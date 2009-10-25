@@ -1,4 +1,4 @@
-= Cucumber
+= SpecFlow
 
 The main website is at http://www.specflow.org/
 The wiki and issue tracking is at http://code.google.com/p/specflow/
