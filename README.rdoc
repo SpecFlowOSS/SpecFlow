@@ -1,0 +1,19 @@
+= Cucumber
+
+The main website is at http://www.specflow.org/
+The wiki and issue tracking is at http://code.google.com/p/specflow/
+Discussion group at: http://groups.google.com/group/SpecFlow
+
+== Note on Patches/Pull Requests
+ 
+* TODO
+
+== Running tests
+
+  TODO
+
+
+== Copyright
+
+Copyright (c) TODO. See LICENSE for details.
+
