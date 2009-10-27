@@ -1,0 +1,21 @@
+Windows Registry Editor Version 5.00
+
+[$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\SpecFlowSingleFileGenerator]
+@="VB XML Class Generator"
+"CLSID"="{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}"
+"GeneratesDesignTimeSource"=dword:00000001
+[$RootKey$\Generators\{E6FDF8B0-F3D1-11D4-8576-0002A516ECE8}\SpecFlowSingleFileGenerator]
+@="J# XML Class Generator"
+"CLSID"="{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}"
+"GeneratesDesignTimeSource"=dword:00000001
+[$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\SpecFlowSingleFileGenerator]
+@="C# XML Class Generator"
+"CLSID"="{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}"
+"GeneratesDesignTimeSource"=dword:00000001
+[$RootKey$\CLSID\{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}]
+@="TechTalk.SpecFlow.VsIntegration.SpecFlowSingleFileGenerator"
+"InprocServer32"="%windir%\\SYSTEM32\\MSCOREE.DLL"
+"Class"="TechTalk.SpecFlow.VsIntegration.SpecFlowSingleFileGenerator"
+"Assembly"="TechTalk.SpecFlow.VsIntegration, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null"
+"ThreadingModel"="Both"
+

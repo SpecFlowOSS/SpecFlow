@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Tags>
+    <Tag>
+      <Name>ftag1</Name>
+    </Tag>
+    <Tag>
+      <Name>ftag2</Name>
+    </Tag>
+    <Tag>
+      <Name>ftag3</Name>
+    </Tag>
+  </Tags>
+  <Scenarios>
+    <Scenario>
+      <Tags>
+        <Tag>
+          <Name>ftag1</Name>
+        </Tag>
+        <Tag>
+          <Name>ftag2</Name>
+        </Tag>
+        <Tag>
+          <Name>ftag3</Name>
+        </Tag>
+      </Tags>
+      <Title>a simple scenario</Title>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>some precondition</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>I do something</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>something happens</Text>
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+    <Scenario>
+      <Tags>
+        <Tag>
+          <Name>stag4</Name>
+        </Tag>
+      </Tags>
+      <Title>a simple scenario with tags in the same line</Title>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>some precondition</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>I do something</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>something happens</Text>
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Title>a very simple feature</Title>
+  <Description />
+</Feature>

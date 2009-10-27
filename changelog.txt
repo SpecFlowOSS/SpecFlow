@@ -1,0 +1,17 @@
+
+1.0.1 - 2009/10/13
+
+Initial publish on http://www.specflow.org
+
+1.0.2 - 2009/10/20
+
+Fixed issues:
++ VS: Error message is displayed when you add a SpecFlow project item to your project.
++ Parser: mixed order of Given/When/Then is not supported
++ Runtime: the original phrasing of the keywords (Given/And/But) is not preserved
++ Generator: the generated test class has a "Fixture" suffix
++ Parser: specifying any "given" should be optional
+
+New features:
++ Runtime: allow non-static bindings
++ Runtime: support multiple step attributes on a single binding method

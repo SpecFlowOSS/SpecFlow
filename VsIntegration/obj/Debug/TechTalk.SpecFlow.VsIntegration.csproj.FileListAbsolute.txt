@@ -1,0 +1,15 @@
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\TechTalk.SpecFlow.VsIntegration.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\TechTalk.SpecFlow.VsIntegration.pdb
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\TechTalk.SpecFlow.VsIntegration.pkgdef
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\TechTalk.SpecFlow.Parser.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\Antlr3.Runtime.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\bin\Debug\TechTalk.SpecFlow.Parser.pdb
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\TechTalk.SpecFlow.VsIntegration.Resources.resources
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\TechTalk.SpecFlow.VsIntegration.VSPackage.resources
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\TechTalk.SpecFlow.VsIntegration.csproj.GenerateResource.Cache
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\SpecFlowStepDefinition.zip
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\SpecFlowEventDefinition.zip
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\SpecFlowFeature.zip
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\TechTalk.SpecFlow.VsIntegration.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\VsIntegration\obj\Debug\TechTalk.SpecFlow.VsIntegration.pdb

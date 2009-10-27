@@ -1,0 +1,115 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
+	ProjectSection(SolutionItems) = preProject
+		changelog.txt = changelog.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
+	ProjectSection(SolutionItems) = preProject
+		changelog.txt = changelog.txt
+		LICENSE.txt = LICENSE.txt
+		VersionInfo.cs = VersionInfo.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Reporting", "Reporting\TechTalk.SpecFlow.Reporting.csproj", "{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow", "Runtime\TechTalk.SpecFlow.csproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Parser", "Parser\TechTalk.SpecFlow.Parser.csproj", "{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "Tests\ParserTests\ParserTests.csproj", "{70376361-0BE1-478D-8EEC-47BD1C768165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeTests", "Tests\RuntimeTests\RuntimeTests.csproj", "{F8FACCF0-5497-4C6B-861F-78D72FD9561B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.VsIntegration", "VsIntegration\TechTalk.SpecFlow.VsIntegration.csproj", "{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevenvSetupCustomAction", "Installer\DevenvSetupCustomAction\DevenvSetupCustomAction.csproj", "{02F3B86D-0421-4D45-A701-44F3C94CF07D}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SpecFlowSetup", "Installer\SpecFlowSetup\SpecFlowSetup.vdproj", "{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://ttb-app01.corp.techtalk.at:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Reporting\\TechTalk.SpecFlow.Reporting.csproj
+		SccProjectName1 = Reporting
+		SccLocalPath1 = Reporting
+		SccProjectUniqueName2 = Runtime\\TechTalk.SpecFlow.csproj
+		SccProjectName2 = Runtime
+		SccLocalPath2 = Runtime
+		SccProjectUniqueName3 = Parser\\TechTalk.SpecFlow.Parser.csproj
+		SccProjectName3 = Parser
+		SccLocalPath3 = Parser
+		SccProjectUniqueName4 = Tests\\ParserTests\\ParserTests.csproj
+		SccProjectTopLevelParentUniqueName4 = TechTalk.SpecFlow.sln
+		SccProjectName4 = Tests/ParserTests
+		SccLocalPath4 = Tests\\ParserTests
+		SccProjectUniqueName5 = Tests\\RuntimeTests\\RuntimeTests.csproj
+		SccProjectTopLevelParentUniqueName5 = TechTalk.SpecFlow.sln
+		SccProjectName5 = Tests/RuntimeTests
+		SccLocalPath5 = Tests\\RuntimeTests
+		SccProjectUniqueName6 = VsIntegration\\TechTalk.SpecFlow.VsIntegration.csproj
+		SccProjectName6 = VsIntegration
+		SccLocalPath6 = VsIntegration
+		SccProjectUniqueName7 = Installer\\DevenvSetupCustomAction\\DevenvSetupCustomAction.csproj
+		SccProjectTopLevelParentUniqueName7 = TechTalk.SpecFlow.sln
+		SccProjectName7 = Installer/DevenvSetupCustomAction
+		SccLocalPath7 = Installer\\DevenvSetupCustomAction
+		SccProjectUniqueName8 = Installer\\SpecFlowSetup\\SpecFlowSetup.vdproj
+		SccProjectTopLevelParentUniqueName8 = TechTalk.SpecFlow.sln
+		SccProjectName8 = Installer/SpecFlowSetup
+		SccLocalPath8 = Installer\\SpecFlowSetup
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70376361-0BE1-478D-8EEC-47BD1C768165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70376361-0BE1-478D-8EEC-47BD1C768165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70376361-0BE1-478D-8EEC-47BD1C768165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70376361-0BE1-478D-8EEC-47BD1C768165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F3B86D-0421-4D45-A701-44F3C94CF07D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F3B86D-0421-4D45-A701-44F3C94CF07D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F3B86D-0421-4D45-A701-44F3C94CF07D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F3B86D-0421-4D45-A701-44F3C94CF07D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Debug|Any CPU.ActiveCfg = Debug
+		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Release|Any CPU.ActiveCfg = Release
+		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Release|Any CPU.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02F3B86D-0421-4D45-A701-44F3C94CF07D} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
+		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
+		{70376361-0BE1-478D-8EEC-47BD1C768165} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{F8FACCF0-5497-4C6B-861F-78D72FD9561B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+	EndGlobalSection
+EndGlobal

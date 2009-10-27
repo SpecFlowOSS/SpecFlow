@@ -1,0 +1,9 @@
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\ParserTests.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\ParserTests.pdb
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\nunit.framework.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\TechTalk.SpecFlow.Parser.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\Antlr3.Runtime.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\bin\Debug\TechTalk.SpecFlow.Parser.pdb
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\obj\Debug\ParserTests.dll
+C:\Users\jba\Code\Research\TechTalk.SpecFlow\Tests\ParserTests\obj\Debug\ParserTests.pdb

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scenarios>
+    <Scenario>
+      <Title>a simple scenario</Title>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>some precondition</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>some other given</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>I do something</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>antother when</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Given">
+          <Text>yet another given</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>something happens</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="But">
+          <Text>this also happens</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>again a when</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Given">
+          <Text>a third given part</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>second step of the third given</Text>
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Title>a very simple feature with mixed given/when/then</Title>
+  <Description />
+</Feature>

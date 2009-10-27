@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StepDefinitionReport
+  xmlns="urn:TechTalk:SpecFlow.Report"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  projectName="PDP"
+  generatedAt="2009-10-19 15:05"
+  >
+  <StepDefinition type="Given">
+    <Binding />
+    <ScenarioStep xsi:type="Given">
+      <Text>
+        the Application Support User e-mail address is '<StepParam name="email" />'
+      </Text>
+    </ScenarioStep>
+    <Instances>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="Background" />
+        <Parameters>
+          <Parameter name="email">gr-app-support@grtest.at</Parameter>
+        </Parameters>
+        <ScenarioStep xsi:type="And">
+          <Text>the Application Support User e-mail address is 'gr-app-support@grtest.at'</Text>
+        </ScenarioStep>
+      </Instance>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="Background" />
+        <Parameters>
+          <Parameter name="email">some-other@grtest.at</Parameter>
+        </Parameters>
+        <ScenarioStep xsi:type="And">
+          <Text>the Application Support User e-mail address is 'some-other@grtest.at'</Text>
+        </ScenarioStep>
+      </Instance>
+    </Instances>
+  </StepDefinition>
+  <StepDefinition type="Given">
+    <Binding />
+    <ScenarioStep xsi:type="Given">
+      <Text>there is some precondition</Text>
+    </ScenarioStep>
+    <Instances>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="XXX1" />
+        <ScenarioStep xsi:type="Given">
+          <Text>there is some precondition</Text>
+        </ScenarioStep>
+      </Instance>
+        <Instance>
+          <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+          <ScenarioRef name="CCC3" />
+          <ScenarioStep xsi:type="Given">
+            <Text>there is some precondition</Text>
+          </ScenarioStep>
+        </Instance>
+    </Instances>
+  </StepDefinition>
+  <StepDefinition type="Given">
+    <Binding />
+    <ScenarioStep xsi:type="Then">
+      <Text>there is an exchange rate in the database with:</Text>
+      <TableArg>
+        <Header>
+          <Cells>
+            <Cell>
+              <Value>code</Value>
+            </Cell>
+            <Cell>
+              <Value>rate</Value>
+            </Cell>
+            <Cell>
+              <Value>date</Value>
+            </Cell>
+            <Cell>
+              <Value>error code</Value>
+            </Cell>
+          </Cells>
+        </Header>
+        <Body>
+          <Row>
+            <Cells>
+              <Cell>
+                <Value>USD</Value>
+              </Cell>
+              <Cell>
+                <Value>1.2</Value>
+              </Cell>
+              <Cell>
+                <Value>2009/09/15</Value>
+              </Cell>
+              <Cell>
+                <Value>OK</Value>
+              </Cell>
+            </Cells>
+          </Row>
+        </Body>
+      </TableArg>
+      <!--<MultiLineTextArgument>
+        Some Title, Eh?
+        ==============
+        Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+        consectetur adipiscing elit.
+      </MultiLineTextArgument>-->
+    </ScenarioStep>
+    <Instances>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="Background" />
+        <ScenarioStep xsi:type="Then">
+          <Text>there is an exchange rate in the database with:</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/15</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+              </Row>
+            </Body>
+          </TableArg>
+        </ScenarioStep>
+      </Instance>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="some scenario" />
+        <ScenarioStep xsi:type="Then">
+          <Text>there is an exchange rate in the database with:</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+              </Row>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>EUR</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+              </Row>
+            </Body>
+          </TableArg>
+        </ScenarioStep>
+      </Instance>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="some other scenario" />
+        <ScenarioStep xsi:type="Then">
+          <Text>there is an exchange rate in the database with:</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+              </Row>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>EUR</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+              </Row>
+            </Body>
+          </TableArg>
+        </ScenarioStep>
+      </Instance>
+    </Instances>
+  </StepDefinition>
+  <StepDefinition type="Given">
+    <Binding />
+    <ScenarioStep xsi:type="Given">
+      <Text>
+        the XX Support User e-mail address is '<StepParam name="email" />'
+      </Text>
+    </ScenarioStep>
+    <Instances>
+      <Instance>
+        <Parameters>
+          <Parameter name="email">gr-app-support@grtest.at</Parameter>
+        </Parameters>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="Background" />
+        <ScenarioStep xsi:type="And">
+          <Text>the XX Support User e-mail address is 'gr-app-support@grtest.at'</Text>
+        </ScenarioStep>
+      </Instance>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="Background" />
+        <Parameters>
+          <Parameter name="email">something-else@grtest.at</Parameter>
+        </Parameters>
+        <ScenarioStep xsi:type="And">
+          <Text>the XX Support User e-mail address is 'gr-app-support@grtest.at'</Text>
+        </ScenarioStep>
+      </Instance>
+    </Instances>
+  </StepDefinition>
+  <StepDefinition type="Given">
+    <ScenarioStep xsi:type="Given">
+      <Text>
+        something where there is no binding yet
+      </Text>
+    </ScenarioStep>
+    <Instances>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="XXX1" />
+        <ScenarioStep xsi:type="Given">
+          <Text>something where there is no binding yet</Text>
+        </ScenarioStep>
+      </Instance>
+      <Instance>
+        <FeatureRef name="US1.1.4.1 –  Import exchange rates published by SEB" file="somefile.feature" />
+        <ScenarioRef name="CCC3" />
+        <ScenarioStep xsi:type="Given">
+          <Text>something where there is no binding yet</Text>
+        </ScenarioStep>
+      </Instance>
+    </Instances>
+  </StepDefinition>
+  <StepDefinition type="Given">
+    <Binding />
+    <ScenarioStep xsi:type="Given">
+      <Text>
+        something where there is no instances yet, just binding
+      </Text>
+    </ScenarioStep>
+  </StepDefinition>
+</StepDefinitionReport>

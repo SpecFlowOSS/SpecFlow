@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scenarios>
+    <Scenario>
+      <Title>a simple scenario</Title>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>some precondition</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>I do something</Text>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>something happens</Text>
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Title>a very simple feature</Title>
+  <Description />
+</Feature>

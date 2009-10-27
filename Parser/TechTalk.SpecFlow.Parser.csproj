@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TechTalk.SpecFlow.Parser</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.Parser</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.1.2.41038, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\antlr\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Runtime\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Grammar\ErrorReporting.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grammar\SpecFlowLangParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grammar\SpecFlowLangWalker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IUnitTestConverter.cs" />
+    <Compile Include="SpecFlowLangParser.cs" />
+    <Compile Include="SpecFlowParserException.cs" />
+    <Compile Include="SpecFlowUnitTestConverter.cs" />
+    <Compile Include="NUnitTestConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyntaxElements\And.cs" />
+    <Compile Include="SyntaxElements\Background.cs" />
+    <Compile Include="SyntaxElements\But.cs" />
+    <Compile Include="SyntaxElements\Examples.cs" />
+    <Compile Include="SyntaxElements\Feature.cs" />
+    <Compile Include="SyntaxElements\Given.cs" />
+    <Compile Include="SyntaxElements\MultilineText.cs" />
+    <Compile Include="SyntaxElements\Scenario.cs" />
+    <Compile Include="SyntaxElements\ScenarioOutline.cs" />
+    <Compile Include="SyntaxElements\ScenarioStep.cs" />
+    <Compile Include="SyntaxElements\Table.cs" />
+    <Compile Include="SyntaxElements\Tag.cs" />
+    <Compile Include="SyntaxElements\Text.cs" />
+    <Compile Include="SyntaxElements\Then.cs" />
+    <Compile Include="SyntaxElements\When.cs" />
+    <Compile Include="SyntaxElements\Word.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Grammar\compile.cmd" />
+    <None Include="Grammar\SpecFlowLang.g" />
+    <None Include="Grammar\SpecFlowLangWalker.g" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

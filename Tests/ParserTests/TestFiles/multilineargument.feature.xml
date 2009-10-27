@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scenarios>
+    <Scenario>
+      <Title>a scenario with a multiline argument</Title>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+</MultiLineTextArgument>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+</MultiLineTextArgument>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.
+</MultiLineTextArgument>
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Title>a very simple feature</Title>
+  <Description />
+</Feature>
