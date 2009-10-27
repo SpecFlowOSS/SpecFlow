@@ -32,40 +32,6 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SpecFlowSetup", "Installer\SpecFlowSetup\SpecFlowSetup.vdproj", "{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://ttb-app01.corp.techtalk.at:8080/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Reporting\\TechTalk.SpecFlow.Reporting.csproj
-		SccProjectName1 = Reporting
-		SccLocalPath1 = Reporting
-		SccProjectUniqueName2 = Runtime\\TechTalk.SpecFlow.csproj
-		SccProjectName2 = Runtime
-		SccLocalPath2 = Runtime
-		SccProjectUniqueName3 = Parser\\TechTalk.SpecFlow.Parser.csproj
-		SccProjectName3 = Parser
-		SccLocalPath3 = Parser
-		SccProjectUniqueName4 = Tests\\ParserTests\\ParserTests.csproj
-		SccProjectTopLevelParentUniqueName4 = TechTalk.SpecFlow.sln
-		SccProjectName4 = Tests/ParserTests
-		SccLocalPath4 = Tests\\ParserTests
-		SccProjectUniqueName5 = Tests\\RuntimeTests\\RuntimeTests.csproj
-		SccProjectTopLevelParentUniqueName5 = TechTalk.SpecFlow.sln
-		SccProjectName5 = Tests/RuntimeTests
-		SccLocalPath5 = Tests\\RuntimeTests
-		SccProjectUniqueName6 = VsIntegration\\TechTalk.SpecFlow.VsIntegration.csproj
-		SccProjectName6 = VsIntegration
-		SccLocalPath6 = VsIntegration
-		SccProjectUniqueName7 = Installer\\DevenvSetupCustomAction\\DevenvSetupCustomAction.csproj
-		SccProjectTopLevelParentUniqueName7 = TechTalk.SpecFlow.sln
-		SccProjectName7 = Installer/DevenvSetupCustomAction
-		SccLocalPath7 = Installer\\DevenvSetupCustomAction
-		SccProjectUniqueName8 = Installer\\SpecFlowSetup\\SpecFlowSetup.vdproj
-		SccProjectTopLevelParentUniqueName8 = TechTalk.SpecFlow.sln
-		SccProjectName8 = Installer/SpecFlowSetup
-		SccLocalPath8 = Installer\\SpecFlowSetup
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
