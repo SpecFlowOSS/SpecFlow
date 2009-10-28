@@ -79,8 +79,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Common\Common.xslt" />
     <EmbeddedResource Include="Common\GherkinElements.xslt" />
-    <Content Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
-    <Content Include="StepDefinitionReport\StepDefinitionReport.xml" />
+    <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
     <EmbeddedResource Include="StepDefinitionReport\StepDefinitionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
