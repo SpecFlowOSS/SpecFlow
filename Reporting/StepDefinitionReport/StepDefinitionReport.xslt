@@ -49,6 +49,35 @@
         <xsl:call-template name="html-body-header">
           <xsl:with-param name="title" select="$title" />
         </xsl:call-template>
+        <xsl:if test="(/sfr:StepDefinitionReport/@onlySelectedFeatures='true')">
+          <div class="legend">
+            Only the following features from the project are included in this report:
+            <xsl:variable name="featureRefs">
+              <FeatureRefs>
+                <xsl:for-each select="//sfr:FeatureRef">
+                  <FeatureName>
+                    <xsl:value-of select="@name"/>
+                  </FeatureName>
+                </xsl:for-each>
+              </FeatureRefs>
+            </xsl:variable>
+            <ul>
+            <xsl:for-each select="msxsl:node-set($featureRefs)/*/*">
+              <xsl:variable name="feature-name" select="string(text())" />
+              <xsl:if test="not(preceding-sibling::FeatureName[string(text())=$feature-name])">
+                <li>
+                  <xsl:value-of select="$feature-name"/>
+                </li>
+              </xsl:if>
+            </xsl:for-each>
+            </ul>
+          </div>
+        </xsl:if>        
+        <xsl:if test="(/sfr:StepDefinitionReport/@showBindingsWithoutInsance!='true')">
+          <div class="legend">
+            Bindings without instances are not included in this report.
+          </div>
+        </xsl:if>        
         <h2>Givens</h2>
         <xsl:call-template name="process-block">
           <xsl:with-param name="block-name" select="'Given'" />
@@ -75,52 +104,54 @@
       </tr>
       <xsl:for-each select="sfr:StepDefinitionReport/sfr:StepDefinition[@type=$block-name]">
         <xsl:sort order="ascending" select="sfr:ScenarioStep/sfr:Text" data-type="text"/>
-        <xsl:variable name="stepdef-id" select="generate-id()" />
-        <tr>
-          <xsl:attribute name="class">
-            <xsl:choose>
-              <xsl:when test="not(sfr:Binding)">noBinding</xsl:when>
-              <xsl:when test="not(sfr:Instances)">noInstances</xsl:when>
-              <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-          </xsl:attribute>
-          <td class="left">
-            <xsl:apply-templates select="sfr:ScenarioStep" />
-          </td>
-          <td>
-            <xsl:value-of select="count(./sfr:Instances/sfr:Instance)"/>
-            <xsl:if test="sfr:Instances">
-              <xsl:text> </xsl:text>
-              <a href="#" onclick="toggle('{$stepdef-id}'); return false;" class="button">[show]</a>
-            </xsl:if>
-          </td>
-        </tr>
-        <xsl:if test="sfr:Instances">
-          <tr id="{$stepdef-id}" class="hidden">
-            <td class="left" colspan="2">
-              <table class="subReportTable" cellpadding="0" cellspacing="0">
-                <tr>
-                  <th class="top left">Instances:</th>
-                </tr>
-                <xsl:for-each select="sfr:Instances/sfr:Instance">
-                  <xsl:variable name="current-key" select="normalize-space(string(sfr:ScenarioStep))" />
-                  <xsl:if test="generate-id() = generate-id(key('step-usage-variation', $current-key))">
-                    <tr>
-                      <td class="left">
-                        <!--<xsl:value-of select="count(key('step-usage-variation', $current-key))"/>-->
-                        <xsl:apply-templates select="sfr:ScenarioStep" />
-                        <br/>
-                        <xsl:for-each select="../sfr:Instance[normalize-space(string(sfr:ScenarioStep)) = $current-key]">
-                          <xsl:apply-templates select="." mode="instance-ref" />
-                          <br/>
-                        </xsl:for-each>
-                      </td>
-                    </tr>
-                  </xsl:if>
-                </xsl:for-each>
-              </table>
+        <xsl:if test="(/sfr:StepDefinitionReport/@showBindingsWithoutInsance='true') or sfr:Instances">
+          <xsl:variable name="stepdef-id" select="generate-id()" />
+          <tr>
+            <xsl:attribute name="class">
+              <xsl:choose>
+                <xsl:when test="not(sfr:Binding)">noBinding</xsl:when>
+                <xsl:when test="not(sfr:Instances)">noInstances</xsl:when>
+                <xsl:otherwise></xsl:otherwise>
+              </xsl:choose>
+            </xsl:attribute>
+            <td class="left">
+              <xsl:apply-templates select="sfr:ScenarioStep" />
+            </td>
+            <td>
+              <xsl:value-of select="count(./sfr:Instances/sfr:Instance)"/>
+              <xsl:if test="sfr:Instances">
+                <xsl:text> </xsl:text>
+                <a href="#" onclick="toggle('{$stepdef-id}'); return false;" class="button">[show]</a>
+              </xsl:if>
             </td>
           </tr>
+          <xsl:if test="sfr:Instances">
+            <tr id="{$stepdef-id}" class="hidden">
+              <td class="left" colspan="2">
+                <table class="subReportTable" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <th class="top left">Instances:</th>
+                  </tr>
+                  <xsl:for-each select="sfr:Instances/sfr:Instance">
+                    <xsl:variable name="current-key" select="normalize-space(string(sfr:ScenarioStep))" />
+                    <xsl:if test="generate-id() = generate-id(key('step-usage-variation', $current-key))">
+                      <tr>
+                        <td class="left">
+                          <!--<xsl:value-of select="count(key('step-usage-variation', $current-key))"/>-->
+                          <xsl:apply-templates select="sfr:ScenarioStep" />
+                          <br/>
+                          <xsl:for-each select="../sfr:Instance[normalize-space(string(sfr:ScenarioStep)) = $current-key]">
+                            <xsl:apply-templates select="." mode="instance-ref" />
+                            <br/>
+                          </xsl:for-each>
+                        </td>
+                      </tr>
+                    </xsl:if>
+                  </xsl:for-each>
+                </table>
+              </td>
+            </tr>
+          </xsl:if>
         </xsl:if>
       </xsl:for-each>
     </table>

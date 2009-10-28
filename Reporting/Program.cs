@@ -20,16 +20,23 @@ namespace TechTalk.SpecFlow.Reporting
         public static void StepDefinitionReport(
             [Required] string projectFile, 
             [Optional("bin\\Debug")] string binFolder,
-            [Optional("StepDefinitionReport.html", "out")] string outputFile)
+            [Optional("StepDefinitionReport.html", "out")] string outputFile,
+            [Optional(null, "features")] string[] featureFiles
+            )
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
 
-            List<Feature> parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
+            bool onlySelectedFeatures = featureFiles != null && featureFiles.Length > 0;
+
+            List<Feature> parsedFeatures = onlySelectedFeatures ?
+                ParserHelper.GetParsedFeatures(featureFiles) :
+                ParserHelper.GetParsedFeatures(specFlowProject);
 
             var basePath = Path.Combine(specFlowProject.ProjectFolder, binFolder);
             List<BindingInfo> bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
 
-            StepDefinitionReportGenerator generator = new StepDefinitionReportGenerator(specFlowProject, bindings, parsedFeatures);
+            StepDefinitionReportGenerator generator = new StepDefinitionReportGenerator(specFlowProject, bindings, parsedFeatures, 
+                !onlySelectedFeatures, onlySelectedFeatures);
             generator.GenerateReport();
 
             string outputFilePath = Path.Combine(basePath, outputFile);

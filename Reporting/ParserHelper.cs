@@ -12,11 +12,16 @@ namespace TechTalk.SpecFlow.Reporting
     {
         public static List<Feature> GetParsedFeatures(SpecFlowProject specFlowProject)
         {
+            return GetParsedFeatures(specFlowProject.FeatureFiles.Select(ff => ff.GetFullPath(specFlowProject)));
+        }
+
+        public static List<Feature> GetParsedFeatures(IEnumerable<string> featureFiles)
+        {
             List<Feature> parsedFeatures = new List<Feature>();
-            foreach (var featureFile in specFlowProject.FeatureFiles)
+            foreach (var featureFile in featureFiles)
             {
                 SpecFlowLangParser parser = new SpecFlowLangParser();
-                using (var reader = new StreamReader(featureFile.GetFullPath(specFlowProject)))
+                using (var reader = new StreamReader(featureFile))
                 {
                     Feature feature = parser.Parse(reader);
                     parsedFeatures.Add(feature);

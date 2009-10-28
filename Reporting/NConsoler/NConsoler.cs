@@ -137,7 +137,7 @@ namespace NConsoler
 			}
 			if (argumentType == typeof(string[]))
 			{
-				return value.Split('+');
+				return value.Split('+', ';');
 			}
 			if (argumentType == typeof(int[]))
 			{
@@ -713,10 +713,11 @@ namespace NConsoler
 					continue;
 				}
 				OptionalAttribute optional = GetOptional(parameter);
-				if (optional.Default != null && optional.Default.GetType() == typeof(string) && CanBeConvertedToDate(optional.Default.ToString()))
-				{
-					return;
-				}
+// this causes a lot of unnecessary exceptions which is annoying during debug
+//				if (optional.Default != null && optional.Default.GetType() == typeof(string) && CanBeConvertedToDate(optional.Default.ToString()))
+//				{
+//					return;
+//				}
 				if ((optional.Default == null && !CanBeNull(parameter.ParameterType))
 					|| (optional.Default != null && !optional.Default.GetType().IsAssignableFrom(parameter.ParameterType)))
 				{
