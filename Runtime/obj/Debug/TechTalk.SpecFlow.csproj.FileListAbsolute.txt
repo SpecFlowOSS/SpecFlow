@@ -1,6 +1,0 @@
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\bin\Debug\TechTalk.SpecFlow.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\bin\Debug\TechTalk.SpecFlow.pdb
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\bin\Debug\nunit.framework.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\obj\Debug\TechTalk.SpecFlow.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Runtime\obj\Debug\TechTalk.SpecFlow.pdb

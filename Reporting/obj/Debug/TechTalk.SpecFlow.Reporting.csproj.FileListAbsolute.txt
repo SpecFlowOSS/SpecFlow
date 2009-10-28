@@ -1,8 +1,0 @@
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\TechTalk.SpecFlow.Reporting.exe
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\TechTalk.SpecFlow.Reporting.pdb
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\TechTalk.SpecFlow.Parser.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\Antlr3.Runtime.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\TechTalk.SpecFlow.Parser.pdb
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.exe
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.pdb
