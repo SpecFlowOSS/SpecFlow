@@ -30,6 +30,10 @@
       {
         font-size: 14px;
       }
+      h3
+      {
+        font-size: 12px;
+      }
       div.marker
       {
         height: 1.1em;
@@ -91,6 +95,10 @@
       td.marker
       {
         white-space: nowrap;
+      }
+      td.subRow
+      {
+        padding-left: 2em;
       }
       
       div.legend

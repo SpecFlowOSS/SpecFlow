@@ -6,3 +6,5 @@ C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\bin\Debug\TechTalk.SpecFl
 C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.exe
 C:\Users\jba\Code\Research\TechTalk.SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.pdb
+C:\git\SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.exe
+C:\git\SpecFlow\Reporting\obj\Debug\TechTalk.SpecFlow.Reporting.pdb

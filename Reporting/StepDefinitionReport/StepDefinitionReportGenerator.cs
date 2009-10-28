@@ -209,7 +209,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, typeof(StepDefinitionReportGenerator), outputFilePath);
+                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath);
             }
         }
 

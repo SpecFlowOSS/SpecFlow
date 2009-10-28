@@ -38,12 +38,18 @@ namespace TechTalk.SpecFlow.Reporting
 
         [Action]
         public static void NUnitExecutionReport(
+            [Required] string projectFile,
             [Optional("TestResult.xml")] string xmlTestResult,
             [Optional("TestResult.txt", "testOutput")] string labeledTestOutput,
             [Optional("TestResult.html", "out")] string outputFile
             )
         {
-            NUnitExecutionReportGenerator generator = new NUnitExecutionReportGenerator();
+            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
+
+            NUnitExecutionReportGenerator generator = new NUnitExecutionReportGenerator(
+                specFlowProject, 
+                Path.GetFullPath(xmlTestResult),
+                Path.GetFullPath(labeledTestOutput));
             generator.GenerateReport();
 
             string outputFilePath = Path.GetFullPath(outputFile);

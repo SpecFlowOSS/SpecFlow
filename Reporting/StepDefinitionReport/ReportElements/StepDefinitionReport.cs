@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
 {
     [XmlType("StepDefinitionReport", Namespace = XmlNamespace)]
+    [XmlRoot("StepDefinitionReport", Namespace = XmlNamespace)]
     public class StepDefinitionReport
     {
         public const string XmlNamespace = "urn:TechTalk:SpecFlow.Report";
