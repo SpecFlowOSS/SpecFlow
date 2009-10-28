@@ -3,6 +3,7 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>a simple scenario outline</Title>
+      <SourceFileLine>3</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some &lt;templated&gt; precondition</Text>
@@ -58,12 +59,15 @@
               </Row>
             </Body>
           </TableArg>
+          <SourceFileLine>4</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>8</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something &lt;templated&gt; happens</Text>
+          <SourceFileLine>9</SourceFileLine>
         </ScenarioStep>
       </Steps>
       <Examples>

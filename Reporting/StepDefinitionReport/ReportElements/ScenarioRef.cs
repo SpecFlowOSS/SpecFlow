@@ -7,5 +7,8 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
     {
         [XmlAttribute("name")]
         public string Name;
+
+        [XmlAttribute("line")]
+        public int SourceFileLine;
     }
 }

@@ -12,6 +12,13 @@ namespace TechTalk.SpecFlow.Parser
 {
     public class SpecFlowLangParser
     {
+        public Feature Parse(TextReader featureFileReader, string sourceFileName)
+        {
+            var feature = Parse(featureFileReader);
+            feature.SourceFile = Path.GetFullPath(sourceFileName);
+            return feature;
+        }
+
         public Feature Parse(TextReader featureFileReader)
         {
             var fileContent = featureFileReader.ReadToEnd() + Environment.NewLine;

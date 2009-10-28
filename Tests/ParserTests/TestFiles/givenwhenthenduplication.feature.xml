@@ -3,59 +3,77 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario with duplicated keywords</Title>
+      <SourceFileLine>3</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>4</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>5</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>6</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>7</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>8</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>9</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>
     <Scenario>
       <Title>a simple scenario with mixed keywords</Title>
+      <SourceFileLine>11</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>12</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>13</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>some precondition</Text>
+          <SourceFileLine>14</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>15</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>I do something</Text>
+          <SourceFileLine>16</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>17</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>18</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="But">
           <Text>something happens</Text>
+          <SourceFileLine>19</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>something happens</Text>
+          <SourceFileLine>20</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>21</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>

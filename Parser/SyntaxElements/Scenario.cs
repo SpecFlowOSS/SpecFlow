@@ -9,6 +9,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     {
         public Tags Tags { get; set; }
         public string Title { get; set; }
+        public int? SourceFileLine { get; set; }
 
         public ScenarioSteps Steps { get; set; }
 

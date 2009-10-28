@@ -159,7 +159,7 @@
 
   <xsl:template match="sfr:Instance" mode="instance-ref">
     <b>
-      <a class="instanceRef" href="{sfr:FeatureRef/@file}">
+      <a class="instanceRef" href="{sfr:FeatureRef/@file}" title="{sfr:FeatureRef/@file}, line {sfr:ScenarioRef/@line}">
         <xsl:value-of select="sfr:FeatureRef/@name"/>
         <xsl:text> / </xsl:text>
         <xsl:value-of select="sfr:ScenarioRef/@name"/>

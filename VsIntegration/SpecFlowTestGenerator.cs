@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.VsIntegration
         static public CodeCompileUnit GenerateTestFile(string content, string featureFileName, string targetNamespace)
         {
             SpecFlowLangParser parser = new SpecFlowLangParser();
-            Feature feature = parser.Parse(new StringReader(content));
+            Feature feature = parser.Parse(new StringReader(content), featureFileName);
 
             SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter();
             CodeCompileUnit codeCompileUnit = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);

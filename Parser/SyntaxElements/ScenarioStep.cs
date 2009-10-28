@@ -15,6 +15,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public string Text { get; set; }
         public string MultiLineTextArgument { get; set; }
         public Table TableArg { get; set; }
+        public int? SourceFileLine { get; set; }
 
         public ScenarioStep()
         {

@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
             foreach (var feature in parsedFeatures)
             {
-                var featureRef = new FeatureRef { FilePath = "some.feature", Name = feature.Title };
+                var featureRef = new FeatureRef { FilePath = feature.SourceFile, Name = feature.Title };
                 if (feature.Background != null)
                 {
                     var scenarioRef = new ScenarioRef { Name = "Background" };
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
                 foreach (var scenario in feature.Scenarios)
                 {
-                    var scenarioRef = new ScenarioRef { Name = scenario.Title };
+                    var scenarioRef = new ScenarioRef { Name = scenario.Title, SourceFileLine = scenario.SourceFileLine ?? -1 };
                     if (scenario is ScenarioOutline)
                     {
                         ScenarioSteps firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline) scenario);

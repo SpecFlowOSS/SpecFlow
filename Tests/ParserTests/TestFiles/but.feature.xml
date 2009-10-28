@@ -3,21 +3,27 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
+      <SourceFileLine>3</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>4</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>5</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>6</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="But">
           <Text>this thing too</Text>
+          <SourceFileLine>7</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>this as well</Text>
+          <SourceFileLine>8</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>

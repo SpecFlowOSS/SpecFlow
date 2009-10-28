@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public Scenario[] Scenarios { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public string SourceFile { get; set; }
 
         public Feature()
         {

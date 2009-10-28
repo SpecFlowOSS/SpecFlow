@@ -3,6 +3,7 @@
   <Scenarios>
     <Scenario>
       <Title>a scenario with a table argument</Title>
+      <SourceFileLine>3</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>there is a table argument</Text>
@@ -58,6 +59,7 @@
               </Row>
             </Body>
           </TableArg>
+          <SourceFileLine>4</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a table argument</Text>
@@ -113,6 +115,7 @@
               </Row>
             </Body>
           </TableArg>
+          <SourceFileLine>8</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a table argument</Text>
@@ -168,6 +171,7 @@
               </Row>
             </Body>
           </TableArg>
+          <SourceFileLine>12</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>

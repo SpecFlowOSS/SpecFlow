@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Reporting
                 SpecFlowLangParser parser = new SpecFlowLangParser();
                 using (var reader = new StreamReader(featureFile))
                 {
-                    Feature feature = parser.Parse(reader);
+                    Feature feature = parser.Parse(reader, featureFile);
                     parsedFeatures.Add(feature);
                 }
             }

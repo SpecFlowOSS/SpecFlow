@@ -88,11 +88,18 @@ scenarioKind returns[Scenario scenarioKind]
     ;
 
 scenarioOutline returns[ScenarioOutline outline]
+@init {
+    int? lineNo_ = null;
+}
 @after {
     $outline = new ScenarioOutline(title_, tags_, steps_, examples_);
+    $outline.SourceFileLine = lineNo_;
 }
     :   ^(SCENARIOOUTLINE
             tags_=tags?
+            {
+				lineNo_ = ((ITree)input.LT(1)).Line;
+            }
             title_=text
             steps_=steps
             examples_=examples
@@ -100,11 +107,18 @@ scenarioOutline returns[ScenarioOutline outline]
     ;
 
 scenario returns[Scenario scenario]
+@init {
+    int? lineNo_ = null;
+}
 @after {
     $scenario = new Scenario(title_, tags_, steps_);
+    $scenario.SourceFileLine = lineNo_;
 }
     :   ^(SCENARIO 
             tags_=tags?
+            {
+				lineNo_ = ((ITree)input.LT(1)).Line;
+            }
             title_=text
             steps_=steps
         )
@@ -142,6 +156,12 @@ steps returns[ScenarioSteps steps]
     ;
 
 step returns[ScenarioStep step]
+@init {
+    int? lineNo_ = ((ITree)input.LT(1)).Line;
+}
+@after {
+    $step.SourceFileLine = lineNo_;
+}
     :   ^(GIVEN
             text_=text
             mlt_=multilineText?

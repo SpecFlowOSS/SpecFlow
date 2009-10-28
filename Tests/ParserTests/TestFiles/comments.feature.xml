@@ -3,9 +3,11 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
+      <SourceFileLine>6</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>7</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>

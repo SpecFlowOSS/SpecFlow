@@ -3,15 +3,19 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
+      <SourceFileLine>10</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
+          <SourceFileLine>11</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
+          <SourceFileLine>12</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
+          <SourceFileLine>13</SourceFileLine>
         </ScenarioStep>
       </Steps>
     </Scenario>
