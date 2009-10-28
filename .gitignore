@@ -1,0 +1,12 @@
+﻿
+*.vspscc
+*.vssscc
+*.user
+*.suo
+Thumbs.db
+obj/
+[Bb]in/
+[Dd]ebug*/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*

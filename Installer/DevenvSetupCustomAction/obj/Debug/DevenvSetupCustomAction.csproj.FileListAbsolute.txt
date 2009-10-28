@@ -1,5 +1,0 @@
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Installer\DevenvSetupCustomAction\bin\Debug\DevenvSetupCustomAction.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Installer\DevenvSetupCustomAction\bin\Debug\DevenvSetupCustomAction.pdb
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Installer\DevenvSetupCustomAction\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Installer\DevenvSetupCustomAction\obj\Debug\DevenvSetupCustomAction.dll
-C:\Users\jba\Code\Research\TechTalk.SpecFlow\Installer\DevenvSetupCustomAction\obj\Debug\DevenvSetupCustomAction.pdb
