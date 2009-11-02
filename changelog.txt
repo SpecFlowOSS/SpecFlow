@@ -1,9 +1,18 @@
 
-1.0.1 - 2009/10/13
+vNext - ???
 
-Initial publish on http://www.specflow.org
+New features:
++ Support for MsTest (Issue 4)
+
+Fixed issues:
++ Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)
+
 
 1.0.2 - 2009/10/20
+
+New features:
++ Runtime: allow non-static bindings
++ Runtime: support multiple step attributes on a single binding method
 
 Fixed issues:
 + VS: Error message is displayed when you add a SpecFlow project item to your project.
@@ -12,6 +21,8 @@ Fixed issues:
 + Generator: the generated test class has a "Fixture" suffix
 + Parser: specifying any "given" should be optional
 
-New features:
-+ Runtime: allow non-static bindings
-+ Runtime: support multiple step attributes on a single binding method
+
+1.0.1 - 2009/10/13
+
+Initial publish on http://www.specflow.org
+
