@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Parser.Configuration
         public CultureInfo ToolLanguage { get; set; } //TODO: use
 
         //unit test framework settings
-        public Type GeneratorUnitTestProviderType { get; set; } //TODO: use
+        public Type GeneratorUnitTestProviderType { get; set; }
         
         public GeneratorConfiguration()
         {

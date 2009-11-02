@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
     {
         private const string TESTFIXTURE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute";
         private const string TEST_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute";
-        //private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.CategoryAttribute";
+        private const string PROPERTY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute";
         private const string TESTFIXTURESETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute";
         private const string TESTFIXTURETEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute";
         private const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute";
@@ -18,7 +18,15 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
         private const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
 
+        private const string CATEGORY_PROPERTY_NAME = "Category";
+        private const string CATEGORIES_KEY = "Categories";
+
+        private const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
+        private const string FEATURE_TITILE_KEY = "FeatureTitle";
+
         private const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
+
+        private CodeTypeDeclaration currentTestTypeDeclaration = null;
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -26,8 +34,11 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTFIXTURE_ATTR)));
 
-            //TODO
-            //SetDescription(typeDeclaration.CustomAttributes, title);
+            //as in mstest, you cannot mark classes with the description attribute, we
+            //just remember the feature title, and we will apply it for each test method
+            typeDeclaration.UserData[FEATURE_TITILE_KEY] = title;
+
+            currentTestTypeDeclaration = typeDeclaration;
         }
 
         private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
@@ -41,20 +52,28 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 
         private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
         {
-//TODO
-//            foreach (var category in categories)
-//            {
-//                customAttributes.Add(
-//                    new CodeAttributeDeclaration(
-//                        new CodeTypeReference(CATEGORY_ATTR),
-//                        new CodeAttributeArgument(
-//                            new CodePrimitiveExpression(category))));
-//            }
+            foreach (var category in categories)
+            {
+                SetProperty(customAttributes, CATEGORY_PROPERTY_NAME, category);
+            }
+        }
+
+        private void SetProperty(CodeAttributeDeclarationCollection customAttributes, string name, string value)
+        {
+            customAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(PROPERTY_ATTR),
+                    new CodeAttributeArgument(
+                        new CodePrimitiveExpression(name)),
+                    new CodeAttributeArgument(
+                        new CodePrimitiveExpression(value))));
         }
 
         public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
         {
-            SetCategories(typeDeclaration.CustomAttributes, categories);
+            //as in mstest, you cannot mark classes with the property attribute, we
+            //just remember the class-level categories, and we will apply it for each test method
+            typeDeclaration.UserData[CATEGORIES_KEY] = categories ?? new string[0];
         }
 
         public void SetTest(CodeMemberMethod memberMethod, string title)
@@ -64,10 +83,29 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
                     new CodeTypeReference(TEST_ATTR)));
 
             SetDescription(memberMethod.CustomAttributes, title);
+
+            if (currentTestTypeDeclaration == null)
+                return;
+
+            IEnumerable<string> featureCategories = currentTestTypeDeclaration.UserData[CATEGORIES_KEY] as IEnumerable<string>;
+            if (featureCategories != null)
+                SetCategories(memberMethod.CustomAttributes, featureCategories);
+
+            string featureTitle = currentTestTypeDeclaration.UserData[FEATURE_TITILE_KEY] as string;
+            if (featureTitle != null)
+                SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
         {
+            // exclude feature categories, to avoid duplications
+            if (currentTestTypeDeclaration != null)
+            {
+                IEnumerable<string> featureCategories = currentTestTypeDeclaration.UserData[CATEGORIES_KEY] as IEnumerable<string>;
+                if (featureCategories != null)
+                    categories = categories.Except(featureCategories);
+            }
+
             SetCategories(memberMethod.CustomAttributes, categories);
         }
 
