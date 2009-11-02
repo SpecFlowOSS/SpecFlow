@@ -2,7 +2,6 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 {
@@ -17,9 +16,6 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
         private const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
         private const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
-
-        private const string CATEGORY_PROPERTY_NAME = "Category";
-        private const string CATEGORIES_KEY = "Categories";
 
         private const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
         private const string FEATURE_TITILE_KEY = "FeatureTitle";
@@ -50,14 +46,6 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
                         new CodePrimitiveExpression(description))));
         }
 
-        private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
-        {
-            foreach (var category in categories)
-            {
-                SetProperty(customAttributes, CATEGORY_PROPERTY_NAME, category);
-            }
-        }
-
         private void SetProperty(CodeAttributeDeclarationCollection customAttributes, string name, string value)
         {
             customAttributes.Add(
@@ -71,9 +59,7 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 
         public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
         {
-            //as in mstest, you cannot mark classes with the property attribute, we
-            //just remember the class-level categories, and we will apply it for each test method
-            typeDeclaration.UserData[CATEGORIES_KEY] = categories ?? new string[0];
+            //MsTest does not support caregories... :(
         }
 
         public void SetTest(CodeMemberMethod memberMethod, string title)
@@ -87,10 +73,6 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
             if (currentTestTypeDeclaration == null)
                 return;
 
-            IEnumerable<string> featureCategories = currentTestTypeDeclaration.UserData[CATEGORIES_KEY] as IEnumerable<string>;
-            if (featureCategories != null)
-                SetCategories(memberMethod.CustomAttributes, featureCategories);
-
             string featureTitle = currentTestTypeDeclaration.UserData[FEATURE_TITILE_KEY] as string;
             if (featureTitle != null)
                 SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
@@ -98,15 +80,7 @@ namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
         {
-            // exclude feature categories, to avoid duplications
-            if (currentTestTypeDeclaration != null)
-            {
-                IEnumerable<string> featureCategories = currentTestTypeDeclaration.UserData[CATEGORIES_KEY] as IEnumerable<string>;
-                if (featureCategories != null)
-                    categories = categories.Except(featureCategories);
-            }
-
-            SetCategories(memberMethod.CustomAttributes, categories);
+            //MsTest does not support caregories... :(
         }
 
         public void SetTestSetup(CodeMemberMethod memberMethod)
