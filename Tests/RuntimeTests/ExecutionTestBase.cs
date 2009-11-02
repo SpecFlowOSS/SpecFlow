@@ -148,7 +148,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             string className = Path.GetFileNameWithoutExtension(fileName);
             const string targetNamespace = "Target.Namespace";
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter();
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter());
             var compileUnit = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
 
             Dictionary<string, string> providerOptions = new Dictionary<string, string>();

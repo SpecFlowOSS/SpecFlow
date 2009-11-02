@@ -43,7 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\antlr\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -57,12 +59,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Runtime\Configuration\ConfigurationSectionHandler.cs">
+      <Link>Configuration\ConfigurationSectionHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\GeneratorConfiguration.cs" />
+    <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
+    <Compile Include="Configuration\SpecFlowProject.cs" />
     <Compile Include="Grammar\ErrorReporting.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer.cs">
       <SubType>Code</SubType>
@@ -74,6 +82,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IUnitTestConverter.cs" />
+    <Compile Include="SpecFlowGenerator.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
     <Compile Include="SpecFlowParserException.cs" />
     <Compile Include="SpecFlowUnitTestConverter.cs" />

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow
 {
@@ -47,7 +48,7 @@ namespace TechTalk.SpecFlow
         {
             FireEvents(BindingEvent.FeatureEnd, ObjectContainer.FeatureContext.FeatureInfo.Tags);
 
-            if (Configuration.Current.TraceTimings)
+            if (RuntimeConfiguration.Current.TraceTimings)
             {
                 ObjectContainer.FeatureContext.Stopwatch.Stop();
                 var duration = ObjectContainer.FeatureContext.Stopwatch.Elapsed;
@@ -65,7 +66,7 @@ namespace TechTalk.SpecFlow
 
         public void CollectScenarioErrors()
         {
-            if (Configuration.Current.TraceTimings)
+            if (RuntimeConfiguration.Current.TraceTimings)
             {
                 ObjectContainer.ScenarioContext.Stopwatch.Stop();
                 var duration = ObjectContainer.ScenarioContext.Stopwatch.Elapsed;
@@ -78,7 +79,7 @@ namespace TechTalk.SpecFlow
             if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.StepDefinitionPending)
             {
                 var pendingSteps = ObjectContainer.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
-                ObjectContainer.TestFrameworkIntegration.TestInconclusive(string.Format("{0}{2}  {1}",
+                ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
                     GetPendingStepDefinitionError().Message,
                     string.Join(Environment.NewLine + "  ", pendingSteps.ToArray()),
                     Environment.NewLine));
@@ -91,7 +92,7 @@ namespace TechTalk.SpecFlow
                 string bindingSkeleton =
                     ObjectContainer.TestTracer.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
-                ObjectContainer.TestFrameworkIntegration.TestInconclusive(string.Format("{0}{2}{1}",
+                ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     GetMissingStepDefinitionError().Message,
                     bindingSkeleton,
                     Environment.NewLine));
@@ -212,7 +213,7 @@ namespace TechTalk.SpecFlow
                 if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
                 {
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
-                    if (Configuration.Current.TraceSuccessfulSteps) 
+                    if (RuntimeConfiguration.Current.TraceSuccessfulSteps) 
                         ObjectContainer.TestTracer.TraceLine("-> done: {0} ({1:F1}s)", ObjectContainer.TestTracer.GetMatchText(match, arguments), duration.TotalSeconds);
                 }
                 else
@@ -253,7 +254,7 @@ namespace TechTalk.SpecFlow
                     ObjectContainer.ScenarioContext.TestStatus = TestStatus.TestError;
                     ObjectContainer.ScenarioContext.TestError = ex;
                 }
-                if (Configuration.Current.StopAtFirstError)
+                if (RuntimeConfiguration.Current.StopAtFirstError)
                     throw;
             }
         }
@@ -269,7 +270,7 @@ namespace TechTalk.SpecFlow
                     continue;
 
                 matches.Add(match);
-                if (!Configuration.Current.DetectAmbiguousMatches)
+                if (!RuntimeConfiguration.Current.DetectAmbiguousMatches)
                     break;
             }
 
@@ -323,7 +324,7 @@ namespace TechTalk.SpecFlow
                 action.DynamicInvoke(arguments);
                 stopwatch.Stop();
 
-                if (Configuration.Current.TraceTimings && stopwatch.Elapsed >= Configuration.Current.MinTracedDuration)
+                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
                 {
                     ObjectContainer.TestTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
                 }
@@ -376,6 +377,24 @@ namespace TechTalk.SpecFlow
         private PendingStepException GetPendingStepDefinitionError()
         {
             return new PendingStepException();
+        }
+
+        private void ThrowPendingError(TestStatus testStatus, string message)
+        {
+            switch (RuntimeConfiguration.Current.MissingOrPendingStepsOutcome)
+            {
+                case MissingOrPendingStepsOutcome.Inconclusive:
+                    ObjectContainer.UnitTestRuntimeProvider.TestInconclusive(message);
+                    break;
+                case MissingOrPendingStepsOutcome.Ignore:
+                    ObjectContainer.UnitTestRuntimeProvider.TestIgnore(message);
+                    break;
+                default:
+                    if (testStatus == TestStatus.MissingStepDefinition)
+                        throw GetMissingStepDefinitionError();
+                    throw GetPendingStepDefinitionError();
+            }
+
         }
 
         #endregion

@@ -2,10 +2,11 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Build.BuildEngine;
+using TechTalk.SpecFlow.Parser.Configuration;
 
 namespace TechTalk.SpecFlow.Reporting
 {
-    static class MsBuildProjectReader
+    public static class MsBuildProjectReader
     {
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFile)
         {
@@ -37,7 +38,7 @@ namespace TechTalk.SpecFlow.Reporting
 
                 if (Path.GetFileName(item.FinalItemSpec).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    ParserConfigReader.UpdateConfigFromFile(specFlowProject.ParserConfiguration, Path.Combine(projectFolder, item.FinalItemSpec));
+                    GeneratorConfigurationReader.UpdateConfigFromFile(specFlowProject.GeneratorConfiguration, Path.Combine(projectFolder, item.FinalItemSpec));
                 }
             }
             return specFlowProject;

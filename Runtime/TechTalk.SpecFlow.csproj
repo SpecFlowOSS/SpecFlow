@@ -66,7 +66,8 @@
     <Compile Include="BindingMatch.cs" />
     <Compile Include="BindingRegistry.cs" />
     <Compile Include="BindingType.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
+    <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="EventBinding.cs" />
     <Compile Include="FeatureContext.cs" />
     <Compile Include="FeatureInfo.cs" />
@@ -74,7 +75,8 @@
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="StepArgs.cs" />
     <Compile Include="StringExtensions.cs" />
-    <Compile Include="TestFrameworkIntegration\NUnitIntegration.cs" />
+    <Compile Include="Tracing\DefaultListener.cs" />
+    <Compile Include="UnitTestProvider\NUnitRuntimeProvider.cs" />
     <Compile Include="ScenarioContext.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="ScenarioInfo.cs" />
@@ -83,8 +85,9 @@
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectContainer.cs" />
-    <Compile Include="TestTracer.cs" />
-    <Compile Include="TestFrameworkIntegration\ITestFrameworkIntegration.cs" />
+    <Compile Include="Tracing\TestTracer.cs" />
+    <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
+    <Compile Include="Tracing\ITraceListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

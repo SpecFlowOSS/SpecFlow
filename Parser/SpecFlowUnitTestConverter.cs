@@ -28,7 +28,12 @@ namespace TechTalk.SpecFlow.Parser
         private const string TABLE_TYPE = "TechTalk.SpecFlow.Table";
         private const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
 
-        private readonly IUnitTestConverter testConverter = new NUnitTestConverter();
+        private readonly IUnitTestConverter testConverter;
+
+        public SpecFlowUnitTestConverter(IUnitTestConverter testConverter)
+        {
+            this.testConverter = testConverter;
+        }
 
         public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
         {

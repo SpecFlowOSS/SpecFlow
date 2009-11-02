@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace TechTalk.SpecFlow.TestFrameworkIntegration
+namespace TechTalk.SpecFlow.UnitTestProvider
 {
-    public class NUnitIntegration : ITestFrameworkIntegration
+    public class NUnitRuntimeProvider : IUnitTestRuntimeProvider
     {
         public void TestInconclusive(string message)
         {

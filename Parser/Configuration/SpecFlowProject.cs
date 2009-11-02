@@ -1,20 +1,15 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace TechTalk.SpecFlow.Reporting
+namespace TechTalk.SpecFlow.Parser.Configuration
 {
-    internal class ParserConfiguration
-    {
-
-    }
-
-    internal class SpecFlowFeatureFile
+    public class SpecFlowFeatureFile
     {
         public string ProjectRelativePath { get; private set; }
         public string CustomNamespace { get; set; }
         public string GetFullPath(SpecFlowProject project)
         {
-            return Path.Combine(project.ProjectFolder, ProjectRelativePath);
+            return Path.GetFullPath(Path.Combine(project.ProjectFolder, ProjectRelativePath));
         }
 
         public SpecFlowFeatureFile(string path)
@@ -23,19 +18,19 @@ namespace TechTalk.SpecFlow.Reporting
         }
     }
 
-    internal class SpecFlowProject
+    public class SpecFlowProject
     {
         public string ProjectName { get; set; }
         public string AssemblyName { get; set; }
         public string ProjectFolder { get; set; }
         public string DefaultNamespace { get; set; }
         public List<SpecFlowFeatureFile> FeatureFiles { get; private set; }
-        public ParserConfiguration ParserConfiguration { get; set; }
+        public GeneratorConfiguration GeneratorConfiguration { get; set; }
 
         public SpecFlowProject()
         {
             FeatureFiles = new List<SpecFlowFeatureFile>();
-            ParserConfiguration = new ParserConfiguration(); // load defaults
+            GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
         }
     }
 }

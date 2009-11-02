@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using NConsoler;
+using TechTalk.SpecFlow.Parser.Configuration;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport;

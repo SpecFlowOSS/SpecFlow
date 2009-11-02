@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
+using TechTalk.SpecFlow.Parser.Configuration;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
 

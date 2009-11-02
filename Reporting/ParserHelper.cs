@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Parser.Configuration;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Reporting

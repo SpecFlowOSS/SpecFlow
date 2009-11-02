@@ -148,6 +148,25 @@ namespace TechTalk.SpecFlow.VsIntegration
             }
         }
 
+        public Project CurrentProject
+        {
+            get
+            {
+                DTE dte = Dte;
+                if (dte != null)
+                {
+                    IEnumerable activeProjects = dte.ActiveSolutionProjects as IEnumerable;
+                    if (activeProjects != null)
+                    {
+                        Project project = activeProjects.OfType<Project>().First();
+                        if (project != null)
+                            return project;
+                    }
+                }
+                throw new InvalidOperationException("Unable to detect current project.");
+            }
+        }
+
         /*
         private void SetTargetNamespace()
         {

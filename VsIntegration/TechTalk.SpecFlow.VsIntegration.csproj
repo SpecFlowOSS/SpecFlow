@@ -79,7 +79,6 @@
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition\SpecFlowStepDefinition1.cs" />
     <ZipItem Include="ItemTemplates\SpecFlowEventDefinition\SpecFlowEventDefinition1.cs" />
     <Compile Include="SpecFlowSingleFileGenerator.cs" />
-    <Compile Include="SpecFlowTestGenerator.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

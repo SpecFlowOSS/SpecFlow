@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Tracing
 {
     public abstract class TestTracer
     {
@@ -83,14 +83,14 @@ namespace TechTalk.SpecFlow
         {
             return new BindingException(
                 string.Format("Error calling binding method '{0}': {1}",
-                              GetMethodText(methodInfo), ex.Message));
+                    GetMethodText(methodInfo), ex.Message));
         }
 
         internal Exception GetParameterCountError(BindingMatch match, int expectedParameterCount)
         {
             return new BindingException(
                 string.Format("Parameter count mismatch! The binding method '{0}' should have {1} parameters",
-                              GetMethodText(match.StepBinding.MethodInfo), expectedParameterCount));
+                    GetMethodText(match.StepBinding.MethodInfo), expectedParameterCount));
         }
 
         internal Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepArgs stepArgs)
@@ -98,8 +98,8 @@ namespace TechTalk.SpecFlow
             string stepDescription = GetStepDescription(stepArgs);
             return new BindingException(
                 string.Format("Ambiguous step definitions found for step '{0}': {1}",
-                              stepDescription,
-                              string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
+                    stepDescription,
+                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
         }
 
         private string GetAttributeName(Type attributeType)

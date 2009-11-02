@@ -48,6 +48,7 @@
       <HintPath>..\..\lib\mocking\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -61,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationTest.cs" />
     <Compile Include="ExecutionTestBase.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,6 +83,9 @@
       <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
       <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

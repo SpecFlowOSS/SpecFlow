@@ -1,22 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using TechTalk.SpecFlow.TestFrameworkIntegration;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow
 {
     internal class ObjectContainer
     {
         #region Configuration
-        private static Configuration configuration = null;
+        private static RuntimeConfiguration configuration = null;
 
-        public static Configuration Configuration
+        public static RuntimeConfiguration Configuration
         {
             get
             {
                 if (configuration == null)
                 {
-                    configuration = Configuration.LoadFromConfigFile();
+                    configuration = RuntimeConfiguration.LoadFromConfigFile();
                 }
                 return configuration;
             }
@@ -140,20 +142,26 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        #region TestFrameworkIntegration
-        private static ITestFrameworkIntegration testFrameworkIntegration = null;
+        #region unitTestRuntimeProvider
+        private static IUnitTestRuntimeProvider unitTestRuntimeProvider = null;
 
-        public static ITestFrameworkIntegration TestFrameworkIntegration
+        public static IUnitTestRuntimeProvider UnitTestRuntimeProvider
         {
             get
             {
-                if (testFrameworkIntegration == null)
+                if (unitTestRuntimeProvider == null)
                 {
-                    testFrameworkIntegration = new NUnitIntegration();
+                    unitTestRuntimeProvider = CreateInstance<IUnitTestRuntimeProvider>(Configuration.RuntimeUnitTestProviderType);
                 }
-                return testFrameworkIntegration;
+                return unitTestRuntimeProvider;
             }
         }
         #endregion
+
+        private static TInterface CreateInstance<TInterface>(Type type)
+        {
+            //TODO: better error handling
+            return (TInterface)Activator.CreateInstance(type);
+        }
     }
 }

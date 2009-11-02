@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using TechTalk.SpecFlow.Parser.Configuration;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport.ReportElements;
 
 namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
