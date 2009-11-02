@@ -40,12 +40,28 @@ namespace TechTalk.SpecFlow
 
         public void OnFeatureStart(FeatureInfo featureInfo)
         {
+            // if the unit test provider would execute the fixture teardown code 
+            // only delayed (at the end of the execution), we automatically close 
+            // the current feature if necessary
+            if (ObjectContainer.UnitTestRuntimeProvider.DelayedFixtureTearDown &&
+                ObjectContainer.FeatureContext != null)
+            {
+                OnFeatureEnd();
+            }
+
             ObjectContainer.FeatureContext = new FeatureContext(featureInfo);
             FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
         }
 
         public void OnFeatureEnd()
         {
+            // if the unit test provider would execute the fixture teardown code 
+            // only delayed (at the end of the execution), we ignore the 
+            // feature-end call, if the feature has been closed already
+            if (ObjectContainer.UnitTestRuntimeProvider.DelayedFixtureTearDown &&
+                ObjectContainer.FeatureContext == null)
+                return;
+                
             FireEvents(BindingEvent.FeatureEnd, ObjectContainer.FeatureContext.FeatureInfo.Tags);
 
             if (RuntimeConfiguration.Current.TraceTimings)

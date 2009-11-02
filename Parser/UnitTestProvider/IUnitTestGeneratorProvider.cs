@@ -3,9 +3,9 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 {
-    public interface IUnitTestConverter
+    public interface IUnitTestGeneratorProvider
     {
         void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description);
         void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories);

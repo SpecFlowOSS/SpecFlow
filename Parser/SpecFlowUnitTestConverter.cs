@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -28,11 +29,11 @@ namespace TechTalk.SpecFlow.Parser
         private const string TABLE_TYPE = "TechTalk.SpecFlow.Table";
         private const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
 
-        private readonly IUnitTestConverter testConverter;
+        private readonly IUnitTestGeneratorProvider testGeneratorProvider;
 
-        public SpecFlowUnitTestConverter(IUnitTestConverter testConverter)
+        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
         {
-            this.testConverter = testConverter;
+            this.testGeneratorProvider = testGeneratorProvider;
         }
 
         public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
@@ -51,16 +52,15 @@ namespace TechTalk.SpecFlow.Parser
             testType.TypeAttributes |= TypeAttributes.Public;
             codeNamespace.Types.Add(testType);
 
-            testConverter.SetTestFixture(testType, feature.Title, feature.Description);
+            testGeneratorProvider.SetTestFixture(testType, feature.Title, feature.Description);
             if (feature.Tags != null)
             {
-                testConverter.SetTestFixtureCategories(testType, GetNonIgnoreTags(feature.Tags));
+                testGeneratorProvider.SetTestFixtureCategories(testType, GetNonIgnoreTags(feature.Tags));
                 if (feature.Tags.Any(t => t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase)))
-                    testConverter.SetIgnore(testType);
+                    testGeneratorProvider.SetIgnore(testType);
             }
 
-            CodeMemberField testRunnerField = new CodeMemberField(ITESTRUNNER_TYPE, TESTRUNNER_FIELD);
-            testType.Members.Add(testRunnerField);
+            DeclareTestRunnerMember(testType);
 
             GenerateTestFixtureSetup(testType, feature);
             GenerateTestFixtureTearDown(testType);
@@ -81,6 +81,19 @@ namespace TechTalk.SpecFlow.Parser
             return codeCompileUnit;
         }
 
+        private void DeclareTestRunnerMember(CodeTypeDeclaration testType)
+        {
+            CodeMemberField testRunnerField = new CodeMemberField(ITESTRUNNER_TYPE, TESTRUNNER_FIELD);
+            testRunnerField.Attributes |= MemberAttributes.Static;
+            testType.Members.Add(testRunnerField);
+        }
+
+        private CodeExpression GetTestRunnerExpression()
+        {
+            return new CodeVariableReferenceExpression(TESTRUNNER_FIELD);
+            //return new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+        }
+
         private IEnumerable<string> GetNonIgnoreTags(IEnumerable<Tag> tags)
         {
             return tags.Where(t => !t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t.Name);
@@ -94,10 +107,10 @@ namespace TechTalk.SpecFlow.Parser
             setupMethod.Attributes = MemberAttributes.Public;
             setupMethod.Name = FIXTURESETUP_NAME;
 
-            testConverter.SetTestFixtureSetup(setupMethod);
+            testGeneratorProvider.SetTestFixtureSetup(setupMethod);
 
-            //testRunner = TestRunner.EnsureTestRunner();
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            //testRunner = TestRunner.GetTestRunner();
+            var testRunnerField = GetTestRunnerExpression();
             setupMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
@@ -156,9 +169,9 @@ namespace TechTalk.SpecFlow.Parser
             tearDownMethod.Attributes = MemberAttributes.Public;
             tearDownMethod.Name = FIXTURETEARDOWN_NAME;
 
-            testConverter.SetTestFixtureTearDown(tearDownMethod);
+            testGeneratorProvider.SetTestFixtureTearDown(tearDownMethod);
 
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            var testRunnerField = GetTestRunnerExpression();
 //            testRunner.OnFeatureEnd();
             tearDownMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -181,9 +194,9 @@ namespace TechTalk.SpecFlow.Parser
             tearDownMethod.Attributes = MemberAttributes.Public;
             tearDownMethod.Name = TEARDOWN_NAME;
 
-            testConverter.SetTestTearDown(tearDownMethod);
+            testGeneratorProvider.SetTestTearDown(tearDownMethod);
 
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            var testRunnerField = GetTestRunnerExpression();
             //testRunner.OnScenarioEnd();
             tearDownMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -203,10 +216,8 @@ namespace TechTalk.SpecFlow.Parser
             setupMethod.Parameters.Add(
                 new CodeParameterDeclarationExpression(SCENARIOINFO_TYPE, "scenarioInfo"));
 
-            //testConverter.SetTestSetup(setupMethod);
-
             //testRunner.OnScenarioStart(scenarioInfo);
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            var testRunnerField = GetTestRunnerExpression();
             setupMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
@@ -348,7 +359,7 @@ namespace TechTalk.SpecFlow.Parser
 
 
             // call collect errors
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            var testRunnerField = GetTestRunnerExpression();
             //testRunner.CollectScenarioErrors();
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -365,12 +376,12 @@ namespace TechTalk.SpecFlow.Parser
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = string.Format(TEST_FORMAT, scenario.Title.ToIdentifier());
 
-            testConverter.SetTest(testMethod, scenario.Title);
+            testGeneratorProvider.SetTest(testMethod, scenario.Title);
             if (scenario.Tags != null)
             {
-                testConverter.SetTestCategories(testMethod, GetNonIgnoreTags(scenario.Tags));
+                testGeneratorProvider.SetTestCategories(testMethod, GetNonIgnoreTags(scenario.Tags));
                 if (scenario.Tags.Any(t => t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase)))
-                    testConverter.SetIgnore(testMethod);
+                    testGeneratorProvider.SetIgnore(testMethod);
             }
             return testMethod;
         }
@@ -417,7 +428,7 @@ namespace TechTalk.SpecFlow.Parser
 
         private void GenerateStep(CodeMemberMethod testMethod, ScenarioStep scenarioStep, ParameterSubstitution paramToIdentifier)
         {
-            var testRunnerField = new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
+            var testRunnerField = GetTestRunnerExpression();
 
             //testRunner.Given("something");
             List<CodeExpression> arguments = new List<CodeExpression>();

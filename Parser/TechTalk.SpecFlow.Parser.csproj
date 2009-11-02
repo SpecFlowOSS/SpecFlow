@@ -81,12 +81,12 @@
     <Compile Include="Grammar\SpecFlowLangWalker.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IUnitTestConverter.cs" />
+    <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
     <Compile Include="SpecFlowGenerator.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
     <Compile Include="SpecFlowParserException.cs" />
     <Compile Include="SpecFlowUnitTestConverter.cs" />
-    <Compile Include="NUnitTestConverter.cs" />
+    <Compile Include="UnitTestProvider\NUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyntaxElements\And.cs" />
     <Compile Include="SyntaxElements\Background.cs" />
@@ -104,6 +104,7 @@
     <Compile Include="SyntaxElements\Then.cs" />
     <Compile Include="SyntaxElements\When.cs" />
     <Compile Include="SyntaxElements\Word.cs" />
+    <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Grammar\compile.cmd" />

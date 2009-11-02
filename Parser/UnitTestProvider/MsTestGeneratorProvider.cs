@@ -1,21 +1,24 @@
-using System;
+﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Parser.UnitTestProvider
 {
-    public class NUnitTestConverter : IUnitTestConverter
+    public class MsTestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        private const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
-        private const string TEST_ATTR = "NUnit.Framework.TestAttribute";
-        private const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
-        private const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
-        private const string TESTFIXTURESETUP_ATTR = "NUnit.Framework.TestFixtureSetUpAttribute";
-        private const string TESTFIXTURETEARDOWN_ATTR = "NUnit.Framework.TestFixtureTearDownAttribute";
-        private const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
-        private const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
-        private const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
+        private const string TESTFIXTURE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute";
+        private const string TEST_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute";
+        //private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.CategoryAttribute";
+        private const string TESTFIXTURESETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute";
+        private const string TESTFIXTURETEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute";
+        private const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute";
+        private const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
+        private const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
+        private const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
+
+        private const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -23,7 +26,8 @@ namespace TechTalk.SpecFlow.Parser
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTFIXTURE_ATTR)));
 
-            SetDescription(typeDeclaration.CustomAttributes, title);
+            //TODO
+            //SetDescription(typeDeclaration.CustomAttributes, title);
         }
 
         private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
@@ -37,14 +41,15 @@ namespace TechTalk.SpecFlow.Parser
 
         private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
         {
-            foreach (var category in categories)
-            {
-                customAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        new CodeTypeReference(CATEGORY_ATTR),
-                        new CodeAttributeArgument(
-                            new CodePrimitiveExpression(category))));
-            }
+//TODO
+//            foreach (var category in categories)
+//            {
+//                customAttributes.Add(
+//                    new CodeAttributeDeclaration(
+//                        new CodeTypeReference(CATEGORY_ATTR),
+//                        new CodeAttributeArgument(
+//                            new CodePrimitiveExpression(category))));
+//            }
         }
 
         public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
@@ -75,6 +80,10 @@ namespace TechTalk.SpecFlow.Parser
 
         public void SetTestFixtureSetup(CodeMemberMethod memberMethod)
         {
+            memberMethod.Attributes |= MemberAttributes.Static;
+            memberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                TESTCONTEXT_TYPE, "testContext"));
+
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTFIXTURESETUP_ATTR)));
@@ -82,6 +91,8 @@ namespace TechTalk.SpecFlow.Parser
 
         public void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
         {
+            memberMethod.Attributes |= MemberAttributes.Static;
+
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTFIXTURETEARDOWN_ATTR)));

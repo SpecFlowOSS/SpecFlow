@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Parser.Configuration
 {
@@ -61,7 +62,7 @@ namespace TechTalk.SpecFlow.Parser.Configuration
                     GeneratorUnitTestProviderType = typeof(NUnitTestConverter);
                     break;
                 case "mstest":
-                    //TODO: GeneratorUnitTestProviderType = typeof(MsTestIntegration);
+                    GeneratorUnitTestProviderType = typeof(MsTestGeneratorProvider);
                     break;
                 default:
                     GeneratorUnitTestProviderType = null;

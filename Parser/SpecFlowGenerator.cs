@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Parser.Configuration;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -26,9 +27,9 @@ namespace TechTalk.SpecFlow.Parser
             SpecFlowLangParser parser = new SpecFlowLangParser();
             Feature feature = parser.Parse(new StringReader(content), featureFile.GetFullPath(project));
 
-            IUnitTestConverter converter = CreateInstance<IUnitTestConverter>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
+            IUnitTestGeneratorProvider generatorProvider = CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
 
-            SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(converter);
+            SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider);
             CodeCompileUnit codeCompileUnit = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
 
             return codeCompileUnit;

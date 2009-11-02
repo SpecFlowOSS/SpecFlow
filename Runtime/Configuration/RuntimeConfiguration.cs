@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Configuration
                     RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
                     break;
                 case "mstest":
-                    //TODO: RuntimeUnitTestProviderType = typeof(MsTestIntegration);
+                    RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);
                     break;
                 default:
                     RuntimeUnitTestProviderType = null;

@@ -7,5 +7,6 @@ namespace TechTalk.SpecFlow.UnitTestProvider
     {
         void TestInconclusive(string message);
         void TestIgnore(string message);
+        bool DelayedFixtureTearDown { get; }
     }
 }
