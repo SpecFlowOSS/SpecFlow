@@ -68,11 +68,11 @@ namespace TechTalk.SpecFlow.Configuration
             if (configSection == null) throw new ArgumentNullException("configSection");
 
             var config = new RuntimeConfiguration();
-            if (configSection.Globalization != null)
+            if (configSection.Language != null)
             {
-                config.ToolLanguage = string.IsNullOrEmpty(configSection.Globalization.ToolLanguage) ?
-                    CultureInfo.GetCultureInfo(configSection.Globalization.Language) : 
-                    CultureInfo.GetCultureInfo(configSection.Globalization.ToolLanguage);
+                config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
+                    CultureInfo.GetCultureInfo(configSection.Language.Feature) : 
+                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (configSection.UnitTestProvider != null)

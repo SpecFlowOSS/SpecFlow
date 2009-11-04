@@ -29,12 +29,12 @@ namespace TechTalk.SpecFlow.Parser.Configuration
         {
             if (configSection == null) throw new ArgumentNullException("configSection");
 
-            if (configSection.Globalization != null)
+            if (configSection.Language != null)
             {
-                FeatureLanguage = CultureInfo.GetCultureInfo(configSection.Globalization.Language);
-                ToolLanguage = string.IsNullOrEmpty(configSection.Globalization.ToolLanguage) ?
-                    FeatureLanguage : 
-                    CultureInfo.GetCultureInfo(configSection.Globalization.ToolLanguage);
+                FeatureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
+                ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
+                    FeatureLanguage :
+                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (configSection.UnitTestProvider != null)

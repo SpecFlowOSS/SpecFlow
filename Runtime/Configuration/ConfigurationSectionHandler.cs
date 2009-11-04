@@ -31,11 +31,11 @@ namespace TechTalk.SpecFlow.Configuration
 
     partial class ConfigurationSectionHandler : ConfigurationSection
     {
-        [ConfigurationProperty("globalization", IsRequired = false)]
-        public GlobalizationConfigElement Globalization
+        [ConfigurationProperty("language", IsRequired = false)]
+        public LanguageConfigElement Language
         {
-            get { return (GlobalizationConfigElement)this["globalization"]; }
-            set { this["globalization"] = value; }
+            get { return (LanguageConfigElement)this["language"]; }
+            set { this["language"] = value; }
         }
 
         [ConfigurationProperty("unitTestProvider", IsRequired = false)]
@@ -86,22 +86,22 @@ namespace TechTalk.SpecFlow.Configuration
         }
     }
 
-    public class GlobalizationConfigElement : ConfigurationElement
+    public class LanguageConfigElement : ConfigurationElement
     {
-        [ConfigurationProperty("language", DefaultValue = "en", IsRequired = false)]
+        [ConfigurationProperty("feature", DefaultValue = "en", IsRequired = false)]
         [RegexStringValidator(@"\w{2}(-\w{2})?")]
-        public string Language 
+        public string Feature 
         {
-            get { return (String)this["language"]; }
-            set { this["language"] = value; }
+            get { return (String)this["feature"]; }
+            set { this["feature"] = value; }
         }
 
-        [ConfigurationProperty("toolLanguage", DefaultValue = "", IsRequired = false)]
+        [ConfigurationProperty("tool", DefaultValue = "", IsRequired = false)]
         [RegexStringValidator(@"\w{2}(-\w{2})?|")]
-        public string ToolLanguage
+        public string Tool
         {
-            get { return (String)this["toolLanguage"]; }
-            set { this["toolLanguage"] = value; }
+            get { return (String)this["tool"]; }
+            set { this["tool"] = value; }
         }
     }
 

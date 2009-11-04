@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void CanLoadConfigFromString()
         {
             const string configString = @"<specFlow>
-    <globalization language=""en"" toolLanguage=""en"" />
+    <language feature=""en"" tool=""en"" /> 
 
     <unitTestProvider name=""NUnit"" 
                       generatorProvider=""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow""
