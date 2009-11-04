@@ -3,6 +3,7 @@ vNext - ???
 
 New features:
 + Support for MsTest (Issue 4)
++ Finalize configuration (Issue 13)
 
 Fixed issues:
 + Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)
