@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
@@ -48,7 +49,7 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
             MissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
 
-            TraceListenerType = typeof(DefaultTraceListener);
+            TraceListenerType = typeof(DefaultListener);
             TraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
             TraceTimings = ConfigDefaults.TraceTimings;
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
