@@ -6,6 +6,7 @@ New features:
 
 Fixed issues:
 + Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)
++ Runtime: Binding methods with more than 4 parameters cannot be used (Issue 21)
 
 
 1.0.2 - 2009/10/20

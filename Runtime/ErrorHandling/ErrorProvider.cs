@@ -75,5 +75,11 @@ namespace TechTalk.SpecFlow.ErrorHandling
             }
 
         }
+
+        public Exception GetTooManyBindingParamError(int maxParam)
+        {
+            return new BindingException(
+                string.Format("Binding methods with more than {0} parameters are not supported", maxParam));
+        }
     }
 }

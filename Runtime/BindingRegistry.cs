@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow
 {
@@ -24,8 +25,15 @@ namespace TechTalk.SpecFlow
 
     internal class BindingRegistry : IEnumerable<StepBinding>
     {
+        private readonly ErrorProvider errorProvider;
+
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
+
+        public BindingRegistry()
+        {
+            this.errorProvider = ObjectContainer.ErrorProvider;
+        }
 
         public void BuildBindingsFromAssembly(Assembly assembly)
         {
@@ -103,11 +111,34 @@ namespace TechTalk.SpecFlow
 
         private void CheckStepBindingMethod(MethodInfo method)
         {
-//            if (!method.IsStatic)
-//                throw new Exception("The binding method must be static! " + method.ToString());
-
             //TODO: check parameters, etc.
         }
+
+        #region extended action types
+        static readonly Type[] actionTypes = new Type[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 
+                typeof(ExtendedAction<,,,,>), typeof(ExtendedAction<,,,,,>), typeof(ExtendedAction<,,,,,,>), typeof(ExtendedAction<,,,,,,,>), typeof(ExtendedAction<,,,,,,,,>), typeof(ExtendedAction<,,,,,,,,,>)
+            };
+
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
+
+        private Type GetActionType(Type[] typeArgs)
+        {
+            if (typeArgs.Length >= actionTypes.Length)
+            {
+                throw errorProvider.GetTooManyBindingParamError(actionTypes.Length - 1);
+            }
+            if (typeArgs.Length == 0)
+            {
+                return actionTypes[typeArgs.Length];
+            }
+            return actionTypes[typeArgs.Length].MakeGenericType(typeArgs);
+        }
+        #endregion
 
         private Delegate CreateBindingAction(MethodInfo method)
         {
@@ -122,6 +153,7 @@ namespace TechTalk.SpecFlow
             if (method.IsStatic)
             {
                 lambda = Expression.Lambda(
+                    GetActionType(parameters.Select(p => p.Type).ToArray()),
                     Expression.Call(method, parameters.Cast<Expression>().ToArray()),
                     parameters.ToArray());
             }
@@ -132,6 +164,7 @@ namespace TechTalk.SpecFlow
                     () => ScenarioContext.Current.GetBindingInstance(bindingType);
 
                 lambda = Expression.Lambda(
+                    GetActionType(parameters.Select(p => p.Type).ToArray()),
                     Expression.Call(
                         Expression.Convert(getInstanceExpression.Body, bindingType),
                         method, 
