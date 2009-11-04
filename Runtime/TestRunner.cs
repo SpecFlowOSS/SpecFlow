@@ -5,12 +5,29 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow
 {
     public class TestRunner : ITestRunner
     {
         private BindingRegistry bindingRegistry = null;
+        private readonly ErrorProvider errorProvider;
+        private readonly TestTracer testTracer;
+        private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
+        private readonly StepFormatter stepFormatter;
+        private readonly StepDefinitonSkeletonProvider stepDefinitonSkeletonProvider;
+
+        public TestRunner()
+        {
+            errorProvider = ObjectContainer.ErrorProvider;
+            testTracer = ObjectContainer.TestTracer;
+            unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
+            stepFormatter = ObjectContainer.StepFormatter;
+            stepDefinitonSkeletonProvider = ObjectContainer.StepDefinitonSkeletonProvider;
+        }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
         {
@@ -43,7 +60,7 @@ namespace TechTalk.SpecFlow
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we automatically close 
             // the current feature if necessary
-            if (ObjectContainer.UnitTestRuntimeProvider.DelayedFixtureTearDown &&
+            if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
                 ObjectContainer.FeatureContext != null)
             {
                 OnFeatureEnd();
@@ -58,7 +75,7 @@ namespace TechTalk.SpecFlow
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we ignore the 
             // feature-end call, if the feature has been closed already
-            if (ObjectContainer.UnitTestRuntimeProvider.DelayedFixtureTearDown &&
+            if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
                 ObjectContainer.FeatureContext == null)
                 return;
                 
@@ -68,7 +85,7 @@ namespace TechTalk.SpecFlow
             {
                 ObjectContainer.FeatureContext.Stopwatch.Stop();
                 var duration = ObjectContainer.FeatureContext.Stopwatch.Elapsed;
-                ObjectContainer.TestTracer.TraceDuration(duration, "Feature: " + ObjectContainer.FeatureContext.FeatureInfo.Title);
+                testTracer.TraceDuration(duration, "Feature: " + ObjectContainer.FeatureContext.FeatureInfo.Title);
             }
 
             ObjectContainer.FeatureContext = null;
@@ -86,7 +103,7 @@ namespace TechTalk.SpecFlow
             {
                 ObjectContainer.ScenarioContext.Stopwatch.Stop();
                 var duration = ObjectContainer.ScenarioContext.Stopwatch.Elapsed;
-                ObjectContainer.TestTracer.TraceDuration(duration, "Scenario: " + ObjectContainer.ScenarioContext.ScenarioInfo.Title);
+                testTracer.TraceDuration(duration, "Scenario: " + ObjectContainer.ScenarioContext.ScenarioInfo.Title);
             }
 
             if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
@@ -95,8 +112,8 @@ namespace TechTalk.SpecFlow
             if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.StepDefinitionPending)
             {
                 var pendingSteps = ObjectContainer.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
-                ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
-                    GetPendingStepDefinitionError().Message,
+                errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
+                    errorProvider.GetPendingStepDefinitionError().Message,
                     string.Join(Environment.NewLine + "  ", pendingSteps.ToArray()),
                     Environment.NewLine));
                 return;
@@ -106,10 +123,10 @@ namespace TechTalk.SpecFlow
             {
                 var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
-                    ObjectContainer.TestTracer.GetBindingClassSkeleton(
+                    stepDefinitonSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
-                ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
-                    GetMissingStepDefinitionError().Message,
+                errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
+                    errorProvider.GetMissingStepDefinitionError().Message,
                     bindingSkeleton,
                     Environment.NewLine));
                 return;
@@ -215,7 +232,7 @@ namespace TechTalk.SpecFlow
 
         private void ExecuteStep(StepArgs stepArgs)
         {
-            ObjectContainer.TestTracer.TraceStep(stepArgs, true);
+            testTracer.TraceStep(stepArgs, true);
 
             HandleBlockSwitch(stepArgs.Type.ToScenarioBlock());
 
@@ -230,23 +247,24 @@ namespace TechTalk.SpecFlow
                 {
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
                     if (RuntimeConfiguration.Current.TraceSuccessfulSteps) 
-                        ObjectContainer.TestTracer.TraceLine("-> done: {0} ({1:F1}s)", ObjectContainer.TestTracer.GetMatchText(match, arguments), duration.TotalSeconds);
+                        testTracer.TraceStepDone(match, arguments, duration);
                 }
                 else
                 {
-                    //TRACE skipped
-                    ObjectContainer.TestTracer.TraceLine("-> skipped because of previous errors");
+                    testTracer.TraceStepSkipped();
                 }
             }
             catch(PendingStepException)
             {
                 Debug.Assert(match != null);
                 Debug.Assert(arguments != null);
-                string matchText = ObjectContainer.TestTracer.GetMatchText(match, arguments);
-                ObjectContainer.TestTracer.TraceLine("-> pending: {0}", matchText);
+
+                testTracer.TraceStepPending(match, arguments);
+                ObjectContainer.ScenarioContext.PendingSteps.Add(
+                    stepFormatter.GetMatchText(match, arguments));
+
                 if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.StepDefinitionPending)
                     ObjectContainer.ScenarioContext.TestStatus = TestStatus.StepDefinitionPending;
-                ObjectContainer.ScenarioContext.PendingSteps.Add(matchText);
             }
             catch(MissingStepDefinitionException)
             {
@@ -255,7 +273,7 @@ namespace TechTalk.SpecFlow
             }
             catch(BindingException ex)
             {
-                ObjectContainer.TestTracer.TraceLine("-> binding error: {0}", ex.Message);
+                testTracer.TraceBindingError(ex);
                 if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.BindingError)
                 {
                     ObjectContainer.ScenarioContext.TestStatus = TestStatus.BindingError;
@@ -264,7 +282,8 @@ namespace TechTalk.SpecFlow
             }
             catch(Exception ex)
             {
-                ObjectContainer.TestTracer.TraceLine("-> error: {0}", ex.Message);
+                testTracer.TraceError(ex);
+
                 if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.TestError)
                 {
                     ObjectContainer.ScenarioContext.TestStatus = TestStatus.TestError;
@@ -292,13 +311,14 @@ namespace TechTalk.SpecFlow
 
             if (matches.Count == 0)
             {
-                ObjectContainer.TestTracer.NoMatchingStepDefinition(stepArgs);
-                ObjectContainer.ScenarioContext.MissingSteps.Add(ObjectContainer.TestTracer.GetStepDefinitionSkeleton(stepArgs));
-                throw GetMissingStepDefinitionError();
+                testTracer.TraceNoMatchingStepDefinition(stepArgs);
+                ObjectContainer.ScenarioContext.MissingSteps.Add(
+                    stepDefinitonSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)
             {
-                throw ObjectContainer.TestTracer.GetAmbiguousMatchError(matches, stepArgs);
+                throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
             }
             return matches[0];
         }
@@ -342,14 +362,14 @@ namespace TechTalk.SpecFlow
 
                 if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
                 {
-                    ObjectContainer.TestTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
+                    testTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
                 }
 
                 return stopwatch.Elapsed;
             }
             catch (ArgumentException ex)
             {
-                throw ObjectContainer.TestTracer.GetCallError(methodInfo, ex);
+                throw errorProvider.GetCallError(methodInfo, ex);
             }
             catch (TargetInvocationException invEx)
             {
@@ -366,7 +386,7 @@ namespace TechTalk.SpecFlow
             var regexArgs = match.Match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
 
             if (regexArgs.Length > match.StepBinding.ParameterTypes.Length)
-                throw ObjectContainer.TestTracer.GetParameterCountError(match, regexArgs.Length + (match.ExtraArguments == null ? 0 : match.ExtraArguments.Length));
+                throw errorProvider.GetParameterCountError(match, regexArgs.Length + (match.ExtraArguments == null ? 0 : match.ExtraArguments.Length));
 
             for (int argIndex = 0; argIndex < regexArgs.Length; argIndex++)
             {
@@ -378,41 +398,10 @@ namespace TechTalk.SpecFlow
                 arguments.AddRange(match.ExtraArguments);
 
             if (arguments.Count != match.StepBinding.ParameterTypes.Length)
-                throw ObjectContainer.TestTracer.GetParameterCountError(match, arguments.Count);
+                throw errorProvider.GetParameterCountError(match, arguments.Count);
 
             return arguments.ToArray();
         }
-        #endregion
-
-        #region Error handling
-        private MissingStepDefinitionException GetMissingStepDefinitionError()
-        {
-            return new MissingStepDefinitionException();
-        }
-
-        private PendingStepException GetPendingStepDefinitionError()
-        {
-            return new PendingStepException();
-        }
-
-        private void ThrowPendingError(TestStatus testStatus, string message)
-        {
-            switch (RuntimeConfiguration.Current.MissingOrPendingStepsOutcome)
-            {
-                case MissingOrPendingStepsOutcome.Inconclusive:
-                    ObjectContainer.UnitTestRuntimeProvider.TestInconclusive(message);
-                    break;
-                case MissingOrPendingStepsOutcome.Ignore:
-                    ObjectContainer.UnitTestRuntimeProvider.TestIgnore(message);
-                    break;
-                default:
-                    if (testStatus == TestStatus.MissingStepDefinition)
-                        throw GetMissingStepDefinitionError();
-                    throw GetPendingStepDefinitionError();
-            }
-
-        }
-
         #endregion
 
         #region Given-When-Then
@@ -446,7 +435,7 @@ namespace TechTalk.SpecFlow
 
         public void Pending()
         {
-            throw GetPendingStepDefinitionError();
+            throw errorProvider.GetPendingStepDefinitionError();
         }
     }
 }

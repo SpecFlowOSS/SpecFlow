@@ -1,12 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow
 {
+    /// <summary>
+    /// A mini IoC container to access the well-known objects.
+    /// </summary>
+    /// <remarks>
+    /// We do not use an external DI tool, because it could cause a version conflict with 
+    /// the DI tool used by the tested application.
+    /// </remarks>
     internal class ObjectContainer
     {
         #region Configuration
@@ -16,22 +25,13 @@ namespace TechTalk.SpecFlow
         {
             get
             {
-                if (configuration == null)
-                {
-                    configuration = RuntimeConfiguration.LoadFromConfigFile();
-                }
-                return configuration;
+                return GetOrCreate(ref configuration, RuntimeConfiguration.LoadFromConfigFile);
             }
         }
         #endregion
 
         #region TestRunner
         private static ITestRunner testRunner = null;
-
-        private static ITestRunner CreateTestRunner()
-        {
-            return new TestRunner(); //TODO: factory from config?
-        }
 
         public static ITestRunner TestRunner
         {
@@ -47,15 +47,17 @@ namespace TechTalk.SpecFlow
 
         internal static ITestRunner EnsureTestRunner(Assembly callingAssembly)
         {
-            if (testRunner == null)
-            {
-                testRunner = CreateTestRunner();
+            return GetOrCreate(ref testRunner, 
+                delegate 
+                {
+                    var result = new TestRunner();
 
-                List<Assembly> bindingAssemblies = new List<Assembly>();
-                bindingAssemblies.Add(callingAssembly); //TODO: add more assemblies from config
-                testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
-            }
-            return testRunner;
+                    List<Assembly> bindingAssemblies = new List<Assembly>();
+                    bindingAssemblies.Add(callingAssembly); //TODO: add more assemblies from config
+                    result.InitializeTestRunner(bindingAssemblies.ToArray());
+
+                    return result;
+                });
         }
 
         #endregion
@@ -77,7 +79,7 @@ namespace TechTalk.SpecFlow
                 if (featureContext != null)
                 {
                     if (value != null)
-                        TestTracer.Warning("The previous feature context was not disposed.");
+                        TestTracer.TraceWarning("The previous feature context was not disposed.");
                     DisposeFeatureContext();
                 }
 
@@ -110,7 +112,7 @@ namespace TechTalk.SpecFlow
                 if (scenarioContext != null)
                 {
                     if (value != null)
-                        TestTracer.Warning("The previous scenario context was not disposed.");
+                        TestTracer.TraceWarning("The previous scenario context was not disposed.");
                     DisposeScenarioContext();
                 }
 
@@ -126,6 +128,18 @@ namespace TechTalk.SpecFlow
 
         #endregion
 
+        #region TraceListener
+        private static ITraceListener traceListener = null;
+
+        public static ITraceListener TraceListener
+        {
+            get
+            {
+                return GetOrCreate(ref traceListener, Configuration.TraceListenerType);
+            }
+        }
+        #endregion
+
         #region TestTracer
         private static TestTracer testTracer = null;
 
@@ -133,11 +147,43 @@ namespace TechTalk.SpecFlow
         {
             get
             {
-                if (testTracer == null)
-                {
-                    testTracer = new ConsoleTestTracer();
-                }
-                return testTracer;
+                return GetOrCreate(ref testTracer);
+            }
+        }
+        #endregion
+
+        #region ErrorProvider
+        private static ErrorProvider errorProvider = null;
+
+        public static ErrorProvider ErrorProvider
+        {
+            get
+            {
+                return GetOrCreate(ref errorProvider);
+            }
+        }
+        #endregion
+
+        #region StepFormatter
+        private static StepFormatter stepFormatter = null;
+
+        public static StepFormatter StepFormatter
+        {
+            get
+            {
+                return GetOrCreate(ref stepFormatter);
+            }
+        }
+        #endregion
+
+        #region StepDefinitonSkeletonProvider
+        private static StepDefinitonSkeletonProvider stepDefinitonSkeletonProvider = null;
+
+        public static StepDefinitonSkeletonProvider StepDefinitonSkeletonProvider
+        {
+            get 
+            {
+                return GetOrCreate(ref stepDefinitonSkeletonProvider);
             }
         }
         #endregion
@@ -149,19 +195,52 @@ namespace TechTalk.SpecFlow
         {
             get
             {
-                if (unitTestRuntimeProvider == null)
-                {
-                    unitTestRuntimeProvider = CreateInstance<IUnitTestRuntimeProvider>(Configuration.RuntimeUnitTestProviderType);
-                }
-                return unitTestRuntimeProvider;
+                return GetOrCreate(ref unitTestRuntimeProvider, Configuration.RuntimeUnitTestProviderType);
             }
         }
         #endregion
 
+        #region factory helper methods
+        private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class
+        {
+            return GetOrCreate(ref storage, () => CreateInstance<TInterface>(implementationType));
+        }
+
+        private static TClass GetOrCreate<TClass>(ref TClass storage) where TClass : class, new()
+        {
+            return GetOrCreate(ref storage, () => new TClass());
+        }
+
+        private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Func<TInterface> factory) where TInterface : class
+        {
+            if (storage == null)
+            {
+                storage = factory();
+            }
+            return storage;
+        }
+
         private static TInterface CreateInstance<TInterface>(Type type)
         {
-            //TODO: better error handling
-            return (TInterface)Activator.CreateInstance(type);
+            // do not use ErrorProvider for thowing exceptions here, because of the potential
+            // infinite loop
+            try
+            {
+                return (TInterface)Activator.CreateInstance(type);                
+            }
+            catch(InvalidCastException)
+            {
+                throw new ConfigurationErrorsException(
+                    string.Format("The specified type '{0}' does not implement interface '{1}'", 
+                        type.FullName, typeof(TInterface).FullName));
+            }
+            catch(Exception ex)
+            {
+                throw new ConfigurationErrorsException(
+                    string.Format("Unable to create instance of type '{0}': {1}", 
+                        type.FullName, ex.Message), ex);
+            }
         }
+        #endregion
     }
 }

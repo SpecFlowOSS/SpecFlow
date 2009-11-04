@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Configuration
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
         
         //tracing settings
-        public Type TraceListenerType { get; set; } //TODO: use it
+        public Type TraceListenerType { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
@@ -107,8 +107,16 @@ namespace TechTalk.SpecFlow.Configuration
 
         private static Type GetTypeConfig(string typeName)
         {
-            //TODO: nicer error message?
-            return Type.GetType(typeName, true);
+            try
+            {
+                return Type.GetType(typeName, true);
+            }
+            catch (Exception ex)
+            {
+                throw new ConfigurationErrorsException(
+                    string.Format("Invalid type reference '{0}': {1}",
+                        typeName, ex.Message), ex);
+            }
         }
 
         private void SetUnitTestDefaultsByName(string name)
