@@ -71,10 +71,9 @@
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
+    <Compile Include="Grammar\CustomLexer.cs" />
     <Compile Include="Grammar\ErrorReporting.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Grammar\SpecFlowLangLexer.cs" />
     <Compile Include="Grammar\SpecFlowLangParser.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -108,7 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Grammar\compile.cmd" />
-    <None Include="Grammar\SpecFlowLang.g" />
+    <None Include="Grammar\SpecFlowLangLexer.g" />
+    <None Include="Grammar\SpecFlowLangParser.g" />
     <None Include="Grammar\SpecFlowLangWalker.g" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

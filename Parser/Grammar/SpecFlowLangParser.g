@@ -1,10 +1,13 @@
-grammar SpecFlowLang;
+parser grammar SpecFlowLangParser;
 
 options {
+	tokenVocab = SpecFlowLangLexer;
 	language = CSharp2;
 	output = AST;
     backtrack = true;
 }
+
+//import SpecFlowLangLexer;
 
 tokens {
     FEATURE;
@@ -16,11 +19,8 @@ tokens {
     EXAMPLES;
     EXAMPLESET;
     STEPS;
-    //GIVENS;
     GIVEN;
-    //WHENS;
     WHEN;
-    //THENS;
     THEN;
     TEXT;
     AND;
@@ -38,13 +38,13 @@ tokens {
     CELL;
 }
 
-@lexer::namespace { TechTalk.SpecFlow.Parser.Grammar }
+//@lexer::namespace { TechTalk.SpecFlow.Parser.Grammar }
 @namespace { TechTalk.SpecFlow.Parser.Grammar }
 
 feature
     :   newlineWithSpaces?
         tags?
-        WS? 'Feature:' WS? text newlineWithSpaces
+        WS? T_FEATURE WS? text newlineWithSpaces
         descriptionLine*
         background?
         scenarioKind* WS? EOF
@@ -86,7 +86,7 @@ scenarioKind
     ;
 
 scenario
-    :   tags? WS? 'Scenario:' WS? 
+    :   tags? WS? T_SCENARIO WS? 
         title newlineWithSpaces 
         steps
         -> ^(SCENARIO tags? title steps)
@@ -94,7 +94,7 @@ scenario
 
 scenarioOutline
     :
-        tags? WS? 'Scenario Outline:' WS?
+        tags? WS? T_SCENARIO_OUTLINE WS?
         title newlineWithSpaces
         steps
         examples
@@ -107,7 +107,7 @@ examples
     ;
 
 exampleSet
-    :   WS? ('Examples:'|'Scenarios:') WS?
+    :   WS? T_EXAMPLES WS?
         text? newlineWithSpaces table
         -> ^(EXAMPLESET text? table)
     ;
@@ -128,12 +128,12 @@ nextStep
     ;
 
 firstAnd
-    :   WS? 'And' WS sentenceEnd
+    :   WS? T_AND WS sentenceEnd
         -> ^(AND sentenceEnd)
     ;
 
 firstBut
-    :   WS? 'But' WS sentenceEnd
+    :   WS? T_BUT WS sentenceEnd
         -> ^(BUT sentenceEnd)
     ;
 
@@ -142,50 +142,17 @@ givens
         -> ^(STEPS firstGiven nextStep*)
     ;
 firstGiven
-    :   WS? 'Given' WS sentenceEnd
+    :   WS? T_GIVEN WS sentenceEnd
         -> ^(GIVEN sentenceEnd)
     ;
-/*nextGiven
-    :   andSentence -> ^(GIVEN andSentence)
-    |   firstGiven -> firstGiven
-    ;
-
-whens
-    :   firstWhen nextWhen*
-        -> ^(WHENS firstWhen nextWhen*)
-    ;*/
 firstWhen
-    :   WS? 'When' WS sentenceEnd
+    :   WS? T_WHEN WS sentenceEnd
         -> ^(WHEN sentenceEnd)
     ;
-/*nextWhen
-    :   andSentence -> ^(WHEN andSentence)
-    |   firstWhen -> firstWhen
-    ;
-
-thens
-    :   firstThen nextThen*
-        -> ^(THENS firstThen nextThen*)
-    ;*/
 firstThen
-    :   WS? 'Then' WS sentenceEnd
+    :   WS? T_THEN WS sentenceEnd
         -> ^(THEN sentenceEnd)
     ;
-/*nextThen
-    :   andSentence -> ^(THEN andSentence)
-    |   butSentence -> ^(THEN butSentence)
-    |   firstThen -> firstThen
-    ;
-
-andSentence
-    :   WS? 'And' WS sentenceEnd 
-        -> sentenceEnd
-    ;
-
-butSentence
-    :   WS? 'But' WS sentenceEnd 
-        -> sentenceEnd
-    ;*/
 
 sentenceEnd
     :   text newlineWithSpaces multilineText? table?
@@ -193,9 +160,9 @@ sentenceEnd
     ;
 
 multilineText
-    :   indent '"""' WS? NEWLINE
+    :   indent MLTEXT WS? NEWLINE
         multilineTextLine*
-        WS? '"""' WS? newlineWithSpaces
+        WS? MLTEXT WS? newlineWithSpaces
         -> ^(MULTILINETEXT multilineTextLine* indent)
     ;
 
@@ -214,12 +181,12 @@ table
     ;
 
 tableRow
-    :   WS? '|' tableCell+ WS? newlineWithSpaces
+    :   WS? CELLSEP tableCell+ WS? newlineWithSpaces
         -> ^(ROW tableCell+)
     ;
 
 tableCell
-    :   WS? text WS? '|'
+    :   WS? text WS? CELLSEP
         -> ^(CELL text)
     ;
 
@@ -263,22 +230,34 @@ newlineWithSpaces
     :   WS? NEWLINE (WS? NEWLINE)*
     ;
 
-fragment WSCHAR     : (' '|'\t');
+/*fragment WSCHAR     : (' '|'\t');
 fragment NONWCHR    : (' '|'\t'|'\r'|'\n'|'#'|'@');
 fragment NEWLINECHR : ('\r'|'\n');
 fragment NONNLCHR   : ('\u0000'..'\t')|('\u000B'..'\f')|('\u000E'..'\uFFFF');
 
 
-T_BACKGROUND : 'Background:';
+T_FEATURE : 'AlmaFeature:';
+T_BACKGROUND : 'KorteBackground:';
+T_SCENARIO : 'BarackScenario:';
+T_SCENARIO_OUTLINE : 'BananScenario Outline:';
+T_EXAMPLES : 'SzilvaExamples:'|'EperScenarios:';
+T_GIVEN : 'NarancsGiven';
+T_WHEN : 'SzoloWhen';
+T_THEN : 'EgresThen';
+T_AND : 'DinnyeAnd';
+T_BUT : 'GyumolcsBut';
+
+MLTEXT		: '"""';
+CELLSEP		: '|';
 AT          : '@';
-/*COMMENT     : WSCHAR* '#' (~NEWLINECHR)* { $channel = Token.HIDDEN_CHANNEL; };*/
 COMMENT     : WSCHAR* '#' NONNLCHR* { $channel = Token.HIDDEN_CHANNEL; };
 WS          : WSCHAR+;
 NEWLINE     : '\r\n' | '\n';
-/*WORDCHAR    : ~NONWCHR; */
 WORDCHAR    : (('\u0000'..'\b') 
     | ('\u000B'..'\f') 
     | ('\u000E'..'\u001F')
     | ('!'..'"') 
     | ('$'..'?')
     | ('A'..'\uFFFF'))+ ;
+
+*/

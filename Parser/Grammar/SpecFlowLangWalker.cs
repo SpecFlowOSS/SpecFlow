@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 SpecFlowLangWalker.g 2009-10-28 16:45:53
+// $ANTLR 3.1.2 SpecFlowLangWalker.g 2009-11-05 16:13:48
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -27,6 +27,27 @@ public partial class SpecFlowLangWalker : TreeParser
 		"<EOR>", 
 		"<DOWN>", 
 		"<UP>", 
+		"WSCHAR", 
+		"NONWCHR", 
+		"NEWLINECHR", 
+		"NONNLCHR", 
+		"T_FEATURE", 
+		"T_BACKGROUND", 
+		"T_SCENARIO", 
+		"T_SCENARIO_OUTLINE", 
+		"T_EXAMPLES", 
+		"T_GIVEN", 
+		"T_WHEN", 
+		"T_THEN", 
+		"T_AND", 
+		"T_BUT", 
+		"MLTEXT", 
+		"CELLSEP", 
+		"AT", 
+		"COMMENT", 
+		"WS", 
+		"NEWLINE", 
+		"WORDCHAR", 
 		"FEATURE", 
 		"DESCRIPTIONLINE", 
 		"BACKGROUND", 
@@ -52,80 +73,57 @@ public partial class SpecFlowLangWalker : TreeParser
 		"HEADER", 
 		"BODY", 
 		"ROW", 
-		"CELL", 
-		"WS", 
-		"AT", 
-		"WORDCHAR", 
-		"T_BACKGROUND", 
-		"NEWLINE", 
-		"WSCHAR", 
-		"NONWCHR", 
-		"NEWLINECHR", 
-		"NONNLCHR", 
-		"COMMENT", 
-		"'Feature:'", 
-		"'Scenario:'", 
-		"'Scenario Outline:'", 
-		"'Examples:'", 
-		"'Scenarios:'", 
-		"'And'", 
-		"'But'", 
-		"'Given'", 
-		"'When'", 
-		"'Then'", 
-		"'\"\"\"'", 
-		"'|'"
+		"CELL"
     };
 
-    public const int NEWLINECHR = 37;
-    public const int ROW = 28;
-    public const int T_BACKGROUND = 33;
-    public const int TABLE = 25;
-    public const int CELL = 29;
-    public const int DESCRIPTIONLINE = 5;
-    public const int AND = 17;
+    public const int NEWLINECHR = 6;
+    public const int ROW = 49;
+    public const int T_BACKGROUND = 9;
+    public const int TABLE = 46;
+    public const int T_SCENARIO_OUTLINE = 11;
+    public const int MLTEXT = 18;
+    public const int CELL = 50;
+    public const int DESCRIPTIONLINE = 26;
+    public const int AND = 38;
     public const int EOF = -1;
-    public const int INDENT = 23;
-    public const int AT = 31;
-    public const int WORD = 21;
-    public const int T__51 = 51;
-    public const int BACKGROUND = 6;
-    public const int MULTILINETEXT = 22;
-    public const int THEN = 15;
-    public const int NONWCHR = 36;
-    public const int BODY = 27;
-    public const int GIVEN = 13;
-    public const int HEADER = 26;
-    public const int COMMENT = 39;
-    public const int SCENARIO = 8;
-    public const int T__50 = 50;
-    public const int T__42 = 42;
-    public const int T__43 = 43;
-    public const int T__40 = 40;
-    public const int T__41 = 41;
-    public const int T__46 = 46;
-    public const int T__47 = 47;
-    public const int T__44 = 44;
-    public const int T__45 = 45;
-    public const int EXAMPLESET = 11;
-    public const int T__48 = 48;
-    public const int T__49 = 49;
-    public const int BUT = 18;
-    public const int TAGS = 19;
-    public const int EXAMPLES = 10;
-    public const int WSCHAR = 35;
-    public const int TEXT = 16;
-    public const int NONNLCHR = 38;
-    public const int LINE = 24;
-    public const int FEATURE = 4;
-    public const int TAG = 20;
-    public const int SCENARIOS = 7;
-    public const int WORDCHAR = 32;
-    public const int WS = 30;
-    public const int NEWLINE = 34;
-    public const int SCENARIOOUTLINE = 9;
-    public const int WHEN = 14;
-    public const int STEPS = 12;
+    public const int T_AND = 16;
+    public const int T_GIVEN = 13;
+    public const int INDENT = 44;
+    public const int WORD = 42;
+    public const int AT = 20;
+    public const int BACKGROUND = 27;
+    public const int THEN = 36;
+    public const int MULTILINETEXT = 43;
+    public const int T_EXAMPLES = 12;
+    public const int NONWCHR = 5;
+    public const int BODY = 48;
+    public const int GIVEN = 34;
+    public const int HEADER = 47;
+    public const int COMMENT = 21;
+    public const int SCENARIO = 29;
+    public const int CELLSEP = 19;
+    public const int EXAMPLESET = 32;
+    public const int T_THEN = 15;
+    public const int BUT = 39;
+    public const int TAGS = 40;
+    public const int EXAMPLES = 31;
+    public const int WSCHAR = 4;
+    public const int TEXT = 37;
+    public const int NONNLCHR = 7;
+    public const int LINE = 45;
+    public const int FEATURE = 25;
+    public const int TAG = 41;
+    public const int SCENARIOS = 28;
+    public const int T_BUT = 17;
+    public const int WORDCHAR = 24;
+    public const int WS = 22;
+    public const int NEWLINE = 23;
+    public const int T_WHEN = 14;
+    public const int SCENARIOOUTLINE = 30;
+    public const int WHEN = 35;
+    public const int T_FEATURE = 8;
+    public const int STEPS = 33;
+    public const int T_SCENARIO = 10;
 
     // delegates
     // delegators
@@ -2145,74 +2143,74 @@ public partial class SpecFlowLangWalker : TreeParser
  
 
     public static readonly BitSet FOLLOW_FEATURE_in_feature73 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_feature90 = new BitSet(new ulong[]{0x0000000000010000UL});
-    public static readonly BitSet FOLLOW_text_in_feature108 = new BitSet(new ulong[]{0x00000000000000E0UL});
-    public static readonly BitSet FOLLOW_descriptionLine_in_feature125 = new BitSet(new ulong[]{0x00000000000000E0UL});
-    public static readonly BitSet FOLLOW_background_in_feature146 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_tags_in_feature90 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_feature108 = new BitSet(new ulong[]{0x000000001C000000UL});
+    public static readonly BitSet FOLLOW_descriptionLine_in_feature125 = new BitSet(new ulong[]{0x000000001C000000UL});
+    public static readonly BitSet FOLLOW_background_in_feature146 = new BitSet(new ulong[]{0x0000000010000000UL});
     public static readonly BitSet FOLLOW_SCENARIOS_in_feature163 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_scenarioKind_in_feature185 = new BitSet(new ulong[]{0x0000000000000308UL});
+    public static readonly BitSet FOLLOW_scenarioKind_in_feature185 = new BitSet(new ulong[]{0x0000000060000008UL});
     public static readonly BitSet FOLLOW_TAGS_in_tags243 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tag_in_tags260 = new BitSet(new ulong[]{0x0000000000100008UL});
+    public static readonly BitSet FOLLOW_tag_in_tags260 = new BitSet(new ulong[]{0x0000020000000008UL});
     public static readonly BitSet FOLLOW_TAG_in_tag302 = new BitSet(new ulong[]{0x0000000000000004UL});
     public static readonly BitSet FOLLOW_word_in_tag318 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_WORD_in_word361 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_word378 = new BitSet(new ulong[]{0x0000000100000008UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_word378 = new BitSet(new ulong[]{0x0000000001000008UL});
     public static readonly BitSet FOLLOW_DESCRIPTIONLINE_in_descriptionLine420 = new BitSet(new ulong[]{0x0000000000000004UL});
     public static readonly BitSet FOLLOW_text_in_descriptionLine436 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_BACKGROUND_in_background474 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_background491 = new BitSet(new ulong[]{0x0000000000001000UL});
+    public static readonly BitSet FOLLOW_text_in_background491 = new BitSet(new ulong[]{0x0000000200000000UL});
     public static readonly BitSet FOLLOW_steps_in_background509 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_scenario_in_scenarioKind543 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_scenarioOutline_in_scenarioKind557 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_SCENARIOOUTLINE_in_scenarioOutline592 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_scenarioOutline608 = new BitSet(new ulong[]{0x0000000000010000UL});
-    public static readonly BitSet FOLLOW_text_in_scenarioOutline639 = new BitSet(new ulong[]{0x0000000000001000UL});
-    public static readonly BitSet FOLLOW_steps_in_scenarioOutline655 = new BitSet(new ulong[]{0x0000000000000400UL});
+    public static readonly BitSet FOLLOW_tags_in_scenarioOutline608 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_scenarioOutline639 = new BitSet(new ulong[]{0x0000000200000000UL});
+    public static readonly BitSet FOLLOW_steps_in_scenarioOutline655 = new BitSet(new ulong[]{0x0000000080000000UL});
     public static readonly BitSet FOLLOW_examples_in_scenarioOutline671 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_SCENARIO_in_scenario714 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_scenario731 = new BitSet(new ulong[]{0x0000000000010000UL});
-    public static readonly BitSet FOLLOW_text_in_scenario762 = new BitSet(new ulong[]{0x0000000000001000UL});
+    public static readonly BitSet FOLLOW_tags_in_scenario731 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_scenario762 = new BitSet(new ulong[]{0x0000000200000000UL});
     public static readonly BitSet FOLLOW_steps_in_scenario778 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_EXAMPLES_in_examples821 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_exampleSet_in_examples838 = new BitSet(new ulong[]{0x0000000000000808UL});
+    public static readonly BitSet FOLLOW_exampleSet_in_examples838 = new BitSet(new ulong[]{0x0000000100000008UL});
     public static readonly BitSet FOLLOW_EXAMPLESET_in_exampleSet880 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_exampleSet896 = new BitSet(new ulong[]{0x0000000002000000UL});
+    public static readonly BitSet FOLLOW_text_in_exampleSet896 = new BitSet(new ulong[]{0x0000400000000000UL});
     public static readonly BitSet FOLLOW_table_in_exampleSet913 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_STEPS_in_steps951 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_step_in_steps968 = new BitSet(new ulong[]{0x000000000006E008UL});
+    public static readonly BitSet FOLLOW_step_in_steps968 = new BitSet(new ulong[]{0x000000DC00000008UL});
     public static readonly BitSet FOLLOW_GIVEN_in_step1015 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1031 = new BitSet(new ulong[]{0x0000000002400008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1047 = new BitSet(new ulong[]{0x0000000002000008UL});
+    public static readonly BitSet FOLLOW_text_in_step1031 = new BitSet(new ulong[]{0x0000480000000008UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1047 = new BitSet(new ulong[]{0x0000400000000008UL});
     public static readonly BitSet FOLLOW_table_in_step1064 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_WHEN_in_step1096 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1112 = new BitSet(new ulong[]{0x0000000002400008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1128 = new BitSet(new ulong[]{0x0000000002000008UL});
+    public static readonly BitSet FOLLOW_text_in_step1112 = new BitSet(new ulong[]{0x0000480000000008UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1128 = new BitSet(new ulong[]{0x0000400000000008UL});
     public static readonly BitSet FOLLOW_table_in_step1145 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_THEN_in_step1177 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1193 = new BitSet(new ulong[]{0x0000000002400008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1209 = new BitSet(new ulong[]{0x0000000002000008UL});
+    public static readonly BitSet FOLLOW_text_in_step1193 = new BitSet(new ulong[]{0x0000480000000008UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1209 = new BitSet(new ulong[]{0x0000400000000008UL});
     public static readonly BitSet FOLLOW_table_in_step1226 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_AND_in_step1258 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1274 = new BitSet(new ulong[]{0x0000000002400008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1290 = new BitSet(new ulong[]{0x0000000002000008UL});
+    public static readonly BitSet FOLLOW_text_in_step1274 = new BitSet(new ulong[]{0x0000480000000008UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1290 = new BitSet(new ulong[]{0x0000400000000008UL});
     public static readonly BitSet FOLLOW_table_in_step1307 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_BUT_in_step1339 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1355 = new BitSet(new ulong[]{0x0000000002400008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1371 = new BitSet(new ulong[]{0x0000000002000008UL});
+    public static readonly BitSet FOLLOW_text_in_step1355 = new BitSet(new ulong[]{0x0000480000000008UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1371 = new BitSet(new ulong[]{0x0000400000000008UL});
     public static readonly BitSet FOLLOW_table_in_step1388 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_TEXT_in_text1443 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_wordchar_in_text1460 = new BitSet(new ulong[]{0x00000005C0000008UL});
-    public static readonly BitSet FOLLOW_WS_in_text1491 = new BitSet(new ulong[]{0x00000005C0000008UL});
-    public static readonly BitSet FOLLOW_wordchar_in_text1523 = new BitSet(new ulong[]{0x00000005C0000008UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_text1549 = new BitSet(new ulong[]{0x00000005C0000008UL});
+    public static readonly BitSet FOLLOW_wordchar_in_text1460 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_WS_in_text1491 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_wordchar_in_text1523 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_text1549 = new BitSet(new ulong[]{0x0000000001D00008UL});
     public static readonly BitSet FOLLOW_WORDCHAR_in_wordchar1605 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_AT_in_wordchar1619 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_MULTILINETEXT_in_multilineText1660 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_line_in_multilineText1677 = new BitSet(new ulong[]{0x0000000001800000UL});
+    public static readonly BitSet FOLLOW_line_in_multilineText1677 = new BitSet(new ulong[]{0x0000300000000000UL});
     public static readonly BitSet FOLLOW_indent_in_multilineText1697 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_LINE_in_line1743 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_WS_in_line1760 = new BitSet(new ulong[]{0x0000000400010000UL});
-    public static readonly BitSet FOLLOW_text_in_line1790 = new BitSet(new ulong[]{0x0000000400000000UL});
+    public static readonly BitSet FOLLOW_WS_in_line1760 = new BitSet(new ulong[]{0x0000002000800000UL});
+    public static readonly BitSet FOLLOW_text_in_line1790 = new BitSet(new ulong[]{0x0000000000800000UL});
     public static readonly BitSet FOLLOW_NEWLINE_in_line1814 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_INDENT_in_indent1859 = new BitSet(new ulong[]{0x0000000000000004UL});
     public static readonly BitSet FOLLOW_WS_in_indent1876 = new BitSet(new ulong[]{0x0000000000000008UL});
@@ -2220,9 +2218,9 @@ public partial class SpecFlowLangWalker : TreeParser
     public static readonly BitSet FOLLOW_HEADER_in_table1939 = new BitSet(new ulong[]{0x0000000000000004UL});
     public static readonly BitSet FOLLOW_tableRow_in_table1943 = new BitSet(new ulong[]{0x0000000000000008UL});
     public static readonly BitSet FOLLOW_BODY_in_table1959 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tableRow_in_table1964 = new BitSet(new ulong[]{0x0000000010000008UL});
+    public static readonly BitSet FOLLOW_tableRow_in_table1964 = new BitSet(new ulong[]{0x0002000000000008UL});
     public static readonly BitSet FOLLOW_ROW_in_tableRow2012 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tableCell_in_tableRow2029 = new BitSet(new ulong[]{0x0000000020000008UL});
+    public static readonly BitSet FOLLOW_tableCell_in_tableRow2029 = new BitSet(new ulong[]{0x0004000000000008UL});
     public static readonly BitSet FOLLOW_CELL_in_tableCell2071 = new BitSet(new ulong[]{0x0000000000000004UL});
     public static readonly BitSet FOLLOW_text_in_tableCell2087 = new BitSet(new ulong[]{0x0000000000000008UL});
 

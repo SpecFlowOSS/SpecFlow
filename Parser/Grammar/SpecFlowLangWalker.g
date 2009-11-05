@@ -2,7 +2,7 @@ tree grammar SpecFlowLangWalker;
 
 options {
 	language = CSharp2;
-	tokenVocab = SpecFlowLang;
+	tokenVocab = SpecFlowLangParser;
 	ASTLabelType = CommonTree;
 }
 
