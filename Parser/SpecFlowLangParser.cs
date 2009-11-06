@@ -21,6 +21,8 @@ namespace TechTalk.SpecFlow.Parser
 
         public Feature Parse(TextReader featureFileReader)
         {
+            //TODO: german
+
             var fileContent = featureFileReader.ReadToEnd() + Environment.NewLine;
 
             var inputStream = new ANTLRReaderStream(new StringReader(fileContent));
