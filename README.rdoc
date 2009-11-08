@@ -13,7 +13,7 @@ Discussion group at: http://groups.google.com/group/SpecFlow
 
 3. Make your feature addition or bugfix. 
 
-3. Send us a pul request vie the Google Group (http://groups.google.com/group/specflow/)
+3. Send us a pull request vie the Google Group (http://groups.google.com/group/specflow/)
 
 == Copyright
 
