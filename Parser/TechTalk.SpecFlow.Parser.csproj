@@ -71,7 +71,6 @@
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
-    <Compile Include="Grammar\CustomLexer.cs" />
     <Compile Include="Grammar\ErrorReporting.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer.cs" />
     <Compile Include="Grammar\SpecFlowLangParser.cs">
