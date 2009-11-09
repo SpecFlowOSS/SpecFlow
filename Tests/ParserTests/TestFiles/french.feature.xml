@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Scenarios>
+    <Scenario xsi:type="ScenarioOutline">
+      <Title>Addition de deux nombres</Title>
+      <SourceFileLine>7</SourceFileLine>
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>une calculatrice</Text>
+          <SourceFileLine>8</SourceFileLine>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
+          <SourceFileLine>9</SourceFileLine>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>que je tape sur la touche "+"</Text>
+          <SourceFileLine>10</SourceFileLine>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
+          <SourceFileLine>11</SourceFileLine>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>je tape sur la touche "="</Text>
+          <SourceFileLine>12</SourceFileLine>
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>le résultat affiché doit être &lt;somme&gt;</Text>
+          <SourceFileLine>13</SourceFileLine>
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Title />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>a</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>b</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>somme</Value>
+                  </Cell>
+                </Cells>
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>4</Value>
+                    </Cell>
+                  </Cells>
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>3</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>5</Value>
+                    </Cell>
+                  </Cells>
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+  </Scenarios>
+  <Title>Addition</Title>
+  <Description>Afin de gagner du temps lors du calcul de la facture
+En tant que commerçant
+Je souhaite pouvoir faire une addition</Description>
+</Feature>

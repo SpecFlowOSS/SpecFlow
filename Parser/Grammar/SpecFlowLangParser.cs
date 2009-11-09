@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 SpecFlowLangParser.g 2009-11-05 16:13:47
+// $ANTLR 3.1.2 SpecFlowLangParser.g 2009-11-09 17:26:27
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -171,7 +171,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "feature"
-    // SpecFlowLangParser.g:44:1: feature : ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) ) ;
+    // SpecFlowLangParser.g:42:1: feature : ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) ) ;
     public SpecFlowLangParser.feature_return feature() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.feature_return retval = new SpecFlowLangParser.feature_return();
@@ -215,10 +215,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_descriptionLine = new RewriteRuleSubtreeStream(adaptor,"rule descriptionLine");
         try 
     	{
-            // SpecFlowLangParser.g:45:5: ( ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) ) )
-            // SpecFlowLangParser.g:45:9: ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF
+            // SpecFlowLangParser.g:43:5: ( ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) ) )
+            // SpecFlowLangParser.g:43:9: ( newlineWithSpaces )? ( tags )? ( WS )? T_FEATURE ( WS )? text newlineWithSpaces ( descriptionLine )* ( background )? ( scenarioKind )* ( WS )? EOF
             {
-            	// SpecFlowLangParser.g:45:9: ( newlineWithSpaces )?
+            	// SpecFlowLangParser.g:43:9: ( newlineWithSpaces )?
             	int alt1 = 2;
             	int LA1_0 = input.LA(1);
 
@@ -240,7 +240,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: newlineWithSpaces
             	        {
-            	        	PushFollow(FOLLOW_newlineWithSpaces_in_feature254);
+            	        	PushFollow(FOLLOW_newlineWithSpaces_in_feature252);
             	        	newlineWithSpaces1 = newlineWithSpaces();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -251,7 +251,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:46:9: ( tags )?
+            	// SpecFlowLangParser.g:44:9: ( tags )?
             	int alt2 = 2;
             	int LA2_0 = input.LA(1);
 
@@ -273,7 +273,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_feature265);
+            	        	PushFollow(FOLLOW_tags_in_feature263);
             	        	tags2 = tags();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -284,7 +284,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:47:9: ( WS )?
+            	// SpecFlowLangParser.g:45:9: ( WS )?
             	int alt3 = 2;
             	int LA3_0 = input.LA(1);
 
@@ -297,7 +297,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS3=(IToken)Match(input,WS,FOLLOW_WS_in_feature276); if (state.failed) return retval; 
+            	        	WS3=(IToken)Match(input,WS,FOLLOW_WS_in_feature274); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS3);
 
 
@@ -306,10 +306,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_FEATURE4=(IToken)Match(input,T_FEATURE,FOLLOW_T_FEATURE_in_feature279); if (state.failed) return retval; 
+            	T_FEATURE4=(IToken)Match(input,T_FEATURE,FOLLOW_T_FEATURE_in_feature277); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_FEATURE.Add(T_FEATURE4);
 
-            	// SpecFlowLangParser.g:47:23: ( WS )?
+            	// SpecFlowLangParser.g:45:23: ( WS )?
             	int alt4 = 2;
             	int LA4_0 = input.LA(1);
 
@@ -322,7 +322,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS5=(IToken)Match(input,WS,FOLLOW_WS_in_feature281); if (state.failed) return retval; 
+            	        	WS5=(IToken)Match(input,WS,FOLLOW_WS_in_feature279); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS5);
 
 
@@ -331,17 +331,17 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_text_in_feature284);
+            	PushFollow(FOLLOW_text_in_feature282);
             	text6 = text();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_text.Add(text6.Tree);
-            	PushFollow(FOLLOW_newlineWithSpaces_in_feature286);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_feature284);
             	newlineWithSpaces7 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces7.Tree);
-            	// SpecFlowLangParser.g:48:9: ( descriptionLine )*
+            	// SpecFlowLangParser.g:46:9: ( descriptionLine )*
             	do 
             	{
             	    int alt5 = 2;
@@ -369,7 +369,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: descriptionLine
             			    {
-            			    	PushFollow(FOLLOW_descriptionLine_in_feature296);
+            			    	PushFollow(FOLLOW_descriptionLine_in_feature294);
             			    	descriptionLine8 = descriptionLine();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -386,7 +386,7 @@ public partial class SpecFlowLangParser : Parser
             	loop5:
             		;	// Stops C# compiler whining that label 'loop5' has no statements
 
-            	// SpecFlowLangParser.g:49:9: ( background )?
+            	// SpecFlowLangParser.g:47:9: ( background )?
             	int alt6 = 2;
             	int LA6_0 = input.LA(1);
 
@@ -408,7 +408,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: background
             	        {
-            	        	PushFollow(FOLLOW_background_in_feature307);
+            	        	PushFollow(FOLLOW_background_in_feature305);
             	        	background9 = background();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -419,7 +419,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:50:9: ( scenarioKind )*
+            	// SpecFlowLangParser.g:48:9: ( scenarioKind )*
             	do 
             	{
             	    int alt7 = 2;
@@ -447,7 +447,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: scenarioKind
             			    {
-            			    	PushFollow(FOLLOW_scenarioKind_in_feature318);
+            			    	PushFollow(FOLLOW_scenarioKind_in_feature316);
             			    	scenarioKind10 = scenarioKind();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -464,7 +464,7 @@ public partial class SpecFlowLangParser : Parser
             	loop7:
             		;	// Stops C# compiler whining that label 'loop7' has no statements
 
-            	// SpecFlowLangParser.g:50:23: ( WS )?
+            	// SpecFlowLangParser.g:48:23: ( WS )?
             	int alt8 = 2;
             	int LA8_0 = input.LA(1);
 
@@ -477,7 +477,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS11=(IToken)Match(input,WS,FOLLOW_WS_in_feature321); if (state.failed) return retval; 
+            	        	WS11=(IToken)Match(input,WS,FOLLOW_WS_in_feature319); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS11);
 
 
@@ -486,13 +486,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	EOF12=(IToken)Match(input,EOF,FOLLOW_EOF_in_feature324); if (state.failed) return retval; 
+            	EOF12=(IToken)Match(input,EOF,FOLLOW_EOF_in_feature322); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_EOF.Add(EOF12);
 
 
 
             	// AST REWRITE
-            	// elements:          scenarioKind, text, background, descriptionLine, tags
+            	// elements:          descriptionLine, text, scenarioKind, tags, background
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -503,14 +503,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 51:9: -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) )
+            	// 49:9: -> ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) )
             	{
-            	    // SpecFlowLangParser.g:51:12: ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) )
+            	    // SpecFlowLangParser.g:49:12: ^( FEATURE ( tags )? text ( descriptionLine )* ( background )? ^( SCENARIOS ( scenarioKind )* ) )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(FEATURE, "FEATURE"), root_1);
 
-            	    // SpecFlowLangParser.g:51:22: ( tags )?
+            	    // SpecFlowLangParser.g:49:22: ( tags )?
             	    if ( stream_tags.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_tags.NextTree());
@@ -518,26 +518,26 @@ public partial class SpecFlowLangParser : Parser
             	    }
             	    stream_tags.Reset();
             	    adaptor.AddChild(root_1, stream_text.NextTree());
-            	    // SpecFlowLangParser.g:51:33: ( descriptionLine )*
+            	    // SpecFlowLangParser.g:49:33: ( descriptionLine )*
             	    while ( stream_descriptionLine.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_descriptionLine.NextTree());
 
             	    }
             	    stream_descriptionLine.Reset();
-            	    // SpecFlowLangParser.g:51:50: ( background )?
+            	    // SpecFlowLangParser.g:49:50: ( background )?
             	    if ( stream_background.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_background.NextTree());
 
             	    }
             	    stream_background.Reset();
-            	    // SpecFlowLangParser.g:52:13: ^( SCENARIOS ( scenarioKind )* )
+            	    // SpecFlowLangParser.g:50:13: ^( SCENARIOS ( scenarioKind )* )
             	    {
             	    object root_2 = (object)adaptor.GetNilNode();
             	    root_2 = (object)adaptor.BecomeRoot((object)adaptor.Create(SCENARIOS, "SCENARIOS"), root_2);
 
-            	    // SpecFlowLangParser.g:52:25: ( scenarioKind )*
+            	    // SpecFlowLangParser.g:50:25: ( scenarioKind )*
             	    while ( stream_scenarioKind.HasNext() )
             	    {
             	        adaptor.AddChild(root_2, stream_scenarioKind.NextTree());
@@ -588,7 +588,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "tags"
-    // SpecFlowLangParser.g:56:1: tags : ( WS )? ( tag )+ -> ^( TAGS ( tag )+ ) ;
+    // SpecFlowLangParser.g:54:1: tags : ( WS )? ( tag )+ -> ^( TAGS ( tag )+ ) ;
     public SpecFlowLangParser.tags_return tags() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.tags_return retval = new SpecFlowLangParser.tags_return();
@@ -605,10 +605,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_tag = new RewriteRuleSubtreeStream(adaptor,"rule tag");
         try 
     	{
-            // SpecFlowLangParser.g:57:5: ( ( WS )? ( tag )+ -> ^( TAGS ( tag )+ ) )
-            // SpecFlowLangParser.g:57:9: ( WS )? ( tag )+
+            // SpecFlowLangParser.g:55:5: ( ( WS )? ( tag )+ -> ^( TAGS ( tag )+ ) )
+            // SpecFlowLangParser.g:55:9: ( WS )? ( tag )+
             {
-            	// SpecFlowLangParser.g:57:9: ( WS )?
+            	// SpecFlowLangParser.g:55:9: ( WS )?
             	int alt9 = 2;
             	int LA9_0 = input.LA(1);
 
@@ -621,7 +621,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS13=(IToken)Match(input,WS,FOLLOW_WS_in_tags401); if (state.failed) return retval; 
+            	        	WS13=(IToken)Match(input,WS,FOLLOW_WS_in_tags399); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS13);
 
 
@@ -630,7 +630,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:57:13: ( tag )+
+            	// SpecFlowLangParser.g:55:13: ( tag )+
             	int cnt10 = 0;
             	do 
             	{
@@ -648,7 +648,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: tag
             			    {
-            			    	PushFollow(FOLLOW_tag_in_tags404);
+            			    	PushFollow(FOLLOW_tag_in_tags402);
             			    	tag14 = tag();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -684,9 +684,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 58:9: -> ^( TAGS ( tag )+ )
+            	// 56:9: -> ^( TAGS ( tag )+ )
             	{
-            	    // SpecFlowLangParser.g:58:12: ^( TAGS ( tag )+ )
+            	    // SpecFlowLangParser.g:56:12: ^( TAGS ( tag )+ )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TAGS, "TAGS"), root_1);
@@ -741,7 +741,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "tag"
-    // SpecFlowLangParser.g:61:1: tag : AT word ( newlineWithSpaces | WS ) -> ^( TAG word ) ;
+    // SpecFlowLangParser.g:59:1: tag : AT word ( newlineWithSpaces | WS ) -> ^( TAG word ) ;
     public SpecFlowLangParser.tag_return tag() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.tag_return retval = new SpecFlowLangParser.tag_return();
@@ -764,18 +764,18 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:62:5: ( AT word ( newlineWithSpaces | WS ) -> ^( TAG word ) )
-            // SpecFlowLangParser.g:62:9: AT word ( newlineWithSpaces | WS )
+            // SpecFlowLangParser.g:60:5: ( AT word ( newlineWithSpaces | WS ) -> ^( TAG word ) )
+            // SpecFlowLangParser.g:60:9: AT word ( newlineWithSpaces | WS )
             {
-            	AT15=(IToken)Match(input,AT,FOLLOW_AT_in_tag441); if (state.failed) return retval; 
+            	AT15=(IToken)Match(input,AT,FOLLOW_AT_in_tag439); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_AT.Add(AT15);
 
-            	PushFollow(FOLLOW_word_in_tag443);
+            	PushFollow(FOLLOW_word_in_tag441);
             	word16 = word();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_word.Add(word16.Tree);
-            	// SpecFlowLangParser.g:62:17: ( newlineWithSpaces | WS )
+            	// SpecFlowLangParser.g:60:17: ( newlineWithSpaces | WS )
             	int alt11 = 2;
             	int LA11_0 = input.LA(1);
 
@@ -815,9 +815,9 @@ public partial class SpecFlowLangParser : Parser
             	switch (alt11) 
             	{
             	    case 1 :
-            	        // SpecFlowLangParser.g:62:18: newlineWithSpaces
+            	        // SpecFlowLangParser.g:60:18: newlineWithSpaces
             	        {
-            	        	PushFollow(FOLLOW_newlineWithSpaces_in_tag446);
+            	        	PushFollow(FOLLOW_newlineWithSpaces_in_tag444);
             	        	newlineWithSpaces17 = newlineWithSpaces();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -826,9 +826,9 @@ public partial class SpecFlowLangParser : Parser
             	        }
             	        break;
             	    case 2 :
-            	        // SpecFlowLangParser.g:62:36: WS
+            	        // SpecFlowLangParser.g:60:36: WS
             	        {
-            	        	WS18=(IToken)Match(input,WS,FOLLOW_WS_in_tag448); if (state.failed) return retval; 
+            	        	WS18=(IToken)Match(input,WS,FOLLOW_WS_in_tag446); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS18);
 
 
@@ -851,9 +851,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 63:9: -> ^( TAG word )
+            	// 61:9: -> ^( TAG word )
             	{
-            	    // SpecFlowLangParser.g:63:12: ^( TAG word )
+            	    // SpecFlowLangParser.g:61:12: ^( TAG word )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TAG, "TAG"), root_1);
@@ -900,7 +900,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "word"
-    // SpecFlowLangParser.g:66:1: word : ( WORDCHAR )+ -> ^( WORD ( WORDCHAR )+ ) ;
+    // SpecFlowLangParser.g:64:1: word : ( WORDCHAR )+ -> ^( WORD ( WORDCHAR )+ ) ;
     public SpecFlowLangParser.word_return word() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.word_return retval = new SpecFlowLangParser.word_return();
@@ -915,10 +915,10 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:67:5: ( ( WORDCHAR )+ -> ^( WORD ( WORDCHAR )+ ) )
-            // SpecFlowLangParser.g:67:9: ( WORDCHAR )+
+            // SpecFlowLangParser.g:65:5: ( ( WORDCHAR )+ -> ^( WORD ( WORDCHAR )+ ) )
+            // SpecFlowLangParser.g:65:9: ( WORDCHAR )+
             {
-            	// SpecFlowLangParser.g:67:9: ( WORDCHAR )+
+            	// SpecFlowLangParser.g:65:9: ( WORDCHAR )+
             	int cnt12 = 0;
             	do 
             	{
@@ -936,7 +936,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: WORDCHAR
             			    {
-            			    	WORDCHAR19=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_word484); if (state.failed) return retval; 
+            			    	WORDCHAR19=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_word482); if (state.failed) return retval; 
             			    	if ( (state.backtracking==0) ) stream_WORDCHAR.Add(WORDCHAR19);
 
 
@@ -970,9 +970,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 68:9: -> ^( WORD ( WORDCHAR )+ )
+            	// 66:9: -> ^( WORD ( WORDCHAR )+ )
             	{
-            	    // SpecFlowLangParser.g:68:12: ^( WORD ( WORDCHAR )+ )
+            	    // SpecFlowLangParser.g:66:12: ^( WORD ( WORDCHAR )+ )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(WORD, "WORD"), root_1);
@@ -1027,7 +1027,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "descriptionLine"
-    // SpecFlowLangParser.g:71:1: descriptionLine : ( WS )? descriptionLineText newlineWithSpaces -> ^( DESCRIPTIONLINE descriptionLineText ) ;
+    // SpecFlowLangParser.g:69:1: descriptionLine : ( WS )? descriptionLineText newlineWithSpaces -> ^( DESCRIPTIONLINE descriptionLineText ) ;
     public SpecFlowLangParser.descriptionLine_return descriptionLine() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.descriptionLine_return retval = new SpecFlowLangParser.descriptionLine_return();
@@ -1047,10 +1047,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:72:5: ( ( WS )? descriptionLineText newlineWithSpaces -> ^( DESCRIPTIONLINE descriptionLineText ) )
-            // SpecFlowLangParser.g:72:9: ( WS )? descriptionLineText newlineWithSpaces
+            // SpecFlowLangParser.g:70:5: ( ( WS )? descriptionLineText newlineWithSpaces -> ^( DESCRIPTIONLINE descriptionLineText ) )
+            // SpecFlowLangParser.g:70:9: ( WS )? descriptionLineText newlineWithSpaces
             {
-            	// SpecFlowLangParser.g:72:9: ( WS )?
+            	// SpecFlowLangParser.g:70:9: ( WS )?
             	int alt13 = 2;
             	int LA13_0 = input.LA(1);
 
@@ -1063,7 +1063,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS20=(IToken)Match(input,WS,FOLLOW_WS_in_descriptionLine521); if (state.failed) return retval; 
+            	        	WS20=(IToken)Match(input,WS,FOLLOW_WS_in_descriptionLine519); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS20);
 
 
@@ -1072,12 +1072,12 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_descriptionLineText_in_descriptionLine524);
+            	PushFollow(FOLLOW_descriptionLineText_in_descriptionLine522);
             	descriptionLineText21 = descriptionLineText();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_descriptionLineText.Add(descriptionLineText21.Tree);
-            	PushFollow(FOLLOW_newlineWithSpaces_in_descriptionLine526);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_descriptionLine524);
             	newlineWithSpaces22 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -1096,9 +1096,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 73:9: -> ^( DESCRIPTIONLINE descriptionLineText )
+            	// 71:9: -> ^( DESCRIPTIONLINE descriptionLineText )
             	{
-            	    // SpecFlowLangParser.g:73:12: ^( DESCRIPTIONLINE descriptionLineText )
+            	    // SpecFlowLangParser.g:71:12: ^( DESCRIPTIONLINE descriptionLineText )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(DESCRIPTIONLINE, "DESCRIPTIONLINE"), root_1);
@@ -1145,7 +1145,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "background"
-    // SpecFlowLangParser.g:76:1: background : ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens -> ^( BACKGROUND ( title )? givens ) ;
+    // SpecFlowLangParser.g:74:1: background : ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens -> ^( BACKGROUND ( title )? givens ) ;
     public SpecFlowLangParser.background_return background() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.background_return retval = new SpecFlowLangParser.background_return();
@@ -1173,10 +1173,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:77:5: ( ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens -> ^( BACKGROUND ( title )? givens ) )
-            // SpecFlowLangParser.g:77:9: ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens
+            // SpecFlowLangParser.g:75:5: ( ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens -> ^( BACKGROUND ( title )? givens ) )
+            // SpecFlowLangParser.g:75:9: ( WS )? T_BACKGROUND ( WS title )? newlineWithSpaces givens
             {
-            	// SpecFlowLangParser.g:77:9: ( WS )?
+            	// SpecFlowLangParser.g:75:9: ( WS )?
             	int alt14 = 2;
             	int LA14_0 = input.LA(1);
 
@@ -1189,7 +1189,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS23=(IToken)Match(input,WS,FOLLOW_WS_in_background561); if (state.failed) return retval; 
+            	        	WS23=(IToken)Match(input,WS,FOLLOW_WS_in_background559); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS23);
 
 
@@ -1198,10 +1198,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_BACKGROUND24=(IToken)Match(input,T_BACKGROUND,FOLLOW_T_BACKGROUND_in_background564); if (state.failed) return retval; 
+            	T_BACKGROUND24=(IToken)Match(input,T_BACKGROUND,FOLLOW_T_BACKGROUND_in_background562); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_BACKGROUND.Add(T_BACKGROUND24);
 
-            	// SpecFlowLangParser.g:78:9: ( WS title )?
+            	// SpecFlowLangParser.g:76:9: ( WS title )?
             	int alt15 = 2;
             	int LA15_0 = input.LA(1);
 
@@ -1217,12 +1217,12 @@ public partial class SpecFlowLangParser : Parser
             	switch (alt15) 
             	{
             	    case 1 :
-            	        // SpecFlowLangParser.g:78:10: WS title
+            	        // SpecFlowLangParser.g:76:10: WS title
             	        {
-            	        	WS25=(IToken)Match(input,WS,FOLLOW_WS_in_background576); if (state.failed) return retval; 
+            	        	WS25=(IToken)Match(input,WS,FOLLOW_WS_in_background574); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS25);
 
-            	        	PushFollow(FOLLOW_title_in_background578);
+            	        	PushFollow(FOLLOW_title_in_background576);
             	        	title26 = title();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -1233,12 +1233,12 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_newlineWithSpaces_in_background591);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_background589);
             	newlineWithSpaces27 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces27.Tree);
-            	PushFollow(FOLLOW_givens_in_background593);
+            	PushFollow(FOLLOW_givens_in_background591);
             	givens28 = givens();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -1246,7 +1246,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          title, givens
+            	// elements:          givens, title
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -1257,14 +1257,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 80:9: -> ^( BACKGROUND ( title )? givens )
+            	// 78:9: -> ^( BACKGROUND ( title )? givens )
             	{
-            	    // SpecFlowLangParser.g:80:12: ^( BACKGROUND ( title )? givens )
+            	    // SpecFlowLangParser.g:78:12: ^( BACKGROUND ( title )? givens )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(BACKGROUND, "BACKGROUND"), root_1);
 
-            	    // SpecFlowLangParser.g:80:25: ( title )?
+            	    // SpecFlowLangParser.g:78:25: ( title )?
             	    if ( stream_title.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_title.NextTree());
@@ -1313,7 +1313,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "scenarioKind"
-    // SpecFlowLangParser.g:83:1: scenarioKind : ( scenarioOutline | scenario );
+    // SpecFlowLangParser.g:81:1: scenarioKind : ( scenarioOutline | scenario );
     public SpecFlowLangParser.scenarioKind_return scenarioKind() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.scenarioKind_return retval = new SpecFlowLangParser.scenarioKind_return();
@@ -1329,17 +1329,17 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:84:5: ( scenarioOutline | scenario )
+            // SpecFlowLangParser.g:82:5: ( scenarioOutline | scenario )
             int alt16 = 2;
             alt16 = dfa16.Predict(input);
             switch (alt16) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:84:9: scenarioOutline
+                    // SpecFlowLangParser.g:82:9: scenarioOutline
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_scenarioOutline_in_scenarioKind631);
+                    	PushFollow(FOLLOW_scenarioOutline_in_scenarioKind629);
                     	scenarioOutline29 = scenarioOutline();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -1348,11 +1348,11 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:85:9: scenario
+                    // SpecFlowLangParser.g:83:9: scenario
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_scenario_in_scenarioKind642);
+                    	PushFollow(FOLLOW_scenario_in_scenarioKind640);
                     	scenario30 = scenario();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -1394,7 +1394,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "scenario"
-    // SpecFlowLangParser.g:88:1: scenario : ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps -> ^( SCENARIO ( tags )? title steps ) ;
+    // SpecFlowLangParser.g:86:1: scenario : ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps -> ^( SCENARIO ( tags )? title steps ) ;
     public SpecFlowLangParser.scenario_return scenario() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.scenario_return retval = new SpecFlowLangParser.scenario_return();
@@ -1425,10 +1425,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:89:5: ( ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps -> ^( SCENARIO ( tags )? title steps ) )
-            // SpecFlowLangParser.g:89:9: ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps
+            // SpecFlowLangParser.g:87:5: ( ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps -> ^( SCENARIO ( tags )? title steps ) )
+            // SpecFlowLangParser.g:87:9: ( tags )? ( WS )? T_SCENARIO ( WS )? title newlineWithSpaces steps
             {
-            	// SpecFlowLangParser.g:89:9: ( tags )?
+            	// SpecFlowLangParser.g:87:9: ( tags )?
             	int alt17 = 2;
             	int LA17_0 = input.LA(1);
 
@@ -1450,7 +1450,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_scenario661);
+            	        	PushFollow(FOLLOW_tags_in_scenario659);
             	        	tags31 = tags();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -1461,7 +1461,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:89:15: ( WS )?
+            	// SpecFlowLangParser.g:87:15: ( WS )?
             	int alt18 = 2;
             	int LA18_0 = input.LA(1);
 
@@ -1474,7 +1474,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS32=(IToken)Match(input,WS,FOLLOW_WS_in_scenario664); if (state.failed) return retval; 
+            	        	WS32=(IToken)Match(input,WS,FOLLOW_WS_in_scenario662); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS32);
 
 
@@ -1483,10 +1483,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_SCENARIO33=(IToken)Match(input,T_SCENARIO,FOLLOW_T_SCENARIO_in_scenario667); if (state.failed) return retval; 
+            	T_SCENARIO33=(IToken)Match(input,T_SCENARIO,FOLLOW_T_SCENARIO_in_scenario665); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_SCENARIO.Add(T_SCENARIO33);
 
-            	// SpecFlowLangParser.g:89:30: ( WS )?
+            	// SpecFlowLangParser.g:87:30: ( WS )?
             	int alt19 = 2;
             	int LA19_0 = input.LA(1);
 
@@ -1499,7 +1499,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS34=(IToken)Match(input,WS,FOLLOW_WS_in_scenario669); if (state.failed) return retval; 
+            	        	WS34=(IToken)Match(input,WS,FOLLOW_WS_in_scenario667); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS34);
 
 
@@ -1508,17 +1508,17 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_title_in_scenario681);
+            	PushFollow(FOLLOW_title_in_scenario679);
             	title35 = title();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_title.Add(title35.Tree);
-            	PushFollow(FOLLOW_newlineWithSpaces_in_scenario683);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_scenario681);
             	newlineWithSpaces36 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces36.Tree);
-            	PushFollow(FOLLOW_steps_in_scenario694);
+            	PushFollow(FOLLOW_steps_in_scenario692);
             	steps37 = steps();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -1526,7 +1526,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          steps, tags, title
+            	// elements:          title, tags, steps
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -1537,14 +1537,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 92:9: -> ^( SCENARIO ( tags )? title steps )
+            	// 90:9: -> ^( SCENARIO ( tags )? title steps )
             	{
-            	    // SpecFlowLangParser.g:92:12: ^( SCENARIO ( tags )? title steps )
+            	    // SpecFlowLangParser.g:90:12: ^( SCENARIO ( tags )? title steps )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(SCENARIO, "SCENARIO"), root_1);
 
-            	    // SpecFlowLangParser.g:92:23: ( tags )?
+            	    // SpecFlowLangParser.g:90:23: ( tags )?
             	    if ( stream_tags.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_tags.NextTree());
@@ -1594,7 +1594,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "scenarioOutline"
-    // SpecFlowLangParser.g:95:1: scenarioOutline : ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples -> ^( SCENARIOOUTLINE ( tags )? title steps examples ) ;
+    // SpecFlowLangParser.g:93:1: scenarioOutline : ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples -> ^( SCENARIOOUTLINE ( tags )? title steps examples ) ;
     public SpecFlowLangParser.scenarioOutline_return scenarioOutline() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.scenarioOutline_return retval = new SpecFlowLangParser.scenarioOutline_return();
@@ -1628,10 +1628,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:96:5: ( ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples -> ^( SCENARIOOUTLINE ( tags )? title steps examples ) )
-            // SpecFlowLangParser.g:97:9: ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples
+            // SpecFlowLangParser.g:94:5: ( ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples -> ^( SCENARIOOUTLINE ( tags )? title steps examples ) )
+            // SpecFlowLangParser.g:95:9: ( tags )? ( WS )? T_SCENARIO_OUTLINE ( WS )? title newlineWithSpaces steps examples
             {
-            	// SpecFlowLangParser.g:97:9: ( tags )?
+            	// SpecFlowLangParser.g:95:9: ( tags )?
             	int alt20 = 2;
             	int LA20_0 = input.LA(1);
 
@@ -1653,7 +1653,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_scenarioOutline740);
+            	        	PushFollow(FOLLOW_tags_in_scenarioOutline738);
             	        	tags38 = tags();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -1664,7 +1664,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:97:15: ( WS )?
+            	// SpecFlowLangParser.g:95:15: ( WS )?
             	int alt21 = 2;
             	int LA21_0 = input.LA(1);
 
@@ -1677,7 +1677,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS39=(IToken)Match(input,WS,FOLLOW_WS_in_scenarioOutline743); if (state.failed) return retval; 
+            	        	WS39=(IToken)Match(input,WS,FOLLOW_WS_in_scenarioOutline741); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS39);
 
 
@@ -1686,10 +1686,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_SCENARIO_OUTLINE40=(IToken)Match(input,T_SCENARIO_OUTLINE,FOLLOW_T_SCENARIO_OUTLINE_in_scenarioOutline746); if (state.failed) return retval; 
+            	T_SCENARIO_OUTLINE40=(IToken)Match(input,T_SCENARIO_OUTLINE,FOLLOW_T_SCENARIO_OUTLINE_in_scenarioOutline744); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_SCENARIO_OUTLINE.Add(T_SCENARIO_OUTLINE40);
 
-            	// SpecFlowLangParser.g:97:38: ( WS )?
+            	// SpecFlowLangParser.g:95:38: ( WS )?
             	int alt22 = 2;
             	int LA22_0 = input.LA(1);
 
@@ -1702,7 +1702,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS41=(IToken)Match(input,WS,FOLLOW_WS_in_scenarioOutline748); if (state.failed) return retval; 
+            	        	WS41=(IToken)Match(input,WS,FOLLOW_WS_in_scenarioOutline746); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS41);
 
 
@@ -1711,22 +1711,22 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_title_in_scenarioOutline759);
+            	PushFollow(FOLLOW_title_in_scenarioOutline757);
             	title42 = title();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_title.Add(title42.Tree);
-            	PushFollow(FOLLOW_newlineWithSpaces_in_scenarioOutline761);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_scenarioOutline759);
             	newlineWithSpaces43 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces43.Tree);
-            	PushFollow(FOLLOW_steps_in_scenarioOutline771);
+            	PushFollow(FOLLOW_steps_in_scenarioOutline769);
             	steps44 = steps();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_steps.Add(steps44.Tree);
-            	PushFollow(FOLLOW_examples_in_scenarioOutline781);
+            	PushFollow(FOLLOW_examples_in_scenarioOutline779);
             	examples45 = examples();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -1734,7 +1734,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          tags, steps, examples, title
+            	// elements:          tags, title, examples, steps
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -1745,14 +1745,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 101:9: -> ^( SCENARIOOUTLINE ( tags )? title steps examples )
+            	// 99:9: -> ^( SCENARIOOUTLINE ( tags )? title steps examples )
             	{
-            	    // SpecFlowLangParser.g:101:12: ^( SCENARIOOUTLINE ( tags )? title steps examples )
+            	    // SpecFlowLangParser.g:99:12: ^( SCENARIOOUTLINE ( tags )? title steps examples )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(SCENARIOOUTLINE, "SCENARIOOUTLINE"), root_1);
 
-            	    // SpecFlowLangParser.g:101:30: ( tags )?
+            	    // SpecFlowLangParser.g:99:30: ( tags )?
             	    if ( stream_tags.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_tags.NextTree());
@@ -1803,7 +1803,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "examples"
-    // SpecFlowLangParser.g:104:1: examples : ( exampleSet )+ -> ^( EXAMPLES ( exampleSet )+ ) ;
+    // SpecFlowLangParser.g:102:1: examples : ( exampleSet )+ -> ^( EXAMPLES ( exampleSet )+ ) ;
     public SpecFlowLangParser.examples_return examples() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.examples_return retval = new SpecFlowLangParser.examples_return();
@@ -1817,10 +1817,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_exampleSet = new RewriteRuleSubtreeStream(adaptor,"rule exampleSet");
         try 
     	{
-            // SpecFlowLangParser.g:105:5: ( ( exampleSet )+ -> ^( EXAMPLES ( exampleSet )+ ) )
-            // SpecFlowLangParser.g:105:9: ( exampleSet )+
+            // SpecFlowLangParser.g:103:5: ( ( exampleSet )+ -> ^( EXAMPLES ( exampleSet )+ ) )
+            // SpecFlowLangParser.g:103:9: ( exampleSet )+
             {
-            	// SpecFlowLangParser.g:105:9: ( exampleSet )+
+            	// SpecFlowLangParser.g:103:9: ( exampleSet )+
             	int cnt23 = 0;
             	do 
             	{
@@ -1849,7 +1849,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: exampleSet
             			    {
-            			    	PushFollow(FOLLOW_exampleSet_in_examples823);
+            			    	PushFollow(FOLLOW_exampleSet_in_examples821);
             			    	exampleSet46 = exampleSet();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -1885,9 +1885,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 106:9: -> ^( EXAMPLES ( exampleSet )+ )
+            	// 104:9: -> ^( EXAMPLES ( exampleSet )+ )
             	{
-            	    // SpecFlowLangParser.g:106:12: ^( EXAMPLES ( exampleSet )+ )
+            	    // SpecFlowLangParser.g:104:12: ^( EXAMPLES ( exampleSet )+ )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(EXAMPLES, "EXAMPLES"), root_1);
@@ -1942,7 +1942,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "exampleSet"
-    // SpecFlowLangParser.g:109:1: exampleSet : ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table -> ^( EXAMPLESET ( text )? table ) ;
+    // SpecFlowLangParser.g:107:1: exampleSet : ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table -> ^( EXAMPLESET ( text )? table ) ;
     public SpecFlowLangParser.exampleSet_return exampleSet() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.exampleSet_return retval = new SpecFlowLangParser.exampleSet_return();
@@ -1970,10 +1970,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:110:5: ( ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table -> ^( EXAMPLESET ( text )? table ) )
-            // SpecFlowLangParser.g:110:9: ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table
+            // SpecFlowLangParser.g:108:5: ( ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table -> ^( EXAMPLESET ( text )? table ) )
+            // SpecFlowLangParser.g:108:9: ( WS )? T_EXAMPLES ( WS )? ( text )? newlineWithSpaces table
             {
-            	// SpecFlowLangParser.g:110:9: ( WS )?
+            	// SpecFlowLangParser.g:108:9: ( WS )?
             	int alt24 = 2;
             	int LA24_0 = input.LA(1);
 
@@ -1986,7 +1986,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS47=(IToken)Match(input,WS,FOLLOW_WS_in_exampleSet860); if (state.failed) return retval; 
+            	        	WS47=(IToken)Match(input,WS,FOLLOW_WS_in_exampleSet858); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS47);
 
 
@@ -1995,10 +1995,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_EXAMPLES48=(IToken)Match(input,T_EXAMPLES,FOLLOW_T_EXAMPLES_in_exampleSet863); if (state.failed) return retval; 
+            	T_EXAMPLES48=(IToken)Match(input,T_EXAMPLES,FOLLOW_T_EXAMPLES_in_exampleSet861); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_EXAMPLES.Add(T_EXAMPLES48);
 
-            	// SpecFlowLangParser.g:110:24: ( WS )?
+            	// SpecFlowLangParser.g:108:24: ( WS )?
             	int alt25 = 2;
             	int LA25_0 = input.LA(1);
 
@@ -2016,7 +2016,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS49=(IToken)Match(input,WS,FOLLOW_WS_in_exampleSet865); if (state.failed) return retval; 
+            	        	WS49=(IToken)Match(input,WS,FOLLOW_WS_in_exampleSet863); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS49);
 
 
@@ -2025,7 +2025,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:111:9: ( text )?
+            	// SpecFlowLangParser.g:109:9: ( text )?
             	int alt26 = 2;
             	int LA26_0 = input.LA(1);
 
@@ -2038,7 +2038,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: text
             	        {
-            	        	PushFollow(FOLLOW_text_in_exampleSet876);
+            	        	PushFollow(FOLLOW_text_in_exampleSet874);
             	        	text50 = text();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -2049,12 +2049,12 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_newlineWithSpaces_in_exampleSet879);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_exampleSet877);
             	newlineWithSpaces51 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces51.Tree);
-            	PushFollow(FOLLOW_table_in_exampleSet881);
+            	PushFollow(FOLLOW_table_in_exampleSet879);
             	table52 = table();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -2062,7 +2062,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          table, text
+            	// elements:          text, table
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -2073,14 +2073,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 112:9: -> ^( EXAMPLESET ( text )? table )
+            	// 110:9: -> ^( EXAMPLESET ( text )? table )
             	{
-            	    // SpecFlowLangParser.g:112:12: ^( EXAMPLESET ( text )? table )
+            	    // SpecFlowLangParser.g:110:12: ^( EXAMPLESET ( text )? table )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(EXAMPLESET, "EXAMPLESET"), root_1);
 
-            	    // SpecFlowLangParser.g:112:25: ( text )?
+            	    // SpecFlowLangParser.g:110:25: ( text )?
             	    if ( stream_text.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_text.NextTree());
@@ -2129,7 +2129,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "steps"
-    // SpecFlowLangParser.g:115:1: steps : firstStep ( nextStep )* -> ^( STEPS firstStep ( nextStep )* ) ;
+    // SpecFlowLangParser.g:113:1: steps : firstStep ( nextStep )* -> ^( STEPS firstStep ( nextStep )* ) ;
     public SpecFlowLangParser.steps_return steps() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.steps_return retval = new SpecFlowLangParser.steps_return();
@@ -2146,15 +2146,15 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_nextStep = new RewriteRuleSubtreeStream(adaptor,"rule nextStep");
         try 
     	{
-            // SpecFlowLangParser.g:116:5: ( firstStep ( nextStep )* -> ^( STEPS firstStep ( nextStep )* ) )
-            // SpecFlowLangParser.g:116:9: firstStep ( nextStep )*
+            // SpecFlowLangParser.g:114:5: ( firstStep ( nextStep )* -> ^( STEPS firstStep ( nextStep )* ) )
+            // SpecFlowLangParser.g:114:9: firstStep ( nextStep )*
             {
-            	PushFollow(FOLLOW_firstStep_in_steps919);
+            	PushFollow(FOLLOW_firstStep_in_steps917);
             	firstStep53 = firstStep();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_firstStep.Add(firstStep53.Tree);
-            	// SpecFlowLangParser.g:116:19: ( nextStep )*
+            	// SpecFlowLangParser.g:114:19: ( nextStep )*
             	do 
             	{
             	    int alt27 = 2;
@@ -2182,7 +2182,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: nextStep
             			    {
-            			    	PushFollow(FOLLOW_nextStep_in_steps921);
+            			    	PushFollow(FOLLOW_nextStep_in_steps919);
             			    	nextStep54 = nextStep();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -2213,15 +2213,15 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 117:9: -> ^( STEPS firstStep ( nextStep )* )
+            	// 115:9: -> ^( STEPS firstStep ( nextStep )* )
             	{
-            	    // SpecFlowLangParser.g:117:12: ^( STEPS firstStep ( nextStep )* )
+            	    // SpecFlowLangParser.g:115:12: ^( STEPS firstStep ( nextStep )* )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(STEPS, "STEPS"), root_1);
 
             	    adaptor.AddChild(root_1, stream_firstStep.NextTree());
-            	    // SpecFlowLangParser.g:117:30: ( nextStep )*
+            	    // SpecFlowLangParser.g:115:30: ( nextStep )*
             	    while ( stream_nextStep.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_nextStep.NextTree());
@@ -2269,7 +2269,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstStep"
-    // SpecFlowLangParser.g:119:1: firstStep : ( firstGiven -> firstGiven | firstWhen -> firstWhen | firstThen -> firstThen );
+    // SpecFlowLangParser.g:117:1: firstStep : ( firstGiven -> firstGiven | firstWhen -> firstWhen | firstThen -> firstThen );
     public SpecFlowLangParser.firstStep_return firstStep() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstStep_return retval = new SpecFlowLangParser.firstStep_return();
@@ -2289,7 +2289,7 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_firstGiven = new RewriteRuleSubtreeStream(adaptor,"rule firstGiven");
         try 
     	{
-            // SpecFlowLangParser.g:120:2: ( firstGiven -> firstGiven | firstWhen -> firstWhen | firstThen -> firstThen )
+            // SpecFlowLangParser.g:118:2: ( firstGiven -> firstGiven | firstWhen -> firstWhen | firstThen -> firstThen )
             int alt28 = 3;
             switch ( input.LA(1) ) 
             {
@@ -2348,9 +2348,9 @@ public partial class SpecFlowLangParser : Parser
             switch (alt28) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:120:4: firstGiven
+                    // SpecFlowLangParser.g:118:4: firstGiven
                     {
-                    	PushFollow(FOLLOW_firstGiven_in_firstStep954);
+                    	PushFollow(FOLLOW_firstGiven_in_firstStep952);
                     	firstGiven55 = firstGiven();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2369,7 +2369,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 120:15: -> firstGiven
+                    	// 118:15: -> firstGiven
                     	{
                     	    adaptor.AddChild(root_0, stream_firstGiven.NextTree());
 
@@ -2379,9 +2379,9 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:121:4: firstWhen
+                    // SpecFlowLangParser.g:119:4: firstWhen
                     {
-                    	PushFollow(FOLLOW_firstWhen_in_firstStep963);
+                    	PushFollow(FOLLOW_firstWhen_in_firstStep961);
                     	firstWhen56 = firstWhen();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2400,7 +2400,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 121:14: -> firstWhen
+                    	// 119:14: -> firstWhen
                     	{
                     	    adaptor.AddChild(root_0, stream_firstWhen.NextTree());
 
@@ -2410,9 +2410,9 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 3 :
-                    // SpecFlowLangParser.g:122:4: firstThen
+                    // SpecFlowLangParser.g:120:4: firstThen
                     {
-                    	PushFollow(FOLLOW_firstThen_in_firstStep972);
+                    	PushFollow(FOLLOW_firstThen_in_firstStep970);
                     	firstThen57 = firstThen();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2431,7 +2431,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 122:14: -> firstThen
+                    	// 120:14: -> firstThen
                     	{
                     	    adaptor.AddChild(root_0, stream_firstThen.NextTree());
 
@@ -2474,7 +2474,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "nextStep"
-    // SpecFlowLangParser.g:124:1: nextStep : ( firstStep -> firstStep | firstAnd -> firstAnd | firstBut -> firstBut );
+    // SpecFlowLangParser.g:122:1: nextStep : ( firstStep -> firstStep | firstAnd -> firstAnd | firstBut -> firstBut );
     public SpecFlowLangParser.nextStep_return nextStep() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.nextStep_return retval = new SpecFlowLangParser.nextStep_return();
@@ -2494,7 +2494,7 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_firstBut = new RewriteRuleSubtreeStream(adaptor,"rule firstBut");
         try 
     	{
-            // SpecFlowLangParser.g:125:5: ( firstStep -> firstStep | firstAnd -> firstAnd | firstBut -> firstBut )
+            // SpecFlowLangParser.g:123:5: ( firstStep -> firstStep | firstAnd -> firstAnd | firstBut -> firstBut )
             int alt29 = 3;
             switch ( input.LA(1) ) 
             {
@@ -2557,9 +2557,9 @@ public partial class SpecFlowLangParser : Parser
             switch (alt29) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:125:9: firstStep
+                    // SpecFlowLangParser.g:123:9: firstStep
                     {
-                    	PushFollow(FOLLOW_firstStep_in_nextStep994);
+                    	PushFollow(FOLLOW_firstStep_in_nextStep992);
                     	firstStep58 = firstStep();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2578,7 +2578,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 125:19: -> firstStep
+                    	// 123:19: -> firstStep
                     	{
                     	    adaptor.AddChild(root_0, stream_firstStep.NextTree());
 
@@ -2588,9 +2588,9 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:126:4: firstAnd
+                    // SpecFlowLangParser.g:124:4: firstAnd
                     {
-                    	PushFollow(FOLLOW_firstAnd_in_nextStep1003);
+                    	PushFollow(FOLLOW_firstAnd_in_nextStep1001);
                     	firstAnd59 = firstAnd();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2609,7 +2609,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 126:13: -> firstAnd
+                    	// 124:13: -> firstAnd
                     	{
                     	    adaptor.AddChild(root_0, stream_firstAnd.NextTree());
 
@@ -2619,9 +2619,9 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 3 :
-                    // SpecFlowLangParser.g:127:4: firstBut
+                    // SpecFlowLangParser.g:125:4: firstBut
                     {
-                    	PushFollow(FOLLOW_firstBut_in_nextStep1012);
+                    	PushFollow(FOLLOW_firstBut_in_nextStep1010);
                     	firstBut60 = firstBut();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -2640,7 +2640,7 @@ public partial class SpecFlowLangParser : Parser
                     	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
                     	root_0 = (object)adaptor.GetNilNode();
-                    	// 127:13: -> firstBut
+                    	// 125:13: -> firstBut
                     	{
                     	    adaptor.AddChild(root_0, stream_firstBut.NextTree());
 
@@ -2683,7 +2683,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstAnd"
-    // SpecFlowLangParser.g:130:1: firstAnd : ( WS )? T_AND WS sentenceEnd -> ^( AND sentenceEnd ) ;
+    // SpecFlowLangParser.g:128:1: firstAnd : ( WS )? T_AND WS sentenceEnd -> ^( AND sentenceEnd ) ;
     public SpecFlowLangParser.firstAnd_return firstAnd() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstAnd_return retval = new SpecFlowLangParser.firstAnd_return();
@@ -2705,10 +2705,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_sentenceEnd = new RewriteRuleSubtreeStream(adaptor,"rule sentenceEnd");
         try 
     	{
-            // SpecFlowLangParser.g:131:5: ( ( WS )? T_AND WS sentenceEnd -> ^( AND sentenceEnd ) )
-            // SpecFlowLangParser.g:131:9: ( WS )? T_AND WS sentenceEnd
+            // SpecFlowLangParser.g:129:5: ( ( WS )? T_AND WS sentenceEnd -> ^( AND sentenceEnd ) )
+            // SpecFlowLangParser.g:129:9: ( WS )? T_AND WS sentenceEnd
             {
-            	// SpecFlowLangParser.g:131:9: ( WS )?
+            	// SpecFlowLangParser.g:129:9: ( WS )?
             	int alt30 = 2;
             	int LA30_0 = input.LA(1);
 
@@ -2721,7 +2721,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS61=(IToken)Match(input,WS,FOLLOW_WS_in_firstAnd1035); if (state.failed) return retval; 
+            	        	WS61=(IToken)Match(input,WS,FOLLOW_WS_in_firstAnd1033); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS61);
 
 
@@ -2730,13 +2730,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_AND62=(IToken)Match(input,T_AND,FOLLOW_T_AND_in_firstAnd1038); if (state.failed) return retval; 
+            	T_AND62=(IToken)Match(input,T_AND,FOLLOW_T_AND_in_firstAnd1036); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_AND.Add(T_AND62);
 
-            	WS63=(IToken)Match(input,WS,FOLLOW_WS_in_firstAnd1040); if (state.failed) return retval; 
+            	WS63=(IToken)Match(input,WS,FOLLOW_WS_in_firstAnd1038); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WS.Add(WS63);
 
-            	PushFollow(FOLLOW_sentenceEnd_in_firstAnd1042);
+            	PushFollow(FOLLOW_sentenceEnd_in_firstAnd1040);
             	sentenceEnd64 = sentenceEnd();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -2755,9 +2755,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 132:9: -> ^( AND sentenceEnd )
+            	// 130:9: -> ^( AND sentenceEnd )
             	{
-            	    // SpecFlowLangParser.g:132:12: ^( AND sentenceEnd )
+            	    // SpecFlowLangParser.g:130:12: ^( AND sentenceEnd )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(AND, "AND"), root_1);
@@ -2804,7 +2804,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstBut"
-    // SpecFlowLangParser.g:135:1: firstBut : ( WS )? T_BUT WS sentenceEnd -> ^( BUT sentenceEnd ) ;
+    // SpecFlowLangParser.g:133:1: firstBut : ( WS )? T_BUT WS sentenceEnd -> ^( BUT sentenceEnd ) ;
     public SpecFlowLangParser.firstBut_return firstBut() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstBut_return retval = new SpecFlowLangParser.firstBut_return();
@@ -2826,10 +2826,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_sentenceEnd = new RewriteRuleSubtreeStream(adaptor,"rule sentenceEnd");
         try 
     	{
-            // SpecFlowLangParser.g:136:5: ( ( WS )? T_BUT WS sentenceEnd -> ^( BUT sentenceEnd ) )
-            // SpecFlowLangParser.g:136:9: ( WS )? T_BUT WS sentenceEnd
+            // SpecFlowLangParser.g:134:5: ( ( WS )? T_BUT WS sentenceEnd -> ^( BUT sentenceEnd ) )
+            // SpecFlowLangParser.g:134:9: ( WS )? T_BUT WS sentenceEnd
             {
-            	// SpecFlowLangParser.g:136:9: ( WS )?
+            	// SpecFlowLangParser.g:134:9: ( WS )?
             	int alt31 = 2;
             	int LA31_0 = input.LA(1);
 
@@ -2842,7 +2842,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS65=(IToken)Match(input,WS,FOLLOW_WS_in_firstBut1077); if (state.failed) return retval; 
+            	        	WS65=(IToken)Match(input,WS,FOLLOW_WS_in_firstBut1075); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS65);
 
 
@@ -2851,13 +2851,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_BUT66=(IToken)Match(input,T_BUT,FOLLOW_T_BUT_in_firstBut1080); if (state.failed) return retval; 
+            	T_BUT66=(IToken)Match(input,T_BUT,FOLLOW_T_BUT_in_firstBut1078); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_BUT.Add(T_BUT66);
 
-            	WS67=(IToken)Match(input,WS,FOLLOW_WS_in_firstBut1082); if (state.failed) return retval; 
+            	WS67=(IToken)Match(input,WS,FOLLOW_WS_in_firstBut1080); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WS.Add(WS67);
 
-            	PushFollow(FOLLOW_sentenceEnd_in_firstBut1084);
+            	PushFollow(FOLLOW_sentenceEnd_in_firstBut1082);
             	sentenceEnd68 = sentenceEnd();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -2876,9 +2876,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 137:9: -> ^( BUT sentenceEnd )
+            	// 135:9: -> ^( BUT sentenceEnd )
             	{
-            	    // SpecFlowLangParser.g:137:12: ^( BUT sentenceEnd )
+            	    // SpecFlowLangParser.g:135:12: ^( BUT sentenceEnd )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(BUT, "BUT"), root_1);
@@ -2925,7 +2925,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "givens"
-    // SpecFlowLangParser.g:140:1: givens : firstGiven ( nextStep )* -> ^( STEPS firstGiven ( nextStep )* ) ;
+    // SpecFlowLangParser.g:138:1: givens : firstGiven ( nextStep )* -> ^( STEPS firstGiven ( nextStep )* ) ;
     public SpecFlowLangParser.givens_return givens() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.givens_return retval = new SpecFlowLangParser.givens_return();
@@ -2942,15 +2942,15 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_firstGiven = new RewriteRuleSubtreeStream(adaptor,"rule firstGiven");
         try 
     	{
-            // SpecFlowLangParser.g:141:5: ( firstGiven ( nextStep )* -> ^( STEPS firstGiven ( nextStep )* ) )
-            // SpecFlowLangParser.g:141:9: firstGiven ( nextStep )*
+            // SpecFlowLangParser.g:139:5: ( firstGiven ( nextStep )* -> ^( STEPS firstGiven ( nextStep )* ) )
+            // SpecFlowLangParser.g:139:9: firstGiven ( nextStep )*
             {
-            	PushFollow(FOLLOW_firstGiven_in_givens1119);
+            	PushFollow(FOLLOW_firstGiven_in_givens1117);
             	firstGiven69 = firstGiven();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_firstGiven.Add(firstGiven69.Tree);
-            	// SpecFlowLangParser.g:141:20: ( nextStep )*
+            	// SpecFlowLangParser.g:139:20: ( nextStep )*
             	do 
             	{
             	    int alt32 = 2;
@@ -2978,7 +2978,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: nextStep
             			    {
-            			    	PushFollow(FOLLOW_nextStep_in_givens1121);
+            			    	PushFollow(FOLLOW_nextStep_in_givens1119);
             			    	nextStep70 = nextStep();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -3009,15 +3009,15 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 142:9: -> ^( STEPS firstGiven ( nextStep )* )
+            	// 140:9: -> ^( STEPS firstGiven ( nextStep )* )
             	{
-            	    // SpecFlowLangParser.g:142:12: ^( STEPS firstGiven ( nextStep )* )
+            	    // SpecFlowLangParser.g:140:12: ^( STEPS firstGiven ( nextStep )* )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(STEPS, "STEPS"), root_1);
 
             	    adaptor.AddChild(root_1, stream_firstGiven.NextTree());
-            	    // SpecFlowLangParser.g:142:31: ( nextStep )*
+            	    // SpecFlowLangParser.g:140:31: ( nextStep )*
             	    while ( stream_nextStep.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_nextStep.NextTree());
@@ -3065,7 +3065,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstGiven"
-    // SpecFlowLangParser.g:144:1: firstGiven : ( WS )? T_GIVEN WS sentenceEnd -> ^( GIVEN sentenceEnd ) ;
+    // SpecFlowLangParser.g:142:1: firstGiven : ( WS )? T_GIVEN WS sentenceEnd -> ^( GIVEN sentenceEnd ) ;
     public SpecFlowLangParser.firstGiven_return firstGiven() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstGiven_return retval = new SpecFlowLangParser.firstGiven_return();
@@ -3087,10 +3087,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_sentenceEnd = new RewriteRuleSubtreeStream(adaptor,"rule sentenceEnd");
         try 
     	{
-            // SpecFlowLangParser.g:145:5: ( ( WS )? T_GIVEN WS sentenceEnd -> ^( GIVEN sentenceEnd ) )
-            // SpecFlowLangParser.g:145:9: ( WS )? T_GIVEN WS sentenceEnd
+            // SpecFlowLangParser.g:143:5: ( ( WS )? T_GIVEN WS sentenceEnd -> ^( GIVEN sentenceEnd ) )
+            // SpecFlowLangParser.g:143:9: ( WS )? T_GIVEN WS sentenceEnd
             {
-            	// SpecFlowLangParser.g:145:9: ( WS )?
+            	// SpecFlowLangParser.g:143:9: ( WS )?
             	int alt33 = 2;
             	int LA33_0 = input.LA(1);
 
@@ -3103,7 +3103,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS71=(IToken)Match(input,WS,FOLLOW_WS_in_firstGiven1159); if (state.failed) return retval; 
+            	        	WS71=(IToken)Match(input,WS,FOLLOW_WS_in_firstGiven1157); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS71);
 
 
@@ -3112,13 +3112,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_GIVEN72=(IToken)Match(input,T_GIVEN,FOLLOW_T_GIVEN_in_firstGiven1162); if (state.failed) return retval; 
+            	T_GIVEN72=(IToken)Match(input,T_GIVEN,FOLLOW_T_GIVEN_in_firstGiven1160); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_GIVEN.Add(T_GIVEN72);
 
-            	WS73=(IToken)Match(input,WS,FOLLOW_WS_in_firstGiven1164); if (state.failed) return retval; 
+            	WS73=(IToken)Match(input,WS,FOLLOW_WS_in_firstGiven1162); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WS.Add(WS73);
 
-            	PushFollow(FOLLOW_sentenceEnd_in_firstGiven1166);
+            	PushFollow(FOLLOW_sentenceEnd_in_firstGiven1164);
             	sentenceEnd74 = sentenceEnd();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -3137,9 +3137,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 146:9: -> ^( GIVEN sentenceEnd )
+            	// 144:9: -> ^( GIVEN sentenceEnd )
             	{
-            	    // SpecFlowLangParser.g:146:12: ^( GIVEN sentenceEnd )
+            	    // SpecFlowLangParser.g:144:12: ^( GIVEN sentenceEnd )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(GIVEN, "GIVEN"), root_1);
@@ -3186,7 +3186,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstWhen"
-    // SpecFlowLangParser.g:148:1: firstWhen : ( WS )? T_WHEN WS sentenceEnd -> ^( WHEN sentenceEnd ) ;
+    // SpecFlowLangParser.g:146:1: firstWhen : ( WS )? T_WHEN WS sentenceEnd -> ^( WHEN sentenceEnd ) ;
     public SpecFlowLangParser.firstWhen_return firstWhen() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstWhen_return retval = new SpecFlowLangParser.firstWhen_return();
@@ -3208,10 +3208,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_sentenceEnd = new RewriteRuleSubtreeStream(adaptor,"rule sentenceEnd");
         try 
     	{
-            // SpecFlowLangParser.g:149:5: ( ( WS )? T_WHEN WS sentenceEnd -> ^( WHEN sentenceEnd ) )
-            // SpecFlowLangParser.g:149:9: ( WS )? T_WHEN WS sentenceEnd
+            // SpecFlowLangParser.g:147:5: ( ( WS )? T_WHEN WS sentenceEnd -> ^( WHEN sentenceEnd ) )
+            // SpecFlowLangParser.g:147:9: ( WS )? T_WHEN WS sentenceEnd
             {
-            	// SpecFlowLangParser.g:149:9: ( WS )?
+            	// SpecFlowLangParser.g:147:9: ( WS )?
             	int alt34 = 2;
             	int LA34_0 = input.LA(1);
 
@@ -3224,7 +3224,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS75=(IToken)Match(input,WS,FOLLOW_WS_in_firstWhen1200); if (state.failed) return retval; 
+            	        	WS75=(IToken)Match(input,WS,FOLLOW_WS_in_firstWhen1198); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS75);
 
 
@@ -3233,13 +3233,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_WHEN76=(IToken)Match(input,T_WHEN,FOLLOW_T_WHEN_in_firstWhen1203); if (state.failed) return retval; 
+            	T_WHEN76=(IToken)Match(input,T_WHEN,FOLLOW_T_WHEN_in_firstWhen1201); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_WHEN.Add(T_WHEN76);
 
-            	WS77=(IToken)Match(input,WS,FOLLOW_WS_in_firstWhen1205); if (state.failed) return retval; 
+            	WS77=(IToken)Match(input,WS,FOLLOW_WS_in_firstWhen1203); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WS.Add(WS77);
 
-            	PushFollow(FOLLOW_sentenceEnd_in_firstWhen1207);
+            	PushFollow(FOLLOW_sentenceEnd_in_firstWhen1205);
             	sentenceEnd78 = sentenceEnd();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -3258,9 +3258,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 150:9: -> ^( WHEN sentenceEnd )
+            	// 148:9: -> ^( WHEN sentenceEnd )
             	{
-            	    // SpecFlowLangParser.g:150:12: ^( WHEN sentenceEnd )
+            	    // SpecFlowLangParser.g:148:12: ^( WHEN sentenceEnd )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(WHEN, "WHEN"), root_1);
@@ -3307,7 +3307,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "firstThen"
-    // SpecFlowLangParser.g:152:1: firstThen : ( WS )? T_THEN WS sentenceEnd -> ^( THEN sentenceEnd ) ;
+    // SpecFlowLangParser.g:150:1: firstThen : ( WS )? T_THEN WS sentenceEnd -> ^( THEN sentenceEnd ) ;
     public SpecFlowLangParser.firstThen_return firstThen() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.firstThen_return retval = new SpecFlowLangParser.firstThen_return();
@@ -3329,10 +3329,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_sentenceEnd = new RewriteRuleSubtreeStream(adaptor,"rule sentenceEnd");
         try 
     	{
-            // SpecFlowLangParser.g:153:5: ( ( WS )? T_THEN WS sentenceEnd -> ^( THEN sentenceEnd ) )
-            // SpecFlowLangParser.g:153:9: ( WS )? T_THEN WS sentenceEnd
+            // SpecFlowLangParser.g:151:5: ( ( WS )? T_THEN WS sentenceEnd -> ^( THEN sentenceEnd ) )
+            // SpecFlowLangParser.g:151:9: ( WS )? T_THEN WS sentenceEnd
             {
-            	// SpecFlowLangParser.g:153:9: ( WS )?
+            	// SpecFlowLangParser.g:151:9: ( WS )?
             	int alt35 = 2;
             	int LA35_0 = input.LA(1);
 
@@ -3345,7 +3345,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS79=(IToken)Match(input,WS,FOLLOW_WS_in_firstThen1241); if (state.failed) return retval; 
+            	        	WS79=(IToken)Match(input,WS,FOLLOW_WS_in_firstThen1239); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS79);
 
 
@@ -3354,13 +3354,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	T_THEN80=(IToken)Match(input,T_THEN,FOLLOW_T_THEN_in_firstThen1244); if (state.failed) return retval; 
+            	T_THEN80=(IToken)Match(input,T_THEN,FOLLOW_T_THEN_in_firstThen1242); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_T_THEN.Add(T_THEN80);
 
-            	WS81=(IToken)Match(input,WS,FOLLOW_WS_in_firstThen1246); if (state.failed) return retval; 
+            	WS81=(IToken)Match(input,WS,FOLLOW_WS_in_firstThen1244); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WS.Add(WS81);
 
-            	PushFollow(FOLLOW_sentenceEnd_in_firstThen1248);
+            	PushFollow(FOLLOW_sentenceEnd_in_firstThen1246);
             	sentenceEnd82 = sentenceEnd();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -3379,9 +3379,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 154:9: -> ^( THEN sentenceEnd )
+            	// 152:9: -> ^( THEN sentenceEnd )
             	{
-            	    // SpecFlowLangParser.g:154:12: ^( THEN sentenceEnd )
+            	    // SpecFlowLangParser.g:152:12: ^( THEN sentenceEnd )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(THEN, "THEN"), root_1);
@@ -3428,7 +3428,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "sentenceEnd"
-    // SpecFlowLangParser.g:157:1: sentenceEnd : text newlineWithSpaces ( multilineText )? ( table )? -> text ( multilineText )? ( table )? ;
+    // SpecFlowLangParser.g:155:1: sentenceEnd : text newlineWithSpaces ( multilineText )? ( table )? -> text ( multilineText )? ( table )? ;
     public SpecFlowLangParser.sentenceEnd_return sentenceEnd() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.sentenceEnd_return retval = new SpecFlowLangParser.sentenceEnd_return();
@@ -3451,20 +3451,20 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:158:5: ( text newlineWithSpaces ( multilineText )? ( table )? -> text ( multilineText )? ( table )? )
-            // SpecFlowLangParser.g:158:9: text newlineWithSpaces ( multilineText )? ( table )?
+            // SpecFlowLangParser.g:156:5: ( text newlineWithSpaces ( multilineText )? ( table )? -> text ( multilineText )? ( table )? )
+            // SpecFlowLangParser.g:156:9: text newlineWithSpaces ( multilineText )? ( table )?
             {
-            	PushFollow(FOLLOW_text_in_sentenceEnd1283);
+            	PushFollow(FOLLOW_text_in_sentenceEnd1281);
             	text83 = text();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_text.Add(text83.Tree);
-            	PushFollow(FOLLOW_newlineWithSpaces_in_sentenceEnd1285);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_sentenceEnd1283);
             	newlineWithSpaces84 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_newlineWithSpaces.Add(newlineWithSpaces84.Tree);
-            	// SpecFlowLangParser.g:158:32: ( multilineText )?
+            	// SpecFlowLangParser.g:156:32: ( multilineText )?
             	int alt36 = 2;
             	int LA36_0 = input.LA(1);
 
@@ -3486,7 +3486,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: multilineText
             	        {
-            	        	PushFollow(FOLLOW_multilineText_in_sentenceEnd1287);
+            	        	PushFollow(FOLLOW_multilineText_in_sentenceEnd1285);
             	        	multilineText85 = multilineText();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -3497,7 +3497,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:158:47: ( table )?
+            	// SpecFlowLangParser.g:156:47: ( table )?
             	int alt37 = 2;
             	int LA37_0 = input.LA(1);
 
@@ -3519,7 +3519,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: table
             	        {
-            	        	PushFollow(FOLLOW_table_in_sentenceEnd1290);
+            	        	PushFollow(FOLLOW_table_in_sentenceEnd1288);
             	        	table86 = table();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -3533,7 +3533,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          table, multilineText, text
+            	// elements:          text, table, multilineText
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -3544,17 +3544,17 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 159:9: -> text ( multilineText )? ( table )?
+            	// 157:9: -> text ( multilineText )? ( table )?
             	{
             	    adaptor.AddChild(root_0, stream_text.NextTree());
-            	    // SpecFlowLangParser.g:159:17: ( multilineText )?
+            	    // SpecFlowLangParser.g:157:17: ( multilineText )?
             	    if ( stream_multilineText.HasNext() )
             	    {
             	        adaptor.AddChild(root_0, stream_multilineText.NextTree());
 
             	    }
             	    stream_multilineText.Reset();
-            	    // SpecFlowLangParser.g:159:32: ( table )?
+            	    // SpecFlowLangParser.g:157:32: ( table )?
             	    if ( stream_table.HasNext() )
             	    {
             	        adaptor.AddChild(root_0, stream_table.NextTree());
@@ -3599,7 +3599,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "multilineText"
-    // SpecFlowLangParser.g:162:1: multilineText : indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces -> ^( MULTILINETEXT ( multilineTextLine )* indent ) ;
+    // SpecFlowLangParser.g:160:1: multilineText : indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces -> ^( MULTILINETEXT ( multilineTextLine )* indent ) ;
     public SpecFlowLangParser.multilineText_return multilineText() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.multilineText_return retval = new SpecFlowLangParser.multilineText_return();
@@ -3634,18 +3634,18 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:163:5: ( indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces -> ^( MULTILINETEXT ( multilineTextLine )* indent ) )
-            // SpecFlowLangParser.g:163:9: indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces
+            // SpecFlowLangParser.g:161:5: ( indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces -> ^( MULTILINETEXT ( multilineTextLine )* indent ) )
+            // SpecFlowLangParser.g:161:9: indent MLTEXT ( WS )? NEWLINE ( multilineTextLine )* ( WS )? MLTEXT ( WS )? newlineWithSpaces
             {
-            	PushFollow(FOLLOW_indent_in_multilineText1328);
+            	PushFollow(FOLLOW_indent_in_multilineText1326);
             	indent87 = indent();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_indent.Add(indent87.Tree);
-            	MLTEXT88=(IToken)Match(input,MLTEXT,FOLLOW_MLTEXT_in_multilineText1330); if (state.failed) return retval; 
+            	MLTEXT88=(IToken)Match(input,MLTEXT,FOLLOW_MLTEXT_in_multilineText1328); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_MLTEXT.Add(MLTEXT88);
 
-            	// SpecFlowLangParser.g:163:23: ( WS )?
+            	// SpecFlowLangParser.g:161:23: ( WS )?
             	int alt38 = 2;
             	int LA38_0 = input.LA(1);
 
@@ -3658,7 +3658,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS89=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1332); if (state.failed) return retval; 
+            	        	WS89=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1330); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS89);
 
 
@@ -3667,10 +3667,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	NEWLINE90=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_multilineText1335); if (state.failed) return retval; 
+            	NEWLINE90=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_multilineText1333); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_NEWLINE.Add(NEWLINE90);
 
-            	// SpecFlowLangParser.g:164:9: ( multilineTextLine )*
+            	// SpecFlowLangParser.g:162:9: ( multilineTextLine )*
             	do 
             	{
             	    int alt39 = 2;
@@ -3698,7 +3698,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: multilineTextLine
             			    {
-            			    	PushFollow(FOLLOW_multilineTextLine_in_multilineText1345);
+            			    	PushFollow(FOLLOW_multilineTextLine_in_multilineText1343);
             			    	multilineTextLine91 = multilineTextLine();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -3715,7 +3715,7 @@ public partial class SpecFlowLangParser : Parser
             	loop39:
             		;	// Stops C# compiler whining that label 'loop39' has no statements
 
-            	// SpecFlowLangParser.g:165:9: ( WS )?
+            	// SpecFlowLangParser.g:163:9: ( WS )?
             	int alt40 = 2;
             	int LA40_0 = input.LA(1);
 
@@ -3728,7 +3728,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS92=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1356); if (state.failed) return retval; 
+            	        	WS92=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1354); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS92);
 
 
@@ -3737,10 +3737,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	MLTEXT93=(IToken)Match(input,MLTEXT,FOLLOW_MLTEXT_in_multilineText1359); if (state.failed) return retval; 
+            	MLTEXT93=(IToken)Match(input,MLTEXT,FOLLOW_MLTEXT_in_multilineText1357); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_MLTEXT.Add(MLTEXT93);
 
-            	// SpecFlowLangParser.g:165:20: ( WS )?
+            	// SpecFlowLangParser.g:163:20: ( WS )?
             	int alt41 = 2;
             	int LA41_0 = input.LA(1);
 
@@ -3758,7 +3758,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS94=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1361); if (state.failed) return retval; 
+            	        	WS94=(IToken)Match(input,WS,FOLLOW_WS_in_multilineText1359); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS94);
 
 
@@ -3767,7 +3767,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_newlineWithSpaces_in_multilineText1364);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_multilineText1362);
             	newlineWithSpaces95 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -3775,7 +3775,7 @@ public partial class SpecFlowLangParser : Parser
 
 
             	// AST REWRITE
-            	// elements:          indent, multilineTextLine
+            	// elements:          multilineTextLine, indent
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -3786,14 +3786,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 166:9: -> ^( MULTILINETEXT ( multilineTextLine )* indent )
+            	// 164:9: -> ^( MULTILINETEXT ( multilineTextLine )* indent )
             	{
-            	    // SpecFlowLangParser.g:166:12: ^( MULTILINETEXT ( multilineTextLine )* indent )
+            	    // SpecFlowLangParser.g:164:12: ^( MULTILINETEXT ( multilineTextLine )* indent )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(MULTILINETEXT, "MULTILINETEXT"), root_1);
 
-            	    // SpecFlowLangParser.g:166:28: ( multilineTextLine )*
+            	    // SpecFlowLangParser.g:164:28: ( multilineTextLine )*
             	    while ( stream_multilineTextLine.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_multilineTextLine.NextTree());
@@ -3842,7 +3842,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "indent"
-    // SpecFlowLangParser.g:169:1: indent : ( WS )? -> ^( INDENT ( WS )? ) ;
+    // SpecFlowLangParser.g:167:1: indent : ( WS )? -> ^( INDENT ( WS )? ) ;
     public SpecFlowLangParser.indent_return indent() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.indent_return retval = new SpecFlowLangParser.indent_return();
@@ -3857,10 +3857,10 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:170:5: ( ( WS )? -> ^( INDENT ( WS )? ) )
-            // SpecFlowLangParser.g:170:9: ( WS )?
+            // SpecFlowLangParser.g:168:5: ( ( WS )? -> ^( INDENT ( WS )? ) )
+            // SpecFlowLangParser.g:168:9: ( WS )?
             {
-            	// SpecFlowLangParser.g:170:9: ( WS )?
+            	// SpecFlowLangParser.g:168:9: ( WS )?
             	int alt42 = 2;
             	int LA42_0 = input.LA(1);
 
@@ -3873,7 +3873,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS96=(IToken)Match(input,WS,FOLLOW_WS_in_indent1402); if (state.failed) return retval; 
+            	        	WS96=(IToken)Match(input,WS,FOLLOW_WS_in_indent1400); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS96);
 
 
@@ -3896,14 +3896,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 170:13: -> ^( INDENT ( WS )? )
+            	// 168:13: -> ^( INDENT ( WS )? )
             	{
-            	    // SpecFlowLangParser.g:170:16: ^( INDENT ( WS )? )
+            	    // SpecFlowLangParser.g:168:16: ^( INDENT ( WS )? )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(INDENT, "INDENT"), root_1);
 
-            	    // SpecFlowLangParser.g:170:25: ( WS )?
+            	    // SpecFlowLangParser.g:168:25: ( WS )?
             	    if ( stream_WS.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_WS.NextNode());
@@ -3951,7 +3951,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "multilineTextLine"
-    // SpecFlowLangParser.g:173:1: multilineTextLine : ( WS )? ( text )? NEWLINE -> ^( LINE ( WS )? ( text )? NEWLINE ) ;
+    // SpecFlowLangParser.g:171:1: multilineTextLine : ( WS )? ( text )? NEWLINE -> ^( LINE ( WS )? ( text )? NEWLINE ) ;
     public SpecFlowLangParser.multilineTextLine_return multilineTextLine() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.multilineTextLine_return retval = new SpecFlowLangParser.multilineTextLine_return();
@@ -3971,10 +3971,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_text = new RewriteRuleSubtreeStream(adaptor,"rule text");
         try 
     	{
-            // SpecFlowLangParser.g:174:5: ( ( WS )? ( text )? NEWLINE -> ^( LINE ( WS )? ( text )? NEWLINE ) )
-            // SpecFlowLangParser.g:174:9: ( WS )? ( text )? NEWLINE
+            // SpecFlowLangParser.g:172:5: ( ( WS )? ( text )? NEWLINE -> ^( LINE ( WS )? ( text )? NEWLINE ) )
+            // SpecFlowLangParser.g:172:9: ( WS )? ( text )? NEWLINE
             {
-            	// SpecFlowLangParser.g:174:9: ( WS )?
+            	// SpecFlowLangParser.g:172:9: ( WS )?
             	int alt43 = 2;
             	int LA43_0 = input.LA(1);
 
@@ -3987,7 +3987,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS97=(IToken)Match(input,WS,FOLLOW_WS_in_multilineTextLine1431); if (state.failed) return retval; 
+            	        	WS97=(IToken)Match(input,WS,FOLLOW_WS_in_multilineTextLine1429); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS97);
 
 
@@ -3996,7 +3996,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	// SpecFlowLangParser.g:174:13: ( text )?
+            	// SpecFlowLangParser.g:172:13: ( text )?
             	int alt44 = 2;
             	int LA44_0 = input.LA(1);
 
@@ -4009,7 +4009,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: text
             	        {
-            	        	PushFollow(FOLLOW_text_in_multilineTextLine1434);
+            	        	PushFollow(FOLLOW_text_in_multilineTextLine1432);
             	        	text98 = text();
             	        	state.followingStackPointer--;
             	        	if (state.failed) return retval;
@@ -4020,13 +4020,13 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	NEWLINE99=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_multilineTextLine1437); if (state.failed) return retval; 
+            	NEWLINE99=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_multilineTextLine1435); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_NEWLINE.Add(NEWLINE99);
 
 
 
             	// AST REWRITE
-            	// elements:          NEWLINE, text, WS
+            	// elements:          WS, text, NEWLINE
             	// token labels:      
             	// rule labels:       retval
             	// token list labels: 
@@ -4037,21 +4037,21 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 175:9: -> ^( LINE ( WS )? ( text )? NEWLINE )
+            	// 173:9: -> ^( LINE ( WS )? ( text )? NEWLINE )
             	{
-            	    // SpecFlowLangParser.g:175:12: ^( LINE ( WS )? ( text )? NEWLINE )
+            	    // SpecFlowLangParser.g:173:12: ^( LINE ( WS )? ( text )? NEWLINE )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(LINE, "LINE"), root_1);
 
-            	    // SpecFlowLangParser.g:175:19: ( WS )?
+            	    // SpecFlowLangParser.g:173:19: ( WS )?
             	    if ( stream_WS.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_WS.NextNode());
 
             	    }
             	    stream_WS.Reset();
-            	    // SpecFlowLangParser.g:175:23: ( text )?
+            	    // SpecFlowLangParser.g:173:23: ( text )?
             	    if ( stream_text.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_text.NextTree());
@@ -4100,7 +4100,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "table"
-    // SpecFlowLangParser.g:178:1: table : tableRow ( tableRow )+ -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) ) ;
+    // SpecFlowLangParser.g:176:1: table : tableRow ( tableRow )+ -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) ) ;
     public SpecFlowLangParser.table_return table() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.table_return retval = new SpecFlowLangParser.table_return();
@@ -4116,15 +4116,15 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_tableRow = new RewriteRuleSubtreeStream(adaptor,"rule tableRow");
         try 
     	{
-            // SpecFlowLangParser.g:179:5: ( tableRow ( tableRow )+ -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) ) )
-            // SpecFlowLangParser.g:179:9: tableRow ( tableRow )+
+            // SpecFlowLangParser.g:177:5: ( tableRow ( tableRow )+ -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) ) )
+            // SpecFlowLangParser.g:177:9: tableRow ( tableRow )+
             {
-            	PushFollow(FOLLOW_tableRow_in_table1478);
+            	PushFollow(FOLLOW_tableRow_in_table1476);
             	tableRow100 = tableRow();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_tableRow.Add(tableRow100.Tree);
-            	// SpecFlowLangParser.g:179:18: ( tableRow )+
+            	// SpecFlowLangParser.g:177:18: ( tableRow )+
             	int cnt45 = 0;
             	do 
             	{
@@ -4153,7 +4153,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: tableRow
             			    {
-            			    	PushFollow(FOLLOW_tableRow_in_table1480);
+            			    	PushFollow(FOLLOW_tableRow_in_table1478);
             			    	tableRow101 = tableRow();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -4189,14 +4189,14 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 180:9: -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) )
+            	// 178:9: -> ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) )
             	{
-            	    // SpecFlowLangParser.g:180:12: ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) )
+            	    // SpecFlowLangParser.g:178:12: ^( TABLE ^( HEADER tableRow ) ^( BODY ( tableRow )+ ) )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TABLE, "TABLE"), root_1);
 
-            	    // SpecFlowLangParser.g:180:20: ^( HEADER tableRow )
+            	    // SpecFlowLangParser.g:178:20: ^( HEADER tableRow )
             	    {
             	    object root_2 = (object)adaptor.GetNilNode();
             	    root_2 = (object)adaptor.BecomeRoot((object)adaptor.Create(HEADER, "HEADER"), root_2);
@@ -4205,7 +4205,7 @@ public partial class SpecFlowLangParser : Parser
 
             	    adaptor.AddChild(root_1, root_2);
             	    }
-            	    // SpecFlowLangParser.g:180:39: ^( BODY ( tableRow )+ )
+            	    // SpecFlowLangParser.g:178:39: ^( BODY ( tableRow )+ )
             	    {
             	    object root_2 = (object)adaptor.GetNilNode();
             	    root_2 = (object)adaptor.BecomeRoot((object)adaptor.Create(BODY, "BODY"), root_2);
@@ -4263,7 +4263,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "tableRow"
-    // SpecFlowLangParser.g:183:1: tableRow : ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces -> ^( ROW ( tableCell )+ ) ;
+    // SpecFlowLangParser.g:181:1: tableRow : ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces -> ^( ROW ( tableCell )+ ) ;
     public SpecFlowLangParser.tableRow_return tableRow() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.tableRow_return retval = new SpecFlowLangParser.tableRow_return();
@@ -4288,10 +4288,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_newlineWithSpaces = new RewriteRuleSubtreeStream(adaptor,"rule newlineWithSpaces");
         try 
     	{
-            // SpecFlowLangParser.g:184:5: ( ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces -> ^( ROW ( tableCell )+ ) )
-            // SpecFlowLangParser.g:184:9: ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces
+            // SpecFlowLangParser.g:182:5: ( ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces -> ^( ROW ( tableCell )+ ) )
+            // SpecFlowLangParser.g:182:9: ( WS )? CELLSEP ( tableCell )+ ( WS )? newlineWithSpaces
             {
-            	// SpecFlowLangParser.g:184:9: ( WS )?
+            	// SpecFlowLangParser.g:182:9: ( WS )?
             	int alt46 = 2;
             	int LA46_0 = input.LA(1);
 
@@ -4304,7 +4304,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS102=(IToken)Match(input,WS,FOLLOW_WS_in_tableRow1527); if (state.failed) return retval; 
+            	        	WS102=(IToken)Match(input,WS,FOLLOW_WS_in_tableRow1525); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS102);
 
 
@@ -4313,10 +4313,10 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	CELLSEP103=(IToken)Match(input,CELLSEP,FOLLOW_CELLSEP_in_tableRow1530); if (state.failed) return retval; 
+            	CELLSEP103=(IToken)Match(input,CELLSEP,FOLLOW_CELLSEP_in_tableRow1528); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_CELLSEP.Add(CELLSEP103);
 
-            	// SpecFlowLangParser.g:184:21: ( tableCell )+
+            	// SpecFlowLangParser.g:182:21: ( tableCell )+
             	int cnt47 = 0;
             	do 
             	{
@@ -4345,7 +4345,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: tableCell
             			    {
-            			    	PushFollow(FOLLOW_tableCell_in_tableRow1532);
+            			    	PushFollow(FOLLOW_tableCell_in_tableRow1530);
             			    	tableCell104 = tableCell();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -4367,7 +4367,7 @@ public partial class SpecFlowLangParser : Parser
             	loop47:
             		;	// Stops C# compiler whinging that label 'loop47' has no statements
 
-            	// SpecFlowLangParser.g:184:32: ( WS )?
+            	// SpecFlowLangParser.g:182:32: ( WS )?
             	int alt48 = 2;
             	int LA48_0 = input.LA(1);
 
@@ -4385,7 +4385,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS105=(IToken)Match(input,WS,FOLLOW_WS_in_tableRow1535); if (state.failed) return retval; 
+            	        	WS105=(IToken)Match(input,WS,FOLLOW_WS_in_tableRow1533); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS105);
 
 
@@ -4394,7 +4394,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_newlineWithSpaces_in_tableRow1538);
+            	PushFollow(FOLLOW_newlineWithSpaces_in_tableRow1536);
             	newlineWithSpaces106 = newlineWithSpaces();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
@@ -4413,9 +4413,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 185:9: -> ^( ROW ( tableCell )+ )
+            	// 183:9: -> ^( ROW ( tableCell )+ )
             	{
-            	    // SpecFlowLangParser.g:185:12: ^( ROW ( tableCell )+ )
+            	    // SpecFlowLangParser.g:183:12: ^( ROW ( tableCell )+ )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(ROW, "ROW"), root_1);
@@ -4470,7 +4470,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "tableCell"
-    // SpecFlowLangParser.g:188:1: tableCell : ( WS )? text ( WS )? CELLSEP -> ^( CELL text ) ;
+    // SpecFlowLangParser.g:186:1: tableCell : ( WS )? text ( WS )? CELLSEP -> ^( CELL text ) ;
     public SpecFlowLangParser.tableCell_return tableCell() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.tableCell_return retval = new SpecFlowLangParser.tableCell_return();
@@ -4492,10 +4492,10 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_text = new RewriteRuleSubtreeStream(adaptor,"rule text");
         try 
     	{
-            // SpecFlowLangParser.g:189:5: ( ( WS )? text ( WS )? CELLSEP -> ^( CELL text ) )
-            // SpecFlowLangParser.g:189:9: ( WS )? text ( WS )? CELLSEP
+            // SpecFlowLangParser.g:187:5: ( ( WS )? text ( WS )? CELLSEP -> ^( CELL text ) )
+            // SpecFlowLangParser.g:187:9: ( WS )? text ( WS )? CELLSEP
             {
-            	// SpecFlowLangParser.g:189:9: ( WS )?
+            	// SpecFlowLangParser.g:187:9: ( WS )?
             	int alt49 = 2;
             	int LA49_0 = input.LA(1);
 
@@ -4508,7 +4508,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS107=(IToken)Match(input,WS,FOLLOW_WS_in_tableCell1574); if (state.failed) return retval; 
+            	        	WS107=(IToken)Match(input,WS,FOLLOW_WS_in_tableCell1572); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS107);
 
 
@@ -4517,12 +4517,12 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	PushFollow(FOLLOW_text_in_tableCell1577);
+            	PushFollow(FOLLOW_text_in_tableCell1575);
             	text108 = text();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_text.Add(text108.Tree);
-            	// SpecFlowLangParser.g:189:18: ( WS )?
+            	// SpecFlowLangParser.g:187:18: ( WS )?
             	int alt50 = 2;
             	int LA50_0 = input.LA(1);
 
@@ -4535,7 +4535,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS109=(IToken)Match(input,WS,FOLLOW_WS_in_tableCell1579); if (state.failed) return retval; 
+            	        	WS109=(IToken)Match(input,WS,FOLLOW_WS_in_tableCell1577); if (state.failed) return retval; 
             	        	if ( (state.backtracking==0) ) stream_WS.Add(WS109);
 
 
@@ -4544,7 +4544,7 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	CELLSEP110=(IToken)Match(input,CELLSEP,FOLLOW_CELLSEP_in_tableCell1582); if (state.failed) return retval; 
+            	CELLSEP110=(IToken)Match(input,CELLSEP,FOLLOW_CELLSEP_in_tableCell1580); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_CELLSEP.Add(CELLSEP110);
 
 
@@ -4561,9 +4561,9 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 190:9: -> ^( CELL text )
+            	// 188:9: -> ^( CELL text )
             	{
-            	    // SpecFlowLangParser.g:190:12: ^( CELL text )
+            	    // SpecFlowLangParser.g:188:12: ^( CELL text )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(CELL, "CELL"), root_1);
@@ -4610,7 +4610,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "descriptionLineText"
-    // SpecFlowLangParser.g:193:1: descriptionLineText : WORDCHAR ( textRest )* -> ^( TEXT WORDCHAR ( textRest )* ) ;
+    // SpecFlowLangParser.g:191:1: descriptionLineText : WORDCHAR ( textRest )* -> ^( TEXT WORDCHAR ( textRest )* ) ;
     public SpecFlowLangParser.descriptionLineText_return descriptionLineText() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.descriptionLineText_return retval = new SpecFlowLangParser.descriptionLineText_return();
@@ -4627,13 +4627,13 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_textRest = new RewriteRuleSubtreeStream(adaptor,"rule textRest");
         try 
     	{
-            // SpecFlowLangParser.g:194:5: ( WORDCHAR ( textRest )* -> ^( TEXT WORDCHAR ( textRest )* ) )
-            // SpecFlowLangParser.g:194:9: WORDCHAR ( textRest )*
+            // SpecFlowLangParser.g:192:5: ( WORDCHAR ( textRest )* -> ^( TEXT WORDCHAR ( textRest )* ) )
+            // SpecFlowLangParser.g:192:9: WORDCHAR ( textRest )*
             {
-            	WORDCHAR111=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_descriptionLineText1617); if (state.failed) return retval; 
+            	WORDCHAR111=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_descriptionLineText1615); if (state.failed) return retval; 
             	if ( (state.backtracking==0) ) stream_WORDCHAR.Add(WORDCHAR111);
 
-            	// SpecFlowLangParser.g:194:18: ( textRest )*
+            	// SpecFlowLangParser.g:192:18: ( textRest )*
             	do 
             	{
             	    int alt51 = 2;
@@ -4661,7 +4661,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: textRest
             			    {
-            			    	PushFollow(FOLLOW_textRest_in_descriptionLineText1619);
+            			    	PushFollow(FOLLOW_textRest_in_descriptionLineText1617);
             			    	textRest112 = textRest();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -4692,15 +4692,15 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 195:9: -> ^( TEXT WORDCHAR ( textRest )* )
+            	// 193:9: -> ^( TEXT WORDCHAR ( textRest )* )
             	{
-            	    // SpecFlowLangParser.g:195:12: ^( TEXT WORDCHAR ( textRest )* )
+            	    // SpecFlowLangParser.g:193:12: ^( TEXT WORDCHAR ( textRest )* )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TEXT, "TEXT"), root_1);
 
             	    adaptor.AddChild(root_1, stream_WORDCHAR.NextNode());
-            	    // SpecFlowLangParser.g:195:28: ( textRest )*
+            	    // SpecFlowLangParser.g:193:28: ( textRest )*
             	    while ( stream_textRest.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_textRest.NextTree());
@@ -4748,7 +4748,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "text"
-    // SpecFlowLangParser.g:198:1: text : wordchar ( textRest )* -> ^( TEXT wordchar ( textRest )* ) ;
+    // SpecFlowLangParser.g:196:1: text : wordchar ( textRest )* -> ^( TEXT wordchar ( textRest )* ) ;
     public SpecFlowLangParser.text_return text() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.text_return retval = new SpecFlowLangParser.text_return();
@@ -4765,15 +4765,15 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_wordchar = new RewriteRuleSubtreeStream(adaptor,"rule wordchar");
         try 
     	{
-            // SpecFlowLangParser.g:199:5: ( wordchar ( textRest )* -> ^( TEXT wordchar ( textRest )* ) )
-            // SpecFlowLangParser.g:199:9: wordchar ( textRest )*
+            // SpecFlowLangParser.g:197:5: ( wordchar ( textRest )* -> ^( TEXT wordchar ( textRest )* ) )
+            // SpecFlowLangParser.g:197:9: wordchar ( textRest )*
             {
-            	PushFollow(FOLLOW_wordchar_in_text1658);
+            	PushFollow(FOLLOW_wordchar_in_text1656);
             	wordchar113 = wordchar();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_wordchar.Add(wordchar113.Tree);
-            	// SpecFlowLangParser.g:199:18: ( textRest )*
+            	// SpecFlowLangParser.g:197:18: ( textRest )*
             	do 
             	{
             	    int alt52 = 2;
@@ -4801,7 +4801,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: textRest
             			    {
-            			    	PushFollow(FOLLOW_textRest_in_text1660);
+            			    	PushFollow(FOLLOW_textRest_in_text1658);
             			    	textRest114 = textRest();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -4832,15 +4832,15 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 200:9: -> ^( TEXT wordchar ( textRest )* )
+            	// 198:9: -> ^( TEXT wordchar ( textRest )* )
             	{
-            	    // SpecFlowLangParser.g:200:12: ^( TEXT wordchar ( textRest )* )
+            	    // SpecFlowLangParser.g:198:12: ^( TEXT wordchar ( textRest )* )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TEXT, "TEXT"), root_1);
 
             	    adaptor.AddChild(root_1, stream_wordchar.NextTree());
-            	    // SpecFlowLangParser.g:200:28: ( textRest )*
+            	    // SpecFlowLangParser.g:198:28: ( textRest )*
             	    while ( stream_textRest.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_textRest.NextTree());
@@ -4888,7 +4888,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "textRest"
-    // SpecFlowLangParser.g:202:1: textRest : ( WS textRest | wordchar );
+    // SpecFlowLangParser.g:200:1: textRest : ( WS textRest | wordchar );
     public SpecFlowLangParser.textRest_return textRest() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.textRest_return retval = new SpecFlowLangParser.textRest_return();
@@ -4906,7 +4906,7 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:203:5: ( WS textRest | wordchar )
+            // SpecFlowLangParser.g:201:5: ( WS textRest | wordchar )
             int alt53 = 2;
             int LA53_0 = input.LA(1);
 
@@ -4929,16 +4929,16 @@ public partial class SpecFlowLangParser : Parser
             switch (alt53) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:203:9: WS textRest
+                    // SpecFlowLangParser.g:201:9: WS textRest
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	WS115=(IToken)Match(input,WS,FOLLOW_WS_in_textRest1698); if (state.failed) return retval;
+                    	WS115=(IToken)Match(input,WS,FOLLOW_WS_in_textRest1696); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{WS115_tree = (object)adaptor.Create(WS115);
                     		adaptor.AddChild(root_0, WS115_tree);
                     	}
-                    	PushFollow(FOLLOW_textRest_in_textRest1700);
+                    	PushFollow(FOLLOW_textRest_in_textRest1698);
                     	textRest116 = textRest();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -4947,11 +4947,11 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:204:9: wordchar
+                    // SpecFlowLangParser.g:202:9: wordchar
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_wordchar_in_textRest1710);
+                    	PushFollow(FOLLOW_wordchar_in_textRest1708);
                     	wordchar117 = wordchar();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -4993,7 +4993,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "title"
-    // SpecFlowLangParser.g:207:1: title : wordchar ( titleRest )* -> ^( TEXT wordchar ( titleRest )* ) ;
+    // SpecFlowLangParser.g:205:1: title : wordchar ( titleRest )* -> ^( TEXT wordchar ( titleRest )* ) ;
     public SpecFlowLangParser.title_return title() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.title_return retval = new SpecFlowLangParser.title_return();
@@ -5010,15 +5010,15 @@ public partial class SpecFlowLangParser : Parser
         RewriteRuleSubtreeStream stream_titleRest = new RewriteRuleSubtreeStream(adaptor,"rule titleRest");
         try 
     	{
-            // SpecFlowLangParser.g:208:5: ( wordchar ( titleRest )* -> ^( TEXT wordchar ( titleRest )* ) )
-            // SpecFlowLangParser.g:208:9: wordchar ( titleRest )*
+            // SpecFlowLangParser.g:206:5: ( wordchar ( titleRest )* -> ^( TEXT wordchar ( titleRest )* ) )
+            // SpecFlowLangParser.g:206:9: wordchar ( titleRest )*
             {
-            	PushFollow(FOLLOW_wordchar_in_title1729);
+            	PushFollow(FOLLOW_wordchar_in_title1727);
             	wordchar118 = wordchar();
             	state.followingStackPointer--;
             	if (state.failed) return retval;
             	if ( (state.backtracking==0) ) stream_wordchar.Add(wordchar118.Tree);
-            	// SpecFlowLangParser.g:208:18: ( titleRest )*
+            	// SpecFlowLangParser.g:206:18: ( titleRest )*
             	do 
             	{
             	    int alt54 = 2;
@@ -5028,7 +5028,7 @@ public partial class SpecFlowLangParser : Parser
             			case 1 :
             			    // SpecFlowLangParser.g:0:0: titleRest
             			    {
-            			    	PushFollow(FOLLOW_titleRest_in_title1731);
+            			    	PushFollow(FOLLOW_titleRest_in_title1729);
             			    	titleRest119 = titleRest();
             			    	state.followingStackPointer--;
             			    	if (state.failed) return retval;
@@ -5059,15 +5059,15 @@ public partial class SpecFlowLangParser : Parser
             	RewriteRuleSubtreeStream stream_retval = new RewriteRuleSubtreeStream(adaptor, "rule retval", retval!=null ? retval.Tree : null);
 
             	root_0 = (object)adaptor.GetNilNode();
-            	// 209:9: -> ^( TEXT wordchar ( titleRest )* )
+            	// 207:9: -> ^( TEXT wordchar ( titleRest )* )
             	{
-            	    // SpecFlowLangParser.g:209:12: ^( TEXT wordchar ( titleRest )* )
+            	    // SpecFlowLangParser.g:207:12: ^( TEXT wordchar ( titleRest )* )
             	    {
             	    object root_1 = (object)adaptor.GetNilNode();
             	    root_1 = (object)adaptor.BecomeRoot((object)adaptor.Create(TEXT, "TEXT"), root_1);
 
             	    adaptor.AddChild(root_1, stream_wordchar.NextTree());
-            	    // SpecFlowLangParser.g:209:28: ( titleRest )*
+            	    // SpecFlowLangParser.g:207:28: ( titleRest )*
             	    while ( stream_titleRest.HasNext() )
             	    {
             	        adaptor.AddChild(root_1, stream_titleRest.NextTree());
@@ -5115,7 +5115,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "titleRest"
-    // SpecFlowLangParser.g:212:1: titleRest : ( WS titleRest | NEWLINE titleRest | wordchar );
+    // SpecFlowLangParser.g:210:1: titleRest : ( WS titleRest | NEWLINE titleRest | wordchar );
     public SpecFlowLangParser.titleRest_return titleRest() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.titleRest_return retval = new SpecFlowLangParser.titleRest_return();
@@ -5137,7 +5137,7 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:213:5: ( WS titleRest | NEWLINE titleRest | wordchar )
+            // SpecFlowLangParser.g:211:5: ( WS titleRest | NEWLINE titleRest | wordchar )
             int alt55 = 3;
             switch ( input.LA(1) ) 
             {
@@ -5168,16 +5168,16 @@ public partial class SpecFlowLangParser : Parser
             switch (alt55) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:213:9: WS titleRest
+                    // SpecFlowLangParser.g:211:9: WS titleRest
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	WS120=(IToken)Match(input,WS,FOLLOW_WS_in_titleRest1770); if (state.failed) return retval;
+                    	WS120=(IToken)Match(input,WS,FOLLOW_WS_in_titleRest1768); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{WS120_tree = (object)adaptor.Create(WS120);
                     		adaptor.AddChild(root_0, WS120_tree);
                     	}
-                    	PushFollow(FOLLOW_titleRest_in_titleRest1772);
+                    	PushFollow(FOLLOW_titleRest_in_titleRest1770);
                     	titleRest121 = titleRest();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -5186,16 +5186,16 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:214:9: NEWLINE titleRest
+                    // SpecFlowLangParser.g:212:9: NEWLINE titleRest
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NEWLINE122=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_titleRest1782); if (state.failed) return retval;
+                    	NEWLINE122=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_titleRest1780); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{NEWLINE122_tree = (object)adaptor.Create(NEWLINE122);
                     		adaptor.AddChild(root_0, NEWLINE122_tree);
                     	}
-                    	PushFollow(FOLLOW_titleRest_in_titleRest1784);
+                    	PushFollow(FOLLOW_titleRest_in_titleRest1782);
                     	titleRest123 = titleRest();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -5204,11 +5204,11 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 3 :
-                    // SpecFlowLangParser.g:215:9: wordchar
+                    // SpecFlowLangParser.g:213:9: wordchar
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_wordchar_in_titleRest1794);
+                    	PushFollow(FOLLOW_wordchar_in_titleRest1792);
                     	wordchar124 = wordchar();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -5250,7 +5250,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "titleRestLine"
-    // SpecFlowLangParser.g:218:1: titleRestLine : ( NEWLINE titleRestLine | WS titleRestLine | WORDCHAR );
+    // SpecFlowLangParser.g:216:1: titleRestLine : ( NEWLINE titleRestLine | WS titleRestLine | WORDCHAR );
     public SpecFlowLangParser.titleRestLine_return titleRestLine() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.titleRestLine_return retval = new SpecFlowLangParser.titleRestLine_return();
@@ -5272,7 +5272,7 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:219:5: ( NEWLINE titleRestLine | WS titleRestLine | WORDCHAR )
+            // SpecFlowLangParser.g:217:5: ( NEWLINE titleRestLine | WS titleRestLine | WORDCHAR )
             int alt56 = 3;
             switch ( input.LA(1) ) 
             {
@@ -5302,16 +5302,16 @@ public partial class SpecFlowLangParser : Parser
             switch (alt56) 
             {
                 case 1 :
-                    // SpecFlowLangParser.g:219:9: NEWLINE titleRestLine
+                    // SpecFlowLangParser.g:217:9: NEWLINE titleRestLine
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NEWLINE125=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_titleRestLine1813); if (state.failed) return retval;
+                    	NEWLINE125=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_titleRestLine1811); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{NEWLINE125_tree = (object)adaptor.Create(NEWLINE125);
                     		adaptor.AddChild(root_0, NEWLINE125_tree);
                     	}
-                    	PushFollow(FOLLOW_titleRestLine_in_titleRestLine1815);
+                    	PushFollow(FOLLOW_titleRestLine_in_titleRestLine1813);
                     	titleRestLine126 = titleRestLine();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -5320,16 +5320,16 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangParser.g:220:9: WS titleRestLine
+                    // SpecFlowLangParser.g:218:9: WS titleRestLine
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	WS127=(IToken)Match(input,WS,FOLLOW_WS_in_titleRestLine1825); if (state.failed) return retval;
+                    	WS127=(IToken)Match(input,WS,FOLLOW_WS_in_titleRestLine1823); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{WS127_tree = (object)adaptor.Create(WS127);
                     		adaptor.AddChild(root_0, WS127_tree);
                     	}
-                    	PushFollow(FOLLOW_titleRestLine_in_titleRestLine1827);
+                    	PushFollow(FOLLOW_titleRestLine_in_titleRestLine1825);
                     	titleRestLine128 = titleRestLine();
                     	state.followingStackPointer--;
                     	if (state.failed) return retval;
@@ -5338,11 +5338,11 @@ public partial class SpecFlowLangParser : Parser
                     }
                     break;
                 case 3 :
-                    // SpecFlowLangParser.g:221:9: WORDCHAR
+                    // SpecFlowLangParser.g:219:9: WORDCHAR
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	WORDCHAR129=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_titleRestLine1837); if (state.failed) return retval;
+                    	WORDCHAR129=(IToken)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_titleRestLine1835); if (state.failed) return retval;
                     	if ( state.backtracking == 0 )
                     	{WORDCHAR129_tree = (object)adaptor.Create(WORDCHAR129);
                     		adaptor.AddChild(root_0, WORDCHAR129_tree);
@@ -5384,7 +5384,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "wordchar"
-    // SpecFlowLangParser.g:224:1: wordchar : ( WORDCHAR | AT );
+    // SpecFlowLangParser.g:222:1: wordchar : ( WORDCHAR | AT );
     public SpecFlowLangParser.wordchar_return wordchar() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.wordchar_return retval = new SpecFlowLangParser.wordchar_return();
@@ -5398,7 +5398,7 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:225:5: ( WORDCHAR | AT )
+            // SpecFlowLangParser.g:223:5: ( WORDCHAR | AT )
             // SpecFlowLangParser.g:
             {
             	root_0 = (object)adaptor.GetNilNode();
@@ -5452,7 +5452,7 @@ public partial class SpecFlowLangParser : Parser
     };
 
     // $ANTLR start "newlineWithSpaces"
-    // SpecFlowLangParser.g:229:1: newlineWithSpaces : ( WS )? NEWLINE ( ( WS )? NEWLINE )* ;
+    // SpecFlowLangParser.g:227:1: newlineWithSpaces : ( WS )? NEWLINE ( ( WS )? NEWLINE )* ;
     public SpecFlowLangParser.newlineWithSpaces_return newlineWithSpaces() // throws RecognitionException [1]
     {   
         SpecFlowLangParser.newlineWithSpaces_return retval = new SpecFlowLangParser.newlineWithSpaces_return();
@@ -5472,12 +5472,12 @@ public partial class SpecFlowLangParser : Parser
 
         try 
     	{
-            // SpecFlowLangParser.g:230:5: ( ( WS )? NEWLINE ( ( WS )? NEWLINE )* )
-            // SpecFlowLangParser.g:230:9: ( WS )? NEWLINE ( ( WS )? NEWLINE )*
+            // SpecFlowLangParser.g:228:5: ( ( WS )? NEWLINE ( ( WS )? NEWLINE )* )
+            // SpecFlowLangParser.g:228:9: ( WS )? NEWLINE ( ( WS )? NEWLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	// SpecFlowLangParser.g:230:9: ( WS )?
+            	// SpecFlowLangParser.g:228:9: ( WS )?
             	int alt57 = 2;
             	int LA57_0 = input.LA(1);
 
@@ -5490,7 +5490,7 @@ public partial class SpecFlowLangParser : Parser
             	    case 1 :
             	        // SpecFlowLangParser.g:0:0: WS
             	        {
-            	        	WS131=(IToken)Match(input,WS,FOLLOW_WS_in_newlineWithSpaces1885); if (state.failed) return retval;
+            	        	WS131=(IToken)Match(input,WS,FOLLOW_WS_in_newlineWithSpaces1883); if (state.failed) return retval;
             	        	if ( state.backtracking == 0 )
             	        	{WS131_tree = (object)adaptor.Create(WS131);
             	        		adaptor.AddChild(root_0, WS131_tree);
@@ -5501,12 +5501,12 @@ public partial class SpecFlowLangParser : Parser
 
             	}
 
-            	NEWLINE132=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_newlineWithSpaces1888); if (state.failed) return retval;
+            	NEWLINE132=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_newlineWithSpaces1886); if (state.failed) return retval;
             	if ( state.backtracking == 0 )
             	{NEWLINE132_tree = (object)adaptor.Create(NEWLINE132);
             		adaptor.AddChild(root_0, NEWLINE132_tree);
             	}
-            	// SpecFlowLangParser.g:230:21: ( ( WS )? NEWLINE )*
+            	// SpecFlowLangParser.g:228:21: ( ( WS )? NEWLINE )*
             	do 
             	{
             	    int alt59 = 2;
@@ -5532,9 +5532,9 @@ public partial class SpecFlowLangParser : Parser
             	    switch (alt59) 
             		{
             			case 1 :
-            			    // SpecFlowLangParser.g:230:22: ( WS )? NEWLINE
+            			    // SpecFlowLangParser.g:228:22: ( WS )? NEWLINE
             			    {
-            			    	// SpecFlowLangParser.g:230:22: ( WS )?
+            			    	// SpecFlowLangParser.g:228:22: ( WS )?
             			    	int alt58 = 2;
             			    	int LA58_0 = input.LA(1);
 
@@ -5547,7 +5547,7 @@ public partial class SpecFlowLangParser : Parser
             			    	    case 1 :
             			    	        // SpecFlowLangParser.g:0:0: WS
             			    	        {
-            			    	        	WS133=(IToken)Match(input,WS,FOLLOW_WS_in_newlineWithSpaces1891); if (state.failed) return retval;
+            			    	        	WS133=(IToken)Match(input,WS,FOLLOW_WS_in_newlineWithSpaces1889); if (state.failed) return retval;
             			    	        	if ( state.backtracking == 0 )
             			    	        	{WS133_tree = (object)adaptor.Create(WS133);
             			    	        		adaptor.AddChild(root_0, WS133_tree);
@@ -5558,7 +5558,7 @@ public partial class SpecFlowLangParser : Parser
 
             			    	}
 
-            			    	NEWLINE134=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_newlineWithSpaces1894); if (state.failed) return retval;
+            			    	NEWLINE134=(IToken)Match(input,NEWLINE,FOLLOW_NEWLINE_in_newlineWithSpaces1892); if (state.failed) return retval;
             			    	if ( state.backtracking == 0 )
             			    	{NEWLINE134_tree = (object)adaptor.Create(NEWLINE134);
             			    		adaptor.AddChild(root_0, NEWLINE134_tree);
@@ -5601,10 +5601,10 @@ public partial class SpecFlowLangParser : Parser
 
     // $ANTLR start "synpred25_SpecFlowLangParser"
     public void synpred25_SpecFlowLangParser_fragment() {
-        // SpecFlowLangParser.g:110:24: ( WS )
-        // SpecFlowLangParser.g:110:24: WS
+        // SpecFlowLangParser.g:108:24: ( WS )
+        // SpecFlowLangParser.g:108:24: WS
         {
-        	Match(input,WS,FOLLOW_WS_in_synpred25_SpecFlowLangParser865); if (state.failed) return ;
+        	Match(input,WS,FOLLOW_WS_in_synpred25_SpecFlowLangParser863); if (state.failed) return ;
 
         }
     }
@@ -5612,10 +5612,10 @@ public partial class SpecFlowLangParser : Parser
 
     // $ANTLR start "synpred43_SpecFlowLangParser"
     public void synpred43_SpecFlowLangParser_fragment() {
-        // SpecFlowLangParser.g:165:20: ( WS )
-        // SpecFlowLangParser.g:165:20: WS
+        // SpecFlowLangParser.g:163:20: ( WS )
+        // SpecFlowLangParser.g:163:20: WS
         {
-        	Match(input,WS,FOLLOW_WS_in_synpred43_SpecFlowLangParser1361); if (state.failed) return ;
+        	Match(input,WS,FOLLOW_WS_in_synpred43_SpecFlowLangParser1359); if (state.failed) return ;
 
         }
     }
@@ -5623,10 +5623,10 @@ public partial class SpecFlowLangParser : Parser
 
     // $ANTLR start "synpred50_SpecFlowLangParser"
     public void synpred50_SpecFlowLangParser_fragment() {
-        // SpecFlowLangParser.g:184:32: ( WS )
-        // SpecFlowLangParser.g:184:32: WS
+        // SpecFlowLangParser.g:182:32: ( WS )
+        // SpecFlowLangParser.g:182:32: WS
         {
-        	Match(input,WS,FOLLOW_WS_in_synpred50_SpecFlowLangParser1535); if (state.failed) return ;
+        	Match(input,WS,FOLLOW_WS_in_synpred50_SpecFlowLangParser1533); if (state.failed) return ;
 
         }
     }
@@ -5634,10 +5634,10 @@ public partial class SpecFlowLangParser : Parser
 
     // $ANTLR start "synpred56_SpecFlowLangParser"
     public void synpred56_SpecFlowLangParser_fragment() {
-        // SpecFlowLangParser.g:208:18: ( titleRest )
-        // SpecFlowLangParser.g:208:18: titleRest
+        // SpecFlowLangParser.g:206:18: ( titleRest )
+        // SpecFlowLangParser.g:206:18: titleRest
         {
-        	PushFollow(FOLLOW_titleRest_in_synpred56_SpecFlowLangParser1731);
+        	PushFollow(FOLLOW_titleRest_in_synpred56_SpecFlowLangParser1729);
         	titleRest();
         	state.followingStackPointer--;
         	if (state.failed) return ;
@@ -5785,7 +5785,7 @@ public partial class SpecFlowLangParser : Parser
 
         override public string Description
         {
-            get { return "83:1: scenarioKind : ( scenarioOutline | scenario );"; }
+            get { return "81:1: scenarioKind : ( scenarioOutline | scenario );"; }
         }
 
     }
@@ -5940,7 +5940,7 @@ public partial class SpecFlowLangParser : Parser
 
         override public string Description
         {
-            get { return "()* loopback of 208:18: ( titleRest )*"; }
+            get { return "()* loopback of 206:18: ( titleRest )*"; }
         }
 
     }
@@ -6441,144 +6441,144 @@ public partial class SpecFlowLangParser : Parser
     }
  
 
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_feature254 = new BitSet(new ulong[]{0x0000000000500100UL});
-    public static readonly BitSet FOLLOW_tags_in_feature265 = new BitSet(new ulong[]{0x0000000000400100UL});
-    public static readonly BitSet FOLLOW_WS_in_feature276 = new BitSet(new ulong[]{0x0000000000000100UL});
-    public static readonly BitSet FOLLOW_T_FEATURE_in_feature279 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_WS_in_feature281 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_text_in_feature284 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_feature286 = new BitSet(new ulong[]{0x0000000001500E00UL});
-    public static readonly BitSet FOLLOW_descriptionLine_in_feature296 = new BitSet(new ulong[]{0x0000000001500E00UL});
-    public static readonly BitSet FOLLOW_background_in_feature307 = new BitSet(new ulong[]{0x0000000000500C00UL});
-    public static readonly BitSet FOLLOW_scenarioKind_in_feature318 = new BitSet(new ulong[]{0x0000000000500C00UL});
-    public static readonly BitSet FOLLOW_WS_in_feature321 = new BitSet(new ulong[]{0x0000000000000000UL});
-    public static readonly BitSet FOLLOW_EOF_in_feature324 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_tags401 = new BitSet(new ulong[]{0x0000000000500000UL});
-    public static readonly BitSet FOLLOW_tag_in_tags404 = new BitSet(new ulong[]{0x0000000000500002UL});
-    public static readonly BitSet FOLLOW_AT_in_tag441 = new BitSet(new ulong[]{0x0000000001000000UL});
-    public static readonly BitSet FOLLOW_word_in_tag443 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_tag446 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_tag448 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_word484 = new BitSet(new ulong[]{0x0000000001000002UL});
-    public static readonly BitSet FOLLOW_WS_in_descriptionLine521 = new BitSet(new ulong[]{0x0000000001400000UL});
-    public static readonly BitSet FOLLOW_descriptionLineText_in_descriptionLine524 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_descriptionLine526 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_background561 = new BitSet(new ulong[]{0x0000000000000200UL});
-    public static readonly BitSet FOLLOW_T_BACKGROUND_in_background564 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_WS_in_background576 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_title_in_background578 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_background591 = new BitSet(new ulong[]{0x0000000000402000UL});
-    public static readonly BitSet FOLLOW_givens_in_background593 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_scenarioOutline_in_scenarioKind631 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_scenario_in_scenarioKind642 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_tags_in_scenario661 = new BitSet(new ulong[]{0x0000000000400400UL});
-    public static readonly BitSet FOLLOW_WS_in_scenario664 = new BitSet(new ulong[]{0x0000000000000400UL});
-    public static readonly BitSet FOLLOW_T_SCENARIO_in_scenario667 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_WS_in_scenario669 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_title_in_scenario681 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_scenario683 = new BitSet(new ulong[]{0x000000000040E000UL});
-    public static readonly BitSet FOLLOW_steps_in_scenario694 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_tags_in_scenarioOutline740 = new BitSet(new ulong[]{0x0000000000400800UL});
-    public static readonly BitSet FOLLOW_WS_in_scenarioOutline743 = new BitSet(new ulong[]{0x0000000000000800UL});
-    public static readonly BitSet FOLLOW_T_SCENARIO_OUTLINE_in_scenarioOutline746 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_WS_in_scenarioOutline748 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_title_in_scenarioOutline759 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_scenarioOutline761 = new BitSet(new ulong[]{0x000000000040E000UL});
-    public static readonly BitSet FOLLOW_steps_in_scenarioOutline771 = new BitSet(new ulong[]{0x0000000000401000UL});
-    public static readonly BitSet FOLLOW_examples_in_scenarioOutline781 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_exampleSet_in_examples823 = new BitSet(new ulong[]{0x0000000000401002UL});
-    public static readonly BitSet FOLLOW_WS_in_exampleSet860 = new BitSet(new ulong[]{0x0000000000001000UL});
-    public static readonly BitSet FOLLOW_T_EXAMPLES_in_exampleSet863 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_WS_in_exampleSet865 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_text_in_exampleSet876 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_exampleSet879 = new BitSet(new ulong[]{0x0000000000480000UL});
-    public static readonly BitSet FOLLOW_table_in_exampleSet881 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstStep_in_steps919 = new BitSet(new ulong[]{0x000000000043E002UL});
-    public static readonly BitSet FOLLOW_nextStep_in_steps921 = new BitSet(new ulong[]{0x000000000043E002UL});
-    public static readonly BitSet FOLLOW_firstGiven_in_firstStep954 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstWhen_in_firstStep963 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstThen_in_firstStep972 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstStep_in_nextStep994 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstAnd_in_nextStep1003 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstBut_in_nextStep1012 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_firstAnd1035 = new BitSet(new ulong[]{0x0000000000010000UL});
-    public static readonly BitSet FOLLOW_T_AND_in_firstAnd1038 = new BitSet(new ulong[]{0x0000000000400000UL});
-    public static readonly BitSet FOLLOW_WS_in_firstAnd1040 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_sentenceEnd_in_firstAnd1042 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_firstBut1077 = new BitSet(new ulong[]{0x0000000000020000UL});
-    public static readonly BitSet FOLLOW_T_BUT_in_firstBut1080 = new BitSet(new ulong[]{0x0000000000400000UL});
-    public static readonly BitSet FOLLOW_WS_in_firstBut1082 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_sentenceEnd_in_firstBut1084 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_firstGiven_in_givens1119 = new BitSet(new ulong[]{0x000000000043E002UL});
-    public static readonly BitSet FOLLOW_nextStep_in_givens1121 = new BitSet(new ulong[]{0x000000000043E002UL});
-    public static readonly BitSet FOLLOW_WS_in_firstGiven1159 = new BitSet(new ulong[]{0x0000000000002000UL});
-    public static readonly BitSet FOLLOW_T_GIVEN_in_firstGiven1162 = new BitSet(new ulong[]{0x0000000000400000UL});
-    public static readonly BitSet FOLLOW_WS_in_firstGiven1164 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_sentenceEnd_in_firstGiven1166 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_firstWhen1200 = new BitSet(new ulong[]{0x0000000000004000UL});
-    public static readonly BitSet FOLLOW_T_WHEN_in_firstWhen1203 = new BitSet(new ulong[]{0x0000000000400000UL});
-    public static readonly BitSet FOLLOW_WS_in_firstWhen1205 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_sentenceEnd_in_firstWhen1207 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_firstThen1241 = new BitSet(new ulong[]{0x0000000000008000UL});
-    public static readonly BitSet FOLLOW_T_THEN_in_firstThen1244 = new BitSet(new ulong[]{0x0000000000400000UL});
-    public static readonly BitSet FOLLOW_WS_in_firstThen1246 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_sentenceEnd_in_firstThen1248 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_text_in_sentenceEnd1283 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_sentenceEnd1285 = new BitSet(new ulong[]{0x00000000004C0002UL});
-    public static readonly BitSet FOLLOW_multilineText_in_sentenceEnd1287 = new BitSet(new ulong[]{0x0000000000480002UL});
-    public static readonly BitSet FOLLOW_table_in_sentenceEnd1290 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_indent_in_multilineText1328 = new BitSet(new ulong[]{0x0000000000040000UL});
-    public static readonly BitSet FOLLOW_MLTEXT_in_multilineText1330 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_WS_in_multilineText1332 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_multilineText1335 = new BitSet(new ulong[]{0x0000000001D40000UL});
-    public static readonly BitSet FOLLOW_multilineTextLine_in_multilineText1345 = new BitSet(new ulong[]{0x0000000001D40000UL});
-    public static readonly BitSet FOLLOW_WS_in_multilineText1356 = new BitSet(new ulong[]{0x0000000000040000UL});
-    public static readonly BitSet FOLLOW_MLTEXT_in_multilineText1359 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_WS_in_multilineText1361 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_multilineText1364 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_indent1402 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_multilineTextLine1431 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_text_in_multilineTextLine1434 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_multilineTextLine1437 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_tableRow_in_table1478 = new BitSet(new ulong[]{0x0000000000480000UL});
-    public static readonly BitSet FOLLOW_tableRow_in_table1480 = new BitSet(new ulong[]{0x0000000000480002UL});
-    public static readonly BitSet FOLLOW_WS_in_tableRow1527 = new BitSet(new ulong[]{0x0000000000080000UL});
-    public static readonly BitSet FOLLOW_CELLSEP_in_tableRow1530 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_tableCell_in_tableRow1532 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_WS_in_tableRow1535 = new BitSet(new ulong[]{0x0000000000C00000UL});
-    public static readonly BitSet FOLLOW_newlineWithSpaces_in_tableRow1538 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_tableCell1574 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_text_in_tableCell1577 = new BitSet(new ulong[]{0x0000000000480000UL});
-    public static readonly BitSet FOLLOW_WS_in_tableCell1579 = new BitSet(new ulong[]{0x0000000000080000UL});
-    public static readonly BitSet FOLLOW_CELLSEP_in_tableCell1582 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_descriptionLineText1617 = new BitSet(new ulong[]{0x0000000001500002UL});
-    public static readonly BitSet FOLLOW_textRest_in_descriptionLineText1619 = new BitSet(new ulong[]{0x0000000001500002UL});
-    public static readonly BitSet FOLLOW_wordchar_in_text1658 = new BitSet(new ulong[]{0x0000000001500002UL});
-    public static readonly BitSet FOLLOW_textRest_in_text1660 = new BitSet(new ulong[]{0x0000000001500002UL});
-    public static readonly BitSet FOLLOW_WS_in_textRest1698 = new BitSet(new ulong[]{0x0000000001500000UL});
-    public static readonly BitSet FOLLOW_textRest_in_textRest1700 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_wordchar_in_textRest1710 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_wordchar_in_title1729 = new BitSet(new ulong[]{0x0000000001D00002UL});
-    public static readonly BitSet FOLLOW_titleRest_in_title1731 = new BitSet(new ulong[]{0x0000000001D00002UL});
-    public static readonly BitSet FOLLOW_WS_in_titleRest1770 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_titleRest_in_titleRest1772 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_titleRest1782 = new BitSet(new ulong[]{0x0000000001D00000UL});
-    public static readonly BitSet FOLLOW_titleRest_in_titleRest1784 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_wordchar_in_titleRest1794 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_titleRestLine1813 = new BitSet(new ulong[]{0x0000000001C00000UL});
-    public static readonly BitSet FOLLOW_titleRestLine_in_titleRestLine1815 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_titleRestLine1825 = new BitSet(new ulong[]{0x0000000001C00000UL});
-    public static readonly BitSet FOLLOW_titleRestLine_in_titleRestLine1827 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_titleRestLine1837 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_feature252 = new BitSet(new ulong[]{0x0000000000500100UL});
+    public static readonly BitSet FOLLOW_tags_in_feature263 = new BitSet(new ulong[]{0x0000000000400100UL});
+    public static readonly BitSet FOLLOW_WS_in_feature274 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_T_FEATURE_in_feature277 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_WS_in_feature279 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_text_in_feature282 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_feature284 = new BitSet(new ulong[]{0x0000000001500E00UL});
+    public static readonly BitSet FOLLOW_descriptionLine_in_feature294 = new BitSet(new ulong[]{0x0000000001500E00UL});
+    public static readonly BitSet FOLLOW_background_in_feature305 = new BitSet(new ulong[]{0x0000000000500C00UL});
+    public static readonly BitSet FOLLOW_scenarioKind_in_feature316 = new BitSet(new ulong[]{0x0000000000500C00UL});
+    public static readonly BitSet FOLLOW_WS_in_feature319 = new BitSet(new ulong[]{0x0000000000000000UL});
+    public static readonly BitSet FOLLOW_EOF_in_feature322 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_tags399 = new BitSet(new ulong[]{0x0000000000500000UL});
+    public static readonly BitSet FOLLOW_tag_in_tags402 = new BitSet(new ulong[]{0x0000000000500002UL});
+    public static readonly BitSet FOLLOW_AT_in_tag439 = new BitSet(new ulong[]{0x0000000001000000UL});
+    public static readonly BitSet FOLLOW_word_in_tag441 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_tag444 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_tag446 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_word482 = new BitSet(new ulong[]{0x0000000001000002UL});
+    public static readonly BitSet FOLLOW_WS_in_descriptionLine519 = new BitSet(new ulong[]{0x0000000001400000UL});
+    public static readonly BitSet FOLLOW_descriptionLineText_in_descriptionLine522 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_descriptionLine524 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_background559 = new BitSet(new ulong[]{0x0000000000000200UL});
+    public static readonly BitSet FOLLOW_T_BACKGROUND_in_background562 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_WS_in_background574 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_title_in_background576 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_background589 = new BitSet(new ulong[]{0x0000000000402000UL});
+    public static readonly BitSet FOLLOW_givens_in_background591 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_scenarioOutline_in_scenarioKind629 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_scenario_in_scenarioKind640 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_tags_in_scenario659 = new BitSet(new ulong[]{0x0000000000400400UL});
+    public static readonly BitSet FOLLOW_WS_in_scenario662 = new BitSet(new ulong[]{0x0000000000000400UL});
+    public static readonly BitSet FOLLOW_T_SCENARIO_in_scenario665 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_WS_in_scenario667 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_title_in_scenario679 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_scenario681 = new BitSet(new ulong[]{0x000000000040E000UL});
+    public static readonly BitSet FOLLOW_steps_in_scenario692 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_tags_in_scenarioOutline738 = new BitSet(new ulong[]{0x0000000000400800UL});
+    public static readonly BitSet FOLLOW_WS_in_scenarioOutline741 = new BitSet(new ulong[]{0x0000000000000800UL});
+    public static readonly BitSet FOLLOW_T_SCENARIO_OUTLINE_in_scenarioOutline744 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_WS_in_scenarioOutline746 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_title_in_scenarioOutline757 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_scenarioOutline759 = new BitSet(new ulong[]{0x000000000040E000UL});
+    public static readonly BitSet FOLLOW_steps_in_scenarioOutline769 = new BitSet(new ulong[]{0x0000000000401000UL});
+    public static readonly BitSet FOLLOW_examples_in_scenarioOutline779 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_exampleSet_in_examples821 = new BitSet(new ulong[]{0x0000000000401002UL});
+    public static readonly BitSet FOLLOW_WS_in_exampleSet858 = new BitSet(new ulong[]{0x0000000000001000UL});
+    public static readonly BitSet FOLLOW_T_EXAMPLES_in_exampleSet861 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_WS_in_exampleSet863 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_text_in_exampleSet874 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_exampleSet877 = new BitSet(new ulong[]{0x0000000000480000UL});
+    public static readonly BitSet FOLLOW_table_in_exampleSet879 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstStep_in_steps917 = new BitSet(new ulong[]{0x000000000043E002UL});
+    public static readonly BitSet FOLLOW_nextStep_in_steps919 = new BitSet(new ulong[]{0x000000000043E002UL});
+    public static readonly BitSet FOLLOW_firstGiven_in_firstStep952 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstWhen_in_firstStep961 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstThen_in_firstStep970 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstStep_in_nextStep992 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstAnd_in_nextStep1001 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstBut_in_nextStep1010 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_firstAnd1033 = new BitSet(new ulong[]{0x0000000000010000UL});
+    public static readonly BitSet FOLLOW_T_AND_in_firstAnd1036 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_WS_in_firstAnd1038 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_sentenceEnd_in_firstAnd1040 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_firstBut1075 = new BitSet(new ulong[]{0x0000000000020000UL});
+    public static readonly BitSet FOLLOW_T_BUT_in_firstBut1078 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_WS_in_firstBut1080 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_sentenceEnd_in_firstBut1082 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_firstGiven_in_givens1117 = new BitSet(new ulong[]{0x000000000043E002UL});
+    public static readonly BitSet FOLLOW_nextStep_in_givens1119 = new BitSet(new ulong[]{0x000000000043E002UL});
+    public static readonly BitSet FOLLOW_WS_in_firstGiven1157 = new BitSet(new ulong[]{0x0000000000002000UL});
+    public static readonly BitSet FOLLOW_T_GIVEN_in_firstGiven1160 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_WS_in_firstGiven1162 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_sentenceEnd_in_firstGiven1164 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_firstWhen1198 = new BitSet(new ulong[]{0x0000000000004000UL});
+    public static readonly BitSet FOLLOW_T_WHEN_in_firstWhen1201 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_WS_in_firstWhen1203 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_sentenceEnd_in_firstWhen1205 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_firstThen1239 = new BitSet(new ulong[]{0x0000000000008000UL});
+    public static readonly BitSet FOLLOW_T_THEN_in_firstThen1242 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_WS_in_firstThen1244 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_sentenceEnd_in_firstThen1246 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_text_in_sentenceEnd1281 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_sentenceEnd1283 = new BitSet(new ulong[]{0x00000000004C0002UL});
+    public static readonly BitSet FOLLOW_multilineText_in_sentenceEnd1285 = new BitSet(new ulong[]{0x0000000000480002UL});
+    public static readonly BitSet FOLLOW_table_in_sentenceEnd1288 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_indent_in_multilineText1326 = new BitSet(new ulong[]{0x0000000000040000UL});
+    public static readonly BitSet FOLLOW_MLTEXT_in_multilineText1328 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_WS_in_multilineText1330 = new BitSet(new ulong[]{0x0000000000800000UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_multilineText1333 = new BitSet(new ulong[]{0x0000000001D40000UL});
+    public static readonly BitSet FOLLOW_multilineTextLine_in_multilineText1343 = new BitSet(new ulong[]{0x0000000001D40000UL});
+    public static readonly BitSet FOLLOW_WS_in_multilineText1354 = new BitSet(new ulong[]{0x0000000000040000UL});
+    public static readonly BitSet FOLLOW_MLTEXT_in_multilineText1357 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_WS_in_multilineText1359 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_multilineText1362 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_indent1400 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_multilineTextLine1429 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_text_in_multilineTextLine1432 = new BitSet(new ulong[]{0x0000000000800000UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_multilineTextLine1435 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_tableRow_in_table1476 = new BitSet(new ulong[]{0x0000000000480000UL});
+    public static readonly BitSet FOLLOW_tableRow_in_table1478 = new BitSet(new ulong[]{0x0000000000480002UL});
+    public static readonly BitSet FOLLOW_WS_in_tableRow1525 = new BitSet(new ulong[]{0x0000000000080000UL});
+    public static readonly BitSet FOLLOW_CELLSEP_in_tableRow1528 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_tableCell_in_tableRow1530 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_WS_in_tableRow1533 = new BitSet(new ulong[]{0x0000000000C00000UL});
+    public static readonly BitSet FOLLOW_newlineWithSpaces_in_tableRow1536 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_tableCell1572 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_text_in_tableCell1575 = new BitSet(new ulong[]{0x0000000000480000UL});
+    public static readonly BitSet FOLLOW_WS_in_tableCell1577 = new BitSet(new ulong[]{0x0000000000080000UL});
+    public static readonly BitSet FOLLOW_CELLSEP_in_tableCell1580 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_descriptionLineText1615 = new BitSet(new ulong[]{0x0000000001500002UL});
+    public static readonly BitSet FOLLOW_textRest_in_descriptionLineText1617 = new BitSet(new ulong[]{0x0000000001500002UL});
+    public static readonly BitSet FOLLOW_wordchar_in_text1656 = new BitSet(new ulong[]{0x0000000001500002UL});
+    public static readonly BitSet FOLLOW_textRest_in_text1658 = new BitSet(new ulong[]{0x0000000001500002UL});
+    public static readonly BitSet FOLLOW_WS_in_textRest1696 = new BitSet(new ulong[]{0x0000000001500000UL});
+    public static readonly BitSet FOLLOW_textRest_in_textRest1698 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_wordchar_in_textRest1708 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_wordchar_in_title1727 = new BitSet(new ulong[]{0x0000000001D00002UL});
+    public static readonly BitSet FOLLOW_titleRest_in_title1729 = new BitSet(new ulong[]{0x0000000001D00002UL});
+    public static readonly BitSet FOLLOW_WS_in_titleRest1768 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_titleRest_in_titleRest1770 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_titleRest1780 = new BitSet(new ulong[]{0x0000000001D00000UL});
+    public static readonly BitSet FOLLOW_titleRest_in_titleRest1782 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_wordchar_in_titleRest1792 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_titleRestLine1811 = new BitSet(new ulong[]{0x0000000001C00000UL});
+    public static readonly BitSet FOLLOW_titleRestLine_in_titleRestLine1813 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_titleRestLine1823 = new BitSet(new ulong[]{0x0000000001C00000UL});
+    public static readonly BitSet FOLLOW_titleRestLine_in_titleRestLine1825 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_titleRestLine1835 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_set_in_wordchar0 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_newlineWithSpaces1885 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_newlineWithSpaces1888 = new BitSet(new ulong[]{0x0000000000C00002UL});
-    public static readonly BitSet FOLLOW_WS_in_newlineWithSpaces1891 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_newlineWithSpaces1894 = new BitSet(new ulong[]{0x0000000000C00002UL});
-    public static readonly BitSet FOLLOW_WS_in_synpred25_SpecFlowLangParser865 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_synpred43_SpecFlowLangParser1361 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_WS_in_synpred50_SpecFlowLangParser1535 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_titleRest_in_synpred56_SpecFlowLangParser1731 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_newlineWithSpaces1883 = new BitSet(new ulong[]{0x0000000000800000UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_newlineWithSpaces1886 = new BitSet(new ulong[]{0x0000000000C00002UL});
+    public static readonly BitSet FOLLOW_WS_in_newlineWithSpaces1889 = new BitSet(new ulong[]{0x0000000000800000UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_newlineWithSpaces1892 = new BitSet(new ulong[]{0x0000000000C00002UL});
+    public static readonly BitSet FOLLOW_WS_in_synpred25_SpecFlowLangParser863 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_synpred43_SpecFlowLangParser1359 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_WS_in_synpred50_SpecFlowLangParser1533 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_titleRest_in_synpred56_SpecFlowLangParser1729 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }
 }

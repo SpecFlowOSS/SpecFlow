@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SpecFlowLanguages>
+  <Language code="en">
+    <Feature>Feature</Feature>
+    <Background>Background</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Scenario Outline</ScenarioOutline>
+    <Examples>Examples</Examples>
+    <Examples>Scenarios</Examples>
+    <Given>Given</Given>
+    <When>When</When>
+    <Then>Then</Then>
+    <And>And</And>
+    <But>But</But>
+  </Language>
+  <Language code="de">
+    <Feature>Funktionalität</Feature>
+    <Background>Grundlage</Background>
+    <Scenario>Szenario</Scenario>
+    <ScenarioOutline>Szenariogrundriss</ScenarioOutline>
+    <Examples>Beispiele</Examples>
+    <Given>Gegeben sei</Given>
+    <When>Wenn</When>
+    <Then>Dann</Then>
+    <And>Und</And>
+    <But>Aber</But>
+  </Language>
+  <Language code="fr">
+    <Feature>Fonctionnalité</Feature>
+    <Background>Contexte</Background>
+    <Scenario>Scénario</Scenario>
+    <ScenarioOutline>Plan du Scénario</ScenarioOutline>
+    <Examples>Exemples</Examples>
+    <Given>Soit</Given>
+    <When>Lorsque</When>
+    <Then>Alors</Then>
+    <And>Et</And>
+    <But>Mais</But>
+  </Language>
+  <Language code="hu">
+    <Feature>Jellemző</Feature>
+    <Background>Háttér</Background>
+    <Scenario>Forgatókönyv</Scenario>
+    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
+    <Examples>Példák</Examples>
+    <Given>Ha</Given>
+    <When>Majd</When>
+    <Then>Akkor</Then>
+    <And>És</And>
+    <But>De</But>
+  </Language>
+</SpecFlowLanguages>

@@ -1,13 +1,11 @@
 parser grammar SpecFlowLangParser;
 
 options {
-	tokenVocab = SpecFlowLangLexer;
+	tokenVocab = SpecFlowLangLexer_en;
 	language = CSharp2;
 	output = AST;
     backtrack = true;
 }
-
-//import SpecFlowLangLexer;
 
 tokens {
     FEATURE;

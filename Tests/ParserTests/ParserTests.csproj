@@ -72,6 +72,12 @@
     </None>
     <None Include="TestFiles\comments.feature">
     </None>
+    <None Include="TestFiles\hungarian.feature">
+    </None>
+    <None Include="TestFiles\french.feature">
+    </None>
+    <None Include="TestFiles\german.feature">
+    </None>
     <None Include="TestFiles\mixedgivenwhenthen.feature">
     </None>
     <None Include="TestFiles\scenariooutline.feature">
@@ -107,8 +113,11 @@
     <Content Include="TestFiles\but.feature.xml" />
     <Content Include="TestFiles\comments.feature.xml" />
     <Content Include="TestFiles\featureheader.feature.xml" />
+    <Content Include="TestFiles\french.feature.xml" />
     <Content Include="TestFiles\full.feature.xml" />
+    <Content Include="TestFiles\german.feature.xml" />
     <Content Include="TestFiles\givenwhenthenduplication.feature.xml" />
+    <Content Include="TestFiles\hungarian.feature.xml" />
     <Content Include="TestFiles\mixedgivenwhenthen.feature.xml" />
     <Content Include="TestFiles\multilineargument.feature.xml" />
     <Content Include="TestFiles\multilinetitle.feature.xml" />

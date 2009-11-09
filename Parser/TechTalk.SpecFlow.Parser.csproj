@@ -73,6 +73,10 @@
     <Compile Include="Configuration\SpecFlowProject.cs" />
     <Compile Include="Grammar\ErrorReporting.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer_de.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer_en.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer_fr.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer_hu.cs" />
     <Compile Include="Grammar\SpecFlowLangParser.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,9 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Grammar\compile.cmd" />
-    <None Include="Grammar\SpecFlowLangLexer.g" />
     <None Include="Grammar\SpecFlowLangParser.g" />
     <None Include="Grammar\SpecFlowLangWalker.g" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Grammar\LexerTransformation.xslt" />
+    <Content Include="Languages.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

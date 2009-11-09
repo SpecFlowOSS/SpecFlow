@@ -29,6 +29,13 @@ namespace ParserTests
         }
 
         [Test]
+        public void CanParseGermanFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanParseFile(Path.Combine(folder, "german.feature"));
+        }
+
+        [Test]
         public void CanParseCommentsFeature()
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
@@ -130,7 +137,7 @@ namespace ParserTests
                 Assert.IsNotNull(feature);
 
                 // to regenerate the expected result file:
-                //SerializeFeature(feature, fileName + ".xml");
+                SerializeFeature(feature, fileName + ".xml");
 
                 CompareWithExpectedResult(feature, fileName + ".xml");
             }
