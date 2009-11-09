@@ -30,6 +30,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void CanExecuteGermanFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanGenerateFromFile(Path.Combine(folder, "german.feature"));
+        }
+
+        [Test]
         public void CanExecuteCommentsFeature()
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
