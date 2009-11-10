@@ -21,3 +21,8 @@ Scenarios: second example set
 Scenarios:
 	| templated	| date1	     | date2      |
 	| four      | 2009/09/14 | 2009/09/14 |
+
+Examples: last example set with non-unique first column
+	| templated	| date1	     | date2      |
+	| five      | 2009/09/14 | 2009/09/14 |
+	| five      | 2009/09/15 | 2009/09/15 |

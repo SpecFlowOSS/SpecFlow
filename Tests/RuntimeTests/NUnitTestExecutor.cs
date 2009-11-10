@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
@@ -8,20 +9,30 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     class NUnitTestExecutor
     {
-        public static void ExecuteNUnitTests(object test)
+        public static void ExecuteNUnitTests(object test, Func<Exception, bool> onError)
         {
             // fixture setup
             ExecuteWithAttribute(test, typeof(TestFixtureSetUpAttribute));
 
             foreach (var testMethod in GetMethodsWithAttribute(test, typeof(TestAttribute)))
             {
-                // test setup
-                ExecuteWithAttribute(test, typeof(SetUpAttribute));
+                try
+                {
+                    Debug.WriteLine(testMethod, "Executing test");
 
-                InvokeMethod(test, testMethod);
+                    // test setup
+                    ExecuteWithAttribute(test, typeof(SetUpAttribute));
 
-                // test teardown
-                ExecuteWithAttribute(test, typeof(TearDownAttribute));
+                    InvokeMethod(test, testMethod);
+
+                    // test teardown
+                    ExecuteWithAttribute(test, typeof(TearDownAttribute));
+                }
+                catch(Exception ex)
+                {
+                    if (onError == null || !onError(ex))
+                        throw;
+                }
             }
 
             // fixture teardown

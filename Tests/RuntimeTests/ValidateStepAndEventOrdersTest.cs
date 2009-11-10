@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             MockRepository mockRepository = SetupTests(feature);
 
-            NUnitTestExecutor.ExecuteNUnitTests(test);
+            NUnitTestExecutor.ExecuteNUnitTests(test, ex => true);
 
             mockRepository.VerifyAll();
         }

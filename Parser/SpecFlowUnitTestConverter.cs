@@ -291,12 +291,24 @@ namespace TechTalk.SpecFlow.Parser
                 string exampleSetTitle = exampleSet.Title == null ? string.Format("Scenarios{0}", exampleSetIndex + 1) :
                     exampleSet.Title.ToIdentifier();
 
+                bool useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.Table);
+
                 for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                 {
-                    GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], rowIndex);
+                    string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifier() :
+                        string.Format("Variant{0}", rowIndex);
+                    GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], variantName);
                 }
                 exampleSetIndex++;
             }
+        }
+
+        private bool CanUseFirstColumnAsName(Table table)
+        {
+            if (table.Header.Cells.Length == 0)
+                return false;
+
+            return table.Body.Select(r => r.Cells[0].Value.ToIdentifier()).Distinct().Count() == table.Body.Length;
         }
 
         private void GenerateScenarioOutlineBody(ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier, CodeTypeDeclaration testType, string testMethodName, CodeMemberMethod testSetup)
@@ -315,10 +327,12 @@ namespace TechTalk.SpecFlow.Parser
             GenerateTestBody(scenarioOutline, testMethod, testSetup, paramToIdentifier);
         }
 
-        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, int rowIndex)
+        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, string variantName)
         {
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenarioOutline);
-            testMethod.Name = string.Format("{0}_{1}_Variant{2}", testMethod.Name, exampleSetTitle, rowIndex);
+            testMethod.Name = string.IsNullOrEmpty(exampleSetTitle) ?
+                string.Format("{0}_{1}", testMethod.Name, variantName) :
+                string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitle, variantName);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = new List<CodeExpression>();

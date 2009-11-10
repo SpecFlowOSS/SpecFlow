@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
@@ -17,15 +18,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected override void ExecuteTests(object test, Feature feature)
         {
-            try
-            {
-                NUnitTestExecutor.ExecuteNUnitTests(test);
-                Assert.Fail("incloncusive exception expected");
-            }
-            catch(InconclusiveException)
-            {
-                
-            }
+            NUnitTestExecutor.ExecuteNUnitTests(test,
+                delegate(Exception exception)
+                {
+                    Assert.IsInstanceOf(typeof(InconclusiveException), exception);
+                    return true;
+                });
         }
     }
 }
