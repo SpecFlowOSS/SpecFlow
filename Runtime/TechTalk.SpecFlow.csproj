@@ -76,6 +76,7 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
+    <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\StepDefinitonSkeletonProvider.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\MsTestRuntimeProvider.cs" />
@@ -91,6 +92,11 @@
     <Compile Include="Tracing\TestTracer.cs" />
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Languages.xml">
+      <Link>Languages.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

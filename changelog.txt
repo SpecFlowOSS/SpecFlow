@@ -4,6 +4,7 @@ vNext - ???
 New features:
 + Support for MsTest (Issue 4)
 + Finalize configuration (Issue 13)
++ Support German, French and Hungarian languages (Issue 5)
 
 Fixed issues:
 + Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)

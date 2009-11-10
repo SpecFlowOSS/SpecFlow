@@ -137,7 +137,7 @@ namespace ParserTests
                 Assert.IsNotNull(feature);
 
                 // to regenerate the expected result file:
-                SerializeFeature(feature, fileName + ".xml");
+                //SerializeFeature(feature, fileName + ".xml");
 
                 CompareWithExpectedResult(feature, fileName + ".xml");
             }

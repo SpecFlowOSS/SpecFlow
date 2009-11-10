@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow
 
         public static string ToIdentifier(this string text)
         {
-            Regex firstWordCharRe = new Regex(@"(?<pre>[^a-zA-Z]+)(?<fc>[a-zA-Z])");
+            Regex firstWordCharRe = new Regex(@"(?<pre>[^\p{Ll}\p{Lu}]+)(?<fc>[\p{Ll}\p{Lu}])");
             text = firstWordCharRe.Replace(text, match => match.Groups["pre"].Value + match.Groups["fc"].Value.ToUpper());
 
             Regex punctCharRe = new Regex(@"[\n\.-]+");

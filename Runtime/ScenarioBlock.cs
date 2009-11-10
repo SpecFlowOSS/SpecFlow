@@ -13,9 +13,9 @@ namespace TechTalk.SpecFlow
 
     internal enum StepDefinitionKeyword
     {
-        Given,
-        When,
-        Then,
+        Given = ScenarioBlock.Given,
+        When = ScenarioBlock.When,
+        Then = ScenarioBlock.Then,
         And,
         But
     }

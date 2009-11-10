@@ -64,6 +64,8 @@ namespace TechTalk.SpecFlow.Parser
             if (feature == null)
                 throw new SpecFlowParserException("Invalid Gherkin file!");
 
+            feature.Language = language.Name;
+
             return feature;
         }
 

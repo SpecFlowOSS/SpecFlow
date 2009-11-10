@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -122,6 +123,8 @@ namespace TechTalk.SpecFlow.Parser
             setupMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(FEATUREINFO_TYPE, "featureInfo",
                     new CodeObjectCreateExpression(FEATUREINFO_TYPE,
+                        new CodeObjectCreateExpression(typeof(CultureInfo), 
+                            new CodePrimitiveExpression(feature.Language)),
                         new CodePrimitiveExpression(feature.Title),
                         new CodePrimitiveExpression(feature.Description),
                         GetStringArrayExpression(feature.Tags))));

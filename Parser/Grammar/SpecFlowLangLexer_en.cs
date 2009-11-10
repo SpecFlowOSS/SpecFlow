@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 SpecFlowLangLexer_en.g 2009-11-09 17:26:24
+// $ANTLR 3.1.2 SpecFlowLangLexer_en.g 2009-11-10 15:19:40
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -1259,31 +1259,13 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
     }
     // $ANTLR end "synpred15_SpecFlowLangLexer_en"
 
-   	public bool synpred15_SpecFlowLangLexer_en() 
+   	public bool synpred12_SpecFlowLangLexer_en() 
    	{
    	    state.backtracking++;
    	    int start = input.Mark();
    	    try 
    	    {
-   	        synpred15_SpecFlowLangLexer_en_fragment(); // can never throw exception
-   	    }
-   	    catch (RecognitionException re) 
-   	    {
-   	        Console.Error.WriteLine("impossible: "+re);
-   	    }
-   	    bool success = !state.failed;
-   	    input.Rewind(start);
-   	    state.backtracking--;
-   	    state.failed = false;
-   	    return success;
-   	}
-   	public bool synpred7_SpecFlowLangLexer_en() 
-   	{
-   	    state.backtracking++;
-   	    int start = input.Mark();
-   	    try 
-   	    {
-   	        synpred7_SpecFlowLangLexer_en_fragment(); // can never throw exception
+   	        synpred12_SpecFlowLangLexer_en_fragment(); // can never throw exception
    	    }
    	    catch (RecognitionException re) 
    	    {
@@ -1313,13 +1295,31 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
    	    state.failed = false;
    	    return success;
    	}
-   	public bool synpred12_SpecFlowLangLexer_en() 
+   	public bool synpred15_SpecFlowLangLexer_en() 
    	{
    	    state.backtracking++;
    	    int start = input.Mark();
    	    try 
    	    {
-   	        synpred12_SpecFlowLangLexer_en_fragment(); // can never throw exception
+   	        synpred15_SpecFlowLangLexer_en_fragment(); // can never throw exception
+   	    }
+   	    catch (RecognitionException re) 
+   	    {
+   	        Console.Error.WriteLine("impossible: "+re);
+   	    }
+   	    bool success = !state.failed;
+   	    input.Rewind(start);
+   	    state.backtracking--;
+   	    state.failed = false;
+   	    return success;
+   	}
+   	public bool synpred7_SpecFlowLangLexer_en() 
+   	{
+   	    state.backtracking++;
+   	    int start = input.Mark();
+   	    try 
+   	    {
+   	        synpred7_SpecFlowLangLexer_en_fragment(); // can never throw exception
    	    }
    	    catch (RecognitionException re) 
    	    {
@@ -1521,47 +1521,36 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
 	}
 
     const string DFA8_eotS =
-        "\x1f\uffff";
+        "\x1e\uffff";
     const string DFA8_eofS =
-        "\x1f\uffff";
+        "\x1e\uffff";
     const string DFA8_minS =
-        "\x02\x00\x03\uffff\x01\x00\x03\uffff\x01\x00\x01\uffff\x02\x00"+
-        "\x01\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff"+
-        "\x01\x00\x02\uffff\x01\x00\x02\uffff\x01\x00\x03\uffff";
+        "\x02\x00\x03\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00"+
+        "\x02\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff"+
+        "\x01\x00\x02\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x02"+
+        "\uffff";
     const string DFA8_maxS =
-        "\x01\uffff\x01\x00\x03\uffff\x01\x00\x03\uffff\x01\x00\x01\uffff"+
-        "\x02\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01"+
-        "\uffff\x01\x00\x02\uffff\x01\x00\x02\uffff\x01\x00\x03\uffff";
+        "\x01\uffff\x01\x00\x03\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff"+
+        "\x01\x00\x02\uffff\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01"+
+        "\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01"+
+        "\x00\x02\uffff";
     const string DFA8_acceptS =
-        "\x02\uffff\x01\x07\x01\x11\x01\x10\x01\uffff\x01\x03\x01\x04\x01"+
-        "\x05\x01\uffff\x01\x08\x02\uffff\x01\x06\x01\uffff\x01\x09\x01\uffff"+
-        "\x01\x0b\x01\x0d\x01\uffff\x01\x0c\x01\uffff\x01\x01\x01\x11\x01"+
-        "\uffff\x01\x02\x01\x0a\x01\uffff\x01\x0e\x01\x0f\x01\x0e";
+        "\x02\uffff\x01\x0c\x01\x11\x01\x0d\x01\uffff\x01\x05\x01\uffff"+
+        "\x01\x03\x01\x04\x01\uffff\x01\x08\x01\x11\x01\uffff\x01\x09\x01"+
+        "\uffff\x01\x0b\x01\x0e\x01\uffff\x01\x0f\x01\uffff\x01\x06\x01\x10"+
+        "\x01\uffff\x01\x01\x01\uffff\x01\x07\x01\uffff\x01\x02\x01\x0a";
     const string DFA8_specialS =
-        "\x01\x00\x01\x01\x03\uffff\x01\x02\x03\uffff\x01\x03\x01\uffff"+
-        "\x01\x04\x01\x05\x01\uffff\x01\x06\x01\uffff\x01\x07\x02\uffff\x01"+
-        "\x08\x01\uffff\x01\x09\x02\uffff\x01\x0a\x02\uffff\x01\x0b\x03\uffff}>";
+        "\x01\x00\x01\x01\x03\uffff\x01\x02\x01\uffff\x01\x03\x02\uffff"+
+        "\x01\x04\x02\uffff\x01\x05\x01\uffff\x01\x06\x02\uffff\x01\x07\x01"+
+        "\uffff\x01\x08\x02\uffff\x01\x09\x01\uffff\x01\x0a\x01\uffff\x01"+
+        "\x0b\x02\uffff}>";
     static readonly string[] DFA8_transitionS = {
-            "\x09\x17\x01\x1b\x01\x04\x02\x17\x01\x04\x12\x17\x01\x1b\x01"+
-            "\x17\x01\x10\x01\x1e\x1c\x17\x01\x12\x01\x0e\x01\x18\x02\x17"+
-            "\x01\x0b\x01\x15\x01\x0c\x0b\x17\x01\x05\x01\x09\x02\x17\x01"+
-            "\x01\x24\x17\x01\x13\uff83\x17",
+            "\x09\x0c\x01\x12\x01\x16\x02\x0c\x01\x16\x12\x0c\x01\x12\x01"+
+            "\x0c\x01\x0f\x01\x11\x1c\x0c\x01\x04\x01\x0d\x01\x1b\x02\x0c"+
+            "\x01\x05\x01\x17\x01\x14\x0b\x0c\x01\x07\x01\x0a\x02\x0c\x01"+
+            "\x19\x24\x0c\x01\x01\uff83\x0c",
             "\x01\uffff",
             "",
-            "",
-            "",
-            "\x01\uffff",
-            "",
-            "",
-            "",
-            "\x01\uffff",
-            "",
-            "\x01\uffff",
-            "\x01\uffff",
-            "",
-            "\x01\uffff",
-            "",
-            "\x01\uffff",
             "",
             "",
             "\x01\uffff",
@@ -1574,6 +1563,19 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
             "",
             "\x01\uffff",
             "",
+            "\x01\uffff",
+            "",
+            "",
+            "\x01\uffff",
+            "",
+            "\x01\uffff",
+            "",
+            "",
+            "\x01\uffff",
+            "",
+            "\x01\uffff",
+            "",
+            "\x01\uffff",
             "",
             ""
     };
@@ -1620,35 +1622,35 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
                    	int LA8_0 = input.LA(1);
 
                    	s = -1;
-                   	if ( (LA8_0 == 'W') ) { s = 1; }
+                   	if ( (LA8_0 == '|') ) { s = 1; }
 
-                   	else if ( (LA8_0 == '\n' || LA8_0 == '\r') ) { s = 4; }
+                   	else if ( (LA8_0 == '@') ) { s = 4; }
 
-                   	else if ( (LA8_0 == 'S') ) { s = 5; }
+                   	else if ( (LA8_0 == 'E') ) { s = 5; }
 
-                   	else if ( (LA8_0 == 'T') ) { s = 9; }
+                   	else if ( (LA8_0 == 'S') ) { s = 7; }
 
-                   	else if ( (LA8_0 == 'E') ) { s = 11; }
+                   	else if ( (LA8_0 == 'T') ) { s = 10; }
 
-                   	else if ( (LA8_0 == 'G') ) { s = 12; }
+                   	else if ( ((LA8_0 >= '\u0000' && LA8_0 <= '\b') || (LA8_0 >= '\u000B' && LA8_0 <= '\f') || (LA8_0 >= '\u000E' && LA8_0 <= '\u001F') || LA8_0 == '!' || (LA8_0 >= '$' && LA8_0 <= '?') || (LA8_0 >= 'C' && LA8_0 <= 'D') || (LA8_0 >= 'H' && LA8_0 <= 'R') || (LA8_0 >= 'U' && LA8_0 <= 'V') || (LA8_0 >= 'X' && LA8_0 <= '{') || (LA8_0 >= '}' && LA8_0 <= '\uFFFF')) ) { s = 12; }
 
-                   	else if ( (LA8_0 == 'A') ) { s = 14; }
+                   	else if ( (LA8_0 == 'A') ) { s = 13; }
 
-                   	else if ( (LA8_0 == '\"') ) { s = 16; }
+                   	else if ( (LA8_0 == '\"') ) { s = 15; }
 
-                   	else if ( (LA8_0 == '@') ) { s = 18; }
+                   	else if ( (LA8_0 == '#') ) { s = 17; }
 
-                   	else if ( (LA8_0 == '|') ) { s = 19; }
+                   	else if ( (LA8_0 == '\t' || LA8_0 == ' ') ) { s = 18; }
 
-                   	else if ( (LA8_0 == 'F') ) { s = 21; }
+                   	else if ( (LA8_0 == 'G') ) { s = 20; }
 
-                   	else if ( ((LA8_0 >= '\u0000' && LA8_0 <= '\b') || (LA8_0 >= '\u000B' && LA8_0 <= '\f') || (LA8_0 >= '\u000E' && LA8_0 <= '\u001F') || LA8_0 == '!' || (LA8_0 >= '$' && LA8_0 <= '?') || (LA8_0 >= 'C' && LA8_0 <= 'D') || (LA8_0 >= 'H' && LA8_0 <= 'R') || (LA8_0 >= 'U' && LA8_0 <= 'V') || (LA8_0 >= 'X' && LA8_0 <= '{') || (LA8_0 >= '}' && LA8_0 <= '\uFFFF')) ) { s = 23; }
+                   	else if ( (LA8_0 == '\n' || LA8_0 == '\r') ) { s = 22; }
 
-                   	else if ( (LA8_0 == 'B') ) { s = 24; }
+                   	else if ( (LA8_0 == 'F') ) { s = 23; }
 
-                   	else if ( (LA8_0 == '\t' || LA8_0 == ' ') ) { s = 27; }
+                   	else if ( (LA8_0 == 'W') ) { s = 25; }
 
-                   	else if ( (LA8_0 == '#') ) { s = 30; }
+                   	else if ( (LA8_0 == 'B') ) { s = 27; }
 
                    	if ( s >= 0 ) return s;
                    	break;
@@ -1659,7 +1661,7 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
                    	int index8_1 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred7_SpecFlowLangLexer_en()) ) { s = 2; }
+                   	if ( (synpred12_SpecFlowLangLexer_en()) ) { s = 2; }
 
                    	else if ( (true) ) { s = 3; }
 
@@ -1674,11 +1676,7 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
                    	int index8_5 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred3_SpecFlowLangLexer_en()) ) { s = 6; }
-
-                   	else if ( (synpred4_SpecFlowLangLexer_en()) ) { s = 7; }
-
-                   	else if ( (synpred5_SpecFlowLangLexer_en()) ) { s = 8; }
+                   	if ( (synpred5_SpecFlowLangLexer_en()) ) { s = 6; }
 
                    	else if ( (true) ) { s = 3; }
 
@@ -1687,125 +1685,127 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
                    	if ( s >= 0 ) return s;
                    	break;
                	case 3 : 
-                   	int LA8_9 = input.LA(1);
+                   	int LA8_7 = input.LA(1);
 
                    	 
-                   	int index8_9 = input.Index();
+                   	int index8_7 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred8_SpecFlowLangLexer_en()) ) { s = 10; }
+                   	if ( (synpred3_SpecFlowLangLexer_en()) ) { s = 8; }
+
+                   	else if ( (synpred4_SpecFlowLangLexer_en()) ) { s = 9; }
+
+                   	else if ( (synpred5_SpecFlowLangLexer_en()) ) { s = 6; }
 
                    	else if ( (true) ) { s = 3; }
 
                    	 
-                   	input.Seek(index8_9);
+                   	input.Seek(index8_7);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 4 : 
-                   	int LA8_11 = input.LA(1);
+                   	int LA8_10 = input.LA(1);
 
                    	 
-                   	int index8_11 = input.Index();
+                   	int index8_10 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred5_SpecFlowLangLexer_en()) ) { s = 8; }
+                   	if ( (synpred8_SpecFlowLangLexer_en()) ) { s = 11; }
 
                    	else if ( (true) ) { s = 3; }
 
                    	 
-                   	input.Seek(index8_11);
+                   	input.Seek(index8_10);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 5 : 
-                   	int LA8_12 = input.LA(1);
+                   	int LA8_13 = input.LA(1);
 
                    	 
-                   	int index8_12 = input.Index();
+                   	int index8_13 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred6_SpecFlowLangLexer_en()) ) { s = 13; }
+                   	if ( (synpred9_SpecFlowLangLexer_en()) ) { s = 14; }
 
-                   	else if ( (true) ) { s = 3; }
+                   	else if ( (true) ) { s = 12; }
 
                    	 
-                   	input.Seek(index8_12);
+                   	input.Seek(index8_13);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 6 : 
-                   	int LA8_14 = input.LA(1);
+                   	int LA8_15 = input.LA(1);
 
                    	 
-                   	int index8_14 = input.Index();
+                   	int index8_15 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred9_SpecFlowLangLexer_en()) ) { s = 15; }
+                   	if ( (synpred11_SpecFlowLangLexer_en()) ) { s = 16; }
 
-                   	else if ( (true) ) { s = 3; }
+                   	else if ( (true) ) { s = 12; }
 
                    	 
-                   	input.Seek(index8_14);
+                   	input.Seek(index8_15);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 7 : 
-                   	int LA8_16 = input.LA(1);
+                   	int LA8_18 = input.LA(1);
 
                    	 
-                   	int index8_16 = input.Index();
+                   	int index8_18 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred11_SpecFlowLangLexer_en()) ) { s = 17; }
+                   	if ( (synpred14_SpecFlowLangLexer_en()) ) { s = 17; }
 
-                   	else if ( (true) ) { s = 3; }
+                   	else if ( (synpred15_SpecFlowLangLexer_en()) ) { s = 19; }
 
                    	 
-                   	input.Seek(index8_16);
+                   	input.Seek(index8_18);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 8 : 
-                   	int LA8_19 = input.LA(1);
+                   	int LA8_20 = input.LA(1);
 
                    	 
-                   	int index8_19 = input.Index();
+                   	int index8_20 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred12_SpecFlowLangLexer_en()) ) { s = 20; }
+                   	if ( (synpred6_SpecFlowLangLexer_en()) ) { s = 21; }
 
-                   	else if ( (true) ) { s = 3; }
+                   	else if ( (true) ) { s = 12; }
 
                    	 
-                   	input.Seek(index8_19);
+                   	input.Seek(index8_20);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 9 : 
-                   	int LA8_21 = input.LA(1);
+                   	int LA8_23 = input.LA(1);
 
                    	 
-                   	int index8_21 = input.Index();
+                   	int index8_23 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred1_SpecFlowLangLexer_en()) ) { s = 22; }
+                   	if ( (synpred1_SpecFlowLangLexer_en()) ) { s = 24; }
 
-                   	else if ( (true) ) { s = 3; }
+                   	else if ( (true) ) { s = 12; }
 
                    	 
-                   	input.Seek(index8_21);
+                   	input.Seek(index8_23);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 10 : 
-                   	int LA8_24 = input.LA(1);
+                   	int LA8_25 = input.LA(1);
 
                    	 
-                   	int index8_24 = input.Index();
+                   	int index8_25 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred2_SpecFlowLangLexer_en()) ) { s = 25; }
+                   	if ( (synpred7_SpecFlowLangLexer_en()) ) { s = 26; }
 
-                   	else if ( (synpred10_SpecFlowLangLexer_en()) ) { s = 26; }
-
-                   	else if ( (true) ) { s = 23; }
+                   	else if ( (true) ) { s = 12; }
 
                    	 
-                   	input.Seek(index8_24);
+                   	input.Seek(index8_25);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 11 : 
@@ -1815,9 +1815,11 @@ public partial class SpecFlowLangLexer_en : SpecFlowLangLexer {
                    	int index8_27 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred14_SpecFlowLangLexer_en()) ) { s = 28; }
+                   	if ( (synpred2_SpecFlowLangLexer_en()) ) { s = 28; }
 
-                   	else if ( (synpred15_SpecFlowLangLexer_en()) ) { s = 29; }
+                   	else if ( (synpred10_SpecFlowLangLexer_en()) ) { s = 29; }
+
+                   	else if ( (true) ) { s = 12; }
 
                    	 
                    	input.Seek(index8_27);

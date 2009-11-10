@@ -19,12 +19,13 @@ namespace TechTalk.SpecFlow.Tracing
                 extraArgs.Add("Table table");
 
             StringBuilder result = new StringBuilder();
-            result.AppendFormat(@"[{0}(@""{1}"")]
-public void {0}{2}({3})
+            result.AppendFormat(@"[{0}(@""{2}"")]
+public void {1}{3}({4})
 {{
     ScenarioContext.Current.Pending();
 }}",
                 stepArgs.Type,
+                LanguageHelper.GetKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
                 EscapeRegex(stepArgs.Text),
                 stepArgs.Text.ToIdentifier(),
                 string.Join(", ", extraArgs.ToArray())

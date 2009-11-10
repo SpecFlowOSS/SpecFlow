@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 SpecFlowLangLexer_fr.g 2009-11-09 17:26:25
+// $ANTLR 3.1.2 SpecFlowLangLexer_fr.g 2009-11-10 15:19:41
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -1335,13 +1335,13 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
    	    state.failed = false;
    	    return success;
    	}
-   	public bool synpred2_SpecFlowLangLexer_fr() 
+   	public bool synpred1_SpecFlowLangLexer_fr() 
    	{
    	    state.backtracking++;
    	    int start = input.Mark();
    	    try 
    	    {
-   	        synpred2_SpecFlowLangLexer_fr_fragment(); // can never throw exception
+   	        synpred1_SpecFlowLangLexer_fr_fragment(); // can never throw exception
    	    }
    	    catch (RecognitionException re) 
    	    {
@@ -1353,13 +1353,13 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
    	    state.failed = false;
    	    return success;
    	}
-   	public bool synpred1_SpecFlowLangLexer_fr() 
+   	public bool synpred2_SpecFlowLangLexer_fr() 
    	{
    	    state.backtracking++;
    	    int start = input.Mark();
    	    try 
    	    {
-   	        synpred1_SpecFlowLangLexer_fr_fragment(); // can never throw exception
+   	        synpred2_SpecFlowLangLexer_fr_fragment(); // can never throw exception
    	    }
    	    catch (RecognitionException re) 
    	    {
@@ -1489,50 +1489,39 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
 	}
 
     const string DFA7_eotS =
-        "\x1f\uffff";
+        "\x1d\uffff";
     const string DFA7_eofS =
-        "\x1f\uffff";
+        "\x1d\uffff";
     const string DFA7_minS =
-        "\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x03\uffff\x01\x00"+
-        "\x02\uffff\x01\x00\x02\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff"+
-        "\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff\x01\x00\x01"+
+        "\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x03\uffff\x01\x00"+
+        "\x01\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x03\uffff"+
+        "\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x02"+
         "\uffff\x01\x00\x01\uffff";
     const string DFA7_maxS =
-        "\x01\uffff\x01\uffff\x01\x00\x02\uffff\x01\x00\x03\uffff\x01\x00"+
-        "\x02\uffff\x01\x00\x02\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff"+
-        "\x01\x00\x01\uffff\x01\x00\x02\uffff\x01\x00\x01\uffff\x01\x00\x01"+
+        "\x01\uffff\x01\uffff\x01\x00\x01\uffff\x01\x00\x03\uffff\x01\x00"+
+        "\x01\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x03\uffff"+
+        "\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x01\uffff\x01\x00\x02"+
         "\uffff\x01\x00\x01\uffff";
     const string DFA7_acceptS =
-        "\x01\uffff\x01\x10\x01\uffff\x01\x0e\x01\x0f\x01\uffff\x01\x05"+
-        "\x01\x09\x01\x11\x01\uffff\x01\x0b\x01\x0e\x01\uffff\x01\x0a\x01"+
-        "\x0d\x01\uffff\x01\x03\x01\x06\x01\uffff\x01\x02\x01\uffff\x01\x0c"+
-        "\x01\uffff\x01\x04\x01\x11\x01\uffff\x01\x07\x01\uffff\x01\x01\x01"+
-        "\uffff\x01\x08";
+        "\x01\uffff\x01\x11\x01\uffff\x01\x01\x01\uffff\x01\x05\x01\x09"+
+        "\x01\x0d\x01\uffff\x01\x04\x01\uffff\x01\x0a\x01\uffff\x01\x0b\x01"+
+        "\uffff\x01\x0c\x01\x10\x01\x0e\x01\uffff\x01\x07\x01\uffff\x01\x02"+
+        "\x01\uffff\x01\x08\x01\uffff\x01\x03\x01\x06\x01\uffff\x01\x0f";
     const string DFA7_specialS =
-        "\x01\x00\x01\uffff\x01\x01\x02\uffff\x01\x02\x03\uffff\x01\x03"+
-        "\x02\uffff\x01\x04\x02\uffff\x01\x05\x02\uffff\x01\x06\x01\uffff"+
-        "\x01\x07\x01\uffff\x01\x08\x02\uffff\x01\x09\x01\uffff\x01\x0a\x01"+
+        "\x01\x00\x01\uffff\x01\x01\x01\uffff\x01\x02\x03\uffff\x01\x03"+
+        "\x01\uffff\x01\x04\x01\uffff\x01\x05\x01\uffff\x01\x06\x03\uffff"+
+        "\x01\x07\x01\uffff\x01\x08\x01\uffff\x01\x09\x01\uffff\x01\x0a\x02"+
         "\uffff\x01\x0b\x01\uffff}>";
     static readonly string[] DFA7_transitionS = {
-            "\x09\x18\x01\x02\x01\x01\x02\x18\x01\x01\x12\x18\x01\x02\x01"+
-            "\x18\x01\x09\x01\x0b\x1c\x18\x01\x0e\x01\x1d\x01\x18\x01\x12"+
-            "\x01\x18\x01\x05\x01\x1b\x05\x18\x01\x19\x01\x0c\x02\x18\x01"+
-            "\x16\x02\x18\x01\x0f\x28\x18\x01\x14\uff83\x18",
+            "\x09\x01\x01\x1b\x01\x10\x02\x01\x01\x10\x12\x01\x01\x1b\x01"+
+            "\x01\x01\x0c\x01\x11\x1c\x01\x01\x07\x01\x16\x01\x01\x01\x14"+
+            "\x01\x01\x01\x04\x01\x02\x05\x01\x01\x12\x01\x0a\x02\x01\x01"+
+            "\x08\x02\x01\x01\x18\x28\x01\x01\x0e\uff83\x01",
             "",
             "\x01\uffff",
             "",
-            "",
             "\x01\uffff",
             "",
-            "",
-            "",
-            "\x01\uffff",
-            "",
-            "",
-            "\x01\uffff",
-            "",
-            "",
-            "\x01\uffff",
             "",
             "",
             "\x01\uffff",
@@ -1541,10 +1530,18 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
             "",
             "\x01\uffff",
             "",
+            "\x01\uffff",
+            "",
+            "",
             "",
             "\x01\uffff",
             "",
             "\x01\uffff",
+            "",
+            "\x01\uffff",
+            "",
+            "\x01\uffff",
+            "",
             "",
             "\x01\uffff",
             ""
@@ -1592,35 +1589,35 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
                    	int LA7_0 = input.LA(1);
 
                    	s = -1;
-                   	if ( (LA7_0 == '\n' || LA7_0 == '\r') ) { s = 1; }
+                   	if ( ((LA7_0 >= '\u0000' && LA7_0 <= '\b') || (LA7_0 >= '\u000B' && LA7_0 <= '\f') || (LA7_0 >= '\u000E' && LA7_0 <= '\u001F') || LA7_0 == '!' || (LA7_0 >= '$' && LA7_0 <= '?') || LA7_0 == 'B' || LA7_0 == 'D' || (LA7_0 >= 'G' && LA7_0 <= 'K') || (LA7_0 >= 'N' && LA7_0 <= 'O') || (LA7_0 >= 'Q' && LA7_0 <= 'R') || (LA7_0 >= 'T' && LA7_0 <= '{') || (LA7_0 >= '}' && LA7_0 <= '\uFFFF')) ) { s = 1; }
 
-                   	else if ( (LA7_0 == '\t' || LA7_0 == ' ') ) { s = 2; }
+                   	else if ( (LA7_0 == 'F') ) { s = 2; }
 
-                   	else if ( (LA7_0 == 'E') ) { s = 5; }
+                   	else if ( (LA7_0 == 'E') ) { s = 4; }
 
-                   	else if ( (LA7_0 == '\"') ) { s = 9; }
+                   	else if ( (LA7_0 == '@') ) { s = 7; }
 
-                   	else if ( (LA7_0 == '#') ) { s = 11; }
+                   	else if ( (LA7_0 == 'P') ) { s = 8; }
 
-                   	else if ( (LA7_0 == 'M') ) { s = 12; }
+                   	else if ( (LA7_0 == 'M') ) { s = 10; }
 
-                   	else if ( (LA7_0 == '@') ) { s = 14; }
+                   	else if ( (LA7_0 == '\"') ) { s = 12; }
 
-                   	else if ( (LA7_0 == 'S') ) { s = 15; }
+                   	else if ( (LA7_0 == '|') ) { s = 14; }
 
-                   	else if ( (LA7_0 == 'C') ) { s = 18; }
+                   	else if ( (LA7_0 == '\n' || LA7_0 == '\r') ) { s = 16; }
 
-                   	else if ( (LA7_0 == '|') ) { s = 20; }
+                   	else if ( (LA7_0 == '#') ) { s = 17; }
 
-                   	else if ( (LA7_0 == 'P') ) { s = 22; }
+                   	else if ( (LA7_0 == 'L') ) { s = 18; }
 
-                   	else if ( ((LA7_0 >= '\u0000' && LA7_0 <= '\b') || (LA7_0 >= '\u000B' && LA7_0 <= '\f') || (LA7_0 >= '\u000E' && LA7_0 <= '\u001F') || LA7_0 == '!' || (LA7_0 >= '$' && LA7_0 <= '?') || LA7_0 == 'B' || LA7_0 == 'D' || (LA7_0 >= 'G' && LA7_0 <= 'K') || (LA7_0 >= 'N' && LA7_0 <= 'O') || (LA7_0 >= 'Q' && LA7_0 <= 'R') || (LA7_0 >= 'T' && LA7_0 <= '{') || (LA7_0 >= '}' && LA7_0 <= '\uFFFF')) ) { s = 24; }
+                   	else if ( (LA7_0 == 'C') ) { s = 20; }
 
-                   	else if ( (LA7_0 == 'L') ) { s = 25; }
+                   	else if ( (LA7_0 == 'A') ) { s = 22; }
 
-                   	else if ( (LA7_0 == 'F') ) { s = 27; }
+                   	else if ( (LA7_0 == 'S') ) { s = 24; }
 
-                   	else if ( (LA7_0 == 'A') ) { s = 29; }
+                   	else if ( (LA7_0 == '\t' || LA7_0 == ' ') ) { s = 27; }
 
                    	if ( s >= 0 ) return s;
                    	break;
@@ -1631,166 +1628,166 @@ public partial class SpecFlowLangLexer_fr : SpecFlowLangLexer {
                    	int index7_2 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred14_SpecFlowLangLexer_fr()) ) { s = 3; }
+                   	if ( (synpred1_SpecFlowLangLexer_fr()) ) { s = 3; }
 
-                   	else if ( (synpred15_SpecFlowLangLexer_fr()) ) { s = 4; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
                    	input.Seek(index7_2);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 2 : 
-                   	int LA7_5 = input.LA(1);
+                   	int LA7_4 = input.LA(1);
 
                    	 
-                   	int index7_5 = input.Index();
+                   	int index7_4 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred5_SpecFlowLangLexer_fr()) ) { s = 6; }
+                   	if ( (synpred5_SpecFlowLangLexer_fr()) ) { s = 5; }
 
-                   	else if ( (synpred9_SpecFlowLangLexer_fr()) ) { s = 7; }
+                   	else if ( (synpred9_SpecFlowLangLexer_fr()) ) { s = 6; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
-                   	input.Seek(index7_5);
+                   	input.Seek(index7_4);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 3 : 
-                   	int LA7_9 = input.LA(1);
+                   	int LA7_8 = input.LA(1);
 
                    	 
-                   	int index7_9 = input.Index();
+                   	int index7_8 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred11_SpecFlowLangLexer_fr()) ) { s = 10; }
+                   	if ( (synpred4_SpecFlowLangLexer_fr()) ) { s = 9; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
-                   	input.Seek(index7_9);
+                   	input.Seek(index7_8);
                    	if ( s >= 0 ) return s;
                    	break;
                	case 4 : 
+                   	int LA7_10 = input.LA(1);
+
+                   	 
+                   	int index7_10 = input.Index();
+                   	input.Rewind();
+                   	s = -1;
+                   	if ( (synpred10_SpecFlowLangLexer_fr()) ) { s = 11; }
+
+                   	else if ( (true) ) { s = 1; }
+
+                   	 
+                   	input.Seek(index7_10);
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 5 : 
                    	int LA7_12 = input.LA(1);
 
                    	 
                    	int index7_12 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred10_SpecFlowLangLexer_fr()) ) { s = 13; }
+                   	if ( (synpred11_SpecFlowLangLexer_fr()) ) { s = 13; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
                    	input.Seek(index7_12);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 5 : 
-                   	int LA7_15 = input.LA(1);
+               	case 6 : 
+                   	int LA7_14 = input.LA(1);
 
                    	 
-                   	int index7_15 = input.Index();
+                   	int index7_14 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred3_SpecFlowLangLexer_fr()) ) { s = 16; }
+                   	if ( (synpred12_SpecFlowLangLexer_fr()) ) { s = 15; }
 
-                   	else if ( (synpred6_SpecFlowLangLexer_fr()) ) { s = 17; }
-
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
-                   	input.Seek(index7_15);
+                   	input.Seek(index7_14);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 6 : 
+               	case 7 : 
                    	int LA7_18 = input.LA(1);
 
                    	 
                    	int index7_18 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred2_SpecFlowLangLexer_fr()) ) { s = 19; }
+                   	if ( (synpred7_SpecFlowLangLexer_fr()) ) { s = 19; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
                    	input.Seek(index7_18);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 7 : 
+               	case 8 : 
                    	int LA7_20 = input.LA(1);
 
                    	 
                    	int index7_20 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred12_SpecFlowLangLexer_fr()) ) { s = 21; }
+                   	if ( (synpred2_SpecFlowLangLexer_fr()) ) { s = 21; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
                    	input.Seek(index7_20);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 8 : 
+               	case 9 : 
                    	int LA7_22 = input.LA(1);
 
                    	 
                    	int index7_22 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred4_SpecFlowLangLexer_fr()) ) { s = 23; }
+                   	if ( (synpred8_SpecFlowLangLexer_fr()) ) { s = 23; }
 
-                   	else if ( (true) ) { s = 8; }
+                   	else if ( (true) ) { s = 1; }
 
                    	 
                    	input.Seek(index7_22);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 9 : 
-                   	int LA7_25 = input.LA(1);
+               	case 10 : 
+                   	int LA7_24 = input.LA(1);
 
                    	 
-                   	int index7_25 = input.Index();
+                   	int index7_24 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred7_SpecFlowLangLexer_fr()) ) { s = 26; }
+                   	if ( (synpred3_SpecFlowLangLexer_fr()) ) { s = 25; }
 
-                   	else if ( (true) ) { s = 24; }
+                   	else if ( (synpred6_SpecFlowLangLexer_fr()) ) { s = 26; }
+
+                   	else if ( (true) ) { s = 1; }
 
                    	 
-                   	input.Seek(index7_25);
+                   	input.Seek(index7_24);
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 10 : 
+               	case 11 : 
                    	int LA7_27 = input.LA(1);
 
                    	 
                    	int index7_27 = input.Index();
                    	input.Rewind();
                    	s = -1;
-                   	if ( (synpred1_SpecFlowLangLexer_fr()) ) { s = 28; }
+                   	if ( (synpred14_SpecFlowLangLexer_fr()) ) { s = 17; }
 
-                   	else if ( (true) ) { s = 24; }
+                   	else if ( (synpred15_SpecFlowLangLexer_fr()) ) { s = 28; }
 
                    	 
                    	input.Seek(index7_27);
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 11 : 
-                   	int LA7_29 = input.LA(1);
-
-                   	 
-                   	int index7_29 = input.Index();
-                   	input.Rewind();
-                   	s = -1;
-                   	if ( (synpred8_SpecFlowLangLexer_fr()) ) { s = 30; }
-
-                   	else if ( (true) ) { s = 24; }
-
-                   	 
-                   	input.Seek(index7_29);
                    	if ( s >= 0 ) return s;
                    	break;
         }

@@ -27,6 +27,11 @@ namespace TechTalk.SpecFlow
             return (ScenarioBlock)((int)bindingType);
         }
 
+        public static StepDefinitionKeyword ToStepDefinitionKeyword(this BindingType bindingType)
+        {
+            return (StepDefinitionKeyword)((int)bindingType);
+        }
+
         public static bool Equals(this ScenarioBlock block, BindingType bindingType)
         {
             return (int)block == (int)bindingType;
