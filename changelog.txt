@@ -6,6 +6,7 @@ New features:
 + Finalize configuration (Issue 13)
 + Support German, French and Hungarian languages (Issue 5)
 + Add strong-name for specflow assemblies (Issue 2)
++ Allow scenario events to be instance methods (Issue 20)
 
 Fixed issues:
 + Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)

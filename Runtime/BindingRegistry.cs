@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow
 
         private void BuildEventBindingFromMethod(MethodInfo method, BindingEventAttribute bindingEventAttr)
         {
-            CheckEventBindingMethod(method);
+            CheckEventBindingMethod(bindingEventAttr.Event, method);
 
             Delegate bindingAction = CreateBindingAction(method);
             var eventBinding = new EventBinding(bindingAction, bindingEventAttr.Tags, method);
@@ -89,12 +89,24 @@ namespace TechTalk.SpecFlow
             GetEvents(bindingEventAttr.Event).Add(eventBinding);
         }
 
-        private void CheckEventBindingMethod(MethodInfo method)
+        private void CheckEventBindingMethod(BindingEvent bindingEvent, MethodInfo method)
         {
-            if (!method.IsStatic)
-                throw new Exception("The event binding method must be static! " + method.ToString());
+            if (!IsScenarioSpecificEvent(bindingEvent) &&
+                !method.IsStatic)
+                throw errorProvider.GetNonStaticEventError(method);
 
             //TODO: check parameters, etc.
+        }
+
+        private bool IsScenarioSpecificEvent(BindingEvent bindingEvent)
+        {
+            return
+                bindingEvent == BindingEvent.ScenarioStart ||
+                bindingEvent == BindingEvent.ScenarioEnd ||
+                bindingEvent == BindingEvent.BlockStart ||
+                bindingEvent == BindingEvent.BlockEnd ||
+                bindingEvent == BindingEvent.StepStart ||
+                bindingEvent == BindingEvent.StepEnd;
         }
 
         private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)

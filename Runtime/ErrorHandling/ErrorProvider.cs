@@ -81,5 +81,12 @@ namespace TechTalk.SpecFlow.ErrorHandling
             return new BindingException(
                 string.Format("Binding methods with more than {0} parameters are not supported", maxParam));
         }
+
+        public Exception GetNonStaticEventError(MethodInfo methodInfo)
+        {
+            throw new BindingException(
+                string.Format("The binding methods for before/after feature and before/after test run events must be static! {0}",
+                GetMethodText(methodInfo)));
+        }
     }
 }
