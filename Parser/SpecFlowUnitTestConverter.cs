@@ -295,7 +295,7 @@ namespace TechTalk.SpecFlow.Parser
 
                 for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                 {
-                    string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifier() :
+                    string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifierPart() :
                         string.Format("Variant{0}", rowIndex);
                     GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], variantName);
                 }
