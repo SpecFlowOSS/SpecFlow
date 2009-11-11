@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -128,7 +129,7 @@ namespace ParserTests
         public void CanGenerateFromFile(string fileName)
         {
             Console.WriteLine(fileName);
-            SpecFlowLangParser parser = new SpecFlowLangParser();
+            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en"));
             using (var reader = new StreamReader(fileName))
             {
                 Feature feature = parser.Parse(reader);

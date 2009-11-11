@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Parser
             SpecFlowFeatureFile featureFile = GetFeatureFile(featureFileName);
             string targetNamespace = GetTargetNamespace(featureFile);
 
-            SpecFlowLangParser parser = new SpecFlowLangParser();
+            SpecFlowLangParser parser = new SpecFlowLangParser(project.GeneratorConfiguration.FeatureLanguage);
             Feature feature = parser.Parse(new StringReader(content), featureFile.GetFullPath(project));
 
             IUnitTestGeneratorProvider generatorProvider = CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);

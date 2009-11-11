@@ -2,9 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using Antlr.Runtime;
 using Antlr.Runtime.Tree;
@@ -15,11 +13,7 @@ namespace TechTalk.SpecFlow.Parser
 {
     public class SpecFlowLangParser
     {
-        private CultureInfo defaultLanguage;
-
-        public SpecFlowLangParser() : this(new CultureInfo("en-US"))
-        {
-        }
+        private readonly CultureInfo defaultLanguage;
 
         public SpecFlowLangParser(CultureInfo defaultLanguage)
         {
@@ -57,7 +51,7 @@ namespace TechTalk.SpecFlow.Parser
                 throw new SpecFlowParserException("Invalid Gherkin file!", lexer.LexerErrors.Concat(parser.ParserErrors).ToArray());
             }
 
-            var walker = new Grammar.SpecFlowLangWalker(new CommonTreeNodeStream(featureTree));
+            var walker = new SpecFlowLangWalker(new CommonTreeNodeStream(featureTree));
 
             Feature feature = walker.feature();
 
@@ -69,7 +63,7 @@ namespace TechTalk.SpecFlow.Parser
             return feature;
         }
 
-        static readonly Dictionary<CultureInfo, Type> lexters = new Dictionary<CultureInfo, Type>()
+        static readonly Dictionary<CultureInfo, Type> lexters = new Dictionary<CultureInfo, Type>
             {
                 {new CultureInfo("en"), typeof(SpecFlowLangLexer_en)},
                 {new CultureInfo("de"), typeof(SpecFlowLangLexer_de)},
