@@ -20,18 +20,24 @@ namespace $rootnamespace$
             // To use the multiline text or the table argument of the scenario,
             // additional string/Table parameters can be defined on the step definition
             // method. 
+
+            ScenarioContext.Current.Pending();
         }
 
         [When("I press add")]
         public void WhenIPressAdd()
         {
             //TODO: implement act (action) logic
+
+            ScenarioContext.Current.Pending();
         }
 
         [Then("the result should be (.*) on the screen")]
         public void ThenTheResultShouldBe(int result)
         {
             //TODO: implement assert (verification) logic
+          
+            ScenarioContext.Current.Pending();
         }
     }
 }
