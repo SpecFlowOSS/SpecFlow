@@ -79,6 +79,7 @@
     <Compile Include="Grammar\SpecFlowLangLexer_en.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer_fr.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer_hu.cs" />
+    <Compile Include="Grammar\SpecFlowLangLexer_nl.cs" />
     <Compile Include="Grammar\SpecFlowLangParser.cs">
       <SubType>Code</SubType>
     </Compile>

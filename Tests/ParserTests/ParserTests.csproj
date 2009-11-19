@@ -74,6 +74,8 @@
     </None>
     <None Include="TestFiles\comments.feature">
     </None>
+    <None Include="TestFiles\dutch.feature">
+    </None>
     <None Include="TestFiles\hungarian.feature">
     </None>
     <None Include="TestFiles\french.feature">
@@ -114,6 +116,7 @@
     <Content Include="TestFiles\background_withtitle.feature.xml" />
     <Content Include="TestFiles\but.feature.xml" />
     <Content Include="TestFiles\comments.feature.xml" />
+    <Content Include="TestFiles\dutch.feature.xml" />
     <Content Include="TestFiles\featureheader.feature.xml" />
     <Content Include="TestFiles\french.feature.xml" />
     <Content Include="TestFiles\full.feature.xml" />
