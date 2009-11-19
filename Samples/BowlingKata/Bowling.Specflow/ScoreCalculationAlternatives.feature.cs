@@ -24,7 +24,7 @@ namespace Bowling.Specflow
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo("Score Calculation (alternative forms)", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation (alternative forms)", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
                     "otal score", ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }

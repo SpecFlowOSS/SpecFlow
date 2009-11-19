@@ -23,7 +23,7 @@ namespace Bowling.SpecFlow
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo("Score Calculation", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
                     "otal score", ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }

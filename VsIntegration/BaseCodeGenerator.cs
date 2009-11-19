@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace TechTalk.SpecFlow.VsIntegration
@@ -71,19 +73,26 @@ namespace TechTalk.SpecFlow.VsIntegration
                 bytes = Encoding.UTF8.GetBytes(message);
             }
 
-//            if (bytes == null)
-//            {
-//                // --- This signals that GenerateCode() has failed.         
-//                rgbOutputFileContents = null;
-//                pcbOutput = 0;
-//                return VSConstants.E_FAIL;
-//            }
-
             int outputLength = bytes.Length;
             rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(outputLength);
             Marshal.Copy(bytes, 0, rgbOutputFileContents[0], outputLength);
             pcbOutput = (uint)outputLength;
+
+            RefreshMsTestWindow();
+
             return VSConstants.S_OK;
+        }
+
+        private void RefreshMsTestWindow()
+        {
+            //refreshCmdGuid,cmdID is the command id of refresh command.
+            Guid refreshCmdGuid = new Guid("{B85579AA-8BE0-4C4F-A850-90902B317571}");
+            IOleCommandTarget cmdTarget = Package.GetGlobalService(typeof(SUIHostCommandDispatcher)) as IOleCommandTarget;
+            const uint cmdID = 13109;
+            if (cmdTarget != null)
+                cmdTarget.Exec(ref refreshCmdGuid, cmdID, 
+                    (uint)OLECMDEXECOPT.OLECMDEXECOPT_DONTPROMPTUSER, 
+                    IntPtr.Zero, IntPtr.Zero);
         }
 
         protected virtual string GenerateError(IVsGeneratorProgress pGenerateProgress, Exception ex)
