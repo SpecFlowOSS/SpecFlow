@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow
         private readonly TestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly StepFormatter stepFormatter;
-        private readonly StepDefinitonSkeletonProvider stepDefinitonSkeletonProvider;
+        private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
         public TestRunner()
         {
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow
             testTracer = ObjectContainer.TestTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
-            stepDefinitonSkeletonProvider = ObjectContainer.StepDefinitonSkeletonProvider;
+            stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow
             {
                 var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
-                    stepDefinitonSkeletonProvider.GetBindingClassSkeleton(
+                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
                 errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
@@ -313,7 +313,7 @@ namespace TechTalk.SpecFlow
             {
                 testTracer.TraceNoMatchingStepDefinition(stepArgs);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
-                    stepDefinitonSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)

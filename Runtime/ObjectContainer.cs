@@ -176,14 +176,14 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        #region StepDefinitonSkeletonProvider
-        private static StepDefinitonSkeletonProvider stepDefinitonSkeletonProvider = null;
+        #region StepDefinitionSkeletonProvider
+        private static StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = null;
 
-        public static StepDefinitonSkeletonProvider StepDefinitonSkeletonProvider
+        public static StepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
         {
             get 
             {
-                return GetOrCreate(ref stepDefinitonSkeletonProvider);
+                return GetOrCreate(ref stepDefinitionSkeletonProvider);
             }
         }
         #endregion

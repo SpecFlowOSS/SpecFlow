@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    internal class StepDefinitonSkeletonProvider
+    internal class StepDefinitionSkeletonProvider
     {
         public const string CODEINDENT = "    ";
 
@@ -39,7 +39,7 @@ public void {1}{3}({4})
         {
             StringBuilder result = new StringBuilder();
             result.AppendFormat(@"[{0}]
-public class StepDefinitons
+public class StepDefinitions
 {{
 {1}}}",
                 GetAttributeName(typeof(BindingAttribute)),
