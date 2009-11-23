@@ -20,7 +20,6 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         private readonly SpecFlowProject specFlowProject;
         private readonly List<BindingInfo> bindings;
         private readonly List<Feature> parsedFeatures;
-        private readonly bool onlySelectedFeatures;
         private readonly bool showBindingsWithoutInsance;
 
         private ReportElements.StepDefinitionReport report;
@@ -28,10 +27,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         private Dictionary<StepDefinition, BindingInfo> bindingByStepDef;
         private readonly List<StepDefinition> stepDefsWithNoBinding = new List<StepDefinition>();
 
-        public StepDefinitionReportGenerator(SpecFlowProject specFlowProject, List<BindingInfo> bindings, List<Feature> parsedFeatures, bool showBindingsWithoutInsance, bool onlySelectedFeatures)
+        public StepDefinitionReportGenerator(SpecFlowProject specFlowProject, List<BindingInfo> bindings, List<Feature> parsedFeatures, bool showBindingsWithoutInsance)
         {
             this.specFlowProject = specFlowProject;
-            this.onlySelectedFeatures = onlySelectedFeatures;
             this.showBindingsWithoutInsance = showBindingsWithoutInsance;
             this.bindings = bindings;
             this.parsedFeatures = parsedFeatures;
@@ -43,7 +41,6 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             report.ProjectName = specFlowProject.ProjectName;
             report.GeneratedAt = DateTime.Now.ToString("g", CultureInfo.InvariantCulture);
             report.ShowBindingsWithoutInsance = showBindingsWithoutInsance;
-            report.OnlySelectedFeatures = onlySelectedFeatures;
 
             stepDefByBinding = new Dictionary<BindingInfo, StepDefinition>();
             bindingByStepDef = new Dictionary<StepDefinition, BindingInfo>();
@@ -216,7 +213,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath);
+                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
             }
         }
 

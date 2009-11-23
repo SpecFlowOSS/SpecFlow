@@ -5,6 +5,7 @@ New features:
 
 Fixed issues:
 + MsTest does not refresh tests automatically (Issue 25)
++ Fixes in report localization
 
 1.1.0 - 2009/11/11
 
