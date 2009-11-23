@@ -19,6 +19,11 @@ namespace TechTalk.SpecFlow.Parser
             this.project = project;
         }
 
+        public CodeCompileUnit GenerateTestFileCode(SpecFlowFeatureFile featureFile)
+        {
+            return GenerateTestFileCode(featureFile.GetFullPath(project), File.ReadAllText(featureFile.GetFullPath(project)));
+        }
+
         public CodeCompileUnit GenerateTestFileCode(string featureFileName, string content)
         {
             SpecFlowFeatureFile featureFile = GetFeatureFile(featureFileName);
