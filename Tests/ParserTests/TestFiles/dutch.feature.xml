@@ -3,23 +3,23 @@
   <Language>nl</Language>
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
-      <Title>Zwei Zahlen hinzufügen</Title>
+      <Title>Twee getallen optellen</Title>
       <SourceFileLine>7</SourceFileLine>
       <Steps>
         <ScenarioStep xsi:type="Given">
-          <Text>sei ich habe &lt;Eingabe_1&gt; in den Taschenrechner eingegeben</Text>
+          <Text>ik heb &lt;ingave_1&gt; op de rekenmaschine ingegeven</Text>
           <SourceFileLine>8</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
-          <Text>ich habe &lt;Eingabe_2&gt; in den Taschenrechner eingegeben</Text>
+          <Text>ik heb &lt;ingave_2&gt; op de rekenmaschine ingegeven</Text>
           <SourceFileLine>9</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
-          <Text>ich &lt;Knopf&gt; drücke</Text>
+          <Text>ik op &lt;knop&gt; druk</Text>
           <SourceFileLine>10</SourceFileLine>
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
-          <Text>sollte das Ergebniss auf dem Bildschirm &lt;Ausgabe&gt; sein</Text>
+          <Text>moet het resultaat op het beeldscherm &lt;resultaat&gt; zijn</Text>
           <SourceFileLine>11</SourceFileLine>
         </ScenarioStep>
       </Steps>
@@ -31,16 +31,16 @@
               <Header>
                 <Cells>
                   <Cell>
-                    <Value>Eingabe_1</Value>
+                    <Value>ingave_1</Value>
                   </Cell>
                   <Cell>
-                    <Value>Eingabe_2</Value>
+                    <Value>ingave_2</Value>
                   </Cell>
                   <Cell>
-                    <Value>Knopf</Value>
+                    <Value>knop</Value>
                   </Cell>
                   <Cell>
-                    <Value>Ausgabe</Value>
+                    <Value>resultaat</Value>
                   </Cell>
                 </Cells>
               </Header>
@@ -100,8 +100,8 @@
       </Examples>
     </Scenario>
   </Scenarios>
-  <Title>Addition</Title>
-  <Description>Um dumme Fehler zu vermeiden
-möchte ich als Matheidiot
-die Summe zweier Zahlen gesagt bekommen</Description>
+  <Title>Optelling</Title>
+  <Description>Om domme fouten te vermijden
+wil ik als nul in wiskunde
+de som van twee getallen te weten komen</Description>
 </Feature>

@@ -1,18 +1,17 @@
 ﻿# language: nl
-Functionaliteit: Addition
-  Um dumme Fehler zu vermeiden
-  möchte ich als Matheidiot
-  die Summe zweier Zahlen gesagt bekommen
+Functionaliteit: Optelling
+  Om domme fouten te vermijden
+  wil ik als nul in wiskunde
+  de som van twee getallen te weten komen
  
-  Abstract Scenario: Zwei Zahlen hinzufügen
-    Gegeven sei ich habe <Eingabe_1> in den Taschenrechner eingegeben
-    En ich habe <Eingabe_2> in den Taschenrechner eingegeben
-    Als ich <Knopf> drücke
-    Dan sollte das Ergebniss auf dem Bildschirm <Ausgabe> sein
+  Abstract Scenario: Twee getallen optellen
+    Gegeven ik heb <ingave_1> op de rekenmaschine ingegeven
+    En ik heb <ingave_2> op de rekenmaschine ingegeven
+    Als ik op <knop> druk
+    Dan moet het resultaat op het beeldscherm <resultaat> zijn
  
   Voorbeelden:
-    | Eingabe_1 | Eingabe_2 | Knopf | Ausgabe |
-    | 20 | 30 | add | 50 |
-    | 2 | 5 | add | 7 |
-    | 0 | 40 | add | 40 |
-    
+    | ingave_1 | ingave_2 | knop | resultaat |
+    | 20       | 30       | add  | 50        |
+    | 2        | 5        | add  | 7         |
+    | 0        | 40       | add  | 40        |
