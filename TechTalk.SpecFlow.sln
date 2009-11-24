@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevenvSetupCustomAction", "
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SpecFlowSetup", "Installer\SpecFlowSetup\SpecFlowSetup.vdproj", "{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.GeneratorTools", "GeneratorTools\TechTalk.SpecFlow.GeneratorTools.csproj", "{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Debug|Any CPU.ActiveCfg = Debug
 		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Release|Any CPU.ActiveCfg = Release
 		{F6740296-282C-4A0F-941E-A8FD1B1DAC2D}.Release|Any CPU.Build.0 = Release
+		{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
