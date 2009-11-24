@@ -86,6 +86,8 @@
     <Compile Include="Grammar\SpecFlowLangWalker.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Grammar\SpecFlowLangWalkerBase.cs" />
+    <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
     <Compile Include="SpecFlowGenerator.cs" />
     <Compile Include="SpecFlowLangParser.cs" />

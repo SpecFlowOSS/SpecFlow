@@ -97,8 +97,11 @@ namespace TechTalk.SpecFlow
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 
+        //TODO: rename this method to OnAfterLastStep (breaking change in generation!)
         public void CollectScenarioErrors()
         {
+            HandleBlockSwitch(ScenarioBlock.None);
+
             if (RuntimeConfiguration.Current.TraceTimings)
             {
                 ObjectContainer.ScenarioContext.Stopwatch.Stop();
@@ -141,8 +144,6 @@ namespace TechTalk.SpecFlow
 
         public void OnScenarioEnd()
         {
-            HandleBlockSwitch(ScenarioBlock.None);
-
             FireScenarioEvents(BindingEvent.ScenarioEnd);
             ObjectContainer.ScenarioContext = null;
         }

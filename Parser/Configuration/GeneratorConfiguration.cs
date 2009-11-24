@@ -14,6 +14,9 @@ namespace TechTalk.SpecFlow.Parser.Configuration
 
         //unit test framework settings
         public Type GeneratorUnitTestProviderType { get; set; }
+
+        // generator settings
+        public bool AllowDebugGeneratedFiles { get; set; }
         
         public GeneratorConfiguration()
         {
@@ -23,6 +26,8 @@ namespace TechTalk.SpecFlow.Parser.Configuration
                 CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+
+            AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
         }
 
         internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)

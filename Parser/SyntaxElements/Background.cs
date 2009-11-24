@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
@@ -7,6 +8,8 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     {
         public string Title { get; set; }
         public ScenarioSteps Steps { get; set; }
+
+        public FilePosition FilePosition { get; set; }
 
         public Background()
         {

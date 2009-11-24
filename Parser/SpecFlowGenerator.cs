@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Parser
 
             IUnitTestGeneratorProvider generatorProvider = CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
 
-            SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider);
+            SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles);
             CodeCompileUnit codeCompileUnit = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
 
             return codeCompileUnit;

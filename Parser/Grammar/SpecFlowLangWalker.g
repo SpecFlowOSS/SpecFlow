@@ -4,6 +4,7 @@ options {
 	language = CSharp2;
 	tokenVocab = SpecFlowLangParser;
 	ASTLabelType = CommonTree;
+	superClass = SpecFlowLangWalkerBase;
 }
 
 @namespace { TechTalk.SpecFlow.Parser.Grammar }
@@ -73,10 +74,18 @@ descriptionLine returns[DescriptionLine descriptionLine]
     ;
 
 background returns[Background background]
+@init {
+    FilePosition fp_ = null;
+}
 @after {
     $background = new Background(title_, steps_);
+    $background.FilePosition = fp_;
 }
-    :   ^(BACKGROUND
+    :   
+            {
+				fp_ = GetFilePosition();
+            }
+		^(BACKGROUND
             (title_=text)?
             steps_=steps
         )
