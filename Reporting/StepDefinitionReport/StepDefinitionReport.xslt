@@ -22,6 +22,18 @@
       <ParameterValuesPost>:</ParameterValuesPost>
       <ScenarioOutlineExampleMessage>(scenario outline example)</ScenarioOutlineExampleMessage>
     </Language>
+    <Language code="de">
+      <Title>Auflistung der Step Definitionen</Title>
+      <Givens>Gegeben Steps</Givens>
+      <Whens>Wenn Steps</Whens>
+      <Thens>Dann Steps</Thens>
+      <StepDefinition>Step Definition</StepDefinition>
+      <Instances>Instanzen</Instances>
+      <BindingsWithoutInstancesMessage>Bindings ohne Instanzen sind in diesem Report nicht aufgeführt.</BindingsWithoutInstancesMessage>
+      <ParameterValuesPre>Verwendete Parameterwerte </ParameterValuesPre>
+      <ParameterValuesPost>:</ParameterValuesPost>
+      <ScenarioOutlineExampleMessage>(Szenariogrundriss Beispiel)</ScenarioOutlineExampleMessage>
+    </Language>
   </xsl:param>
 
   <xsl:template match="@* | node()">

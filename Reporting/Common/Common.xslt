@@ -21,6 +21,14 @@
       <Hide>hide</Hide>
       <Copy>copy</Copy>
     </Language>
+    <Language code="de">
+      <GeneratedByPre>Erstellt durch SpecFlow am </GeneratedByPre>
+      <GeneratedByPost></GeneratedByPost>
+      <See></See>
+      <Show>anzeigen</Show>
+      <Hide>ausblenden</Hide>
+      <Copy>kopieren</Copy>
+    </Language>
   </xsl:param>
 
   <xsl:template name="get-common-tool-text">
