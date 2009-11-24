@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--<Import Project="TechTalk.SpecFlow.tasks"/>-->
+
+  <PropertyGroup>
+    <SpecFlowTasksPath Condition="'$(SpecFlowTasksPath)'==''">specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+
+  <!-- handle relative tasks path -->
+  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GeneratorTask" AssemblyFile="$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)"
+             Condition="Exists('$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)')" />
+  <!-- handle absolute tasks path -->
+  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GeneratorTask" AssemblyFile="$(SpecFlowTasksPath)"
+             Condition="!Exists('$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)')" />
+
+
+  <PropertyGroup>
+    <ShowTrace Condition="'$(ShowTrace)'==''">false</ShowTrace>
+    
+    <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)'==''">false</OverwriteReadOnlyFiles>
+    <ForceGeneration Condition="'$(ForceGeneration)'==''">false</ForceGeneration>
+    <VerboseOutput Condition="'$(VerboseOutput)'==''">false</VerboseOutput>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(BuildServerMode)' == ''">
+    <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'=='true'">false</BuildServerMode>
+    <BuildServerMode Condition="'$(BuildingInsideVisualStudio)'!='true'">true</BuildServerMode>
+  </PropertyGroup>
+
+  <Target Name="CalculateGeneratorDependencies">
+    <ItemGroup>
+      <__FeatureFiles Include="@(Content)" Condition=" '%(Content.Extension)' == '.feature' " />
+      <!--<__TestFiles Include="@(Compile)" Condition=" '%(Content.Extension)' == '.feature.cs' " />-->
+    </ItemGroup>
+
+    <RemoveDuplicates Inputs="%(__FeatureFiles.FullPath)">
+      <Output TaskParameter="Filtered" ItemName="FeatureFiles"/>
+    </RemoveDuplicates>
+  </Target>
+
+  <!--
+  Inputs="$(MSBuildAllProjects);
+  @(FeatureFiles);
+  $(AppConfig)"
+  Outputs="@(FeatureFiles->'%(FullPath).cs')"
+  DependsOnTargets="CalculateGeneratorDependencies"
+  -->
+
+  <Target 
+    Name="UpdateFeatureFilesInProject">
+    <GeneratorTask
+      ShowTrace="$(ShowTrace)"
+
+      BuildServerMode="$(BuildServerMode)"
+      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+      
+      ProjectPath="$(MSBuildProjectFullPath)"
+      ForceGeneration="$(ForceGeneration)"
+      VerboseOutput="$(VerboseOutput)"
+      />
+    
+  </Target>
+
+</Project>

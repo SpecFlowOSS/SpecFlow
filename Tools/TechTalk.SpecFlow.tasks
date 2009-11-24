@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SpecFlowTasksPath Condition="'$(SpecFlowTasksPath)'==''">specflow.exe</SpecFlowTasksPath>
+  </PropertyGroup>
+
+  <!-- handle relative tasks path -->
+  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GeneratorTask" AssemblyFile="$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)"
+             Condition="Exists('$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)')" />
+  <!-- handle absolute tasks path -->
+  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GeneratorTask" AssemblyFile="$(SpecFlowTasksPath)"
+             Condition="!Exists('$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)')" />
+
+</Project>

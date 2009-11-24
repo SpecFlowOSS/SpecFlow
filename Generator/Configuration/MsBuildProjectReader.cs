@@ -11,8 +11,13 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFile)
         {
             projectFile = Path.GetFullPath(projectFile);
-            Project project = new Project();
-            project.Load(projectFile, ProjectLoadSettings.IgnoreMissingImports);
+            
+            Project project = Engine.GlobalEngine.GetLoadedProject(projectFile);
+            if (project == null)
+            {
+                project = new Project();
+                project.Load(projectFile, ProjectLoadSettings.IgnoreMissingImports);
+            }
 
             string projectFolder = Path.GetDirectoryName(projectFile);
 
