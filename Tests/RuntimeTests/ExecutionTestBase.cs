@@ -8,6 +8,8 @@ using System.Linq;
 using Microsoft.CSharp;
 using NUnit.Framework;
 using ParserTests;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 

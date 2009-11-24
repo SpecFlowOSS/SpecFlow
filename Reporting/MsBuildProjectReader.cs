@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Build.BuildEngine;
-using TechTalk.SpecFlow.Parser.Configuration;
+using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.Reporting
 {

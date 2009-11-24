@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace TechTalk.SpecFlow.Parser.Configuration
+namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class SpecFlowFeatureFile
     {

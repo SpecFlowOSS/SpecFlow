@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Generator
 {
     public class SpecFlowUnitTestConverter
     {
@@ -36,15 +35,6 @@ namespace TechTalk.SpecFlow.Parser
         {
             this.testGeneratorProvider = testGeneratorProvider;
         }
-
-//        public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
-//        {
-//            CodeNamespace codeNamespace = GenerateUnitTestFixture(feature, testClassName, targetNamespace);
-//
-//            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
-//            codeCompileUnit.Namespaces.Add(codeNamespace);
-//            return codeCompileUnit;
-//        }
 
         public CodeNamespace GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
         {
@@ -181,12 +171,12 @@ namespace TechTalk.SpecFlow.Parser
             testGeneratorProvider.SetTestFixtureTearDown(tearDownMethod);
 
             var testRunnerField = GetTestRunnerExpression();
-//            testRunner.OnFeatureEnd();
+            //            testRunner.OnFeatureEnd();
             tearDownMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
                     "OnFeatureEnd"));
-//            testRunner = null;
+            //            testRunner = null;
             tearDownMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
@@ -295,14 +285,14 @@ namespace TechTalk.SpecFlow.Parser
             foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
             {
                 string exampleSetTitle = exampleSet.Title == null ? string.Format("Scenarios{0}", exampleSetIndex + 1) :
-                    exampleSet.Title.ToIdentifier();
+                                                                                                                           exampleSet.Title.ToIdentifier();
 
                 bool useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.Table);
 
                 for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                 {
                     string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifierPart() :
-                        string.Format("Variant{0}", rowIndex);
+                                                                                                                                      string.Format("Variant{0}", rowIndex);
                     GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], variantName);
                 }
                 exampleSetIndex++;
@@ -337,8 +327,8 @@ namespace TechTalk.SpecFlow.Parser
         {
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenarioOutline);
             testMethod.Name = string.IsNullOrEmpty(exampleSetTitle) ?
-                string.Format("{0}_{1}", testMethod.Name, variantName) :
-                string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitle, variantName);
+                                                                        string.Format("{0}_{1}", testMethod.Name, variantName) :
+                                                                                                                                   string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitle, variantName);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = new List<CodeExpression>();
@@ -421,19 +411,19 @@ namespace TechTalk.SpecFlow.Parser
             List<string> arguments = new List<string>();
 
             formatText = paramRe.Replace(formatText, match =>
-                                             {
-                                                 string param = match.Groups["param"].Value;
-                                                 string id;
-                                                 if (!paramToIdentifier.TryGetIdentifier(param, out id))
-                                                     return match.Value;
-                                                 int argIndex = arguments.IndexOf(id);
-                                                 if (argIndex < 0)
-                                                 {
-                                                     argIndex = arguments.Count;
-                                                     arguments.Add(id);
-                                                 }
-                                                 return "{" + argIndex + "}";
-                                             });
+                                                     {
+                                                         string param = match.Groups["param"].Value;
+                                                         string id;
+                                                         if (!paramToIdentifier.TryGetIdentifier(param, out id))
+                                                             return match.Value;
+                                                         int argIndex = arguments.IndexOf(id);
+                                                         if (argIndex < 0)
+                                                         {
+                                                             argIndex = arguments.Count;
+                                                             arguments.Add(id);
+                                                         }
+                                                         return "{" + argIndex + "}";
+                                                     });
 
             if (arguments.Count == 0)
                 return new CodePrimitiveExpression(text);
@@ -484,9 +474,9 @@ namespace TechTalk.SpecFlow.Parser
             var tableVar = new CodeVariableReferenceExpression("table" + tableCounter);
             statements.Add(
                 new CodeVariableDeclarationStatement(TABLE_TYPE, tableVar.VariableName,
-                        new CodeObjectCreateExpression(
-                            TABLE_TYPE,
-                            GetStringArrayExpression(tableArg.Header.Cells.Select(c => c.Value), paramToIdentifier))));
+                    new CodeObjectCreateExpression(
+                        TABLE_TYPE,
+                        GetStringArrayExpression(tableArg.Header.Cells.Select(c => c.Value), paramToIdentifier))));
 
             foreach (var row in tableArg.Body)
             {

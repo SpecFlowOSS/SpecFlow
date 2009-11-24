@@ -3,7 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.Parser.UnitTestProvider
+namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public interface IUnitTestGeneratorProvider
     {

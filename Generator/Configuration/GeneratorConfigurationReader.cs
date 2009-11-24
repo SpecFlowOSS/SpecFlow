@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 using TechTalk.SpecFlow.Configuration;
 
-namespace TechTalk.SpecFlow.Parser.Configuration
+namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public static class GeneratorConfigurationReader
     {

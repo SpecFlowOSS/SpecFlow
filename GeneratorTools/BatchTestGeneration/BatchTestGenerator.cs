@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.Configuration;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.GeneratorTools.BatchTestGeneration
 {

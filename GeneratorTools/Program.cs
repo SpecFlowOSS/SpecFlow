@@ -1,6 +1,6 @@
 ﻿using NConsoler;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.GeneratorTools.BatchTestGeneration;
-using TechTalk.SpecFlow.Parser.Configuration;
 
 namespace TechTalk.SpecFlow.Tools
 {

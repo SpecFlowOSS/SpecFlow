@@ -2,8 +2,9 @@
 using System.IO;
 using System.Linq;
 using Microsoft.Build.BuildEngine;
+using TechTalk.SpecFlow.Generator.Configuration;
 
-namespace TechTalk.SpecFlow.Parser.Configuration
+namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public static class MsBuildProjectReader
     {

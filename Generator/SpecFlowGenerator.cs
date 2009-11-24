@@ -8,11 +8,12 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Parser.Configuration;
+using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Generator
 {
     public class SpecFlowGenerator
     {
@@ -41,9 +42,9 @@ namespace TechTalk.SpecFlow.Parser
         {
             var codeNamespace = GenerateTestFileCode(featureFile, inputReader);
             var options = new CodeGeneratorOptions
-            {
-                BracingStyle = "C"
-            };
+                {
+                    BracingStyle = "C"
+                };
 
             AddSpecFlowHeader(codeProvider, outputWriter);
             codeProvider.GenerateCodeFromNamespace(codeNamespace, outputWriter, options);
@@ -83,7 +84,7 @@ namespace TechTalk.SpecFlow.Parser
                 {
                     string[] parts = extraFolders.TrimStart('\\').Split('\\');
                     targetNamespace += "." + string.Join(".",
-                        parts.Select(p => p.ToIdentifier()).ToArray());
+                                                 parts.Select(p => p.ToIdentifier()).ToArray());
                 }
             }
             return targetNamespace;

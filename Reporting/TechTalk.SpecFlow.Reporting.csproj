@@ -91,6 +91,10 @@
     <EmbeddedResource Include="StepDefinitionReport\StepDefinitionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
+      <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
+      <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>

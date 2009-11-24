@@ -12,6 +12,8 @@
     <AssemblyName>TechTalk.SpecFlow.Generator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -45,7 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Runtime\Configuration\ConfigurationSectionHandler.cs">
+      <Link>Configuration\ConfigurationSectionHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\GeneratorConfiguration.cs" />
+    <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
+    <Compile Include="Configuration\MsBuildProjectReader.cs" />
+    <Compile Include="Configuration\SpecFlowProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecFlowGenerator.cs" />
+    <Compile Include="SpecFlowUnitTestConverter.cs" />
+    <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
+    <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
+    <Compile Include="UnitTestProvider\NUnitTestConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
