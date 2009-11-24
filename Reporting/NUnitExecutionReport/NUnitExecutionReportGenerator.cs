@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath);
+                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
             }
         }
     }

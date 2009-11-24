@@ -16,8 +16,6 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public string GeneratedAt;
         [XmlAttribute("showBindingsWithoutInsance")]
         public bool ShowBindingsWithoutInsance;
-        [XmlAttribute("onlySelectedFeatures")]
-        public bool OnlySelectedFeatures;
 
         [XmlElement("StepDefinition")]
         public List<StepDefinition> StepDefinitions = new List<StepDefinition>();

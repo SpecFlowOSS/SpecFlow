@@ -49,4 +49,16 @@
     <And>És</And>
     <But>De</But>
   </Language>
+  <Language code="nl">
+    <Feature>Functionaliteit</Feature>
+    <Background>Achtergrond</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Abstract Scenario</ScenarioOutline>
+    <Examples>Voorbeelden</Examples>
+    <Given>Gegeven</Given>
+    <When>Als</When>
+    <Then>Dan</Then>
+    <And>En</And>
+    <But>Maar</But>
+  </Language>
 </SpecFlowLanguages>

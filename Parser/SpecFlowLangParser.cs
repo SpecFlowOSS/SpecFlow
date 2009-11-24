@@ -69,6 +69,7 @@ namespace TechTalk.SpecFlow.Parser
                 {new CultureInfo("de"), typeof(SpecFlowLangLexer_de)},
                 {new CultureInfo("fr"), typeof(SpecFlowLangLexer_fr)},
                 {new CultureInfo("hu"), typeof(SpecFlowLangLexer_hu)},
+                {new CultureInfo("nl"), typeof(SpecFlowLangLexer_nl)},
             };
 
         private SpecFlowLangLexer GetLexter(CultureInfo language, ANTLRReaderStream inputStream)

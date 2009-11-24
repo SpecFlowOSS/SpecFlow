@@ -9,17 +9,58 @@
 
   <xsl:include href="..\Common\Common.xslt"/>
 
+  <xsl:param name="tool-text">
+    <Language code="en">
+      <Title>Step Definition Report</Title>
+      <Givens>Givens</Givens>
+      <Whens>Whens</Whens>
+      <Thens>Thens</Thens>
+      <StepDefinition>Step Definition</StepDefinition>
+      <Instances>Instances</Instances>
+      <BindingsWithoutInstancesMessage>Bindings without instances are not included in this report.</BindingsWithoutInstancesMessage>
+      <ParameterValuesPre>Used values for parameter </ParameterValuesPre>
+      <ParameterValuesPost>:</ParameterValuesPost>
+      <ScenarioOutlineExampleMessage>(scenario outline example)</ScenarioOutlineExampleMessage>
+    </Language>
+    <Language code="de">
+      <Title>Auflistung der Step Definitionen</Title>
+      <Givens>Gegeben Steps</Givens>
+      <Whens>Wenn Steps</Whens>
+      <Thens>Dann Steps</Thens>
+      <StepDefinition>Step Definition</StepDefinition>
+      <Instances>Instanzen</Instances>
+      <BindingsWithoutInstancesMessage>Bindings ohne Instanzen sind in diesem Report nicht aufgeführt.</BindingsWithoutInstancesMessage>
+      <ParameterValuesPre>Verwendete Parameterwerte </ParameterValuesPre>
+      <ParameterValuesPost>:</ParameterValuesPost>
+      <ScenarioOutlineExampleMessage>(Szenariogrundriss Beispiel)</ScenarioOutlineExampleMessage>
+    </Language>
+  </xsl:param>
+
   <xsl:template match="@* | node()">
     <xsl:copy>
       <xsl:apply-templates select="@* | node()"/>
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template name="get-tool-text">
+    <xsl:param name="text-key" />
+
+    <xsl:call-template name="get-tool-text-base">
+      <xsl:with-param name="text-key" select="$text-key" />
+      <xsl:with-param name="local-tool-texts" select="msxsl:node-set($tool-text)" />
+    </xsl:call-template>
+  </xsl:template>
+
+
   <xsl:key name="step-usage-variation" match="sfr:Instance" use="normalize-space(string(sfr:ScenarioStep))"/>
 
   <xsl:template match="/">
     <xsl:variable name="title">
-      <xsl:value-of select="sfr:StepDefinitionReport/@projectName"/> Step Definition Report
+      <xsl:call-template name="get-tool-text">
+        <xsl:with-param name="text-key" select="'Title'" />
+      </xsl:call-template>
+      <xsl:text> - </xsl:text>
+      <xsl:value-of select="sfr:StepDefinitionReport/@projectName"/>
     </xsl:variable>
     <html>
       <head>
@@ -49,44 +90,34 @@
         <xsl:call-template name="html-body-header">
           <xsl:with-param name="title" select="$title" />
         </xsl:call-template>
-        <xsl:if test="(/sfr:StepDefinitionReport/@onlySelectedFeatures='true')">
-          <div class="legend">
-            Only the following features from the project are included in this report:
-            <xsl:variable name="featureRefs">
-              <FeatureRefs>
-                <xsl:for-each select="//sfr:FeatureRef">
-                  <FeatureName>
-                    <xsl:value-of select="@name"/>
-                  </FeatureName>
-                </xsl:for-each>
-              </FeatureRefs>
-            </xsl:variable>
-            <ul>
-            <xsl:for-each select="msxsl:node-set($featureRefs)/*/*">
-              <xsl:variable name="feature-name" select="string(text())" />
-              <xsl:if test="not(preceding-sibling::FeatureName[string(text())=$feature-name])">
-                <li>
-                  <xsl:value-of select="$feature-name"/>
-                </li>
-              </xsl:if>
-            </xsl:for-each>
-            </ul>
-          </div>
-        </xsl:if>        
         <xsl:if test="(/sfr:StepDefinitionReport/@showBindingsWithoutInsance!='true')">
           <div class="legend">
-            Bindings without instances are not included in this report.
+            <xsl:call-template name="get-tool-text">
+              <xsl:with-param name="text-key" select="'BindingsWithoutInstancesMessage'" />
+            </xsl:call-template>
           </div>
         </xsl:if>        
-        <h2>Givens</h2>
+        <h2>
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'Givens'" />
+          </xsl:call-template>
+        </h2>
         <xsl:call-template name="process-block">
           <xsl:with-param name="block-name" select="'Given'" />
         </xsl:call-template>
-        <h2>Whens</h2>
+        <h2>
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'Whens'" />
+          </xsl:call-template>
+        </h2>
         <xsl:call-template name="process-block">
           <xsl:with-param name="block-name" select="'When'" />
         </xsl:call-template>
-        <h2>Thens</h2>
+        <h2>
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'Thens'" />
+          </xsl:call-template>
+        </h2>
         <xsl:call-template name="process-block">
           <xsl:with-param name="block-name" select="'Then'" />
         </xsl:call-template>
@@ -99,8 +130,16 @@
 
     <table class="reportTable" cellpadding="0" cellspacing="0">
       <tr>
-        <th class="top left">Step Definition</th>
-        <th class="top">Instances</th>
+        <th class="top left">
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'StepDefinition'" />
+          </xsl:call-template>
+        </th>
+        <th class="top">
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'Instances'" />
+          </xsl:call-template>
+        </th>
       </tr>
       <xsl:for-each select="sfr:StepDefinitionReport/sfr:StepDefinition[@type=$block-name]">
         <xsl:sort order="ascending" select="sfr:ScenarioStep/sfr:Text" data-type="text"/>
@@ -121,7 +160,9 @@
               <xsl:value-of select="count(./sfr:Instances/sfr:Instance)"/>
               <xsl:if test="sfr:Instances">
                 <xsl:text> </xsl:text>
-                <a href="#" onclick="toggle('{$stepdef-id}'); return false;" class="button">[show]</a>
+                <a href="#" onclick="toggle('{$stepdef-id}'); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+                  <xsl:with-param name="text-key" select="'Show'" />
+                </xsl:call-template>]</a>
               </xsl:if>
             </td>
           </tr>
@@ -130,7 +171,12 @@
               <td class="left" colspan="2">
                 <table class="subReportTable" cellpadding="0" cellspacing="0">
                   <tr>
-                    <th class="top left">Instances:</th>
+                    <th class="top left">
+                      <xsl:call-template name="get-tool-text">
+                        <xsl:with-param name="text-key" select="'Instances'" />
+                      </xsl:call-template>
+                      <xsl:text>:</xsl:text>
+                    </th>
                   </tr>
                   <xsl:for-each select="sfr:Instances/sfr:Instance">
                     <xsl:variable name="current-key" select="normalize-space(string(sfr:ScenarioStep))" />
@@ -164,7 +210,10 @@
         <xsl:text> / </xsl:text>
         <xsl:value-of select="sfr:ScenarioRef/@name"/>
         <xsl:if test="@fromScenarioOutline = 'true'">
-          <xsl:text> (scenario outline example)</xsl:text>
+          <xsl:text> </xsl:text>
+          <xsl:call-template name="get-tool-text">
+            <xsl:with-param name="text-key" select="'ScenarioOutlineExampleMessage'" />
+          </xsl:call-template>
         </xsl:if>
       </a>
     </b>
@@ -187,7 +236,15 @@
 
     </xsl:variable>
     <xsl:variable name="param-values">
-      <xsl:text>Used values for parameter '</xsl:text><xsl:value-of select="$param-name"/>'<xsl:text>:
+      <xsl:call-template name="get-tool-text">
+        <xsl:with-param name="text-key" select="'ParameterValuesPre'" />
+      </xsl:call-template>
+      <xsl:text>'</xsl:text><xsl:value-of select="$param-name"/>
+      <xsl:text>'</xsl:text>
+      <xsl:call-template name="get-tool-text">
+        <xsl:with-param name="text-key" select="'ParameterValuesPost'" />
+      </xsl:call-template>
+      <xsl:text>
 </xsl:text>
       <xsl:for-each select="$instances-root/sfr:Instance/sfr:Parameters/sfr:Parameter[@name=$param-name]">
         <xsl:variable name="param-value" select="string(text())" />

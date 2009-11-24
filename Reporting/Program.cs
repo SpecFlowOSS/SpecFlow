@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Reporting
             List<BindingInfo> bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
 
             StepDefinitionReportGenerator generator = new StepDefinitionReportGenerator(specFlowProject, bindings, parsedFeatures, 
-                true, false);
+                true);
             generator.GenerateReport();
 
             string outputFilePath = Path.GetFullPath(outputFile);
