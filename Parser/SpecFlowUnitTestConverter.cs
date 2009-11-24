@@ -37,14 +37,21 @@ namespace TechTalk.SpecFlow.Parser
             this.testGeneratorProvider = testGeneratorProvider;
         }
 
-        public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
+//        public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
+//        {
+//            CodeNamespace codeNamespace = GenerateUnitTestFixture(feature, testClassName, targetNamespace);
+//
+//            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
+//            codeCompileUnit.Namespaces.Add(codeNamespace);
+//            return codeCompileUnit;
+//        }
+
+        public CodeNamespace GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
         {
             targetNamespace = targetNamespace ?? DEFAULT_NAMESPACE;
             testClassName = testClassName ?? string.Format(FIXTURE_FORMAT, feature.Title.ToIdentifier());
 
-            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
             CodeNamespace codeNamespace = new CodeNamespace(targetNamespace);
-            codeCompileUnit.Namespaces.Add(codeNamespace);
 
             codeNamespace.Imports.Add(new CodeNamespaceImport(SPECFLOW_NAMESPACE));
 
@@ -78,8 +85,7 @@ namespace TechTalk.SpecFlow.Parser
                 else
                     GenerateTest(testType, testSetup, scenario, feature);
             }
-
-            return codeCompileUnit;
+            return codeNamespace;
         }
 
         private void DeclareTestRunnerMember(CodeTypeDeclaration testType)

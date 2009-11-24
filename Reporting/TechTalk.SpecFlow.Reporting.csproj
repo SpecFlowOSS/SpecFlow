@@ -56,13 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\lib\nconsoler\NConsoler.cs">
+      <Link>NConsoler\NConsoler.cs</Link>
+    </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
     <Compile Include="MsBuildProjectReader.cs" />
-    <Compile Include="NConsoler\NConsoler.cs" />
     <Compile Include="NUnitExecutionReport\NUnitExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\NUnitExecutionReport.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\ScenarioOutput.cs" />

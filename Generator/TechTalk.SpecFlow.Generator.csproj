@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{453D8014-B6CD-4E86-80A8-D59F59092334}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TechTalk.SpecFlow.Tools</RootNamespace>
-    <AssemblyName>specflow</AssemblyName>
+    <RootNamespace>TechTalk.SpecFlow.Generator</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.Generator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v3.5">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -51,19 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\lib\nconsoler\NConsoler.cs">
-      <Link>NConsoler\NConsoler.cs</Link>
-    </Compile>
-    <Compile Include="BatchTestGeneration\BatchTestGenerator.cs" />
-    <Compile Include="MsBuild\BatchTestGeneratorTask.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
-      <Name>TechTalk.SpecFlow.Parser</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

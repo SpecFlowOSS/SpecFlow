@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Globalization;
@@ -171,7 +172,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             string className = Path.GetFileNameWithoutExtension(fileName);
             const string targetNamespace = "Target.Namespace";
             SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter());
-            var compileUnit = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
+            var codeNamespace = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
+            var compileUnit = new CodeCompileUnit();
+            compileUnit.Namespaces.Add(codeNamespace);
 
             Dictionary<string, string> providerOptions = new Dictionary<string, string>();
             providerOptions["CompilerVersion"] = "v3.5";

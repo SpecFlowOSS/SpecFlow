@@ -47,15 +47,11 @@ namespace TechTalk.SpecFlow.VsIntegration
             SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
             SpecFlowGenerator generator = new SpecFlowGenerator(specFlowProject);
 
-            CodeCompileUnit compileUnit = generator.GenerateTestFileCode(CodeFilePath, inputFileContent);
             using (StringWriter writer = new StringWriter(new StringBuilder()))
             {
-                CodeGeneratorOptions options = new CodeGeneratorOptions();
-                options.BracingStyle = "C";
-                provider.GenerateCodeFromCompileUnit(compileUnit, writer,
-                                                     options);
-                writer.Flush();
-
+                generator.GenerateTestFile(
+                    specFlowProject.GetOrCreateFeatureFile(CodeFilePath), 
+                    provider, new StringReader(inputFileContent), writer);
                 return writer.ToString();
             }
         }

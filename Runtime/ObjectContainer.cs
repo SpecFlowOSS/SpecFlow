@@ -203,7 +203,7 @@ namespace TechTalk.SpecFlow
         #region factory helper methods
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class
         {
-            return GetOrCreate(ref storage, () => CreateInstance<TInterface>(implementationType));
+            return GetOrCreate(ref storage, () => ConfigurationServices.CreateInstance<TInterface>(implementationType));
         }
 
         private static TClass GetOrCreate<TClass>(ref TClass storage) where TClass : class, new()
@@ -220,27 +220,6 @@ namespace TechTalk.SpecFlow
             return storage;
         }
 
-        private static TInterface CreateInstance<TInterface>(Type type)
-        {
-            // do not use ErrorProvider for thowing exceptions here, because of the potential
-            // infinite loop
-            try
-            {
-                return (TInterface)Activator.CreateInstance(type);                
-            }
-            catch(InvalidCastException)
-            {
-                throw new ConfigurationErrorsException(
-                    string.Format("The specified type '{0}' does not implement interface '{1}'", 
-                        type.FullName, typeof(TInterface).FullName));
-            }
-            catch(Exception ex)
-            {
-                throw new ConfigurationErrorsException(
-                    string.Format("Unable to create instance of type '{0}': {1}", 
-                        type.FullName, ex.Message), ex);
-            }
-        }
         #endregion
     }
 }

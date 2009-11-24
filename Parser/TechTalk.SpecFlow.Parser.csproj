@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
+    <Compile Include="Configuration\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
     <Compile Include="Grammar\ErrorReporting.cs" />
     <Compile Include="Grammar\SpecFlowLangLexer.cs" />
