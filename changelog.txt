@@ -1,9 +1,10 @@
 
-vNext - ???
+1.2.0 - 2009/11/25
 
 New features:
 + Generate #line pragmas to the output file (Issue 26)
 + Allow transformation of feature files from command-line and MsBuild (Issue 3)
++ 
 
 Fixed issues:
 + MsTest does not refresh tests automatically (Issue 25)

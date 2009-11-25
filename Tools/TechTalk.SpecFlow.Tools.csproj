@@ -75,12 +75,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MsBuild\TechTalk.SpecFlow.targets">
+    <Content Include="MsBuild\TechTalk.SpecFlow.targets">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="MsBuild\TechTalk.SpecFlow.tasks">
+    </Content>
+    <Content Include="MsBuild\TechTalk.SpecFlow.tasks">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
