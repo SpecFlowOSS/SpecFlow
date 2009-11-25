@@ -15,7 +15,7 @@ using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 {
-    internal class StepDefinitionReportGenerator
+    public class StepDefinitionReportGenerator
     {
         private readonly SpecFlowProject specFlowProject;
         private readonly List<BindingInfo> bindings;
@@ -26,6 +26,18 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         private Dictionary<BindingInfo, StepDefinition> stepDefByBinding;
         private Dictionary<StepDefinition, BindingInfo> bindingByStepDef;
         private readonly List<StepDefinition> stepDefsWithNoBinding = new List<StepDefinition>();
+
+        public StepDefinitionReportGenerator(string projectFile, string binFolder, bool showBindingsWithoutInsance)
+        {
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
+
+            parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
+
+            var basePath = Path.Combine(specFlowProject.ProjectFolder, binFolder);
+            bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
+
+            this.showBindingsWithoutInsance = showBindingsWithoutInsance;
+        }
 
         public StepDefinitionReportGenerator(SpecFlowProject specFlowProject, List<BindingInfo> bindings, List<Feature> parsedFeatures, bool showBindingsWithoutInsance)
         {

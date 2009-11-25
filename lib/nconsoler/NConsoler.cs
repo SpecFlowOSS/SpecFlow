@@ -507,7 +507,7 @@ namespace NConsoler
 			_messenger.Write("Available subcommands:");
 			foreach (MethodInfo method in _actionMethods)
 			{
-				_messenger.Write(method.Name.ToLower() + " " + GetMethodDescription(method));
+				_messenger.Write(method.Name.ToLower() + " - " + GetMethodDescription(method));
 			}
 		}
 

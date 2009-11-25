@@ -11,12 +11,19 @@ using TechTalk.SpecFlow.Reporting.NUnitExecutionReport.ReportElements;
 
 namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
 {
-    internal class NUnitExecutionReportGenerator
+    public class NUnitExecutionReportGenerator
     {
         private ReportElements.NUnitExecutionReport report;
-        private SpecFlowProject specFlowProject;
+        private readonly SpecFlowProject specFlowProject;
         private readonly string xmlTestResultPath;
         private readonly string labeledTestOutputPath;
+
+        public NUnitExecutionReportGenerator(string projectFile, string xmlTestResultPath, string labeledTestOutputPath)
+        {
+            this.xmlTestResultPath = xmlTestResultPath;
+            this.specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
+            this.labeledTestOutputPath = labeledTestOutputPath;
+        }
 
         public NUnitExecutionReportGenerator(SpecFlowProject specFlowProject, string xmlTestResultPath, string labeledTestOutputPath)
         {

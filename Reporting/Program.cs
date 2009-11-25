@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.IO;
 using NConsoler;
@@ -24,19 +24,9 @@ namespace TechTalk.SpecFlow.Reporting
             [Optional("StepDefinitionReport.html", "out")] string outputFile
             )
         {
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
-
-            List<Feature> parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
-
-            var basePath = Path.Combine(specFlowProject.ProjectFolder, binFolder);
-            List<BindingInfo> bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
-
-            StepDefinitionReportGenerator generator = new StepDefinitionReportGenerator(specFlowProject, bindings, parsedFeatures, 
-                true);
+            StepDefinitionReportGenerator generator = new StepDefinitionReportGenerator(projectFile, binFolder, true);
             generator.GenerateReport();
-
-            string outputFilePath = Path.GetFullPath(outputFile);
-            generator.TransformReport(outputFilePath);
+            generator.TransformReport(Path.GetFullPath(outputFile));
         }
 
         [Action]
@@ -47,16 +37,12 @@ namespace TechTalk.SpecFlow.Reporting
             [Optional("TestResult.html", "out")] string outputFile
             )
         {
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
-
             NUnitExecutionReportGenerator generator = new NUnitExecutionReportGenerator(
-                specFlowProject, 
+                projectFile, 
                 Path.GetFullPath(xmlTestResult),
                 Path.GetFullPath(labeledTestOutput));
             generator.GenerateReport();
-
-            string outputFilePath = Path.GetFullPath(outputFile);
-            generator.TransformReport(outputFilePath);
+            generator.TransformReport(Path.GetFullPath(outputFile));
         }
     }
-}
+}*/
