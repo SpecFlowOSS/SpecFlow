@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace TechTalk.SpecFlow.Parser.Configuration
+namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class SpecFlowFeatureFile
     {
@@ -31,6 +32,17 @@ namespace TechTalk.SpecFlow.Parser.Configuration
         {
             FeatureFiles = new List<SpecFlowFeatureFile>();
             GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
+        }
+
+        public SpecFlowFeatureFile GetOrCreateFeatureFile(string featureFileName)
+        {
+            featureFileName = Path.GetFullPath(Path.Combine(ProjectFolder, featureFileName));
+            var result = FeatureFiles.Find(ff => ff.GetFullPath(this).Equals(featureFileName, StringComparison.InvariantCultureIgnoreCase));
+            if (result == null)
+            {
+                result = new SpecFlowFeatureFile(featureFileName); //TODO: make it project relative
+            }
+            return result;
         }
     }
 }

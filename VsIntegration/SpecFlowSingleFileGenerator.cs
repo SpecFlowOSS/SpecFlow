@@ -15,8 +15,9 @@ using Microsoft.VisualStudio.Designer.Interfaces;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.Configuration;
 using VSLangProj80;
 
 namespace TechTalk.SpecFlow.VsIntegration
@@ -117,16 +118,11 @@ namespace TechTalk.SpecFlow.VsIntegration
             SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
             SpecFlowGenerator generator = new SpecFlowGenerator(specFlowProject);
 
-            CodeCompileUnit compileUnit = generator.GenerateTestFileCode(CodeFilePath, inputFileContent);
             using (var writer = new HackedWriter(new StringWriter(new StringBuilder())))
             {
-                CodeGeneratorOptions options = new CodeGeneratorOptions();
-                options.BracingStyle = "C";
-                //options.IndentString = "";
-                provider.GenerateCodeFromCompileUnit(compileUnit, writer,
-                                                     options);
-                writer.Flush();
-
+                generator.GenerateTestFile(
+                    specFlowProject.GetOrCreateFeatureFile(CodeFilePath), 
+                    provider, new StringReader(inputFileContent), writer);
                 return writer.ToString();
             }
         }

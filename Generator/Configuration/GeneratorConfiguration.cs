@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Parser.UnitTestProvider;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.Parser.Configuration
+namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class GeneratorConfiguration
     {
@@ -22,8 +22,8 @@ namespace TechTalk.SpecFlow.Parser.Configuration
         {
             FeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
-                FeatureLanguage : 
-                CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
+                                                                                 FeatureLanguage : 
+                                                                                                     CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 
@@ -38,8 +38,8 @@ namespace TechTalk.SpecFlow.Parser.Configuration
             {
                 FeatureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
                 ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                    FeatureLanguage :
-                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
+                                                                                     FeatureLanguage :
+                                                                                                         CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (configSection.UnitTestProvider != null)

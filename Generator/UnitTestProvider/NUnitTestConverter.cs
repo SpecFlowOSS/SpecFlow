@@ -2,9 +2,8 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class NUnitTestConverter : IUnitTestGeneratorProvider
     {
