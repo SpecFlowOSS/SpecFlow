@@ -530,30 +530,33 @@ namespace TechTalk.SpecFlow.Parser
 
         private void AddLineDirective(CodeStatementCollection statements, Background background)
         {
-            //AddLineDirective(statements, null, background.SourceFileLine);
+            AddLineDirective(statements, null, background.FilePosition);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, Scenario scenario)
         {
-            AddLineDirective(statements, null, scenario.SourceFileLine);
+            AddLineDirective(statements, null, scenario.FilePosition);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, ScenarioStep step)
         {
-            AddLineDirective(statements, null, step.SourceFileLine);
+            AddLineDirective(statements, null, step.FilePosition);
         }
 
-        private void AddLineDirective(CodeStatementCollection statements, string sourceFile, int? sourceFileLine)
+        private void AddLineDirective(CodeStatementCollection statements, string sourceFile, FilePosition filePosition)
         {
-            if (sourceFileLine == null || allowDebugGeneratedFiles)
+            if (filePosition == null || allowDebugGeneratedFiles)
                 return;
 
             if (sourceFile == null)
                 statements.Add(new CodeSnippetStatement(
-                    string.Format("#line {0}", sourceFileLine)));
+                    string.Format("#line {0}", filePosition.Line)));
             else
                 statements.Add(new CodeSnippetStatement(
-                    string.Format("#line {0} \"{1}\"", sourceFileLine, Path.GetFileName(sourceFile))));
+                    string.Format("#line {0} \"{1}\"", filePosition.Line, Path.GetFileName(sourceFile))));
+
+            statements.Add(new CodeSnippetStatement(
+                    string.Format("//#indentnext {0}", filePosition.Column - 1)));
         }
 
         #endregion

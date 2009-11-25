@@ -47,6 +47,13 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["unitTestProvider"] = value; }
         }
 
+        [ConfigurationProperty("generator", IsRequired = false)]
+        public GeneratorConfigElement Generator
+        {
+            get { return (GeneratorConfigElement)this["generator"]; }
+            set { this["generator"] = value; }
+        }
+
         [ConfigurationProperty("runtime", IsRequired = false)]
         public RuntimeConfigElement Runtime
         {
@@ -153,6 +160,16 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (MissingOrPendingStepsOutcome)this["missingOrPendingStepsOutcome"]; }
             set { this["missingOrPendingStepsOutcome"] = value; }
+        }
+    }
+
+    public class GeneratorConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("allowDebugGeneratedFiles", DefaultValue = ConfigDefaults.AllowDebugGeneratedFiles, IsRequired = false)]
+        public bool AllowDebugGeneratedFiles
+        {
+            get { return (bool)this["allowDebugGeneratedFiles"]; }
+            set { this["allowDebugGeneratedFiles"] = value; }
         }
     }
 

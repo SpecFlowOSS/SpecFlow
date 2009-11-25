@@ -4,23 +4,23 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>Két szám összeadása</Title>
-      <SourceFileLine>7</SourceFileLine>
+      <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>beütök a számológépbe egy &lt;be_1&gt;-est</Text>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>beütök a számológépbe egy &lt;be_2&gt;-est</Text>
-          <SourceFileLine>9</SourceFileLine>
+          <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>megnyomom az &lt;gomb&gt; gombot</Text>
-          <SourceFileLine>10</SourceFileLine>
+          <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>eredményül &lt;ki&gt;-t kell kapnom</Text>
-          <SourceFileLine>11</SourceFileLine>
+          <FilePosition line="11" column="5" />
         </ScenarioStep>
       </Steps>
       <Examples>
@@ -32,66 +32,86 @@
                 <Cells>
                   <Cell>
                     <Value>be_1</Value>
+                    <FilePosition line="14" column="7" />
                   </Cell>
                   <Cell>
                     <Value>be_2</Value>
+                    <FilePosition line="14" column="14" />
                   </Cell>
                   <Cell>
                     <Value>gomb</Value>
+                    <FilePosition line="14" column="21" />
                   </Cell>
                   <Cell>
                     <Value>ki</Value>
+                    <FilePosition line="14" column="28" />
                   </Cell>
                 </Cells>
+                <FilePosition line="14" column="5" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>20</Value>
+                      <FilePosition line="15" column="7" />
                     </Cell>
                     <Cell>
                       <Value>30</Value>
+                      <FilePosition line="15" column="12" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
+                      <FilePosition line="15" column="17" />
                     </Cell>
                     <Cell>
                       <Value>50</Value>
+                      <FilePosition line="15" column="23" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="15" column="5" />
                 </Row>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>2</Value>
+                      <FilePosition line="16" column="7" />
                     </Cell>
                     <Cell>
                       <Value>5</Value>
+                      <FilePosition line="16" column="11" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
+                      <FilePosition line="16" column="15" />
                     </Cell>
                     <Cell>
                       <Value>7</Value>
+                      <FilePosition line="16" column="21" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="16" column="5" />
                 </Row>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>0</Value>
+                      <FilePosition line="17" column="7" />
                     </Cell>
                     <Cell>
                       <Value>40</Value>
+                      <FilePosition line="17" column="11" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
+                      <FilePosition line="17" column="16" />
                     </Cell>
                     <Cell>
                       <Value>40</Value>
+                      <FilePosition line="17" column="22" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="17" column="5" />
                 </Row>
               </Body>
             </Table>

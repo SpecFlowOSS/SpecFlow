@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.Grammar
 {
@@ -20,6 +21,17 @@ namespace TechTalk.SpecFlow.Parser.Grammar
         {
             Debug.WriteLine(msg);
             ParserErrors.Add(msg);
+        }
+
+        protected string GetFilePosition()
+        {
+            var node = input.LT(1);
+            return string.Format("{0}:{1}", node.Line, node.CharPositionInLine + 1);
+        }
+
+        public void Hehe()
+        {
+            Debug.WriteLine("hehe");
         }
     }
 }

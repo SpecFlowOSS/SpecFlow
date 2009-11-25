@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
                 foreach (var scenario in feature.Scenarios)
                 {
-                    var scenarioRef = new ScenarioRef { Name = scenario.Title, SourceFileLine = scenario.SourceFileLine ?? -1 };
+                    var scenarioRef = new ScenarioRef { Name = scenario.Title, SourceFileLine = scenario.FilePosition == null ? -1 : scenario.FilePosition.Line };
                     if (scenario is ScenarioOutline)
                     {
                         ScenarioSteps firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline) scenario);

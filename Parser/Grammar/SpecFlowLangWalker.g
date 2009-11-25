@@ -74,20 +74,15 @@ descriptionLine returns[DescriptionLine descriptionLine]
     ;
 
 background returns[Background background]
-@init {
-    FilePosition fp_ = null;
-}
 @after {
     $background = new Background(title_, steps_);
     $background.FilePosition = fp_;
 }
     :   
-            {
-				fp_ = GetFilePosition();
-            }
 		^(BACKGROUND
             (title_=text)?
             steps_=steps
+            fp_=fileposition
         )
     ;
 
@@ -97,41 +92,35 @@ scenarioKind returns[Scenario scenarioKind]
     ;
 
 scenarioOutline returns[ScenarioOutline outline]
-@init {
-    int? lineNo_ = null;
-}
 @after {
     $outline = new ScenarioOutline(title_, tags_, steps_, examples_);
-    $outline.SourceFileLine = lineNo_;
+    $outline.FilePosition = fp_;
 }
     :   ^(SCENARIOOUTLINE
             tags_=tags?
-            {
-				lineNo_ = ((ITree)input.LT(1)).Line;
-            }
             title_=text
             steps_=steps
             examples_=examples
+            fp_=fileposition
         )
     ;
 
 scenario returns[Scenario scenario]
-@init {
-    int? lineNo_ = null;
-}
 @after {
     $scenario = new Scenario(title_, tags_, steps_);
-    $scenario.SourceFileLine = lineNo_;
+    $scenario.FilePosition = fp_;
 }
     :   ^(SCENARIO 
             tags_=tags?
-            {
-				lineNo_ = ((ITree)input.LT(1)).Line;
-            }
             title_=text
             steps_=steps
+            fp_=fileposition
         )
     ;
+    
+fileposition returns[FilePosition fp]
+	:	fp_ = FILEPOSITION { $fp = ParseFilePosition(fp_.Text); }
+	;
 
 examples returns[Examples examples]
 @init {
@@ -165,16 +154,14 @@ steps returns[ScenarioSteps steps]
     ;
 
 step returns[ScenarioStep step]
-@init {
-    int? lineNo_ = ((ITree)input.LT(1)).Line;
-}
 @after {
-    $step.SourceFileLine = lineNo_;
+    $step.FilePosition = fp_;
 }
     :   ^(GIVEN
             text_=text
             mlt_=multilineText?
             table_=table?
+            fp_=fileposition
         )
         {
 			$step = new Given(text_, mlt_, table_);
@@ -183,6 +170,7 @@ step returns[ScenarioStep step]
             text_=text
             mlt_=multilineText?
             table_=table?
+            fp_=fileposition
         )
         {
 			$step = new When(text_, mlt_, table_);
@@ -191,6 +179,7 @@ step returns[ScenarioStep step]
             text_=text
             mlt_=multilineText?
             table_=table?
+            fp_=fileposition
         )
         {
 			$step = new Then(text_, mlt_, table_);
@@ -199,6 +188,7 @@ step returns[ScenarioStep step]
             text_=text
             mlt_=multilineText?
             table_=table?
+            fp_=fileposition
         )
         {
 			$step = new And(text_, mlt_, table_);
@@ -207,6 +197,7 @@ step returns[ScenarioStep step]
             text_=text
             mlt_=multilineText?
             table_=table?
+            fp_=fileposition
         )
         {
 			$step = new But(text_, mlt_, table_);
@@ -290,17 +281,21 @@ tableRow returns[Row row]
 }
 @after {
     $row = new Row(cells.ToArray());
+    $row.FilePosition = fp_;
 }
     :   ^(ROW
             (cell_=tableCell { cells.Add(cell_); })+
+            fp_=fileposition
         )
     ;
 
 tableCell returns[Cell cell]
 @after {
     $cell = new Cell(text_);
+    $cell.FilePosition = fp_;
 }
     :   ^(CELL
             text_=text
+            fp_=fileposition
         )
     ;

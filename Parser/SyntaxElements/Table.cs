@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
     public class Cell
     {
         public string Value { get; set; }
+        public FilePosition FilePosition { get; set; }
 
         public Cell()
         {
@@ -20,6 +22,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     public class Row
     {
         public Cell[] Cells { get; set; }
+        public FilePosition FilePosition { get; set; }
 
         public Row()
         {

@@ -4,7 +4,7 @@
   <Scenarios>
     <Scenario>
       <Title>a scenario with a table argument</Title>
-      <SourceFileLine>3</SourceFileLine>
+      <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>there is a table argument</Text>
@@ -13,54 +13,69 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
+                  <FilePosition line="5" column="4" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
+                  <FilePosition line="5" column="11" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
+                  <FilePosition line="5" column="18" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
+                  <FilePosition line="5" column="28" />
                 </Cell>
               </Cells>
+              <FilePosition line="5" column="2" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
+                    <FilePosition line="6" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="6" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="6" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="6" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="6" column="2" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
+                    <FilePosition line="7" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="7" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="7" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="7" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="7" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <SourceFileLine>4</SourceFileLine>
+          <FilePosition line="4" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a table argument</Text>
@@ -69,54 +84,69 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
+                  <FilePosition line="9" column="4" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
+                  <FilePosition line="9" column="11" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
+                  <FilePosition line="9" column="18" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
+                  <FilePosition line="9" column="28" />
                 </Cell>
               </Cells>
+              <FilePosition line="9" column="2" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
+                    <FilePosition line="10" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="10" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="10" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="10" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="10" column="2" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
+                    <FilePosition line="11" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="11" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="11" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="11" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="11" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a table argument</Text>
@@ -125,54 +155,69 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
+                  <FilePosition line="13" column="4" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
+                  <FilePosition line="13" column="11" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
+                  <FilePosition line="13" column="18" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
+                  <FilePosition line="13" column="28" />
                 </Cell>
               </Cells>
+              <FilePosition line="13" column="2" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
+                    <FilePosition line="14" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="14" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="14" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="14" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="14" column="2" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
+                    <FilePosition line="15" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="15" column="10" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
+                    <FilePosition line="15" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="15" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="15" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <SourceFileLine>12</SourceFileLine>
+          <FilePosition line="12" column="3" />
         </ScenarioStep>
       </Steps>
     </Scenario>

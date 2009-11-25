@@ -6,30 +6,31 @@
     <Steps>
       <ScenarioStep xsi:type="Given">
         <Text>some precondition</Text>
-        <SourceFileLine>4</SourceFileLine>
+        <FilePosition line="4" column="2" />
       </ScenarioStep>
       <ScenarioStep xsi:type="And">
         <Text>some other</Text>
-        <SourceFileLine>5</SourceFileLine>
+        <FilePosition line="5" column="2" />
       </ScenarioStep>
     </Steps>
+    <FilePosition line="3" column="1" />
   </Background>
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
-      <SourceFileLine>7</SourceFileLine>
+      <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>9</SourceFileLine>
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>10</SourceFileLine>
+          <FilePosition line="10" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

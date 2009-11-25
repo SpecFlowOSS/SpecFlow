@@ -20,7 +20,14 @@ namespace TechTalk.SpecFlow.Parser.Grammar
 
         protected FilePosition GetFilePosition()
         {
-            return new FilePosition(((ITree)input.LT(1)).Line, ((ITree)input.LT(1)).CharPositionInLine);
+            var node = ((ITree)input.LT(1));
+            return new FilePosition(node.Line, node.CharPositionInLine - node.Parent.Text.Length);
+        }
+
+        protected FilePosition ParseFilePosition(string text)
+        {
+            var parts = text.Split(':');
+            return new FilePosition(int.Parse(parts[0]), int.Parse(parts[1]));
         }
     }
 }

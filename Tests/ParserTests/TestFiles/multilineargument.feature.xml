@@ -4,7 +4,7 @@
   <Scenarios>
     <Scenario>
       <Title>a scenario with a multiline argument</Title>
-      <SourceFileLine>3</SourceFileLine>
+      <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>there is a multiline text argument</Text>
@@ -13,7 +13,7 @@
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
 consectetur adipiscing elit.
 </MultiLineTextArgument>
-          <SourceFileLine>4</SourceFileLine>
+          <FilePosition line="4" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a multiline text argument</Text>
@@ -22,7 +22,7 @@ consectetur adipiscing elit.
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
 consectetur adipiscing elit.
 </MultiLineTextArgument>
-          <SourceFileLine>11</SourceFileLine>
+          <FilePosition line="11" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a multiline text argument</Text>
@@ -31,7 +31,7 @@ consectetur adipiscing elit.
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
 consectetur adipiscing elit.
 </MultiLineTextArgument>
-          <SourceFileLine>18</SourceFileLine>
+          <FilePosition line="18" column="2" />
         </ScenarioStep>
       </Steps>
     </Scenario>

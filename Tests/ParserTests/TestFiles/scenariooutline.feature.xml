@@ -4,7 +4,7 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>a simple scenario outline</Title>
-      <SourceFileLine>3</SourceFileLine>
+      <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some &lt;templated&gt; precondition</Text>
@@ -13,62 +13,77 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
+                  <FilePosition line="5" column="4" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
+                  <FilePosition line="5" column="11" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
+                  <FilePosition line="5" column="18" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
+                  <FilePosition line="5" column="28" />
                 </Cell>
               </Cells>
+              <FilePosition line="5" column="2" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
+                    <FilePosition line="6" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="6" column="10" />
                   </Cell>
                   <Cell>
                     <Value>&lt;date1&gt;</Value>
+                    <FilePosition line="6" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="6" column="26" />
                   </Cell>
                 </Cells>
+                <FilePosition line="6" column="2" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
+                    <FilePosition line="7" column="4" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
+                    <FilePosition line="7" column="10" />
                   </Cell>
                   <Cell>
                     <Value>&lt;date2&gt;</Value>
+                    <FilePosition line="7" column="16" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
+                    <FilePosition line="7" column="26" />
                   </Cell>
                 </Cells>
+                <FilePosition line="7" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <SourceFileLine>4</SourceFileLine>
+          <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something &lt;templated&gt; happens</Text>
-          <SourceFileLine>9</SourceFileLine>
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
       </Steps>
       <Examples>
@@ -80,41 +95,53 @@
                 <Cells>
                   <Cell>
                     <Value>templated</Value>
+                    <FilePosition line="12" column="4" />
                   </Cell>
                   <Cell>
                     <Value>date1</Value>
+                    <FilePosition line="12" column="16" />
                   </Cell>
                   <Cell>
                     <Value>date2</Value>
+                    <FilePosition line="12" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="12" column="2" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>one</Value>
+                      <FilePosition line="13" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="13" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="13" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="13" column="2" />
                 </Row>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>two</Value>
+                      <FilePosition line="14" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/15</Value>
+                      <FilePosition line="14" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/15</Value>
+                      <FilePosition line="14" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="14" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -126,28 +153,36 @@
                 <Cells>
                   <Cell>
                     <Value>templated</Value>
+                    <FilePosition line="17" column="4" />
                   </Cell>
                   <Cell>
                     <Value>date1</Value>
+                    <FilePosition line="17" column="16" />
                   </Cell>
                   <Cell>
                     <Value>date2</Value>
+                    <FilePosition line="17" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="17" column="2" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>three</Value>
+                      <FilePosition line="18" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="18" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="18" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="18" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -159,28 +194,36 @@
                 <Cells>
                   <Cell>
                     <Value>templated</Value>
+                    <FilePosition line="22" column="4" />
                   </Cell>
                   <Cell>
                     <Value>date1</Value>
+                    <FilePosition line="22" column="16" />
                   </Cell>
                   <Cell>
                     <Value>date2</Value>
+                    <FilePosition line="22" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="22" column="2" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>four</Value>
+                      <FilePosition line="23" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="23" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="23" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="23" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -192,41 +235,53 @@
                 <Cells>
                   <Cell>
                     <Value>templated</Value>
+                    <FilePosition line="26" column="4" />
                   </Cell>
                   <Cell>
                     <Value>date1</Value>
+                    <FilePosition line="26" column="16" />
                   </Cell>
                   <Cell>
                     <Value>date2</Value>
+                    <FilePosition line="26" column="29" />
                   </Cell>
                 </Cells>
+                <FilePosition line="26" column="2" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>five</Value>
+                      <FilePosition line="27" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="27" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/14</Value>
+                      <FilePosition line="27" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="27" column="2" />
                 </Row>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>five</Value>
+                      <FilePosition line="28" column="4" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/15</Value>
+                      <FilePosition line="28" column="16" />
                     </Cell>
                     <Cell>
                       <Value>2009/09/15</Value>
+                      <FilePosition line="28" column="29" />
                     </Cell>
                   </Cells>
+                  <FilePosition line="28" column="2" />
                 </Row>
               </Body>
             </Table>

@@ -4,11 +4,11 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
-      <SourceFileLine>6</SourceFileLine>
+      <FilePosition line="6" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>7</SourceFileLine>
+          <FilePosition line="7" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

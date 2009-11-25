@@ -27,6 +27,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
                       generatorProvider=""TechTalk.SpecFlow.TestFrameworkIntegration.NUnitRuntimeProvider, TechTalk.SpecFlow""
                       runtimeProvider=""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow"" />
 
+    <generator allowDebugGeneratedFiles=""false"" />
+    
     <runtime detectAmbiguousMatches=""true""
              stopAtFirstError=""false""
              missingOrPendingStepsOutcome=""Inconclusive"" />
