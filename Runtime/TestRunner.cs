@@ -391,7 +391,8 @@ namespace TechTalk.SpecFlow
 
             for (int argIndex = 0; argIndex < regexArgs.Length; argIndex++)
             {
-                object convertedArg = Convert.ChangeType(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex]);
+                object convertedArg = Convert.ChangeType(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex], 
+                    FeatureContext.Current.FeatureInfo.CultureInfo);
                 arguments.Add(convertedArg);
             }
 

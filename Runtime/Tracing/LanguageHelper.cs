@@ -11,7 +11,10 @@ namespace TechTalk.SpecFlow.Tracing
 {
     internal static class LanguageHelper
     {
-        class KeywordTranslation : Dictionary<StepDefinitionKeyword, string> {}
+        class KeywordTranslation : Dictionary<StepDefinitionKeyword, string>
+        {
+            public CultureInfo DefaultSpecificCulture { get; set; }
+        }
 
         private static readonly Dictionary<CultureInfo, KeywordTranslation> translationCache = new Dictionary<CultureInfo, KeywordTranslation>();
 
@@ -22,16 +25,32 @@ namespace TechTalk.SpecFlow.Tracing
 
         public static string GetKeyword(CultureInfo language, StepDefinitionKeyword keyword)
         {
-            KeywordTranslation translation;
-            if (!translationCache.TryGetValue(language, out translation))
-            {
-                translation = GetTranslation(language);
-            }
-
+            KeywordTranslation translation = GetTranslation(language);
             return translation[keyword];
         }
 
         private static KeywordTranslation GetTranslation(CultureInfo language)
+        {
+            KeywordTranslation translation;
+            if (!translationCache.TryGetValue(language, out translation))
+            {
+                translation = LoadTranslation(language);
+            }
+            return translation;
+        }
+
+        static public CultureInfo GetSpecificCultureInfo(CultureInfo language)
+        {
+            //HACK: we need to have a better solution
+            if (!language.IsNeutralCulture)
+                return language;
+
+            KeywordTranslation translation = GetTranslation(language);
+            return translation.DefaultSpecificCulture;
+        }
+
+
+        private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
             var docStream = typeof(LanguageHelper).Assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
             if (docStream == null)
@@ -46,6 +65,10 @@ namespace TechTalk.SpecFlow.Tracing
             XElement langElm = GetBestFitLanguageElement(languageDoc, language);
 
             KeywordTranslation result = new KeywordTranslation();
+
+            result.DefaultSpecificCulture = language.IsNeutralCulture ?
+                new CultureInfo(langElm.Attribute(XName.Get("defaultSpecificCulture", "")).Value) :
+                language;
 
             foreach (StepDefinitionKeyword keyword in Enum.GetValues(typeof(StepDefinitionKeyword)))
             {

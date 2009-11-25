@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SpecFlowLanguages>
-  <Language code="en">
+  <Language code="en" defaultSpecificCulture="en-US">
     <Feature>Feature</Feature>
     <Background>Background</Background>
     <Scenario>Scenario</Scenario>
@@ -13,7 +13,7 @@
     <And>And</And>
     <But>But</But>
   </Language>
-  <Language code="de">
+  <Language code="de" defaultSpecificCulture="de-DE">
     <Feature>Funktionalität</Feature>
     <Background>Grundlage</Background>
     <Scenario>Szenario</Scenario>
@@ -25,7 +25,7 @@
     <And>Und</And>
     <But>Aber</But>
   </Language>
-  <Language code="fr">
+  <Language code="fr" defaultSpecificCulture="fr-FR">
     <Feature>Fonctionnalité</Feature>
     <Background>Contexte</Background>
     <Scenario>Scénario</Scenario>
@@ -37,7 +37,7 @@
     <And>Et</And>
     <But>Mais</But>
   </Language>
-  <Language code="hu">
+  <Language code="hu" defaultSpecificCulture="hu-HU">
     <Feature>Jellemző</Feature>
     <Background>Háttér</Background>
     <Scenario>Forgatókönyv</Scenario>
@@ -49,7 +49,7 @@
     <And>És</And>
     <But>De</But>
   </Language>
-  <Language code="nl">
+  <Language code="nl" defaultSpecificCulture="nl-NL">
     <Feature>Functionaliteit</Feature>
     <Background>Achtergrond</Background>
     <Scenario>Scenario</Scenario>

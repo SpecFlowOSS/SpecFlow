@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -15,7 +16,7 @@ namespace TechTalk.SpecFlow.Configuration
 
     public static class ConfigDefaults
     {
-        internal const string FeatureLanguage = "en";
+        internal const string FeatureLanguage = "en-US";
         internal const string ToolLanguage = "";
 
         internal const string UnitTestProviderName = "NUnit";
