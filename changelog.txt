@@ -2,6 +2,7 @@
 vNext - ???
 
 New features:
++ Allow transformation of feature files from command-line and MsBuild (Issue 3)
 
 Fixed issues:
 + MsTest does not refresh tests automatically (Issue 25)
