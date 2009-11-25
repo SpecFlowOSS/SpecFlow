@@ -4,7 +4,8 @@
 New features:
 + Generate #line pragmas to the output file (Issue 26)
 + Allow transformation of feature files from command-line and MsBuild (Issue 3)
-+ 
++ Merge all command-line tool (generation, reports) to a single executable: specflow.exe
++ Support for Dutch language
 
 Fixed issues:
 + MsTest does not refresh tests automatically (Issue 25)
