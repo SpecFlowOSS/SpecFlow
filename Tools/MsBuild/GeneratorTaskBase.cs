@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
     {
         public bool BuildServerMode { get; set; }
         public bool OverwriteReadOnlyFiles { get; set; }
+        public bool OnlyUpdateIfChanged { get; set; }
 
         public class OutputFile
         {
@@ -31,7 +32,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             }
         }
 
-        public class VerifyDifferenceOutputFile : OutputFile
+        public abstract class TempOutputFile : OutputFile
         {
             public string TempFilePath { get; private set; }
 
@@ -40,23 +41,51 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
                 get { return TempFilePath; }
             }
 
-            public VerifyDifferenceOutputFile(string filePath) : base(filePath)
+            protected TempOutputFile(string filePath)
+                : base(filePath)
             {
                 TempFilePath = Path.Combine(Path.GetTempPath(), "tmp" + Path.GetFileName(filePath));
             }
 
             public override void Done(CompilerErrorCollection result)
             {
-                Compare(TempFilePath, FilePath, result);
+                SafeDeleteFile(TempFilePath);
+            }
+        }
+
+        public class VerifyDifferenceOutputFile : TempOutputFile
+        {
+            public VerifyDifferenceOutputFile(string filePath) : base(filePath)
+            {
             }
 
-            private void Compare(string path1, string path2, CompilerErrorCollection result)
+            public override void Done(CompilerErrorCollection result)
             {
-                if (FileCompare(path1, path2))
-                    return;
+                if (!FileCompare(TempFilePath, FilePath))
+                {
+                    string message = String.Format("Error during file generation. The target file '{0}' is read-only, but different from the transformation result. This problem can be a sign of an inconsistent source code package. Compile and check-in the current version of the file from the development environment or remove the read-only flag from the generation result. To compile a solution that contains messaging project on a build server, you can also exclude the messaging project from the build-server solution or set the <OverwriteReadOnlyFiles> msbuild project parameter to 'true' in the messaging project file.", 
+                        Path.GetFullPath(FilePath));
+                    result.Add(new CompilerError(String.Empty, 0, 0, null, message));
+                }
 
-                string message = String.Format("Error during file generation. The target file '{0}' is read-only, but different from the transformation result. This problem can be a sign of an inconsistent source code package. Compile and check-in the current version of the file from the development environment or remove the read-only flag from the generation result. To compile a solution that contains messaging project on a build server, you can also exclude the messaging project from the build-server solution or set the <OverwriteReadOnlyFiles> msbuild project parameter to 'true' in the messaging project file.", Path.GetFullPath(path2));
-                result.Add(new CompilerError(String.Empty, 0, 0, null, message));
+                base.Done(result);
+            }
+        }
+
+        public class UpdateIfChangedOutputFile : TempOutputFile
+        {
+            public UpdateIfChangedOutputFile(string filePath) : base(filePath)
+            {
+            }
+
+            public override void Done(CompilerErrorCollection result)
+            {
+                if (!FileCompare(TempFilePath, FilePath))
+                {
+                    ReplaceFile(TempFilePath, FilePath);
+                }
+
+                base.Done(result);
             }
         }
 
@@ -70,6 +99,9 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             bool isReadOnly = IsReadOnly(outputFilePath);
             if (isReadOnly && BuildServerMode)
                 return new VerifyDifferenceOutputFile(outputFilePath);
+
+            if (OnlyUpdateIfChanged)
+                return new UpdateIfChangedOutputFile(outputFilePath);
 
             return new OutputFile(outputFilePath);
         }
@@ -119,7 +151,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             return ((file1byte - file2byte) == 0);
         }
 
-        private bool IsReadOnly(string path)
+        private static bool IsReadOnly(string path)
         {
             try
             {
@@ -138,11 +170,34 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             }
         }
 
-        private void RemoveReadOnly(string path)
+        private static void RemoveReadOnly(string path)
         {
             FileInfo fileInfo = new FileInfo(path);
             if (fileInfo.Exists && fileInfo.IsReadOnly)
                 fileInfo.IsReadOnly = false;
+        }
+
+        private static void SafeDeleteFile(string path)
+        {
+            try
+            {
+                if (IsReadOnly(path))
+                    RemoveReadOnly(path);
+                File.Delete(path);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "SaveDeleteFile");
+            }
+        }
+
+        private static void ReplaceFile(string sourcePath, string targetPath)
+        {
+            if (File.Exists(targetPath))
+                SafeDeleteFile(targetPath);
+
+            File.Move(sourcePath, targetPath);
         }
     }
 }

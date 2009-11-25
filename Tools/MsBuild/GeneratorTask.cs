@@ -58,7 +58,8 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ProjectPath);
 
-            BatchGenerator batchGenerator = new MsBuildBatchGenerator(GetMessageWriter(), VerboseOutput, this);
+            BatchGenerator batchGenerator = new MsBuildBatchGenerator(
+                GetMessageWriter(MessageImportance.High), VerboseOutput, this);
             batchGenerator.ProcessProject(specFlowProject, ForceGeneration);
         }
     }

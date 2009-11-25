@@ -54,8 +54,9 @@
     <Compile Include="..\lib\nconsoler\NConsoler.cs">
       <Link>NConsoler\NConsoler.cs</Link>
     </Compile>
-    <Compile Include="BatchTestGeneration\BatchTestGenerator.cs" />
-    <Compile Include="MsBuild\BatchTestGeneratorTask.cs" />
+    <Compile Include="MsBuild\GeneratorTask.cs" />
+    <Compile Include="MsBuild\GeneratorTaskBase.cs" />
+    <Compile Include="MsBuild\TaskBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +69,14 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MsBuild\TechTalk.SpecFlow.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MsBuild\TechTalk.SpecFlow.tasks">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

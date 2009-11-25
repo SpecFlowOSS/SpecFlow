@@ -1,6 +1,7 @@
-﻿using NConsoler;
+﻿using System;
+using NConsoler;
+using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.GeneratorTools.BatchTestGeneration;
 
 namespace TechTalk.SpecFlow.Tools
 {
@@ -21,7 +22,14 @@ namespace TechTalk.SpecFlow.Tools
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
 
-            BatchTestGenerator.ProcessProject(specFlowProject, false, false);
+            BatchGenerator batchGenerator = new BatchGenerator(Console.Out, verboseOutput);
+            batchGenerator.ProcessProject(specFlowProject, forceGeneration);
+        }
+
+        [Action]
+        public static void ToBeDefinedAction()
+        {
+            
         }
     }
 }

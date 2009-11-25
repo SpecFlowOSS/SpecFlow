@@ -80,11 +80,17 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         private class MessageTextWriter : TextWriter
         {
             private TaskBase task;
-            MessageImportance importance = MessageImportance.Normal;
+            private MessageImportance importance = MessageImportance.Normal;
 
             public MessageTextWriter(TaskBase task)
             {
                 this.task = task;
+            }
+
+            public MessageTextWriter(TaskBase task, MessageImportance importance)
+            {
+                this.task = task;
+                this.importance = importance;
             }
 
             public override Encoding Encoding
@@ -111,6 +117,11 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         protected TextWriter GetMessageWriter()
         {
             return new MessageTextWriter(this);
+        }
+
+        protected TextWriter GetMessageWriter(MessageImportance importance)
+        {
+            return new MessageTextWriter(this, importance);
         }
 
         protected abstract void DoExecute();
