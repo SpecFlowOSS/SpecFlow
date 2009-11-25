@@ -4,77 +4,77 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario with duplicated keywords</Title>
-      <SourceFileLine>3</SourceFileLine>
+      <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>4</SourceFileLine>
+          <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>5</SourceFileLine>
+          <FilePosition line="5" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>6</SourceFileLine>
+          <FilePosition line="6" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>7</SourceFileLine>
+          <FilePosition line="7" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>9</SourceFileLine>
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>
     <Scenario>
       <Title>a simple scenario with mixed keywords</Title>
-      <SourceFileLine>11</SourceFileLine>
+      <FilePosition line="11" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>12</SourceFileLine>
+          <FilePosition line="12" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>13</SourceFileLine>
+          <FilePosition line="13" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>some precondition</Text>
-          <SourceFileLine>14</SourceFileLine>
+          <FilePosition line="14" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>15</SourceFileLine>
+          <FilePosition line="15" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>I do something</Text>
-          <SourceFileLine>16</SourceFileLine>
+          <FilePosition line="16" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>17</SourceFileLine>
+          <FilePosition line="17" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>18</SourceFileLine>
+          <FilePosition line="18" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="But">
           <Text>something happens</Text>
-          <SourceFileLine>19</SourceFileLine>
+          <FilePosition line="19" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>something happens</Text>
-          <SourceFileLine>20</SourceFileLine>
+          <FilePosition line="20" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>21</SourceFileLine>
+          <FilePosition line="21" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

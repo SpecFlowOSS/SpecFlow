@@ -4,47 +4,47 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
-      <SourceFileLine>3</SourceFileLine>
+      <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <SourceFileLine>4</SourceFileLine>
+          <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>some other given</Text>
-          <SourceFileLine>5</SourceFileLine>
+          <FilePosition line="5" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <SourceFileLine>6</SourceFileLine>
+          <FilePosition line="6" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>antother when</Text>
-          <SourceFileLine>7</SourceFileLine>
+          <FilePosition line="7" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>yet another given</Text>
-          <SourceFileLine>8</SourceFileLine>
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <SourceFileLine>9</SourceFileLine>
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="But">
           <Text>this also happens</Text>
-          <SourceFileLine>10</SourceFileLine>
+          <FilePosition line="10" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>again a when</Text>
-          <SourceFileLine>11</SourceFileLine>
+          <FilePosition line="11" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Given">
           <Text>a third given part</Text>
-          <SourceFileLine>12</SourceFileLine>
+          <FilePosition line="12" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>second step of the third given</Text>
-          <SourceFileLine>13</SourceFileLine>
+          <FilePosition line="13" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

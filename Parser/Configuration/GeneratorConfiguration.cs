@@ -9,11 +9,14 @@ namespace TechTalk.SpecFlow.Parser.Configuration
     public class GeneratorConfiguration
     {
         //language settings
-        public CultureInfo FeatureLanguage { get; set; } //TODO: use
-        public CultureInfo ToolLanguage { get; set; } //TODO: use
+        public CultureInfo FeatureLanguage { get; set; }
+        public CultureInfo ToolLanguage { get; set; }
 
         //unit test framework settings
         public Type GeneratorUnitTestProviderType { get; set; }
+
+        // generator settings
+        public bool AllowDebugGeneratedFiles { get; set; }
         
         public GeneratorConfiguration()
         {
@@ -23,6 +26,8 @@ namespace TechTalk.SpecFlow.Parser.Configuration
                 CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+
+            AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
         }
 
         internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)
@@ -45,6 +50,11 @@ namespace TechTalk.SpecFlow.Parser.Configuration
                     GeneratorUnitTestProviderType = GetTypeConfig(configSection.UnitTestProvider.GeneratorProvider);
 
                 //TODO: config.CheckUnitTestConfig();
+            }
+
+            if (configSection.Generator != null)
+            {
+                AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
             }
         }
 

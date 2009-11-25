@@ -1,4 +1,4 @@
-// $ANTLR 3.1.2 SpecFlowLangWalker.g 2009-11-10 15:19:44
+// $ANTLR 3.1.2 SpecFlowLangWalker.g 2009-11-25 14:12:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -19,7 +19,7 @@ using ArrayList 	= System.Collections.ArrayList;
 using Stack 		= Antlr.Runtime.Collections.StackList;
 
 
-public partial class SpecFlowLangWalker : TreeParser
+public partial class SpecFlowLangWalker : SpecFlowLangWalkerBase
 {
     public static readonly string[] tokenNames = new string[] 
 	{
@@ -73,7 +73,8 @@ public partial class SpecFlowLangWalker : TreeParser
 		"HEADER", 
 		"BODY", 
 		"ROW", 
-		"CELL"
+		"CELL", 
+		"FILEPOSITION"
     };
 
     public const int NEWLINECHR = 6;
@@ -123,6 +124,7 @@ public partial class SpecFlowLangWalker : TreeParser
     public const int WHEN = 35;
     public const int T_FEATURE = 8;
     public const int STEPS = 33;
+    public const int FILEPOSITION = 51;
     public const int T_SCENARIO = 10;
 
     // delegates
@@ -153,7 +155,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "feature"
-    // SpecFlowLangWalker.g:17:1: feature returns [Feature feature] : ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) ) ;
+    // SpecFlowLangWalker.g:18:1: feature returns [Feature feature] : ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) ) ;
     public Feature feature() // throws RecognitionException [1]
     {   
         Feature feature = default(Feature);
@@ -175,13 +177,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:25:5: ( ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) ) )
-            // SpecFlowLangWalker.g:25:9: ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) )
+            // SpecFlowLangWalker.g:26:5: ( ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) ) )
+            // SpecFlowLangWalker.g:26:9: ^( FEATURE (tags_= tags )? title_= text (descLine_= descriptionLine )* (background_= background )? ^( SCENARIOS (scenario_= scenarioKind )* ) )
             {
-            	Match(input,FEATURE,FOLLOW_FEATURE_in_feature73); 
+            	Match(input,FEATURE,FOLLOW_FEATURE_in_feature81); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:26:13: (tags_= tags )?
+            	// SpecFlowLangWalker.g:27:13: (tags_= tags )?
             	int alt1 = 2;
             	int LA1_0 = input.LA(1);
 
@@ -192,9 +194,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt1) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:26:14: tags_= tags
+            	        // SpecFlowLangWalker.g:27:14: tags_= tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_feature90);
+            	        	PushFollow(FOLLOW_tags_in_feature98);
             	        	tags_ = tags();
             	        	state.followingStackPointer--;
 
@@ -204,11 +206,11 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-            	PushFollow(FOLLOW_text_in_feature108);
+            	PushFollow(FOLLOW_text_in_feature116);
             	title_ = text();
             	state.followingStackPointer--;
 
-            	// SpecFlowLangWalker.g:28:13: (descLine_= descriptionLine )*
+            	// SpecFlowLangWalker.g:29:13: (descLine_= descriptionLine )*
             	do 
             	{
             	    int alt2 = 2;
@@ -223,9 +225,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt2) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:28:14: descLine_= descriptionLine
+            			    // SpecFlowLangWalker.g:29:14: descLine_= descriptionLine
             			    {
-            			    	PushFollow(FOLLOW_descriptionLine_in_feature125);
+            			    	PushFollow(FOLLOW_descriptionLine_in_feature133);
             			    	descLine_ = descriptionLine();
             			    	state.followingStackPointer--;
 
@@ -242,7 +244,7 @@ public partial class SpecFlowLangWalker : TreeParser
             	loop2:
             		;	// Stops C# compiler whining that label 'loop2' has no statements
 
-            	// SpecFlowLangWalker.g:29:13: (background_= background )?
+            	// SpecFlowLangWalker.g:30:13: (background_= background )?
             	int alt3 = 2;
             	int LA3_0 = input.LA(1);
 
@@ -253,9 +255,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt3) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:29:14: background_= background
+            	        // SpecFlowLangWalker.g:30:14: background_= background
             	        {
-            	        	PushFollow(FOLLOW_background_in_feature146);
+            	        	PushFollow(FOLLOW_background_in_feature154);
             	        	background_ = background();
             	        	state.followingStackPointer--;
 
@@ -265,12 +267,12 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-            	Match(input,SCENARIOS,FOLLOW_SCENARIOS_in_feature163); 
+            	Match(input,SCENARIOS,FOLLOW_SCENARIOS_in_feature171); 
 
             	if ( input.LA(1) == Token.DOWN )
             	{
             	    Match(input, Token.DOWN, null); 
-            	    // SpecFlowLangWalker.g:31:17: (scenario_= scenarioKind )*
+            	    // SpecFlowLangWalker.g:32:17: (scenario_= scenarioKind )*
             	    do 
             	    {
             	        int alt4 = 2;
@@ -285,9 +287,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	        switch (alt4) 
             	    	{
             	    		case 1 :
-            	    		    // SpecFlowLangWalker.g:31:18: scenario_= scenarioKind
+            	    		    // SpecFlowLangWalker.g:32:18: scenario_= scenarioKind
             	    		    {
-            	    		    	PushFollow(FOLLOW_scenarioKind_in_feature185);
+            	    		    	PushFollow(FOLLOW_scenarioKind_in_feature193);
             	    		    	scenario_ = scenarioKind();
             	    		    	state.followingStackPointer--;
 
@@ -330,7 +332,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "tags"
-    // SpecFlowLangWalker.g:36:1: tags returns [Tags tags] : ^( TAGS (tag_= tag )+ ) ;
+    // SpecFlowLangWalker.g:37:1: tags returns [Tags tags] : ^( TAGS (tag_= tag )+ ) ;
     public Tags tags() // throws RecognitionException [1]
     {   
         Tags tags = default(Tags);
@@ -343,13 +345,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:40:5: ( ^( TAGS (tag_= tag )+ ) )
-            // SpecFlowLangWalker.g:40:9: ^( TAGS (tag_= tag )+ )
+            // SpecFlowLangWalker.g:41:5: ( ^( TAGS (tag_= tag )+ ) )
+            // SpecFlowLangWalker.g:41:9: ^( TAGS (tag_= tag )+ )
             {
-            	Match(input,TAGS,FOLLOW_TAGS_in_tags243); 
+            	Match(input,TAGS,FOLLOW_TAGS_in_tags251); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:41:13: (tag_= tag )+
+            	// SpecFlowLangWalker.g:42:13: (tag_= tag )+
             	int cnt5 = 0;
             	do 
             	{
@@ -365,9 +367,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt5) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:41:14: tag_= tag
+            			    // SpecFlowLangWalker.g:42:14: tag_= tag
             			    {
-            			    	PushFollow(FOLLOW_tag_in_tags260);
+            			    	PushFollow(FOLLOW_tag_in_tags268);
             			    	tag_ = tag();
             			    	state.followingStackPointer--;
 
@@ -408,7 +410,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "tag"
-    // SpecFlowLangWalker.g:45:1: tag returns [Tag tag] : ^( TAG word_= word ) ;
+    // SpecFlowLangWalker.g:46:1: tag returns [Tag tag] : ^( TAG word_= word ) ;
     public Tag tag() // throws RecognitionException [1]
     {   
         Tag tag = default(Tag);
@@ -418,13 +420,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:49:5: ( ^( TAG word_= word ) )
-            // SpecFlowLangWalker.g:49:9: ^( TAG word_= word )
+            // SpecFlowLangWalker.g:50:5: ( ^( TAG word_= word ) )
+            // SpecFlowLangWalker.g:50:9: ^( TAG word_= word )
             {
-            	Match(input,TAG,FOLLOW_TAG_in_tag302); 
+            	Match(input,TAG,FOLLOW_TAG_in_tag310); 
 
             	Match(input, Token.DOWN, null); 
-            	PushFollow(FOLLOW_word_in_tag318);
+            	PushFollow(FOLLOW_word_in_tag326);
             	word_ = word();
             	state.followingStackPointer--;
 
@@ -451,7 +453,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "word"
-    // SpecFlowLangWalker.g:54:1: word returns [Word word] : ^( WORD (char_= WORDCHAR )+ ) ;
+    // SpecFlowLangWalker.g:55:1: word returns [Word word] : ^( WORD (char_= WORDCHAR )+ ) ;
     public Word word() // throws RecognitionException [1]
     {   
         Word word = default(Word);
@@ -463,13 +465,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:61:5: ( ^( WORD (char_= WORDCHAR )+ ) )
-            // SpecFlowLangWalker.g:61:9: ^( WORD (char_= WORDCHAR )+ )
+            // SpecFlowLangWalker.g:62:5: ( ^( WORD (char_= WORDCHAR )+ ) )
+            // SpecFlowLangWalker.g:62:9: ^( WORD (char_= WORDCHAR )+ )
             {
-            	Match(input,WORD,FOLLOW_WORD_in_word361); 
+            	Match(input,WORD,FOLLOW_WORD_in_word369); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:62:13: (char_= WORDCHAR )+
+            	// SpecFlowLangWalker.g:63:13: (char_= WORDCHAR )+
             	int cnt6 = 0;
             	do 
             	{
@@ -485,9 +487,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt6) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:62:14: char_= WORDCHAR
+            			    // SpecFlowLangWalker.g:63:14: char_= WORDCHAR
             			    {
-            			    	char_=(CommonTree)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_word378); 
+            			    	char_=(CommonTree)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_word386); 
             			    	 wordBuffer.Append(char_.Text); 
 
             			    }
@@ -528,7 +530,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "descriptionLine"
-    // SpecFlowLangWalker.g:66:1: descriptionLine returns [DescriptionLine descriptionLine] : ^( DESCRIPTIONLINE text_= text ) ;
+    // SpecFlowLangWalker.g:67:1: descriptionLine returns [DescriptionLine descriptionLine] : ^( DESCRIPTIONLINE text_= text ) ;
     public DescriptionLine descriptionLine() // throws RecognitionException [1]
     {   
         DescriptionLine descriptionLine = default(DescriptionLine);
@@ -538,13 +540,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:70:5: ( ^( DESCRIPTIONLINE text_= text ) )
-            // SpecFlowLangWalker.g:70:9: ^( DESCRIPTIONLINE text_= text )
+            // SpecFlowLangWalker.g:71:5: ( ^( DESCRIPTIONLINE text_= text ) )
+            // SpecFlowLangWalker.g:71:9: ^( DESCRIPTIONLINE text_= text )
             {
-            	Match(input,DESCRIPTIONLINE,FOLLOW_DESCRIPTIONLINE_in_descriptionLine420); 
+            	Match(input,DESCRIPTIONLINE,FOLLOW_DESCRIPTIONLINE_in_descriptionLine428); 
 
             	Match(input, Token.DOWN, null); 
-            	PushFollow(FOLLOW_text_in_descriptionLine436);
+            	PushFollow(FOLLOW_text_in_descriptionLine444);
             	text_ = text();
             	state.followingStackPointer--;
 
@@ -571,7 +573,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "background"
-    // SpecFlowLangWalker.g:75:1: background returns [Background background] : ^( BACKGROUND (title_= text )? steps_= steps ) ;
+    // SpecFlowLangWalker.g:76:1: background returns [Background background] : ^( BACKGROUND (title_= text )? steps_= steps fp_= fileposition ) ;
     public Background background() // throws RecognitionException [1]
     {   
         Background background = default(Background);
@@ -580,16 +582,18 @@ public partial class SpecFlowLangWalker : TreeParser
 
         ScenarioSteps steps_ = default(ScenarioSteps);
 
+        FilePosition fp_ = default(FilePosition);
+
 
         try 
     	{
-            // SpecFlowLangWalker.g:79:5: ( ^( BACKGROUND (title_= text )? steps_= steps ) )
-            // SpecFlowLangWalker.g:79:9: ^( BACKGROUND (title_= text )? steps_= steps )
+            // SpecFlowLangWalker.g:81:5: ( ^( BACKGROUND (title_= text )? steps_= steps fp_= fileposition ) )
+            // SpecFlowLangWalker.g:82:3: ^( BACKGROUND (title_= text )? steps_= steps fp_= fileposition )
             {
-            	Match(input,BACKGROUND,FOLLOW_BACKGROUND_in_background474); 
+            	Match(input,BACKGROUND,FOLLOW_BACKGROUND_in_background485); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:80:13: (title_= text )?
+            	// SpecFlowLangWalker.g:83:13: (title_= text )?
             	int alt7 = 2;
             	int LA7_0 = input.LA(1);
 
@@ -600,9 +604,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt7) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:80:14: title_= text
+            	        // SpecFlowLangWalker.g:83:14: title_= text
             	        {
-            	        	PushFollow(FOLLOW_text_in_background491);
+            	        	PushFollow(FOLLOW_text_in_background502);
             	        	title_ = text();
             	        	state.followingStackPointer--;
 
@@ -612,8 +616,12 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-            	PushFollow(FOLLOW_steps_in_background509);
+            	PushFollow(FOLLOW_steps_in_background520);
             	steps_ = steps();
+            	state.followingStackPointer--;
+
+            	PushFollow(FOLLOW_fileposition_in_background536);
+            	fp_ = fileposition();
             	state.followingStackPointer--;
 
 
@@ -623,6 +631,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
                 background =  new Background(title_, steps_);
+                background.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -639,7 +648,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "scenarioKind"
-    // SpecFlowLangWalker.g:85:1: scenarioKind returns [Scenario scenarioKind] : (scenario_= scenario | outline_= scenarioOutline );
+    // SpecFlowLangWalker.g:89:1: scenarioKind returns [Scenario scenarioKind] : (scenario_= scenario | outline_= scenarioOutline );
     public Scenario scenarioKind() // throws RecognitionException [1]
     {   
         Scenario scenarioKind = default(Scenario);
@@ -651,7 +660,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:86:5: (scenario_= scenario | outline_= scenarioOutline )
+            // SpecFlowLangWalker.g:90:5: (scenario_= scenario | outline_= scenarioOutline )
             int alt8 = 2;
             int LA8_0 = input.LA(1);
 
@@ -673,9 +682,9 @@ public partial class SpecFlowLangWalker : TreeParser
             switch (alt8) 
             {
                 case 1 :
-                    // SpecFlowLangWalker.g:86:9: scenario_= scenario
+                    // SpecFlowLangWalker.g:90:9: scenario_= scenario
                     {
-                    	PushFollow(FOLLOW_scenario_in_scenarioKind543);
+                    	PushFollow(FOLLOW_scenario_in_scenarioKind570);
                     	scenario_ = scenario();
                     	state.followingStackPointer--;
 
@@ -684,9 +693,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangWalker.g:87:9: outline_= scenarioOutline
+                    // SpecFlowLangWalker.g:91:9: outline_= scenarioOutline
                     {
-                    	PushFollow(FOLLOW_scenarioOutline_in_scenarioKind557);
+                    	PushFollow(FOLLOW_scenarioOutline_in_scenarioKind584);
                     	outline_ = scenarioOutline();
                     	state.followingStackPointer--;
 
@@ -711,7 +720,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "scenarioOutline"
-    // SpecFlowLangWalker.g:90:1: scenarioOutline returns [ScenarioOutline outline] : ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples ) ;
+    // SpecFlowLangWalker.g:94:1: scenarioOutline returns [ScenarioOutline outline] : ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples fp_= fileposition ) ;
     public ScenarioOutline scenarioOutline() // throws RecognitionException [1]
     {   
         ScenarioOutline outline = default(ScenarioOutline);
@@ -724,19 +733,18 @@ public partial class SpecFlowLangWalker : TreeParser
 
         Examples examples_ = default(Examples);
 
+        FilePosition fp_ = default(FilePosition);
 
-
-            int? lineNo_ = null;
 
         try 
     	{
-            // SpecFlowLangWalker.g:98:5: ( ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples ) )
-            // SpecFlowLangWalker.g:98:9: ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples )
+            // SpecFlowLangWalker.g:99:5: ( ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples fp_= fileposition ) )
+            // SpecFlowLangWalker.g:99:9: ^( SCENARIOOUTLINE (tags_= tags )? title_= text steps_= steps examples_= examples fp_= fileposition )
             {
-            	Match(input,SCENARIOOUTLINE,FOLLOW_SCENARIOOUTLINE_in_scenarioOutline592); 
+            	Match(input,SCENARIOOUTLINE,FOLLOW_SCENARIOOUTLINE_in_scenarioOutline614); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:99:18: (tags_= tags )?
+            	// SpecFlowLangWalker.g:100:18: (tags_= tags )?
             	int alt9 = 2;
             	int LA9_0 = input.LA(1);
 
@@ -747,9 +755,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt9) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:99:18: tags_= tags
+            	        // SpecFlowLangWalker.g:100:18: tags_= tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_scenarioOutline608);
+            	        	PushFollow(FOLLOW_tags_in_scenarioOutline630);
             	        	tags_ = tags();
             	        	state.followingStackPointer--;
 
@@ -759,19 +767,20 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-
-            					lineNo_ = ((ITree)input.LT(1)).Line;
-            	            
-            	PushFollow(FOLLOW_text_in_scenarioOutline639);
+            	PushFollow(FOLLOW_text_in_scenarioOutline647);
             	title_ = text();
             	state.followingStackPointer--;
 
-            	PushFollow(FOLLOW_steps_in_scenarioOutline655);
+            	PushFollow(FOLLOW_steps_in_scenarioOutline663);
             	steps_ = steps();
             	state.followingStackPointer--;
 
-            	PushFollow(FOLLOW_examples_in_scenarioOutline671);
+            	PushFollow(FOLLOW_examples_in_scenarioOutline679);
             	examples_ = examples();
+            	state.followingStackPointer--;
+
+            	PushFollow(FOLLOW_fileposition_in_scenarioOutline695);
+            	fp_ = fileposition();
             	state.followingStackPointer--;
 
 
@@ -781,7 +790,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
                 outline =  new ScenarioOutline(title_, tags_, steps_, examples_);
-                outline.SourceFileLine = lineNo_;
+                outline.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -798,7 +807,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "scenario"
-    // SpecFlowLangWalker.g:109:1: scenario returns [Scenario scenario] : ^( SCENARIO (tags_= tags )? title_= text steps_= steps ) ;
+    // SpecFlowLangWalker.g:108:1: scenario returns [Scenario scenario] : ^( SCENARIO (tags_= tags )? title_= text steps_= steps fp_= fileposition ) ;
     public Scenario scenario() // throws RecognitionException [1]
     {   
         Scenario scenario = default(Scenario);
@@ -809,19 +818,18 @@ public partial class SpecFlowLangWalker : TreeParser
 
         ScenarioSteps steps_ = default(ScenarioSteps);
 
+        FilePosition fp_ = default(FilePosition);
 
-
-            int? lineNo_ = null;
 
         try 
     	{
-            // SpecFlowLangWalker.g:117:5: ( ^( SCENARIO (tags_= tags )? title_= text steps_= steps ) )
-            // SpecFlowLangWalker.g:117:9: ^( SCENARIO (tags_= tags )? title_= text steps_= steps )
+            // SpecFlowLangWalker.g:113:5: ( ^( SCENARIO (tags_= tags )? title_= text steps_= steps fp_= fileposition ) )
+            // SpecFlowLangWalker.g:113:9: ^( SCENARIO (tags_= tags )? title_= text steps_= steps fp_= fileposition )
             {
-            	Match(input,SCENARIO,FOLLOW_SCENARIO_in_scenario714); 
+            	Match(input,SCENARIO,FOLLOW_SCENARIO_in_scenario733); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:118:18: (tags_= tags )?
+            	// SpecFlowLangWalker.g:114:18: (tags_= tags )?
             	int alt10 = 2;
             	int LA10_0 = input.LA(1);
 
@@ -832,9 +840,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt10) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:118:18: tags_= tags
+            	        // SpecFlowLangWalker.g:114:18: tags_= tags
             	        {
-            	        	PushFollow(FOLLOW_tags_in_scenario731);
+            	        	PushFollow(FOLLOW_tags_in_scenario750);
             	        	tags_ = tags();
             	        	state.followingStackPointer--;
 
@@ -844,15 +852,16 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-
-            					lineNo_ = ((ITree)input.LT(1)).Line;
-            	            
-            	PushFollow(FOLLOW_text_in_scenario762);
+            	PushFollow(FOLLOW_text_in_scenario767);
             	title_ = text();
             	state.followingStackPointer--;
 
-            	PushFollow(FOLLOW_steps_in_scenario778);
+            	PushFollow(FOLLOW_steps_in_scenario783);
             	steps_ = steps();
+            	state.followingStackPointer--;
+
+            	PushFollow(FOLLOW_fileposition_in_scenario799);
+            	fp_ = fileposition();
             	state.followingStackPointer--;
 
 
@@ -862,7 +871,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
                 scenario =  new Scenario(title_, tags_, steps_);
-                scenario.SourceFileLine = lineNo_;
+                scenario.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -878,8 +887,40 @@ public partial class SpecFlowLangWalker : TreeParser
     // $ANTLR end "scenario"
 
 
+    // $ANTLR start "fileposition"
+    // SpecFlowLangWalker.g:121:1: fileposition returns [FilePosition fp] : fp_= FILEPOSITION ;
+    public FilePosition fileposition() // throws RecognitionException [1]
+    {   
+        FilePosition fp = default(FilePosition);
+
+        CommonTree fp_ = null;
+
+        try 
+    	{
+            // SpecFlowLangWalker.g:122:2: (fp_= FILEPOSITION )
+            // SpecFlowLangWalker.g:122:4: fp_= FILEPOSITION
+            {
+            	fp_=(CommonTree)Match(input,FILEPOSITION,FOLLOW_FILEPOSITION_in_fileposition834); 
+            	 fp =  ParseFilePosition(fp_.Text); 
+
+            }
+
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+        }
+        finally 
+    	{
+        }
+        return fp;
+    }
+    // $ANTLR end "fileposition"
+
+
     // $ANTLR start "examples"
-    // SpecFlowLangWalker.g:127:1: examples returns [Examples examples] : ^( EXAMPLES (exampleSet_= exampleSet )+ ) ;
+    // SpecFlowLangWalker.g:125:1: examples returns [Examples examples] : ^( EXAMPLES (exampleSet_= exampleSet )+ ) ;
     public Examples examples() // throws RecognitionException [1]
     {   
         Examples examples = default(Examples);
@@ -892,13 +933,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:134:5: ( ^( EXAMPLES (exampleSet_= exampleSet )+ ) )
-            // SpecFlowLangWalker.g:134:9: ^( EXAMPLES (exampleSet_= exampleSet )+ )
+            // SpecFlowLangWalker.g:132:5: ( ^( EXAMPLES (exampleSet_= exampleSet )+ ) )
+            // SpecFlowLangWalker.g:132:9: ^( EXAMPLES (exampleSet_= exampleSet )+ )
             {
-            	Match(input,EXAMPLES,FOLLOW_EXAMPLES_in_examples821); 
+            	Match(input,EXAMPLES,FOLLOW_EXAMPLES_in_examples866); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:135:13: (exampleSet_= exampleSet )+
+            	// SpecFlowLangWalker.g:133:13: (exampleSet_= exampleSet )+
             	int cnt11 = 0;
             	do 
             	{
@@ -914,9 +955,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt11) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:135:14: exampleSet_= exampleSet
+            			    // SpecFlowLangWalker.g:133:14: exampleSet_= exampleSet
             			    {
-            			    	PushFollow(FOLLOW_exampleSet_in_examples838);
+            			    	PushFollow(FOLLOW_exampleSet_in_examples883);
             			    	exampleSet_ = exampleSet();
             			    	state.followingStackPointer--;
 
@@ -960,7 +1001,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "exampleSet"
-    // SpecFlowLangWalker.g:139:1: exampleSet returns [ExampleSet exampleSet] : ^( EXAMPLESET (title_= text )? table_= table ) ;
+    // SpecFlowLangWalker.g:137:1: exampleSet returns [ExampleSet exampleSet] : ^( EXAMPLESET (title_= text )? table_= table ) ;
     public ExampleSet exampleSet() // throws RecognitionException [1]
     {   
         ExampleSet exampleSet = default(ExampleSet);
@@ -972,13 +1013,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:143:5: ( ^( EXAMPLESET (title_= text )? table_= table ) )
-            // SpecFlowLangWalker.g:143:9: ^( EXAMPLESET (title_= text )? table_= table )
+            // SpecFlowLangWalker.g:141:5: ( ^( EXAMPLESET (title_= text )? table_= table ) )
+            // SpecFlowLangWalker.g:141:9: ^( EXAMPLESET (title_= text )? table_= table )
             {
-            	Match(input,EXAMPLESET,FOLLOW_EXAMPLESET_in_exampleSet880); 
+            	Match(input,EXAMPLESET,FOLLOW_EXAMPLESET_in_exampleSet925); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:144:19: (title_= text )?
+            	// SpecFlowLangWalker.g:142:19: (title_= text )?
             	int alt12 = 2;
             	int LA12_0 = input.LA(1);
 
@@ -989,9 +1030,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	switch (alt12) 
             	{
             	    case 1 :
-            	        // SpecFlowLangWalker.g:144:19: title_= text
+            	        // SpecFlowLangWalker.g:142:19: title_= text
             	        {
-            	        	PushFollow(FOLLOW_text_in_exampleSet896);
+            	        	PushFollow(FOLLOW_text_in_exampleSet941);
             	        	title_ = text();
             	        	state.followingStackPointer--;
 
@@ -1001,7 +1042,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-            	PushFollow(FOLLOW_table_in_exampleSet913);
+            	PushFollow(FOLLOW_table_in_exampleSet958);
             	table_ = table();
             	state.followingStackPointer--;
 
@@ -1028,7 +1069,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "steps"
-    // SpecFlowLangWalker.g:149:1: steps returns [ScenarioSteps steps] : ^( STEPS (step_= step )+ ) ;
+    // SpecFlowLangWalker.g:147:1: steps returns [ScenarioSteps steps] : ^( STEPS (step_= step )+ ) ;
     public ScenarioSteps steps() // throws RecognitionException [1]
     {   
         ScenarioSteps steps = default(ScenarioSteps);
@@ -1041,13 +1082,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:153:5: ( ^( STEPS (step_= step )+ ) )
-            // SpecFlowLangWalker.g:153:9: ^( STEPS (step_= step )+ )
+            // SpecFlowLangWalker.g:151:5: ( ^( STEPS (step_= step )+ ) )
+            // SpecFlowLangWalker.g:151:9: ^( STEPS (step_= step )+ )
             {
-            	Match(input,STEPS,FOLLOW_STEPS_in_steps951); 
+            	Match(input,STEPS,FOLLOW_STEPS_in_steps996); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:154:13: (step_= step )+
+            	// SpecFlowLangWalker.g:152:13: (step_= step )+
             	int cnt13 = 0;
             	do 
             	{
@@ -1063,9 +1104,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt13) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:154:14: step_= step
+            			    // SpecFlowLangWalker.g:152:14: step_= step
             			    {
-            			    	PushFollow(FOLLOW_step_in_steps968);
+            			    	PushFollow(FOLLOW_step_in_steps1013);
             			    	step_ = step();
             			    	state.followingStackPointer--;
 
@@ -1106,7 +1147,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "step"
-    // SpecFlowLangWalker.g:158:1: step returns [ScenarioStep step] : ( ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( THEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( AND text_= text (mlt_= multilineText )? (table_= table )? ) | ^( BUT text_= text (mlt_= multilineText )? (table_= table )? ) );
+    // SpecFlowLangWalker.g:156:1: step returns [ScenarioStep step] : ( ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( THEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( AND text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( BUT text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) );
     public ScenarioStep step() // throws RecognitionException [1]
     {   
         ScenarioStep step = default(ScenarioStep);
@@ -1117,13 +1158,12 @@ public partial class SpecFlowLangWalker : TreeParser
 
         Table table_ = default(Table);
 
+        FilePosition fp_ = default(FilePosition);
 
-
-            int? lineNo_ = ((ITree)input.LT(1)).Line;
 
         try 
     	{
-            // SpecFlowLangWalker.g:165:5: ( ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( THEN text_= text (mlt_= multilineText )? (table_= table )? ) | ^( AND text_= text (mlt_= multilineText )? (table_= table )? ) | ^( BUT text_= text (mlt_= multilineText )? (table_= table )? ) )
+            // SpecFlowLangWalker.g:160:5: ( ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( THEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( AND text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) | ^( BUT text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition ) )
             int alt24 = 5;
             switch ( input.LA(1) ) 
             {
@@ -1162,16 +1202,16 @@ public partial class SpecFlowLangWalker : TreeParser
             switch (alt24) 
             {
                 case 1 :
-                    // SpecFlowLangWalker.g:165:9: ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? )
+                    // SpecFlowLangWalker.g:160:9: ^( GIVEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition )
                     {
-                    	Match(input,GIVEN,FOLLOW_GIVEN_in_step1015); 
+                    	Match(input,GIVEN,FOLLOW_GIVEN_in_step1055); 
 
                     	Match(input, Token.DOWN, null); 
-                    	PushFollow(FOLLOW_text_in_step1031);
+                    	PushFollow(FOLLOW_text_in_step1071);
                     	text_ = text();
                     	state.followingStackPointer--;
 
-                    	// SpecFlowLangWalker.g:167:17: (mlt_= multilineText )?
+                    	// SpecFlowLangWalker.g:162:17: (mlt_= multilineText )?
                     	int alt14 = 2;
                     	int LA14_0 = input.LA(1);
 
@@ -1182,9 +1222,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt14) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:167:17: mlt_= multilineText
+                    	        // SpecFlowLangWalker.g:162:17: mlt_= multilineText
                     	        {
-                    	        	PushFollow(FOLLOW_multilineText_in_step1047);
+                    	        	PushFollow(FOLLOW_multilineText_in_step1087);
                     	        	mlt_ = multilineText();
                     	        	state.followingStackPointer--;
 
@@ -1194,7 +1234,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
                     	}
 
-                    	// SpecFlowLangWalker.g:168:19: (table_= table )?
+                    	// SpecFlowLangWalker.g:163:19: (table_= table )?
                     	int alt15 = 2;
                     	int LA15_0 = input.LA(1);
 
@@ -1205,9 +1245,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt15) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:168:19: table_= table
+                    	        // SpecFlowLangWalker.g:163:19: table_= table
                     	        {
-                    	        	PushFollow(FOLLOW_table_in_step1064);
+                    	        	PushFollow(FOLLOW_table_in_step1104);
                     	        	table_ = table();
                     	        	state.followingStackPointer--;
 
@@ -1216,6 +1256,10 @@ public partial class SpecFlowLangWalker : TreeParser
                     	        break;
 
                     	}
+
+                    	PushFollow(FOLLOW_fileposition_in_step1121);
+                    	fp_ = fileposition();
+                    	state.followingStackPointer--;
 
 
                     	Match(input, Token.UP, null); 
@@ -1226,16 +1270,16 @@ public partial class SpecFlowLangWalker : TreeParser
                     }
                     break;
                 case 2 :
-                    // SpecFlowLangWalker.g:173:9: ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? )
+                    // SpecFlowLangWalker.g:169:9: ^( WHEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition )
                     {
-                    	Match(input,WHEN,FOLLOW_WHEN_in_step1096); 
+                    	Match(input,WHEN,FOLLOW_WHEN_in_step1152); 
 
                     	Match(input, Token.DOWN, null); 
-                    	PushFollow(FOLLOW_text_in_step1112);
+                    	PushFollow(FOLLOW_text_in_step1168);
                     	text_ = text();
                     	state.followingStackPointer--;
 
-                    	// SpecFlowLangWalker.g:175:17: (mlt_= multilineText )?
+                    	// SpecFlowLangWalker.g:171:17: (mlt_= multilineText )?
                     	int alt16 = 2;
                     	int LA16_0 = input.LA(1);
 
@@ -1246,9 +1290,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt16) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:175:17: mlt_= multilineText
+                    	        // SpecFlowLangWalker.g:171:17: mlt_= multilineText
                     	        {
-                    	        	PushFollow(FOLLOW_multilineText_in_step1128);
+                    	        	PushFollow(FOLLOW_multilineText_in_step1184);
                     	        	mlt_ = multilineText();
                     	        	state.followingStackPointer--;
 
@@ -1258,7 +1302,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
                     	}
 
-                    	// SpecFlowLangWalker.g:176:19: (table_= table )?
+                    	// SpecFlowLangWalker.g:172:19: (table_= table )?
                     	int alt17 = 2;
                     	int LA17_0 = input.LA(1);
 
@@ -1269,9 +1313,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt17) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:176:19: table_= table
+                    	        // SpecFlowLangWalker.g:172:19: table_= table
                     	        {
-                    	        	PushFollow(FOLLOW_table_in_step1145);
+                    	        	PushFollow(FOLLOW_table_in_step1201);
                     	        	table_ = table();
                     	        	state.followingStackPointer--;
 
@@ -1280,6 +1324,10 @@ public partial class SpecFlowLangWalker : TreeParser
                     	        break;
 
                     	}
+
+                    	PushFollow(FOLLOW_fileposition_in_step1218);
+                    	fp_ = fileposition();
+                    	state.followingStackPointer--;
 
 
                     	Match(input, Token.UP, null); 
@@ -1290,16 +1338,16 @@ public partial class SpecFlowLangWalker : TreeParser
                     }
                     break;
                 case 3 :
-                    // SpecFlowLangWalker.g:181:9: ^( THEN text_= text (mlt_= multilineText )? (table_= table )? )
+                    // SpecFlowLangWalker.g:178:9: ^( THEN text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition )
                     {
-                    	Match(input,THEN,FOLLOW_THEN_in_step1177); 
+                    	Match(input,THEN,FOLLOW_THEN_in_step1249); 
 
                     	Match(input, Token.DOWN, null); 
-                    	PushFollow(FOLLOW_text_in_step1193);
+                    	PushFollow(FOLLOW_text_in_step1265);
                     	text_ = text();
                     	state.followingStackPointer--;
 
-                    	// SpecFlowLangWalker.g:183:17: (mlt_= multilineText )?
+                    	// SpecFlowLangWalker.g:180:17: (mlt_= multilineText )?
                     	int alt18 = 2;
                     	int LA18_0 = input.LA(1);
 
@@ -1310,9 +1358,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt18) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:183:17: mlt_= multilineText
+                    	        // SpecFlowLangWalker.g:180:17: mlt_= multilineText
                     	        {
-                    	        	PushFollow(FOLLOW_multilineText_in_step1209);
+                    	        	PushFollow(FOLLOW_multilineText_in_step1281);
                     	        	mlt_ = multilineText();
                     	        	state.followingStackPointer--;
 
@@ -1322,7 +1370,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
                     	}
 
-                    	// SpecFlowLangWalker.g:184:19: (table_= table )?
+                    	// SpecFlowLangWalker.g:181:19: (table_= table )?
                     	int alt19 = 2;
                     	int LA19_0 = input.LA(1);
 
@@ -1333,9 +1381,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt19) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:184:19: table_= table
+                    	        // SpecFlowLangWalker.g:181:19: table_= table
                     	        {
-                    	        	PushFollow(FOLLOW_table_in_step1226);
+                    	        	PushFollow(FOLLOW_table_in_step1298);
                     	        	table_ = table();
                     	        	state.followingStackPointer--;
 
@@ -1344,6 +1392,10 @@ public partial class SpecFlowLangWalker : TreeParser
                     	        break;
 
                     	}
+
+                    	PushFollow(FOLLOW_fileposition_in_step1315);
+                    	fp_ = fileposition();
+                    	state.followingStackPointer--;
 
 
                     	Match(input, Token.UP, null); 
@@ -1354,16 +1406,16 @@ public partial class SpecFlowLangWalker : TreeParser
                     }
                     break;
                 case 4 :
-                    // SpecFlowLangWalker.g:189:9: ^( AND text_= text (mlt_= multilineText )? (table_= table )? )
+                    // SpecFlowLangWalker.g:187:9: ^( AND text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition )
                     {
-                    	Match(input,AND,FOLLOW_AND_in_step1258); 
+                    	Match(input,AND,FOLLOW_AND_in_step1346); 
 
                     	Match(input, Token.DOWN, null); 
-                    	PushFollow(FOLLOW_text_in_step1274);
+                    	PushFollow(FOLLOW_text_in_step1362);
                     	text_ = text();
                     	state.followingStackPointer--;
 
-                    	// SpecFlowLangWalker.g:191:17: (mlt_= multilineText )?
+                    	// SpecFlowLangWalker.g:189:17: (mlt_= multilineText )?
                     	int alt20 = 2;
                     	int LA20_0 = input.LA(1);
 
@@ -1374,9 +1426,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt20) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:191:17: mlt_= multilineText
+                    	        // SpecFlowLangWalker.g:189:17: mlt_= multilineText
                     	        {
-                    	        	PushFollow(FOLLOW_multilineText_in_step1290);
+                    	        	PushFollow(FOLLOW_multilineText_in_step1378);
                     	        	mlt_ = multilineText();
                     	        	state.followingStackPointer--;
 
@@ -1386,7 +1438,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
                     	}
 
-                    	// SpecFlowLangWalker.g:192:19: (table_= table )?
+                    	// SpecFlowLangWalker.g:190:19: (table_= table )?
                     	int alt21 = 2;
                     	int LA21_0 = input.LA(1);
 
@@ -1397,9 +1449,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt21) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:192:19: table_= table
+                    	        // SpecFlowLangWalker.g:190:19: table_= table
                     	        {
-                    	        	PushFollow(FOLLOW_table_in_step1307);
+                    	        	PushFollow(FOLLOW_table_in_step1395);
                     	        	table_ = table();
                     	        	state.followingStackPointer--;
 
@@ -1408,6 +1460,10 @@ public partial class SpecFlowLangWalker : TreeParser
                     	        break;
 
                     	}
+
+                    	PushFollow(FOLLOW_fileposition_in_step1412);
+                    	fp_ = fileposition();
+                    	state.followingStackPointer--;
 
 
                     	Match(input, Token.UP, null); 
@@ -1418,16 +1474,16 @@ public partial class SpecFlowLangWalker : TreeParser
                     }
                     break;
                 case 5 :
-                    // SpecFlowLangWalker.g:197:9: ^( BUT text_= text (mlt_= multilineText )? (table_= table )? )
+                    // SpecFlowLangWalker.g:196:9: ^( BUT text_= text (mlt_= multilineText )? (table_= table )? fp_= fileposition )
                     {
-                    	Match(input,BUT,FOLLOW_BUT_in_step1339); 
+                    	Match(input,BUT,FOLLOW_BUT_in_step1443); 
 
                     	Match(input, Token.DOWN, null); 
-                    	PushFollow(FOLLOW_text_in_step1355);
+                    	PushFollow(FOLLOW_text_in_step1459);
                     	text_ = text();
                     	state.followingStackPointer--;
 
-                    	// SpecFlowLangWalker.g:199:17: (mlt_= multilineText )?
+                    	// SpecFlowLangWalker.g:198:17: (mlt_= multilineText )?
                     	int alt22 = 2;
                     	int LA22_0 = input.LA(1);
 
@@ -1438,9 +1494,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt22) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:199:17: mlt_= multilineText
+                    	        // SpecFlowLangWalker.g:198:17: mlt_= multilineText
                     	        {
-                    	        	PushFollow(FOLLOW_multilineText_in_step1371);
+                    	        	PushFollow(FOLLOW_multilineText_in_step1475);
                     	        	mlt_ = multilineText();
                     	        	state.followingStackPointer--;
 
@@ -1450,7 +1506,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
                     	}
 
-                    	// SpecFlowLangWalker.g:200:19: (table_= table )?
+                    	// SpecFlowLangWalker.g:199:19: (table_= table )?
                     	int alt23 = 2;
                     	int LA23_0 = input.LA(1);
 
@@ -1461,9 +1517,9 @@ public partial class SpecFlowLangWalker : TreeParser
                     	switch (alt23) 
                     	{
                     	    case 1 :
-                    	        // SpecFlowLangWalker.g:200:19: table_= table
+                    	        // SpecFlowLangWalker.g:199:19: table_= table
                     	        {
-                    	        	PushFollow(FOLLOW_table_in_step1388);
+                    	        	PushFollow(FOLLOW_table_in_step1492);
                     	        	table_ = table();
                     	        	state.followingStackPointer--;
 
@@ -1472,6 +1528,10 @@ public partial class SpecFlowLangWalker : TreeParser
                     	        break;
 
                     	}
+
+                    	PushFollow(FOLLOW_fileposition_in_step1509);
+                    	fp_ = fileposition();
+                    	state.followingStackPointer--;
 
 
                     	Match(input, Token.UP, null); 
@@ -1484,7 +1544,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
             }
 
-                step.SourceFileLine = lineNo_;
+                step.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -1521,10 +1581,10 @@ public partial class SpecFlowLangWalker : TreeParser
             // SpecFlowLangWalker.g:215:5: ( ^( TEXT f= wordchar (ws= WS | wc= wordchar | nl= NEWLINE )* ) )
             // SpecFlowLangWalker.g:215:9: ^( TEXT f= wordchar (ws= WS | wc= wordchar | nl= NEWLINE )* )
             {
-            	Match(input,TEXT,FOLLOW_TEXT_in_text1443); 
+            	Match(input,TEXT,FOLLOW_TEXT_in_text1563); 
 
             	Match(input, Token.DOWN, null); 
-            	PushFollow(FOLLOW_wordchar_in_text1460);
+            	PushFollow(FOLLOW_wordchar_in_text1580);
             	f = wordchar();
             	state.followingStackPointer--;
 
@@ -1559,7 +1619,7 @@ public partial class SpecFlowLangWalker : TreeParser
             			case 1 :
             			    // SpecFlowLangWalker.g:217:17: ws= WS
             			    {
-            			    	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_text1491); 
+            			    	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_text1611); 
             			    	 elements.Add(ws.Text); 
 
             			    }
@@ -1567,7 +1627,7 @@ public partial class SpecFlowLangWalker : TreeParser
             			case 2 :
             			    // SpecFlowLangWalker.g:218:17: wc= wordchar
             			    {
-            			    	PushFollow(FOLLOW_wordchar_in_text1523);
+            			    	PushFollow(FOLLOW_wordchar_in_text1643);
             			    	wc = wordchar();
             			    	state.followingStackPointer--;
 
@@ -1578,7 +1638,7 @@ public partial class SpecFlowLangWalker : TreeParser
             			case 3 :
             			    // SpecFlowLangWalker.g:219:17: nl= NEWLINE
             			    {
-            			    	nl=(CommonTree)Match(input,NEWLINE,FOLLOW_NEWLINE_in_text1549); 
+            			    	nl=(CommonTree)Match(input,NEWLINE,FOLLOW_NEWLINE_in_text1669); 
             			    	 elements.Add(nl.Text); 
 
             			    }
@@ -1649,7 +1709,7 @@ public partial class SpecFlowLangWalker : TreeParser
                 case 1 :
                     // SpecFlowLangWalker.g:225:9: wc= WORDCHAR
                     {
-                    	wc=(CommonTree)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_wordchar1605); 
+                    	wc=(CommonTree)Match(input,WORDCHAR,FOLLOW_WORDCHAR_in_wordchar1725); 
                     	 text =  wc.Text; 
 
                     }
@@ -1657,7 +1717,7 @@ public partial class SpecFlowLangWalker : TreeParser
                 case 2 :
                     // SpecFlowLangWalker.g:226:9: at= AT
                     {
-                    	at=(CommonTree)Match(input,AT,FOLLOW_AT_in_wordchar1619); 
+                    	at=(CommonTree)Match(input,AT,FOLLOW_AT_in_wordchar1739); 
                     	 @text = at.Text; 
 
                     }
@@ -1697,7 +1757,7 @@ public partial class SpecFlowLangWalker : TreeParser
             // SpecFlowLangWalker.g:236:5: ( ^( MULTILINETEXT (line_= line )* indent_= indent ) )
             // SpecFlowLangWalker.g:236:9: ^( MULTILINETEXT (line_= line )* indent_= indent )
             {
-            	Match(input,MULTILINETEXT,FOLLOW_MULTILINETEXT_in_multilineText1660); 
+            	Match(input,MULTILINETEXT,FOLLOW_MULTILINETEXT_in_multilineText1780); 
 
             	Match(input, Token.DOWN, null); 
             	// SpecFlowLangWalker.g:237:13: (line_= line )*
@@ -1717,7 +1777,7 @@ public partial class SpecFlowLangWalker : TreeParser
             			case 1 :
             			    // SpecFlowLangWalker.g:237:14: line_= line
             			    {
-            			    	PushFollow(FOLLOW_line_in_multilineText1677);
+            			    	PushFollow(FOLLOW_line_in_multilineText1797);
             			    	line_ = line();
             			    	state.followingStackPointer--;
 
@@ -1734,7 +1794,7 @@ public partial class SpecFlowLangWalker : TreeParser
             	loop27:
             		;	// Stops C# compiler whining that label 'loop27' has no statements
 
-            	PushFollow(FOLLOW_indent_in_multilineText1697);
+            	PushFollow(FOLLOW_indent_in_multilineText1817);
             	indent_ = indent();
             	state.followingStackPointer--;
 
@@ -1779,7 +1839,7 @@ public partial class SpecFlowLangWalker : TreeParser
             // SpecFlowLangWalker.g:249:5: ( ^( LINE (ws= WS )? (text_= text )? nl= NEWLINE ) )
             // SpecFlowLangWalker.g:249:9: ^( LINE (ws= WS )? (text_= text )? nl= NEWLINE )
             {
-            	Match(input,LINE,FOLLOW_LINE_in_line1743); 
+            	Match(input,LINE,FOLLOW_LINE_in_line1863); 
 
             	Match(input, Token.DOWN, null); 
             	// SpecFlowLangWalker.g:250:13: (ws= WS )?
@@ -1795,7 +1855,7 @@ public partial class SpecFlowLangWalker : TreeParser
             	    case 1 :
             	        // SpecFlowLangWalker.g:250:14: ws= WS
             	        {
-            	        	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_line1760); 
+            	        	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_line1880); 
             	        	 buffer.Append(ws.Text); 
 
             	        }
@@ -1816,7 +1876,7 @@ public partial class SpecFlowLangWalker : TreeParser
             	    case 1 :
             	        // SpecFlowLangWalker.g:251:14: text_= text
             	        {
-            	        	PushFollow(FOLLOW_text_in_line1790);
+            	        	PushFollow(FOLLOW_text_in_line1910);
             	        	text_ = text();
             	        	state.followingStackPointer--;
 
@@ -1827,7 +1887,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
             	}
 
-            	nl=(CommonTree)Match(input,NEWLINE,FOLLOW_NEWLINE_in_line1814); 
+            	nl=(CommonTree)Match(input,NEWLINE,FOLLOW_NEWLINE_in_line1934); 
             	 buffer.Append(nl.Text); 
 
             	Match(input, Token.UP, null); 
@@ -1867,7 +1927,7 @@ public partial class SpecFlowLangWalker : TreeParser
             // SpecFlowLangWalker.g:260:5: ( ^( INDENT (ws= WS )? ) )
             // SpecFlowLangWalker.g:260:9: ^( INDENT (ws= WS )? )
             {
-            	Match(input,INDENT,FOLLOW_INDENT_in_indent1859); 
+            	Match(input,INDENT,FOLLOW_INDENT_in_indent1979); 
 
             	if ( input.LA(1) == Token.DOWN )
             	{
@@ -1885,7 +1945,7 @@ public partial class SpecFlowLangWalker : TreeParser
             	        case 1 :
             	            // SpecFlowLangWalker.g:261:14: ws= WS
             	            {
-            	            	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_indent1876); 
+            	            	ws=(CommonTree)Match(input,WS,FOLLOW_WS_in_indent1996); 
             	            	 indent =  ws.Text; 
 
             	            }
@@ -1932,19 +1992,19 @@ public partial class SpecFlowLangWalker : TreeParser
             // SpecFlowLangWalker.g:272:5: ( ^( TABLE ^( HEADER header_= tableRow ) ^( BODY (row_= tableRow )+ ) ) )
             // SpecFlowLangWalker.g:272:9: ^( TABLE ^( HEADER header_= tableRow ) ^( BODY (row_= tableRow )+ ) )
             {
-            	Match(input,TABLE,FOLLOW_TABLE_in_table1924); 
+            	Match(input,TABLE,FOLLOW_TABLE_in_table2044); 
 
             	Match(input, Token.DOWN, null); 
-            	Match(input,HEADER,FOLLOW_HEADER_in_table1939); 
+            	Match(input,HEADER,FOLLOW_HEADER_in_table2059); 
 
             	Match(input, Token.DOWN, null); 
-            	PushFollow(FOLLOW_tableRow_in_table1943);
+            	PushFollow(FOLLOW_tableRow_in_table2063);
             	header_ = tableRow();
             	state.followingStackPointer--;
 
 
             	Match(input, Token.UP, null); 
-            	Match(input,BODY,FOLLOW_BODY_in_table1959); 
+            	Match(input,BODY,FOLLOW_BODY_in_table2079); 
 
             	Match(input, Token.DOWN, null); 
             	// SpecFlowLangWalker.g:274:20: (row_= tableRow )+
@@ -1965,7 +2025,7 @@ public partial class SpecFlowLangWalker : TreeParser
             			case 1 :
             			    // SpecFlowLangWalker.g:274:21: row_= tableRow
             			    {
-            			    	PushFollow(FOLLOW_tableRow_in_table1964);
+            			    	PushFollow(FOLLOW_tableRow_in_table2084);
             			    	row_ = tableRow();
             			    	state.followingStackPointer--;
 
@@ -2011,12 +2071,14 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "tableRow"
-    // SpecFlowLangWalker.g:278:1: tableRow returns [Row row] : ^( ROW (cell_= tableCell )+ ) ;
+    // SpecFlowLangWalker.g:278:1: tableRow returns [Row row] : ^( ROW (cell_= tableCell )+ fp_= fileposition ) ;
     public Row tableRow() // throws RecognitionException [1]
     {   
         Row row = default(Row);
 
         Cell cell_ = default(Cell);
+
+        FilePosition fp_ = default(FilePosition);
 
 
 
@@ -2024,13 +2086,13 @@ public partial class SpecFlowLangWalker : TreeParser
 
         try 
     	{
-            // SpecFlowLangWalker.g:285:5: ( ^( ROW (cell_= tableCell )+ ) )
-            // SpecFlowLangWalker.g:285:9: ^( ROW (cell_= tableCell )+ )
+            // SpecFlowLangWalker.g:286:5: ( ^( ROW (cell_= tableCell )+ fp_= fileposition ) )
+            // SpecFlowLangWalker.g:286:9: ^( ROW (cell_= tableCell )+ fp_= fileposition )
             {
-            	Match(input,ROW,FOLLOW_ROW_in_tableRow2012); 
+            	Match(input,ROW,FOLLOW_ROW_in_tableRow2132); 
 
             	Match(input, Token.DOWN, null); 
-            	// SpecFlowLangWalker.g:286:13: (cell_= tableCell )+
+            	// SpecFlowLangWalker.g:287:13: (cell_= tableCell )+
             	int cnt32 = 0;
             	do 
             	{
@@ -2046,9 +2108,9 @@ public partial class SpecFlowLangWalker : TreeParser
             	    switch (alt32) 
             		{
             			case 1 :
-            			    // SpecFlowLangWalker.g:286:14: cell_= tableCell
+            			    // SpecFlowLangWalker.g:287:14: cell_= tableCell
             			    {
-            			    	PushFollow(FOLLOW_tableCell_in_tableRow2029);
+            			    	PushFollow(FOLLOW_tableCell_in_tableRow2149);
             			    	cell_ = tableCell();
             			    	state.followingStackPointer--;
 
@@ -2069,6 +2131,10 @@ public partial class SpecFlowLangWalker : TreeParser
             	loop32:
             		;	// Stops C# compiler whinging that label 'loop32' has no statements
 
+            	PushFollow(FOLLOW_fileposition_in_tableRow2169);
+            	fp_ = fileposition();
+            	state.followingStackPointer--;
+
 
             	Match(input, Token.UP, null); 
 
@@ -2076,6 +2142,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
                 row =  new Row(cells.ToArray());
+                row.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -2092,24 +2159,30 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
     // $ANTLR start "tableCell"
-    // SpecFlowLangWalker.g:290:1: tableCell returns [Cell cell] : ^( CELL text_= text ) ;
+    // SpecFlowLangWalker.g:292:1: tableCell returns [Cell cell] : ^( CELL text_= text fp_= fileposition ) ;
     public Cell tableCell() // throws RecognitionException [1]
     {   
         Cell cell = default(Cell);
 
         Text text_ = default(Text);
 
+        FilePosition fp_ = default(FilePosition);
+
 
         try 
     	{
-            // SpecFlowLangWalker.g:294:5: ( ^( CELL text_= text ) )
-            // SpecFlowLangWalker.g:294:9: ^( CELL text_= text )
+            // SpecFlowLangWalker.g:297:5: ( ^( CELL text_= text fp_= fileposition ) )
+            // SpecFlowLangWalker.g:297:9: ^( CELL text_= text fp_= fileposition )
             {
-            	Match(input,CELL,FOLLOW_CELL_in_tableCell2071); 
+            	Match(input,CELL,FOLLOW_CELL_in_tableCell2207); 
 
             	Match(input, Token.DOWN, null); 
-            	PushFollow(FOLLOW_text_in_tableCell2087);
+            	PushFollow(FOLLOW_text_in_tableCell2223);
             	text_ = text();
+            	state.followingStackPointer--;
+
+            	PushFollow(FOLLOW_fileposition_in_tableCell2239);
+            	fp_ = fileposition();
             	state.followingStackPointer--;
 
 
@@ -2119,6 +2192,7 @@ public partial class SpecFlowLangWalker : TreeParser
 
 
                 cell =  new Cell(text_);
+                cell.FilePosition = fp_;
 
         }
         catch (RecognitionException re) 
@@ -2142,87 +2216,98 @@ public partial class SpecFlowLangWalker : TreeParser
 
  
 
-    public static readonly BitSet FOLLOW_FEATURE_in_feature73 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_feature90 = new BitSet(new ulong[]{0x0000002000000000UL});
-    public static readonly BitSet FOLLOW_text_in_feature108 = new BitSet(new ulong[]{0x000000001C000000UL});
-    public static readonly BitSet FOLLOW_descriptionLine_in_feature125 = new BitSet(new ulong[]{0x000000001C000000UL});
-    public static readonly BitSet FOLLOW_background_in_feature146 = new BitSet(new ulong[]{0x0000000010000000UL});
-    public static readonly BitSet FOLLOW_SCENARIOS_in_feature163 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_scenarioKind_in_feature185 = new BitSet(new ulong[]{0x0000000060000008UL});
-    public static readonly BitSet FOLLOW_TAGS_in_tags243 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tag_in_tags260 = new BitSet(new ulong[]{0x0000020000000008UL});
-    public static readonly BitSet FOLLOW_TAG_in_tag302 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_word_in_tag318 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_WORD_in_word361 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_word378 = new BitSet(new ulong[]{0x0000000001000008UL});
-    public static readonly BitSet FOLLOW_DESCRIPTIONLINE_in_descriptionLine420 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_descriptionLine436 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_BACKGROUND_in_background474 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_background491 = new BitSet(new ulong[]{0x0000000200000000UL});
-    public static readonly BitSet FOLLOW_steps_in_background509 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_scenario_in_scenarioKind543 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_scenarioOutline_in_scenarioKind557 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_SCENARIOOUTLINE_in_scenarioOutline592 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_scenarioOutline608 = new BitSet(new ulong[]{0x0000002000000000UL});
-    public static readonly BitSet FOLLOW_text_in_scenarioOutline639 = new BitSet(new ulong[]{0x0000000200000000UL});
-    public static readonly BitSet FOLLOW_steps_in_scenarioOutline655 = new BitSet(new ulong[]{0x0000000080000000UL});
-    public static readonly BitSet FOLLOW_examples_in_scenarioOutline671 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_SCENARIO_in_scenario714 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tags_in_scenario731 = new BitSet(new ulong[]{0x0000002000000000UL});
-    public static readonly BitSet FOLLOW_text_in_scenario762 = new BitSet(new ulong[]{0x0000000200000000UL});
-    public static readonly BitSet FOLLOW_steps_in_scenario778 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_EXAMPLES_in_examples821 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_exampleSet_in_examples838 = new BitSet(new ulong[]{0x0000000100000008UL});
-    public static readonly BitSet FOLLOW_EXAMPLESET_in_exampleSet880 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_exampleSet896 = new BitSet(new ulong[]{0x0000400000000000UL});
-    public static readonly BitSet FOLLOW_table_in_exampleSet913 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_STEPS_in_steps951 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_step_in_steps968 = new BitSet(new ulong[]{0x000000DC00000008UL});
-    public static readonly BitSet FOLLOW_GIVEN_in_step1015 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1031 = new BitSet(new ulong[]{0x0000480000000008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1047 = new BitSet(new ulong[]{0x0000400000000008UL});
-    public static readonly BitSet FOLLOW_table_in_step1064 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_WHEN_in_step1096 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1112 = new BitSet(new ulong[]{0x0000480000000008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1128 = new BitSet(new ulong[]{0x0000400000000008UL});
-    public static readonly BitSet FOLLOW_table_in_step1145 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_THEN_in_step1177 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1193 = new BitSet(new ulong[]{0x0000480000000008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1209 = new BitSet(new ulong[]{0x0000400000000008UL});
-    public static readonly BitSet FOLLOW_table_in_step1226 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_AND_in_step1258 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1274 = new BitSet(new ulong[]{0x0000480000000008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1290 = new BitSet(new ulong[]{0x0000400000000008UL});
-    public static readonly BitSet FOLLOW_table_in_step1307 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_BUT_in_step1339 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_step1355 = new BitSet(new ulong[]{0x0000480000000008UL});
-    public static readonly BitSet FOLLOW_multilineText_in_step1371 = new BitSet(new ulong[]{0x0000400000000008UL});
-    public static readonly BitSet FOLLOW_table_in_step1388 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_TEXT_in_text1443 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_wordchar_in_text1460 = new BitSet(new ulong[]{0x0000000001D00008UL});
-    public static readonly BitSet FOLLOW_WS_in_text1491 = new BitSet(new ulong[]{0x0000000001D00008UL});
-    public static readonly BitSet FOLLOW_wordchar_in_text1523 = new BitSet(new ulong[]{0x0000000001D00008UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_text1549 = new BitSet(new ulong[]{0x0000000001D00008UL});
-    public static readonly BitSet FOLLOW_WORDCHAR_in_wordchar1605 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_AT_in_wordchar1619 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_MULTILINETEXT_in_multilineText1660 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_line_in_multilineText1677 = new BitSet(new ulong[]{0x0000300000000000UL});
-    public static readonly BitSet FOLLOW_indent_in_multilineText1697 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_LINE_in_line1743 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_WS_in_line1760 = new BitSet(new ulong[]{0x0000002000800000UL});
-    public static readonly BitSet FOLLOW_text_in_line1790 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_NEWLINE_in_line1814 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_INDENT_in_indent1859 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_WS_in_indent1876 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_TABLE_in_table1924 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_HEADER_in_table1939 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tableRow_in_table1943 = new BitSet(new ulong[]{0x0000000000000008UL});
-    public static readonly BitSet FOLLOW_BODY_in_table1959 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tableRow_in_table1964 = new BitSet(new ulong[]{0x0002000000000008UL});
-    public static readonly BitSet FOLLOW_ROW_in_tableRow2012 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_tableCell_in_tableRow2029 = new BitSet(new ulong[]{0x0004000000000008UL});
-    public static readonly BitSet FOLLOW_CELL_in_tableCell2071 = new BitSet(new ulong[]{0x0000000000000004UL});
-    public static readonly BitSet FOLLOW_text_in_tableCell2087 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_FEATURE_in_feature81 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tags_in_feature98 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_feature116 = new BitSet(new ulong[]{0x000000001C000000UL});
+    public static readonly BitSet FOLLOW_descriptionLine_in_feature133 = new BitSet(new ulong[]{0x000000001C000000UL});
+    public static readonly BitSet FOLLOW_background_in_feature154 = new BitSet(new ulong[]{0x0000000010000000UL});
+    public static readonly BitSet FOLLOW_SCENARIOS_in_feature171 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_scenarioKind_in_feature193 = new BitSet(new ulong[]{0x0000000060000008UL});
+    public static readonly BitSet FOLLOW_TAGS_in_tags251 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tag_in_tags268 = new BitSet(new ulong[]{0x0000020000000008UL});
+    public static readonly BitSet FOLLOW_TAG_in_tag310 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_word_in_tag326 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_WORD_in_word369 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_word386 = new BitSet(new ulong[]{0x0000000001000008UL});
+    public static readonly BitSet FOLLOW_DESCRIPTIONLINE_in_descriptionLine428 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_descriptionLine444 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_BACKGROUND_in_background485 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_background502 = new BitSet(new ulong[]{0x0000000200000000UL});
+    public static readonly BitSet FOLLOW_steps_in_background520 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_background536 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_scenario_in_scenarioKind570 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_scenarioOutline_in_scenarioKind584 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_SCENARIOOUTLINE_in_scenarioOutline614 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tags_in_scenarioOutline630 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_scenarioOutline647 = new BitSet(new ulong[]{0x0000000200000000UL});
+    public static readonly BitSet FOLLOW_steps_in_scenarioOutline663 = new BitSet(new ulong[]{0x0000000080000000UL});
+    public static readonly BitSet FOLLOW_examples_in_scenarioOutline679 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_scenarioOutline695 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_SCENARIO_in_scenario733 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tags_in_scenario750 = new BitSet(new ulong[]{0x0000002000000000UL});
+    public static readonly BitSet FOLLOW_text_in_scenario767 = new BitSet(new ulong[]{0x0000000200000000UL});
+    public static readonly BitSet FOLLOW_steps_in_scenario783 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_scenario799 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_FILEPOSITION_in_fileposition834 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EXAMPLES_in_examples866 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_exampleSet_in_examples883 = new BitSet(new ulong[]{0x0000000100000008UL});
+    public static readonly BitSet FOLLOW_EXAMPLESET_in_exampleSet925 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_exampleSet941 = new BitSet(new ulong[]{0x0000400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_exampleSet958 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_STEPS_in_steps996 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_step_in_steps1013 = new BitSet(new ulong[]{0x000000DC00000008UL});
+    public static readonly BitSet FOLLOW_GIVEN_in_step1055 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_step1071 = new BitSet(new ulong[]{0x0008480000000000UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1087 = new BitSet(new ulong[]{0x0008400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_step1104 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_step1121 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_WHEN_in_step1152 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_step1168 = new BitSet(new ulong[]{0x0008480000000000UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1184 = new BitSet(new ulong[]{0x0008400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_step1201 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_step1218 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_THEN_in_step1249 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_step1265 = new BitSet(new ulong[]{0x0008480000000000UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1281 = new BitSet(new ulong[]{0x0008400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_step1298 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_step1315 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_AND_in_step1346 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_step1362 = new BitSet(new ulong[]{0x0008480000000000UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1378 = new BitSet(new ulong[]{0x0008400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_step1395 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_step1412 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_BUT_in_step1443 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_step1459 = new BitSet(new ulong[]{0x0008480000000000UL});
+    public static readonly BitSet FOLLOW_multilineText_in_step1475 = new BitSet(new ulong[]{0x0008400000000000UL});
+    public static readonly BitSet FOLLOW_table_in_step1492 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_step1509 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_TEXT_in_text1563 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_wordchar_in_text1580 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_WS_in_text1611 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_wordchar_in_text1643 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_text1669 = new BitSet(new ulong[]{0x0000000001D00008UL});
+    public static readonly BitSet FOLLOW_WORDCHAR_in_wordchar1725 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_AT_in_wordchar1739 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_MULTILINETEXT_in_multilineText1780 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_line_in_multilineText1797 = new BitSet(new ulong[]{0x0000300000000000UL});
+    public static readonly BitSet FOLLOW_indent_in_multilineText1817 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_LINE_in_line1863 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_WS_in_line1880 = new BitSet(new ulong[]{0x0000002000800000UL});
+    public static readonly BitSet FOLLOW_text_in_line1910 = new BitSet(new ulong[]{0x0000000000800000UL});
+    public static readonly BitSet FOLLOW_NEWLINE_in_line1934 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_INDENT_in_indent1979 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_WS_in_indent1996 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_TABLE_in_table2044 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_HEADER_in_table2059 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tableRow_in_table2063 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_BODY_in_table2079 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tableRow_in_table2084 = new BitSet(new ulong[]{0x0002000000000008UL});
+    public static readonly BitSet FOLLOW_ROW_in_tableRow2132 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_tableCell_in_tableRow2149 = new BitSet(new ulong[]{0x000C000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_tableRow2169 = new BitSet(new ulong[]{0x0000000000000008UL});
+    public static readonly BitSet FOLLOW_CELL_in_tableCell2207 = new BitSet(new ulong[]{0x0000000000000004UL});
+    public static readonly BitSet FOLLOW_text_in_tableCell2223 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_fileposition_in_tableCell2239 = new BitSet(new ulong[]{0x0000000000000008UL});
 
 }
 }

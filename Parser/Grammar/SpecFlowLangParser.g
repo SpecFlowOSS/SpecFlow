@@ -34,6 +34,7 @@ tokens {
     BODY;
     ROW;
     CELL;
+    FILEPOSITION;
 }
 
 //@lexer::namespace { TechTalk.SpecFlow.Parser.Grammar }
@@ -72,10 +73,17 @@ descriptionLine
     ;
 
 background
-    :   WS? T_BACKGROUND 
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_BACKGROUND 
         (WS title)? 
         newlineWithSpaces givens
-        -> ^(BACKGROUND title? givens)
+        -> ^(BACKGROUND title? givens FILEPOSITION[fp_])
     ;
 
 scenarioKind
@@ -84,19 +92,33 @@ scenarioKind
     ;
 
 scenario
-    :   tags? WS? T_SCENARIO WS? 
+@init {
+	string fp_ = null;
+}
+    :   tags? WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_SCENARIO WS? 
         title newlineWithSpaces 
         steps
-        -> ^(SCENARIO tags? title steps)
+        -> ^(SCENARIO tags? title steps FILEPOSITION[fp_])
     ;
 
 scenarioOutline
+@init {
+	string fp_ = null;
+}
     :
-        tags? WS? T_SCENARIO_OUTLINE WS?
+        tags? WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+        T_SCENARIO_OUTLINE WS?
         title newlineWithSpaces
         steps
         examples
-        -> ^(SCENARIOOUTLINE tags? title steps examples)
+        -> ^(SCENARIOOUTLINE tags? title steps examples FILEPOSITION[fp_])
     ;
 
 examples
@@ -126,13 +148,27 @@ nextStep
     ;
 
 firstAnd
-    :   WS? T_AND WS sentenceEnd
-        -> ^(AND sentenceEnd)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_AND WS sentenceEnd
+        -> ^(AND sentenceEnd FILEPOSITION[fp_])
     ;
 
 firstBut
-    :   WS? T_BUT WS sentenceEnd
-        -> ^(BUT sentenceEnd)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_BUT WS sentenceEnd
+        -> ^(BUT sentenceEnd FILEPOSITION[fp_])
     ;
 
 givens
@@ -140,16 +176,37 @@ givens
         -> ^(STEPS firstGiven nextStep*)
     ;
 firstGiven
-    :   WS? T_GIVEN WS sentenceEnd
-        -> ^(GIVEN sentenceEnd)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_GIVEN WS sentenceEnd
+        -> ^(GIVEN sentenceEnd FILEPOSITION[fp_])
     ;
 firstWhen
-    :   WS? T_WHEN WS sentenceEnd
-        -> ^(WHEN sentenceEnd)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_WHEN WS sentenceEnd
+        -> ^(WHEN sentenceEnd FILEPOSITION[fp_])
     ;
 firstThen
-    :   WS? T_THEN WS sentenceEnd
-        -> ^(THEN sentenceEnd)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		T_THEN WS sentenceEnd
+        -> ^(THEN sentenceEnd FILEPOSITION[fp_])
     ;
 
 sentenceEnd
@@ -179,13 +236,27 @@ table
     ;
 
 tableRow
-    :   WS? CELLSEP tableCell+ WS? newlineWithSpaces
-        -> ^(ROW tableCell+)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		CELLSEP tableCell+ WS? newlineWithSpaces
+        -> ^(ROW tableCell+ FILEPOSITION[fp_])
     ;
 
 tableCell
-    :   WS? text WS? CELLSEP
-        -> ^(CELL text)
+@init {
+	string fp_ = null;
+}
+    :   WS? 
+		{
+			fp_ = GetFilePosition();
+		}
+		text WS? CELLSEP
+        -> ^(CELL text FILEPOSITION[fp_])
     ;
 
 descriptionLineText

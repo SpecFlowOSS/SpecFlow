@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -31,10 +32,12 @@ namespace TechTalk.SpecFlow.Parser
         private const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
 
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
+        private readonly bool allowDebugGeneratedFiles;
 
-        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
+        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider, bool allowDebugGeneratedFiles)
         {
             this.testGeneratorProvider = testGeneratorProvider;
+            this.allowDebugGeneratedFiles = allowDebugGeneratedFiles;
         }
 
         public CodeCompileUnit GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
@@ -43,6 +46,7 @@ namespace TechTalk.SpecFlow.Parser
             testClassName = testClassName ?? string.Format(FIXTURE_FORMAT, feature.Title.ToIdentifier());
 
             CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
+
             CodeNamespace codeNamespace = new CodeNamespace(targetNamespace);
             codeCompileUnit.Namespaces.Add(codeNamespace);
 
@@ -52,6 +56,8 @@ namespace TechTalk.SpecFlow.Parser
             testType.IsPartial = true;
             testType.TypeAttributes |= TypeAttributes.Public;
             codeNamespace.Types.Add(testType);
+
+            AddLinePragmaInitial(testType, feature);
 
             testGeneratorProvider.SetTestFixture(testType, feature.Title, feature.Description);
             if (feature.Tags != null)
@@ -92,7 +98,6 @@ namespace TechTalk.SpecFlow.Parser
         private CodeExpression GetTestRunnerExpression()
         {
             return new CodeVariableReferenceExpression(TESTRUNNER_FIELD);
-            //return new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), TESTRUNNER_FIELD);
         }
 
         private IEnumerable<string> GetNonIgnoreTags(IEnumerable<Tag> tags)
@@ -238,8 +243,12 @@ namespace TechTalk.SpecFlow.Parser
             backgroundMethod.Attributes = MemberAttributes.Public;
             backgroundMethod.Name = BACKGROUND_NAME;
 
+            AddLineDirective(backgroundMethod.Statements, background);
+
             foreach (var given in background.Steps)
                 GenerateStep(backgroundMethod, given, null);
+
+            AddLineDirectiveHidden(backgroundMethod.Statements);
 
             testSetup.Statements.Add(
                 new CodeMethodInvokeExpression(
@@ -283,7 +292,7 @@ namespace TechTalk.SpecFlow.Parser
                 //TODO: check params
             }
 
-            GenerateScenarioOutlineBody(scenarioOutline, paramToIdentifier, testType, testMethodName, testSetup);
+            GenerateScenarioOutlineBody(feature, scenarioOutline, paramToIdentifier, testType, testMethodName, testSetup);
 
             int exampleSetIndex = 0;
             foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
@@ -311,7 +320,7 @@ namespace TechTalk.SpecFlow.Parser
             return table.Body.Select(r => r.Cells[0].Value.ToIdentifier()).Distinct().Count() == table.Body.Length;
         }
 
-        private void GenerateScenarioOutlineBody(ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier, CodeTypeDeclaration testType, string testMethodName, CodeMemberMethod testSetup)
+        private void GenerateScenarioOutlineBody(Feature feature, ScenarioOutline scenarioOutline, ParameterSubstitution paramToIdentifier, CodeTypeDeclaration testType, string testMethodName, CodeMemberMethod testSetup)
         {
             CodeMemberMethod testMethod = new CodeMemberMethod();
             testType.Members.Add(testMethod);
@@ -324,7 +333,7 @@ namespace TechTalk.SpecFlow.Parser
                 testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof (string), pair.Value));
             }
 
-            GenerateTestBody(scenarioOutline, testMethod, testSetup, paramToIdentifier);
+            GenerateTestBody(feature, scenarioOutline, testMethod, testSetup, paramToIdentifier);
         }
 
         private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, string variantName)
@@ -350,10 +359,10 @@ namespace TechTalk.SpecFlow.Parser
         private void GenerateTest(CodeTypeDeclaration testType, CodeMemberMethod testSetup, Scenario scenario, Feature feature)
         {
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenario);
-            GenerateTestBody(scenario, testMethod, testSetup, null);
+            GenerateTestBody(feature, scenario, testMethod, testSetup, null);
         }
 
-        private void GenerateTestBody(Scenario scenario, CodeMemberMethod testMethod, CodeMemberMethod testSetup, ParameterSubstitution paramToIdentifier)
+        private void GenerateTestBody(Feature feature, Scenario scenario, CodeMemberMethod testMethod, CodeMemberMethod testSetup, ParameterSubstitution paramToIdentifier)
         {
             //call test setup
             //ScenarioInfo scenarioInfo = new ScenarioInfo("xxxx", tags...);
@@ -363,6 +372,7 @@ namespace TechTalk.SpecFlow.Parser
                         new CodePrimitiveExpression(scenario.Title),
                         GetStringArrayExpression(scenario.Tags))));
 
+            AddLineDirective(testMethod.Statements, scenario);
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     new CodeThisReferenceExpression(),
@@ -374,6 +384,7 @@ namespace TechTalk.SpecFlow.Parser
                 GenerateStep(testMethod, scenarioStep, paramToIdentifier);
             }
 
+            AddLineDirectiveHidden(testMethod.Statements);
 
             // call collect errors
             var testRunnerField = GetTestRunnerExpression();
@@ -453,12 +464,14 @@ namespace TechTalk.SpecFlow.Parser
                 GetSubstitutedString(scenarioStep.Text, paramToIdentifier));
             if (scenarioStep.MultiLineTextArgument != null || scenarioStep.TableArg != null)
             {
+                AddLineDirectiveHidden(testMethod.Statements);
                 arguments.Add(
                     GetMultilineTextArgExpression(scenarioStep.MultiLineTextArgument, paramToIdentifier));
                 arguments.Add(
                     GetTableArgExpression(scenarioStep.TableArg, testMethod.Statements, paramToIdentifier));
             }
 
+            AddLineDirective(testMethod.Statements, scenarioStep);
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
@@ -498,5 +511,54 @@ namespace TechTalk.SpecFlow.Parser
         {
             return GetSubstitutedString(multiLineTextArgument, paramToIdentifier);
         }
+
+        #region Line pragma handling
+
+        private void AddLinePragmaInitial(CodeTypeDeclaration testType, Feature feature)
+        {
+            testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", feature.SourceFile)));
+            testType.Members.Add(new CodeSnippetTypeMember("#line hidden"));
+        }
+
+        private void AddLineDirectiveHidden(CodeStatementCollection statements)
+        {
+            if (allowDebugGeneratedFiles)
+                return;
+
+            statements.Add(new CodeSnippetStatement("#line hidden"));
+        }
+
+        private void AddLineDirective(CodeStatementCollection statements, Background background)
+        {
+            AddLineDirective(statements, null, background.FilePosition);
+        }
+
+        private void AddLineDirective(CodeStatementCollection statements, Scenario scenario)
+        {
+            AddLineDirective(statements, null, scenario.FilePosition);
+        }
+
+        private void AddLineDirective(CodeStatementCollection statements, ScenarioStep step)
+        {
+            AddLineDirective(statements, null, step.FilePosition);
+        }
+
+        private void AddLineDirective(CodeStatementCollection statements, string sourceFile, FilePosition filePosition)
+        {
+            if (filePosition == null || allowDebugGeneratedFiles)
+                return;
+
+            if (sourceFile == null)
+                statements.Add(new CodeSnippetStatement(
+                    string.Format("#line {0}", filePosition.Line)));
+            else
+                statements.Add(new CodeSnippetStatement(
+                    string.Format("#line {0} \"{1}\"", filePosition.Line, Path.GetFileName(sourceFile))));
+
+            statements.Add(new CodeSnippetStatement(
+                    string.Format("//#indentnext {0}", filePosition.Column - 1)));
+        }
+
+        #endregion
     }
 }

@@ -27,6 +27,8 @@ namespace TechTalk.SpecFlow.Configuration
         internal const bool TraceSuccessfulSteps = true;
         internal const bool TraceTimings = false;
         internal const string MinTracedDuration = "0:0:0.1";
+
+        internal const bool AllowDebugGeneratedFiles = false;
     }
 
     partial class ConfigurationSectionHandler : ConfigurationSection
@@ -43,6 +45,13 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (UnitTestProviderConfigElement)this["unitTestProvider"]; }
             set { this["unitTestProvider"] = value; }
+        }
+
+        [ConfigurationProperty("generator", IsRequired = false)]
+        public GeneratorConfigElement Generator
+        {
+            get { return (GeneratorConfigElement)this["generator"]; }
+            set { this["generator"] = value; }
         }
 
         [ConfigurationProperty("runtime", IsRequired = false)]
@@ -151,6 +160,16 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (MissingOrPendingStepsOutcome)this["missingOrPendingStepsOutcome"]; }
             set { this["missingOrPendingStepsOutcome"] = value; }
+        }
+    }
+
+    public class GeneratorConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("allowDebugGeneratedFiles", DefaultValue = ConfigDefaults.AllowDebugGeneratedFiles, IsRequired = false)]
+        public bool AllowDebugGeneratedFiles
+        {
+            get { return (bool)this["allowDebugGeneratedFiles"]; }
+            set { this["allowDebugGeneratedFiles"] = value; }
         }
     }
 
