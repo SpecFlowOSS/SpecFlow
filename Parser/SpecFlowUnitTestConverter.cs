@@ -516,7 +516,7 @@ namespace TechTalk.SpecFlow.Parser
 
         private void AddLinePragmaInitial(CodeTypeDeclaration testType, Feature feature)
         {
-            testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", feature.SourceFile)));
+            testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", Path.GetFileName(feature.SourceFile))));
             testType.Members.Add(new CodeSnippetTypeMember("#line hidden"));
         }
 

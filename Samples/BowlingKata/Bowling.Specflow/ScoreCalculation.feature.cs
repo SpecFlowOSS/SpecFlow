@@ -20,6 +20,9 @@ namespace Bowling.Specflow
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
+#line 1 "ScoreCalculation.feature"
+#line hidden
+        
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
@@ -52,10 +55,15 @@ namespace Bowling.Specflow
         public virtual void GutterGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gutter game", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("all of my balls are landing in the gutter");
-            testRunner.Then("my total score should be 0");
+#line 6
+this.ScenarioSetup(scenarioInfo);
+#line 7
+  testRunner.Given("a new bowling game");
+#line 8
+  testRunner.When("all of my balls are landing in the gutter");
+#line 9
+  testRunner.Then("my total score should be 0");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
         
@@ -64,12 +72,19 @@ namespace Bowling.Specflow
         public virtual void BeginnersGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Beginners game", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("I roll 2 and 7");
-            testRunner.And("I roll 3 and 4");
-            testRunner.And("I roll 8 times 1 and 1");
-            testRunner.Then("my total score should be 32");
+#line 11
+this.ScenarioSetup(scenarioInfo);
+#line 12
+  testRunner.Given("a new bowling game");
+#line 13
+  testRunner.When("I roll 2 and 7");
+#line 14
+  testRunner.And("I roll 3 and 4");
+#line 15
+  testRunner.And("I roll 8 times 1 and 1");
+#line 16
+  testRunner.Then("my total score should be 32");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
         
@@ -78,10 +93,15 @@ namespace Bowling.Specflow
         public virtual void AnotherBeginnersGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Another beginners game", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("I roll the following series:\t2,7,3,4,1,1,5,1,1,1,1,1,1,1,1,1,1,1,5,1");
-            testRunner.Then("my total score should be 40");
+#line 18
+this.ScenarioSetup(scenarioInfo);
+#line 19
+  testRunner.Given("a new bowling game");
+#line 20
+  testRunner.When("I roll the following series:\t2,7,3,4,1,1,5,1,1,1,1,1,1,1,1,1,1,1,5,1");
+#line 21
+  testRunner.Then("my total score should be 40");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
         
@@ -90,10 +110,15 @@ namespace Bowling.Specflow
         public virtual void AllStrikes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All Strikes", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("all of my rolls are strikes");
-            testRunner.Then("my total score should be 300");
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+  testRunner.Given("a new bowling game");
+#line 25
+  testRunner.When("all of my rolls are strikes");
+#line 26
+  testRunner.Then("my total score should be 300");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
         
@@ -102,10 +127,15 @@ namespace Bowling.Specflow
         public virtual void OneSingleSpare()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("One single spare", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("I roll the following series: 2,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
-            testRunner.Then("my total score should be 29");
+#line 28
+this.ScenarioSetup(scenarioInfo);
+#line 29
+   testRunner.Given("a new bowling game");
+#line 30
+   testRunner.When("I roll the following series: 2,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
+#line 31
+   testRunner.Then("my total score should be 29");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
         
@@ -114,11 +144,17 @@ namespace Bowling.Specflow
         public virtual void AllSpares()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All spares", ((string[])(null)));
-            this.ScenarioSetup(scenarioInfo);
-            testRunner.Given("a new bowling game");
-            testRunner.When("I roll 10 times 1 and 9");
-            testRunner.And("I roll 1");
-            testRunner.Then("my total score should be 110");
+#line 33
+this.ScenarioSetup(scenarioInfo);
+#line 34
+  testRunner.Given("a new bowling game");
+#line 35
+  testRunner.When("I roll 10 times 1 and 9");
+#line 36
+  testRunner.And("I roll 1");
+#line 37
+  testRunner.Then("my total score should be 110");
+#line hidden
             testRunner.CollectScenarioErrors();
         }
     }
