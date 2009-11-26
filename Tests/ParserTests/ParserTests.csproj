@@ -74,6 +74,8 @@
     </None>
     <None Include="TestFiles\comments.feature">
     </None>
+    <None Include="TestFiles\swedish.feature">
+    </None>
     <None Include="TestFiles\dutch.feature">
     </None>
     <None Include="TestFiles\hungarian.feature">

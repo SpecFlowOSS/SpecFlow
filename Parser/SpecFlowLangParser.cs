@@ -33,11 +33,7 @@ namespace TechTalk.SpecFlow.Parser
         {
             var fileContent = featureFileReader.ReadToEnd() + Environment.NewLine;
 
-            CultureInfo language = defaultLanguage;
-
-            var langMatch = languageRe.Match(fileContent);
-            if (langMatch.Success)
-                language = new CultureInfo(langMatch.Groups["lang"].Value);
+            CultureInfo language = GetLanguage(fileContent);
 
             var inputStream = new ANTLRReaderStream(new StringReader(fileContent));
             var lexer = GetLexter(language, inputStream);
@@ -63,6 +59,31 @@ namespace TechTalk.SpecFlow.Parser
             return feature;
         }
 
+        private CultureInfo GetLanguage(string fileContent)
+        {
+            CultureInfo language = defaultLanguage;
+
+            var langMatch = languageRe.Match(fileContent);
+            if (langMatch.Success)
+            {
+                string langName = langMatch.Groups["lang"].Value;
+                langName = ResolveLangNameExceptions(langName);
+                language = new CultureInfo(langName);
+            }
+            return language;
+        }
+
+        private string ResolveLangNameExceptions(string langName)
+        {
+            switch (langName)
+            {
+                case "se":
+                    return "sv";
+                default:
+                    return langName;
+            }
+        }
+
         static readonly Dictionary<CultureInfo, Type> lexters = new Dictionary<CultureInfo, Type>
             {
                 {new CultureInfo("en"), typeof(SpecFlowLangLexer_en)},
@@ -70,6 +91,7 @@ namespace TechTalk.SpecFlow.Parser
                 {new CultureInfo("fr"), typeof(SpecFlowLangLexer_fr)},
                 {new CultureInfo("hu"), typeof(SpecFlowLangLexer_hu)},
                 {new CultureInfo("nl"), typeof(SpecFlowLangLexer_nl)},
+                {new CultureInfo("sv"), typeof(SpecFlowLangLexer_sv)},
             };
 
         private SpecFlowLangLexer GetLexter(CultureInfo language, ANTLRReaderStream inputStream)

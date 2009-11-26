@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Language>sv</Language>
+  <Scenarios>
+    <Scenario>
+      <Title>två tal</Title>
+      <FilePosition line="7" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>att jag har knappat in 5</Text>
+          <FilePosition line="8" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>att jag har knappat in 7</Text>
+          <FilePosition line="9" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>jag summerar</Text>
+          <FilePosition line="10" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>ska resultatet vara 12</Text>
+          <FilePosition line="11" column="5" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+    <Scenario>
+      <Title>tre tal</Title>
+      <FilePosition line="13" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <Text>att jag har knappat in 5</Text>
+          <FilePosition line="14" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>att jag har knappat in 4</Text>
+          <FilePosition line="15" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <Text>att jag har knappat in 3</Text>
+          <FilePosition line="16" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <Text>jag summerar</Text>
+          <FilePosition line="17" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <Text>ska resultatet vara 12</Text>
+          <FilePosition line="18" column="5" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Title>Summering</Title>
+  <Description>För att slippa att göra dumma fel
+Som räknare
+Vill jag kunna lägga samman</Description>
+</Feature>

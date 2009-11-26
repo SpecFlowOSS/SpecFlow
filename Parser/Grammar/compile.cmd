@@ -20,6 +20,10 @@ del SpecFlowLangLexer_hu.g
 java -cp ..\..\lib\antlr\antlr-3.1.2.jar org.antlr.Tool SpecFlowLangLexer_nl.g
 del SpecFlowLangLexer_nl.g
 
+..\..\lib\msxsl\msxsl.exe ..\..\Languages.xml LexerTransformation.xslt language=sv -o SpecFlowLangLexer_sv.g
+java -cp ..\..\lib\antlr\antlr-3.1.2.jar org.antlr.Tool SpecFlowLangLexer_sv.g
+del SpecFlowLangLexer_sv.g
+
 
 java -cp ..\..\lib\antlr\antlr-3.1.2.jar org.antlr.Tool SpecFlowLangParser.g
 java -cp ..\..\lib\antlr\antlr-3.1.2.jar org.antlr.Tool SpecFlowLangWalker.g

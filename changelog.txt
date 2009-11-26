@@ -5,7 +5,7 @@ New features:
 + Generate #line pragmas to the output file (Issue 26)
 + Allow transformation of feature files from command-line and MsBuild (Issue 3)
 + Merge all command-line tool (generation, reports) to a single executable: specflow.exe
-+ Support for Dutch language
++ Support for Dutch and Swedish language
 + Support enumerations in step binding arguments (Issue 28)
 
 Fixed issues:

@@ -37,6 +37,13 @@ namespace ParserTests
         }
 
         [Test]
+        public void CanParseSwedishFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanParseFile(Path.Combine(folder, "swedish.feature"));
+        }
+
+        [Test]
         public void CanParseCommentsFeature()
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));

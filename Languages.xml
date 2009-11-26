@@ -61,4 +61,16 @@
     <And>En</And>
     <But>Maar</But>
   </Language>
+  <Language code="sv" defaultSpecificCulture="sv-SE">
+    <Feature>Egenskap</Feature>
+    <Background>Bakgrund</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <Examples>Exempel</Examples>
+    <Given>Givet</Given>
+    <When>När</When>
+    <Then>Så</Then>
+    <And>Och</And>
+    <But>Men</But>
+  </Language>
 </SpecFlowLanguages>
