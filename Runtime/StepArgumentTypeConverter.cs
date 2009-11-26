@@ -1,26 +1,27 @@
 using System;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow
 {
     public interface IStepArgumentTypeConverter
     {
-        object Convert(string value, Type typeToConvertTo);
+        object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
     }
 
-    public class StepStepArgumentTypeConverter : IStepArgumentTypeConverter
+    public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
-        public object Convert(string value, Type typeToConvertTo)
+        public object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
             object convertedArg;
 
             var paramType = typeToConvertTo;
-            if (paramType.BaseType == typeof(Enum))
+            if (paramType.IsEnum)
             {
                 convertedArg = Enum.Parse(paramType, value, true);
             }
             else
             {
-                convertedArg = System.Convert.ChangeType(value, paramType);
+                convertedArg = System.Convert.ChangeType(value, paramType, cultureInfo);
             }
 
             return convertedArg;

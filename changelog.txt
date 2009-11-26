@@ -6,6 +6,7 @@ New features:
 + Allow transformation of feature files from command-line and MsBuild (Issue 3)
 + Merge all command-line tool (generation, reports) to a single executable: specflow.exe
 + Support for Dutch language
++ Support enumerations in step binding arguments (Issue 28)
 
 Fixed issues:
 + MsTest does not refresh tests automatically (Issue 25)

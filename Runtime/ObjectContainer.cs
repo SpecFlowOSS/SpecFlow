@@ -188,6 +188,18 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
+        #region StepArgumentTypeConverter
+        private static IStepArgumentTypeConverter stepArgumentTypeConverter = null;
+
+        public static IStepArgumentTypeConverter StepArgumentTypeConverter
+        {
+            get 
+            {
+                return GetOrCreate(ref stepArgumentTypeConverter, typeof(StepArgumentTypeConverter));
+            }
+        }
+        #endregion
+
         #region unitTestRuntimeProvider
         private static IUnitTestRuntimeProvider unitTestRuntimeProvider = null;
 

@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly StepFormatter stepFormatter;
         private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter = new StepArgumentTypeConverter(); 
 
         public TestRunner()
         {
@@ -27,6 +28,7 @@ namespace TechTalk.SpecFlow
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
             stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
+            stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
@@ -382,7 +384,6 @@ namespace TechTalk.SpecFlow
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
-            IStepArgumentTypeConverter typeConverter = new StepStepArgumentTypeConverter(); 
             List<object> arguments = new List<object>();
 
             var regexArgs = match.Match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
@@ -392,8 +393,7 @@ namespace TechTalk.SpecFlow
 
             for (int argIndex = 0; argIndex < regexArgs.Length; argIndex++)
             {
-                var convertedArg = typeConverter.Convert(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex]);
-                object convertedArg = Convert.ChangeType(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex], 
+                var convertedArg = stepArgumentTypeConverter.Convert(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex],
                     FeatureContext.Current.FeatureInfo.CultureInfo);
                 arguments.Add(convertedArg);
             }
