@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         }
     }
 
-    public class GeneratorTask : GeneratorTaskBase
+    public class GenerateAll : GeneratorTaskBase
     {
         public bool VerboseOutput { get; set; }
         public bool ForceGeneration { get; set; }

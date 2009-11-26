@@ -12,6 +12,6 @@
       >$(MSBuildProjectDirectory)\$(SpecFlowTasksPath)</__SpecFlowTasksFullPath>
   </PropertyGroup>
   
-  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GeneratorTask" AssemblyFile="$(__SpecFlowTasksFullPath)" />
+  <UsingTask TaskName="TechTalk.SpecFlow.Tools.MsBuild.GenerateAll" AssemblyFile="$(__SpecFlowTasksFullPath)" />
 
 </Project>

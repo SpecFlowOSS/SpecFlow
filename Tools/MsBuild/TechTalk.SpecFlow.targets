@@ -42,7 +42,7 @@
   </Target>
 
   <Target Name="UpdateFeatureFilesInProject">
-    <GeneratorTask
+    <GenerateAll
       ShowTrace="$(ShowTrace)"
 
       BuildServerMode="$(BuildServerMode)"
