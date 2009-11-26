@@ -59,6 +59,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="StepArgumentTypeConverter.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="ErrorHandling\BindingException.cs" />
     <Compile Include="BindingMatch.cs" />

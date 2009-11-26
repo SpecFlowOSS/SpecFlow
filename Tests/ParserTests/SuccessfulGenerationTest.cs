@@ -131,7 +131,7 @@ namespace ParserTests
         public void CanGenerateFromFile(string fileName)
         {
             Console.WriteLine(fileName);
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en"));
+            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
             using (var reader = new StreamReader(fileName))
             {
                 Feature feature = parser.Parse(reader);

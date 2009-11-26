@@ -382,6 +382,7 @@ namespace TechTalk.SpecFlow
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
+            IStepArgumentTypeConverter typeConverter = new StepStepArgumentTypeConverter(); 
             List<object> arguments = new List<object>();
 
             var regexArgs = match.Match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
@@ -391,6 +392,7 @@ namespace TechTalk.SpecFlow
 
             for (int argIndex = 0; argIndex < regexArgs.Length; argIndex++)
             {
+                var convertedArg = typeConverter.Convert(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex]);
                 object convertedArg = Convert.ChangeType(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex], 
                     FeatureContext.Current.FeatureInfo.CultureInfo);
                 arguments.Add(convertedArg);
