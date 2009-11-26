@@ -41,76 +41,6 @@ namespace TechTalk.SpecFlow.VsIntegration
             return ".feature.cs";
         }
 
-        private class HackedWriter : TextWriter
-        {
-            TextWriter innerWriter;
-            private bool trimSpaces = false;
-
-            public HackedWriter(TextWriter innerWriter)
-            {
-                this.innerWriter = innerWriter;
-            }
-
-            public override void Write(char[] buffer, int index, int count)
-            {
-                Write(new string(buffer, index, count));
-            }
-
-            public override void Write(char value)
-            {
-                Write(value.ToString());
-            }
-
-            public override void Write(string value)
-            {
-                if (trimSpaces)
-                {
-                    value = value.TrimStart(' ', '\t');
-                    if (value == string.Empty)
-                        return;
-                    trimSpaces = false;
-                }
-
-                innerWriter.Write(value);
-            }
-
-            public override Encoding Encoding
-            {
-                get { return innerWriter.Encoding; }
-            }
-
-            static public readonly Regex indentNextRe = new Regex(@"^[\s\/\']*#indentnext (?<ind>\d+)\s*$");
-
-            public override void WriteLine(string text)
-            {
-                var match = indentNextRe.Match(text);
-                if (match.Success)
-                {
-                    Write(new string(' ', int.Parse(match.Groups["ind"].Value)));
-                    trimSpaces = true;
-                    return;
-                }
-
-                base.WriteLine(text);
-            }
-
-            public override string ToString()
-            {
-                return innerWriter.ToString();
-            }
-
-            public override void Flush()
-            {
-                innerWriter.Flush();
-            }
-
-            protected override void Dispose(bool disposing)
-            {
-                if (disposing)
-                    innerWriter.Dispose();
-            }
-        }
-
         protected override string GenerateCode(string inputFileContent)
         {
             CodeDomProvider provider = GetCodeProvider();
@@ -118,7 +48,7 @@ namespace TechTalk.SpecFlow.VsIntegration
             SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
             SpecFlowGenerator generator = new SpecFlowGenerator(specFlowProject);
 
-            using (var writer = new HackedWriter(new StringWriter(new StringBuilder())))
+            using (var writer = new StringWriter(new StringBuilder()))
             {
                 generator.GenerateTestFile(
                     specFlowProject.GetOrCreateFeatureFile(CodeFilePath), 
