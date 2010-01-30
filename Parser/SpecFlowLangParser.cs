@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;     
 using System.Globalization;
-using System.Linq;
-using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
-using Antlr.Runtime;
-using Antlr.Runtime.Tree;
-using TechTalk.SpecFlow.Parser.Grammar;
+using Gherkin;
+using TechTalk.SpecFlow.Parser.GherkinBuilder;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser
@@ -35,21 +34,17 @@ namespace TechTalk.SpecFlow.Parser
 
             CultureInfo language = GetLanguage(fileContent);
 
-            var inputStream = new ANTLRReaderStream(new StringReader(fileContent));
-            var lexer = GetLexter(language, inputStream);
-            var tokenStream = new CommonTokenStream(lexer);
-            var parser = new Grammar.SpecFlowLangParser(tokenStream);
+            var gherkinListener = new GherkinListener();
 
-            var featureTree = parser.feature().Tree as CommonTree;
+            var lexer = GetLexer(language, gherkinListener);
+            using (var reader = new StringReader(fileContent)) lexer.Scan(reader);
 
-            if (featureTree == null || parser.ParserErrors.Count > 0 || lexer.LexerErrors.Count > 0)
+            if (gherkinListener.Errors.Length > 0)
             {
-                throw new SpecFlowParserException("Invalid Gherkin file!", lexer.LexerErrors.Concat(parser.ParserErrors).ToArray());
+                throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
             }
 
-            var walker = new SpecFlowLangWalker(new CommonTreeNodeStream(featureTree));
-
-            Feature feature = walker.feature();
+            Feature feature = gherkinListener.GetResult();
 
             if (feature == null)
                 throw new SpecFlowParserException("Invalid Gherkin file!");
@@ -57,6 +52,28 @@ namespace TechTalk.SpecFlow.Parser
             feature.Language = language.Name;
 
             return feature;
+        }
+
+        private IEnumerable<string> GetPossibleLanguageNames(CultureInfo language)
+        {
+            return GetParentChain(language).SelectMany(lang => new [] {GetGherkinLangName(lang.Name), GetGherkinLangName(lang.Name.Replace("-", ""))});
+        }
+
+        private IEnumerable<CultureInfo> GetParentChain(CultureInfo cultureInfo)
+        {
+            var current = cultureInfo;
+            yield return current;
+            while (current.Parent != current)
+            {
+                current = current.Parent;
+                yield return current;
+            }
+
+        }
+
+        private ILexer GetLexer(CultureInfo language, IListener listener)
+        {
+            return Lexers.Create(GetPossibleLanguageNames(language).First(Lexers.Exists), listener);
         }
 
         private CultureInfo GetLanguage(string fileContent)
@@ -73,6 +90,17 @@ namespace TechTalk.SpecFlow.Parser
             return language;
         }
 
+        private string GetGherkinLangName(string isoLangName)
+        {
+            switch (isoLangName)
+            {
+                case "sv":
+                    return "se";
+                default:
+                    return isoLangName;
+            }
+        }
+
         private string ResolveLangNameExceptions(string langName)
         {
             switch (langName)
@@ -82,37 +110,6 @@ namespace TechTalk.SpecFlow.Parser
                 default:
                     return langName;
             }
-        }
-
-        static readonly Dictionary<CultureInfo, Type> lexters = new Dictionary<CultureInfo, Type>
-            {
-                {new CultureInfo("en"), typeof(SpecFlowLangLexer_en)},
-                {new CultureInfo("de"), typeof(SpecFlowLangLexer_de)},
-                {new CultureInfo("fr"), typeof(SpecFlowLangLexer_fr)},
-                {new CultureInfo("hu"), typeof(SpecFlowLangLexer_hu)},
-                {new CultureInfo("nl"), typeof(SpecFlowLangLexer_nl)},
-                {new CultureInfo("sv"), typeof(SpecFlowLangLexer_sv)},
-            };
-
-        private SpecFlowLangLexer GetLexter(CultureInfo language, ANTLRReaderStream inputStream)
-        {
-            Type lexterType;
-            if (!lexters.TryGetValue(language, out lexterType))
-            {
-                CultureInfo calculatedLanguage = language;
-
-                while (calculatedLanguage.Parent != calculatedLanguage)
-                {
-                    calculatedLanguage = calculatedLanguage.Parent;
-                    if (lexters.TryGetValue(calculatedLanguage, out lexterType))
-                        break;
-                }
-
-                if (lexterType == null)
-                    throw new SpecFlowParserException(string.Format("The specified feature file language ('{0}') is not supported.", language));
-            }
-
-            return (SpecFlowLangLexer)Activator.CreateInstance(lexterType, inputStream);
         }
     }
 }

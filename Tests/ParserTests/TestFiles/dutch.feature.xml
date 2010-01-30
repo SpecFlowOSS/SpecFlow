@@ -32,19 +32,19 @@
                 <Cells>
                   <Cell>
                     <Value>ingave_1</Value>
-                    <FilePosition line="14" column="7" />
+                    <FilePosition line="14" column="6" />
                   </Cell>
                   <Cell>
                     <Value>ingave_2</Value>
-                    <FilePosition line="14" column="18" />
+                    <FilePosition line="14" column="17" />
                   </Cell>
                   <Cell>
                     <Value>knop</Value>
-                    <FilePosition line="14" column="29" />
+                    <FilePosition line="14" column="28" />
                   </Cell>
                   <Cell>
                     <Value>resultaat</Value>
-                    <FilePosition line="14" column="36" />
+                    <FilePosition line="14" column="35" />
                   </Cell>
                 </Cells>
                 <FilePosition line="14" column="5" />
@@ -54,19 +54,19 @@
                   <Cells>
                     <Cell>
                       <Value>20</Value>
-                      <FilePosition line="15" column="7" />
+                      <FilePosition line="15" column="6" />
                     </Cell>
                     <Cell>
                       <Value>30</Value>
-                      <FilePosition line="15" column="18" />
+                      <FilePosition line="15" column="17" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
-                      <FilePosition line="15" column="29" />
+                      <FilePosition line="15" column="28" />
                     </Cell>
                     <Cell>
                       <Value>50</Value>
-                      <FilePosition line="15" column="36" />
+                      <FilePosition line="15" column="35" />
                     </Cell>
                   </Cells>
                   <FilePosition line="15" column="5" />
@@ -75,19 +75,19 @@
                   <Cells>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="16" column="7" />
+                      <FilePosition line="16" column="6" />
                     </Cell>
                     <Cell>
                       <Value>5</Value>
-                      <FilePosition line="16" column="18" />
+                      <FilePosition line="16" column="17" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
-                      <FilePosition line="16" column="29" />
+                      <FilePosition line="16" column="28" />
                     </Cell>
                     <Cell>
                       <Value>7</Value>
-                      <FilePosition line="16" column="36" />
+                      <FilePosition line="16" column="35" />
                     </Cell>
                   </Cells>
                   <FilePosition line="16" column="5" />
@@ -96,19 +96,19 @@
                   <Cells>
                     <Cell>
                       <Value>0</Value>
-                      <FilePosition line="17" column="7" />
+                      <FilePosition line="17" column="6" />
                     </Cell>
                     <Cell>
                       <Value>40</Value>
-                      <FilePosition line="17" column="18" />
+                      <FilePosition line="17" column="17" />
                     </Cell>
                     <Cell>
                       <Value>add</Value>
-                      <FilePosition line="17" column="29" />
+                      <FilePosition line="17" column="28" />
                     </Cell>
                     <Cell>
                       <Value>40</Value>
-                      <FilePosition line="17" column="36" />
+                      <FilePosition line="17" column="35" />
                     </Cell>
                   </Cells>
                   <FilePosition line="17" column="5" />

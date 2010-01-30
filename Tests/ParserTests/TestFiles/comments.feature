@@ -4,7 +4,7 @@ Feature: a very simple feature
 # no scenario tags
    # still nothing
 Scenario: a simple scenario
-Given some precondition		#comment at EOL
+Given some precondition
 #When commented out
 	#Then commented out
 	

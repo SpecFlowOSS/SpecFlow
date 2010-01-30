@@ -40,15 +40,15 @@
                 <Cells>
                   <Cell>
                     <Value>a</Value>
-                    <FilePosition line="16" column="9" />
+                    <FilePosition line="16" column="8" />
                   </Cell>
                   <Cell>
                     <Value>b</Value>
-                    <FilePosition line="16" column="13" />
+                    <FilePosition line="16" column="12" />
                   </Cell>
                   <Cell>
                     <Value>somme</Value>
-                    <FilePosition line="16" column="17" />
+                    <FilePosition line="16" column="16" />
                   </Cell>
                 </Cells>
                 <FilePosition line="16" column="7" />
@@ -58,15 +58,15 @@
                   <Cells>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="17" column="9" />
+                      <FilePosition line="17" column="8" />
                     </Cell>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="17" column="13" />
+                      <FilePosition line="17" column="12" />
                     </Cell>
                     <Cell>
                       <Value>4</Value>
-                      <FilePosition line="17" column="17" />
+                      <FilePosition line="17" column="16" />
                     </Cell>
                   </Cells>
                   <FilePosition line="17" column="7" />
@@ -75,15 +75,15 @@
                   <Cells>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="18" column="9" />
+                      <FilePosition line="18" column="8" />
                     </Cell>
                     <Cell>
                       <Value>3</Value>
-                      <FilePosition line="18" column="13" />
+                      <FilePosition line="18" column="12" />
                     </Cell>
                     <Cell>
                       <Value>5</Value>
-                      <FilePosition line="18" column="17" />
+                      <FilePosition line="18" column="16" />
                     </Cell>
                   </Cells>
                   <FilePosition line="18" column="7" />

@@ -121,7 +121,7 @@ namespace ParserTests
         }
 
         [Test]
-        public void CanParseScneriooutlineFeature()
+        public void CanParseScenarioOutlineFeature()
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
             CanParseFile(Path.Combine(folder, "scenariooutline.feature"));
@@ -153,8 +153,8 @@ namespace ParserTests
 
         private void CompareWithExpectedResult(Feature feature, string expectedResultFileName)
         {
-            string expected = TestFileHelper.ReadFile(expectedResultFileName);
-            string got = SerializeFeature(feature);
+            string expected = TestFileHelper.ReadFile(expectedResultFileName).Replace("\r", "");
+            string got = SerializeFeature(feature).Replace("\r", "");
 
             Assert.AreEqual(expected, got);
         }

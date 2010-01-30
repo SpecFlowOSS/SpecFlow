@@ -11,8 +11,7 @@
           <MultiLineTextArgument>Some Title, Eh?
 ==============
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
-consectetur adipiscing elit.
-</MultiLineTextArgument>
+consectetur adipiscing elit.</MultiLineTextArgument>
           <FilePosition line="4" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
@@ -20,8 +19,7 @@ consectetur adipiscing elit.
           <MultiLineTextArgument>Some Title, Eh?
 ==============
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
-consectetur adipiscing elit.
-</MultiLineTextArgument>
+consectetur adipiscing elit.</MultiLineTextArgument>
           <FilePosition line="11" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
@@ -29,8 +27,7 @@ consectetur adipiscing elit.
           <MultiLineTextArgument>Some Title, Eh?
 ==============
 Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
-consectetur adipiscing elit.
-</MultiLineTextArgument>
+consectetur adipiscing elit.</MultiLineTextArgument>
           <FilePosition line="18" column="2" />
         </ScenarioStep>
       </Steps>

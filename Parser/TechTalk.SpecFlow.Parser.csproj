@@ -41,9 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.1.2.41038, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
+    <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=65cc5a3983d6ff12, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\antlr\Antlr3.Runtime.dll</HintPath>
+      <HintPath>..\lib\gherkin\Gherkin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -62,21 +62,17 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Grammar\ErrorReporting.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_de.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_en.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_fr.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_hu.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_nl.cs" />
-    <Compile Include="Grammar\SpecFlowLangLexer_sv.cs" />
-    <Compile Include="Grammar\SpecFlowLangParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Grammar\SpecFlowLangWalker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Grammar\SpecFlowLangWalkerBase.cs" />
+    <Compile Include="GherkinBuilder\BackgroundBuilder.cs" />
+    <Compile Include="GherkinBuilder\ExampleBuilder.cs" />
+    <Compile Include="GherkinBuilder\FeatureBuilder.cs" />
+    <Compile Include="GherkinBuilder\GherkinListener.cs" />
+    <Compile Include="GherkinBuilder\IExampleProcessor.cs" />
+    <Compile Include="GherkinBuilder\IScenarioBuilder.cs" />
+    <Compile Include="GherkinBuilder\IStepProcessor.cs" />
+    <Compile Include="GherkinBuilder\ITableProcessor.cs" />
+    <Compile Include="GherkinBuilder\ScenarioBuilder.cs" />
+    <Compile Include="GherkinBuilder\ScenarioOutlineBuilder.cs" />
+    <Compile Include="GherkinBuilder\StepBuilder.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
     <Compile Include="SpecFlowParserException.cs" />
@@ -97,14 +93,6 @@
     <Compile Include="SyntaxElements\Then.cs" />
     <Compile Include="SyntaxElements\When.cs" />
     <Compile Include="SyntaxElements\Word.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Grammar\compile.cmd" />
-    <None Include="Grammar\SpecFlowLangParser.g" />
-    <None Include="Grammar\SpecFlowLangWalker.g" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Grammar\LexerTransformation.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

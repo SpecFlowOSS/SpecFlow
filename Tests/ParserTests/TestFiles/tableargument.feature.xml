@@ -13,19 +13,19 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="5" column="4" />
+                  <FilePosition line="5" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="5" column="11" />
+                  <FilePosition line="5" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="5" column="18" />
+                  <FilePosition line="5" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="5" column="28" />
+                  <FilePosition line="5" column="27" />
                 </Cell>
               </Cells>
               <FilePosition line="5" column="2" />
@@ -35,19 +35,19 @@
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="6" column="4" />
+                    <FilePosition line="6" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="6" column="10" />
+                    <FilePosition line="6" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="6" column="16" />
+                    <FilePosition line="6" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="6" column="29" />
+                    <FilePosition line="6" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="6" column="2" />
@@ -56,19 +56,19 @@
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="7" column="4" />
+                    <FilePosition line="7" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="7" column="10" />
+                    <FilePosition line="7" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="7" column="16" />
+                    <FilePosition line="7" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="7" column="29" />
+                    <FilePosition line="7" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="7" column="2" />
@@ -84,19 +84,19 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="9" column="4" />
+                  <FilePosition line="9" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="9" column="11" />
+                  <FilePosition line="9" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="9" column="18" />
+                  <FilePosition line="9" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="9" column="28" />
+                  <FilePosition line="9" column="27" />
                 </Cell>
               </Cells>
               <FilePosition line="9" column="2" />
@@ -106,19 +106,19 @@
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="10" column="4" />
+                    <FilePosition line="10" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="10" column="10" />
+                    <FilePosition line="10" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="10" column="16" />
+                    <FilePosition line="10" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="10" column="29" />
+                    <FilePosition line="10" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="10" column="2" />
@@ -127,19 +127,19 @@
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="11" column="4" />
+                    <FilePosition line="11" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="11" column="10" />
+                    <FilePosition line="11" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="11" column="16" />
+                    <FilePosition line="11" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="11" column="29" />
+                    <FilePosition line="11" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="11" column="2" />
@@ -155,19 +155,19 @@
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="13" column="4" />
+                  <FilePosition line="13" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="13" column="11" />
+                  <FilePosition line="13" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="13" column="18" />
+                  <FilePosition line="13" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="13" column="28" />
+                  <FilePosition line="13" column="27" />
                 </Cell>
               </Cells>
               <FilePosition line="13" column="2" />
@@ -177,19 +177,19 @@
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="14" column="4" />
+                    <FilePosition line="14" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="14" column="10" />
+                    <FilePosition line="14" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="14" column="16" />
+                    <FilePosition line="14" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="14" column="29" />
+                    <FilePosition line="14" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="14" column="2" />
@@ -198,19 +198,19 @@
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="15" column="4" />
+                    <FilePosition line="15" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="15" column="10" />
+                    <FilePosition line="15" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="15" column="16" />
+                    <FilePosition line="15" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="15" column="29" />
+                    <FilePosition line="15" column="28" />
                   </Cell>
                 </Cells>
                 <FilePosition line="15" column="2" />
