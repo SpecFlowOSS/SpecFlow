@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -15,6 +18,8 @@ namespace TechTalk.SpecFlow.Configuration
 
     internal class RuntimeConfiguration
     {
+        private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
+
         static public RuntimeConfiguration Current
         {
             get { return ObjectContainer.Configuration; }
@@ -36,6 +41,13 @@ namespace TechTalk.SpecFlow.Configuration
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
+
+        public IEnumerable<Assembly> AdditionalStepAssemblies
+        {
+            get {
+                return _additionalStepAssemblies;
+            }
+        }
 
         public RuntimeConfiguration()
         {
@@ -101,6 +113,14 @@ namespace TechTalk.SpecFlow.Configuration
                 config.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
                 config.TraceTimings = configSection.Trace.TraceTimings;
                 config.MinTracedDuration = configSection.Trace.MinTracedDuration;
+            }
+
+            foreach(var element in configSection.StepAssemblies)
+            {
+                string stepAssemblyFileName = ((StepAssemblyConfigElement)element).File;
+                string fullPath = Path.GetFullPath(stepAssemblyFileName);
+                Assembly stepAssembly = Assembly.LoadFile(fullPath);
+                config._additionalStepAssemblies.Add(stepAssembly);
             }
 
             return config;

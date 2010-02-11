@@ -8,10 +8,13 @@
     <ProjectGuid>{3FE793A8-E662-4026-B4EC-891324073235}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FeatureTests</RootNamespace>
-    <AssemblyName>FeatureTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>TechTalk.SpecFlow.FeatureTests</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.FeatureTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,7 +42,9 @@
       <HintPath>..\..\lib\mocking\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -58,6 +63,11 @@
     <Compile Include="ContextInjection\FeatureWithASingleContextSteps.cs" />
     <Compile Include="ContextInjection\NestedContext.cs" />
     <Compile Include="ContextInjection\SingleContext.cs" />
+    <Compile Include="ExternalSteps\ExternalSteps.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExternalSteps.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,13 +82,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="ContextInjection\ContextInjection.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
     </None>
-    <None Include="ListArguments\ListArguments.feature">
+    <None Include="ExternalSteps\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ListArguments.feature.cs</LastGenOutput>
+      <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

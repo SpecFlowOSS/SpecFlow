@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
@@ -6,6 +7,7 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
+using System.Linq;
 
 namespace TechTalk.SpecFlow
 {
@@ -53,7 +55,10 @@ namespace TechTalk.SpecFlow
                     var result = new TestRunner();
 
                     List<Assembly> bindingAssemblies = new List<Assembly>();
-                    bindingAssemblies.Add(callingAssembly); //TODO: add more assemblies from config
+                    bindingAssemblies.Add(callingAssembly); 
+
+                    bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
+
                     result.InitializeTestRunner(bindingAssemblies.ToArray());
 
                     return result;

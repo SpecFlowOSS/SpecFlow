@@ -1,4 +1,9 @@
 
+next release
+New features:
++ Context injection in step definitions. Step definitions can get a context injected with constructor injection. See examples in Tests/FeatureTests/ContextInjection.
++ Using steps in other assemblies. This enables writing steps in VB. See examples in Tests/FeatureTests/ExternalSteps.
+
 1.2.0 - 2009/11/25
 
 New features:

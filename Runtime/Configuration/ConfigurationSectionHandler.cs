@@ -94,6 +94,14 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["trace"] = value; }
         }
 
+        [ConfigurationProperty("stepAssemblies", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(StepAssemblyCollection), AddItemName = "stepAssembly")]
+        public StepAssemblyCollection StepAssemblies
+        {
+            get { return (StepAssemblyCollection)this["stepAssemblies"]; }
+            set { this["stepAssemblies"] = value; }
+        }
+
         static internal ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
@@ -227,6 +235,29 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (string)this["listener"]; }
             set { this["listener"] = value; }
+        }
+    }
+
+    public class StepAssemblyCollection : ConfigurationElementCollection
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new StepAssemblyConfigElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((StepAssemblyConfigElement) element).File;
+        }
+    }
+
+    public class StepAssemblyConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("file", DefaultValue = null, IsRequired = false)]
+        public string File
+        {
+            get { return (string)this["file"]; }
+            set { this["file"] = value; }
         }
     }
 }
