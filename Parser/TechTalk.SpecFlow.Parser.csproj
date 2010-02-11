@@ -62,6 +62,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="ErrorDetail.cs" />
     <Compile Include="GherkinBuilder\BackgroundBuilder.cs" />
     <Compile Include="GherkinBuilder\ExampleBuilder.cs" />
     <Compile Include="GherkinBuilder\FeatureBuilder.cs" />

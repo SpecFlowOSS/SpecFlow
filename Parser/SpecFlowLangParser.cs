@@ -35,14 +35,23 @@ namespace TechTalk.SpecFlow.Parser
             CultureInfo language = GetLanguage(fileContent);
 
             var gherkinListener = new GherkinListener();
+            var lexer = GetLexer(language, new Gherkin.Parser(gherkinListener, false));
 
-            var lexer = GetLexer(language, gherkinListener);
-            using (var reader = new StringReader(fileContent)) lexer.Scan(reader);
-
-            if (gherkinListener.Errors.Length > 0)
+            using (var reader = new StringReader(fileContent))
             {
-                throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
+                try
+                {
+                    lexer.Scan(reader);
+                }
+                catch (LexingException e)
+                {
+                    gherkinListener.DisplayRecognitionError(e.Line, e.Column, e.Message);
+                    throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
+                }
             }
+
+            if (gherkinListener.Errors.Count > 0)
+                throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
 
             Feature feature = gherkinListener.GetResult();
 
@@ -68,7 +77,6 @@ namespace TechTalk.SpecFlow.Parser
                 current = current.Parent;
                 yield return current;
             }
-
         }
 
         private ILexer GetLexer(CultureInfo language, IListener listener)

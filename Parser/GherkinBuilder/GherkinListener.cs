@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -8,10 +9,20 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class GherkinListener : IListener
     {
-        private StepBuilder stepBuilder;
-        public string[] Errors
+        public GherkinListener()
         {
-            get { return errors.ToArray(); }
+            Errors = new List<ErrorDetail>();
+        }
+
+        private StepBuilder stepBuilder;
+        public List<ErrorDetail> Errors { get; set; }
+
+        public void DisplayRecognitionError(int line, int column, string message)
+        {
+            string msg = string.Format("({0},{1}): {2}", line, column, message);
+
+            Debug.WriteLine(msg);
+            Errors.Add(new ErrorDetail {Message = msg, Row = line, Column = column});
         }
 
         private FeatureBuilder featureBuilder;
@@ -31,7 +42,6 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private IStepProcessor stepProcessor;
         private ITableProcessor tableProcessor;
         private IExampleProcessor exampleProcessor;
-        private readonly List<string> errors = new List<string>();
 
         public void Tag(Token name)
         {
@@ -102,7 +112,10 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void SyntaxError(string state, string @event, IEnumerable<string> legalEvents, Position position)
         {
-            throw new NotImplementedException();
+            string message = "Parse error. Found " + @event + " when expecting one of: " +
+                             string.Join(", ", legalEvents.ToArray()) + ". (Current state: " + state + ").";
+
+            DisplayRecognitionError(position.Line, position.Column, message);
         }
 
         private FilePosition ToFilePosition(Position position)

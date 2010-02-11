@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.CodeDom.Compiler;
 using EnvDTE;
 using System.Collections.Generic;
@@ -7,14 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Designer.Interfaces;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.TextTemplating.VSHost;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
@@ -62,19 +55,13 @@ namespace TechTalk.SpecFlow.VsIntegration
             if (ex is SpecFlowParserException)
             {
                 SpecFlowParserException sfpex = (SpecFlowParserException) ex;
-                if (sfpex.DetailedErrors == null)
+                if (sfpex.ErrorDetails == null || sfpex.ErrorDetails.Count == 0)
                     return base.GenerateError(pGenerateProgress, ex);
 
-                Regex coordRe = new Regex(@"^\((?<line>\d+),(?<col>\d+)\)");
-                var match = coordRe.Match(sfpex.DetailedErrors[0]);
-                if (!match.Success)
-                    return base.GenerateError(pGenerateProgress, ex);
+                foreach (var errorDetail in sfpex.ErrorDetails)
+                    pGenerateProgress.GeneratorError(0, 4, errorDetail.Message, (uint)errorDetail.Row - 1,(uint)errorDetail.Column);
 
-                string message = GetMessage(ex);
-                pGenerateProgress.GeneratorError(0, 4, message,
-                    uint.Parse(match.Groups["line"].Value) - 1, 
-                    uint.Parse(match.Groups["col"].Value));
-                return message;
+                return GetMessage(ex);
             }
 
             return base.GenerateError(pGenerateProgress, ex);

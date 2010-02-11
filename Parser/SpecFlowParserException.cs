@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -7,17 +8,21 @@ namespace TechTalk.SpecFlow.Parser
     [Serializable]
     public class SpecFlowParserException : Exception
     {
-        public string[] DetailedErrors { get; private set; }
+        public List<ErrorDetail> ErrorDetails { get; private set; }
 
         public override string Message
         {
             get
             {
-                if (DetailedErrors != null)
+                if (ErrorDetails != null)
+                {
+                    string[] errorMessages = ErrorDetails.Select(ed => string.Format("({0},{1}): {2}", ed.Row, ed.Column, ed.Message)).ToArray();
                     return string.Format("{0}{1}{2}",
-                                    base.Message,
-                                    Environment.NewLine,
-                                    string.Join(Environment.NewLine, DetailedErrors));
+                                         base.Message,
+                                         Environment.NewLine,
+                                         string.Join(Environment.NewLine, errorMessages));
+                }
+
                 return base.Message;
             }
         }
@@ -30,18 +35,17 @@ namespace TechTalk.SpecFlow.Parser
         {
         }
 
-        public SpecFlowParserException(string message, string[] detailedErrors) : base(message)
+        public SpecFlowParserException(string message, List<ErrorDetail> errorDetails)
+            : base(message)
         {
-            DetailedErrors = detailedErrors;
+            ErrorDetails = errorDetails;
         }
 
         public SpecFlowParserException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        protected SpecFlowParserException(
-            SerializationInfo info,
-            StreamingContext context) : base(info, context)
+        protected SpecFlowParserException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
