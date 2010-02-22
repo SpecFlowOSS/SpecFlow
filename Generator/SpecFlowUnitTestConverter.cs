@@ -512,6 +512,9 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLinePragmaInitial(CodeTypeDeclaration testType, Feature feature)
         {
+            if (allowDebugGeneratedFiles)
+                return;
+
             testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", Path.GetFileName(feature.SourceFile))));
             testType.Members.Add(new CodeSnippetTypeMember("#line hidden"));
         }
