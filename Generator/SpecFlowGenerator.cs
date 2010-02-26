@@ -133,8 +133,7 @@ namespace TechTalk.SpecFlow.Generator
             Feature feature = parser.Parse(inputReader, featureFile.GetFullPath(project));
 
             IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
-
-            SpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles);
+						ISpecFlowUnitTestConverter testConverter = ConfigurationServices.CreateInstance<ISpecFlowUnitTestConverter>(project.GeneratorConfiguration.SpecFlowUnitTestConverterType, new object[] { generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles});
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;

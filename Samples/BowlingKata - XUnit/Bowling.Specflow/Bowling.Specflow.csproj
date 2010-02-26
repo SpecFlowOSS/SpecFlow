@@ -5,15 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{453D8014-B6CD-4E86-80A8-D59F59092334}</ProjectGuid>
+    <ProjectGuid>{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TechTalk.SpecFlow.Generator</RootNamespace>
-    <AssemblyName>TechTalk.SpecFlow.Generator</AssemblyName>
+    <RootNamespace>Bowling.Specflow</RootNamespace>
+    <AssemblyName>Bowling.Specflow</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,9 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -47,36 +44,44 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow, Version=1.2.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\TechTalk\SpecFlow\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit, Version=1.5.0.1479, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Library\xUnit\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\Configuration\ConfigurationSectionHandler.cs">
-      <Link>Configuration\ConfigurationSectionHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\StringExtensions.cs">
-      <Link>StringExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="BatchGenerator.cs" />
-    <Compile Include="Configuration\GeneratorConfiguration.cs" />
-    <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
-    <Compile Include="Configuration\MsBuildProjectReader.cs" />
-    <Compile Include="Configuration\SpecFlowProject.cs" />
-    <Compile Include="SpecflowUnitTestConverters\ISpecFlowUnitTestConverter.cs" />
+    <Compile Include="BowlingSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecFlowGenerator.cs" />
-    <Compile Include="SpecFlowUnitTestConverter.cs" />
-    <Compile Include="SpecflowUnitTestConverters\SpecFlowXUnitTestConverter.cs" />
-    <Compile Include="UnitTestProvider\XUnitTestGeneratorProvider.cs" />
-    <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
-    <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
-    <Compile Include="UnitTestProvider\NUnitTestConverter.cs" />
+    <Compile Include="ScoreCalculationAlternativesFeature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScoreCalculationAlternativesFeature.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ScoreCalculationFeature.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScoreCalculationFeature.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
-      <Name>TechTalk.SpecFlow.Parser</Name>
+    <None Include="App.config" />
+    <None Include="ScoreCalculationAlternativesFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ScoreCalculationAlternativesFeature.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ScoreCalculationFeature.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ScoreCalculationFeature.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bowling\Bowling.csproj">
+      <Project>{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}</Project>
+      <Name>Bowling</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
