@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling", "Bowling\Bowling.csproj", "{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling.Specflow", "Bowling.Specflow\Bowling.Specflow.csproj", "{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B065A18E-57BD-4399-AAF7-BD2FA0147FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

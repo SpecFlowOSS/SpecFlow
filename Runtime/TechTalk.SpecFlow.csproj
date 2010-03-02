@@ -82,6 +82,7 @@
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\StepDefinitonSkeletonProvider.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
+    <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\NUnitRuntimeProvider.cs" />
     <Compile Include="ScenarioContext.cs" />

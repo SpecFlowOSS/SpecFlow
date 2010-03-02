@@ -11,7 +11,7 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public class SpecFlowUnitTestConverter
+    public class SpecFlowUnitTestConverter : ISpecFlowUnitTestConverter
     {
         private const string DEFAULT_NAMESPACE = "SpecFlowTests";
         const string FIXTURE_FORMAT = "{0}Feature";
@@ -512,8 +512,8 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLinePragmaInitial(CodeTypeDeclaration testType, Feature feature)
         {
-            if (allowDebugGeneratedFiles)
-                return;
+						if (allowDebugGeneratedFiles)
+							return;
 
             testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", Path.GetFileName(feature.SourceFile))));
             testType.Members.Add(new CodeSnippetTypeMember("#line hidden"));

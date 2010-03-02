@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         //unit test framework settings
         public Type GeneratorUnitTestProviderType { get; set; }
+				public Type SpecFlowUnitTestConverterType { get; set; }
 
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
@@ -70,10 +71,16 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 case "nunit":
                     GeneratorUnitTestProviderType = typeof(NUnitTestConverter);
+										SpecFlowUnitTestConverterType = typeof(SpecFlowUnitTestConverter);
                     break;
+								case "xunit":
+										GeneratorUnitTestProviderType = typeof(XUnitTestGeneratorProvider);
+										SpecFlowUnitTestConverterType = typeof(SpecFlowXUnitTestConverter);
+										break;
                 case "mstest":
                     GeneratorUnitTestProviderType = typeof(MsTestGeneratorProvider);
-                    break;
+										SpecFlowUnitTestConverterType = typeof(SpecFlowUnitTestConverter);
+										break;
                 default:
                     GeneratorUnitTestProviderType = null;
                     break;
