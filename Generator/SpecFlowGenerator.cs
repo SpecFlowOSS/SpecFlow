@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -133,7 +134,7 @@ namespace TechTalk.SpecFlow.Generator
             Feature feature = parser.Parse(inputReader, featureFile.GetFullPath(project));
 
             IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
-						ISpecFlowUnitTestConverter testConverter = ConfigurationServices.CreateInstance<ISpecFlowUnitTestConverter>(project.GeneratorConfiguration.SpecFlowUnitTestConverterType, new object[] { generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles});
+            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles);
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;

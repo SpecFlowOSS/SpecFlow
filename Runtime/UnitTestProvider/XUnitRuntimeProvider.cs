@@ -5,20 +5,14 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 {
 	public class XUnitRuntimeProvider : IUnitTestRuntimeProvider
 	{
-		private const string XUNIT_ASSEMBLY = "xunit";
-		private const string ASSERT_TYPE = "Xunit.Assert";
-
-		Action<string> assertInconclusive = null;
-		Action<string> assertIgnore = null;
-
 		public void TestInconclusive(string message)
 		{
-			throw new NotSupportedException("XUnit does not support Assert.Inconclusive");
+		    throw new SpecFlowException("Test inconclusive: " + message);
 		}
 
 		public void TestIgnore(string message)
 		{
-			throw new NotSupportedException("XUnit does not support Assert.Ignore");
+            throw new SpecFlowException("Test ignored: " + message);
 		}
 
 		public bool DelayedFixtureTearDown

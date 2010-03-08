@@ -10,231 +10,175 @@
 // ------------------------------------------------------------------------------
 namespace Bowling.Specflow
 {
-    using System;
-    using System.Globalization;
-    using Xunit;
     using TechTalk.SpecFlow;
     
     
-    public partial class ScoreCalculationFeature : IUseFixture<ScoreCalculationFixture>, IDisposable
+    public partial class ScoreCalculationFeature : Xunit.IUseFixture<ScoreCalculationFeature.FixtureData>, System.IDisposable
     {
         
-        private ScoreCalculationFixture _fixture;
-        
-        private bool _isDisposed = false;
+        private static TechTalk.SpecFlow.ITestRunner testRunner;
         
 #line 1 "ScoreCalculationFeature.feature"
 #line hidden
-		~ScoreCalculationFeature()
-		{
-			Dispose(false);
-		}
-		partial void OnDisposeManagedResources();
-		partial void OnDisposeUnmanagedResources();
-		partial void OnInitialize();
         
-        public ScoreCalculationFeature()
+        public static void FeatureSetup()
         {
-            this.OnInitialize();
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
+                    "otal score", ((string[])(null)));
+            testRunner.OnFeatureStart(featureInfo);
         }
         
-        public void SetFixture(ScoreCalculationFixture fixture)
+        public virtual void SetFixture(ScoreCalculationFeature.FixtureData fixtureData)
         {
-            _fixture = fixture;
         }
         
-        public void Dispose()
+        public static void FeatureTearDown()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            testRunner.OnFeatureEnd();
+            testRunner = null;
         }
         
-        private void Dispose(bool isDisposing)
+        public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
-            if ((this._isDisposed == false))
-            {
-                if ((isDisposing == true))
-                {
-                    this.OnDisposeManagedResources();
-                }
-                this.OnDisposeUnmanagedResources();
-                this._isDisposed = true;
-            }
+            testRunner.OnScenarioStart(scenarioInfo);
+        }
+        
+        public virtual void ScenarioTearDown()
+        {
+            testRunner.OnScenarioEnd();
+        }
+        
+        void System.IDisposable.Dispose()
+        {
+            this.ScenarioTearDown();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "Gutter game")]
-        public void GutterGame()
+        public virtual void GutterGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gutter game", ((string[])(null)));
 #line 6
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 7
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 8
-  this._fixture.TestRunner.When("all of my balls are landing in the gutter");
+  testRunner.When("all of my balls are landing in the gutter");
 #line 9
-  this._fixture.TestRunner.Then("my total score should be 0");
+  testRunner.Then("my total score should be 0");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "Beginners game")]
-        public void BeginnersGame()
+        public virtual void BeginnersGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Beginners game", ((string[])(null)));
 #line 11
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 12
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 13
-  this._fixture.TestRunner.When("I roll 2 and 7");
+  testRunner.When("I roll 2 and 7");
 #line 14
-  this._fixture.TestRunner.And("I roll 3 and 4");
+  testRunner.And("I roll 3 and 4");
 #line 15
-  this._fixture.TestRunner.And("I roll 8 times 1 and 1");
+  testRunner.And("I roll 8 times 1 and 1");
 #line 16
-  this._fixture.TestRunner.Then("my total score should be 32");
+  testRunner.Then("my total score should be 32");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "Another beginners game")]
-        public void AnotherBeginnersGame()
+        public virtual void AnotherBeginnersGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Another beginners game", ((string[])(null)));
 #line 18
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 19
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 20
-  this._fixture.TestRunner.When("I roll the following series:\t2,7,3,4,1,1,5,1,1,1,1,1,1,1,1,1,1,1,5,1");
+  testRunner.When("I roll the following series:\t2,7,3,4,1,1,5,1,1,1,1,1,1,1,1,1,1,1,5,1");
 #line 21
-  this._fixture.TestRunner.Then("my total score should be 40");
+  testRunner.Then("my total score should be 40");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "All Strikes")]
-        public void AllStrikes()
+        public virtual void AllStrikes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All Strikes", ((string[])(null)));
 #line 23
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 24
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 25
-  this._fixture.TestRunner.When("all of my rolls are strikes");
+  testRunner.When("all of my rolls are strikes");
 #line 26
-  this._fixture.TestRunner.Then("my total score should be 300");
+  testRunner.Then("my total score should be 300");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "One single spare")]
-        public void OneSingleSpare()
+        public virtual void OneSingleSpare()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("One single spare", ((string[])(null)));
 #line 28
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 29
-   this._fixture.TestRunner.Given("a new bowling game");
+   testRunner.Given("a new bowling game");
 #line 30
-   this._fixture.TestRunner.When("I roll the following series: 2,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
+   testRunner.When("I roll the following series: 2,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
 #line 31
-   this._fixture.TestRunner.Then("my total score should be 29");
+   testRunner.Then("my total score should be 29");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation")]
         [Xunit.TraitAttribute("Description", "All spares")]
-        public void AllSpares()
+        public virtual void AllSpares()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All spares", ((string[])(null)));
 #line 33
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 34
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 35
-  this._fixture.TestRunner.When("I roll 10 times 1 and 9");
+  testRunner.When("I roll 10 times 1 and 9");
 #line 36
-  this._fixture.TestRunner.And("I roll 1");
+  testRunner.And("I roll 1");
 #line 37
-  this._fixture.TestRunner.Then("my total score should be 110");
+  testRunner.Then("my total score should be 110");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
-        }
-    }
-    
-    public partial class ScoreCalculationFixture : IDisposable
-    {
-        
-        private bool _isDisposed = false;
-        
-        private ITestRunner _testRunner;
-        
-		~ScoreCalculationFixture()
-		{
-			Dispose(false);
-		}
-		partial void OnDisposeManagedResources();
-		partial void OnDisposeUnmanagedResources();
-        
-        public ScoreCalculationFixture()
-        {
-            FeatureInfo featureInfo = new FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
-                    "otal score", ((string[])(null)));
-            this._testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            this._testRunner.OnFeatureStart(featureInfo);
+            testRunner.CollectScenarioErrors();
         }
         
-        public ITestRunner TestRunner
+        public class FixtureData : System.IDisposable
         {
-            get
+            
+            public FixtureData()
             {
-                return this._testRunner;
+                ScoreCalculationFeature.FeatureSetup();
             }
-        }
-        
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        
-        private void Dispose(bool isDisposing)
-        {
-            if ((this._isDisposed == false))
+            
+            void System.IDisposable.Dispose()
             {
-                if (((this._testRunner == null) 
-                            == false))
-                {
-                    this._testRunner.OnFeatureEnd();
-                    this._testRunner = null;
-                }
-                if ((isDisposing == true))
-                {
-                    this.OnDisposeManagedResources();
-                }
-                this.OnDisposeUnmanagedResources();
-                this._isDisposed = true;
+                ScoreCalculationFeature.FeatureTearDown();
             }
         }
     }

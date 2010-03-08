@@ -1,140 +1,197 @@
-﻿using System;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-	public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider
-	{
-		private const string FEATURE_TITLE_KEY = "FeatureTitle";
-		private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
-		private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
-		private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-		private const string SKIP_REASON = "Ignored";
-		private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
-		private const string IUSEFIXTURE = "Xunit.IUseFixture";	// n/a uses IUseFixture<T>, what to do?
-		private const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute"; // n/a uses the Constructor, what to do?
-		private const string IDISPOSABLE_METHOD_NAME = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";	// n/a uses IDisposable.Dispose, what to do?
+    public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider
+    {
+        private const string FEATURE_TITLE_KEY = "FeatureTitle";
+        private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
+        private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
+        private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        private const string SKIP_REASON = "Ignored";
+        private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
+        private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
 
-		private CodeTypeDeclaration _currentTypeDeclaration = null;
+        private CodeTypeDeclaration _currentTestTypeDeclaration = null;
+        private CodeTypeDeclaration _currentFixtureTypeDeclaration = null;
 
-		public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
-		{
-			// xUnit does not use an attribute for the TestFixture
+        public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
+        {
+            // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
 
-			// Remember the feature title for use later
-			typeDeclaration.UserData[FEATURE_TITLE_KEY] = title;
+            // Remember the feature title for use later
+            typeDeclaration.UserData[FEATURE_TITLE_KEY] = title;
 
-			_currentTypeDeclaration = typeDeclaration;
-		}
+            _currentTestTypeDeclaration = typeDeclaration;
+        }
 
-		public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
-		{
-			// xUnit does not support caregories
-		}
+        public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        {
+            // xUnit does not support caregories
+        }
 
-		public void SetTestFixtureSetup(CodeMemberMethod memberMethod)
-		{
-			// xUnit uses IUseFixture<T> on the class
-		}
+        public void SetTestFixtureSetup(CodeMemberMethod fixtureSetupMethod)
+        {
+            // xUnit uses IUseFixture<T> on the class
 
-		public void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
-		{
-			// xUnit uses IUseFixture<T> on the class
-		}
+            fixtureSetupMethod.Attributes |= MemberAttributes.Static;
 
-		public void SetTest(CodeMemberMethod memberMethod, string title)
-		{
-			memberMethod.CustomAttributes.Add
-			(
-				new CodeAttributeDeclaration
-				(
-					new CodeTypeReference(FACT_ATTRIBUTE)
-				)
-			);
+            _currentFixtureTypeDeclaration = new CodeTypeDeclaration("FixtureData");
+            _currentTestTypeDeclaration.Members.Add(_currentFixtureTypeDeclaration);
 
-			if (_currentTypeDeclaration != null)
-			{
-				string featureTitle = _currentTypeDeclaration.UserData[FEATURE_TITLE_KEY] as string;
-				if (!string.IsNullOrEmpty(featureTitle))
-				{
-					SetProperty(memberMethod.CustomAttributes, FEATURE_TITLE_PROPERTY_NAME, featureTitle);
-				}
-			}
+            var fixtureDataType = 
+                CodeDomHelper.CreateNestedTypeReference(_currentTestTypeDeclaration, _currentFixtureTypeDeclaration.Name);
+            
+            var useFixtureType = new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+            CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
-			SetDescription(memberMethod.CustomAttributes, title);
-		}
+            _currentTestTypeDeclaration.BaseTypes.Add(useFixtureType);
 
-		public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
-		{
-			// xUnit does not support caregories
-		}
+            // public void SetFixture(T) { } // explicit interface implementation for generic interfaces does not work with codedom
 
-		public void SetTestSetup(CodeMemberMethod memberMethod)
-		{
-			// xUnit uses a parameterless Constructor
-		}
+            CodeMemberMethod setFixtureMethod = new CodeMemberMethod();
+            setFixtureMethod.Attributes = MemberAttributes.Public;
+            setFixtureMethod.Name = "SetFixture";
+            setFixtureMethod.Parameters.Add(new CodeParameterDeclarationExpression(fixtureDataType, "fixtureData"));
+            setFixtureMethod.ImplementationTypes.Add(useFixtureType);
+            _currentTestTypeDeclaration.Members.Add(setFixtureMethod);
 
-		public void SetTestTearDown(CodeMemberMethod memberMethod)
-		{
-			// uses IDisposable.Dispose, what to do?
-		}
+            // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
+            CodeConstructor ctorMethod = new CodeConstructor();
+            ctorMethod.Attributes = MemberAttributes.Public;
+            _currentFixtureTypeDeclaration.Members.Add(ctorMethod);
+            ctorMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression(new CodeTypeReference(_currentTestTypeDeclaration.Name)),
+                    fixtureSetupMethod.Name));
+        }
 
-		public void SetIgnore(CodeTypeMember codeTypeMember)
-		{
-			foreach (var customAttribute in codeTypeMember.CustomAttributes)
-			{
-				CodeAttributeDeclaration codeAttributeDeclaration = customAttribute as CodeAttributeDeclaration;
-				if (codeAttributeDeclaration != null && codeAttributeDeclaration.Name == FACT_ATTRIBUTE)
-				{
-					// set [FactAttribute(Skip="reason")]
-					codeAttributeDeclaration.Arguments.Add
-					(
-						new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
-					);
-					break;
-				}
-			}
-		}
+        public void SetTestFixtureTearDown(CodeMemberMethod fixtureTearDownMethod)
+        {
+            // xUnit uses IUseFixture<T> on the class
 
-		private void SetProperty(CodeAttributeDeclarationCollection customAttributes, string name, string value)
-		{
-			customAttributes.Add
-			(
-				new CodeAttributeDeclaration
-				(
-					new CodeTypeReference(TRAIT_ATTRIBUTE),
-					new CodeAttributeArgument
-					(
-						new CodePrimitiveExpression(name)
-					),
-					new CodeAttributeArgument
-					(
-						new CodePrimitiveExpression(value)
-					)
-				)
-			);
-		}
+            fixtureTearDownMethod.Attributes |= MemberAttributes.Static;
 
-		private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
-		{
-			// xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
-			customAttributes.Add
-			(
-				new CodeAttributeDeclaration
-				(
-					new CodeTypeReference(TRAIT_ATTRIBUTE),
-					new CodeAttributeArgument
-					(
-						new CodePrimitiveExpression("Description")
-					),
-					new CodeAttributeArgument
-					(
-						new CodePrimitiveExpression(description)
-					)
-				)
-			);
-		}
-	}
+            _currentFixtureTypeDeclaration.BaseTypes.Add(typeof(IDisposable));
+
+            // void IDisposable.Dispose() { <fixtureTearDownMethod>(); }
+
+            CodeMemberMethod disposeMethod = new CodeMemberMethod();
+            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
+            disposeMethod.Name = "Dispose";
+            _currentFixtureTypeDeclaration.Members.Add(disposeMethod);
+
+            disposeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeTypeReferenceExpression(new CodeTypeReference(_currentTestTypeDeclaration.Name)),
+                    fixtureTearDownMethod.Name));
+        }
+
+        public void SetTest(CodeMemberMethod memberMethod, string title)
+        {
+            memberMethod.CustomAttributes.Add
+            (
+                new CodeAttributeDeclaration
+                (
+                    new CodeTypeReference(FACT_ATTRIBUTE)
+                )
+            );
+
+            if (_currentTestTypeDeclaration != null)
+            {
+                string featureTitle = _currentTestTypeDeclaration.UserData[FEATURE_TITLE_KEY] as string;
+                if (!string.IsNullOrEmpty(featureTitle))
+                {
+                    SetProperty(memberMethod.CustomAttributes, FEATURE_TITLE_PROPERTY_NAME, featureTitle);
+                }
+            }
+
+            SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
+        {
+            // xUnit does not support caregories
+        }
+
+        public void SetTestSetup(CodeMemberMethod memberMethod)
+        {
+            // xUnit uses a parameterless constructor
+
+            // public <_currentTestTypeDeclaration>() { <memberMethod>(); }
+
+            CodeConstructor ctorMethod = new CodeConstructor();
+            ctorMethod.Attributes = MemberAttributes.Public;
+            _currentTestTypeDeclaration.Members.Add(ctorMethod);
+
+            ctorMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    memberMethod.Name));
+        }
+
+        public void SetTestTearDown(CodeMemberMethod memberMethod)
+        {
+            // xUnit supports test tear down through the IDisposable interface
+
+            _currentTestTypeDeclaration.BaseTypes.Add(typeof(IDisposable));
+
+            // void IDisposable.Dispose() { <memberMethod>(); }
+
+            CodeMemberMethod disposeMethod = new CodeMemberMethod();
+            disposeMethod.PrivateImplementationType = new CodeTypeReference(typeof(IDisposable));
+            disposeMethod.Name = "Dispose";
+            _currentTestTypeDeclaration.Members.Add(disposeMethod);
+
+            disposeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeThisReferenceExpression(),
+                    memberMethod.Name));
+        }
+
+        public void SetIgnore(CodeTypeMember codeTypeMember)
+        {
+            foreach (var customAttribute in codeTypeMember.CustomAttributes)
+            {
+                CodeAttributeDeclaration codeAttributeDeclaration = customAttribute as CodeAttributeDeclaration;
+                if (codeAttributeDeclaration != null && codeAttributeDeclaration.Name == FACT_ATTRIBUTE)
+                {
+                    // set [FactAttribute(Skip="reason")]
+                    codeAttributeDeclaration.Arguments.Add
+                    (
+                        new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
+                    );
+                    break;
+                }
+            }
+        }
+
+        private void SetProperty(CodeAttributeDeclarationCollection customAttributes, string name, string value)
+        {
+            customAttributes.Add
+            (
+                new CodeAttributeDeclaration
+                (
+                    new CodeTypeReference(TRAIT_ATTRIBUTE),
+                    new CodeAttributeArgument
+                    (
+                        new CodePrimitiveExpression(name)
+                    ),
+                    new CodeAttributeArgument
+                    (
+                        new CodePrimitiveExpression(value)
+                    )
+                )
+            );
+        }
+
+        private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
+        {
+            // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
+            SetProperty(customAttributes, "Description", description);
+        }
+    }
 }

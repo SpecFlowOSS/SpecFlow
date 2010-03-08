@@ -10,108 +10,98 @@
 // ------------------------------------------------------------------------------
 namespace Bowling.Specflow
 {
-    using System;
-    using System.Globalization;
-    using Xunit;
     using TechTalk.SpecFlow;
     
     
-    public partial class ScoreCalculationAlternativeFormsFeature : IUseFixture<ScoreCalculationAlternativeFormsFixture>, IDisposable
+    public partial class ScoreCalculationAlternativeFormsFeature : Xunit.IUseFixture<ScoreCalculationAlternativeFormsFeature.FixtureData>, System.IDisposable
     {
         
-        private ScoreCalculationAlternativeFormsFixture _fixture;
-        
-        private bool _isDisposed = false;
+        private static TechTalk.SpecFlow.ITestRunner testRunner;
         
 #line 1 "ScoreCalculationAlternativesFeature.feature"
 #line hidden
-		~ScoreCalculationAlternativeFormsFeature()
-		{
-			Dispose(false);
-		}
-		partial void OnDisposeManagedResources();
-		partial void OnDisposeUnmanagedResources();
-		partial void OnInitialize();
         
-        public ScoreCalculationAlternativeFormsFeature()
+        public static void FeatureSetup()
         {
-            this.OnInitialize();
+            testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation (alternative forms)", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
+                    "otal score", ((string[])(null)));
+            testRunner.OnFeatureStart(featureInfo);
         }
         
-        public void SetFixture(ScoreCalculationAlternativeFormsFixture fixture)
+        public virtual void SetFixture(ScoreCalculationAlternativeFormsFeature.FixtureData fixtureData)
         {
-            _fixture = fixture;
         }
         
-        public void Dispose()
+        public static void FeatureTearDown()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            testRunner.OnFeatureEnd();
+            testRunner = null;
         }
         
-        private void Dispose(bool isDisposing)
+        public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
-            if ((this._isDisposed == false))
-            {
-                if ((isDisposing == true))
-                {
-                    this.OnDisposeManagedResources();
-                }
-                this.OnDisposeUnmanagedResources();
-                this._isDisposed = true;
-            }
+            testRunner.OnScenarioStart(scenarioInfo);
+        }
+        
+        public virtual void ScenarioTearDown()
+        {
+            testRunner.OnScenarioEnd();
+        }
+        
+        void System.IDisposable.Dispose()
+        {
+            this.ScenarioTearDown();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation (alternative forms)")]
         [Xunit.TraitAttribute("Description", "One single spare")]
-        public void OneSingleSpare()
+        public virtual void OneSingleSpare()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("One single spare", ((string[])(null)));
 #line 7
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 8
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 9
-  this._fixture.TestRunner.When("I roll the following series:\t3,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
+  testRunner.When("I roll the following series:\t3,7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1");
 #line 10
-  this._fixture.TestRunner.Then("my total score should be 29");
+  testRunner.Then("my total score should be 29");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation (alternative forms)")]
         [Xunit.TraitAttribute("Description", "All spares")]
-        public void AllSpares()
+        public virtual void AllSpares()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All spares", ((string[])(null)));
 #line 12
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 13
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line 14
-  this._fixture.TestRunner.When("I roll 10 times 1 and 9");
+  testRunner.When("I roll 10 times 1 and 9");
 #line 15
-  this._fixture.TestRunner.And("I roll 1");
+  testRunner.And("I roll 1");
 #line 16
-  this._fixture.TestRunner.Then("my total score should be 110");
+  testRunner.Then("my total score should be 110");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
+            testRunner.CollectScenarioErrors();
         }
         
         [Xunit.FactAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "Score Calculation (alternative forms)")]
         [Xunit.TraitAttribute("Description", "Yet another beginners game")]
-        public void YetAnotherBeginnersGame()
+        public virtual void YetAnotherBeginnersGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Yet another beginners game", ((string[])(null)));
 #line 18
-this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 19
-  this._fixture.TestRunner.Given("a new bowling game");
+  testRunner.Given("a new bowling game");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Pins"});
@@ -156,67 +146,24 @@ this._fixture.TestRunner.OnScenarioStart(scenarioInfo);
             table1.AddRow(new string[] {
                         "1"});
 #line 20
-  this._fixture.TestRunner.When("I roll", ((string)(null)), table1);
+  testRunner.When("I roll", ((string)(null)), table1);
 #line 42
-  this._fixture.TestRunner.Then("my total score should be 43");
+  testRunner.Then("my total score should be 43");
 #line hidden
-            this._fixture.TestRunner.CollectScenarioErrors();
-            this._fixture.TestRunner.OnScenarioEnd();
-        }
-    }
-    
-    public partial class ScoreCalculationAlternativeFormsFixture : IDisposable
-    {
-        
-        private bool _isDisposed = false;
-        
-        private ITestRunner _testRunner;
-        
-		~ScoreCalculationAlternativeFormsFixture()
-		{
-			Dispose(false);
-		}
-		partial void OnDisposeManagedResources();
-		partial void OnDisposeUnmanagedResources();
-        
-        public ScoreCalculationAlternativeFormsFixture()
-        {
-            FeatureInfo featureInfo = new FeatureInfo(new System.Globalization.CultureInfo("en"), "Score Calculation (alternative forms)", "In order to know my performance\r\nAs a player\r\nI want the system to calculate my t" +
-                    "otal score", ((string[])(null)));
-            this._testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            this._testRunner.OnFeatureStart(featureInfo);
+            testRunner.CollectScenarioErrors();
         }
         
-        public ITestRunner TestRunner
+        public class FixtureData : System.IDisposable
         {
-            get
+            
+            public FixtureData()
             {
-                return this._testRunner;
+                ScoreCalculationAlternativeFormsFeature.FeatureSetup();
             }
-        }
-        
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        
-        private void Dispose(bool isDisposing)
-        {
-            if ((this._isDisposed == false))
+            
+            void System.IDisposable.Dispose()
             {
-                if (((this._testRunner == null) 
-                            == false))
-                {
-                    this._testRunner.OnFeatureEnd();
-                    this._testRunner = null;
-                }
-                if ((isDisposing == true))
-                {
-                    this.OnDisposeManagedResources();
-                }
-                this.OnDisposeUnmanagedResources();
-                this._isDisposed = true;
+                ScoreCalculationAlternativeFormsFeature.FeatureTearDown();
             }
         }
     }

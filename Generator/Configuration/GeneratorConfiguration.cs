@@ -14,17 +14,15 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         //unit test framework settings
         public Type GeneratorUnitTestProviderType { get; set; }
-				public Type SpecFlowUnitTestConverterType { get; set; }
 
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
-        
+
         public GeneratorConfiguration()
         {
             FeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
-                                                                                 FeatureLanguage : 
-                                                                                                     CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
+            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ? FeatureLanguage :
+                CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 
@@ -38,9 +36,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             if (configSection.Language != null)
             {
                 FeatureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
-                ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                                                                                     FeatureLanguage :
-                                                                                                         CultureInfo.GetCultureInfo(configSection.Language.Tool);
+                ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ? FeatureLanguage :
+                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (configSection.UnitTestProvider != null)
@@ -71,16 +68,13 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 case "nunit":
                     GeneratorUnitTestProviderType = typeof(NUnitTestConverter);
-										SpecFlowUnitTestConverterType = typeof(SpecFlowUnitTestConverter);
                     break;
-								case "xunit":
-										GeneratorUnitTestProviderType = typeof(XUnitTestGeneratorProvider);
-										SpecFlowUnitTestConverterType = typeof(SpecFlowXUnitTestConverter);
-										break;
+                case "xunit":
+                    GeneratorUnitTestProviderType = typeof(XUnitTestGeneratorProvider);
+                    break;
                 case "mstest":
                     GeneratorUnitTestProviderType = typeof(MsTestGeneratorProvider);
-										SpecFlowUnitTestConverterType = typeof(SpecFlowUnitTestConverter);
-										break;
+                    break;
                 default:
                     GeneratorUnitTestProviderType = null;
                     break;
