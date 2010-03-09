@@ -32,11 +32,13 @@ namespace TechTalk.SpecFlow.Generator
         private const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
 
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
+        private readonly CodeDomHelper codeDomHelper;
         private readonly bool allowDebugGeneratedFiles;
 
-        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider, bool allowDebugGeneratedFiles)
+        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, bool allowDebugGeneratedFiles)
         {
             this.testGeneratorProvider = testGeneratorProvider;
+            this.codeDomHelper = codeDomHelper;
             this.allowDebugGeneratedFiles = allowDebugGeneratedFiles;
         }
 
@@ -125,7 +127,7 @@ namespace TechTalk.SpecFlow.Generator
             setupMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(FEATUREINFO_TYPE, "featureInfo",
                     new CodeObjectCreateExpression(FEATUREINFO_TYPE,
-                        new CodeObjectCreateExpression(typeof(CultureInfo), 
+                        new CodeObjectCreateExpression(typeof(CultureInfo),
                             new CodePrimitiveExpression(feature.Language)),
                         new CodePrimitiveExpression(feature.Title),
                         new CodePrimitiveExpression(feature.Description),
@@ -152,7 +154,7 @@ namespace TechTalk.SpecFlow.Generator
                 items.Add(new CodePrimitiveExpression(tag.Name));
             }
 
-            return new CodeArrayCreateExpression(typeof (string[]), items.ToArray());
+            return new CodeArrayCreateExpression(typeof(string[]), items.ToArray());
         }
 
         private CodeExpression GetStringArrayExpression(IEnumerable<string> items, ParameterSubstitution paramToIdentifier)
@@ -163,7 +165,7 @@ namespace TechTalk.SpecFlow.Generator
                 expressions.Add(GetSubstitutedString(item, paramToIdentifier));
             }
 
-            return new CodeArrayCreateExpression(typeof (string[]), expressions.ToArray());
+            return new CodeArrayCreateExpression(typeof(string[]), expressions.ToArray());
         }
 
         private CodeMemberMethod GenerateTestFixtureTearDown(CodeTypeDeclaration testType)
@@ -327,7 +329,7 @@ namespace TechTalk.SpecFlow.Generator
 
             foreach (var pair in paramToIdentifier)
             {
-                testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof (string), pair.Value));
+                testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), pair.Value));
             }
 
             GenerateTestBody(feature, scenarioOutline, testMethod, testSetup, paramToIdentifier);
@@ -397,7 +399,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             CodeMemberMethod testMethod = new CodeMemberMethod();
             testType.Members.Add(testMethod);
-            
+
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = string.Format(TEST_FORMAT, scenario.Title.ToIdentifier());
 
@@ -446,7 +448,7 @@ namespace TechTalk.SpecFlow.Generator
                 formatArguments.Add(new CodeVariableReferenceExpression(id));
 
             return new CodeMethodInvokeExpression(
-                new CodeTypeReferenceExpression(typeof (string)),
+                new CodeTypeReferenceExpression(typeof(string)),
                 "Format",
                 formatArguments.ToArray());
         }
@@ -513,11 +515,10 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLinePragmaInitial(CodeTypeDeclaration testType, Feature feature)
         {
-						if (allowDebugGeneratedFiles)
-							return;
+            if (allowDebugGeneratedFiles)
+                return;
 
-            testType.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", Path.GetFileName(feature.SourceFile))));
-            testType.Members.Add(new CodeSnippetTypeMember("#line hidden"));
+            codeDomHelper.BindTypeToSourceFile(testType, Path.GetFileName(feature.SourceFile));
         }
 
         private void AddLineDirectiveHidden(CodeStatementCollection statements)
@@ -525,38 +526,30 @@ namespace TechTalk.SpecFlow.Generator
             if (allowDebugGeneratedFiles)
                 return;
 
-            statements.Add(new CodeSnippetStatement("#line hidden"));
+            codeDomHelper.AddDisableSourceLinePragmaStatement(statements);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, Background background)
         {
-            AddLineDirective(statements, null, background.FilePosition);
+            AddLineDirective(statements, background.FilePosition);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, Scenario scenario)
         {
-            AddLineDirective(statements, null, scenario.FilePosition);
+            AddLineDirective(statements, scenario.FilePosition);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, ScenarioStep step)
         {
-            AddLineDirective(statements, null, step.FilePosition);
+            AddLineDirective(statements, step.FilePosition);
         }
 
-        private void AddLineDirective(CodeStatementCollection statements, string sourceFile, FilePosition filePosition)
+        private void AddLineDirective(CodeStatementCollection statements, FilePosition filePosition)
         {
             if (filePosition == null || allowDebugGeneratedFiles)
                 return;
 
-            if (sourceFile == null)
-                statements.Add(new CodeSnippetStatement(
-                    string.Format("#line {0}", filePosition.Line)));
-            else
-                statements.Add(new CodeSnippetStatement(
-                    string.Format("#line {0} \"{1}\"", filePosition.Line, Path.GetFileName(sourceFile))));
-
-            statements.Add(new CodeSnippetStatement(
-                    string.Format("//#indentnext {0}", filePosition.Column - 1)));
+            codeDomHelper.AddSourceLinePragmaStatement(statements, filePosition.Line, filePosition.Column);
         }
 
         #endregion

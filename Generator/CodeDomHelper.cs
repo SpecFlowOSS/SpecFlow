@@ -1,26 +1,118 @@
 ﻿using System;
 using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
+using System.CodeDom.Compiler;
+using System.Globalization;
 using System.Reflection;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    internal static class CodeDomHelper
+    public enum GenerationTargetLanguage
     {
-        static public CodeTypeReference CreateNestedTypeReference(CodeTypeDeclaration baseTypeDeclaration, string nestedTypeName)
+        CSharp,
+        VB,
+        Other
+    }
+
+    public interface ICodeDomHelperRequired
+    {
+        CodeDomHelper CodeDomHelper { get; set; }
+    }
+
+    public class CodeDomHelper
+    {
+        public GenerationTargetLanguage TargetLanguage { get; private set; }
+
+        public CodeDomHelper(CodeDomProvider codeComProvider)
+        {
+            switch (codeComProvider.FileExtension.ToLower(CultureInfo.InvariantCulture))
+            {
+                case "cs":
+                    TargetLanguage = GenerationTargetLanguage.CSharp;
+                    break;
+                case "vb":
+                    TargetLanguage = GenerationTargetLanguage.VB;
+                    break;
+                default:
+                    TargetLanguage = GenerationTargetLanguage.Other;
+                    break;
+            }
+        }
+
+        public CodeDomHelper(GenerationTargetLanguage targetLanguage)
+        {
+            TargetLanguage = targetLanguage;
+        }
+
+        public CodeTypeReference CreateNestedTypeReference(CodeTypeDeclaration baseTypeDeclaration, string nestedTypeName)
         {
             return new CodeTypeReference(baseTypeDeclaration.Name + "." + nestedTypeName);
         }
 
-        static public void SetTypeReferenceAsInterface(CodeTypeReference typeReference)
+        public void SetTypeReferenceAsInterface(CodeTypeReference typeReference)
         {
             // this hack is necessary for VB.NET code generation
 
-            var isInterfaceField = typeReference.GetType().GetField("isInterface", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (isInterfaceField != null)
+            if (TargetLanguage == GenerationTargetLanguage.VB)
+            {
+                var isInterfaceField = typeReference.GetType().GetField("isInterface",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                if (isInterfaceField == null)
+                    throw new InvalidOperationException("CodeDom version does not support VB.NET generation.");
+
                 isInterfaceField.SetValue(typeReference, true);
+            }
+        }
+
+        public void InjectIfRequired(object target)
+        {
+            ICodeDomHelperRequired codeDomHelperRequired = target as ICodeDomHelperRequired;
+            if (codeDomHelperRequired != null)
+                codeDomHelperRequired.CodeDomHelper = this;
+        }
+
+        public void AddCommentStatement(CodeStatementCollection statements, string comment)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    statements.Add(new CodeSnippetStatement("//" + comment));
+                    break;
+                case GenerationTargetLanguage.VB:
+                    statements.Add(new CodeSnippetStatement("'" + comment));
+                    break;
+            }
+        }
+
+        public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    typeDeclaration.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", fileName)));
+                    typeDeclaration.Members.Add(new CodeSnippetTypeMember("#line hidden"));
+                    break;
+            }
+        }
+
+        public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
+                    AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
+                    break;
+            }
+        }
+
+        public void AddDisableSourceLinePragmaStatement(CodeStatementCollection statements)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    statements.Add(new CodeSnippetStatement("#line hidden"));
+                    break;
+            }
         }
     }
 }

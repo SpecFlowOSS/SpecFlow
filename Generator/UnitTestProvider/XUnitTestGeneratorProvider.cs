@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-    public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider
+    public class XUnitTestGeneratorProvider : IUnitTestGeneratorProvider, ICodeDomHelperRequired
     {
         private const string FEATURE_TITLE_KEY = "FeatureTitle";
         private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
@@ -17,6 +17,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private CodeTypeDeclaration _currentTestTypeDeclaration = null;
         private CodeTypeDeclaration _currentFixtureTypeDeclaration = null;
+
+        public CodeDomHelper CodeDomHelper { get; set; }
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {

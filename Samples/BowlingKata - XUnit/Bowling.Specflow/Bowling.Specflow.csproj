@@ -72,6 +72,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SpecFlowFeature1.feature</DependentUpon>
     </Compile>
+    <Compile Include="StepDefinition1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

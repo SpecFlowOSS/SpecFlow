@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.Generator
                 get { return innerWriter.Encoding; }
             }
 
-            static public readonly Regex indentNextRe = new Regex(@"^[\s\/\']*#indentnext (?<ind>\d+)\s*$");
+            static private readonly Regex indentNextRe = new Regex(@"^[\s\/\']*#indentnext (?<ind>\d+)\s*$");
 
             public override void WriteLine(string text)
             {
@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             outputWriter = new HackedWriter(outputWriter);
 
-            var codeNamespace = GenerateTestFileCode(featureFile, inputReader);
+            var codeNamespace = GenerateTestFileCode(featureFile, inputReader, codeProvider);
             var options = new CodeGeneratorOptions
                 {
                     BracingStyle = "C"
@@ -126,15 +126,19 @@ namespace TechTalk.SpecFlow.Generator
             outputWriter.Flush();
         }
 
-        public CodeNamespace GenerateTestFileCode(SpecFlowFeatureFile featureFile, TextReader inputReader)
+        public CodeNamespace GenerateTestFileCode(SpecFlowFeatureFile featureFile, TextReader inputReader, CodeDomProvider codeProvider)
         {
             string targetNamespace = GetTargetNamespace(featureFile);
 
             SpecFlowLangParser parser = new SpecFlowLangParser(project.GeneratorConfiguration.FeatureLanguage);
             Feature feature = parser.Parse(inputReader, featureFile.GetFullPath(project));
 
+            CodeDomHelper codeDomHelper = new CodeDomHelper(codeProvider);
+
             IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(project.GeneratorConfiguration.GeneratorUnitTestProviderType);
-            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, project.GeneratorConfiguration.AllowDebugGeneratedFiles);
+            codeDomHelper.InjectIfRequired(generatorProvider);
+
+            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, project.GeneratorConfiguration.AllowDebugGeneratedFiles);
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;
