@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling", "Bowling\Bowling.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bowling.Specflow", "Bowling.Specflow\Bowling.Specflow.csproj", "{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.vbproj", "{E2352F77-9222-444B-8B15-470E73D3D990}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,10 +19,6 @@ Global
 		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1FC8B4C-8553-4B50-BFC3-1BA12CDABBAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2352F77-9222-444B-8B15-470E73D3D990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2352F77-9222-444B-8B15-470E73D3D990}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2352F77-9222-444B-8B15-470E73D3D990}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2352F77-9222-444B-8B15-470E73D3D990}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
