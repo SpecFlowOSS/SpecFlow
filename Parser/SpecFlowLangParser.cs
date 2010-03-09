@@ -32,7 +32,14 @@ namespace TechTalk.SpecFlow.Parser
         {
             var fileContent = featureFileReader.ReadToEnd() + Environment.NewLine;
 
+            //TODO: remove this hotfix when upgrading to the newer parser
+            fileContent = FixLineEndings(fileContent);
+
             CultureInfo language = GetLanguage(fileContent);
+
+            //TODO: remove this hotfix when upgrading to the newer parser
+            //this call has to be after the language detection, otherwise the fix removes the language comment as well
+            fileContent = FixComments(fileContent);
 
             var gherkinListener = new GherkinListener();
             var lexer = GetLexer(language, new Gherkin.Parser(gherkinListener, false));
@@ -61,6 +68,17 @@ namespace TechTalk.SpecFlow.Parser
             feature.Language = language.Name;
 
             return feature;
+        }
+
+        static private readonly Regex commentFixRe = new Regex(@"#.*");
+        private string FixComments(string fileContent)
+        {
+            return commentFixRe.Replace(fileContent, "");
+        }
+
+        private string FixLineEndings(string fileContent)
+        {
+            return fileContent.Replace("\r\n", "\n");
         }
 
         private IEnumerable<string> GetPossibleLanguageNames(CultureInfo language)
