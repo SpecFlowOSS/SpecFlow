@@ -157,7 +157,9 @@ namespace ParserTests
 
 		private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
 		{
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new XUnitTestGeneratorProvider(), new CodeDomHelper(GenerationTargetLanguage.CSharp), true);
+		    CodeDomHelper codeDomHelper = new CodeDomHelper(GenerationTargetLanguage.CSharp);
+		    XUnitTestGeneratorProvider xUnitTestGeneratorProvider = new XUnitTestGeneratorProvider();
+		    SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true);
 			var codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
 			CSharpCodeProvider codeProvider = new CSharpCodeProvider();

@@ -13,13 +13,13 @@ namespace TechTalk.SpecFlow
 {
     public class TestRunner : ITestRunner
     {
-        private BindingRegistry bindingRegistry = null;
         private readonly ErrorProvider errorProvider;
         private readonly TestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly StepFormatter stepFormatter;
         private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter = new StepArgumentTypeConverter(); 
+        private readonly BindingRegistry bindingRegistry;
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
 
         public TestRunner()
         {
@@ -28,12 +28,13 @@ namespace TechTalk.SpecFlow
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
             stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
-            stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
+ 
+            bindingRegistry = new BindingRegistry();
+            stepArgumentTypeConverter = new StepArgumentTypeConverter(bindingRegistry.StepTransformations);
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
         {
-            bindingRegistry = new BindingRegistry();
             foreach (Assembly assembly in bindingAssemblies)
             {
                 bindingRegistry.BuildBindingsFromAssembly(assembly);
@@ -216,8 +217,25 @@ namespace TechTalk.SpecFlow
         private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs)
         {
             Match match = stepBinding.Regex.Match(stepArgs.Text);
+
+            // Check if regexp is a match
             if (!match.Success)
                 return null;
+
+            var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
+
+            // Check if argument-count of method matches capture-groups of regexp
+            if (regexArgs.Length != stepBinding.ParameterTypes.Length)
+                return null;
+
+            // Check if argument types of method can be provided
+            for (int i = 0; i < regexArgs.Length; i++)
+            {
+                if (stepBinding.ParameterTypes[i] != typeof(string))
+                    if (!stepArgumentTypeConverter.CanConvert(regexArgs[i], stepBinding.ParameterTypes[i],
+                                                  FeatureContext.Current.FeatureInfo.CultureInfo))
+                       return null;
+            } 
 
             object[] extraArgs = null;
             if (stepArgs.MultilineTextArgument != null || stepArgs.TableArgument != null)

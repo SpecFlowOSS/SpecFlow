@@ -108,4 +108,20 @@ namespace TechTalk.SpecFlow
     {
         public AfterStep(params string[] tags) : base(BindingEvent.StepEnd, tags) { }
     }
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public class StepTransformationAttribute : Attribute
+    {
+        public string Regex { get; set; }
+
+        public StepTransformationAttribute(string regex)
+        {
+            Regex = regex;
+        }   
+        
+        public StepTransformationAttribute()
+        {
+            Regex = "(.*)";
+        }
+    }
 }
