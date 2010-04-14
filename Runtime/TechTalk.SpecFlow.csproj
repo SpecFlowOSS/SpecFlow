@@ -60,6 +60,7 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="StepMethodBinding.cs" />
+    <Compile Include="Steps.cs" />
     <Compile Include="StepTransformation.cs" />
     <Compile Include="StepArgumentTypeConverter.cs" />
     <Compile Include="Attributes.cs" />
