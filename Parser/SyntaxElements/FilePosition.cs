@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Xml.Serialization;
-using Gherkin;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {

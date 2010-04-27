@@ -4,9 +4,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Gherkin;
+using gherkin;
+using java.lang;
 using TechTalk.SpecFlow.Parser.GherkinBuilder;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using Exception=System.Exception;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -42,18 +44,19 @@ namespace TechTalk.SpecFlow.Parser
             fileContent = FixComments(fileContent);
 
             var gherkinListener = new GherkinListener();
-            var lexer = GetLexer(language, new Gherkin.Parser(gherkinListener, false));
-
+            //var lexer = GetLexer(language, new gherkin.parser.Parser(gherkinListener, false));
+            Lexer lexer = new I18nLexer(gherkinListener);
             using (var reader = new StringReader(fileContent))
             {
                 try
                 {
-                    lexer.Scan(reader);
+                    lexer.scan(reader.ReadToEnd());
                 }
-                catch (LexingException e)
+                catch (Exception e)
                 {
-                    gherkinListener.DisplayRecognitionError(e.Line, e.Column, e.Message);
-                    throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
+//                    gherkinListener.DisplayRecognitionError(e.Line, e.Column, e.Message);
+//                    throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
+                    throw;
                 }
             }
 
@@ -97,10 +100,11 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        private ILexer GetLexer(CultureInfo language, IListener listener)
-        {
-            return Lexers.Create(GetPossibleLanguageNames(language).First(Lexers.Exists), listener);
-        }
+//        private Lexer GetLexer(CultureInfo language, Listener listener)
+//        {
+//            //return Lexers.Create(GetPossibleLanguageNames(language).First(Lexers.Exists), listener);
+//            Lexer lexer = new I18nLexer(parser);
+//        }
 
         private CultureInfo GetLanguage(string fileContent)
         {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Gherkin;
+using gherkin.parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
@@ -8,23 +8,23 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
     {
         private ScenarioStep step;
 
-        public StepBuilder(StepKind kind, string text, FilePosition position)
+        public StepBuilder(string kind, string text, FilePosition position)
         {
-            switch (kind)
+            switch (kind.Trim())
             {
-                case StepKind.Given:
+                case "Given":
                     step = new Given(new Text(text), null, null);
                     break;
-                case StepKind.When:
+                case "When":
                     step = new When(new Text(text), null, null);
                     break;
-                case StepKind.Then:
+                case "Then":
                     step = new Then(new Text(text), null, null);
                     break;
-                case StepKind.And:
+                case "And":
                     step = new And(new Text(text), null, null);
                     break;
-                case StepKind.But:
+                case "But":
                     step = new But(new Text(text), null, null);
                     break;
                 default:
@@ -43,9 +43,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             step.MultiLineTextArgument = text;
         }
 
-        public void ProcessTable(Table table)
+        public void ProcessTableRow(string[] row, int lineNumber)
         {
-            step.TableArg = table;
+            step.AddTableArgRow(row, lineNumber);
         }
     }
 }
