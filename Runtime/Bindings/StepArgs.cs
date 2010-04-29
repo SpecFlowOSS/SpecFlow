@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    //TODO: move to Bindigns folder
     public class StepArgs
     {
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }

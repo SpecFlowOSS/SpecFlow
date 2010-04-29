@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
     public interface IStepArgumentTypeConverter
     {
@@ -21,10 +20,10 @@ namespace TechTalk.SpecFlow
         public StepArgumentTypeConverter()
         {
             testTracer = ObjectContainer.TestTracer;
-            StepTransformations = ObjectContainer.BindingRegistry.StepTransformations ?? new List<StepTransformation>();
+            StepTransformations = ObjectContainer.BindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
         }
 
-        public ICollection<StepTransformation> StepTransformations { get; private set; }
+        public ICollection<StepTransformationBinding> StepTransformations { get; private set; }
 
         public object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
         {

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Rhino.Mocks;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

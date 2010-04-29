@@ -36,11 +36,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            StepTransformation stepTransformation = new StepTransformation(@"user (\w+)", transformMethod);
+            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(@"user (\w+)", transformMethod);
 
-            Assert.True(stepTransformation.Regex.IsMatch("user xyz"));
+            Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
-            var result = stepTransformation.BindingAction.DynamicInvoke("xyz");
+            var result = stepTransformationBinding.BindingAction.DynamicInvoke("xyz");
             Assert.NotNull(result);
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            bindingRegistry.StepTransformations.Add(new StepTransformation(@"user (\w+)", transformMethod));
+            bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"user (\w+)", transformMethod));
 
             var stepArgumentTypeConverter = new StepArgumentTypeConverter();
 

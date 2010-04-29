@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    //TODO: move to Bindigns folder
     public class BindingMatch
     {
         public StepBinding StepBinding { get; private set; }

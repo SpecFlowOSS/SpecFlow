@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

@@ -1,10 +1,8 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    //TODO: move to Bindigns folder
     public class StepBinding : MethodBinding
     {
         public BindingType Type { get; private set; }

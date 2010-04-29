@@ -2,16 +2,14 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    //TODO: move to Bindigns folder
-    public class StepTransformation : MethodBinding
+    public class StepTransformationBinding : MethodBinding
     {
         public Regex Regex { get; private set; }
 
-        public StepTransformation(string regexString, MethodInfo methodInfo)
+        public StepTransformationBinding(string regexString, MethodInfo methodInfo)
             : base(methodInfo)
         {
             Regex regex = new Regex("^" + regexString + "$", RegexOptions.Compiled | RegexOptions.CultureInvariant);

@@ -2,15 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    //TODO: move to Bindigns folder
     internal enum BindingEvent
     {
         TestRunStart,
@@ -30,7 +26,7 @@ namespace TechTalk.SpecFlow.Bindings
         private readonly ErrorProvider errorProvider;
 
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
-        private readonly List<StepTransformation> stepTransformations = new List<StepTransformation>();
+        private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
 
         public BindingRegistry()
@@ -89,7 +85,7 @@ namespace TechTalk.SpecFlow.Bindings
             return list;
         }
 
-        public ICollection<StepTransformation> StepTransformations 
+        public ICollection<StepTransformationBinding> StepTransformations 
         { 
             get { return stepTransformations; }
         }
@@ -134,9 +130,9 @@ namespace TechTalk.SpecFlow.Bindings
 
         private void BuildStepTransformationFromMethod(MethodInfo method, StepTransformationAttribute transformationAttribute)
         {
-            StepTransformation stepTransformation = new StepTransformation(transformationAttribute.Regex, method);
+            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(transformationAttribute.Regex, method);
 
-            stepTransformations.Add(stepTransformation);
+            stepTransformations.Add(stepTransformationBinding);
         }
 
         private void CheckStepBindingMethod(MethodInfo method)
