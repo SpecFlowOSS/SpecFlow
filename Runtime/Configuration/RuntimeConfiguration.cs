@@ -118,9 +118,10 @@ namespace TechTalk.SpecFlow.Configuration
 
             foreach (var element in configSection.StepAssemblies)
             {
-                string stepAssemblyFileName = ((StepAssemblyConfigElement)element).File;
-                string fullPath = Path.GetFullPath(stepAssemblyFileName);
-                Assembly stepAssembly = Assembly.LoadFile(fullPath);
+//                string stepAssemblyFileName = ((StepAssemblyConfigElement)element).File;
+//                string fullPath = Path.GetFullPath(stepAssemblyFileName);
+//                Assembly stepAssembly = Assembly.LoadFile(fullPath);
+                Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
                 config._additionalStepAssemblies.Add(stepAssembly);
             }
 
