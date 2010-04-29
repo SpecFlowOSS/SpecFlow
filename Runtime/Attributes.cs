@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow
 {

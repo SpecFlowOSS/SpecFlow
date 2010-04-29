@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -49,14 +50,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
             ObjectContainer.ScenarioContext = new ScenarioContext(null);
-
-            ICollection<StepTransformation> stepTransformations = new List<StepTransformation>();
+            BindingRegistry bindingRegistry = new BindingRegistry();
+            ObjectContainer.BindingRegistry = bindingRegistry;
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            stepTransformations.Add(new StepTransformation(@"user (\w+)", transformMethod));
+            bindingRegistry.StepTransformations.Add(new StepTransformation(@"user (\w+)", transformMethod));
 
-            var stepArgumentTypeConverter = new StepArgumentTypeConverter(stepTransformations);
+            var stepArgumentTypeConverter = new StepArgumentTypeConverter();
 
             var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));

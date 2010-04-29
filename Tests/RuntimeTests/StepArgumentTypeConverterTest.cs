@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void SetUp()
         {
-            _stepArgumentTypeConverter = new StepArgumentTypeConverter(null);
+            _stepArgumentTypeConverter = new StepArgumentTypeConverter();
             _enUSCulture = new CultureInfo("en-US");
         }
 

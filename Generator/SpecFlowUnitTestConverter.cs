@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             this.testGeneratorProvider = testGeneratorProvider;
             this.codeDomHelper = codeDomHelper;
-            codeDomHelper.InjectIfRequired(testGeneratorProvider);
+            this.codeDomHelper.InjectIfRequired(this.testGeneratorProvider);
             this.allowDebugGeneratedFiles = allowDebugGeneratedFiles;
         }
 

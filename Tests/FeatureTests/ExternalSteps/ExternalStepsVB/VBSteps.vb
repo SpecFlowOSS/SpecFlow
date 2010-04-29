@@ -4,13 +4,13 @@
 Public Class VBStepDefinitions
 
     <Given("I have external step definitions in a separate assembly referenced by this project")> _
-    Public Function step1()
+    Public Sub step1()
         ScenarioContext.Current.Item("counter") = 1
-    End Function
+    End Sub
 
     <[When]("I call those steps")> _
-    Public Function step2()
+    Public Sub step2()
         ScenarioContext.Current.Item("counter") += 1
-    End Function
+    End Sub
 
 End Class

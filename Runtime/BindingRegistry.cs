@@ -5,10 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.ErrorHandling;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
+    //TODO: move to Bindigns folder
     internal enum BindingEvent
     {
         TestRunStart,
@@ -48,7 +50,7 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        private void BuildBindingsFromType(Type type)
+        internal void BuildBindingsFromType(Type type)
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {

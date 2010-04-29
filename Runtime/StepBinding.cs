@@ -1,9 +1,11 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Bindings;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
-    internal class StepBinding : MethodBinding
+    //TODO: move to Bindigns folder
+    public class StepBinding : MethodBinding
     {
         public BindingType Type { get; private set; }
         public Regex Regex { get; private set; }

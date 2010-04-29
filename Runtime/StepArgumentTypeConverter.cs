@@ -1,64 +1,92 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow
 {
     public interface IStepArgumentTypeConverter
     {
-        ICollection<StepTransformation> StepTransformations { get; }
         object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
         bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
     }
 
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
-        public StepArgumentTypeConverter(ICollection<StepTransformation> stepTransformations)
+        private readonly ITestTracer testTracer;
+
+        public StepArgumentTypeConverter()
         {
-            StepTransformations = stepTransformations ?? new List<StepTransformation>();
+            testTracer = ObjectContainer.TestTracer;
+            StepTransformations = ObjectContainer.BindingRegistry.StepTransformations ?? new List<StepTransformation>();
         }
 
         public ICollection<StepTransformation> StepTransformations { get; private set; }
 
         public object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
-            object convertedArg;
+            if (typeToConvertTo == typeof(string))
+                return value;
 
-            var stepTransformation = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).SingleOrDefault();
-            if (stepTransformation != null)
-            {
-                var arguments = stepTransformation.GetStepTransformationArguments(value);
-                var convertedValue = stepTransformation.BindingAction.DynamicInvoke(arguments);
-                return convertedValue;
-            }
+            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).ToArray();
+            Debug.Assert(stepTransformations.Length <= 1, "You may not call Convert if CanConvert returns false");
+            if (stepTransformations.Length > 0)
+                return stepTransformations[0].Transform(value);
 
-            var paramType = typeToConvertTo;
-            if (paramType.IsEnum)
-            {
-                convertedArg = Enum.Parse(paramType, value, true);
-            }
-            else
-            {
-                convertedArg = System.Convert.ChangeType(value, paramType, cultureInfo);
-            }
-
-            return convertedArg;
+            return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
         public bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
+            if (typeToConvertTo == typeof(string))
+                return true;
+
+            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).ToArray();
+            if (stepTransformations.Length > 1)
+            {
+                //TODO: error?
+                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
+            }
+            if (stepTransformations.Length >= 1)
+                return true;
+
+            return CanConvertSimple(typeToConvertTo, value, cultureInfo);
+        }
+
+        private object ConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)
+        {
+            if (typeToConvertTo.IsEnum)
+                return Enum.Parse(typeToConvertTo, value, true);
+
+            return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
+        }
+
+        public bool CanConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)
+        {
             try
             {
-                var val = Convert(value, typeToConvertTo, cultureInfo);
-                if (val != null)
-                    return true;
+                ConvertSimple(typeToConvertTo, value, cultureInfo);
+                return true;
             }
-            catch (Exception)
+            catch (InvalidCastException)
             {
                 return false;
             }
-            return false;
+            catch (OverflowException)
+            {
+                return false;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
     }
 }

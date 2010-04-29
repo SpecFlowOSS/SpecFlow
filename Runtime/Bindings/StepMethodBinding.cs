@@ -5,13 +5,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using TechTalk.SpecFlow.ErrorHandling;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
     public abstract class MethodBinding
     {
         private readonly ErrorProvider errorProvider;
 
-        public MethodBinding(MethodInfo method)
+        protected MethodBinding(MethodInfo method)
         {
             errorProvider = ObjectContainer.ErrorProvider;
 

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using NUnit.Framework;
 using System.Linq;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

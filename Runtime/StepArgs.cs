@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
-    internal class StepArgs
+    //TODO: move to Bindigns folder
+    public class StepArgs
     {
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }
         public BindingType Type { get; private set; }
