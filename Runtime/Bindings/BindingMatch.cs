@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
-    internal class BindingMatch
+    public class BindingMatch
     {
         public StepBinding StepBinding { get; private set; }
         public Match Match { get; private set; }

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
-    internal enum BindingType
+    public enum BindingType
     {
         Given = ScenarioBlock.Given,
         When = ScenarioBlock.When,

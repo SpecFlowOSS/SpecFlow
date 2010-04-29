@@ -268,17 +268,17 @@ namespace TechTalk.SpecFlow.Configuration
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((StepAssemblyConfigElement)element).File;
+            return ((StepAssemblyConfigElement)element).Assembly;
         }
     }
 
     public class StepAssemblyConfigElement : ConfigurationElement
     {
-        [ConfigurationProperty("file", DefaultValue = null, IsRequired = false)]
-        public string File
+        [ConfigurationProperty("assembly", DefaultValue = null, IsRequired = false)]
+        public string Assembly
         {
-            get { return (string)this["file"]; }
-            set { this["file"] = value; }
+            get { return (string)this["assembly"]; }
+            set { this["assembly"] = value; }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -10,7 +11,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
 {
     internal class ErrorProvider
     {
-        private readonly StepFormatter stepFormatter;
+        private readonly IStepFormatter stepFormatter;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
 
         public ErrorProvider()
@@ -44,6 +45,16 @@ namespace TechTalk.SpecFlow.ErrorHandling
             string stepDescription = stepFormatter.GetStepDescription(stepArgs);
             return new BindingException(
                 string.Format("Ambiguous step definitions found for step '{0}': {1}",
+                    stepDescription,
+                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
+        }
+
+
+        public Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepArgs stepArgs)
+        {
+            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            return new BindingException(
+                string.Format("Multiple step definitions found, but none of them have matching parameter count and type for step '{0}': {1}",
                     stepDescription,
                     string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
         }

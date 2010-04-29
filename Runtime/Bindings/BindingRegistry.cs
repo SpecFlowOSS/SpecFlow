@@ -2,12 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.ErrorHandling;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Bindings
 {
     internal enum BindingEvent
     {
@@ -28,6 +26,7 @@ namespace TechTalk.SpecFlow
         private readonly ErrorProvider errorProvider;
 
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
+        private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
 
         public BindingRegistry()
@@ -47,7 +46,7 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        private void BuildBindingsFromType(Type type)
+        internal void BuildBindingsFromType(Type type)
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
@@ -64,6 +63,13 @@ namespace TechTalk.SpecFlow
                     {
                         BuildEventBindingFromMethod(method, bindingEventAttr);
                     }
+
+                var stepTransformationAttrs = Attribute.GetCustomAttributes(method, typeof(StepTransformationAttribute));
+                if (stepTransformationAttrs != null)
+                    foreach (StepTransformationAttribute stepTransformationAttr in stepTransformationAttrs)
+                    {
+                        BuildStepTransformationFromMethod(method, stepTransformationAttr);
+                    }
             }
         }
 
@@ -79,12 +85,16 @@ namespace TechTalk.SpecFlow
             return list;
         }
 
+        public ICollection<StepTransformationBinding> StepTransformations 
+        { 
+            get { return stepTransformations; }
+        }
+
         private void BuildEventBindingFromMethod(MethodInfo method, BindingEventAttribute bindingEventAttr)
         {
             CheckEventBindingMethod(bindingEventAttr.Event, method);
 
-            Delegate bindingAction = CreateBindingAction(method);
-            var eventBinding = new EventBinding(bindingAction, bindingEventAttr.Tags, method);
+            var eventBinding = new EventBinding(bindingEventAttr.Tags, method);
 
             GetEvents(bindingEventAttr.Event).Add(eventBinding);
         }
@@ -113,79 +123,21 @@ namespace TechTalk.SpecFlow
         {
             CheckStepBindingMethod(method);
 
-            Regex regex = new Regex("^" + scenarioStepAttr.Regex + "$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-            Delegate bindingAction = CreateBindingAction(method);
-            var parameterTypes = method.GetParameters().Select(pi => pi.ParameterType).ToArray();
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, regex, bindingAction, parameterTypes, method);
+            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method);
 
             stepBindings.Add(stepBinding);
+        }
+
+        private void BuildStepTransformationFromMethod(MethodInfo method, StepTransformationAttribute transformationAttribute)
+        {
+            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(transformationAttribute.Regex, method);
+
+            stepTransformations.Add(stepTransformationBinding);
         }
 
         private void CheckStepBindingMethod(MethodInfo method)
         {
             //TODO: check parameters, etc.
-        }
-
-        #region extended action types
-        static readonly Type[] actionTypes = new Type[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 
-                typeof(ExtendedAction<,,,,>), typeof(ExtendedAction<,,,,,>), typeof(ExtendedAction<,,,,,,>), typeof(ExtendedAction<,,,,,,,>), typeof(ExtendedAction<,,,,,,,,>), typeof(ExtendedAction<,,,,,,,,,>)
-            };
-
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
-
-        private Type GetActionType(Type[] typeArgs)
-        {
-            if (typeArgs.Length >= actionTypes.Length)
-            {
-                throw errorProvider.GetTooManyBindingParamError(actionTypes.Length - 1);
-            }
-            if (typeArgs.Length == 0)
-            {
-                return actionTypes[typeArgs.Length];
-            }
-            return actionTypes[typeArgs.Length].MakeGenericType(typeArgs);
-        }
-        #endregion
-
-        private Delegate CreateBindingAction(MethodInfo method)
-        {
-            List<ParameterExpression> parameters = new List<ParameterExpression>();
-            foreach (ParameterInfo parameterInfo in method.GetParameters())
-            {
-                parameters.Add(Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name));
-            }
-
-            LambdaExpression lambda;
-
-            if (method.IsStatic)
-            {
-                lambda = Expression.Lambda(
-                    GetActionType(parameters.Select(p => p.Type).ToArray()),
-                    Expression.Call(method, parameters.Cast<Expression>().ToArray()),
-                    parameters.ToArray());
-            }
-            else
-            {
-                Type bindingType = method.DeclaringType;
-                Expression<Func<object>> getInstanceExpression =
-                    () => ScenarioContext.Current.GetBindingInstance(bindingType);
-
-                lambda = Expression.Lambda(
-                    GetActionType(parameters.Select(p => p.Type).ToArray()),
-                    Expression.Call(
-                        Expression.Convert(getInstanceExpression.Body, bindingType),
-                        method, 
-                        parameters.Cast<Expression>().ToArray()),
-                    parameters.ToArray());
-            }
-
-
-            return lambda.Compile();
         }
 
         public IEnumerator<StepBinding> GetEnumerator()

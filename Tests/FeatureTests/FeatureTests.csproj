@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinition.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CallingStepsFromStepDefinition.feature</DependentUpon>
+    </Compile>
+    <Compile Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinitionSteps.cs" />
     <Compile Include="ContextInjection\ContextInjection.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -69,6 +75,12 @@
       <DependentUpon>ExternalSteps.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepArgumentTransfomation\StepArgumentTransformation.feature.cs">
+      <DependentUpon>StepArgumentTransformation.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="StepArgumentTransfomation\StepArgumentTransformationSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
@@ -80,9 +92,21 @@
       <Name>TechTalk.SpecFlow</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="ExternalSteps\ExternalStepsCS\ExternalStepsCS.csproj">
+      <Project>{3836A6FC-4ECC-413A-AC8F-83A0A773EC9E}</Project>
+      <Name>ExternalStepsCS</Name>
+    </ProjectReference>
+    <ProjectReference Include="ExternalSteps\ExternalStepsVB\ExternalStepsVB.vbproj">
+      <Project>{D3F6B835-B228-4DCF-B533-B6ED469A33B3}</Project>
+      <Name>ExternalStepsVB</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinition.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CallingStepsFromStepDefinition.feature.cs</LastGenOutput>
+    </None>
     <None Include="ContextInjection\ContextInjection.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
@@ -90,6 +114,10 @@
     <None Include="ExternalSteps\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StepArgumentTransfomation\StepArgumentTransformation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepArgumentTransformation.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

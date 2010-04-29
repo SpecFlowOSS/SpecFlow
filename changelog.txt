@@ -1,8 +1,12 @@
 
 next release
 New features:
-+ Context injection in step definitions. Step definitions can get a context injected with constructor injection. See examples in Tests/FeatureTests/ContextInjection.
-+ Using steps in other assemblies. This enables writing steps in VB. See examples in Tests/FeatureTests/ExternalSteps.
++ Context injection in step definitions. Step definitions can get a context injected with constructor injection. See examples in Tests/FeatureTests/ContextInjection
++ Using steps in other assemblies. This enables writing steps in VB. See examples in Tests/FeatureTests/ExternalSteps
++ Steps can be invoked from other steps using step text. See examples in Tests/FeatureTests/CallingStepsFromStepDefinitions
++ Custom step parameter converters can be defined as a binding. See examples in Tests/FeatureTests/StepArgumentTransfomation
++ SpecFlow feature files can be added also to VB.NET projects
++ Support for xUnit
 
 1.2.0 - 2009/11/25
 

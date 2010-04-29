@@ -59,23 +59,27 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="StepArgumentTypeConverter.cs" />
+    <Compile Include="Bindings\StepDefinitionKeyword.cs" />
+    <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="Steps.cs" />
+    <Compile Include="Bindings\StepTransformationBinding.cs" />
+    <Compile Include="Bindings\StepArgumentTypeConverter.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="ErrorHandling\BindingException.cs" />
-    <Compile Include="BindingMatch.cs" />
-    <Compile Include="BindingRegistry.cs" />
-    <Compile Include="BindingType.cs" />
+    <Compile Include="Bindings\BindingMatch.cs" />
+    <Compile Include="Bindings\BindingRegistry.cs" />
+    <Compile Include="Bindings\BindingType.cs" />
     <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />
     <Compile Include="ErrorHandling\SpecFlowException.cs" />
-    <Compile Include="EventBinding.cs" />
+    <Compile Include="Bindings\EventBinding.cs" />
     <Compile Include="FeatureContext.cs" />
     <Compile Include="FeatureInfo.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
-    <Compile Include="StepArgs.cs" />
+    <Compile Include="Bindings\StepArgs.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
@@ -88,7 +92,7 @@
     <Compile Include="ScenarioContext.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="ScenarioInfo.cs" />
-    <Compile Include="StepBinding.cs" />
+    <Compile Include="Bindings\StepBinding.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
