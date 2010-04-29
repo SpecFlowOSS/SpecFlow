@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
     <Compile Include="Bindings\StepArgumentTypeConverter.cs" />
     <Compile Include="Attributes.cs" />
