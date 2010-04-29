@@ -201,17 +201,18 @@
       <xsl:with-param name="text-key" select="'Hide'" />
     </xsl:call-template>]";
       <![CDATA[
-          function toggle(sdid){
-            e=window.event.srcElement;
+          function toggle(sdid, event){
+            var link = event.target || event.srcElement;
+
             toToggle=document.getElementById(sdid);
-            if (e.innerText==showButtonText)
+            if (link.innerHTML==showButtonText)
             {
-              e.innerText=hideButtonText;
+              link.innerHTML=hideButtonText;
               toToggle.style.display="block";
             }
             else
             {
-              e.innerText=showButtonText;
+              link.innerHTML=showButtonText;
               toToggle.style.display="none";
             }
           }
