@@ -160,7 +160,7 @@
               <xsl:value-of select="count(./sfr:Instances/sfr:Instance)"/>
               <xsl:if test="sfr:Instances">
                 <xsl:text> </xsl:text>
-                <a href="#" onclick="toggle('{$stepdef-id}'); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+                <a href="#" onclick="toggle('{$stepdef-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
                   <xsl:with-param name="text-key" select="'Show'" />
                 </xsl:call-template>]</a>
               </xsl:if>
