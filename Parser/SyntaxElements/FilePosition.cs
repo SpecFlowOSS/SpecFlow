@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public FilePosition(int line, int column)
         {
             Line = line;
-            Column = column;
+            Column = column; // TODO: 20100430,jb: remove column since it is not provided by gherkin...
         }
     }
 }

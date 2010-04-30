@@ -8,216 +8,180 @@
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>there is a table argument</Text>
+          <FilePosition line="4" column="1" />
           <TableArg>
             <Header>
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="5" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="5" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="5" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="5" column="27" />
                 </Cell>
               </Cells>
-              <FilePosition line="5" column="2" />
+              <FilePosition line="5" column="1" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="6" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="6" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="6" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="6" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="6" column="2" />
+                <FilePosition line="6" column="1" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="7" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="7" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="7" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="7" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="7" column="2" />
+                <FilePosition line="7" column="1" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="4" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a table argument</Text>
+          <FilePosition line="8" column="1" />
           <TableArg>
             <Header>
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="9" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="9" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="9" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="9" column="27" />
                 </Cell>
               </Cells>
-              <FilePosition line="9" column="2" />
+              <FilePosition line="9" column="1" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="10" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="10" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="10" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="10" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="10" column="2" />
+                <FilePosition line="10" column="1" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="11" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="11" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="11" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="11" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="11" column="2" />
+                <FilePosition line="11" column="1" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="8" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a table argument</Text>
+          <FilePosition line="12" column="1" />
           <TableArg>
             <Header>
               <Cells>
                 <Cell>
                   <Value>code</Value>
-                  <FilePosition line="13" column="3" />
                 </Cell>
                 <Cell>
                   <Value>rate</Value>
-                  <FilePosition line="13" column="10" />
                 </Cell>
                 <Cell>
                   <Value>date</Value>
-                  <FilePosition line="13" column="17" />
                 </Cell>
                 <Cell>
                   <Value>error code</Value>
-                  <FilePosition line="13" column="27" />
                 </Cell>
               </Cells>
-              <FilePosition line="13" column="2" />
+              <FilePosition line="13" column="1" />
             </Header>
             <Body>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>USD</Value>
-                    <FilePosition line="14" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="14" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="14" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="14" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="14" column="2" />
+                <FilePosition line="14" column="1" />
               </Row>
               <Row>
                 <Cells>
                   <Cell>
                     <Value>EUR</Value>
-                    <FilePosition line="15" column="3" />
                   </Cell>
                   <Cell>
                     <Value>1.2</Value>
-                    <FilePosition line="15" column="9" />
                   </Cell>
                   <Cell>
                     <Value>2009/09/14</Value>
-                    <FilePosition line="15" column="15" />
                   </Cell>
                   <Cell>
                     <Value>OK</Value>
-                    <FilePosition line="15" column="28" />
                   </Cell>
                 </Cells>
-                <FilePosition line="15" column="2" />
+                <FilePosition line="15" column="1" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="12" column="3" />
         </ScenarioStep>
       </Steps>
     </Scenario>

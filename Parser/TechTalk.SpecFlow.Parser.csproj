@@ -41,9 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="gherkin-1.0.18, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="gherkin-1.0.21, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\gherkin\gherkin-1.0.18.dll</HintPath>
+      <HintPath>..\lib\gherkin\gherkin-1.0.21.dll</HintPath>
     </Reference>
     <Reference Include="IKVM.OpenJDK.Core, Version=0.42.0.3, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

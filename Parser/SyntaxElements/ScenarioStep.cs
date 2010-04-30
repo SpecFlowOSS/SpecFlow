@@ -40,11 +40,11 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
                            {
                                Header = new Row{
                                                 Cells = _tableArgLines.Values.First().Select(c => new Cell(new Text(c))).ToArray(),
-                                                FilePosition = new FilePosition(_tableArgLines.Keys.First(), 0)
+                                                FilePosition = new FilePosition(_tableArgLines.Keys.First(), 1)
                                                 },
                                Body = _tableArgLines.Skip(1).Select(r => new Row{
                                                                                 Cells = r.Value.Select(c => new Cell(new Text(c))).ToArray(),
-                                                                                FilePosition = new FilePosition(r.Key,0)
+                                                                                FilePosition = new FilePosition(r.Key,1)
                                                                                 }).ToArray()
                            };
             }

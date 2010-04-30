@@ -4,49 +4,49 @@
   <Scenarios>
     <Scenario>
       <Title>två tal</Title>
-      <FilePosition line="7" column="3" />
+      <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>att jag har knappat in 5</Text>
-          <FilePosition line="8" column="5" />
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>att jag har knappat in 7</Text>
-          <FilePosition line="9" column="5" />
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>jag summerar</Text>
-          <FilePosition line="10" column="5" />
+          <FilePosition line="10" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>ska resultatet vara 12</Text>
-          <FilePosition line="11" column="5" />
+          <FilePosition line="11" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>
     <Scenario>
       <Title>tre tal</Title>
-      <FilePosition line="13" column="3" />
+      <FilePosition line="13" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>att jag har knappat in 5</Text>
-          <FilePosition line="14" column="5" />
+          <FilePosition line="14" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>att jag har knappat in 4</Text>
-          <FilePosition line="15" column="5" />
+          <FilePosition line="15" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>att jag har knappat in 3</Text>
-          <FilePosition line="16" column="5" />
+          <FilePosition line="16" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>jag summerar</Text>
-          <FilePosition line="17" column="5" />
+          <FilePosition line="17" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>ska resultatet vara 12</Text>
-          <FilePosition line="18" column="5" />
+          <FilePosition line="18" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

@@ -134,6 +134,7 @@
     <Content Include="TestFiles\multilinetitle.feature.xml" />
     <Content Include="TestFiles\scenariooutline.feature.xml" />
     <Content Include="TestFiles\simple.feature.xml" />
+    <Content Include="TestFiles\swedish.feature.xml" />
     <Content Include="TestFiles\tableargument.feature.xml" />
     <Content Include="TestFiles\tags.feature.xml" />
     <Content Include="TestFiles\whitespaces.feature.xml" />

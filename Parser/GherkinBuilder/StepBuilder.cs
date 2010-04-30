@@ -1,35 +1,22 @@
 ﻿using System;
-using gherkin.parser;
+using gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class StepBuilder : ITableProcessor
     {
-        private ScenarioStep step;
+        private readonly ScenarioStep step;
 
-        public StepBuilder(string kind, string text, FilePosition position)
+        public StepBuilder(string keyword, string text, FilePosition position, I18n i18n)
         {
-            switch (kind.Trim())
-            {
-                case "Given":
-                    step = new Given(new Text(text), null, null);
-                    break;
-                case "When":
-                    step = new When(new Text(text), null, null);
-                    break;
-                case "Then":
-                    step = new Then(new Text(text), null, null);
-                    break;
-                case "And":
-                    step = new And(new Text(text), null, null);
-                    break;
-                case "But":
-                    step = new But(new Text(text), null, null);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("kind");
-            }
+            if (i18n.keywords("given").contains(keyword)) step = new Given(new Text(text), null, null);
+            else if (i18n.keywords("when").contains(keyword)) step = new When(new Text(text), null, null);
+            else if (i18n.keywords("then").contains(keyword)) step = new Then(new Text(text), null, null);
+            else if (i18n.keywords("and").contains(keyword)) step = new And(new Text(text), null, null);
+            else if (i18n.keywords("but").contains(keyword)) step = new But(new Text(text), null, null);
+            else throw new ArgumentOutOfRangeException(string.Format("Parameter 'keyword' has value that can not be translated! Value:'{0}'", keyword));
+
             step.FilePosition = position;
         }
 

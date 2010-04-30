@@ -4,31 +4,31 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>Addition de deux nombres</Title>
-      <FilePosition line="7" column="3" />
+      <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>une calculatrice</Text>
-          <FilePosition line="8" column="5" />
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
-          <FilePosition line="9" column="5" />
+          <FilePosition line="9" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que je tape sur la touche "+"</Text>
-          <FilePosition line="10" column="5" />
+          <FilePosition line="10" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
-          <FilePosition line="11" column="5" />
+          <FilePosition line="11" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>je tape sur la touche "="</Text>
-          <FilePosition line="12" column="5" />
+          <FilePosition line="12" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>le résultat affiché doit être &lt;somme&gt;</Text>
-          <FilePosition line="13" column="5" />
+          <FilePosition line="13" column="1" />
         </ScenarioStep>
       </Steps>
       <Examples>
@@ -40,53 +40,44 @@
                 <Cells>
                   <Cell>
                     <Value>a</Value>
-                    <FilePosition line="16" column="8" />
                   </Cell>
                   <Cell>
                     <Value>b</Value>
-                    <FilePosition line="16" column="12" />
                   </Cell>
                   <Cell>
                     <Value>somme</Value>
-                    <FilePosition line="16" column="16" />
                   </Cell>
                 </Cells>
-                <FilePosition line="16" column="7" />
+                <FilePosition line="16" column="1" />
               </Header>
               <Body>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="17" column="8" />
                     </Cell>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="17" column="12" />
                     </Cell>
                     <Cell>
                       <Value>4</Value>
-                      <FilePosition line="17" column="16" />
                     </Cell>
                   </Cells>
-                  <FilePosition line="17" column="7" />
+                  <FilePosition line="17" column="1" />
                 </Row>
                 <Row>
                   <Cells>
                     <Cell>
                       <Value>2</Value>
-                      <FilePosition line="18" column="8" />
                     </Cell>
                     <Cell>
                       <Value>3</Value>
-                      <FilePosition line="18" column="12" />
                     </Cell>
                     <Cell>
                       <Value>5</Value>
-                      <FilePosition line="18" column="16" />
                     </Cell>
                   </Cells>
-                  <FilePosition line="18" column="7" />
+                  <FilePosition line="18" column="1" />
                 </Row>
               </Body>
             </Table>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using gherkin;
 using java.util;
@@ -10,8 +11,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class GherkinListener : Listener
     {
-        public GherkinListener()
+        public GherkinListener(CultureInfo language)
         {
+            _i18n = new I18n(language.Name);
             Errors = new List<ErrorDetail>();
         }
 
@@ -43,10 +45,12 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private IStepProcessor stepProcessor;
         private ITableProcessor tableProcessor;
         private IExampleProcessor exampleProcessor;
+        private I18n _i18n;
 
         public void tag(string name, int i)
         {
-            tags.Add(new Tag(new Word(name)));
+            string nameWithoutAt = name.Remove(0, 1);
+            tags.Add(new Tag(new Word(nameWithoutAt)));
         }
 
         public void comment(string str, int i)
@@ -89,7 +93,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void step(string keyword, string content, int line_number)
         {
-            stepBuilder = new StepBuilder(keyword, content, new FilePosition(line_number, 1));
+            stepBuilder = new StepBuilder(keyword, content, new FilePosition(line_number, 1), _i18n);
             tableProcessor = stepBuilder;
             stepProcessor.ProcessStep(stepBuilder);
         }
@@ -118,84 +122,5 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
             DisplayRecognitionError(line_number, 0, message);
         }
-
-
-
-
-//        public void Comment(string content, int i)
-//        {
-//        }
-//
-//        public void Feature(Token keyword, Token name)
-//        {
-//            featureBuilder = new FeatureBuilder(name.Content, FlushTags());
-//        }
-//
-//        public void Background(Token keyword, Token name)
-//        {
-//            var background = new BackgroundBuilder(name.Content, ToFilePosition(keyword.Position));
-//            stepProcessor = background;
-//            featureBuilder.AddBackground(background);
-//        }
-//
-//        public void Scenario(Token keyword, Token name)
-//        {
-//            var currentScenario = new ScenarioBuilder(name.Content, FlushTags(), ToFilePosition(keyword.Position));
-//            stepProcessor = currentScenario;
-//            featureBuilder.AddScenario(currentScenario);
-//        }
-//
-//        public void ScenarioOutline(Token keyword, Token name)
-//        {
-//            var currentScenario = new ScenarioOutlineBuilder(name.Content, FlushTags(), ToFilePosition(keyword.Position));
-//            stepProcessor = currentScenario;
-//            exampleProcessor = currentScenario;
-//            featureBuilder.AddScenario(currentScenario);
-//        }
-//
-//        public void Examples(Token keyword, Token name)
-//        {
-//            var exampleBuilder = new ExampleBuilder(name.Content, ToFilePosition(keyword.Position));
-//            tableProcessor = exampleBuilder;
-//            exampleProcessor.ProcessExample(exampleBuilder);
-//        }
-//
-//        public void Step(Token keyword, Token name, StepKind stepKind)
-//        {
-//            stepBuilder = new StepBuilder(stepKind, name.Content, ToFilePosition(keyword.Position));
-//            tableProcessor = stepBuilder;
-//            stepProcessor.ProcessStep(stepBuilder);
-//        }
-//
-//        public void Table(IList<IList<Token>> rows, Position tablePosition)
-//        {
-//            tableProcessor.ProcessTable(CreateTable(rows));
-//        }
-//
-//        private Table CreateTable(IList<IList<Token>> rows)
-//        {
-//            Func<Token, Cell> convertCell = cell => new Cell(new Text(cell.Content)) { FilePosition = ToFilePosition(cell.Position) };
-//            Func<IList<Token>, Row> convertRow = row => new Row(row.Select(convertCell).ToArray()) { FilePosition = new FilePosition(row[0].Position.Line, row[0].Position.Column - 1) };
-//            return new Table(convertRow(rows[0]), rows.Skip(1).Select(convertRow).ToArray());
-//        }
-//
-//        public void PythonString(Token pyString)
-//        {
-//            stepBuilder.SetMultilineArg(pyString.Content);
-//        }
-//
-//        public void SyntaxError(string state, string @event, IEnumerable<string> legalEvents, Position position)
-//        {
-//            string message = "Parse error. Found " + @event + " when expecting one of: " +
-//                             string.Join(", ", legalEvents.ToArray()) + ". (Current state: " + state + ").";
-//
-//            DisplayRecognitionError(position.Line, position.Column, message);
-//        }
-//
-//        private FilePosition ToFilePosition(Position position)
-//        {
-//            return new FilePosition(position.Line, position.Column);
-//        }
     }
-
 }
