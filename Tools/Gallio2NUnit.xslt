@@ -1,3 +1,4 @@
+<!-- http://community.thoughtworks.com/posts/3967b9b234 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:gallio="http://www.gallio.org/"
