@@ -187,14 +187,14 @@
         <xsl:call-template name="get-name"/>
         <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('out{$scenario-id}'); return false;" class="button">[show]</a>
+          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[show]</a>
         </xsl:if>
       </td>
       <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('err{$scenario-id}'); return false;" class="button">[show]</a>
+          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[show]</a>
         </xsl:if>
       </td>
       <td>
