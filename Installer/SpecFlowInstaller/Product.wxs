@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ProductShortName = "SpecFlow" ?>
-<?define ProductVersion = "1.2.0" ?>
+<?define ProductVersion = "1.2.1" ?>
 <?define ProductVersionText = "1.2" ?>
 <?define ProductUrl = "http://www.specflow.org" ?>
 <?define Manufacturer = "TechTalk" ?>
@@ -75,8 +75,8 @@
     </Feature>
 
     <!-- Custom actions -->
-    <CustomActionRef Id="VS90Setup" />
-    <CustomActionRef Id="VS2010Setup" />
+    <CustomActionRef Id="VS90InstallVSTemplates" />
+    <CustomActionRef Id="VS2010InstallVSTemplates" />
 
     <!-- Sequences -->
     <InstallExecuteSequence>
