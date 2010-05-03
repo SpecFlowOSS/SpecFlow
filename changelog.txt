@@ -14,6 +14,8 @@ New features:
 + Support for xUnit
 + Single installer for Visual Studio 2008 and 2010 (Issue 6, 10, 11)
 + SpecFlow Reporting doesn't work with Firefox (Issue 31)
++ Place GeneratedCodeAttribute and 'Designer generated code' region on generated code to 
+  avoid having this code parsed by code analysis. (Issue 33)
 
 1.2.0 - 2009/11/25
 

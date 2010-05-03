@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             fixtureSetupMethod.Attributes |= MemberAttributes.Static;
 
-            _currentFixtureTypeDeclaration = new CodeTypeDeclaration("FixtureData");
+            _currentFixtureTypeDeclaration = CodeDomHelper.CreateGeneratedTypeDeclaration("FixtureData");
             _currentTestTypeDeclaration.Members.Add(_currentFixtureTypeDeclaration);
 
             var fixtureDataType = 
