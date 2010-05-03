@@ -270,5 +270,13 @@ namespace TechTalk.SpecFlow
         }
 
         #endregion
+
+        internal static void Reset()
+        {
+            foreach (var fieldInfo in typeof(ObjectContainer).GetFields(BindingFlags.Static | BindingFlags.NonPublic| BindingFlags.Public))
+            {
+                fieldInfo.SetValue(null, null);
+            }
+        }
     }
 }

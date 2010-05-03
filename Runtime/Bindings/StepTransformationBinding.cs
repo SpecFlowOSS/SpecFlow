@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -16,17 +17,17 @@ namespace TechTalk.SpecFlow.Bindings
             Regex = regex;
         }
 
-        public string[] GetStepTransformationArguments(string stepSnippet)
+        private object[] GetStepTransformationArguments(string stepSnippet)
         {
             var match = Regex.Match(stepSnippet);
             var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
             return argumentStrings;
         }
 
-        public object Transform(string value)
+        public object Transform(string value, ITestTracer testTracer)
         {
             var arguments = GetStepTransformationArguments(value);
-            return BindingAction.DynamicInvoke(arguments);
+            return InvokeAction(arguments, testTracer);
         }
     }
 }

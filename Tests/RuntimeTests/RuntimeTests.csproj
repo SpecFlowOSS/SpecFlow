@@ -68,6 +68,7 @@
     <Compile Include="StepExecutionTests.cs" />
     <Compile Include="StepExecutionTestsBase.cs" />
     <Compile Include="StepExecutionTestsWithConversions.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
     <Compile Include="StepTransformationTests.cs" />
     <Compile Include="StepArgumentTypeConverterTest.cs" />
     <Compile Include="ConfigurationTest.cs" />

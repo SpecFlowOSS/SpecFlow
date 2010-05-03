@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -106,6 +109,49 @@ namespace TechTalk.SpecFlow.Bindings
             return lambda.Compile();
         }
 
+        public object InvokeAction(object[] arguments, ITestTracer testTracer)
+        {
+            TimeSpan duration;
+            return InvokeAction(arguments, testTracer, out duration);
+        }
+
+        public object InvokeAction(object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        {
+            try
+            {
+                object result;
+                Stopwatch stopwatch = new Stopwatch();
+                using (new CultureInfoScope(FeatureContext.Current.FeatureInfo.Language))
+                {
+                    stopwatch.Start();
+                    result = BindingAction.DynamicInvoke(arguments);
+                    stopwatch.Stop();
+                }
+
+                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
+                {
+                    testTracer.TraceDuration(stopwatch.Elapsed, MethodInfo, arguments);
+                }
+
+                duration = stopwatch.Elapsed;
+                return result;
+            }
+            catch (ArgumentException ex)
+            {
+                throw errorProvider.GetCallError(MethodInfo, ex);
+            }
+            catch (TargetInvocationException invEx)
+            {
+                var ex = invEx.InnerException;
+                PreserveStackTrace(ex);
+                throw ex;
+            }
+        }
+
+        internal void PreserveStackTrace(Exception ex)
+        {
+            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+        }
 
         #region extended action types
         static readonly Type[] actionTypes = new Type[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 

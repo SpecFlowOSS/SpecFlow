@@ -67,13 +67,20 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
         #endregion
 
+        protected virtual CultureInfo GetLanguage()
+        {
+            return new CultureInfo("en-US");
+        }
+
         [SetUp]
         public void SetUp()
         {
+            ObjectContainer.Reset();
+
             MockRepository = new MockRepository();
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
-            Language = new CultureInfo("en-US");
+            Language = GetLanguage();
             ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(Language, "test feature", null));
             ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
 
@@ -82,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ObjectContainer.TestTracer = new DummyTestTracer();
         }
 
-        private TestRunner GetTestRunnerFor(params Type[] bindingTypes)
+        protected TestRunner GetTestRunnerFor(params Type[] bindingTypes)
         {
             bindingRegistry = new BindingRegistry();
             foreach (var bindingType in bindingTypes)
