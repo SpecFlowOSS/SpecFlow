@@ -7,6 +7,7 @@ New features:
 + Custom step parameter converters can be defined as a binding. See examples in Tests/FeatureTests/StepArgumentTransfomation
 + SpecFlow feature files can be added also to VB.NET projects
 + Support for xUnit
++ Single installer for Visual Studio 2008 and 2010 (Issue 6, 10, 11)
 
 1.2.0 - 2009/11/25
 
