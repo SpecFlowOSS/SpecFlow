@@ -54,6 +54,9 @@
     <Compile Include="..\lib\nconsoler\NConsoler.cs">
       <Link>NConsoler\NConsoler.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="MsBuild\GeneratorTask.cs" />
     <Compile Include="MsBuild\GeneratorTaskBase.cs" />
     <Compile Include="MsBuild\TaskBase.cs" />

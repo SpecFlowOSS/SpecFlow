@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Bindings
             var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).ToArray();
             Debug.Assert(stepTransformations.Length <= 1, "You may not call Convert if CanConvert returns false");
             if (stepTransformations.Length > 0)
-                return stepTransformations[0].Transform(value);
+                return stepTransformations[0].Transform(value, testTracer);
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }

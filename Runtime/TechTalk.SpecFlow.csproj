@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="CultureInfoScope.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
     <Compile Include="Bindings\StepArgumentTypeConverter.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
+    <Compile Include="Tracing\NullListener.cs" />
     <Compile Include="Tracing\StepDefinitonSkeletonProvider.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />

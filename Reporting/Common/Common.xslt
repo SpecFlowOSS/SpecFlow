@@ -202,7 +202,12 @@
     </xsl:call-template>]";
       <![CDATA[
           function toggle(sdid, event){
-            var link = event.target || event.srcElement;
+            var link;
+            if(window.event) {
+              link = window.event.srcElement;
+            } else {
+              link = event.target;
+            }
 
             toToggle=document.getElementById(sdid);
             if (link.innerHTML==showButtonText)
@@ -219,8 +224,32 @@
 
           function copyToClipboard(s)
           {
-            clipboardData.setData("Text", s);
-          }
+            if (window.clipboardData)
+            {
+              window.clipboardData.setData('Text',s);
+            }
+            else
+            {
+              try
+              {
+                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+              }
+              catch(e)
+              {
+                alert("The clipboard copy didn't work.\nYour browser doesn't allow Javascript clipboard copy.\nIf you want to change its behaviour: \n1.Open a new browser window\n2.Enter the URL: about:config\n3.Change the signed.applets.codebase_principal_support property to true");
+                return;
+              }
+              var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+              var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+              trans.addDataFlavor('text/unicode');
+              var len = new Object();
+              var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+              str.data=s;
+              trans.setTransferData("text/unicode",str,s.length*2);
+              var clipid=Components.interfaces.nsIClipboard;
+              clip.setData(trans,null,clipid.kGlobalClipboard);
+            }
+          } 
           ]]>
     </script>
   </xsl:template>
@@ -228,13 +257,20 @@
   <xsl:template name="html-copy-step-to-clipboard-script">
     <script>
       <![CDATA[
+          function getInnerText(elm)
+          {
+            if (elm.textContent)
+              return elm.textContent;
+            
+            return elm.innerText;
+          }
+      
           function copyStepToClipboard(stepId)
           {
-            e=window.event.srcElement;
             text=document.getElementById("txt" + stepId);
             tableArg=document.getElementById("tbl" + stepId);
             
-            result = text.innerText;
+            result = getInnerText(text);
             if (tableArg != null)
             {
               result += "\r\n";
@@ -248,19 +284,19 @@
           {
             indent = "  ";
             
-            header = table.rows(0).cells;
-            rows = table.rows;
+            var rows = table.getElementsByTagName("tr");   
+            header = rows[0].cells;
             
             columnWidths = new Array();
             for (colIndex = 0; colIndex < header.length; colIndex++)
-                columnWidths[colIndex] = header[colIndex].innerText.length;
+                columnWidths[colIndex] = header[colIndex].innerHTML.length;
 
             for (rowIndex = 1; rowIndex < rows.length; rowIndex++)
             {
                 row = rows[rowIndex].cells;
                 for (colIndex = 0; colIndex < header.length; colIndex++)
-                    if (row[colIndex].innerText.length > columnWidths[colIndex])
-                        columnWidths[colIndex] = row[colIndex].innerText.length;
+                    if (row[colIndex].innerHTML.length > columnWidths[colIndex])
+                        columnWidths[colIndex] = row[colIndex].innerHTML.length;
             }
 
             tableSource = "";
@@ -271,8 +307,8 @@
                 for (colIndex = 0; colIndex < header.length; colIndex++)
                 {
                   tableSource = tableSource + " ";
-                  tableSource = tableSource + row[colIndex].innerText;
-                  for (i = row[colIndex].innerText.length; i < columnWidths[colIndex]; i++)
+                  tableSource = tableSource + row[colIndex].innerHTML;
+                  for (i = row[colIndex].innerHTML.length; i < columnWidths[colIndex]; i++)
                     tableSource = tableSource + " ";
                   tableSource = tableSource + " |";
                 }

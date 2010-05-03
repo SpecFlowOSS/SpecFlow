@@ -188,6 +188,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             compilerParameters.TempFiles.KeepFiles = true;
 
             compilerParameters.ReferencedAssemblies.Add(
+                TestFileHelper.GetAssemblyPath(typeof (GeneratedCodeAttribute))); //System
+            compilerParameters.ReferencedAssemblies.Add(
                 TestFileHelper.GetAssemblyPath(typeof (TestAttribute))); //NUnit
             compilerParameters.ReferencedAssemblies.Add(
                 TestFileHelper.GetAssemblyPath(typeof (ITestRunner))); //TechTalk.SpecFlow

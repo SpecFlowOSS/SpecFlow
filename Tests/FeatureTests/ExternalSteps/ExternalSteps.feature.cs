@@ -8,11 +8,14 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
+#region Designer generated code
 namespace TechTalk.SpecFlow.FeatureTests.ExternalSteps
 {
     using TechTalk.SpecFlow;
     
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.2.0.0")]
+    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("External Step Definitions")]
     public partial class ExternalStepDefinitionsFeature
@@ -69,3 +72,4 @@ this.ScenarioSetup(scenarioInfo);
         }
     }
 }
+#endregion

@@ -195,7 +195,7 @@ namespace TechTalk.SpecFlow
             {
                 if (IsTagNeeded(eventBinding.Tags, tags))
                 {
-                    InvokeAction(eventBinding.BindingAction, null, eventBinding.MethodInfo);
+                    eventBinding.InvokeAction(null, testTracer);
                 }
             }
         }
@@ -402,7 +402,8 @@ namespace TechTalk.SpecFlow
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             OnStepStart();
-            TimeSpan duration = InvokeAction(match.StepBinding.BindingAction, arguments, match.StepBinding.MethodInfo);
+            TimeSpan duration;
+            match.StepBinding.InvokeAction(arguments, testTracer, out duration);
             OnStepEnd();
 
             return duration;
@@ -419,34 +420,6 @@ namespace TechTalk.SpecFlow
 
                 if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
                     OnBlockStart(ObjectContainer.ScenarioContext.CurrentScenarioBlock);
-            }
-        }
-
-        private TimeSpan InvokeAction(Delegate action, object[] arguments, MethodInfo methodInfo)
-        {
-            try
-            {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                action.DynamicInvoke(arguments);
-                stopwatch.Stop();
-
-                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
-                {
-                    testTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
-                }
-
-                return stopwatch.Elapsed;
-            }
-            catch (ArgumentException ex)
-            {
-                throw errorProvider.GetCallError(methodInfo, ex);
-            }
-            catch (TargetInvocationException invEx)
-            {
-                var ex = invEx.InnerException;
-                PreserveStackTrace(ex);
-                throw ex;
             }
         }
 

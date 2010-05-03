@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.Generator
 
             codeNamespace.Imports.Add(new CodeNamespaceImport(SPECFLOW_NAMESPACE));
 
-            var testType = new CodeTypeDeclaration(testClassName);
+            var testType = codeDomHelper.CreateGeneratedTypeDeclaration(testClassName);
             testType.IsPartial = true;
             testType.TypeAttributes |= TypeAttributes.Public;
             codeNamespace.Types.Add(testType);

@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace TechTalk.SpecFlow.Generator
 {
@@ -113,6 +114,49 @@ namespace TechTalk.SpecFlow.Generator
                     statements.Add(new CodeSnippetStatement("#line hidden"));
                     break;
             }
+        }
+
+        public CodeStatement GetStartRegionStatement(string regionText)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    return new CodeSnippetStatement("#region " + regionText);
+                case GenerationTargetLanguage.VB:
+                    return new CodeSnippetStatement("#Region \"" + regionText + "\"");
+            }
+            return new CodeCommentStatement("#region " + regionText);
+        }
+
+        public CodeStatement GetEndRegionStatement()
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    return new CodeSnippetStatement("#endregion");
+                case GenerationTargetLanguage.VB:
+                    return new CodeSnippetStatement("#End Region");
+            }
+            return new CodeCommentStatement("#endregion");
+        }
+
+        private Version GetCurrentSpecFlowVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version;
+        }
+
+        public CodeTypeDeclaration CreateGeneratedTypeDeclaration(string className)
+        {
+            var result = new CodeTypeDeclaration(className);
+            result.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(GeneratedCodeAttribute)),
+                    new CodeAttributeArgument(new CodePrimitiveExpression("TechTalk.SpecFlow")),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(GetCurrentSpecFlowVersion().ToString()))));
+            result.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(CompilerGeneratedAttribute))));
+            return result;
         }
     }
 }

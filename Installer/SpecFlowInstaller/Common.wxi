@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?define SetupResourcesDir = "$(var.SolutionDir)\Installer\Resources" ?>
+
+  <?define Vs2008RegPath = "Software\Microsoft\VisualStudio\9.0" ?>
+  <?define Vs2010RegPath = "Software\Microsoft\VisualStudio\10.0" ?>
+  
+  <?define CLSID_SpecFlowSingleFileGenerator = "{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}" ?>
+  <?define VBLangId = "{164B10B9-B200-11D0-8C61-00A0C91E29D5}" ?>
+  <?define CSharpLangId = "{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}" ?>
+
+</Include>

@@ -1,12 +1,27 @@
 
 next release
 New features:
-+ Context injection in step definitions. Step definitions can get a context injected with constructor injection. See examples in Tests/FeatureTests/ContextInjection
-+ Using steps in other assemblies. This enables writing steps in VB. See examples in Tests/FeatureTests/ExternalSteps
-+ Steps can be invoked from other steps using step text. See examples in Tests/FeatureTests/CallingStepsFromStepDefinitions
-+ Custom step parameter converters can be defined as a binding. See examples in Tests/FeatureTests/StepArgumentTransfomation
++ Context injection in step definitions. Step definitions can get a context injected with 
+  constructor injection. (Issue 30)
+  See examples in Tests/FeatureTests/ContextInjection
++ Using steps in other assemblies. This enables writing steps in VB. (Issue 19)
+  See examples in Tests/FeatureTests/ExternalSteps 
++ Steps can be invoked from other steps using step text. See examples in 
+  Tests/FeatureTests/CallingStepsFromStepDefinitions
++ Custom step parameter converters can be defined as a binding. 
+  See examples in Tests/FeatureTests/StepArgumentTransfomation
 + SpecFlow feature files can be added also to VB.NET projects
 + Support for xUnit
++ Single installer for Visual Studio 2008 and 2010 (Issue 6, 10, 11)
++ Place GeneratedCodeAttribute and 'Designer generated code' region on generated code to 
+  avoid having this code parsed by code analysis. (Issue 33)
++ Configuration option to disable all output. (Issue 29)
+  Use the following config to disable output:
+  <trace listener="TechTalk.SpecFlow.Tracing.NullListener, TechTalk.SpecFlow" />
+
+Fixed issues:
++ SpecFlow Reporting doesn't work with Firefox (Issue 31)
++ Binding methods are executed using the culture of the feature file.
 
 1.2.0 - 2009/11/25
 
@@ -37,7 +52,8 @@ New features:
 Fixed issues:
 + Runtime: Remove direct dependency on nunit.framework.dll from the runtime (Issue 12)
 + Runtime: Binding methods with more than 4 parameters cannot be used (Issue 21)
-+ Generator: Special language characters (e.g. accented letters) are removed when generating test method names (Issue 22)
++ Generator: Special language characters (e.g. accented letters) are removed when generating 
+  test method names (Issue 22)
 
 1.0.2 - 2009/10/20
 
