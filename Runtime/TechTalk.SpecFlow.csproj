@@ -85,6 +85,7 @@
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
+    <Compile Include="Tracing\NullListener.cs" />
     <Compile Include="Tracing\StepDefinitonSkeletonProvider.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />

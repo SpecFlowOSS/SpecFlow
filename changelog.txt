@@ -15,6 +15,9 @@ New features:
 + Single installer for Visual Studio 2008 and 2010 (Issue 6, 10, 11)
 + Place GeneratedCodeAttribute and 'Designer generated code' region on generated code to 
   avoid having this code parsed by code analysis. (Issue 33)
++ Configuration option to disable all output. (Issue 29)
+  Use the following config to disable output:
+  <trace listener="TechTalk.SpecFlow.Tracing.NullListener, TechTalk.SpecFlow" />
 
 Fixed issues:
 + SpecFlow Reporting doesn't work with Firefox (Issue 31)
