@@ -162,10 +162,16 @@
   <xsl:template match="nunit:test-suite">
     <xsl:variable name="feature-id" select="generate-id()" />
     <a name="{$feature-id}" />
-    <h3>Feature: <xsl:call-template name="get-name"/></h3>
+    <h3><xsl:call-template name="get-keyword">
+        <xsl:with-param name="keyword" select="'Feature'" />
+      </xsl:call-template>: <xsl:call-template name="get-name"/></h3>
     <table class="reportTable" cellpadding="0" cellspacing="0">
       <tr>
-        <th class="top left">Scenario</th>
+        <th class="top left">
+          <xsl:call-template name="get-keyword">
+            <xsl:with-param name="keyword" select="'Scenario'" />
+          </xsl:call-template>
+        </th>
         <th class="top" style="width: 5em">Status</th>
         <th class="top" style="width: 5em">Time(s)</th>
       </tr>
@@ -187,14 +193,18 @@
         <xsl:call-template name="get-name"/>
         <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[show]</a>
+          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+              <xsl:with-param name="text-key" select="'Show'" />
+            </xsl:call-template>]</a>
         </xsl:if>
       </td>
       <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[show]</a>
+          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+              <xsl:with-param name="text-key" select="'Show'" />
+            </xsl:call-template>]</a>
         </xsl:if>
       </td>
       <td>
