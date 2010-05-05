@@ -8,7 +8,6 @@
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some &lt;templated&gt; precondition</Text>
-          <FilePosition line="4" column="1" />
           <TableArg>
             <Header>
               <Cells>
@@ -64,6 +63,7 @@
               </Row>
             </Body>
           </TableArg>
+          <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>

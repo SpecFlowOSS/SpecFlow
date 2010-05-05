@@ -6,13 +6,6 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
     public class Then : ScenarioStep
     {
-        public Then()
-        {
-        }
-
-        public Then(Text givenText, MultilineText multilineTextArgument, Table tableArg) : base(givenText, multilineTextArgument, tableArg)
-        {
-        }
     }
 
     public class Thens : List<Then>

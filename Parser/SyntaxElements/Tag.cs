@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Tag(Word name)
+        public Tag(string name)
         {
-            Name = name.Value;
+            Name = name;
         }
     }
 

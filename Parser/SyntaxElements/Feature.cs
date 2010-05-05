@@ -4,19 +4,6 @@ using System.Xml.Serialization;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
-    /// <summary>
-    /// not required in the final AST
-    /// </summary>
-    public class DescriptionLine
-    {
-        public string LineText { get; set; }
-
-        public DescriptionLine(Text lineText)
-        {
-            LineText = lineText.Value;
-        }
-    }
-
     public class Feature
     {
         public string Language { get; set; }
@@ -32,13 +19,13 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Feature(Text title, Tags tags, DescriptionLine[] description, Background background, params Scenario[] scenarios)
+        public Feature(string title, Tags tags, string description, Background background, params Scenario[] scenarios)
         {
             Tags = tags;
-            Description = description == null ? string.Empty : string.Join(Environment.NewLine, description.Select(d => d.LineText.Trim()).ToArray());
+            Description = description ?? string.Empty;
             Background = background;
             Scenarios = scenarios;
-            Title = title.Value;
+            Title = title;
         }
     }
 }

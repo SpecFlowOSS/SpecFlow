@@ -13,9 +13,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Cell(Text value)
+        public Cell(string value)
         {
-            Value = value.Value;
+            Value = value;
         }
     }
 

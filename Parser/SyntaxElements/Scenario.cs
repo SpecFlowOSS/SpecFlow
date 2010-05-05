@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Scenario(Text title, Tags tags, ScenarioSteps scenarioSteps)
+        public Scenario(string title, Tags tags, ScenarioSteps scenarioSteps)
         {
-            Title = title.Value;
+            Title = title;
             Tags = tags;
             Steps = scenarioSteps ?? new ScenarioSteps();
         }

@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Background GetResult()
         {
-            return new Background(new Text(text), new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
+            return new Background(text, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
         }
     }
 }

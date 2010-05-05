@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                         });
 
             return new ScenarioOutline(
-                new Text(name),
+                name,
                 tags,
                 new ScenarioSteps(steps.Select(step => step.GetResult()).ToArray()),
                 new Examples(examples.Select(example => example.GetResult()).ToArray())) { FilePosition = position };

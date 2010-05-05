@@ -8,7 +8,6 @@
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>there is a table argument</Text>
-          <FilePosition line="4" column="1" />
           <TableArg>
             <Header>
               <Cells>
@@ -64,10 +63,10 @@
               </Row>
             </Body>
           </TableArg>
+          <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a table argument</Text>
-          <FilePosition line="8" column="1" />
           <TableArg>
             <Header>
               <Cells>
@@ -123,10 +122,10 @@
               </Row>
             </Body>
           </TableArg>
+          <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a table argument</Text>
-          <FilePosition line="12" column="1" />
           <TableArg>
             <Header>
               <Cells>
@@ -182,6 +181,7 @@
               </Row>
             </Body>
           </TableArg>
+          <FilePosition line="12" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>

@@ -26,9 +26,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public ExampleSet(Text title, Table table)
+        public ExampleSet(string title, Table table)
         {
-            Title = title == null ? string.Empty : title.Value;
+            Title = title ?? string.Empty;
             Table = table;
         }
     }

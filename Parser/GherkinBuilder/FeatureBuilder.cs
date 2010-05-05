@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
@@ -17,13 +18,24 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             this.tags = tags;
         }
 
+        private static readonly Regex firstLineRe = new Regex(@"^(?<firstline>[^\r\n]*)[\r\n]+(?<rest>.*)", RegexOptions.Singleline);
+
         public Feature GetResult()
         {
-            var textLines = text.Split('\n');
+            string title = text;
+            string description = null;
+
+            var match = firstLineRe.Match(text);
+            if (match.Success)
+            {
+                title = match.Groups["firstline"].Value;
+                description = match.Groups["rest"].Value;
+            }
+
             return new Feature(
-                new Text(textLines[0]),
+                title,
                 tags,
-                textLines.Skip(1).SkipWhile(line => string.IsNullOrEmpty(line.Trim('\n', '\r', '\t', ' '))).Select(line => new DescriptionLine(new Text(line))).ToArray(),
+                description,
                 background == null ? null : background.GetResult(),
                 scenarios.Select(sb => sb.GetResult()).ToArray());
         }

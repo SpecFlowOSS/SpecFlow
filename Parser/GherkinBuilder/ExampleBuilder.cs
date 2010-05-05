@@ -24,16 +24,16 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             {
                 Header = new Row
                                 {
-                                    Cells = _exampleLines.Values.First().Select(c => new Cell(new Text(c))).ToArray(),
+                                    Cells = _exampleLines.Values.First().Select(c => new Cell(c)).ToArray(),
                                     FilePosition = new FilePosition(_exampleLines.Keys.First(), 1)
                                 },
                 Body = _exampleLines.Skip(1).Select(r => new Row
                                                                 {
-                                                                    Cells = r.Value.Select(c => new Cell(new Text(c))).ToArray(),
+                                                                    Cells = r.Value.Select(c => new Cell(c)).ToArray(),
                                                                     FilePosition = new FilePosition(r.Key, 1)
                                                                 }).ToArray()
             };
-            return new ExampleSet(new Text(text), exampleTable);
+            return new ExampleSet(text, exampleTable);
         }
 
         public void ProcessTableRow(string[] row, int lineNumber)

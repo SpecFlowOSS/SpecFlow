@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void tag(string name, int i)
         {
             string nameWithoutAt = name.Remove(0, 1);
-            tags.Add(new Tag(new Word(nameWithoutAt)));
+            tags.Add(new Tag(nameWithoutAt));
         }
 
         public void comment(string str, int i)

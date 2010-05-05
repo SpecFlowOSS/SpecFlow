@@ -15,9 +15,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Background(Text title, ScenarioSteps scenarioSteps)
+        public Background(string title, ScenarioSteps scenarioSteps)
         {
-            Title = title == null ? "" : title.Value;
+            Title = title ?? "";
             Steps = scenarioSteps ?? new ScenarioSteps();
         }
     }

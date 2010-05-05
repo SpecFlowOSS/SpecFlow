@@ -89,16 +89,13 @@
     <Compile Include="SyntaxElements\Examples.cs" />
     <Compile Include="SyntaxElements\Feature.cs" />
     <Compile Include="SyntaxElements\Given.cs" />
-    <Compile Include="SyntaxElements\MultilineText.cs" />
     <Compile Include="SyntaxElements\Scenario.cs" />
     <Compile Include="SyntaxElements\ScenarioOutline.cs" />
     <Compile Include="SyntaxElements\ScenarioStep.cs" />
     <Compile Include="SyntaxElements\Table.cs" />
     <Compile Include="SyntaxElements\Tag.cs" />
-    <Compile Include="SyntaxElements\Text.cs" />
     <Compile Include="SyntaxElements\Then.cs" />
     <Compile Include="SyntaxElements\When.cs" />
-    <Compile Include="SyntaxElements\Word.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">

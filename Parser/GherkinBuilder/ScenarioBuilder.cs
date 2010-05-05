@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Scenario GetResult()
         {
-            return new Scenario(new Text(name), tags, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
+            return new Scenario(name, tags, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
         }
     }
 }
