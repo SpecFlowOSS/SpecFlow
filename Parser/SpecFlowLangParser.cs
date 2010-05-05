@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;     
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,111 +29,56 @@ namespace TechTalk.SpecFlow.Parser
             return feature;
         }
 
-        static private readonly Regex languageRe = new Regex(@"^\s*#\s*language:\s*(?<lang>[\w-]+)\s*\n");
-
         public Feature Parse(TextReader featureFileReader)
         {
-            var fileContent = featureFileReader.ReadToEnd() + Environment.NewLine;
+            var fileContent = featureFileReader.ReadToEnd();
 
-            //TODO: remove this hotfix when upgrading to the newer parser
-            //fileContent = FixLineEndings(fileContent);
+            var language = GetLanguage(fileContent);
 
-            CultureInfo language = GetLanguage(fileContent);
-
-            //TODO: remove this hotfix when upgrading to the newer parser
-            //this call has to be after the language detection, otherwise the fix removes the language comment as well
-            //fileContent = FixComments(fileContent);
-
-            var gherkinListener = new GherkinListener(language);
-            Lexer lexer = new I18nLexer(gherkinListener);
-            using (var reader = new StringReader(fileContent))
-            {
-                try
-                {
-                    lexer.scan(reader.ReadToEnd());
-                }
-                catch (Exception e)
-                {
-//                    gherkinListener.DisplayRecognitionError(e.Line, e.Column, e.Message);
-//                    throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
-                    throw;
-                }
-            }
+            I18n languageService = new I18n(language.CompatibleGherkinLanguage ?? language.Language);
+            var gherkinListener = new GherkinListener(languageService);
+            Feature feature = Parse(fileContent, gherkinListener, languageService);
 
             if (gherkinListener.Errors.Count > 0)
-                throw new SpecFlowParserException("Invalid Gherkin file!", gherkinListener.Errors);
+                throw new SpecFlowParserException(gherkinListener.Errors);
 
-            Feature feature = gherkinListener.GetResult();
-
-            if (feature == null)
-                throw new SpecFlowParserException("Invalid Gherkin file!");
-
-            feature.Language = language.Name;
+            Debug.Assert(feature != null, "If there were no errors, the feature cannot be null");
+            feature.Language = language.LanguageForConversions.Name;
 
             return feature;
         }
 
-        static private readonly Regex commentFixRe = new Regex(@"#.*");
-        private string FixComments(string fileContent)
+        private Feature Parse(string fileContent, GherkinListener gherkinListener, I18n languageService)
         {
-            return commentFixRe.Replace(fileContent, "");
-        }
-
-        private string FixLineEndings(string fileContent)
-        {
-            return fileContent.Replace("\r\n", "\n");
-        }
-
-        private IEnumerable<string> GetPossibleLanguageNames(CultureInfo language)
-        {
-            return GetParentChain(language).SelectMany(lang => new [] {GetGherkinLangName(lang.Name), GetGherkinLangName(lang.Name.Replace("-", ""))});
-        }
-
-        private IEnumerable<CultureInfo> GetParentChain(CultureInfo cultureInfo)
-        {
-            var current = cultureInfo;
-            yield return current;
-            while (current.Parent != current)
+            try
             {
-                current = current.Parent;
-                yield return current;
+                Lexer lexer = languageService.lexer(gherkinListener);
+                lexer.scan(fileContent);
+                return gherkinListener.GetResult();
             }
+            catch(SpecFlowParserException specFlowParserException)
+            {
+                foreach (var errorDetail in specFlowParserException.ErrorDetails)
+                    gherkinListener.RegisterError(errorDetail);
+            }
+            catch (Exception ex)
+            {
+                gherkinListener.RegisterError(new ErrorDetail(ex));
+            }
+            return null;
         }
 
-        private CultureInfo GetLanguage(string fileContent)
+        static private readonly Regex languageRe = new Regex(@"^\s*#\s*language:\s*(?<lang>[\w-]+)\s*\n");
+        private LanguageInfo GetLanguage(string fileContent)
         {
-            CultureInfo language = defaultLanguage;
-
+            string langName = defaultLanguage.Name;
             var langMatch = languageRe.Match(fileContent);
             if (langMatch.Success)
-            {
-                string langName = langMatch.Groups["lang"].Value;
-                langName = ResolveLangNameExceptions(langName);
-                language = new CultureInfo(langName);
-            }
-            return language;
-        }
+                langName = langMatch.Groups["lang"].Value;
 
-        private string GetGherkinLangName(string isoLangName)
-        {
-            switch (isoLangName)
-            {
-                case "sv":
-                    return "se";
-                default:
-                    return isoLangName;
-            }
-        }
-
-        private string ResolveLangNameExceptions(string langName)
-        {
-            switch (langName)
-            {
-                case "se":
-                    return "sv";
-                default:
-                    return langName;
-            }
+            LanguageInfo languageInfo = 
+                SupportedLanguageHelper.GetSupportedLanguage(langName);
+            return languageInfo;
         }
     }
 }

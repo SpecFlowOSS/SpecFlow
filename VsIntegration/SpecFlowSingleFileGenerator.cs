@@ -59,7 +59,9 @@ namespace TechTalk.SpecFlow.VsIntegration
                     return base.GenerateError(pGenerateProgress, ex);
 
                 foreach (var errorDetail in sfpex.ErrorDetails)
-                    pGenerateProgress.GeneratorError(0, 4, errorDetail.Message, (uint)errorDetail.Row - 1,(uint)errorDetail.Column);
+                    pGenerateProgress.GeneratorError(0, 4, errorDetail.Message, 
+                        (uint)errorDetail.ForcedLine - 1,
+                        (uint)errorDetail.ForcedColumn - 1);
 
                 return GetMessage(ex);
             }

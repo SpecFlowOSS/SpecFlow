@@ -16,7 +16,8 @@ namespace TechTalk.SpecFlow.Parser
             {
                 if (ErrorDetails != null)
                 {
-                    string[] errorMessages = ErrorDetails.Select(ed => string.Format("({0},{1}): {2}", ed.Row, ed.Column, ed.Message)).ToArray();
+                    string[] errorMessages = ErrorDetails.Select(ed => 
+                        string.Format("({0},{1}): {2}", ed.ForcedLine, ed.ForcedColumn, ed.Message)).ToArray();
                     return string.Format("{0}{1}{2}",
                                          base.Message,
                                          Environment.NewLine,
@@ -27,22 +28,22 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        public SpecFlowParserException()
+        public const string DefaultMessage = "Invalid Gherkin file!";
+
+        public SpecFlowParserException() : base(DefaultMessage)
         {
         }
 
-        public SpecFlowParserException(string message) : base(message)
-        {
-        }
-
-        public SpecFlowParserException(string message, List<ErrorDetail> errorDetails)
-            : base(message)
+        public SpecFlowParserException(List<ErrorDetail> errorDetails)
+            : base(DefaultMessage)
         {
             ErrorDetails = errorDetails;
         }
 
-        public SpecFlowParserException(string message, Exception inner) : base(message, inner)
+        public SpecFlowParserException(ErrorDetail errorDetail)
+            : base(DefaultMessage)
         {
+            ErrorDetails = new List<ErrorDetail> { errorDetail };
         }
 
         protected SpecFlowParserException(SerializationInfo info, StreamingContext context) : base(info, context)

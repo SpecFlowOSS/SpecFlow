@@ -6,6 +6,8 @@ namespace TechTalk.SpecFlow
     internal class StepArgs
     {
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }
+        //TODO: we should preserve the original keyword as well
+        public string OriginalStepKeyword;
         public BindingType Type { get; private set; }
         public string Text { get; private set; }
         public string MultilineTextArgument { get; private set; }

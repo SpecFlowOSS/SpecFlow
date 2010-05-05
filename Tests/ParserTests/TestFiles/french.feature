@@ -1,4 +1,4 @@
-﻿# language: fr
+﻿# language: fr-FR
 Fonctionnalité: Addition
   Afin de gagner du temps lors du calcul de la facture
   En tant que commerçant

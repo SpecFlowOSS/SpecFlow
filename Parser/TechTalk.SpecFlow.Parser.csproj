@@ -12,15 +12,7 @@
     <AssemblyName>TechTalk.SpecFlow.Parser</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -41,9 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="gherkin-1.0.21, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Gherkin, Version=1.0.24.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\gherkin\gherkin-1.0.21.dll</HintPath>
+      <HintPath>..\lib\gherkin\Gherkin.dll</HintPath>
     </Reference>
     <Reference Include="IKVM.OpenJDK.Core, Version=0.42.0.3, Culture=neutral, PublicKeyToken=13235d27fcbfff58, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,6 +78,7 @@
     <Compile Include="GherkinBuilder\ScenarioBuilder.cs" />
     <Compile Include="GherkinBuilder\ScenarioOutlineBuilder.cs" />
     <Compile Include="GherkinBuilder\StepBuilder.cs" />
+    <Compile Include="SupportedLanguageHelper.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
     <Compile Include="SpecFlowParserException.cs" />
@@ -106,6 +99,11 @@
     <Compile Include="SyntaxElements\Then.cs" />
     <Compile Include="SyntaxElements\When.cs" />
     <Compile Include="SyntaxElements\Word.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Languages.xml">
+      <Link>Languages.xml</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

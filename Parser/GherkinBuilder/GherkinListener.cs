@@ -11,21 +11,25 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class GherkinListener : Listener
     {
-        public GherkinListener(CultureInfo language)
+        public GherkinListener(I18n languageService)
         {
-            _i18n = new I18n(language.Name);
+            _i18n = languageService;
             Errors = new List<ErrorDetail>();
         }
 
         private StepBuilder stepBuilder;
         public List<ErrorDetail> Errors { get; set; }
 
-        public void DisplayRecognitionError(int line, int column, string message)
+        public void RegisterError(int? line, int? column, string message)
         {
-            string msg = string.Format("({0},{1}): {2}", line, column, message);
+            var errorDetail = new ErrorDetail { Message = message, Line = line, Column = column };
+            RegisterError(errorDetail);
+        }
 
-            Debug.WriteLine(msg);
-            Errors.Add(new ErrorDetail {Message = msg, Row = line, Column = column});
+        public void RegisterError(ErrorDetail errorDetail)
+        {
+            Debug.WriteLine(string.Format("({0},{1}): {2}", errorDetail.Line, errorDetail.Column, errorDetail.Message));
+            Errors.Add(errorDetail);
         }
 
         private FeatureBuilder featureBuilder;
@@ -76,7 +80,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             featureBuilder.AddScenario(currentScenario);
         }
 
-        public void scenario_outline(string keyword, string content, int line_number)
+        public void scenarioOutline(string keyword, string content, int line_number)
         {
             var currentScenario = new ScenarioOutlineBuilder(content, FlushTags(), new FilePosition(line_number, 1));
             stepProcessor = currentScenario;
@@ -105,7 +109,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             tableProcessor.ProcessTableRow(rows, line_number);
         }
 
-        public void py_string(string content, int line_number)
+        public void pyString(string content, int line_number)
         {
             stepBuilder.SetMultilineArg(content);
         }
@@ -115,12 +119,12 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         }
 
-        public void syntax_error(string str1, string str2, List l, int line_number)
+        public void syntaxError(string str1, string str2, List l, int line_number)
         {
             string message = "Parse error. Found " + str1 + " when expecting one of: " +
                              "TODO" + ". (Current state: " + str2 + ").";
 
-            DisplayRecognitionError(line_number, 0, message);
+            RegisterError(line_number, null, message);
         }
     }
 }

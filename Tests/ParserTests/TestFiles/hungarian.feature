@@ -1,4 +1,4 @@
-﻿# language: hu
+﻿# language: hu-HU
 Jellemző: Összeadás
   Azért, hogy elkerüljem a buta hibákat
   amit diszkalkúliásként elkövethetek,

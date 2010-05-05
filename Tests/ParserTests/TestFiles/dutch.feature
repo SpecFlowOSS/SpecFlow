@@ -1,4 +1,4 @@
-﻿# language: nl
+﻿# language: nl-NL
 Functionaliteit: Optelling
   Om domme fouten te vermijden
   wil ik als nul in wiskunde

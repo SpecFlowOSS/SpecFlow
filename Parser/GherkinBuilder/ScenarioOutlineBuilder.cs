@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
@@ -26,6 +27,15 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Scenario GetResult()
         {
+            if (examples.Count == 0)
+                throw new SpecFlowParserException(
+                    new ErrorDetail
+                        {
+                            Line = position.Line, 
+                            Column = position.Column - 1, 
+                            Message = "There are no examples defined for the scenario outline."
+                        });
+
             return new ScenarioOutline(
                 new Text(name),
                 tags,
