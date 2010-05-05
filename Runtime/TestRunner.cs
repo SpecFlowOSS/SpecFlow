@@ -235,7 +235,7 @@ namespace TechTalk.SpecFlow
                     return null;
 
                 // Check if regex arguments can be converted to the method parameters
-                CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.CultureInfo;
+                CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.Language;
                 for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
                 {
                     Type parameterType = stepBinding.ParameterTypes[regexArgIndex];
@@ -432,7 +432,7 @@ namespace TechTalk.SpecFlow
             if (regexArgs.Length + match.ExtraArguments.Length != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, regexArgs.Length + match.ExtraArguments.Length);
 
-            CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.CultureInfo;
+            CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.Language;
             for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
             {
                 Type parameterType = match.StepBinding.ParameterTypes[regexArgIndex];
