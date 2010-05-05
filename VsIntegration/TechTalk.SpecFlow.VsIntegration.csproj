@@ -137,20 +137,17 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\VSSDK\Microsoft.VsSDK.targets" />
+  <PropertyGroup>
+    <SettingUpDevenvDependsOn>$(SettingUpDevenvDependsOn);SkipDevenvSetup</SettingUpDevenvDependsOn>
+  </PropertyGroup>
+  <Target Name="SkipDevenvSetup">
+    <Touch Files="$(DevenvSetupStateFile)" />
+  </Target>
+
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>-->
-  <PropertyGroup>
-    <!--<PrepareForRunDependsOn>
-      ZipProjects;
-      ZipItems;
-      $(PrepareForRunDependsOn)
-    </PrepareForRunDependsOn>-->
-    <!--<ZipFilesDependsOn>VsTemplatePathsTarget;GetZipFilesFromVSTemplates;CalculateZipFiles</ZipFilesDependsOn>-->
-    <!--<ZipFilesDependsOn>GetZipFilesFromVSTemplates;CalculateZipFiles</ZipFilesDependsOn>-->
-  </PropertyGroup>
-
   <Target Name="AfterBuild">
     <ItemGroup>
       <OutputZipFiles Include="$(ZipIntermediatePath)\*.zip" />
