@@ -1,5 +1,5 @@
+1.3.0 - 2010/05/05
 
-next release
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v1.0.24
 + Context injection in step definitions. Step definitions can get a context injected with 
