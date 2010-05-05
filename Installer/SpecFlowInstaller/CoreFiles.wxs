@@ -12,9 +12,13 @@
       <Component Id="Comp_CoreFiles" Guid="7022E635-FB3E-412e-9DA0-DBB84C96505F">
         <File Name="LICENSE.txt" Source="$(var.SolutionDir)\LICENSE.txt" />
         <File Name="changelog.txt" Source="$(var.SolutionDir)\changelog.txt" />
-        <File Name="Antlr3.Runtime.dll" Source="$(var.SolutionDir)\lib\antlr\Antlr3.Runtime.dll" />
         <File Name="TechTalk.SpecFlow.targets" Source="$(var.TechTalk.SpecFlow.Tools.ProjectDir)\MsBuild\TechTalk.SpecFlow.targets" />
         <File Name="TechTalk.SpecFlow.tasks" Source="$(var.TechTalk.SpecFlow.Tools.ProjectDir)\MsBuild\TechTalk.SpecFlow.tasks" />
+        <!-- files for the gherkin parser -->
+        <File Name="Gherkin.dll" Source="$(var.SolutionDir)\lib\gherkin\Gherkin.dll" />
+        <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.Runtime.dll" />
+        <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
+        <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
       </Component>
     </DirectoryRef>
 	</Fragment>

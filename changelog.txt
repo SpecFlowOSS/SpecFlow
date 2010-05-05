@@ -1,6 +1,7 @@
 
 next release
 New features:
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v1.0.24
 + Context injection in step definitions. Step definitions can get a context injected with 
   constructor injection. (Issue 30)
   See examples in Tests/FeatureTests/ContextInjection
@@ -22,6 +23,7 @@ New features:
 Fixed issues:
 + SpecFlow Reporting doesn't work with Firefox (Issue 31)
 + Binding methods are executed using the culture of the feature file.
++ Several parsing issues are solved now (Issue 1, 8, 9, 37)
 
 1.2.0 - 2009/11/25
 
