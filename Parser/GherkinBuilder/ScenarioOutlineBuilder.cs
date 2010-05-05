@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                     new ErrorDetail
                         {
                             Line = position.Line, 
-                            Column = position.Column - 1, 
+                            Column = position.Column, 
                             Message = "There are no examples defined for the scenario outline."
                         });
 

@@ -9,8 +9,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
     {
         private readonly string text;
         private readonly FilePosition position;
-
-        private Dictionary<int, string[]> _exampleLines = new Dictionary<int, string[]>();
+        private readonly TableBuilder tableBuilder = new TableBuilder();
 
         public ExampleBuilder(string text, FilePosition position)
         {
@@ -20,25 +19,22 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public ExampleSet GetResult()
         {
-            Table exampleTable = new Table
-            {
-                Header = new Row
-                                {
-                                    Cells = _exampleLines.Values.First().Select(c => new Cell(c)).ToArray(),
-                                    FilePosition = new FilePosition(_exampleLines.Keys.First(), 1)
-                                },
-                Body = _exampleLines.Skip(1).Select(r => new Row
-                                                                {
-                                                                    Cells = r.Value.Select(c => new Cell(c)).ToArray(),
-                                                                    FilePosition = new FilePosition(r.Key, 1)
-                                                                }).ToArray()
-            };
+            Table exampleTable = tableBuilder.GetResult();
+            if (exampleTable == null)
+                throw new SpecFlowParserException(
+                    new ErrorDetail
+                    {
+                        Line = position.Line,
+                        Column = position.Column,
+                        Message = "No examples defined in the example set!"
+                    });
+
             return new ExampleSet(text, exampleTable);
         }
 
         public void ProcessTableRow(string[] row, int lineNumber)
         {
-            _exampleLines.Add(lineNumber, row);
+            tableBuilder.ProcessTableRow(row, lineNumber);
         }
     }
 }

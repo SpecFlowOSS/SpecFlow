@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
@@ -9,7 +7,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
     internal class StepBuilder : ITableProcessor
     {
         private readonly ScenarioStep step;
-        private readonly List<Row> tableRows = new List<Row>();
+        private readonly TableBuilder tableBuilder = new TableBuilder();
 
         public StepBuilder(string keyword, string text, FilePosition position, I18n i18n)
         {
@@ -26,8 +24,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public ScenarioStep GetResult()
         {
-            step.TableArg = tableRows.Count == 0 ? null : 
-                new Table(tableRows[0], tableRows.Skip(1).ToArray());
+            step.TableArg = tableBuilder.GetResult();
 
             return step;
         }
@@ -39,9 +36,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void ProcessTableRow(string[] cells, int lineNumber)
         {
-            var row = new Row(cells.Select(c => new Cell(c)).ToArray());
-            row.FilePosition = new FilePosition(lineNumber, 1);
-            tableRows.Add(row);
+            tableBuilder.ProcessTableRow(cells, lineNumber);
         }
     }
 }

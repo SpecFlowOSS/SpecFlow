@@ -78,6 +78,7 @@
     <Compile Include="GherkinBuilder\ScenarioBuilder.cs" />
     <Compile Include="GherkinBuilder\ScenarioOutlineBuilder.cs" />
     <Compile Include="GherkinBuilder\StepBuilder.cs" />
+    <Compile Include="GherkinBuilder\TableBuilder.cs" />
     <Compile Include="SupportedLanguageHelper.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
