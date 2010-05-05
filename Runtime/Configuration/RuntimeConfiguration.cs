@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -10,11 +13,13 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public partial class ConfigurationSectionHandler
     {
-        
+
     }
 
     internal class RuntimeConfiguration
     {
+        private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
+
         static public RuntimeConfiguration Current
         {
             get { return ObjectContainer.Configuration; }
@@ -30,17 +35,25 @@ namespace TechTalk.SpecFlow.Configuration
         public bool DetectAmbiguousMatches { get; set; }
         public bool StopAtFirstError { get; set; }
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
-        
+
         //tracing settings
         public Type TraceListenerType { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
 
+        public IEnumerable<Assembly> AdditionalStepAssemblies
+        {
+            get
+            {
+                return _additionalStepAssemblies;
+            }
+        }
+
         public RuntimeConfiguration()
         {
-            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ? 
-                CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage) : 
+            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
+                CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage) :
                 CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
@@ -72,7 +85,7 @@ namespace TechTalk.SpecFlow.Configuration
             if (configSection.Language != null)
             {
                 config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                    CultureInfo.GetCultureInfo(configSection.Language.Feature) : 
+                    CultureInfo.GetCultureInfo(configSection.Language.Feature) :
                     CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
@@ -103,6 +116,12 @@ namespace TechTalk.SpecFlow.Configuration
                 config.MinTracedDuration = configSection.Trace.MinTracedDuration;
             }
 
+            foreach (var element in configSection.StepAssemblies)
+            {
+                Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
+                config._additionalStepAssemblies.Add(stepAssembly);
+            }
+
             return config;
         }
 
@@ -126,6 +145,9 @@ namespace TechTalk.SpecFlow.Configuration
             {
                 case "nunit":
                     RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
+                    break;
+                case "xunit":
+                    RuntimeUnitTestProviderType = typeof(XUnitRuntimeProvider);
                     break;
                 case "mstest":
                     RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);

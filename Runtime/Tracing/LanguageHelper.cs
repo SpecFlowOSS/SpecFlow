@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {

@@ -1,11 +1,14 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
+using System.Linq;
 
 namespace TechTalk.SpecFlow
 {
@@ -53,7 +56,10 @@ namespace TechTalk.SpecFlow
                     var result = new TestRunner();
 
                     List<Assembly> bindingAssemblies = new List<Assembly>();
-                    bindingAssemblies.Add(callingAssembly); //TODO: add more assemblies from config
+                    bindingAssemblies.Add(callingAssembly); 
+
+                    bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
+
                     result.InitializeTestRunner(bindingAssemblies.ToArray());
 
                     return result;
@@ -141,13 +147,17 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region TestTracer
-        private static TestTracer testTracer = null;
+        private static ITestTracer testTracer = null;
 
-        public static TestTracer TestTracer
+        public static ITestTracer TestTracer
         {
             get
             {
-                return GetOrCreate(ref testTracer);
+                return GetOrCreate(ref testTracer, typeof(TestTracer));
+            }
+            internal set
+            {
+                testTracer = value;
             }
         }
         #endregion
@@ -165,13 +175,17 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region StepFormatter
-        private static StepFormatter stepFormatter = null;
+        private static IStepFormatter stepFormatter = null;
 
-        public static StepFormatter StepFormatter
+        public static IStepFormatter StepFormatter
         {
             get
             {
-                return GetOrCreate(ref stepFormatter);
+                return GetOrCreate(ref stepFormatter, typeof(StepFormatter));
+            }
+            internal set
+            {
+                stepFormatter = value;
             }
         }
         #endregion
@@ -197,10 +211,14 @@ namespace TechTalk.SpecFlow
             {
                 return GetOrCreate(ref stepArgumentTypeConverter, typeof(StepArgumentTypeConverter));
             }
+            internal set
+            {
+                stepArgumentTypeConverter = value;
+            }
         }
         #endregion
 
-        #region unitTestRuntimeProvider
+        #region UnitTestRuntimeProvider
         private static IUnitTestRuntimeProvider unitTestRuntimeProvider = null;
 
         public static IUnitTestRuntimeProvider UnitTestRuntimeProvider
@@ -210,7 +228,26 @@ namespace TechTalk.SpecFlow
                 return GetOrCreate(ref unitTestRuntimeProvider, Configuration.RuntimeUnitTestProviderType);
             }
         }
+
         #endregion
+
+        #region BindingRegistry
+        private static BindingRegistry bindingRegistry = null;
+
+        public static BindingRegistry BindingRegistry
+        {
+            get 
+            {
+                return GetOrCreate(ref bindingRegistry);
+            }
+            internal set
+            {
+                bindingRegistry = value;
+            }
+        }
+
+        #endregion
+
 
         #region factory helper methods
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class
@@ -233,5 +270,13 @@ namespace TechTalk.SpecFlow
         }
 
         #endregion
+
+        internal static void Reset()
+        {
+            foreach (var fieldInfo in typeof(ObjectContainer).GetFields(BindingFlags.Static | BindingFlags.NonPublic| BindingFlags.Public))
+            {
+                fieldInfo.SetValue(null, null);
+            }
+        }
     }
 }

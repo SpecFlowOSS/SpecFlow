@@ -31,7 +31,9 @@ namespace TechTalk.SpecFlow.VsIntegration
     {
         protected override string GetDefaultExtension()
         {
-            return ".feature.cs";
+            CodeDomProvider provider = GetCodeProvider();
+
+            return ".feature." + provider.FileExtension;
         }
 
         protected override string GenerateCode(string inputFileContent)

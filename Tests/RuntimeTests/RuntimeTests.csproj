@@ -56,7 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StepArgumentTypeConverterTests.cs" />
+    <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepExecutionTests.cs" />
+    <Compile Include="StepExecutionTestsBase.cs" />
+    <Compile Include="StepExecutionTestsWithConversions.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
+    <Compile Include="StepTransformationTests.cs" />
+    <Compile Include="StepArgumentTypeConverterTest.cs" />
     <Compile Include="ConfigurationTest.cs" />
     <Compile Include="ExecutionTestBase.cs" />
     <Compile Include="NUnitTestExecutor.cs" />

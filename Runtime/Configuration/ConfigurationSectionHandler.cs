@@ -40,19 +40,40 @@ namespace TechTalk.SpecFlow.Configuration
             // infinite loop
             try
             {
-                return (TInterface)Activator.CreateInstance(type);                
+                return (TInterface)Activator.CreateInstance(type);
             }
-            catch(InvalidCastException)
+            catch (InvalidCastException)
             {
                 throw new ConfigurationErrorsException(
-                    String.Format("The specified type '{0}' does not implement interface '{1}'", 
+                    String.Format("The specified type '{0}' does not implement interface '{1}'",
                         type.FullName, typeof(TInterface).FullName));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ConfigurationErrorsException(
-                    String.Format("Unable to create instance of type '{0}': {1}", 
+                    String.Format("Unable to create instance of type '{0}': {1}",
                         type.FullName, ex.Message), ex);
+            }
+        }
+        public static TInterface CreateInstance<TInterface>(Type type, params object[] arguments)
+        {
+            // do not use ErrorProvider for thowing exceptions here, because of the potential
+            // infinite loop
+            try
+            {
+                return (TInterface)Activator.CreateInstance(type, arguments);
+            }
+            catch (InvalidCastException)
+            {
+                throw new ConfigurationErrorsException(
+                        String.Format("The specified type '{0}' does not implement interface '{1}'",
+                                type.FullName, typeof(TInterface).FullName));
+            }
+            catch (Exception ex)
+            {
+                throw new ConfigurationErrorsException(
+                        String.Format("Unable to create instance of type '{0}': {1}",
+                                type.FullName, ex.Message), ex);
             }
         }
     }
@@ -94,6 +115,14 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["trace"] = value; }
         }
 
+        [ConfigurationProperty("stepAssemblies", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(StepAssemblyCollection), AddItemName = "stepAssembly")]
+        public StepAssemblyCollection StepAssemblies
+        {
+            get { return (StepAssemblyCollection)this["stepAssemblies"]; }
+            set { this["stepAssemblies"] = value; }
+        }
+
         static internal ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
@@ -101,7 +130,7 @@ namespace TechTalk.SpecFlow.Configuration
             section.Reset(null);
             using (var reader = new XmlTextReader(new StringReader(xmlContent)))
             {
-                section.DeserializeSection(reader);    
+                section.DeserializeSection(reader);
             }
             section.ResetModified();
             return section;
@@ -114,7 +143,7 @@ namespace TechTalk.SpecFlow.Configuration
             section.Reset(null);
             using (var reader = new XmlNodeReader(xmlContent))
             {
-                section.DeserializeSection(reader);    
+                section.DeserializeSection(reader);
             }
             section.ResetModified();
             return section;
@@ -125,7 +154,7 @@ namespace TechTalk.SpecFlow.Configuration
     {
         [ConfigurationProperty("feature", DefaultValue = "en", IsRequired = false)]
         [RegexStringValidator(@"\w{2}(-\w{2})?")]
-        public string Feature 
+        public string Feature
         {
             get { return (String)this["feature"]; }
             set { this["feature"] = value; }
@@ -227,6 +256,29 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (string)this["listener"]; }
             set { this["listener"] = value; }
+        }
+    }
+
+    public class StepAssemblyCollection : ConfigurationElementCollection
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new StepAssemblyConfigElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((StepAssemblyConfigElement)element).Assembly;
+        }
+    }
+
+    public class StepAssemblyConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("assembly", DefaultValue = null, IsRequired = false)]
+        public string Assembly
+        {
+            get { return (string)this["assembly"]; }
+            set { this["assembly"] = value; }
         }
     }
 }

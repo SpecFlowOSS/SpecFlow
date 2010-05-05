@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
@@ -13,13 +15,13 @@ namespace TechTalk.SpecFlow
 {
     public class TestRunner : ITestRunner
     {
-        private BindingRegistry bindingRegistry = null;
         private readonly ErrorProvider errorProvider;
-        private readonly TestTracer testTracer;
+        private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
-        private readonly StepFormatter stepFormatter;
+        private readonly IStepFormatter stepFormatter;
         private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter = new StepArgumentTypeConverter(); 
+        private readonly BindingRegistry bindingRegistry;
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
 
         public TestRunner()
         {
@@ -28,12 +30,13 @@ namespace TechTalk.SpecFlow
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
             stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
+ 
+            bindingRegistry = ObjectContainer.BindingRegistry;
             stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
         {
-            bindingRegistry = new BindingRegistry();
             foreach (Assembly assembly in bindingAssemblies)
             {
                 bindingRegistry.BuildBindingsFromAssembly(assembly);
@@ -192,7 +195,7 @@ namespace TechTalk.SpecFlow
             {
                 if (IsTagNeeded(eventBinding.Tags, tags))
                 {
-                    InvokeAction(eventBinding.BindingAction, null, eventBinding.MethodInfo);
+                    eventBinding.InvokeAction(null, testTracer);
                 }
             }
         }
@@ -213,24 +216,59 @@ namespace TechTalk.SpecFlow
             return filterTags.Intersect(currentTags).Any();
         }
 
-        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs)
+        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching)
         {
             Match match = stepBinding.Regex.Match(stepArgs.Text);
+
+            // Check if regexp is a match
             if (!match.Success)
                 return null;
 
-            object[] extraArgs = null;
-            if (stepArgs.MultilineTextArgument != null || stepArgs.TableArgument != null)
+            var extraArgs = CalculateExtraArgs(stepArgs);
+
+            if (useParamMatching)
             {
-                List<object> extraArgsList = new List<object>();
-                if (stepArgs.MultilineTextArgument != null)
-                    extraArgsList.Add(stepArgs.MultilineTextArgument);
-                if (stepArgs.TableArgument != null)
-                    extraArgsList.Add(stepArgs.TableArgument);
-                extraArgs = extraArgsList.ToArray();
+                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
+
+                // check if the regex + extra arguments match to the binding method parameters
+                if (regexArgs.Length + extraArgs.Length != stepBinding.ParameterTypes.Length)
+                    return null;
+
+                // Check if regex arguments can be converted to the method parameters
+                CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.CultureInfo;
+                for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
+                {
+                    Type parameterType = stepBinding.ParameterTypes[regexArgIndex];
+
+                    if (!stepArgumentTypeConverter.CanConvert(regexArgs[regexArgIndex], parameterType, cultureInfo))
+                        return null;
+                }
+
+                // Check if there are corresponting parameters defined for the extra arguments 
+                for (int extraArgIndex = 0; extraArgIndex < extraArgs.Length; extraArgIndex++)
+                {
+                    Type parameterType = stepBinding.ParameterTypes[extraArgIndex + regexArgs.Length];
+                    Type argType = extraArgs[extraArgIndex].GetType();
+                    if (argType != parameterType)
+                        return null;
+                }
             }
 
             return new BindingMatch(stepBinding, match, extraArgs, stepArgs);
+        }
+
+        private static readonly object[] emptyExtraArgs = new object[0];
+        private object[] CalculateExtraArgs(StepArgs stepArgs)
+        {
+            if (stepArgs.MultilineTextArgument == null && stepArgs.TableArgument == null)
+                return emptyExtraArgs;
+
+            var extraArgsList = new List<object>();
+            if (stepArgs.MultilineTextArgument != null)
+                extraArgsList.Add(stepArgs.MultilineTextArgument);
+            if (stepArgs.TableArgument != null)
+                extraArgsList.Add(stepArgs.TableArgument);
+            return extraArgsList.ToArray();
         }
 
         private void ExecuteStep(StepArgs stepArgs)
@@ -303,7 +341,7 @@ namespace TechTalk.SpecFlow
 
             foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
             {
-                BindingMatch match = Match(binding, stepArgs);
+                BindingMatch match = Match(binding, stepArgs, true);
                 if (match == null)
                     continue;
 
@@ -314,6 +352,22 @@ namespace TechTalk.SpecFlow
 
             if (matches.Count == 0)
             {
+                // there were either no regex match of it was filtered out by the param matching
+                // to provide better error message for the param matching error, we re-run 
+                // the matching without param check
+
+                List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
+                if (matchesWithoutParamCheck.Count == 1)
+                {
+                    // no ambiguouity, but param error -> execute will find it out
+                    return matchesWithoutParamCheck[0];
+                }
+                if (matchesWithoutParamCheck.Count > 1)
+                {
+                    // ambiguouity, because of param error
+                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepArgs);
+                }
+
                 testTracer.TraceNoMatchingStepDefinition(stepArgs);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
                     stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
@@ -326,6 +380,20 @@ namespace TechTalk.SpecFlow
             return matches[0];
         }
 
+        private List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
+        {
+            List<BindingMatch> matches = new List<BindingMatch>();
+
+            foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
+            {
+                BindingMatch match = Match(binding, stepArgs, false);
+                if (match != null)
+                    matches.Add(match);
+            }
+
+            return matches;
+        }
+
         internal void PreserveStackTrace(Exception ex)
         {
             typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
@@ -334,7 +402,8 @@ namespace TechTalk.SpecFlow
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             OnStepStart();
-            TimeSpan duration = InvokeAction(match.StepBinding.BindingAction, arguments, match.StepBinding.MethodInfo);
+            TimeSpan duration;
+            match.StepBinding.InvokeAction(arguments, testTracer, out duration);
             OnStepEnd();
 
             return duration;
@@ -354,52 +423,26 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        private TimeSpan InvokeAction(Delegate action, object[] arguments, MethodInfo methodInfo)
-        {
-            try
-            {
-                System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                action.DynamicInvoke(arguments);
-                stopwatch.Stop();
-
-                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
-                {
-                    testTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
-                }
-
-                return stopwatch.Elapsed;
-            }
-            catch (ArgumentException ex)
-            {
-                throw errorProvider.GetCallError(methodInfo, ex);
-            }
-            catch (TargetInvocationException invEx)
-            {
-                var ex = invEx.InnerException;
-                PreserveStackTrace(ex);
-                throw ex;
-            }
-        }
-
         private object[] GetExecuteArguments(BindingMatch match)
         {
             List<object> arguments = new List<object>();
 
             var regexArgs = match.Match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
 
-            if (regexArgs.Length > match.StepBinding.ParameterTypes.Length)
-                throw errorProvider.GetParameterCountError(match, regexArgs.Length + (match.ExtraArguments == null ? 0 : match.ExtraArguments.Length));
+            if (regexArgs.Length + match.ExtraArguments.Length != match.StepBinding.ParameterTypes.Length)
+                throw errorProvider.GetParameterCountError(match, regexArgs.Length + match.ExtraArguments.Length);
 
-            for (int argIndex = 0; argIndex < regexArgs.Length; argIndex++)
+            CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.CultureInfo;
+            for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
             {
-                var convertedArg = stepArgumentTypeConverter.Convert(regexArgs[argIndex], match.StepBinding.ParameterTypes[argIndex],
-                    FeatureContext.Current.FeatureInfo.CultureInfo);
+                Type parameterType = match.StepBinding.ParameterTypes[regexArgIndex];
+
+                var convertedArg = stepArgumentTypeConverter.Convert(
+                    regexArgs[regexArgIndex], parameterType, cultureInfo);
                 arguments.Add(convertedArg);
             }
 
-            if (match.ExtraArguments != null)
-                arguments.AddRange(match.ExtraArguments);
+            arguments.AddRange(match.ExtraArguments);
 
             if (arguments.Count != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, arguments.Count);

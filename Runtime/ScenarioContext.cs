@@ -55,11 +55,26 @@ namespace TechTalk.SpecFlow
             object value;
             if (!bindingInstances.TryGetValue(bindingType, out value))
             {
-                value = Activator.CreateInstance(bindingType);
+                var ctors = bindingType.GetConstructors();
+                if (bindingType.IsClass && ctors.Length == 0)
+                    throw new MissingMethodException(String.Format("No public constructors found for type {0}", bindingType.FullName));
+
+                var parameters = new List<object>();
+                foreach (var param in ctors[0].GetParameters())
+                {
+                    parameters.Add(GetBindingInstance(param.ParameterType)); 
+                }
+
+                value = Activator.CreateInstance(bindingType, parameters.ToArray());
                 bindingInstances.Add(bindingType, value);
             }
 
             return value;
+        }
+
+        internal void SetBindingInstance(Type bindingType, object instance)
+        {
+            bindingInstances[bindingType] = instance;
         }
     }
 }
