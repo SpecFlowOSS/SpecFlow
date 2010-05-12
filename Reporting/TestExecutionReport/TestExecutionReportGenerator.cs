@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -13,10 +8,9 @@ namespace TechTalk.SpecFlow.Reporting.TestExecutionReport
     public class TestExecutionReportGenerator
     {
         public void GenerateNUnitXmlFromGallio(string xmlTestResult)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            Stream rsrc = asm.GetManifestResourceStream("TechTalk.SpecFlow.Reporting.TestExecutionReport.Gallio2NUnit.xslt");
-            XmlTextReader xmlTextReader = new XmlTextReader(rsrc);
+        {                      
+            XmlTextReader xmlTextReader = new ResourceXmlReader(Assembly.GetExecutingAssembly(),
+                "TechTalk.SpecFlow.Reporting.TestExecutionReport.Gallio2NUnit.xslt");
 
             XDocument doc = XDocument.Load(xmlTestResult);
             var tranny = new XslCompiledTransform();
