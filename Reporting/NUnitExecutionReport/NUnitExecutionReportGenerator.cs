@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -21,17 +19,10 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
         public NUnitExecutionReportGenerator(string projectFile, string xmlTestResultPath, string labeledTestOutputPath)
         {
             this.xmlTestResultPath = xmlTestResultPath;
-            this.specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
             this.labeledTestOutputPath = labeledTestOutputPath;
         }
-
-        public NUnitExecutionReportGenerator(SpecFlowProject specFlowProject, string xmlTestResultPath, string labeledTestOutputPath)
-        {
-            this.xmlTestResultPath = xmlTestResultPath;
-            this.specFlowProject = specFlowProject;
-            this.labeledTestOutputPath = labeledTestOutputPath;
-        }
-
+      
         public void GenerateReport()
         {
             report = new ReportElements.NUnitExecutionReport();
@@ -91,7 +82,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             return xmlTestResult;
         }
 
-        public void TransformReport(string outputFilePath)
+        public void TransformReport(string outputFilePath, string xsltFile)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(ReportElements.NUnitExecutionReport), ReportElements.NUnitExecutionReport.XmlNamespace);
 
@@ -101,7 +92,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
+                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration, xsltFile);
             }
         }
     }

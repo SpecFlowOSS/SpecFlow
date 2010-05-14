@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Reporting
             }
         }
 
-        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration)
+        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration, string xsltFile)
         {
             var xmlOutputWriter = new StringWriter();
             serializer.Serialize(xmlOutputWriter, report);
@@ -38,11 +38,20 @@ namespace TechTalk.SpecFlow.Reporting
             var resourceResolver = new XmlResourceResolver();
 
             var reportName = reportType.Name.Replace("Generator", "");
-            using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
-            {
-                xslt.Load(xsltReader, xsltSettings, resourceResolver);
-            }
 
+            if (!string.IsNullOrEmpty(xsltFile))
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(xsltFile);
+                xslt.Load(document);
+            }
+            else
+            {
+                using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
+                {
+                    xslt.Load(xsltReader, xsltSettings, resourceResolver);
+                }
+            }
             var xmlOutputReader = new XmlTextReader(new StringReader(xmlOutputWriter.ToString()));
 
             XsltArgumentList argumentList = new XsltArgumentList();
@@ -54,7 +63,7 @@ namespace TechTalk.SpecFlow.Reporting
             }            
         }
 
-        static public void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
+        private static void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
         {
             //xslt.command.Execute(input, new XmlUrlResolver(), arguments, results);
 

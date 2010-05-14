@@ -215,7 +215,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             return sampleText;
         }
 
-        public void TransformReport(string outputFilePath)
+        public void TransformReport(string outputFilePath, string xsltFile)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(ReportElements.StepDefinitionReport), ReportElements.StepDefinitionReport.XmlNamespace);
 
@@ -225,7 +225,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
+                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration, xsltFile);
             }
         }
 

@@ -2,15 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
-	ProjectSection(SolutionItems) = preProject
-		changelog.txt = changelog.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
 	ProjectSection(SolutionItems) = preProject
-		changelog.txt = changelog.txt
 		Languages.xml = Languages.xml
 		LICENSE.txt = LICENSE.txt
 		VersionInfo.cs = VersionInfo.cs
@@ -175,7 +171,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{89167EB9-F458-48DA-9D8F-F639A74F5871} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{70376361-0BE1-478D-8EEC-47BD1C768165} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{3FE793A8-E662-4026-B4EC-891324073235} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
