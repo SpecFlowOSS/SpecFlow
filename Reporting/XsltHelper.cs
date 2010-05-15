@@ -33,9 +33,8 @@ namespace TechTalk.SpecFlow.Reporting
             serializer.Serialize(xmlOutputWriter, report);
 
             XslCompiledTransform xslt = new XslCompiledTransform();
-
             var xsltSettings = new XsltSettings(true, false);
-            var resourceResolver = new XmlResourceResolver();
+            XmlResolver resourceResolver;
 
             var reportName = reportType.Name.Replace("Generator", "");
 
@@ -43,12 +42,14 @@ namespace TechTalk.SpecFlow.Reporting
             {
                 XmlDocument document = new XmlDocument();
                 document.Load(xsltFile);
-                xslt.Load(document);
+                resourceResolver = new LocalUrlResolver();
+                xslt.Load(document, xsltSettings, resourceResolver);                
             }
             else
             {
                 using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
                 {
+                    resourceResolver = new XmlResourceResolver();
                     xslt.Load(xsltReader, xsltSettings, resourceResolver);
                 }
             }

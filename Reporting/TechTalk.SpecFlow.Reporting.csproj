@@ -84,9 +84,12 @@
     <Compile Include="XsltHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Common\Common.xslt" />
-    <EmbeddedResource Include="Common\GherkinElements.xslt" />
-    <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
+    <EmbeddedResource Include="..\..\SpecFlow-Examples\BowlingKata\BowlingKata-Nunit\Bowling.Specflow\bin\Debug\Common.xslt">
+      <Link>Common\Common.xslt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\SpecFlow-Examples\BowlingKata\BowlingKata-Nunit\Bowling.Specflow\bin\Debug\GherkinElements.xslt">
+      <Link>Common\GherkinElements.xslt</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="StepDefinitionReport\StepDefinitionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +106,9 @@
     <EmbeddedResource Include="..\Languages.xml">
       <Link>Common\Languages.xml</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
