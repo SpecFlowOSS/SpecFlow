@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Reporting
 
             var reportName = reportType.Name.Replace("Generator", "");
 
-            if (!string.IsNullOrEmpty(xsltFile))
+            if (UseCustomStylesheet(xsltFile))
             {
                 XmlDocument document = new XmlDocument();
                 document.Load(xsltFile);
@@ -63,10 +63,13 @@ namespace TechTalk.SpecFlow.Reporting
             }            
         }
 
+        private static bool UseCustomStylesheet(string xsltFile)
+        {
+            return !string.IsNullOrEmpty(xsltFile);
+        }
+
         private static void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
         {
-            //xslt.command.Execute(input, new XmlUrlResolver(), arguments, results);
-
             var command = xslt.GetType().GetField("command", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(xslt);
 
             var executeMethod = command.GetType().GetMethod("Execute", new Type[] { typeof(XmlReader), typeof(XmlResolver), typeof(XsltArgumentList), typeof(Stream) });
