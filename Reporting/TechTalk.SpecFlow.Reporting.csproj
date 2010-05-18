@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
+    <Compile Include="LocalUrlResolver.cs" />
     <Compile Include="MsBuildProjectReader.cs" />
     <Compile Include="NUnitExecutionReport\NUnitExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\NUnitExecutionReport.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinitionReport.cs" />
     <Compile Include="ResourceXmlReader.cs" />
     <Compile Include="StepDefinitionReport\StepDefinitionReportGenerator.cs" />
+    <Compile Include="TestExecutionReportParameters.cs" />
     <Compile Include="XmlResourceResolver.cs" />
     <Compile Include="XsltHelper.cs" />
   </ItemGroup>
