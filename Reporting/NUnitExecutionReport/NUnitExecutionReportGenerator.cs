@@ -13,9 +13,9 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
     {
         private ReportElements.NUnitExecutionReport report;
         private readonly SpecFlowProject specFlowProject;
-        private readonly TestExecutionReportParameters reportParameters;        
+        private readonly NUnitExecutionReportParameters reportParameters;        
 
-        public NUnitExecutionReportGenerator(TestExecutionReportParameters reportParameters)
+        public NUnitExecutionReportGenerator(NUnitExecutionReportParameters reportParameters)
         {            
             specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);            
             this.reportParameters = reportParameters;

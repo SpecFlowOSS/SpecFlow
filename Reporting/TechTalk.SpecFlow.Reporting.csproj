@@ -60,6 +60,7 @@
     <Compile Include="NUnitExecutionReport\NUnitExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\NUnitExecutionReport.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\ScenarioOutput.cs" />
+    <Compile Include="ReportParameters.cs" />
     <Compile Include="ParserHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,7 +74,8 @@
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinitionReport.cs" />
     <Compile Include="ResourceXmlReader.cs" />
     <Compile Include="StepDefinitionReport\StepDefinitionReportGenerator.cs" />
-    <Compile Include="TestExecutionReportParameters.cs" />
+    <Compile Include="NUnitExecutionReport\NUnitExecutionReportParameters.cs" />
+    <Compile Include="StepDefinitionReport\StepDefinitionReportParameters.cs" />
     <Compile Include="XmlResourceResolver.cs" />
     <Compile Include="XsltHelper.cs" />
   </ItemGroup>

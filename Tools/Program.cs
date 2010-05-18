@@ -3,7 +3,6 @@ using System.IO;
 using NConsoler;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.Reporting;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport;
 using MsBuildProjectReader = TechTalk.SpecFlow.Generator.Configuration.MsBuildProjectReader;
@@ -38,9 +37,10 @@ namespace TechTalk.SpecFlow.Tools
             [Optional("bin\\Debug", Description = @"Path for Spec dll e.g. Company.Specs.dll. Defaults to bin\Debug ")] string binFolder,
             [Optional("StepDefinitionReport.html", "out", Description = "Generated Output File. Defaults to StepDefinitionReport.html")] string outputFile)
         {
-            var generator = new StepDefinitionReportGenerator(projectFile, binFolder, true);
-            generator.GenerateReport();
-            generator.TransformReport(Path.GetFullPath(outputFile), xsltFile);
+            StepDefinitionReportParameters reportParameters = 
+                new StepDefinitionReportParameters(projectFile, outputFile, xsltFile, binFolder, true);
+            var generator = new StepDefinitionReportGenerator(reportParameters);
+            generator.GenerateAndTransformReport();
         }
 
         [Action("Formats an NUnit execution report to SpecFlow style")]
@@ -50,8 +50,8 @@ namespace TechTalk.SpecFlow.Tools
             [Optional("TestResult.txt", "testOutput")] string labeledTestOutput,
             [Optional("TestResult.html", "out", Description = "Generated Output File. Defaults to TestResult.html")] string outputFile)
         {
-            TestExecutionReportParameters reportParameters = new TestExecutionReportParameters
-                                    (projectFile, xmlTestResult, labeledTestOutput, outputFile, xsltFile);         
+            NUnitExecutionReportParameters reportParameters = 
+                new NUnitExecutionReportParameters(projectFile, xmlTestResult, labeledTestOutput, outputFile, xsltFile);         
             var generator = new NUnitExecutionReportGenerator(reportParameters);
             generator.GenerateAndTransformReport();
         }
