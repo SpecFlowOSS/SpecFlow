@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -121,7 +122,7 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 object result;
                 Stopwatch stopwatch = new Stopwatch();
-                using (new CultureInfoScope(FeatureContext.Current.FeatureInfo.Language))
+                using (CreateCultureInfoScope())
                 {
                     stopwatch.Start();
                     result = BindingAction.DynamicInvoke(arguments);
@@ -146,6 +147,16 @@ namespace TechTalk.SpecFlow.Bindings
                 PreserveStackTrace(ex);
                 throw ex;
             }
+        }
+
+        private CultureInfoScope CreateCultureInfoScope()
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            if (FeatureContext.Current != null)
+            {
+                cultureInfo = FeatureContext.Current.FeatureInfo.Language;
+            }
+            return new CultureInfoScope(cultureInfo);
         }
 
         internal void PreserveStackTrace(Exception ex)
