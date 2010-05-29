@@ -55,7 +55,25 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         internal static void PreserveStackTrace(Exception ex)
         {
-            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+			Type exceptionType = typeof(Exception);
+			
+			// Mono's implementation of System.Exception doesn't contain the method InternalPreserveStackTrace
+			if (Type.GetType("Mono.Runtime") != null)
+			{
+				FieldInfo remoteStackTraceString = exceptionType.GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+				
+				// Just in case we're running in pre-2.6
+				if (remoteStackTraceString == null)
+				{
+					remoteStackTraceString = exceptionType.GetField("remote_stack_trace", BindingFlags.Instance | BindingFlags.NonPublic);
+				}
+				
+				remoteStackTraceString.SetValue(ex, ex.StackTrace + Environment.NewLine);
+			}
+			else
+			{
+				exceptionType.GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+			}
         }
 
         private static void ExecuteWithAttribute(object test, Type attributeType)
