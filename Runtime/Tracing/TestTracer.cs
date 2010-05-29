@@ -1,14 +1,29 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    internal class TestTracer
+    public interface ITestTracer
+    {
+        void TraceStep(StepArgs stepArgs, bool showAdditionalArguments);
+        void TraceWarning(string text);
+        void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration);
+        void TraceStepSkipped();
+        void TraceStepPending(BindingMatch match, object[] arguments);
+        void TraceBindingError(BindingException ex);
+        void TraceError(Exception ex);
+        void TraceNoMatchingStepDefinition(StepArgs stepArgs);
+        void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments);
+        void TraceDuration(TimeSpan elapsed, string text);
+    }
+
+    internal class TestTracer : ITestTracer
     {
         private readonly ITraceListener traceListener;
         private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
-        private readonly StepFormatter stepFormatter;
+        private readonly IStepFormatter stepFormatter;
 
         public TestTracer()
         {

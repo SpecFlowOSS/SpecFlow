@@ -1,4 +1,4 @@
-﻿# language: de
+﻿# language: de-DE
 Funktionalität: Addition
   Um dumme Fehler zu vermeiden
   möchte ich als Matheidiot
@@ -15,4 +15,3 @@ Funktionalität: Addition
     | 20 | 30 | add | 50 |
     | 2 | 5 | add | 7 |
     | 0 | 40 | add | 40 |
-    

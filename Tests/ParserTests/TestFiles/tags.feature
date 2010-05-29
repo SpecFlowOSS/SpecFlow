@@ -10,8 +10,3 @@ Scenario: a simple scenario
 Given some precondition
 When I do something
 Then something happens
-
-@stag4 Scenario: a simple scenario with tags in the same line
-Given some precondition
-When I do something
-Then something happens

@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             string className = Path.GetFileNameWithoutExtension(fileName);
             const string targetNamespace = "Target.Namespace";
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), true);
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(GenerationTargetLanguage.CSharp), true);
             var codeNamespace = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
             var compileUnit = new CodeCompileUnit();
             compileUnit.Namespaces.Add(codeNamespace);
@@ -187,6 +187,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             compilerParameters.GenerateInMemory = true;
             compilerParameters.TempFiles.KeepFiles = true;
 
+            compilerParameters.ReferencedAssemblies.Add(
+                TestFileHelper.GetAssemblyPath(typeof (GeneratedCodeAttribute))); //System
             compilerParameters.ReferencedAssemblies.Add(
                 TestFileHelper.GetAssemblyPath(typeof (TestAttribute))); //NUnit
             compilerParameters.ReferencedAssemblies.Add(

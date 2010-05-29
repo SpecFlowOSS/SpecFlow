@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public partial class ConfigurationSectionHandler
     {
-        
+
     }
 
     internal class RuntimeConfiguration
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Configuration
         public bool DetectAmbiguousMatches { get; set; }
         public bool StopAtFirstError { get; set; }
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
-        
+
         //tracing settings
         public Type TraceListenerType { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
@@ -44,15 +44,16 @@ namespace TechTalk.SpecFlow.Configuration
 
         public IEnumerable<Assembly> AdditionalStepAssemblies
         {
-            get {
+            get
+            {
                 return _additionalStepAssemblies;
             }
         }
 
         public RuntimeConfiguration()
         {
-            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ? 
-                CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage) : 
+            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
+                CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage) :
                 CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
@@ -84,7 +85,7 @@ namespace TechTalk.SpecFlow.Configuration
             if (configSection.Language != null)
             {
                 config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                    CultureInfo.GetCultureInfo(configSection.Language.Feature) : 
+                    CultureInfo.GetCultureInfo(configSection.Language.Feature) :
                     CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
@@ -115,11 +116,9 @@ namespace TechTalk.SpecFlow.Configuration
                 config.MinTracedDuration = configSection.Trace.MinTracedDuration;
             }
 
-            foreach(var element in configSection.StepAssemblies)
+            foreach (var element in configSection.StepAssemblies)
             {
-                string stepAssemblyFileName = ((StepAssemblyConfigElement)element).File;
-                string fullPath = Path.GetFullPath(stepAssemblyFileName);
-                Assembly stepAssembly = Assembly.LoadFile(fullPath);
+                Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
                 config._additionalStepAssemblies.Add(stepAssembly);
             }
 
@@ -146,6 +145,9 @@ namespace TechTalk.SpecFlow.Configuration
             {
                 case "nunit":
                     RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
+                    break;
+                case "xunit":
+                    RuntimeUnitTestProviderType = typeof(XUnitRuntimeProvider);
                     break;
                 case "mstest":
                     RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);

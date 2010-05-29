@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow
 {
@@ -59,53 +60,69 @@ namespace TechTalk.SpecFlow
         }
     }
 
-    public class BeforeTestRun : BindingEventAttribute
+    public class BeforeTestRunAttribute : BindingEventAttribute
     {
-        public BeforeTestRun() : base(BindingEvent.TestRunStart, null) {}
+        public BeforeTestRunAttribute() : base(BindingEvent.TestRunStart, null) {}
     }
 
-    public class AfterTestRun : BindingEventAttribute
+    public class AfterTestRunAttribute : BindingEventAttribute
     {
-        public AfterTestRun() : base(BindingEvent.TestRunEnd, null) { }
+        public AfterTestRunAttribute() : base(BindingEvent.TestRunEnd, null) { }
     }
 
-    public class BeforeFeature : BindingEventAttribute
+    public class BeforeFeatureAttribute : BindingEventAttribute
     {
-        public BeforeFeature(params string[] tags) : base(BindingEvent.FeatureStart, tags) { }
+        public BeforeFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureStart, tags) { }
     }
 
-    public class AfterFeature : BindingEventAttribute
+    public class AfterFeatureAttribute : BindingEventAttribute
     {
-        public AfterFeature(params string[] tags) : base(BindingEvent.FeatureEnd, tags) { }
+        public AfterFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureEnd, tags) { }
     }
 
-    public class BeforeScenario : BindingEventAttribute
+    public class BeforeScenarioAttribute : BindingEventAttribute
     {
-        public BeforeScenario(params string[] tags) : base(BindingEvent.ScenarioStart, tags) { }
+        public BeforeScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioStart, tags) { }
     }
 
-    public class AfterScenario : BindingEventAttribute
+    public class AfterScenarioAttribute : BindingEventAttribute
     {
-        public AfterScenario(params string[] tags) : base(BindingEvent.ScenarioEnd, tags) { }
+        public AfterScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioEnd, tags) { }
     }
 
-    public class BeforeScenarioBlock : BindingEventAttribute
+    public class BeforeScenarioBlockAttribute : BindingEventAttribute
     {
-        public BeforeScenarioBlock(params string[] tags) : base(BindingEvent.BlockStart, tags) { }
+        public BeforeScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockStart, tags) { }
     }
 
-    public class AfterScenarioBlock : BindingEventAttribute
+    public class AfterScenarioBlockAttribute : BindingEventAttribute
     {
-        public AfterScenarioBlock(params string[] tags) : base(BindingEvent.BlockEnd, tags) { }
+        public AfterScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockEnd, tags) { }
     }
 
-    public class BeforeStep : BindingEventAttribute
+    public class BeforeStepAttribute : BindingEventAttribute
     {
-        public BeforeStep(params string[] tags) : base(BindingEvent.StepStart, tags) { }
+        public BeforeStepAttribute(params string[] tags) : base(BindingEvent.StepStart, tags) { }
     }
 
-    public class AfterStep : BindingEventAttribute
+    public class AfterStepAttribute : BindingEventAttribute
     {
-        public AfterStep(params string[] tags) : base(BindingEvent.StepEnd, tags) { }
+        public AfterStepAttribute(params string[] tags) : base(BindingEvent.StepEnd, tags) { }
+    }
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public class StepTransformationAttribute : Attribute
+    {
+        public string Regex { get; set; }
+
+        public StepTransformationAttribute(string regex)
+        {
+            Regex = regex;
+        }   
+        
+        public StepTransformationAttribute()
+        {
+            Regex = "(.*)";
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public FilePosition(int line, int column)
         {
             Line = line;
-            Column = column;
+            Column = column; //NOTE: this is always 1 now since it is not provided by gherkin...
         }
     }
 }

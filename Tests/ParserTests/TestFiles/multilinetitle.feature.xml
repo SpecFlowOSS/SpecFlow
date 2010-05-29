@@ -3,11 +3,11 @@
   <Language>en-US</Language>
   <Background>
     <Title>some background
-  with multi-line title</Title>
+with multi-line title</Title>
     <Steps>
       <ScenarioStep xsi:type="Given">
         <Text>some precondition</Text>
-        <FilePosition line="5" column="3" />
+        <FilePosition line="5" column="1" />
       </ScenarioStep>
     </Steps>
     <FilePosition line="3" column="1" />
@@ -15,7 +15,7 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario
-	with multi-line title</Title>
+with multi-line title</Title>
       <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

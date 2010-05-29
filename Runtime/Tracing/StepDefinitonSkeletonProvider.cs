@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -25,7 +26,7 @@ public void {1}{3}({4})
     ScenarioContext.Current.Pending();
 }}",
                 stepArgs.Type,
-                LanguageHelper.GetKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
+                LanguageHelper.GetDefaultKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
                 EscapeRegex(stepArgs.Text),
                 stepArgs.Text.ToIdentifier(),
                 string.Join(", ", extraArgs.ToArray())

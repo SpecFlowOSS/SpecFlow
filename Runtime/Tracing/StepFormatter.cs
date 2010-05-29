@@ -2,10 +2,19 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    internal class StepFormatter
+    public interface IStepFormatter
+    {
+        string GetStepDescription(StepArgs stepArgs);
+        string GetMatchText(BindingMatch match, object[] arguments);
+        string GetMatchText(MethodInfo methodInfo, object[] arguments);
+        string GetStepText(StepArgs stepArgs);
+    }
+
+    internal class StepFormatter : IStepFormatter
     {
         public const string INDENT = "  ";
 
@@ -46,7 +55,8 @@ namespace TechTalk.SpecFlow.Tracing
         public string GetStepText(StepArgs stepArgs)
         {
             StringBuilder result = new StringBuilder();
-            result.Append(LanguageHelper.GetKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.StepDefinitionKeyword));
+            result.Append(stepArgs.OriginalStepKeyword ?? 
+                LanguageHelper.GetDefaultKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.StepDefinitionKeyword));
             result.Append(" ");
             result.AppendLine(stepArgs.Text);
 

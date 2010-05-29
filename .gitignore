@@ -12,3 +12,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.pidb
 *.userprefs
+*.resharper
+*.cache

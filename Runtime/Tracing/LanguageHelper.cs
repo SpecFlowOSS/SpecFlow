@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -18,12 +19,12 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static readonly Dictionary<CultureInfo, KeywordTranslation> translationCache = new Dictionary<CultureInfo, KeywordTranslation>();
 
-        public static string GetKeyword(CultureInfo language, BindingType bindingType)
+        public static string GetDefaultKeyword(CultureInfo language, BindingType bindingType)
         {
-            return GetKeyword(language, bindingType.ToStepDefinitionKeyword());
+            return GetDefaultKeyword(language, bindingType.ToStepDefinitionKeyword());
         }
 
-        public static string GetKeyword(CultureInfo language, StepDefinitionKeyword keyword)
+        public static string GetDefaultKeyword(CultureInfo language, StepDefinitionKeyword keyword)
         {
             KeywordTranslation translation = GetTranslation(language);
             return translation[keyword];
@@ -66,12 +67,22 @@ namespace TechTalk.SpecFlow.Tracing
 
             KeywordTranslation result = new KeywordTranslation();
 
-            result.DefaultSpecificCulture = language.IsNeutralCulture ?
-                new CultureInfo(langElm.Attribute(XName.Get("defaultSpecificCulture", "")).Value) :
-                language;
+            if (language.IsNeutralCulture)
+            {
+                var defaultSpecificCultureAttr = langElm.Attribute(XName.Get("defaultSpecificCulture", ""));
+                if (defaultSpecificCultureAttr == null)
+                    result.DefaultSpecificCulture = CultureInfo.GetCultureInfo("en-US");
+                else
+                    result.DefaultSpecificCulture = CultureInfo.GetCultureInfo(defaultSpecificCultureAttr.Value);
+            }
+            else
+            {
+                result.DefaultSpecificCulture = language;
+            }
 
             foreach (StepDefinitionKeyword keyword in Enum.GetValues(typeof(StepDefinitionKeyword)))
             {
+                //NOTE: we only load the first translation of each keyword
                 XElement keywordElm = langElm.Element(keyword.ToString());
                 Debug.Assert(keywordElm != null);
                 result[keyword] = keywordElm.Value;

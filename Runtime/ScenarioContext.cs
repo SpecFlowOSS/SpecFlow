@@ -71,5 +71,10 @@ namespace TechTalk.SpecFlow
 
             return value;
         }
+
+        internal void SetBindingInstance(Type bindingType, object instance)
+        {
+            bindingInstances[bindingType] = instance;
+        }
     }
 }

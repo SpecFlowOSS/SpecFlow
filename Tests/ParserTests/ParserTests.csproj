@@ -12,14 +12,6 @@
     <AssemblyName>ParserTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -59,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SuccessfulXUnitGenerationTest.cs" />
     <Compile Include="SuccessfulGenerationTest.cs" />
     <Compile Include="SuccessfulParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,6 +127,7 @@
     <Content Include="TestFiles\multilinetitle.feature.xml" />
     <Content Include="TestFiles\scenariooutline.feature.xml" />
     <Content Include="TestFiles\simple.feature.xml" />
+    <Content Include="TestFiles\swedish.feature.xml" />
     <Content Include="TestFiles\tableargument.feature.xml" />
     <Content Include="TestFiles\tags.feature.xml" />
     <Content Include="TestFiles\whitespaces.feature.xml" />

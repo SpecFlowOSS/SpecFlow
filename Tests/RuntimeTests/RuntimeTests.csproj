@@ -12,14 +12,6 @@
     <AssemblyName>TechTalk.SpecFlow.RuntimeTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -64,7 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StepArgumentTypeConverterTests.cs" />
+    <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepExecutionTests.cs" />
+    <Compile Include="StepExecutionTestsBase.cs" />
+    <Compile Include="StepExecutionTestsWithConversions.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
+    <Compile Include="StepTransformationTests.cs" />
+    <Compile Include="StepArgumentTypeConverterTest.cs" />
     <Compile Include="ConfigurationTest.cs" />
     <Compile Include="ExecutionTestBase.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
@@ -78,6 +76,10 @@
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ParserTests\ParserTests.csproj">
       <Project>{70376361-0BE1-478D-8EEC-47BD1C768165}</Project>
       <Name>ParserTests</Name>
@@ -85,10 +87,6 @@
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
-      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
-      <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

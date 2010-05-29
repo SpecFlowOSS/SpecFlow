@@ -16,17 +16,6 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public string MultiLineTextArgument { get; set; }
         public Table TableArg { get; set; }
         public FilePosition FilePosition { get; set; }
-
-        public ScenarioStep()
-        {
-        }
-
-        public ScenarioStep(Text stepText, MultilineText multilineTextArgument, Table tableArg)
-        {
-            this.Text = stepText.Value;
-            MultiLineTextArgument = multilineTextArgument == null ? null : multilineTextArgument.Value;
-            this.TableArg = tableArg;
-        }
     }
 
     public class ScenarioSteps : List<ScenarioStep>

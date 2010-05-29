@@ -8,11 +8,14 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
+#region Designer generated code
 namespace TechTalk.SpecFlow.FeatureTests.ContextInjection
 {
     using TechTalk.SpecFlow;
     
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.2.0.0")]
+    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Injecting context into step specifications")]
     public partial class InjectingContextIntoStepSpecificationsFeature
@@ -132,3 +135,4 @@ this.ScenarioSetup(scenarioInfo);
         }
     }
 }
+#endregion
