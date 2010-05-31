@@ -1,0 +1,29 @@
+<Addin namespace   = "MonoDevelop" 
+       id          = "TechTalk.SpecFlow" 
+       name        = "SpecFlow Support" 
+       author      = "TechTalk, SineSignal" 
+       copyright   = "BSD" 
+       url         = "http://www.specflow.org" 
+       description = "Integrates SpecFlow into the MonoDevelop IDE." 
+       category    = "IDE Extensions" 
+       version     = "2.4">
+
+	<Runtime>
+		<Import assembly="TechTalk.SpecFlow.Generator.dll" />
+		<Import assembly="TechTalk.SpecFlow.Parser.dll" />
+	</Runtime>
+	
+	<Dependencies>
+		<Addin id="Core" version="2.4"/>
+		<Addin id="Ide" version="2.4"/>
+	</Dependencies>
+	
+	<Extension path="/MonoDevelop/Ide/FileTemplates">
+		<FileTemplate id   = "SpecFlowFeatureTemplate"
+					  file = "Templates/SpecFlowFeature.xft.xml"/>
+	</Extension>
+	
+	<Extension path="/MonoDevelop/Ide/CustomTools">
+		<Tool name="SpecFlowSingleFileGenerator" type="MonoDevelop.TechTalk.SpecFlow.SpecFlowCustomTool"/>
+	</Extension>
+</Addin>
