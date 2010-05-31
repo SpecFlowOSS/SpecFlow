@@ -5,12 +5,17 @@
        copyright   = "BSD" 
        url         = "http://www.specflow.org" 
        description = "Integrates SpecFlow into the MonoDevelop IDE." 
-       category    = "IDE Extensions" 
+       category    = "IDE extensions" 
        version     = "2.4">
 
 	<Runtime>
-		<Import assembly="TechTalk.SpecFlow.Generator.dll" />
-		<Import assembly="TechTalk.SpecFlow.Parser.dll" />
+		<Import assembly="Gherkin.dll"/>
+		<Import assembly="IKVM.OpenJDK.Core.dll"/>
+		<Import assembly="IKVM.OpenJDK.Security.dll"/>
+		<Import assembly="IKVM.OpenJDK.Text.dll"/>
+		<Import assembly="IKVM.Runtime.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Generator.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Parser.dll"/>
 	</Runtime>
 	
 	<Dependencies>
@@ -18,12 +23,24 @@
 		<Addin id="Ide" version="2.4"/>
 	</Dependencies>
 	
+	<Extension path="/MonoDevelop/Core/MimeTypes">
+		<MimeType id="application/feature-template" _description="Feature Template" icon="res:SpecFlowFeatureIcon.ico" isText="true">
+			<File pattern="*.feature"/>
+		</MimeType>
+	</Extension>
+	
+	<Extension path="/MonoDevelop/Ide/FileFilters">
+		<FileFilter id           = "FeatureTemplates"
+		            insertbefore = "AllFiles"
+		            _label       = "Feature Templates"
+		            extensions   = "*.feature"/>
+	</Extension>
+	
 	<Extension path="/MonoDevelop/Ide/FileTemplates">
-		<FileTemplate id   = "SpecFlowFeatureTemplate"
-					  file = "Templates/SpecFlowFeature.xft.xml"/>
+		<FileTemplate id="SpecFlowFeatureTemplate" resource="SpecFlowFeature.xft.xml"/>
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/CustomTools">
-		<Tool name="SpecFlowSingleFileGenerator" type="MonoDevelop.TechTalk.SpecFlow.SpecFlowCustomTool"/>
+		<Tool name="SpecFlowSingleFileGenerator" type="MonoDevelop.TechTalk.SpecFlow.SingleFeatureFileGenerator"/>
 	</Extension>
 </Addin>

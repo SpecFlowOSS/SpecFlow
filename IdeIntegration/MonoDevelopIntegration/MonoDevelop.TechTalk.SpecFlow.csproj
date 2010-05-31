@@ -29,8 +29,12 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <EmbeddedResource Include="MonoDevelop.TechTalk.SpecFlow.addin.xml" />
-    <EmbeddedResource Include="Templates\SpecFlowFeature.xft.xml" />
+    <EmbeddedResource Include="MonoDevelop.TechTalk.SpecFlow.addin.xml">
+      <LogicalName>MonoDevelop.TechTalk.SpecFlow.addin.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowFeature.xft.xml">
+      <LogicalName>SpecFlowFeature.xft.xml</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\SpecFlowFeatureIcon.ico">
       <LogicalName>SpecFlowFeatureIcon.ico</LogicalName>
     </EmbeddedResource>
@@ -52,12 +56,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SpecFlowCustomTool.cs" />
+    <Compile Include="SingleFeatureFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

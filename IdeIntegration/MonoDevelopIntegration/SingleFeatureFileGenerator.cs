@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Threading;
 
 using MonoDevelop.Core;
@@ -7,12 +9,15 @@ using MonoDevelop.Projects;
 
 namespace MonoDevelop.TechTalk.SpecFlow
 {
-	public class SpecFlowCustomTool : ISingleFileCustomTool
+	public class SingleFeatureFileGenerator : ISingleFileCustomTool
 	{
 		public IAsyncOperation Generate(IProgressMonitor monitor, ProjectFile file, SingleFileCustomToolResult result)
 		{
 			return new ThreadAsyncOperation(() => {
-				// Generate the code for the passed in feature project file
+				FilePath outputFile = file.FilePath.ChangeExtension(".feature.cs");
+				string content = @"// {0} was generated successfully";
+				File.WriteAllText(outputFile, String.Format(content, outputFile.FileName), Encoding.UTF8);
+				result.GeneratedFilePath = outputFile;
 			}, result);
 		}
 	}
