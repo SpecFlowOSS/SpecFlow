@@ -38,6 +38,8 @@
 	
 	<Extension path="/MonoDevelop/Ide/FileTemplates">
 		<FileTemplate id="SpecFlowFeatureTemplate" resource="SpecFlowFeature.xft.xml"/>
+		<FileTemplate id="SpecFlowStepDefinition" resource="SpecFlowStepDefinition.xft.xml"/>
+		<FileTemplate id="SpecFlowEventDefinition" resource="SpecFlowEventDefinition.xft.xml"/>
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/CustomTools">

@@ -38,6 +38,18 @@
     <EmbeddedResource Include="Gui\SpecFlowFeatureIcon.ico">
       <LogicalName>SpecFlowFeatureIcon.ico</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowEventDefinitionIcon.ico">
+      <LogicalName>SpecFlowEventDefinitionIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowStepDefinitionIcon.ico">
+      <LogicalName>SpecFlowStepDefinitionIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowStepDefinition.xft.xml">
+      <LogicalName>SpecFlowStepDefinition.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowEventDefinition.xft.xml">
+      <LogicalName>SpecFlowEventDefinition.xft.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<Template originator="SineSignal, LLC"
+		  created="2010/05/31"
+		  lastModified="2010/05/31">
+	<!-- Template Header -->
+	<TemplateConfiguration>
+		<_Name>SpecFlow Step Definition</_Name>
+		<Icon>res:SpecFlowStepDefinitionIcon.ico</Icon>
+		<_Category>NUnit</_Category>
+		<LanguageName>*</LanguageName>
+		<_Description>Creates a SpecFlow Step Definition file.</_Description>
+	</TemplateConfiguration>
+	
+	<!-- Template Content -->
+	<TemplateFiles>
+		<CodeDomFile>
+			<CompileUnit>
+				<Namespaces>
+					<Namespace Name="">
+						<Imports>
+							<NamespaceImport Namespace="System"/>
+							<NamespaceImport Namespace="TechTalk.SpecFlow"/>
+						</Imports>
+					</Namespace>
+					<Namespace Name="${Namespace}">
+						<Types>
+							<TypeDeclaration Name="${Name}" IsClass="true">
+								<CustomAttributes>
+									<AttributeDeclaration Name="Binding"/>
+								</CustomAttributes>
+								<Members>
+									<MemberMethod Attributes="Public, Final" Name="GivenIHaveEnteredSomethingIntoTheCalculator" ReturnType="System.Void">
+										<CustomAttributes>
+											<AttributeDeclaration Name="Given">
+											</AttributeDeclaration>
+										</CustomAttributes>
+										<Parameters>
+											<ParameterDeclarationExpression Type="System.Int32" Name="number"/>
+										</Parameters>
+										<Statements>
+											<MethodInvokeExpression>
+												<Method>
+													<MethodReferenceExpression MethodName="Pending">
+														<TargetObject>
+															<TypeReferenceExpression Type="ScenarioContext.Current"/>
+														</TargetObject>
+													</MethodReferenceExpression>
+												</Method>
+											</MethodInvokeExpression>
+										</Statements>
+									</MemberMethod>
+									<MemberMethod Attributes="Public, Final" Name="WhenIPressAdd" ReturnType="System.Void">
+										<CustomAttributes>
+											<AttributeDeclaration Name="When">
+											</AttributeDeclaration>
+										</CustomAttributes>
+										<Statements>
+											<MethodInvokeExpression>
+												<Method>
+													<MethodReferenceExpression MethodName="Pending">
+														<TargetObject>
+															<TypeReferenceExpression Type="ScenarioContext.Current"/>
+														</TargetObject>
+													</MethodReferenceExpression>
+												</Method>
+											</MethodInvokeExpression>
+										</Statements>
+									</MemberMethod>
+									<MemberMethod Attributes="Public, Final" Name="ThenTheResultShouldBe" ReturnType="System.Void">
+										<CustomAttributes>
+											<AttributeDeclaration Name="Then">
+											</AttributeDeclaration>
+										</CustomAttributes>
+										<Parameters>
+											<ParameterDeclarationExpression Type="System.Int32" Name="result"/>
+										</Parameters>
+										<Statements>
+											<MethodInvokeExpression>
+												<Method>
+													<MethodReferenceExpression MethodName="Pending">
+														<TargetObject>
+															<TypeReferenceExpression Type="ScenarioContext.Current"/>
+														</TargetObject>
+													</MethodReferenceExpression>
+												</Method>
+											</MethodInvokeExpression>
+										</Statements>
+									</MemberMethod>
+								</Members>
+							</TypeDeclaration>
+						</Types>
+					</Namespace>
+				</Namespaces>
+			</CompileUnit>
+		</CodeDomFile>
+	</TemplateFiles>
+</Template>
