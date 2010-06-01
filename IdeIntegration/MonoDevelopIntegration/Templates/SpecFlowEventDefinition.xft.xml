@@ -7,84 +7,95 @@
 		<_Name>SpecFlow Event Definition</_Name>
 		<Icon>res:SpecFlowEventDefinitionIcon.ico</Icon>
 		<_Category>NUnit</_Category>
-		<LanguageName>*</LanguageName>
+		<LanguageName>C#</LanguageName>
 		<_Description>Creates a SpecFlow Event Definition file.</_Description>
 	</TemplateConfiguration>
 	
 	<!-- Template Content -->
 	<TemplateFiles>
-		<CodeDomFile>
-			<CompileUnit>
-				<Namespaces>
-					<Namespace Name="">
-						<Imports>
-							<NamespaceImport Namespace="System"/>
-							<NamespaceImport Namespace="TechTalk.SpecFlow"/>
-						</Imports>
-					</Namespace>
-					<Namespace Name="${Namespace}">
-						<Types>
-							<TypeDeclaration Name="${Name}" IsClass="true">
-								<CustomAttributes>
-									<AttributeDeclaration Name="Binding"/>
-								</CustomAttributes>
-								<Members>
-									<MemberMethod Attributes="Public, Final" Name="BeforeStep" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="BeforeStep"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="AfterStep" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="AfterStep"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="BeforeScenarioBlock" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="BeforeScenarioBlock"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="AfterScenarioBlock" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="AfterScenarioBlock"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="BeforeScenario" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="BeforeScenario"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="AfterScenario" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="AfterScenario"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="BeforeFeature" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="BeforeFeature"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="AfterFeature" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="AfterFeature"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="BeforeTestRun" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="BeforeTestRun"/>
-										</CustomAttributes>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="AfterTestRun" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="AfterTestRun"/>
-										</CustomAttributes>
-									</MemberMethod>
-								</Members>
-							</TypeDeclaration>
-						</Types>
-					</Namespace>
-				</Namespaces>
-			</CompileUnit>
-		</CodeDomFile>
+		<File DefaultExtension=".cs" DefaultName="SpecFlowEventDefinition1">
+		<![CDATA[using System;
+
+using TechTalk.SpecFlow;
+
+namespace ${Namespace}
+{
+    [Binding]
+    public class ${Name}
+    {
+    	[BeforeStep]
+        public void BeforeStep()
+        {
+            // TODO: implement logic that has to run before each scenario step
+            // For storing and retrieving scenario-specific data, 
+            // the instance fields of the class or the
+            //     ScenarioContext.Current
+            // collection can be used.
+            // For storing and retrieving feature-specific data, the 
+            //     FeatureContext.Current
+            // collection can be used.
+            // Use the attribute overload to specify tags. If tags are specified, the event 
+            // handler will be executed only if any of the tags are specified for the 
+            // feature or the scenario.
+            //     [BeforeStep("mytag")]
+        }
+
+        [AfterStep]
+        public void AfterStep()
+        {
+            // TODO: implement logic that has to run after each scenario step
+        }
+
+        [BeforeScenarioBlock]
+        public void BeforeScenarioBlock()
+        {
+            // TODO: implement logic that has to run before each scenario block (given-when-then)
+        }
+
+        [AfterScenarioBlock]
+        public void AfterScenarioBlock()
+        {
+            // TODO: implement logic that has to run after each scenario block (given-when-then)
+        }
+
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            // TODO: implement logic that has to run before executing each scenario
+        }
+
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            // TODO: implement logic that has to run after executing each scenario
+        }
+
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            // TODO: implement logic that has to run before executing each feature
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            // TODO: implement logic that has to run after executing each feature
+        }
+
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            // TODO: implement logic that has to run before the entire test run
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            // TODO: implement logic that has to run after the entire test run
+        }
+    }
+}
+		]]>
+		</File>
 	</TemplateFiles>
 </Template>

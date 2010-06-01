@@ -7,112 +7,55 @@
 		<_Name>SpecFlow Step Definition</_Name>
 		<Icon>res:SpecFlowStepDefinitionIcon.ico</Icon>
 		<_Category>NUnit</_Category>
-		<LanguageName>*</LanguageName>
+		<LanguageName>C#</LanguageName>
 		<_Description>Creates a SpecFlow Step Definition file.</_Description>
 	</TemplateConfiguration>
 	
 	<!-- Template Content -->
 	<TemplateFiles>
-		<CodeDomFile>
-			<CompileUnit>
-				<Namespaces>
-					<Namespace Name="">
-						<Imports>
-							<NamespaceImport Namespace="System"/>
-							<NamespaceImport Namespace="TechTalk.SpecFlow"/>
-						</Imports>
-					</Namespace>
-					<Namespace Name="${Namespace}">
-						<Types>
-							<TypeDeclaration Name="${Name}" IsClass="true">
-								<CustomAttributes>
-									<AttributeDeclaration Name="Binding"/>
-								</CustomAttributes>
-								<Members>
-									<MemberMethod Attributes="Public, Final" Name="GivenIHaveEnteredSomethingIntoTheCalculator" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="Given">
-												<Arguments>
-													<AttributeArgument>
-														<Value>
-															<PrimitiveExpression Value="I have entered (.*) into the calculator"/>
-														</Value>
-													</AttributeArgument>
-												</Arguments>
-											</AttributeDeclaration>
-										</CustomAttributes>
-										<Parameters>
-											<ParameterDeclarationExpression Type="System.Int32" Name="number"/>
-										</Parameters>
-										<Statements>
-											<MethodInvokeExpression>
-												<Method>
-													<MethodReferenceExpression MethodName="Pending">
-														<TargetObject>
-															<TypeReferenceExpression Type="ScenarioContext.Current"/>
-														</TargetObject>
-													</MethodReferenceExpression>
-												</Method>
-											</MethodInvokeExpression>
-										</Statements>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="WhenIPressAdd" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="When">
-												<Arguments>
-													<AttributeArgument>
-														<Value>
-															<PrimitiveExpression Value="I press add"/>
-														</Value>
-													</AttributeArgument>
-												</Arguments>
-											</AttributeDeclaration>
-										</CustomAttributes>
-										<Statements>
-											<MethodInvokeExpression>
-												<Method>
-													<MethodReferenceExpression MethodName="Pending">
-														<TargetObject>
-															<TypeReferenceExpression Type="ScenarioContext.Current"/>
-														</TargetObject>
-													</MethodReferenceExpression>
-												</Method>
-											</MethodInvokeExpression>
-										</Statements>
-									</MemberMethod>
-									<MemberMethod Attributes="Public, Final" Name="ThenTheResultShouldBe" ReturnType="System.Void">
-										<CustomAttributes>
-											<AttributeDeclaration Name="Then">
-												<Arguments>
-													<AttributeArgument>
-														<Value>
-															<PrimitiveExpression Value="the result should be (.*) on the screen"/>
-														</Value>
-													</AttributeArgument>
-												</Arguments>
-											</AttributeDeclaration>
-										</CustomAttributes>
-										<Parameters>
-											<ParameterDeclarationExpression Type="System.Int32" Name="result"/>
-										</Parameters>
-										<Statements>
-											<MethodInvokeExpression>
-												<Method>
-													<MethodReferenceExpression MethodName="Pending">
-														<TargetObject>
-															<TypeReferenceExpression Type="ScenarioContext.Current"/>
-														</TargetObject>
-													</MethodReferenceExpression>
-												</Method>
-											</MethodInvokeExpression>
-										</Statements>
-									</MemberMethod>
-								</Members>
-							</TypeDeclaration>
-						</Types>
-					</Namespace>
-				</Namespaces>
-			</CompileUnit>
-		</CodeDomFile>
+		<File DefaultExtension=".cs" DefaultName="SpecFlowStepDefinition1">
+		<![CDATA[using System;
+
+using TechTalk.SpecFlow;
+
+namespace ${Namespace}
+{
+    [Binding]
+    public class ${Name}
+    {
+        [Given("I have entered (.*) into the calculator")]
+        public void GivenIHaveEnteredSomethingIntoTheCalculator(int number)
+        {
+            // TODO: implement arrange (recondition) logic
+            // For storing and retrieving scenario-specific data, 
+            // the instance fields of the class or the
+            //     ScenarioContext.Current
+            // collection can be used.
+            // To use the multiline text or the table argument of the scenario,
+            // additional string/Table parameters can be defined on the step definition
+            // method. 
+
+            ScenarioContext.Current.Pending();
+        }
+
+        [When("I press add")]
+        public void WhenIPressAdd()
+        {
+            // TODO: implement act (action) logic
+
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then("the result should be (.*) on the screen")]
+        public void ThenTheResultShouldBe(int result)
+        {
+            // TODO: implement assert (verification) logic
+          
+            ScenarioContext.Current.Pending();
+        }
+    }
+}
+		]]>
+		</File>
 	</TemplateFiles>
 </Template>
