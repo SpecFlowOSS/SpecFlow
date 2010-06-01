@@ -32,6 +32,13 @@
 									<MemberMethod Attributes="Public, Final" Name="GivenIHaveEnteredSomethingIntoTheCalculator" ReturnType="System.Void">
 										<CustomAttributes>
 											<AttributeDeclaration Name="Given">
+												<Arguments>
+													<AttributeArgument>
+														<Value>
+															<PrimitiveExpression Value="I have entered (.*) into the calculator"/>
+														</Value>
+													</AttributeArgument>
+												</Arguments>
 											</AttributeDeclaration>
 										</CustomAttributes>
 										<Parameters>
@@ -52,6 +59,13 @@
 									<MemberMethod Attributes="Public, Final" Name="WhenIPressAdd" ReturnType="System.Void">
 										<CustomAttributes>
 											<AttributeDeclaration Name="When">
+												<Arguments>
+													<AttributeArgument>
+														<Value>
+															<PrimitiveExpression Value="I press add"/>
+														</Value>
+													</AttributeArgument>
+												</Arguments>
 											</AttributeDeclaration>
 										</CustomAttributes>
 										<Statements>
@@ -69,6 +83,13 @@
 									<MemberMethod Attributes="Public, Final" Name="ThenTheResultShouldBe" ReturnType="System.Void">
 										<CustomAttributes>
 											<AttributeDeclaration Name="Then">
+												<Arguments>
+													<AttributeArgument>
+														<Value>
+															<PrimitiveExpression Value="the result should be (.*) on the screen"/>
+														</Value>
+													</AttributeArgument>
+												</Arguments>
 											</AttributeDeclaration>
 										</CustomAttributes>
 										<Parameters>
