@@ -27,11 +27,6 @@ namespace MonoDevelop.TechTalk.SpecFlow
 			specFlowProject.AssemblyName = defaultNamespace;
 			specFlowProject.DefaultNamespace = defaultNamespace;
 			
-			foreach (SolutionItemConfiguration configuration in project.Configurations)
-			{
-				MonoDevelop.Core.LoggingService.LogInfo(configuration.Name);
-			}
-			
 			// TODO: Find out if we really need to add all the feature files everytime we generate
 			foreach (ProjectFile projectFile in project.Files.Where(IsFeatureOrAppConfigFile))
 			{
