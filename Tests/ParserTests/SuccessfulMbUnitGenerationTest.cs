@@ -14,7 +14,7 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 namespace ParserTests
 {
     [TestFixture]
-    public class SuccessfulXUnitGenerationTest
+    public class SuccessfulMbUnitGenerationTest
     {
         private void CompareWithExpectedResult(Feature feature, string expectedResultFileName)
         {
@@ -27,8 +27,8 @@ namespace ParserTests
         private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
         {
             var codeDomHelper = new CodeDomHelper(GenerationTargetLanguage.CSharp);
-            var xUnitTestGeneratorProvider = new XUnitTestGeneratorProvider();
-            var converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true);
+            var mbUnitTestGeneratorProvider = new MbUnitTestGeneratorProvider();
+            var converter = new SpecFlowUnitTestConverter(mbUnitTestGeneratorProvider, codeDomHelper, true);
             CodeNamespace codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
             var codeProvider = new CSharpCodeProvider();
