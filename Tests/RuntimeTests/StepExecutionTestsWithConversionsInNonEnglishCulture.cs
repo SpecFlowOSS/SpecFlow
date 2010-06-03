@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingWithSimpleConvertParam()
+        public void ShouldCallBindingWithSimpleConvertParam()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
