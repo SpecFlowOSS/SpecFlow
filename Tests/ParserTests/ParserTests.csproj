@@ -33,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\mbunit\MbUnit.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
@@ -61,8 +57,6 @@
     <Compile Include="SuccessfulParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestFileHelper.cs" />
-    <Compile Include="TestFrameworks\MbUnitTestActivator.cs" />
-    <Compile Include="TestFrameworks\NUnitTestActivator.cs" />
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>

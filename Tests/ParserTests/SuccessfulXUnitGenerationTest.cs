@@ -1,9 +1,12 @@
 ﻿using System;
-using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml.Serialization;
 using Microsoft.CSharp;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
@@ -13,171 +16,172 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace ParserTests
 {
-    [TestFixture]
-    public class SuccessfulXUnitGenerationTest
-    {
-        private void CompareWithExpectedResult(Feature feature, string expectedResultFileName)
-        {
-            string expected = TestFileHelper.ReadFile(expectedResultFileName);
-            string got = GenerateCodeFromFeature(feature);
+	[TestFixture]
+	public class SuccessfulXUnitGenerationTest
+	{
+		[Test]
+		public void CanGenerateFromFiles()
+		{
+			foreach (var testFile in TestFileHelper.GetTestFiles())
+			{
+				CanGenerateFromFile(testFile);
+			}
+		}
 
-            Assert.AreEqual(expected, got);
-        }
+		[Test]
+		public void CanGenerateSimpleFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "simple.feature"));
+		}
 
-        private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
-        {
-            var codeDomHelper = new CodeDomHelper(GenerationTargetLanguage.CSharp);
-            var xUnitTestGeneratorProvider = new XUnitTestGeneratorProvider();
-            var converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true);
-            CodeNamespace codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
+		[Test]
+		public void CanGenerateCommentsFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "comments.feature"));
+		}
 
-            var codeProvider = new CSharpCodeProvider();
-            var options = new CodeGeneratorOptions();
-            codeProvider.GenerateCodeFromNamespace(codeNamespace, writer, options);
-        }
+		[Test]
+		public void CanGenerateFeatureheaderFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "featureheader.feature"));
+		}
 
-        private void GenerateCodeFromFeature(Feature feature, string fileName)
-        {
-            using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
-            {
-                GenerateCodeFromFeature(feature, writer);
-            }
-        }
+		[Test]
+		public void CanGenerateTagsFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "tags.feature"));
+		}
 
-        private string GenerateCodeFromFeature(Feature feature)
-        {
-            using (var writer = new Utf8StringWriter())
-            {
-                GenerateCodeFromFeature(feature, writer);
-                return writer.ToString();
-            }
-        }
+		[Test]
+		public void CanGeneratebackgroundFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "background.feature"));
+		}
 
-        [Test]
-        public void CanGenerateButFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "but.feature"));
-        }
+		[Test]
+		public void CanGeneratebackgroundWithTitleFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "background_withtitle.feature"));
+		}
 
-        [Test]
-        public void CanGenerateCommentsFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "comments.feature"));
-        }
+		[Test]
+		public void CanGenerateWhitespacesFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "whitespaces.feature"));
+		}
 
-        [Test]
-        public void CanGenerateFeatureheaderFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "featureheader.feature"));
-        }
+		[Test]
+		public void CanGenerateGivenWhenThenDuplicationFeatureFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "givenwhenthenduplication.feature"));
+		}
 
-        [Test, TestCaseSource(typeof (TestFileHelper), "GetTestFiles")]
-        public void CanGenerateFromFile(string fileName)
-        {
-            Console.WriteLine(fileName);
-            var parser = new SpecFlowLangParser(new CultureInfo("en-US"));
-            using (var reader = new StreamReader(fileName))
-            {
-                Feature feature = parser.Parse(reader);
-                Assert.IsNotNull(feature);
+		[Test]
+		public void CanGenerateButFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "but.feature"));
+		}
 
-                string generatedCode = GenerateCodeFromFeature(feature);
-                Assert.IsNotNull(generatedCode);
+		[Test]
+		public void CanGenerateMultilinetitleFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "multilinetitle.feature"));
+		}
 
-                // to regenerate the expected result file:
-                //GenerateCodeFromFeature(feature, fileName + ".cs");
+		[Test]
+		public void CanGenerateMultilineargumentFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "multilineargument.feature"));
+		}
 
-                //CompareWithExpectedResult(feature, fileName + ".cs");
-            }
-        }
+		[Test]
+		public void CanGenerateTableargumentFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "tableargument.feature"));
+		}
 
-        [Test]
-        public void CanGenerateFromFiles()
-        {
-            foreach (string testFile in TestFileHelper.GetTestFiles())
-            {
-                CanGenerateFromFile(testFile);
-            }
-        }
+		[Test]
+		public void CanGenerateScneriooutlineFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "scenariooutline.feature"));
+		}
 
-        [Test]
-        public void CanGenerateGivenWhenThenDuplicationFeatureFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "givenwhenthenduplication.feature"));
-        }
+		[Test]
+		public void CanGenerateMixedGWTFeature()
+		{
+			var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+			CanGenerateFromFile(Path.Combine(folder, "mixedgivenwhenthen.feature"));
+		}
 
-        [Test]
-        public void CanGenerateMixedGWTFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "mixedgivenwhenthen.feature"));
-        }
 
-        [Test]
-        public void CanGenerateMultilineargumentFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "multilineargument.feature"));
-        }
+		[Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
+		public void CanGenerateFromFile(string fileName)
+		{
+			Console.WriteLine(fileName);
+			SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+			using (var reader = new StreamReader(fileName))
+			{
+				Feature feature = parser.Parse(reader);
+				Assert.IsNotNull(feature);
 
-        [Test]
-        public void CanGenerateMultilinetitleFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "multilinetitle.feature"));
-        }
+				string generatedCode = GenerateCodeFromFeature(feature);
+				Assert.IsNotNull(generatedCode);
 
-        [Test]
-        public void CanGenerateScneriooutlineFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "scenariooutline.feature"));
-        }
+				// to regenerate the expected result file:
+				//GenerateCodeFromFeature(feature, fileName + ".cs");
 
-        [Test]
-        public void CanGenerateSimpleFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "simple.feature"));
-        }
+				//CompareWithExpectedResult(feature, fileName + ".cs");
+			}
+		}
 
-        [Test]
-        public void CanGenerateTableargumentFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "tableargument.feature"));
-        }
+		private void CompareWithExpectedResult(Feature feature, string expectedResultFileName)
+		{
+			string expected = TestFileHelper.ReadFile(expectedResultFileName);
+			string got = GenerateCodeFromFeature(feature);
 
-        [Test]
-        public void CanGenerateTagsFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "tags.feature"));
-        }
+			Assert.AreEqual(expected, got);
+		}
 
-        [Test]
-        public void CanGenerateWhitespacesFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "whitespaces.feature"));
-        }
+		private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
+		{
+		    CodeDomHelper codeDomHelper = new CodeDomHelper(GenerationTargetLanguage.CSharp);
+		    XUnitTestGeneratorProvider xUnitTestGeneratorProvider = new XUnitTestGeneratorProvider();
+		    SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true);
+			var codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
-        [Test]
-        public void CanGeneratebackgroundFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "background.feature"));
-        }
+			CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+			CodeGeneratorOptions options = new CodeGeneratorOptions();
+			codeProvider.GenerateCodeFromNamespace(codeNamespace, writer, options);
+		}
 
-        [Test]
-        public void CanGeneratebackgroundWithTitleFeature()
-        {
-            string folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "background_withtitle.feature"));
-        }
-    }
+		private void GenerateCodeFromFeature(Feature feature, string fileName)
+		{
+			using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
+			{
+				GenerateCodeFromFeature(feature, writer);
+			}
+		}
+
+		private string GenerateCodeFromFeature(Feature feature)
+		{
+			using (var writer = new Utf8StringWriter())
+			{
+				GenerateCodeFromFeature(feature, writer);
+				return writer.ToString();
+			}
+		}
+	}
 }
