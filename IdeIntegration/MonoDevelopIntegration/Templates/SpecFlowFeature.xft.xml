@@ -6,7 +6,7 @@
 	<TemplateConfiguration>
 		<_Name>SpecFlow Feature</_Name>
 		<Icon>res:SpecFlowFeatureIcon.ico</Icon>
-		<_Category>NUnit</_Category>
+		<_Category>SpecFlow</_Category>
 		<_Description>Creates a SpecFlow Feature template.</_Description>
 	</TemplateConfiguration>
 	

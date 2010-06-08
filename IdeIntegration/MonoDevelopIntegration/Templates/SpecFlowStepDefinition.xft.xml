@@ -6,7 +6,7 @@
 	<TemplateConfiguration>
 		<_Name>SpecFlow Step Definition</_Name>
 		<Icon>res:SpecFlowStepDefinitionIcon.ico</Icon>
-		<_Category>NUnit</_Category>
+		<_Category>SpecFlow</_Category>
 		<LanguageName>C#</LanguageName>
 		<_Description>Creates a SpecFlow Step Definition file.</_Description>
 	</TemplateConfiguration>

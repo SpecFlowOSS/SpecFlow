@@ -6,7 +6,7 @@
 	<TemplateConfiguration>
 		<_Name>SpecFlow Event Definition</_Name>
 		<Icon>res:SpecFlowEventDefinitionIcon.ico</Icon>
-		<_Category>NUnit</_Category>
+		<_Category>SpecFlow</_Category>
 		<LanguageName>C#</LanguageName>
 		<_Description>Creates a SpecFlow Event Definition file.</_Description>
 	</TemplateConfiguration>
