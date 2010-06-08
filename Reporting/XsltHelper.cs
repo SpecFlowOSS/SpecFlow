@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Reporting
             var reportName = reportType.Name.Replace("Generator", "");
             using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
             {
-                xslt.Load(xsltReader, xsltSettings, resourceResolver);
+				xslt.Load(xsltReader, xsltSettings, resourceResolver);
             }
 
             var xmlOutputReader = new XmlTextReader(new StringReader(xmlOutputWriter.ToString()));
@@ -48,30 +48,12 @@ namespace TechTalk.SpecFlow.Reporting
             XsltArgumentList argumentList = new XsltArgumentList();
             argumentList.AddParam("feature-language", "", generatorConfiguration.FeatureLanguage.Name);
             argumentList.AddParam("tool-language", "", generatorConfiguration.ToolLanguage.Name);
-            using (var outFileStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
+            
+			using (var outFileStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
+			using (var xmlTextWriter = new XmlTextWriter(outFileStream, Encoding.UTF8))
             {
-                xslt.Transform(xmlOutputReader, argumentList, outFileStream, resourceResolver);
+				xslt.Transform(xmlOutputReader, argumentList, xmlTextWriter, resourceResolver);
             }            
-        }
-
-        static public void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
-        {
-            //xslt.command.Execute(input, new XmlUrlResolver(), arguments, results);
-
-            var command = xslt.GetType().GetField("command", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(xslt);
-
-            var executeMethod = command.GetType().GetMethod("Execute", new Type[] { typeof(XmlReader), typeof(XmlResolver), typeof(XsltArgumentList), typeof(Stream) });
-
-            try
-            {
-                executeMethod.Invoke(command, new object[] {input, documentResolver, arguments, results});
-            }
-            catch (TargetInvocationException invEx)
-            {
-                var ex = invEx.InnerException;
-                ex.PreserveStackTrace();
-                throw ex;
-            }
         }
     }
 }
