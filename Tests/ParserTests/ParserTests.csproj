@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SuccessfulMbUnitGenerationTest.cs" />
     <Compile Include="SuccessfulXUnitGenerationTest.cs" />
     <Compile Include="SuccessfulGenerationTest.cs" />
     <Compile Include="SuccessfulParsingTest.cs" />
