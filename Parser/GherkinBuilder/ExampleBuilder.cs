@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private readonly FilePosition position;
         private readonly TableBuilder tableBuilder = new TableBuilder();
 
-        public ExampleBuilder(string text, FilePosition position)
+        public ExampleBuilder(string name, string description, FilePosition position)
         {
-            this.text = text;
+            this.text = TextHelper.GetText(name, description);
             this.position = position;
         }
 

@@ -1,3 +1,11 @@
+1.3.1 - ???
+
+New features:
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.0.1
+
+Fixed issues:
++ NullReference exception when using BeforeTestRun event (Issue 41)
+
 1.3.0 - 2010/05/05
 
 New features:
