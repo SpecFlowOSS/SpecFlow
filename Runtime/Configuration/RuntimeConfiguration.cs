@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -53,8 +54,8 @@ namespace TechTalk.SpecFlow.Configuration
         public RuntimeConfiguration()
         {
             ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
-                CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage) :
-                CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
+                CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage) :
+                CultureInfoHelper.GetCultureInfo(ConfigDefaults.ToolLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 
@@ -68,6 +69,7 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
+#if !SILVERLIGHT
         public static RuntimeConfiguration LoadFromConfigFile()
         {
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
@@ -138,11 +140,12 @@ namespace TechTalk.SpecFlow.Configuration
                         typeName, ex.Message), ex);
             }
         }
-
+#endif
         private void SetUnitTestDefaultsByName(string name)
         {
-            switch (name.ToLowerInvariant())
+            switch (name.ToLower())
             {
+#if !SILVERLIGHT
                 case "nunit":
                     RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
                     break;
@@ -155,11 +158,22 @@ namespace TechTalk.SpecFlow.Configuration
                 case "mstest":
                     RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);
                     break;
+#else
+                case "mstestsilverlight":
+                    RuntimeUnitTestProviderType = typeof (MsTestSilverlightRuntimeProvider);
+                    break;
+#endif
                 default:
                     RuntimeUnitTestProviderType = null;
                     break;
             }
-
         }
+
+#if SILVERLIGHT
+        internal static RuntimeConfiguration CreateForSilverlight()
+        {
+            return new RuntimeConfiguration();
+        }
+#endif
     }
 }

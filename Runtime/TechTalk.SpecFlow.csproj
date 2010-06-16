@@ -53,6 +53,11 @@
     </Compile>
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="Compatibility\CultureInfoHelper.cs" />
+    <Compile Include="Compatibility\EnumHelper.cs" />
+    <Compile Include="Configuration\ConfigDefaults.cs" />
+    <Compile Include="Configuration\ConfigurationServices.cs" />
+    <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />

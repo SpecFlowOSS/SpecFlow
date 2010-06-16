@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Compatibility;
+
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -53,7 +55,8 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
-            var docStream = typeof(LanguageHelper).Assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
+            var assembly = typeof(LanguageHelper).Assembly;
+            var docStream = assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
             if (docStream == null)
                 throw new InvalidOperationException("Language resource not found.");
 
@@ -71,16 +74,16 @@ namespace TechTalk.SpecFlow.Tracing
             {
                 var defaultSpecificCultureAttr = langElm.Attribute(XName.Get("defaultSpecificCulture", ""));
                 if (defaultSpecificCultureAttr == null)
-                    result.DefaultSpecificCulture = CultureInfo.GetCultureInfo("en-US");
+                    result.DefaultSpecificCulture = CultureInfoHelper.GetCultureInfo("en-US");
                 else
-                    result.DefaultSpecificCulture = CultureInfo.GetCultureInfo(defaultSpecificCultureAttr.Value);
+                    result.DefaultSpecificCulture = CultureInfoHelper.GetCultureInfo(defaultSpecificCultureAttr.Value);
             }
             else
             {
                 result.DefaultSpecificCulture = language;
             }
 
-            foreach (StepDefinitionKeyword keyword in Enum.GetValues(typeof(StepDefinitionKeyword)))
+            foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof (StepDefinitionKeyword)))
             {
                 //NOTE: we only load the first translation of each keyword
                 XElement keywordElm = langElm.Element(keyword.ToString());

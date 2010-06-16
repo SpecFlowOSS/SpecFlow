@@ -49,8 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Runtime\Configuration\ConfigDefaults.cs">
+      <Link>Configuration\ConfigDefaults.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Configuration\ConfigurationSectionHandler.cs">
       <Link>Configuration\ConfigurationSectionHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Configuration\ConfigurationServices.cs">
+      <Link>Configuration\ConfigurationServices.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
+      <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>

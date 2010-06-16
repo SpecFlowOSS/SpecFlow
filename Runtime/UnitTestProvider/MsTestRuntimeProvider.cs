@@ -36,15 +36,21 @@ namespace TechTalk.SpecFlow.UnitTestProvider
     public class MsTestRuntimeProvider : IUnitTestRuntimeProvider
     {
         private const string MSTEST_ASSEMBLY = "Microsoft.VisualStudio.QualityTools.UnitTestFramework";
+
         private const string ASSERT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.Assert";
 
         Action<string> assertInconclusive = null;
+        
+        public virtual string AssemblyName
+        {
+            get { return MSTEST_ASSEMBLY; }
+        }
 
         public void TestInconclusive(string message)
         {
             if (assertInconclusive == null)
             {
-                assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethod(MSTEST_ASSEMBLY, ASSERT_TYPE, "Inconclusive");
+                assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethod(AssemblyName, ASSERT_TYPE, "Inconclusive");
             }
 
             assertInconclusive(message);
@@ -59,5 +65,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         {
             get { return true; }
         }
+
+        
     }
 }

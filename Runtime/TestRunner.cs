@@ -43,11 +43,14 @@ namespace TechTalk.SpecFlow
             }
 
             OnTestRunnerStart();
+#if !SILVERLIGHT
             AppDomain.CurrentDomain.DomainUnload += 
                 delegate
                     {
                         OnTestRunnerEnd();
                     };
+            //TODO: Siverlight
+#endif
         }
 
         protected virtual void OnTestRunnerStart()
