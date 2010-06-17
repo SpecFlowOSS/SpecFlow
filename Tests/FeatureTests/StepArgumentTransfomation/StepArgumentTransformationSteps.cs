@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
     [Binding]
     public class UserLookup 
     {
-        [StepTransformation]
+        [StepArgumentTransformation]
         public User Transform(string name)
         {
             return new User {Name = name};
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
     [Binding]
     public class DateConverter 
     {
-        [StepTransformation("date (.*)")]
+        [StepArgumentTransformation("date (.*)")]
         public DateTime Transform(string dateString)
         {
             return DateTime.Parse(dateString);
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
     [Binding]
     public class TerminalConverter 
     {
-        [StepTransformation("terminal (.*)")]
+        [StepArgumentTransformation("terminal (.*)")]
         public Terminal Transform(string terminalId)
         {
             return new Terminal { Id = terminalId };

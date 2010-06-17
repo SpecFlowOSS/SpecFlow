@@ -6,6 +6,9 @@ New features:
   See examples in Tests/ReportingTests/CustomXsltTemplate.feature
 + The test error can be accessed through ScenarioContext.Current.TestError 
   (e.g. in an AfterScenario event).
++ [StepTransformation] attribute has been renamed to [StepArgumentTransformation]
+  because this name describe the intention better. Using the old attribute will 
+  generate a warning.
 
 Fixed issues:
 + NullReference exception when using BeforeTestRun event (Issue 41)
