@@ -9,7 +9,7 @@ using MsBuildProjectReader = TechTalk.SpecFlow.Generator.Configuration.MsBuildPr
 
 namespace TechTalk.SpecFlow.Tools
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {

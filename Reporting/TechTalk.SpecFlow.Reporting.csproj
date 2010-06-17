@@ -55,7 +55,6 @@
     </Compile>
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
-    <Compile Include="LocalUrlResolver.cs" />
     <Compile Include="MsBuildProjectReader.cs" />
     <Compile Include="NUnitExecutionReport\NUnitExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\NUnitExecutionReport.cs" />

@@ -36,22 +36,12 @@ namespace TechTalk.SpecFlow.Reporting
             XmlResolver resourceResolver;
 
             var reportName = reportType.Name.Replace("Generator", "");
+            using (var xsltReader = GetTemplateReader(reportType, reportName, xsltFile))
+            {
+                resourceResolver = new XmlResourceResolver();
+                xslt.Load(xsltReader, xsltSettings, resourceResolver);
+            }
 
-            if (UseCustomStylesheet(xsltFile))
-            {
-                XmlDocument document = new XmlDocument();
-                document.Load(xsltFile);
-                resourceResolver = new LocalUrlResolver();
-                xslt.Load(document, xsltSettings, resourceResolver);                
-            }
-            else
-            {
-                using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
-                {
-                    resourceResolver = new XmlResourceResolver();
-                    xslt.Load(xsltReader, xsltSettings, resourceResolver);
-                }
-            }
             var xmlOutputReader = new XmlTextReader(new StringReader(xmlOutputWriter.ToString()));
 
             XsltArgumentList argumentList = new XsltArgumentList();
@@ -63,9 +53,12 @@ namespace TechTalk.SpecFlow.Reporting
             }            
         }
 
-        private static bool UseCustomStylesheet(string xsltFile)
+        private static XmlReader GetTemplateReader(Type reportType, string reportName, string xsltFile)
         {
-            return !string.IsNullOrEmpty(xsltFile);
+            if (string.IsNullOrEmpty(xsltFile))
+                return new ResourceXmlReader(reportType, reportName + ".xslt");
+
+            return new XmlTextReader(xsltFile);
         }
 
         private static void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
