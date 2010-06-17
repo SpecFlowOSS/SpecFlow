@@ -2,6 +2,8 @@
 
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.0.1
++ Custom XSLT can be specified for generating reports. 
+  See examples in Tests/ReportingTests/CustomXsltTemplate.feature
 
 Fixed issues:
 + NullReference exception when using BeforeTestRun event (Issue 41)
