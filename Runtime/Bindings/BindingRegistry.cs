@@ -64,9 +64,9 @@ namespace TechTalk.SpecFlow.Bindings
                         BuildEventBindingFromMethod(method, bindingEventAttr);
                     }
 
-                var stepTransformationAttrs = Attribute.GetCustomAttributes(method, typeof(StepTransformationAttribute));
+                var stepTransformationAttrs = Attribute.GetCustomAttributes(method, typeof(StepArgumentTransformationAttribute));
                 if (stepTransformationAttrs != null)
-                    foreach (StepTransformationAttribute stepTransformationAttr in stepTransformationAttrs)
+                    foreach (StepArgumentTransformationAttribute stepTransformationAttr in stepTransformationAttrs)
                     {
                         BuildStepTransformationFromMethod(method, stepTransformationAttr);
                     }
@@ -128,9 +128,9 @@ namespace TechTalk.SpecFlow.Bindings
             stepBindings.Add(stepBinding);
         }
 
-        private void BuildStepTransformationFromMethod(MethodInfo method, StepTransformationAttribute transformationAttribute)
+        private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
         {
-            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(transformationAttribute.Regex, method);
+            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(argumentTransformationAttribute.Regex, method);
 
             stepTransformations.Add(stepTransformationBinding);
         }

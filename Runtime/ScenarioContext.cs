@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
 
         internal TestStatus TestStatus { get; set; }
-        internal Exception TestError { get; set; }
+        public Exception TestError { get; internal set; }
         internal List<string> PendingSteps { get; private set; }
         internal List<string> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }

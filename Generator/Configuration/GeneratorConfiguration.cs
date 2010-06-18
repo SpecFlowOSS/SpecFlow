@@ -69,6 +69,9 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 case "nunit":
                     GeneratorUnitTestProviderType = typeof(NUnitTestConverter);
                     break;
+                case "mbunit":
+                    GeneratorUnitTestProviderType = typeof(MbUnitTestGeneratorProvider);
+                    break;
                 case "xunit":
                     GeneratorUnitTestProviderType = typeof(XUnitTestGeneratorProvider);
                     break;

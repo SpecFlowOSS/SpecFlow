@@ -18,9 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void CanLoadConfigFromString()
-        {
-            const string configString = @"<specFlow>
+        [TestCase(@"<specFlow>
     <language feature=""en"" tool=""en"" /> 
 
     <unitTestProvider name=""NUnit"" 
@@ -38,7 +36,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
            minTracedDuration=""0:0:0.1""
            listener=""TechTalk.SpecFlow.Tracing.DefaultListener, TechTalk.SpecFlow""
             />
-</specFlow>";
+</specFlow>")]
+        public void CanLoadConfigFromString(string configString)
+        {
+            //const string configString = ;
 
             var runtimeConfig = RuntimeConfiguration.LoadFromConfigFile(
                 ConfigurationSectionHandler.CreateFromXml(configString));
