@@ -219,8 +219,11 @@
     <Scenario>Forgatókönyv</Scenario>
     <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
     <Examples>Példák</Examples>
-    <Given>Ha</Given>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
     <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
     <Then>Akkor</Then>
     <And>És</And>
     <But>De</But>
@@ -250,8 +253,11 @@
     <Scenario>Forgatókönyv</Scenario>
     <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
     <Examples>Példák</Examples>
-    <Given>Ha</Given>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
     <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
     <Then>Akkor</Then>
     <And>És</And>
     <But>De</But>
@@ -262,8 +268,11 @@
     <Scenario>Forgatókönyv</Scenario>
     <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
     <Examples>Példák</Examples>
-    <Given>Ha</Given>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
     <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
     <Then>Akkor</Then>
     <And>És</And>
     <But>De</But>
@@ -327,6 +336,20 @@
     <Then>Tada</Then>
     <And>Ir</And>
     <But>Bet</But>
+  </Language>
+  <Language code="lb-LU" cultureInfo="lb-LU" compatibleGherkinCode="lu" englishName="Luxembourgish (Luxembourg)">
+    <Feature>Funktionalitéit</Feature>
+    <Background>Hannergrond</Background>
+    <Scenario>Szenario</Scenario>
+    <ScenarioOutline>Plang vum Szenario</ScenarioOutline>
+    <Examples>Beispiller</Examples>
+    <Given>ugeholl</Given>
+    <When>wann</When>
+    <Then>dann</Then>
+    <And>an</And>
+    <And>a</And>
+    <But>awer</But>
+    <But>mä</But>
   </Language>
   <Language code="lv" cultureInfo="lv" defaultSpecificCulture="lv-LV" englishName="Latvian">
     <Feature>Funkcionalitāte</Feature>
@@ -427,8 +450,12 @@
     <ScenarioOutline>Структура сценария</ScenarioOutline>
     <Examples>Значения</Examples>
     <Given>Допустим</Given>
+    <Given>Дано</Given>
+    <Given>Пусть</Given>
     <When>Если</When>
+    <When>Когда</When>
     <Then>То</Then>
+    <Then>Тогда</Then>
     <And>И</And>
     <And>К тому же</And>
     <But>Но</But>
@@ -452,8 +479,11 @@
     <Scenario>Forgatókönyv</Scenario>
     <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
     <Examples>Példák</Examples>
-    <Given>Ha</Given>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
     <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
     <Then>Akkor</Then>
     <And>És</And>
     <But>De</But>
@@ -464,8 +494,11 @@
     <Scenario>Forgatókönyv</Scenario>
     <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
     <Examples>Példák</Examples>
-    <Given>Ha</Given>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
     <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
     <Then>Akkor</Then>
     <And>És</And>
     <But>De</But>
@@ -504,9 +537,14 @@
     <Given>Припустимо</Given>
     <Given>Припустимо, що</Given>
     <Given>Нехай</Given>
+    <Given>Дано</Given>
     <When>Якщо</When>
+    <When>Коли</When>
     <Then>То</Then>
+    <Then>Тоді</Then>
     <And>І</And>
+    <And>А також</And>
+    <And>Та</And>
     <But>Але</But>
   </Language>
   <Language code="uz" cultureInfo="uz" defaultSpecificCulture="uz-Cyrl-UZ" englishName="Uzbek">

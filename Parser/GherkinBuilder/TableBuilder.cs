@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void ProcessTableRow(string[] cells, int lineNumber)
         {
             var row = new Row(cells.Select(c => new Cell(c)).ToArray());
-            row.FilePosition = new FilePosition(lineNumber, 1);
+            row.FilePosition = new FilePosition(lineNumber);
 
             if (tableRows.Count > 0 && tableRows[0].Cells.Length != row.Cells.Length)
             {

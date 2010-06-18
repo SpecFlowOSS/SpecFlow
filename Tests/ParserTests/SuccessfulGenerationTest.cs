@@ -134,7 +134,7 @@ namespace ParserTests
             SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
             using (var reader = new StreamReader(fileName))
             {
-                Feature feature = parser.Parse(reader);
+                Feature feature = parser.Parse(reader, null);
                 Assert.IsNotNull(feature);
 
                 string generatedCode = GenerateCodeFromFeature(feature);

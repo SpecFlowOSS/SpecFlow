@@ -37,6 +37,13 @@ namespace ParserTests
         }
 
         [Test]
+        public void CanParseHungarianFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanParseFile(Path.Combine(folder, "hungarian.feature"));
+        }
+
+        [Test]
         public void CanParseSwedishFeature()
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
@@ -141,8 +148,11 @@ namespace ParserTests
             SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
             using (var reader = new StreamReader(fileName))
             {
-                Feature feature = parser.Parse(reader);
+                Feature feature = parser.Parse(reader, fileName);
                 Assert.IsNotNull(feature);
+                Assert.AreEqual(fileName, feature.SourceFile);
+
+                feature.SourceFile = null; // cleanup source file to make the test run from other folders too
 
                 // to regenerate the expected result file:
                 //SerializeFeature(feature, fileName + ".xml");

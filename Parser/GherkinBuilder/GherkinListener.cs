@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using gherkin;
 using java.util;
@@ -13,7 +12,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
     {
         public GherkinListener(I18n languageService)
         {
-            _i18n = languageService;
+            i18n = languageService;
             Errors = new List<ErrorDetail>();
         }
 
@@ -32,7 +31,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             Errors.Add(errorDetail);
         }
 
-        private FeatureBuilder featureBuilder;
+        private readonly FeatureBuilder featureBuilder = new FeatureBuilder();
+
         public Feature GetResult()
         {
             return featureBuilder.GetResult();
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private IStepProcessor stepProcessor;
         private ITableProcessor tableProcessor;
         private IExampleProcessor exampleProcessor;
-        private I18n _i18n;
+        private readonly I18n i18n;
 
         public void tag(string name, int i)
         {
@@ -57,59 +57,64 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             tags.Add(new Tag(nameWithoutAt));
         }
 
-        public void comment(string str, int i)
+        public void comment(string comment, int line)
         {
         }
 
-        public void feature(string keyword, string content, int line_number)
+        public void location(string uri, int offset)
         {
-            featureBuilder = new FeatureBuilder(content, FlushTags());
+            featureBuilder.SourceFilePath = uri;
         }
 
-        public void background(string keyword, string content, int line_number)
+        public void feature(string keyword, string name, string description, int line)
         {
-            var background = new BackgroundBuilder(content, new FilePosition(line_number, 1));
+            featureBuilder.SetHeader(name, description, FlushTags());
+        }
+
+        public void background(string keyword, string name, string description, int line)
+        {
+            var background = new BackgroundBuilder(name, description, new FilePosition(line));
             stepProcessor = background;
             featureBuilder.AddBackground(background);
         }
 
-        public void scenario(string keyword, string content, int line_number)
+        public void scenario(string keyword, string name, string description, int line)
         {
-            var currentScenario = new ScenarioBuilder(content, FlushTags(), new FilePosition(line_number, 1));
+            var currentScenario = new ScenarioBuilder(name, description, FlushTags(), new FilePosition(line));
             stepProcessor = currentScenario;
             featureBuilder.AddScenario(currentScenario);
         }
 
-        public void scenarioOutline(string keyword, string content, int line_number)
+        public void scenarioOutline(string keyword, string name, string description, int line)
         {
-            var currentScenario = new ScenarioOutlineBuilder(content, FlushTags(), new FilePosition(line_number, 1));
+            var currentScenario = new ScenarioOutlineBuilder(name, description, FlushTags(), new FilePosition(line));
             stepProcessor = currentScenario;
             exampleProcessor = currentScenario;
             featureBuilder.AddScenario(currentScenario);
         }
 
-        public void examples(string keyword, string content, int line_number)
+        public void examples(string keyword, string name, string description, int line)
         {
-            var exampleBuilder = new ExampleBuilder(content, new FilePosition(line_number, 1));
+            var exampleBuilder = new ExampleBuilder(name, description, new FilePosition(line));
             tableProcessor = exampleBuilder;
             exampleProcessor.ProcessExample(exampleBuilder);
         }
 
-        public void step(string keyword, string content, int line_number)
+        public void step(string keyword, string text, int line)
         {
-            stepBuilder = new StepBuilder(keyword, content, new FilePosition(line_number, 1), _i18n);
+            stepBuilder = new StepBuilder(keyword, text, new FilePosition(line), i18n);
             tableProcessor = stepBuilder;
             stepProcessor.ProcessStep(stepBuilder);
         }
 
-        public void row(List list, int line_number)
+        public void row(List list, int line)
         {
             string[] rows = new string[list.size()];
             list.toArray(rows);
-            tableProcessor.ProcessTableRow(rows, line_number);
+            tableProcessor.ProcessTableRow(rows, line);
         }
 
-        public void pyString(string content, int line_number)
+        public void pyString(string content, int line)
         {
             stepBuilder.SetMultilineArg(content);
         }
@@ -119,12 +124,11 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         }
 
-        public void syntaxError(string str1, string str2, List l, int line_number)
+        public void syntaxError(string state, string eventName, List legalEvents, int line)
         {
-            string message = "Parse error. Found " + str1 + " when expecting one of: " +
-                             "TODO" + ". (Current state: " + str2 + ").";
+            string message = string.Format("Parser error on line {2}. State: {0}, Event: {1}", state, eventName, line);
 
-            RegisterError(line_number, null, message);
+            RegisterError(line, null, message);
         }
     }
 }
