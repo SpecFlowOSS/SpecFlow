@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [Binding]
     public class UserCreator
     {
-        [StepTransformation("user (w+)")]
+        [StepArgumentTransformation("user (w+)")]
         public User Create(string name)
         {
             return new User {Name = name};

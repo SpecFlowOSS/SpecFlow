@@ -7,15 +7,15 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class ScenarioOutlineBuilder : IScenarioBuilder, IExampleProcessor
     {
-        private readonly string name;
+        private readonly string title;
         private readonly Tags tags;
         private readonly FilePosition position;
         private readonly IList<StepBuilder> steps = new List<StepBuilder>();
         private readonly IList<ExampleBuilder> examples = new List<ExampleBuilder>();
 
-        public ScenarioOutlineBuilder(string name, Tags tags, FilePosition position)
+        public ScenarioOutlineBuilder(string name, string description, Tags tags, FilePosition position)
         {
-            this.name = name;
+            this.title = TextHelper.GetText(name, description);
             this.tags = tags;
             this.position = position;
         }
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                         });
 
             return new ScenarioOutline(
-                name,
+                title,
                 tags,
                 new ScenarioSteps(steps.Select(step => step.GetResult()).ToArray()),
                 new Examples(examples.Select(example => example.GetResult()).ToArray())) { FilePosition = position };

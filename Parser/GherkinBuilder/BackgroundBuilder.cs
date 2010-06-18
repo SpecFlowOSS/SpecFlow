@@ -10,9 +10,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private readonly FilePosition position;
         private readonly IList<StepBuilder> steps = new List<StepBuilder>();
 
-        public BackgroundBuilder(string text, FilePosition position)
+        public BackgroundBuilder(string name, string description, FilePosition position)
         {
-            this.text = text;
+            this.text = TextHelper.GetText(name, description);
             this.position = position;
         }
 

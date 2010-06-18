@@ -6,32 +6,13 @@ using System.Xml;
 
 namespace TechTalk.SpecFlow.Reporting
 {
-    public class XmlResourceResolver : XmlResolver
+    public class XmlResourceResolver : XmlUrlResolver
     {
-        private ICredentials credentials;
-
-        public override Uri ResolveUri(Uri baseUri, string relativeUri)
-		{
-			if (baseUri == null)
-			{
-				if (relativeUri == null)
-					throw new ArgumentNullException ("Either baseUri or relativeUri are required.");
-				
-				if (relativeUri.StartsWith ("resource:"))
-				{
-					return new Uri(relativeUri);
-				}
-				else
-				{
-					return base.ResolveUri(baseUri, relativeUri);
-				}
-			}
-
-			return base.ResolveUri(baseUri, relativeUri);
-		}
-		
-		public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
+        public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
+            if (absoluteUri == null || !"resource".Equals(absoluteUri.Scheme, StringComparison.InvariantCultureIgnoreCase))
+                return base.GetEntity(absoluteUri, role, ofObjectToReturn);
+
             string resourceName = absoluteUri.AbsolutePath.TrimStart(Path.AltDirectorySeparatorChar).Replace(Path.AltDirectorySeparatorChar, Type.Delimiter);
             Assembly assembly = GetAssemblyFor(absoluteUri.Host);
 			
@@ -48,11 +29,6 @@ namespace TechTalk.SpecFlow.Reporting
 			}
 			
 			return assembly.GetManifestResourceStream(resourceName);
-        }
-
-        public override ICredentials Credentials
-        {
-            set { credentials = value; }
         }
 		
 		private static Assembly GetAssemblyFor(string host)

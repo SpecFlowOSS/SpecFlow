@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
@@ -27,20 +26,20 @@ namespace TechTalk.SpecFlow.Reporting
             }
         }
 
-        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration)
+        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration, string xsltFile)
         {
             var xmlOutputWriter = new StringWriter();
             serializer.Serialize(xmlOutputWriter, report);
 
             XslCompiledTransform xslt = new XslCompiledTransform();
-
             var xsltSettings = new XsltSettings(true, false);
-            var resourceResolver = new XmlResourceResolver();
+            XmlResolver resourceResolver;
 
             var reportName = reportType.Name.Replace("Generator", "");
-            using (var xsltReader = new ResourceXmlReader(reportType, reportName + ".xslt"))
+            using (var xsltReader = GetTemplateReader(reportType, reportName, xsltFile))
             {
-				xslt.Load(xsltReader, xsltSettings, resourceResolver);
+                resourceResolver = new XmlResourceResolver();
+                xslt.Load(xsltReader, xsltSettings, resourceResolver);
             }
 
             var xmlOutputReader = new XmlTextReader(new StringReader(xmlOutputWriter.ToString()));
@@ -54,6 +53,14 @@ namespace TechTalk.SpecFlow.Reporting
             {
 				xslt.Transform(xmlOutputReader, argumentList, xmlTextWriter, resourceResolver);
             }            
+        }
+
+        private static XmlReader GetTemplateReader(Type reportType, string reportName, string xsltFile)
+        {
+            if (string.IsNullOrEmpty(xsltFile))
+                return new ResourceXmlReader(reportType, reportName + ".xslt");
+
+            return new XmlTextReader(xsltFile);
         }
     }
 }

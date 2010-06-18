@@ -54,6 +54,7 @@
   <ItemGroup>
     <Folder Include="Templates\" />
     <Folder Include="Gui\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoDevelop.Ide, Version=2.4.0.0, Culture=neutral, PublicKeyToken=null">
@@ -70,6 +71,10 @@
   <ItemGroup>
     <Compile Include="SingleFeatureFileGenerator.cs" />
     <Compile Include="MonoDevelopProjectReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+	<Compile Include="..\..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

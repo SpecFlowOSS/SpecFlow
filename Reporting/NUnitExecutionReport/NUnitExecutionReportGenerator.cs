@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -15,24 +13,15 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
     {
         private ReportElements.NUnitExecutionReport report;
         private readonly SpecFlowProject specFlowProject;
-        private readonly string xmlTestResultPath;
-        private readonly string labeledTestOutputPath;
+        private readonly NUnitExecutionReportParameters reportParameters;        
 
-        public NUnitExecutionReportGenerator(string projectFile, string xmlTestResultPath, string labeledTestOutputPath)
-        {
-            this.xmlTestResultPath = xmlTestResultPath;
-            this.specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
-            this.labeledTestOutputPath = labeledTestOutputPath;
+        public NUnitExecutionReportGenerator(NUnitExecutionReportParameters reportParameters)
+        {            
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);            
+            this.reportParameters = reportParameters;
         }
 
-        public NUnitExecutionReportGenerator(SpecFlowProject specFlowProject, string xmlTestResultPath, string labeledTestOutputPath)
-        {
-            this.xmlTestResultPath = xmlTestResultPath;
-            this.specFlowProject = specFlowProject;
-            this.labeledTestOutputPath = labeledTestOutputPath;
-        }
-
-        public void GenerateReport()
+        private void GenerateReport()
         {
             report = new ReportElements.NUnitExecutionReport();
             report.ProjectName = specFlowProject.ProjectName;
@@ -41,9 +30,9 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             XmlDocument xmlTestResult = LoadXmlTestResult();
             report.NUnitXmlTestResult = xmlTestResult.DocumentElement;
 
-            if (File.Exists(labeledTestOutputPath))
+            if (File.Exists(reportParameters.LabelledTestOutput))
             {
-                using(var reader = new StreamReader(labeledTestOutputPath))
+                using(var reader = new StreamReader(reportParameters.LabelledTestOutput))
                 {
                     string currentTest = "unknown";
                     List<string> testLines = new List<string>();
@@ -84,25 +73,31 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             XmlDocument xmlTestResult = new XmlDocument();
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
             nsmgr.AddNamespace("", ReportElements.NUnitExecutionReport.XmlNUnitNamespace);
-            using(XmlReader reader = XmlReader.Create(xmlTestResultPath, new XmlReaderSettings(), new XmlParserContext(null, nsmgr, null, XmlSpace.None)))
+            using(XmlReader reader = XmlReader.Create(reportParameters.XmlTestResult, new XmlReaderSettings(), new XmlParserContext(null, nsmgr, null, XmlSpace.None)))
             {
                 xmlTestResult.Load(reader);
             }
             return xmlTestResult;
         }
 
-        public void TransformReport(string outputFilePath)
+        private void TransformReport()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(ReportElements.NUnitExecutionReport), ReportElements.NUnitExecutionReport.XmlNamespace);
 
-            if (XsltHelper.IsXmlOutput(outputFilePath))
+            if (XsltHelper.IsXmlOutput(reportParameters.OutputFile))
             {
-                XsltHelper.TransformXml(serializer, report, outputFilePath);
+                XsltHelper.TransformXml(serializer, report, reportParameters.OutputFile);
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
+                XsltHelper.TransformHtml(serializer, report, GetType(), reportParameters.OutputFile, specFlowProject.GeneratorConfiguration, reportParameters.XsltFile);
             }
+        }
+
+        public void GenerateAndTransformReport()
+        {
+            GenerateReport();
+            TransformReport();
         }
     }
 }

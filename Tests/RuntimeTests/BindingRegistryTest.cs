@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Binding]
         public class StepTransformationExample
         {
-            [StepTransformation("BindingRegistryTests")]
+            [StepArgumentTransformation("BindingRegistryTests")]
             public int Transform(string val)
             {
                 return 42;
