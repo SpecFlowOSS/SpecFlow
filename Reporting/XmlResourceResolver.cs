@@ -8,27 +8,7 @@ namespace TechTalk.SpecFlow.Reporting
 {
     public class XmlResourceResolver : XmlUrlResolver
     {
-        //public override Uri ResolveUri(Uri baseUri, string relativeUri)
-		//{
-		//	if (baseUri == null)
-		//	{
-		//		if (relativeUri == null)
-		//			throw new ArgumentNullException ("Either baseUri or relativeUri are required.");
-		//		
-		//		if (relativeUri.StartsWith ("resource:"))
-		//		{
-		//			return new Uri(relativeUri);
-		//		}
-		//		else
-		//		{
-		//			return base.ResolveUri(baseUri, relativeUri);
-		//		}
-		//	}
-
-		//	return base.ResolveUri(baseUri, relativeUri);
-		//}
-		
-		public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
+        public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
             if (absoluteUri == null || !"resource".Equals(absoluteUri.Scheme, StringComparison.InvariantCultureIgnoreCase))
                 return base.GetEntity(absoluteUri, role, ofObjectToReturn);
