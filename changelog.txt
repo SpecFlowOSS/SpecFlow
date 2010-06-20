@@ -9,6 +9,7 @@ New features:
 + [StepTransformation] attribute has been renamed to [StepArgumentTransformation]
   because this name describe the intention better. Using the old attribute will 
   generate a warning.
++ Support for MbUnit
 
 Fixed issues:
 + NullReference exception when using BeforeTestRun event (Issue 41)

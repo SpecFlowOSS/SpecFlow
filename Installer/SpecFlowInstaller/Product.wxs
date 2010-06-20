@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ProductShortName = "SpecFlow" ?>
-<?define ProductVersion = "1.3.0" ?>
+<?define ProductVersion = "1.3.1" ?>
 <?define ProductVersionText = "1.3" ?>
 <?define ProductUrl = "http://www.specflow.org" ?>
 <?define Manufacturer = "TechTalk" ?>
