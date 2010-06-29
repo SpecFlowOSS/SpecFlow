@@ -1,43 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class FeatureBuilder
     {
-        private readonly string text;
-        private readonly Tags tags;
+        private string title;
+        private string description;
+        private string sourceFilePath;
+        private Tags tags;
         private readonly IList<IScenarioBuilder> scenarios = new List<IScenarioBuilder>();
         private BackgroundBuilder background = null;
 
-        public FeatureBuilder(string text, Tags tags)
+        public string SourceFilePath
         {
-            this.text = text;
+            get { return sourceFilePath; }
+            set { sourceFilePath = value; }
+        }
+
+        public void SetHeader(string title, string description, Tags tags)
+        {
+            this.title = title;
+            this.description = description;
             this.tags = tags;
         }
 
-        private static readonly Regex firstLineRe = new Regex(@"^(?<firstline>[^\r\n]*)[\r\n]+(?<rest>.*)", RegexOptions.Singleline);
-
         public Feature GetResult()
         {
-            string title = text;
-            string description = null;
-
-            var match = firstLineRe.Match(text);
-            if (match.Success)
-            {
-                title = match.Groups["firstline"].Value;
-                description = match.Groups["rest"].Value;
-            }
-
-            return new Feature(
+            var feature = new Feature(
                 title,
                 tags,
                 description,
                 background == null ? null : background.GetResult(),
                 scenarios.Select(sb => sb.GetResult()).ToArray());
+            feature.SourceFile = sourceFilePath;
+            return feature;
         }
 
         public void AddScenario(IScenarioBuilder scenarioBuilder)

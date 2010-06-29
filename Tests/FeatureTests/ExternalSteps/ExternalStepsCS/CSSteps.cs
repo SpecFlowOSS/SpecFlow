@@ -10,6 +10,18 @@ namespace ExternalStepsCS
     [Binding]
     public class CSSteps
     {
+        [Given(@"I have external step definitions in a separate assembly referenced by this project")]
+        public void GivenIHaveExternalStepDefinitionsInASeparateAssemblyReferencedByThisProject()
+        {
+            ScenarioContext.Current["counter"] = 1;
+        }
+
+        [When(@"I call those steps")]
+        public void WhenICallThoseSteps()
+        {
+            ScenarioContext.Current["counter"] = (int)ScenarioContext.Current["counter"] + 1;
+        }
+
         [Then("the scenario should pass")]
         public void GivenAFeatureWhichRequiresADependentContext()
         {

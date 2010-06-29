@@ -6,9 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Xml.Xsl;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
@@ -17,34 +15,25 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 {
     public class StepDefinitionReportGenerator
     {
+        public StepDefinitionReportParameters ReportParameters { get; set; }
         private readonly SpecFlowProject specFlowProject;
         private readonly List<BindingInfo> bindings;
         private readonly List<Feature> parsedFeatures;
-        private readonly bool showBindingsWithoutInsance;
 
         private ReportElements.StepDefinitionReport report;
         private Dictionary<BindingInfo, StepDefinition> stepDefByBinding;
         private Dictionary<StepDefinition, BindingInfo> bindingByStepDef;
         private readonly List<StepDefinition> stepDefsWithNoBinding = new List<StepDefinition>();
 
-        public StepDefinitionReportGenerator(string projectFile, string binFolder, bool showBindingsWithoutInsance)
+        public StepDefinitionReportGenerator(StepDefinitionReportParameters reportParameters)
         {
-            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
+            ReportParameters = reportParameters;
 
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);
             parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
 
-            var basePath = Path.Combine(specFlowProject.ProjectFolder, binFolder);
+            var basePath = Path.Combine(specFlowProject.ProjectFolder, reportParameters.BinFolder);
             bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
-
-            this.showBindingsWithoutInsance = showBindingsWithoutInsance;
-        }
-
-        public StepDefinitionReportGenerator(SpecFlowProject specFlowProject, List<BindingInfo> bindings, List<Feature> parsedFeatures, bool showBindingsWithoutInsance)
-        {
-            this.specFlowProject = specFlowProject;
-            this.showBindingsWithoutInsance = showBindingsWithoutInsance;
-            this.bindings = bindings;
-            this.parsedFeatures = parsedFeatures;
         }
 
         public ReportElements.StepDefinitionReport GenerateReport()
@@ -52,7 +41,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             report = new ReportElements.StepDefinitionReport();
             report.ProjectName = specFlowProject.ProjectName;
             report.GeneratedAt = DateTime.Now.ToString("g", CultureInfo.InvariantCulture);
-            report.ShowBindingsWithoutInsance = showBindingsWithoutInsance;
+            report.ShowBindingsWithoutInsance = ReportParameters.ShowBindingsWithoutInsance;
 
             stepDefByBinding = new Dictionary<BindingInfo, StepDefinition>();
             bindingByStepDef = new Dictionary<StepDefinition, BindingInfo>();
@@ -215,17 +204,17 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             return sampleText;
         }
 
-        public void TransformReport(string outputFilePath)
+        public void TransformReport()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(ReportElements.StepDefinitionReport), ReportElements.StepDefinitionReport.XmlNamespace);
 
-            if (XsltHelper.IsXmlOutput(outputFilePath))
+            if (XsltHelper.IsXmlOutput(ReportParameters.OutputFile))
             {
-                XsltHelper.TransformXml(serializer, report, outputFilePath);
+                XsltHelper.TransformXml(serializer, report, ReportParameters.OutputFile);
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), outputFilePath, specFlowProject.GeneratorConfiguration);
+                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.GeneratorConfiguration, ReportParameters.XsltFile);
             }
         }
 
@@ -354,6 +343,13 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             newStep.MultiLineTextArgument = step.MultiLineTextArgument;
             newStep.TableArg = Clone(step.TableArg);
             return newStep;
+        }
+
+
+        public void GenerateAndTransformReport()
+        {
+            GenerateReport();
+            TransformReport();
         }
     }
 }

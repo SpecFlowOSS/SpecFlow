@@ -117,10 +117,6 @@
       <Project>{3836A6FC-4ECC-413A-AC8F-83A0A773EC9E}</Project>
       <Name>ExternalStepsCS</Name>
     </ProjectReference>
-    <ProjectReference Include="ExternalSteps\ExternalStepsVB\ExternalStepsVB.vbproj">
-      <Project>{D3F6B835-B228-4DCF-B533-B6ED469A33B3}</Project>
-      <Name>ExternalStepsVB</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

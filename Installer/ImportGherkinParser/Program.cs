@@ -92,6 +92,7 @@ namespace ImportGherkinParser
             new Dictionary<string, string>()
             {
                 {"se", "sv"},
+                {"lu", "lb-LU"},
             };
 
         private class KeywordTranslation
