@@ -1,8 +1,9 @@
-1.3.2 - ???
+1.3.2 - 2010/06/29
 
 New features:
 + Support for MsTest for .NET 4.0 categories. Configure the test provider name to 
   "MsTest.2010" in order to use the [TestCategory] attribute.
++ Silverlight support (beta), see http://wiki.github.com/techtalk/SpecFlow/silverlight-support  
 
 Fixed issues:
 + Report generation fails if no custom XSLT is provided
