@@ -184,6 +184,9 @@
     <Compile Include="..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\XUnitRuntimeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="Compatibility\ConfigurationErrorsException.cs" />
     <Compile Include="Compatibility\CultureInfoHelper.cs" />
     <Compile Include="Compatibility\EnumHelper.cs" />
