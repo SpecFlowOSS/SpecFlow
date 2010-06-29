@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepExecutionTestsWithConversions : StepExecutionTestsBase
     {
         [Test]
-        public void SholdCallBindingWithSimpleConvertParam()
+        public void ShouldCallBindingWithSimpleConvertParam()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdRaiseErrorIfSimpleConvertParamFails()
+        public void ShouldRaiseErrorIfSimpleConvertParamFails()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallTheOnlyThatCanConvert()
+        public void ShouldCallTheOnlyThatCanConvert()
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
@@ -91,7 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdRaiseAmbiguousIfMultipleCanConvert()
+        public void ShouldRaiseAmbiguousIfMultipleCanConvert()
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallTheOnlyThatCanConvertWithTable()
+        public void ShouldCallTheOnlyThatCanConvertWithTable()
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdRaiseParamErrorIfNoneCanConvert()
+        public void ShouldRaiseParamErrorIfNoneCanConvert()
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
