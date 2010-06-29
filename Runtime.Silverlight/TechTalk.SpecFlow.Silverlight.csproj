@@ -169,11 +169,17 @@
     <Compile Include="..\Runtime\UnitTestProvider\MbUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\MbUnitRuntimeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\UnitTestProvider\MsTest2010RuntimeProvider.cs">
+      <Link>UnitTestProvider\MsTest2010RuntimeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\MsTestRuntimeProvider.cs">
       <Link>UnitTestProvider\MsTestRuntimeProvider.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\NUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\NUnitRuntimeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\UnitTestProvider\UnitTestRuntimeProviderHelper.cs">
+      <Link>UnitTestProvider\UnitTestRuntimeProviderHelper.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\XUnitRuntimeProvider.cs</Link>
