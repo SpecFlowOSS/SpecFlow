@@ -72,6 +72,16 @@
           <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
           <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
         </RegistryKey>
+
+        <!-- Silverlight registration -->
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.SilverlightPackageId)\.feature" Action="createAndRemoveOnUninstall">
+          <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
+        </RegistryKey>
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.SilverlightPackageId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
+          <RegistryValue Value="Silverlight SpecFlow Generator" Type="string" />
+          <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
+          <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
+        </RegistryKey>
       </Component>
     </DirectoryRef>
 

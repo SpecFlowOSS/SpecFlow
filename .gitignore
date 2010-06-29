@@ -12,3 +12,4 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.resharper
 *.cache
+*.gpState
