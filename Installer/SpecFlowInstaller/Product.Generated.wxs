@@ -5,6 +5,9 @@
       <ComponentGroupRef Id="TechTalk.SpecFlow.Generator.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Parser.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Reporting.Binaries" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Binaries" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Content" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Satellites" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Tools.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.VsIntegration.Binaries" />
