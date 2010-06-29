@@ -39,8 +39,8 @@ namespace ReportingTests.StepDefinitions
             GenerateCustomXslt(xsltContent, templateFileName);
         }
 
-        [When(@"I generate SpecFlow NUnit execution report with the custom XSLT")]
-        public void WhenIGenerateSpecFlowNUnitExecutionReportWithTheCustomXSLT()
+        [When(@"I generate SpecFlow NUnit execution report( with the custom XSLT)?")]
+        public void WhenIGenerateSpecFlowNUnitExecutionReportWithTheCustomXSLT(string withCustomXslt)
         {
             SpecFlowTool.NUnitExecutionReport(
                 sampleProjectInfo.ProjectFilePath, 
@@ -60,15 +60,55 @@ namespace ReportingTests.StepDefinitions
             AssertEqualIgnoringWhitespace(expectedResultContent, resultContent);
         }
 
+        [Then(@"a report generated containing")]
+        public void ThenAReportGeneratedContaining(string expectedResultContent)
+        {
+            Assert.IsTrue(File.Exists(sampleProjectInfo.OutputFilePath), "no result is generated");
+
+            string resultContent = sampleProjectInfo.GetOutputFileContent();
+
+            AssertContainsIgnoringWhitespace(expectedResultContent, resultContent);
+        }
+
         private void AssertEqualIgnoringWhitespace(string expectedValue, string actualValue)
         {
-            StringAssert.AreEqualIgnoringCase(NormalizeWhitespace(expectedValue), NormalizeWhitespace(actualValue));
+            StringAssert.AreEqualIgnoringCase(
+                NormalizeWhitespace(CleanHtml(expectedValue)), 
+                NormalizeWhitespace(CleanHtml(actualValue)));
+        }
+
+        private void AssertContainsIgnoringWhitespace(string expectedValue, string actualValue)
+        {
+            StringAssert.Contains(
+                NormalizeWhitespace(HtmlEncode(expectedValue)).ToLowerInvariant(),
+                NormalizeWhitespace(CleanHtml(actualValue)).ToLowerInvariant());
         }
 
         private string NormalizeWhitespace(string value)
         {
             var whitespaceRe = new Regex(@"\s+");
             return whitespaceRe.Replace(value.Trim(), " ");
+        }
+
+        private string HtmlEncode(string value)
+        {
+            return value.Replace("<", "&lt;").Replace(">", "&gt;");
+        }
+
+        private string CleanHtml(string value)
+        {
+            var bodyRe = new Regex(@"\<\/?\s*body\s*\>");
+            var bodyMatch = bodyRe.Match(value);
+            if (bodyMatch.Success)
+            {
+                value = value.Substring(bodyMatch.Index + bodyMatch.Value.Length);
+                bodyMatch = bodyRe.Match(value);
+                if (bodyMatch.Success)
+                    value = value.Substring(0, bodyMatch.Index);
+            }
+            var whitespaceRe = new Regex(@"\<.*?\>");
+            var result = whitespaceRe.Replace(value.Trim(), " ");
+            return result;
         }
 
         private string GenerateCustomXslt(string content, string templateFileName)
