@@ -38,7 +38,7 @@
 
     <!-- Launch conditions -->
     <Condition Message="An administrator must approve or install [ProductName]."> Privileged </Condition>
-    <Condition Message="A later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
+    <Condition Message="The same or a later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
 
     <!-- Root directories -->
 		<Directory Id="TARGETDIR" Name="SourceDir">

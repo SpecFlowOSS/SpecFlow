@@ -3,10 +3,9 @@
 <?include Common.wxi?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Fragment>
+  <Fragment>
     <ComponentGroup Id="CompGroup_CoreFiles">
       <ComponentRef Id="Comp_CoreFiles" />
-      <ComponentRef Id="Comp_AssociateGherkinFiles" />
     </ComponentGroup>
 
     <DirectoryRef Id="INSTALLLOCATION">
@@ -21,16 +20,13 @@
         <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
         <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
         <File Name="gherkin.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
-      </Component>
-
-      <!-- Gherkin file associations -->
-      <Component Id="Comp_AssociateGherkinFiles" Guid="2AE052A2-F932-4282-BF38-021CC54FC441">
-        <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="[INSTALLLOCATION]gherkin.ico">
+        <!-- Gherkin file associations -->
+        <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="gherkin.ico">
           <Extension Id="feature" ContentType='application/text'>
             <!--<Verb Id="open" TargetProperty="VS90DEVENV" Command="Open" Argument='/edit "%1"' />-->
           </Extension>
         </ProgId>
       </Component>
     </DirectoryRef>
-	</Fragment>
+  </Fragment>
 </Wix>
