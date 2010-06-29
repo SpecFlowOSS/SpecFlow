@@ -162,7 +162,17 @@ namespace TechTalk.SpecFlow.Bindings
 
         internal void PreserveStackTrace(Exception ex)
         {
-            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+            Type exceptionType = typeof(Exception);
+			
+			// Mono's implementation of System.Exception doesn't contain the method InternalPreserveStackTrace
+			if (Type.GetType("Mono.Runtime") != null)
+			{
+				exceptionType.GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ex, ex.StackTrace + Environment.NewLine);
+			}
+			else
+			{
+				exceptionType.GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
+			}
         }
 
         #region extended action types

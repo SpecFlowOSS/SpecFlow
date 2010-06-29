@@ -10,6 +10,8 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+*.pidb
+*.userprefs
 *.resharper
 *.cache
 *.gpState

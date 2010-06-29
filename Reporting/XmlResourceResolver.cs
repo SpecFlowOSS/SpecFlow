@@ -14,10 +14,38 @@ namespace TechTalk.SpecFlow.Reporting
                 return base.GetEntity(absoluteUri, role, ofObjectToReturn);
 
             string resourceName = absoluteUri.AbsolutePath.TrimStart(Path.AltDirectorySeparatorChar).Replace(Path.AltDirectorySeparatorChar, Type.Delimiter);
-            string assemblyName = absoluteUri.Host;
-
-            Assembly assembly = Assembly.Load(assemblyName);
-            return new ResourceXmlReader(assembly, resourceName);
+            Assembly assembly = GetAssemblyFor(absoluteUri.Host);
+			
+			if (ofObjectToReturn != null)
+			{
+				if (ofObjectToReturn == typeof(ResourceXmlReader) || ofObjectToReturn == typeof(XmlTextReader))
+				{	
+					return new ResourceXmlReader(assembly, resourceName);
+				}
+				else if (ofObjectToReturn == typeof(Stream))
+				{
+					return assembly.GetManifestResourceStream(resourceName);
+				}
+			}
+			
+			return assembly.GetManifestResourceStream(resourceName);
         }
+		
+		private static Assembly GetAssemblyFor(string host)
+		{
+			Assembly locatedAssembly = null;
+			
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				AssemblyName assemblyName = assembly.GetName();
+				
+				if (!assemblyName.Name.Equals(host, StringComparison.CurrentCultureIgnoreCase))
+					continue;
+				
+				locatedAssembly = assembly;
+			}
+			
+			return locatedAssembly;
+		}
     }
 }
