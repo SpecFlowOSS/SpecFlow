@@ -20,11 +20,17 @@ namespace ReportingTests.StepDefinitions
             this.sampleProjectInfo = sampleProjectInfo;
         }
 
-        [Given(@"there are NUuit test execution results for the ReportingTest.SampleProject project")]
+        [Given(@"there are NUnit test execution results for the ReportingTest.SampleProject project")]
         public void GivenThereIsAnNUuitTestExecutionResultsForMyProject()
         {
             Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitXmlResultPath), "NUnit xml test result is missing");
             Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitTextResultPath), "NUnit txt test result is missing");
+        }
+
+        [Given(@"there are MsTest test execution results for the ReportingTest.SampleProject project")]
+        public void GivenThereIsAnMsTestTestExecutionResultsForMyProject()
+        {
+            Assert.IsTrue(File.Exists(sampleProjectInfo.MsTestResultPath), "MsTest test result is missing");
         }
 
         [Given(@"there is an XSLT template containing")]
@@ -47,6 +53,16 @@ namespace ReportingTests.StepDefinitions
                 sampleProjectInfo.NUnitXmlResultPath, 
                 sampleProjectInfo.CustomXslt, 
                 sampleProjectInfo.NUnitTextResultPath,
+                sampleProjectInfo.OutputFilePath);
+        }
+
+        [When(@"I generate SpecFlow MsTest execution report( with the custom XSLT)?")]
+        public void WhenIGenerateSpecFlowMsTestExecutionReportWithTheCustomXSLT(string withCustomXslt)
+        {
+            SpecFlowTool.MsTestExecutionReport(
+                sampleProjectInfo.ProjectFilePath, 
+                sampleProjectInfo.MsTestResultPath, 
+                sampleProjectInfo.CustomXslt, 
                 sampleProjectInfo.OutputFilePath);
         }
 

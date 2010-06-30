@@ -4,7 +4,7 @@
 	I want to be able to specify a custom XSLT template for the report generation
 
 Scenario: Specfiy custom XSLT for NUnit execution report
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	And there is an XSLT template containing
 	"""
 	  <xsl:template match="/">
@@ -28,7 +28,7 @@ Scenario: Specfiy custom XSLT for NUnit execution report
 	"""
 
 Scenario: Custom XSLT can include other custom XSLT
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	And there is an XSLT template 'custominclude.xslt' containing
 	"""
 	  <xsl:template name="custom-template">
@@ -53,7 +53,7 @@ Scenario: Custom XSLT can include other custom XSLT
 
 
 Scenario: Custom XSLT can include built-in SpecFlow XSLT
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	And there is an XSLT template containing
 	"""
 	  <xsl:include href="resource://TechTalk.SpecFlow.Reporting/TechTalk/SpecFlow/Reporting/Common/Common.xslt"/>
@@ -73,7 +73,7 @@ Scenario: Custom XSLT can include built-in SpecFlow XSLT
 	"""
 	
 Scenario: Custom XSLT can include built-in SpecFlow and custom XSLT 
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	And there is an XSLT template 'custominclude.xslt' containing
 	"""
 	  <xsl:template name="custom-template">

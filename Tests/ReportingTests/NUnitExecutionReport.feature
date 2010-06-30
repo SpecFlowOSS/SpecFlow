@@ -3,9 +3,9 @@
 	As a test manager
 	I want to be able to generate an HTML report from the NUnit execution result
 
-Scenario: Summary is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario Outline: Summary is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 		Summary 
@@ -13,9 +13,13 @@ Scenario: Summary is included in the HTML result
 		2 features	40%				5			2			1		1			1 
 	"""
 
+Examples:
+	| unittest	|
+	| NUnit		|
+	| MsTest	|
 
 Scenario: Feature summary is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	When I generate SpecFlow NUnit execution report
 	Then a report generated containing
 	"""
@@ -27,7 +31,7 @@ Scenario: Feature summary is included in the HTML result
 
 
 Scenario: Successful test output is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	When I generate SpecFlow NUnit execution report
 	Then a report generated containing
 	"""
@@ -41,7 +45,7 @@ Scenario: Successful test output is included in the HTML result
 
 
 Scenario: Pending test output is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	When I generate SpecFlow NUnit execution report
 	Then a report generated containing
 	"""
@@ -60,7 +64,7 @@ Scenario: Pending test output is included in the HTML result
 
 
 Scenario: Failing test output is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	When I generate SpecFlow NUnit execution report
 	Then a report generated containing
 	"""
@@ -70,7 +74,7 @@ Scenario: Failing test output is included in the HTML result
 
 
 Scenario: Failing test exception is included in the HTML result
-	Given there are NUuit test execution results for the ReportingTest.SampleProject project
+	Given there are NUnit test execution results for the ReportingTest.SampleProject project
 	When I generate SpecFlow NUnit execution report
 	Then a report generated containing
 	"""
