@@ -28,9 +28,21 @@ namespace TechTalk.SpecFlow
         {
             get
             {
-                return GetOrCreate(ref configuration, RuntimeConfiguration.LoadFromConfigFile);
+                return GetOrCreate(ref configuration, GetConfiguration);
             }
         }
+
+#if SILVERLIGHT
+        private static RuntimeConfiguration GetConfiguration()
+        {
+            return RuntimeConfiguration.CreateForSilverlight();
+        }
+#else
+        private static RuntimeConfiguration GetConfiguration()
+        {
+            return RuntimeConfiguration.LoadFromConfigFile();
+        }
+#endif
         #endregion
 
         #region TestRunner

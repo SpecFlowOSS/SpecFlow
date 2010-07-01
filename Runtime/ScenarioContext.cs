@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+#if SILVERLIGHT
+using TechTalk.SpecFlow.Compatibility;
+#endif
+
 namespace TechTalk.SpecFlow
 {
     internal enum TestStatus

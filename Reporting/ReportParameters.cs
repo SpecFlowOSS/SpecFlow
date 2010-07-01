@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Reporting
         {
             this.ProjectFile = projectFile;
             this.OutputFile = Path.GetFullPath(outputFile);
-			this.XsltFile = !String.IsNullOrEmpty(xsltFile) ? Path.GetFullPath(xsltFile) : String.Empty;
+			this.XsltFile = string.IsNullOrEmpty(xsltFile) ? "" : Path.GetFullPath(xsltFile);
         }
     }
 }

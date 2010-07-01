@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ProductShortName = "SpecFlow" ?>
-<?define ProductVersion = "1.3.1" ?>
-<?define ProductVersionText = "1.3.1" ?>
+<?define ProductVersion = "1.3.2" ?>
+<?define ProductVersionText = "1.3.2" ?>
 <?define ProductUrl = "http://www.specflow.org" ?>
 <?define Manufacturer = "TechTalk" ?>
 <?define UpgradeCode = "A72428B6-8ADB-4EDF-BC23-4BE4E19F01A0" ?>
@@ -38,7 +38,7 @@
 
     <!-- Launch conditions -->
     <Condition Message="An administrator must approve or install [ProductName]."> Privileged </Condition>
-    <Condition Message="A later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
+    <Condition Message="The same or a later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
 
     <!-- Root directories -->
 		<Directory Id="TARGETDIR" Name="SourceDir">
@@ -77,6 +77,10 @@
     <!-- Custom actions -->
     <CustomActionRef Id="VS90InstallVSTemplates" />
     <CustomActionRef Id="VS2010InstallVSTemplates" />
+
+    <!-- icons -->
+    <Icon Id="specflowsetup.ico" SourceFile="$(var.SetupResourcesDir)\specflowsetup.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="specflowsetup.ico" />
 
     <!-- Sequences -->
     <InstallExecuteSequence>

@@ -3,7 +3,7 @@
 <?include Common.wxi?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Fragment>
+  <Fragment>
     <ComponentGroup Id="CompGroup_CoreFiles">
       <ComponentRef Id="Comp_CoreFiles" />
     </ComponentGroup>
@@ -19,7 +19,14 @@
         <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.Runtime.dll" />
         <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
         <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
+        <File Name="gherkin.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
+        <!-- Gherkin file associations -->
+        <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="gherkin.ico">
+          <Extension Id="feature" ContentType='application/text'>
+            <!--<Verb Id="open" TargetProperty="VS90DEVENV" Command="Open" Argument='/edit "%1"' />-->
+          </Extension>
+        </ProgId>
       </Component>
     </DirectoryRef>
-	</Fragment>
+  </Fragment>
 </Wix>

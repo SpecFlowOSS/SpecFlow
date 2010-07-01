@@ -51,6 +51,13 @@
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\..\Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj">
+      <Name>TechTalk.SpecFlow.Silverlight</Name>
+      <Project>{b93f95cf-bf89-4d92-bb0f-86885b9b6dce}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
       <Name>TechTalk.SpecFlow</Name>
       <Project>{413ee28c-4f89-4c6f-ba1e-2cdee4cd43b4}</Project>

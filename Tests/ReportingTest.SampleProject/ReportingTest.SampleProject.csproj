@@ -66,6 +66,7 @@
     </None>
     <None Include="FeatureWithSuccessfulScenarios.feature">
     </None>
+    <None Include="MsTestResult\TestResult.trx" />
     <None Include="NUnitResult\generate.cmd" />
     <None Include="NUnitResult\generate" />
   </ItemGroup>

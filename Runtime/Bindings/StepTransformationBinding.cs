@@ -8,12 +8,19 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class StepTransformationBinding : MethodBinding
     {
+
+#if SILVERLIGHT
+        private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
+#else
+        private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
+#endif
+
         public Regex Regex { get; private set; }
 
         public StepTransformationBinding(string regexString, MethodInfo methodInfo)
             : base(methodInfo)
         {
-            Regex regex = new Regex("^" + regexString + "$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+            Regex regex = new Regex("^" + regexString + "$", RegexOptions);
             Regex = regex;
         }
 
