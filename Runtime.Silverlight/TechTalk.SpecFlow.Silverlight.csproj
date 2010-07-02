@@ -1,4 +1,8 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,10 +14,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow.Silverlight</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -169,14 +175,23 @@
     <Compile Include="..\Runtime\UnitTestProvider\MbUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\MbUnitRuntimeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\UnitTestProvider\MsTest2010RuntimeProvider.cs">
+      <Link>UnitTestProvider\MsTest2010RuntimeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\MsTestRuntimeProvider.cs">
       <Link>UnitTestProvider\MsTestRuntimeProvider.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\NUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\NUnitRuntimeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\UnitTestProvider\UnitTestRuntimeProviderHelper.cs">
+      <Link>UnitTestProvider\UnitTestRuntimeProviderHelper.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\XUnitRuntimeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Compatibility\ConfigurationErrorsException.cs" />
     <Compile Include="Compatibility\CultureInfoHelper.cs" />
@@ -191,7 +206,7 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

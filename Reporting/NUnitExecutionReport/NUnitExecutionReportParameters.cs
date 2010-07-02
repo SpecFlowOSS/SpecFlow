@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             : base(projectFile, outputFile, xsltFile)
         {
             this.XmlTestResult = Path.GetFullPath(xmlTestResult);
-            this.LabelledTestOutput = Path.GetFullPath(labelledTestOutput);
+            this.LabelledTestOutput = string.IsNullOrEmpty(labelledTestOutput) ? "" : Path.GetFullPath(labelledTestOutput);
         }
     }
 }

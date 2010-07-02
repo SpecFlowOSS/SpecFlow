@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}"
@@ -11,6 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Languages.xml = Languages.xml
 		LICENSE.txt = LICENSE.txt
 		VersionInfo.cs = VersionInfo.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{EF9D1EFD-574B-4A33-96CB-8885A6CEB227}"
+	ProjectSection(SolutionItems) = preProject
+		Installer\Resources\EULA.rtf = Installer\Resources\EULA.rtf
+		Installer\Resources\header.bmp = Installer\Resources\header.bmp
+		Installer\Resources\logo.png = Installer\Resources\logo.png
+		Installer\Resources\welcome_dialog.bmp = Installer\Resources\welcome_dialog.bmp
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Reporting", "Reporting\TechTalk.SpecFlow.Reporting.csproj", "{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}"
@@ -36,14 +44,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalStepsCS", "Tests\FeatureTests\ExternalSteps\ExternalStepsCS\ExternalStepsCS.csproj", "{3836A6FC-4ECC-413A-AC8F-83A0A773EC9E}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SpecFlowInstaller", "Installer\SpecFlowInstaller\SpecFlowInstaller.wixproj", "{89167EB9-F458-48DA-9D8F-F639A74F5871}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{EF9D1EFD-574B-4A33-96CB-8885A6CEB227}"
-	ProjectSection(SolutionItems) = preProject
-		Installer\Resources\EULA.rtf = Installer\Resources\EULA.rtf
-		Installer\Resources\header.bmp = Installer\Resources\header.bmp
-		Installer\Resources\logo.png = Installer\Resources\logo.png
-		Installer\Resources\welcome_dialog.bmp = Installer\Resources\welcome_dialog.bmp
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Silverlight", "Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj", "{B93F95CF-BF89-4D92-BB0F-86885B9B6DCE}"
 EndProject
@@ -144,6 +144,7 @@ Global
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -214,9 +215,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{EF9D1EFD-574B-4A33-96CB-8885A6CEB227} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{89167EB9-F458-48DA-9D8F-F639A74F5871} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
-		{EF9D1EFD-574B-4A33-96CB-8885A6CEB227} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{70376361-0BE1-478D-8EEC-47BD1C768165} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{3FE793A8-E662-4026-B4EC-891324073235} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
