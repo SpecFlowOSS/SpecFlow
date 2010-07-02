@@ -1,8 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Xml;
+using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow.Reporting
 {
@@ -14,38 +15,19 @@ namespace TechTalk.SpecFlow.Reporting
                 return base.GetEntity(absoluteUri, role, ofObjectToReturn);
 
             string resourceName = absoluteUri.AbsolutePath.TrimStart(Path.AltDirectorySeparatorChar).Replace(Path.AltDirectorySeparatorChar, Type.Delimiter);
+
             Assembly assembly = GetAssemblyFor(absoluteUri.Host);
-			
-			if (ofObjectToReturn != null)
-			{
-				if (ofObjectToReturn == typeof(ResourceXmlReader) || ofObjectToReturn == typeof(XmlTextReader))
-				{	
-					return new ResourceXmlReader(assembly, resourceName);
-				}
-				else if (ofObjectToReturn == typeof(Stream))
-				{
-					return assembly.GetManifestResourceStream(resourceName);
-				}
-			}
-			
+            Debug.Assert(ofObjectToReturn == null || ofObjectToReturn == typeof(Stream));
 			return assembly.GetManifestResourceStream(resourceName);
         }
 		
-		private static Assembly GetAssemblyFor(string host)
+		private static Assembly GetAssemblyFor(string assemblyName)
 		{
-			Assembly locatedAssembly = null;
-			
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				AssemblyName assemblyName = assembly.GetName();
-				
-				if (!assemblyName.Name.Equals(host, StringComparison.CurrentCultureIgnoreCase))
-					continue;
-				
-				locatedAssembly = assembly;
-			}
-			
-			return locatedAssembly;
+            if (MonoHelper.IsMono)
+                //TODO: find out why Assembly.Load does not work on Mono
+                return MonoHelper.GetLoadedAssembly(assemblyName);
+
+		    return Assembly.Load(assemblyName);
 		}
     }
 }

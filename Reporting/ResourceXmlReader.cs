@@ -5,6 +5,9 @@ using System.Xml;
 
 namespace TechTalk.SpecFlow.Reporting
 {
+    /// <summary>
+    /// XML reader for an embedded resource that uses the resource://assembly/resource base URI.
+    /// </summary>
     internal class ResourceXmlReader : XmlTextReader
     {
         private readonly string baseUri;

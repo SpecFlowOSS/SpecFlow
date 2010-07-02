@@ -196,6 +196,7 @@
     <Compile Include="Compatibility\ConfigurationErrorsException.cs" />
     <Compile Include="Compatibility\CultureInfoHelper.cs" />
     <Compile Include="Compatibility\EnumHelper.cs" />
+    <Compile Include="Compatibility\ExceptionHelper.cs" />
     <Compile Include="Compatibility\Stopwatch.cs" />
     <Compile Include="Configuration\ConfigDefaults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
