@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdeIntegration", "IdeIntegr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Vs2008Integration", "IdeIntegration\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj", "{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.TechTalk.SpecFlow", "IdeIntegration\MonoDevelopIntegration\MonoDevelop.TechTalk.SpecFlow.csproj", "{199D2315-F5BD-463C-B16A-BE31A845792B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -212,6 +214,16 @@ Global
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{199D2315-F5BD-463C-B16A-BE31A845792B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -227,5 +239,6 @@ Global
 		{1965463E-6972-4618-8E59-D3259AE7A125} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{E5C299D5-E7CC-4477-9A0B-4797B74BC88B} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E} = {55E45533-9AAA-41AB-B44F-7530799C9337}
+		{199D2315-F5BD-463C-B16A-BE31A845792B} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 	EndGlobalSection
 EndGlobal
