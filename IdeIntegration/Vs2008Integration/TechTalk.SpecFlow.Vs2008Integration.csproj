@@ -7,14 +7,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TechTalk.SpecFlow.VsIntegration</RootNamespace>
-    <AssemblyName>TechTalk.SpecFlow.VsIntegration</AssemblyName>
+    <RootNamespace>TechTalk.SpecFlow.Vs2008Integration</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.Vs2008Integration</AssemblyName>
     <SignAssembly>False</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ProjectGuid>{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}</ProjectGuid>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,10 +61,10 @@
     <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\StringExtensions.cs">
+    <Compile Include="..\..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\VersionInfo.cs">
+    <Compile Include="..\..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BaseCodeGenerator.cs" />
@@ -83,7 +83,6 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="SingleFileGeneratorSupportRegistrationAttribute.cs" />
-    <Compile Include="SpecFlowPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -112,11 +111,11 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
+    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>

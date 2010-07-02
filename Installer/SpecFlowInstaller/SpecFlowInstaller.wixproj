@@ -72,8 +72,8 @@
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\VsIntegration\TechTalk.SpecFlow.VsIntegration.csproj">
-      <Name>TechTalk.SpecFlow.VsIntegration</Name>
+    <ProjectReference Include="..\..\IdeIntegration\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj">
+      <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
       <Project>{5703ca95-a08a-46ae-ae24-db6b21fd6f7e}</Project>
       <Private>True</Private>
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
