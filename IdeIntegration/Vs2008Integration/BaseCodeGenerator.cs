@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace TechTalk.SpecFlow.VsIntegration
+namespace TechTalk.SpecFlow.Vs2008Integration
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [Guid("8EC3552F-9C6A-472f-8E64-630C7CAE0179")]

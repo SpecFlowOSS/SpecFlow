@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                PreserveStackTrace(ex);
+                ex.PreserveStackTrace();
                 throw ex;
             }
         }
@@ -158,21 +158,6 @@ namespace TechTalk.SpecFlow.Bindings
                 cultureInfo = FeatureContext.Current.FeatureInfo.Language;
             }
             return new CultureInfoScope(cultureInfo);
-        }
-
-        internal void PreserveStackTrace(Exception ex)
-        {
-            Type exceptionType = typeof(Exception);
-			
-			// Mono's implementation of System.Exception doesn't contain the method InternalPreserveStackTrace
-			if (Type.GetType("Mono.Runtime") != null)
-			{
-				exceptionType.GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(ex, ex.StackTrace + Environment.NewLine);
-			}
-			else
-			{
-				exceptionType.GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
-			}
         }
 
         #region extended action types

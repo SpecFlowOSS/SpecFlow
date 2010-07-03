@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using VSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 
-namespace TechTalk.SpecFlow.VsIntegration
+namespace TechTalk.SpecFlow.Vs2008Integration
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [Guid("800FD294-E1AF-4a80-AFF2-FFBCE664D020")]

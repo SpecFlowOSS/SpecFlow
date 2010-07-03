@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using VSLangProj80;
 
-namespace TechTalk.SpecFlow.VsIntegration
+namespace TechTalk.SpecFlow.Vs2008Integration
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [Guid("3C9CF10A-A9AB-4899-A0FB-4B3BE4A36C15")]
