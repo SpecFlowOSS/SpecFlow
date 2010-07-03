@@ -30,7 +30,7 @@ namespace GherkinFileClassifier
                 lexer.scan(fileContent, null, 0);
                 return gherkinListener.Classifications;
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
 /*
                 var errorClassificationType = registry.GetClassificationType("error");
