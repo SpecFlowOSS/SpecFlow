@@ -27,6 +27,13 @@ namespace ParserTests
         {
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
             CanParseFile(Path.Combine(folder, "simple.feature"));
+        }       
+        
+        [Test]
+        public void CanGenerateAsterisksFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanParseFile(Path.Combine(folder, "asterisks.feature"));
         }
 
         [Test]
