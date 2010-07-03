@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
@@ -146,7 +147,7 @@ namespace TechTalk.SpecFlow
             if (ObjectContainer.ScenarioContext.TestError == null)
                 throw new InvalidOperationException("test failed with an unknown error");
 
-            PreserveStackTrace(ObjectContainer.ScenarioContext.TestError);
+            ObjectContainer.ScenarioContext.TestError.PreserveStackTrace();
             throw ObjectContainer.ScenarioContext.TestError;
         }
 
@@ -395,11 +396,6 @@ namespace TechTalk.SpecFlow
             }
 
             return matches;
-        }
-
-        internal void PreserveStackTrace(Exception ex)
-        {
-            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
         }
 
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)

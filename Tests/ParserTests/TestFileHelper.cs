@@ -29,7 +29,8 @@ namespace ParserTests
         public static string GetProjectLocation()
         {
             string dllLocation = Path.GetDirectoryName(GetAssemblyPath(typeof(TestFileHelper)));
-            return Path.Combine(dllLocation, @"..\..\..\ParserTests");
+			string parserTestsLocation = String.Format("..{0}..{0}..{0}ParserTests", Path.DirectorySeparatorChar);
+            return Path.Combine(dllLocation, parserTestsLocation);
         }
 
         public static string ReadFile(string fileName)

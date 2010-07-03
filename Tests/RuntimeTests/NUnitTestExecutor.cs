@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -48,14 +49,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                PreserveStackTrace(ex);
+                ex.PreserveStackTrace();
                 throw ex;
             }
-        }
-
-        internal static void PreserveStackTrace(Exception ex)
-        {
-            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
         }
 
         private static void ExecuteWithAttribute(object test, Type attributeType)

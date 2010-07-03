@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Template originator="SineSignal, LLC"
+		  created="2010/05/30"
+		  lastModified="2010/05/30">
+	<!-- Template Header -->
+	<TemplateConfiguration>
+		<_Name>SpecFlow Feature</_Name>
+		<Icon>res:SpecFlowFeatureIcon.ico</Icon>
+		<_Category>SpecFlow</_Category>
+		<_Description>Creates a SpecFlow Feature template.</_Description>
+	</TemplateConfiguration>
+	
+	<!-- Template Content -->
+	<TemplateFiles>
+		<File name="${Name}.feature" CustomTool="SpecFlowSingleFileGenerator">
+		<![CDATA[Feature: Addition
+	In order to avoid silly mistakes
+	As a math idiot
+	I want to be told the sum of two numbers
+	
+@mytag
+Scenario: Add two numbers
+	Given I have entered 50 into the calculator
+	And I have entered 70 into the calculator
+	When I press add
+	Then the result should be 120 on the screen]]>
+		</File>
+	</TemplateFiles>
+</Template>
