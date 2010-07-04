@@ -47,9 +47,10 @@ namespace TechTalk.SpecFlow.Reporting
             XsltArgumentList argumentList = new XsltArgumentList();
             argumentList.AddParam("feature-language", "", generatorConfiguration.FeatureLanguage.Name);
             argumentList.AddParam("tool-language", "", generatorConfiguration.ToolLanguage.Name);
-            using (var outFileStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
+            
+            using (var xmlTextWriter = new XmlTextWriter(outputFilePath, Encoding.UTF8))
             {
-                xslt.Transform(xmlOutputReader, argumentList, outFileStream, resourceResolver);
+				xslt.Transform(xmlOutputReader, argumentList, xmlTextWriter, resourceResolver);
             }            
         }
 
@@ -59,24 +60,6 @@ namespace TechTalk.SpecFlow.Reporting
                 return new ResourceXmlReader(reportType, reportName + ".xslt");
 
             return new XmlTextReader(xsltFile);
-        }
-
-        private static void Transform(this XslCompiledTransform xslt, XmlReader input, XsltArgumentList arguments, Stream results, XmlResolver documentResolver)
-        {
-            var command = xslt.GetType().GetField("command", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(xslt);
-
-            var executeMethod = command.GetType().GetMethod("Execute", new Type[] { typeof(XmlReader), typeof(XmlResolver), typeof(XsltArgumentList), typeof(Stream) });
-
-            try
-            {
-                executeMethod.Invoke(command, new object[] {input, documentResolver, arguments, results});
-            }
-            catch (TargetInvocationException invEx)
-            {
-                var ex = invEx.InnerException;
-                ex.PreserveStackTrace();
-                throw ex;
-            }
         }
     }
 }

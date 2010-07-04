@@ -34,13 +34,14 @@ namespace ReportingTests.StepDefinitions
 
         public SampleProjectInfo()
         {
+			string projectFolderLocation = String.Format("..{0}..{0}..{0}ReportingTest.SampleProject", Path.DirectorySeparatorChar);
             ProjectFolder = Path.GetFullPath(
-                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\..\ReportingTest.SampleProject"));
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), projectFolderLocation));
             ProjectFilePath = Path.Combine(ProjectFolder, @"ReportingTest.SampleProject.csproj");
 
-            NUnitXmlResultPath = Path.Combine(ProjectFolder, @"NUnitResult\TestResult.xml");
-            NUnitTextResultPath = Path.Combine(ProjectFolder, @"NUnitResult\TestResult.txt");
-            MsTestResultPath = Path.Combine(ProjectFolder, @"MsTestResult\TestResult.trx");
+            NUnitXmlResultPath = Path.Combine(ProjectFolder, String.Format("NUnitResult{0}TestResult.xml", Path.DirectorySeparatorChar));
+            NUnitTextResultPath = Path.Combine(ProjectFolder, String.Format("NUnitResult{0}TestResult.txt", Path.DirectorySeparatorChar));
+            MsTestResultPath = Path.Combine(ProjectFolder, String.Format("MsTestResult{0}TestResult.trx", Path.DirectorySeparatorChar));
 
             OutputFilePath = GenerateTempFilePath(".html");
         }

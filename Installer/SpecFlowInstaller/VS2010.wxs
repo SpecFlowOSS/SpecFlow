@@ -18,14 +18,14 @@
       </Directory>
 
       <Directory Id="Dir_VS2010_ItemTemplates" Name="VS2010_ItemTemplates">
-        <Directory Id="Dir_VS2010_ItemTemplates_CSharp" Name="CSharp" FileSource="$(var.TechTalk.SpecFlow.VsIntegration.TargetDir)">
+        <Directory Id="Dir_VS2010_ItemTemplates_CSharp" Name="CSharp" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
           <Component Id="Comp_VS2010ItemTemplates_CSharp" Guid="23464AB4-D785-48da-80D7-A817AA5D4152">
             <File Id="File_SpecFlowFeature.zip_VS2010" Name="SpecFlowFeature.zip" />
             <File Id="File_SpecFlowStepDefinition.zip_VS2010" Name="SpecFlowStepDefinition.zip" />
             <File Id="File_SpecFlowEventDefinition.zip_VS2010" Name="SpecFlowEventDefinition.zip" />
           </Component>
         </Directory>
-        <Directory Id="Dir_VS2010_ItemTemplates_VisualBasic" Name="VisualBasic" FileSource="$(var.TechTalk.SpecFlow.VsIntegration.TargetDir)">
+        <Directory Id="Dir_VS2010_ItemTemplates_VisualBasic" Name="VisualBasic" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
           <Component Id="Comp_VS2010ItemTemplates_VisualBasic" Guid="8074242F-AD50-4135-A3BF-69D468C440DF">
             <File Id="File_SpecFlowFeature_VB.zip_VS2010" Name="SpecFlowFeature_VB.zip" />
             <File Id="File_SpecFlowStepDefinition_VB.zip_VS2010" Name="SpecFlowStepDefinition_VB.zip" />
@@ -46,9 +46,9 @@
     <DirectoryRef Id="INSTALLLOCATION">
       <Component Id="Comp_VS2010Registry" Guid="88BDD46F-2005-48a0-A065-4DA9E40039A6">
         <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\CLSID\$(var.CLSID_SpecFlowSingleFileGenerator)" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="TechTalk.SpecFlow.VsIntegration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.VsIntegration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.VsIntegration.dll" Type="string" />
+          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.SpecFlowSingleFileGenerator" Type="string" />
+          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2008Integration.SpecFlowSingleFileGenerator" Type="string" />
+          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2008Integration.dll" Type="string" />
           <RegistryValue Name="InprocServer32" Value="C:\\Windows\\SYSTEM32\\MSCOREE.DLL" Type="string" />
           <RegistryValue Name="ThreadingModel" Value="Both" Type="string" />
         </RegistryKey>

@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                PreserveStackTrace(ex);
+                ex.PreserveStackTrace();
                 throw ex;
             }
         }
@@ -158,11 +158,6 @@ namespace TechTalk.SpecFlow.Bindings
                 cultureInfo = FeatureContext.Current.FeatureInfo.Language;
             }
             return new CultureInfoScope(cultureInfo);
-        }
-
-        internal void PreserveStackTrace(Exception ex)
-        {
-            typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(ex, new object[0]);
         }
 
         #region extended action types

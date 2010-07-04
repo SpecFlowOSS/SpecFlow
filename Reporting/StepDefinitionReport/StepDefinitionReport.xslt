@@ -7,7 +7,7 @@
                 exclude-result-prefixes="msxsl">
   <xsl:output method="html" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"/>
 
-  <xsl:include href="..\Common\Common.xslt"/>
+  <xsl:include href="../Common/Common.xslt"/>
 
   <xsl:param name="tool-text">
     <Language code="en">

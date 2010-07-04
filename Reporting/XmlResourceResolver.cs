@@ -1,8 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Xml;
+using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow.Reporting
 {
@@ -14,10 +15,19 @@ namespace TechTalk.SpecFlow.Reporting
                 return base.GetEntity(absoluteUri, role, ofObjectToReturn);
 
             string resourceName = absoluteUri.AbsolutePath.TrimStart(Path.AltDirectorySeparatorChar).Replace(Path.AltDirectorySeparatorChar, Type.Delimiter);
-            string assemblyName = absoluteUri.Host;
 
-            Assembly assembly = Assembly.Load(assemblyName);
-            return new ResourceXmlReader(assembly, resourceName);
+            Assembly assembly = GetAssemblyFor(absoluteUri.Host);
+            Debug.Assert(ofObjectToReturn == null || ofObjectToReturn == typeof(Stream));
+			return assembly.GetManifestResourceStream(resourceName);
         }
+		
+		private static Assembly GetAssemblyFor(string assemblyName)
+		{
+            if (MonoHelper.IsMono)
+                //TODO: find out why Assembly.Load does not work on Mono
+                return MonoHelper.GetLoadedAssembly(assemblyName);
+
+		    return Assembly.Load(assemblyName);
+		}
     }
 }
