@@ -12,15 +12,24 @@ Scenario Outline: Summary is included in the HTML result
 		Features	Success rate	Scenarios	Success		Failed	Pending		Ignored 
 		2 features	40%				5			2			1		1			1 
 	"""
-
 Examples:
 	| unittest	|
 	| NUnit		|
-	| MsTest	|
+#	| MsTest	| MsTest reports don't support ignored
 
-Scenario: Feature summary is included in the HTML result
-	Given there are NUnit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario: Summary is included in the HTML result (MsTest)
+	Given there are MsTest test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow MsTest execution report
+	Then a report generated containing
+	"""
+		Summary 
+		Features	Success rate	Scenarios	Success		Failed	Pending		Ignored 
+		2 features	50%				4			2			1		1			0 
+	"""
+
+Scenario Outline: Feature summary is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 		Feature Summary
@@ -28,11 +37,25 @@ Scenario: Feature summary is included in the HTML result
 		Feature with failing scenarios		0%				3			0			1		1			1
 		Feature with successful scenarios	100%			2			2			0		0			0
 	"""
+Examples:
+	| unittest	|
+	| NUnit		|
+#	| MsTest	| MsTest reports don't support ignored
 
+Scenario: Feature summary is included in the HTML result (MsTest)
+	Given there are MsTest test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow MsTest execution report
+	Then a report generated containing
+	"""
+		Feature Summary
+		Feature								Success rate	Scenarios	Success		Failed	Pending		Ignored		
+		Feature with failing scenarios		0%				2			0			1		1			0
+		Feature with successful scenarios	100%			2			2			0		0			0
+	"""
 
-Scenario: Successful test output is included in the HTML result
-	Given there are NUnit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario Outline: Successful test output is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 		Given I have a precondition that is successful
@@ -42,11 +65,14 @@ Scenario: Successful test output is included in the HTML result
 		Then I have a postcondition that is successful
 		-> done: StepDefinitions.GivenIHaveAPreconditionThatIs("successful") (0,0s)
 	"""
+Examples:
+	| unittest	|
+	| NUnit		|
+	| MsTest	|
 
-
-Scenario: Pending test output is included in the HTML result
-	Given there are NUnit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario Outline: Pending test output is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 		Given I have a pending precondition
@@ -61,23 +87,38 @@ Scenario: Pending test output is included in the HTML result
 				}
 			}
 	"""
+Examples:
+	| unittest	|
+	| NUnit		|
+	| MsTest	|
 
-
-Scenario: Failing test output is included in the HTML result
-	Given there are NUnit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario Outline: Failing test output is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 		Given I have a precondition that is failing
-		-> error: simulated failure
+		-> error:
 	"""
+	And a report generated containing
+	"""
+		simulated failure
+	"""
+Examples:
+	| unittest	|
+	| NUnit		|
+	| MsTest	|
 
-
-Scenario: Failing test exception is included in the HTML result
-	Given there are NUnit test execution results for the ReportingTest.SampleProject project
-	When I generate SpecFlow NUnit execution report
+Scenario Outline: Failing test exception is included in the HTML result
+	Given there are <unittest> test execution results for the ReportingTest.SampleProject project
+	When I generate SpecFlow <unittest> execution report
 	Then a report generated containing
 	"""
 simulated failure
 at ReportingTest.SampleProject.StepDefinitions.GivenIHaveAPreconditionThatIs(String result) in 
 	"""
+Examples:
+	| unittest	|
+	| NUnit		|
+	| MsTest	|
+

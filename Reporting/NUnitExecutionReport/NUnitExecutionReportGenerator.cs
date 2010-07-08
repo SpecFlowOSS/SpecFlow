@@ -1,35 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Xml;
-using System.Xml.Serialization;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport.ReportElements;
 
 namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
 {
-    public class NUnitExecutionReportGenerator
+    public class NUnitExecutionReportGenerator : NUnitBasedExecutionReportGenerator
     {
-        private ReportElements.NUnitExecutionReport report;
-        private readonly SpecFlowProject specFlowProject;
-        private readonly NUnitExecutionReportParameters reportParameters;        
+        private readonly NUnitExecutionReportParameters reportParameters;
+
+        protected override ReportParameters ReportParameters
+        {
+            get { return reportParameters; }
+        }
 
         public NUnitExecutionReportGenerator(NUnitExecutionReportParameters reportParameters)
         {            
-            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);            
             this.reportParameters = reportParameters;
         }
 
-        private void GenerateReport()
+        protected override void ExtendReport(ReportElements.NUnitExecutionReport report)
         {
-            report = new ReportElements.NUnitExecutionReport();
-            report.ProjectName = specFlowProject.ProjectName;
-            report.GeneratedAt = DateTime.Now.ToString("g", CultureInfo.InvariantCulture);
-
-            XmlDocument xmlTestResult = LoadXmlTestResult();
-            report.NUnitXmlTestResult = xmlTestResult.DocumentElement;
-
             if (File.Exists(reportParameters.LabelledTestOutput))
             {
                 using(var reader = new StreamReader(reportParameters.LabelledTestOutput))
@@ -42,7 +34,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
                     {
                         if (line.StartsWith("***"))
                         {
-                            CloseCurrentTest(testLines, currentTest);
+                            CloseCurrentTest(testLines, currentTest, report);
                             currentTest = line.Trim('*', ' ');
                         }
                         else
@@ -50,12 +42,12 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
                             testLines.Add(line);
                         }
                     }
-                    CloseCurrentTest(testLines, currentTest);
+                    CloseCurrentTest(testLines, currentTest, report);
                 }
             }
         }
 
-        private void CloseCurrentTest(List<string> testLines, string currentTest)
+        private void CloseCurrentTest(List<string> testLines, string currentTest, ReportElements.NUnitExecutionReport report)
         {
             if (testLines.Count > 0)
             {
@@ -68,7 +60,7 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             }
         }
 
-        private XmlDocument LoadXmlTestResult()
+        protected override XmlDocument LoadXmlTestResult()
         {
             XmlDocument xmlTestResult = new XmlDocument();
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
@@ -80,24 +72,5 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
             return xmlTestResult;
         }
 
-        private void TransformReport()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(ReportElements.NUnitExecutionReport), ReportElements.NUnitExecutionReport.XmlNamespace);
-
-            if (XsltHelper.IsXmlOutput(reportParameters.OutputFile))
-            {
-                XsltHelper.TransformXml(serializer, report, reportParameters.OutputFile);
-            }
-            else
-            {
-                XsltHelper.TransformHtml(serializer, report, GetType(), reportParameters.OutputFile, specFlowProject.GeneratorConfiguration, reportParameters.XsltFile);
-            }
-        }
-
-        public void GenerateAndTransformReport()
-        {
-            GenerateReport();
-            TransformReport();
-        }
     }
 }

@@ -78,26 +78,36 @@ testRunner.Then("a report generated containing", "\tSummary \r\n\tFeatures\tSucc
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Summary is included in the HTML result")]
-        public virtual void SummaryIsIncludedInTheHTMLResult_MsTest()
+        [NUnit.Framework.DescriptionAttribute("Summary is included in the HTML result (MsTest)")]
+        public virtual void SummaryIsIncludedInTheHTMLResultMsTest()
         {
-            this.SummaryIsIncludedInTheHTMLResult("MsTest");
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Summary is included in the HTML result (MsTest)", ((string[])(null)));
+#line 20
+this.ScenarioSetup(scenarioInfo);
+#line 21
+testRunner.Given("there are MsTest test execution results for the ReportingTest.SampleProject proje" +
+                    "ct");
+#line 22
+testRunner.When("I generate SpecFlow MsTest execution report");
+#line hidden
+#line 23
+testRunner.Then("a report generated containing", "\tSummary \r\n\tFeatures\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\tIgnored \r\n\t2" +
+                    " features\t50%\t\t\t\t4\t\t\t2\t\t\t1\t\t1\t\t\t0 ", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+            testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Feature summary is included in the HTML result")]
-        public virtual void FeatureSummaryIsIncludedInTheHTMLResult()
+        public virtual void FeatureSummaryIsIncludedInTheHTMLResult(string unittest)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature summary is included in the HTML result", ((string[])(null)));
-#line 21
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 22
-testRunner.Given("there are NUnit test execution results for the ReportingTest.SampleProject projec" +
-                    "t");
-#line 23
-testRunner.When("I generate SpecFlow NUnit execution report");
+#line 31
+testRunner.Given(string.Format("there are {0} test execution results for the ReportingTest.SampleProject project", unittest));
+#line 32
+testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest));
 #line hidden
-#line 24
+#line 33
 testRunner.Then("a report generated containing", "\tFeature Summary\r\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t" +
                     "\tIgnored\t\t\r\n\tFeature with failing scenarios\t\t0%\t\t\t\t3\t\t\t0\t\t\t1\t\t1\t\t\t1\r\n\tFeature wi" +
                     "th successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)));
@@ -106,19 +116,44 @@ testRunner.Then("a report generated containing", "\tFeature Summary\r\n\tFeature
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
-        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult()
+        [NUnit.Framework.DescriptionAttribute("Feature summary is included in the HTML result")]
+        public virtual void FeatureSummaryIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.FeatureSummaryIsIncludedInTheHTMLResult("NUnit");
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Feature summary is included in the HTML result (MsTest)")]
+        public virtual void FeatureSummaryIsIncludedInTheHTMLResultMsTest()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature summary is included in the HTML result (MsTest)", ((string[])(null)));
+#line 45
+this.ScenarioSetup(scenarioInfo);
+#line 46
+testRunner.Given("there are MsTest test execution results for the ReportingTest.SampleProject proje" +
+                    "ct");
+#line 47
+testRunner.When("I generate SpecFlow MsTest execution report");
+#line hidden
+#line 48
+testRunner.Then("a report generated containing", "\tFeature Summary\r\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t" +
+                    "\tIgnored\t\t\r\n\tFeature with failing scenarios\t\t0%\t\t\t\t2\t\t\t0\t\t\t1\t\t1\t\t\t0\r\n\tFeature wi" +
+                    "th successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult(string unittest)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful test output is included in the HTML result", ((string[])(null)));
-#line 33
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 34
-testRunner.Given("there are NUnit test execution results for the ReportingTest.SampleProject projec" +
-                    "t");
-#line 35
-testRunner.When("I generate SpecFlow NUnit execution report");
+#line 57
+testRunner.Given(string.Format("there are {0} test execution results for the ReportingTest.SampleProject project", unittest));
+#line 58
+testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest));
 #line hidden
-#line 36
+#line 59
 testRunner.Then("a report generated containing", @"	Given I have a precondition that is successful
 	-> done: StepDefinitions.GivenIHaveAPreconditionThatIs(""successful"") (0,0s)
 	When I do something that works
@@ -130,19 +165,30 @@ testRunner.Then("a report generated containing", @"	Given I have a precondition 
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
-        public virtual void PendingTestOutputIsIncludedInTheHTMLResult()
+        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
+        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.SuccessfulTestOutputIsIncludedInTheHTMLResult("NUnit");
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
+        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.SuccessfulTestOutputIsIncludedInTheHTMLResult("MsTest");
+        }
+        
+        public virtual void PendingTestOutputIsIncludedInTheHTMLResult(string unittest)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pending test output is included in the HTML result", ((string[])(null)));
-#line 47
+#line 73
 this.ScenarioSetup(scenarioInfo);
-#line 48
-testRunner.Given("there are NUnit test execution results for the ReportingTest.SampleProject projec" +
-                    "t");
-#line 49
-testRunner.When("I generate SpecFlow NUnit execution report");
+#line 74
+testRunner.Given(string.Format("there are {0} test execution results for the ReportingTest.SampleProject project", unittest));
+#line 75
+testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest));
 #line hidden
-#line 50
+#line 76
 testRunner.Then("a report generated containing", @"	Given I have a pending precondition
 	-> No matching step definition found for the step. Use the following code to create one:
 		[Binding]
@@ -159,42 +205,81 @@ testRunner.Then("a report generated containing", @"	Given I have a pending preco
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
-        public virtual void FailingTestOutputIsIncludedInTheHTMLResult()
+        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
+        public virtual void PendingTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.PendingTestOutputIsIncludedInTheHTMLResult("NUnit");
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
+        public virtual void PendingTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.PendingTestOutputIsIncludedInTheHTMLResult("MsTest");
+        }
+        
+        public virtual void FailingTestOutputIsIncludedInTheHTMLResult(string unittest)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test output is included in the HTML result", ((string[])(null)));
-#line 66
+#line 95
 this.ScenarioSetup(scenarioInfo);
-#line 67
-testRunner.Given("there are NUnit test execution results for the ReportingTest.SampleProject projec" +
-                    "t");
-#line 68
-testRunner.When("I generate SpecFlow NUnit execution report");
+#line 96
+testRunner.Given(string.Format("there are {0} test execution results for the ReportingTest.SampleProject project", unittest));
+#line 97
+testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest));
 #line hidden
-#line 69
-testRunner.Then("a report generated containing", "\tGiven I have a precondition that is failing\r\n\t-> error: simulated failure", ((TechTalk.SpecFlow.Table)(null)));
+#line 98
+testRunner.Then("a report generated containing", "\tGiven I have a precondition that is failing\r\n\t-> error:", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 103
+testRunner.And("a report generated containing", "\tsimulated failure", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+            testRunner.CollectScenarioErrors();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
+        public virtual void FailingTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.FailingTestOutputIsIncludedInTheHTMLResult("NUnit");
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
+        public virtual void FailingTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.FailingTestOutputIsIncludedInTheHTMLResult("MsTest");
+        }
+        
+        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult(string unittest)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test exception is included in the HTML result", ((string[])(null)));
+#line 112
+this.ScenarioSetup(scenarioInfo);
+#line 113
+testRunner.Given(string.Format("there are {0} test execution results for the ReportingTest.SampleProject project", unittest));
+#line 114
+testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest));
+#line hidden
+#line 115
+testRunner.Then("a report generated containing", "simulated failure\r\nat ReportingTest.SampleProject.StepDefinitions.GivenIHaveAPrec" +
+                    "onditionThatIs(String result) in ", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
             testRunner.CollectScenarioErrors();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
-        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult()
+        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult_NUnit()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test exception is included in the HTML result", ((string[])(null)));
-#line 76
-this.ScenarioSetup(scenarioInfo);
-#line 77
-testRunner.Given("there are NUnit test execution results for the ReportingTest.SampleProject projec" +
-                    "t");
-#line 78
-testRunner.When("I generate SpecFlow NUnit execution report");
-#line hidden
-#line 79
-testRunner.Then("a report generated containing", "simulated failure\r\nat ReportingTest.SampleProject.StepDefinitions.GivenIHaveAPrec" +
-                    "onditionThatIs(String result) in ", ((TechTalk.SpecFlow.Table)(null)));
-#line hidden
-            testRunner.CollectScenarioErrors();
+            this.FailingTestExceptionIsIncludedInTheHTMLResult("NUnit");
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
+        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.FailingTestExceptionIsIncludedInTheHTMLResult("MsTest");
         }
     }
 }
