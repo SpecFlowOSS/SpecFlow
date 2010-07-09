@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,6 +36,14 @@
       <Project>{453d8014-b6cd-4e86-80a8-d59f59092334}</Project>
       <Private>True</Private>
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj">
+      <Name>TechTalk.SpecFlow.Vs2010Integration</Name>
+      <Project>{96294e6f-8875-4d12-8577-4ec83e60bd6c}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>
+      </RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
