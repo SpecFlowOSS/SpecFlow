@@ -2,20 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Windows.Media;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 
-namespace GherkinFileClassifier
+namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
-
     #region Provider definition
-    /// <summary>
-    /// This class causes a classifier to be added to the set of classifiers. Since 
-    /// the content type is set to "text", this classifier applies to all text files
-    /// </summary>
     [Export(typeof(IClassifierProvider))]
     [ContentType("gherkin")]
     internal class GherkinFileClassifierProvider : IClassifierProvider
@@ -38,11 +32,7 @@ namespace GherkinFileClassifier
     }
     #endregion //provider def
 
-    #region Classifier
-    /// <summary>
-    /// Classifier that classifies all text as an instance of the OrinaryClassifierType
-    /// </summary>
-    class GherkinFileClassifier : IClassifier
+    internal class GherkinFileClassifier : IClassifier
     {
         private readonly IClassificationTypeRegistryService classificationTypeRegistryService;
 
@@ -53,12 +43,12 @@ namespace GherkinFileClassifier
             BufferTagAggregatorFactoryService = bufferTagAggregatorFactoryService;
             this.classificationTypeRegistryService = classificationTypeRegistryService;
 
-            buffer.Changed += new EventHandler<TextContentChangedEventArgs>(buffer_Changed);
+            buffer.Changed += BufferChanged;
         }
 
         private IList<ClassificationSpan> lastClassification = null;
 
-        void buffer_Changed(object sender, TextContentChangedEventArgs e)
+        void BufferChanged(object sender, TextContentChangedEventArgs e)
         {
             var chStart = e.Changes.Min(ch => ch.NewPosition);
             var chEnd = e.Changes.Max(ch => ch.NewPosition + ch.NewLength);
@@ -107,12 +97,9 @@ namespace GherkinFileClassifier
             return lastClassification;
         }
 
-#pragma warning disable 67
         // This event gets raised if a non-text change would affect the classification in some way,
         // for example typing /* would cause the clssification to change in C# without directly
         // affecting the span.
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
-#pragma warning restore 67
     }
-    #endregion //Classifier
 }

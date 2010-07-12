@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
+using System.Text.RegularExpressions;
 using java.util;
 using gherkin;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 
-namespace GherkinFileClassifier
+namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     public class ListeningDoneException : Exception
     {
@@ -59,10 +58,17 @@ namespace GherkinFileClassifier
         private int startLine;
         private int endLine;
 
+        private bool inScenarioOutline = false;
+        private bool isInTable = false;
+
         private readonly IClassificationType keywordClassificationType;
         private readonly IClassificationType commentClassificationType;
         private readonly IClassificationType tagClassificationType;
         private readonly IClassificationType multilineTextClassificationType;
+        private readonly IClassificationType placeholderClassificationType;
+        private readonly IClassificationType scenarioTitleClassificationType;
+        private readonly IClassificationType tableCellClassificationType;
+        private readonly IClassificationType tableHeaderClassificationType;
 
         public SyntaxColoringListener(SnapshotSpan snapshotSpan, IClassificationTypeRegistryService registry)
         {
@@ -76,6 +82,10 @@ namespace GherkinFileClassifier
             commentClassificationType = registry.GetClassificationType("comment");
             tagClassificationType = registry.GetClassificationType("gherkin.tag");
             multilineTextClassificationType = registry.GetClassificationType("string");
+            placeholderClassificationType = registry.GetClassificationType("gherkin.placeholder");
+            scenarioTitleClassificationType = registry.GetClassificationType("gherkin.scenariotitle");
+            tableCellClassificationType = registry.GetClassificationType("gherkin.tablecell");
+            tableHeaderClassificationType = registry.GetClassificationType("gherkin.tableheader");
         }
 
         private int? GetEditorLine(int line)
@@ -87,6 +97,17 @@ namespace GherkinFileClassifier
 //                return null;
             return editorLine;
         }
+
+        private string GetLineText(int line)
+        {
+            var editorLine = GetEditorLine(line);
+            if (editorLine == null)
+                return null;
+
+            var snapshotLine = SnapshotSpan.Snapshot.GetLineFromLineNumber(editorLine.Value);
+            return snapshotLine.GetText();
+        }
+
 
         private void AddClassification(IClassificationType classificationType, int startIndex, int length)
         {
@@ -106,7 +127,7 @@ namespace GherkinFileClassifier
             AddClassification(classificationType, snapshotLine.Start, snapshotLine.LengthIncludingLineBreak);
         }
 
-        private void ColorizeLinePart(string lineTextPart, int line, IClassificationType classificationType)
+        private void ColorizeLinePart(string lineTextPart, int line, IClassificationType classificationType, int startIndex = 0)
         {
             var editorLine = GetEditorLine(line);
             if (editorLine == null)
@@ -114,11 +135,11 @@ namespace GherkinFileClassifier
 
             var snapshotLine = SnapshotSpan.Snapshot.GetLineFromLineNumber(editorLine.Value);
 
-            int startIndex = snapshotLine.GetText().IndexOf(lineTextPart);
-            if (startIndex < 0)
+            int lineTextPartStartIndex = snapshotLine.GetText().IndexOf(lineTextPart, startIndex);
+            if (lineTextPartStartIndex < 0)
                 return;
 
-            AddClassification(classificationType, snapshotLine.Start + startIndex, lineTextPart.Length);
+            AddClassification(classificationType, snapshotLine.Start + lineTextPartStartIndex, lineTextPart.Length);
         }
 
         public void location(string str, int line)
@@ -145,14 +166,18 @@ namespace GherkinFileClassifier
             RegisterKeyword(keyword, line);
         }
 
-        public void scenario(string keyword, string str2, string str3, int line)
+        public void scenario(string keyword, string name, string description, int line)
         {
+            inScenarioOutline = false;
             RegisterKeyword(keyword, line);
+            ColorizeLinePart(name, line, scenarioTitleClassificationType);
         }
 
-        public void scenarioOutline(string keyword, string str2, string str3, int line)
+        public void scenarioOutline(string keyword, string name, string description, int line)
         {
+            inScenarioOutline = true;
             RegisterKeyword(keyword, line);
+            ColorizeLinePart(name, line, scenarioTitleClassificationType);
         }
 
         public void examples(string keyword, string str2, string str3, int line)
@@ -160,9 +185,18 @@ namespace GherkinFileClassifier
             RegisterKeyword(keyword, line);
         }
 
+
+        private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
         public void step(string keyword, string text, int line)
         {
+            isInTable = false;
             RegisterKeyword(keyword, line);
+            if (inScenarioOutline)
+            {
+                var matches = placeholderRe.Matches(text);
+                foreach (Match match in matches)
+                    ColorizeLinePart(match.Value, line, placeholderClassificationType);
+            }
         }
 
         private void RegisterKeyword(string keyword, int line)
@@ -190,9 +224,28 @@ namespace GherkinFileClassifier
             
         }
 
-        public void row(List l, int line)
+        public void row(List list, int line)
         {
-            
+            var lineText = GetLineText(line);
+            if (lineText == null)
+                return;
+
+            string[] cells = new string[list.size()];
+            list.toArray(cells);
+
+            IClassificationType classificationType = isInTable ? tableCellClassificationType : tableHeaderClassificationType;
+            isInTable = true;
+
+            int startIndex = lineText.IndexOf('|');
+            if (startIndex < 0)
+                return;
+            foreach (var cell in cells)
+            {
+                ColorizeLinePart(cell.Trim(), line, classificationType, startIndex);
+                startIndex = lineText.IndexOf('|', startIndex + 1);
+                if (startIndex < 0)
+                    return;
+            }
         }
     }
 }
