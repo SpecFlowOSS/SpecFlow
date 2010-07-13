@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?include Common.wxi?>
+<?define CLSID_SpecFlowSingleFileGenerator = "{44F8C2E2-18A9-4B97-B830-6BCD0CAA161C}" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <ComponentGroup Id="CompGroup_VS2010">
-      <ComponentRef Id="Comp_Vs2010Integration_New" />
+      <ComponentRef Id="Comp_Vs2010Integration_Core" />
       <ComponentRef Id="Comp_Vs2010Integration_Extensions" />
       
       <ComponentRef Id="Comp_VS2010ItemTemplates_CSharp" />
@@ -15,7 +16,7 @@
 
     <!-- new VS2010 integration components -->
     <DirectoryRef Id="INSTALLLOCATION">
-      <Component Id="Comp_Vs2010Integration_New" Guid="122C987F-37FF-4383-AF8D-81325A218F31">
+      <Component Id="Comp_Vs2010Integration_Core" Guid="122C987F-37FF-4383-AF8D-81325A218F31">
         <File Id="specflowsetup.ico_VS2010" Name="specflowsetup.ico" Source="$(var.SetupResourcesDir)\specflowsetup.ico" />
         <File Id="specflow_preview.png_VS2010" Name="specflow_preview.png" Source="$(var.SetupResourcesDir)\specflow_preview.png" />
         <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.dll" />
@@ -78,9 +79,9 @@
     <DirectoryRef Id="INSTALLLOCATION">
       <Component Id="Comp_VS2010Registry" Guid="88BDD46F-2005-48a0-A065-4DA9E40039A6">
         <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\CLSID\$(var.CLSID_SpecFlowSingleFileGenerator)" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2008Integration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2008Integration.dll" Type="string" />
+          <RegistryValue Value="TechTalk.SpecFlow.Vs2010Integration.SpecFlowSingleFileGenerator" Type="string" />
+          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2010Integration.SpecFlowSingleFileGenerator" Type="string" />
+          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2010Integration.dll" Type="string" />
           <RegistryValue Name="InprocServer32" Value="C:\\Windows\\SYSTEM32\\MSCOREE.DLL" Type="string" />
           <RegistryValue Name="ThreadingModel" Value="Both" Type="string" />
         </RegistryKey>

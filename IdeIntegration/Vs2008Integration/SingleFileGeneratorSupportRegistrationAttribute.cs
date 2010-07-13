@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.Shell
 	/// 
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-	public sealed class SingleFileGeneratorSupportRegistrationAttribute : RegistrationAttribute
+    public sealed partial class SingleFileGeneratorSupportRegistrationAttribute : RegistrationAttribute
 	{
         private Guid _prjFacGuid;
 		/// <summary>

@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.VsIntegration.Common;
 using VSLangProj80;
 
-namespace TechTalk.SpecFlow.Vs2008Integration
+namespace TechTalk.SpecFlow.Vs2010Integration
 {
     [System.Runtime.InteropServices.ComVisible(true)]
-    [Guid("3C9CF10A-A9AB-4899-A0FB-4B3BE4A36C15")]
+    [Guid("44F8C2E2-18A9-4B97-B830-6BCD0CAA161C")]
     [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator),
       "C# XML Class Generator", vsContextGuids.vsContextGuidVCSProject,
       GeneratesDesignTimeSource = true)]
@@ -16,5 +16,9 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     [ProvideObject(typeof(SpecFlowSingleFileGenerator))]
     public class SpecFlowSingleFileGenerator : SpecFlowSingleFileGeneratorBase
     {
+        protected override void RefreshMsTestWindow()
+        {
+            //the automatic refresh of the test window causes problems in VS2010 -> skip
+        }
     }
 }

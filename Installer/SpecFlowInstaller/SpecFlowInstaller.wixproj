@@ -85,7 +85,8 @@
       <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
       <Project>{5703ca95-a08a-46ae-ae24-db6b21fd6f7e}</Project>
       <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
+      <RefProjectOutputGroups>
+      </RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
   </ItemGroup>
