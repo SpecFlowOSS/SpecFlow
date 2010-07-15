@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         private const string NUNIT_ASSEMBLY = "nunit.framework";
         private const string ASSERT_TYPE = "NUnit.Framework.Assert";
 
-        Action<string> assertInconclusive = null;
-        Action<string> assertIgnore = null;
+        Action<string, object[]> assertInconclusive = null;
+        Action<string, object[]> assertIgnore = null;
 
         public void TestInconclusive(string message)
         {
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
                 }
             }
 
-            assertInconclusive(message);
+            assertInconclusive(message, new object[0]);
         }
 
         public void TestIgnore(string message)
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
                 assertIgnore = UnitTestRuntimeProviderHelper.GetAssertMethod(NUNIT_ASSEMBLY, ASSERT_TYPE, "Ignore");
             }
 
-            assertIgnore(message);
+            assertIgnore(message, new object[0]);
         }
 
         public bool DelayedFixtureTearDown
