@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -8,15 +9,17 @@ using gherkin;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     internal class GherkinFileEditorParser
     {
-        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry)
+        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry, SpecFlowProject specFlowProject)
         {
             return buffer.Properties.GetOrCreateSingletonProperty(() =>
-                new GherkinFileEditorParser(buffer, classificationRegistry));
+                new GherkinFileEditorParser(buffer, classificationRegistry, specFlowProject));
         }
 
         private class IdleHandler
@@ -43,6 +46,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         }
 
         private readonly ITextBuffer buffer;
+        private readonly SpecFlowProject specFlowProject;
         public GherkinFileEditorInfo GherkinFileEditorInfo { get; set; }
 
         readonly TaskFactory parsingTaskFactory = new TaskFactory();
@@ -56,9 +60,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
-        public GherkinFileEditorParser(ITextBuffer buffer, IClassificationTypeRegistryService registry)
+        public GherkinFileEditorParser(ITextBuffer buffer, IClassificationTypeRegistryService registry, SpecFlowProject specFlowProject)
         {
             this.buffer = buffer;
+            this.specFlowProject = specFlowProject;
             this.buffer.Changed += BufferChanged;
 
             this.classifications = new GherkinFileEditorClassifications(registry);
@@ -145,7 +150,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 changeInfo.TextSnapshot.GetLineFromLineNumber(firstAffectedScenario.StartLine).Start;
 
             string fileContent = changeInfo.TextSnapshot.GetText(parseStartPosition, changeInfo.TextSnapshot.Length - parseStartPosition);
-            I18n languageService = GetLanguageService();
+            string fileHeader = changeInfo.TextSnapshot.GetText(0, parseStartPosition);
+            I18n languageService = GetLanguageService(fileHeader);
 
             ScenarioEditorInfo firstUnchangedScenario;
             var partialResult = DoParsePartial(fileContent, languageService, 
@@ -187,7 +193,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         private void FullParse(ChangeInfo changeInfo)
         {
             string fileContent = changeInfo.TextSnapshot.GetText();
-            I18n languageService = GetLanguageService();
+            I18n languageService = GetLanguageService(fileContent);
 
             var result = DoParse(fileContent, languageService, changeInfo.TextSnapshot);
 
@@ -286,9 +292,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             return DoParsePartial(fileContent, languageService, 0, out firstUnchangedScenario, textSnapshot, null, 0, 0);
         }
 
-        private I18n GetLanguageService()
+        private I18n GetLanguageService(string fileContent)
         {
-            return new I18n("en");
+            CultureInfo defaultLanguage = specFlowProject == null ? 
+                CultureInfo.GetCultureInfo("en-US") : 
+                specFlowProject.GeneratorConfiguration.FeatureLanguage;
+            var languageServices = new GherkinLanguageServices(defaultLanguage);
+
+            return languageServices.GetLanguageService(fileContent);
         }
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)

@@ -40,6 +40,9 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PublicAssemblies\EnvDTE.dll</HintPath>
     </Reference>
+    <Reference Include="envdte80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Gherkin">
       <HintPath>..\..\lib\gherkin\Gherkin.dll</HintPath>
     </Reference>
@@ -63,13 +66,21 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.Designer.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Editor, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v4.0\Microsoft.VisualStudio.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.9.0, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.Shell.9.0.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.Shell.9.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v4.0\Microsoft.VisualStudio.Shell.Immutable.10.0.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
@@ -94,6 +105,10 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.UI.Wpf">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -120,15 +135,16 @@
     <Compile Include="..\Vs2008Integration\BaseCodeGeneratorWithSite.cs">
       <Link>SingleFileGenerator\BaseCodeGeneratorWithSite.cs</Link>
     </Compile>
-    <Compile Include="..\Vs2008Integration\CodeGeneratorRegistrationAttribute.cs">
+    <None Include="..\Vs2008Integration\CodeGeneratorRegistrationAttribute.cs">
       <Link>SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Vs2008Integration\SingleFileGeneratorSupportRegistrationAttribute.cs">
+    </None>
+    <None Include="..\Vs2008Integration\SingleFileGeneratorSupportRegistrationAttribute.cs">
       <Link>SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs</Link>
-    </Compile>
+    </None>
     <Compile Include="..\Vs2008Integration\SpecFlowSingleFileGeneratorBase.cs">
       <Link>SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs</Link>
     </Compile>
+    <Compile Include="GherkinFileEditor\EditorExtensionProviderBase.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifierFormats.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassificationDefinition.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifier.cs" />

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using EnvDTE80;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -9,22 +10,20 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
+
     #region Provider definition
     [Export(typeof(IClassifierProvider))]
     [ContentType("gherkin")]
-    internal class GherkinFileClassifierProvider : IClassifierProvider
+    internal class GherkinFileClassifierProvider : EditorExtensionProviderBase, IClassifierProvider
     {
-        [Import]
-        internal IClassificationTypeRegistryService ClassificationRegistry = null; // Set via MEF
-
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
-            GherkinFileEditorParser parser = 
-                GherkinFileEditorParser.GetParser(buffer, ClassificationRegistry);
+            GherkinFileEditorParser parser = GetParser(buffer);
 
             return buffer.Properties.GetOrCreateSingletonProperty(() => 
                 new GherkinFileClassifier(parser));
         }
+
     }
     #endregion //provider def
 

@@ -14,15 +14,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [Export(typeof(ITaggerProvider))]
     [TagType(typeof(IOutliningRegionTag))]
     [ContentType("gherkin")]
-    internal sealed class OutliningTaggerProvider : ITaggerProvider
+    internal sealed class OutliningTaggerProvider : EditorExtensionProviderBase, ITaggerProvider
     {
-        [Import]
-        internal IClassificationTypeRegistryService ClassificationRegistry = null; // Set via MEF
-
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
-            GherkinFileEditorParser parser =
-                GherkinFileEditorParser.GetParser(buffer, ClassificationRegistry);
+            GherkinFileEditorParser parser = GetParser(buffer);
 
             return (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(() =>
                 new GherkinFileOutliningTagger(parser));
