@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
     internal class GherkinFileEditorParserListener : Listener
     {
-        private readonly int lineOffset;
+        private int lineOffset;
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileEditorInfo previousGherkinFileEditorInfo;
         private readonly ITextSnapshot textSnapshot;
@@ -32,6 +32,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         private readonly int changeLastLine;
         private readonly int changeLineDelta;
+
+        public int LineOffset
+        {
+            get { return lineOffset; }
+            set { lineOffset = value; }
+        }
 
         private bool isPartialParsing
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using gherkin;
@@ -176,6 +176,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TriggerChanges(partialResult, changeInfo, firstAffectedScenario, firstUnchangedScenario);
         }
 
+        private void FullParse(ChangeInfo changeInfo)
+        {
+            string fileContent = changeInfo.TextSnapshot.GetText();
+            I18n languageService = GetLanguageService();
+
+            var result = DoParse(fileContent, languageService, changeInfo.TextSnapshot);
+
+            TriggerChanges(result, changeInfo);
+        }
+
         private void TriggerChanges(GherkinFileEditorInfo gherkinFileEditorInfo, ChangeInfo changeInfo, ScenarioEditorInfo firstAffectedScenario = null, ScenarioEditorInfo firstUnchangedScenario = null)
         {
             this.GherkinFileEditorInfo = gherkinFileEditorInfo;
@@ -199,19 +209,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
-        private void FullParse(ChangeInfo changeInfo)
-        {
-            string fileContent = changeInfo.TextSnapshot.GetText();
-            I18n languageService = GetLanguageService();
-
-            var result = DoParse(fileContent, languageService, changeInfo.TextSnapshot);
-
-            TriggerChanges(result, changeInfo);
-        }
-
         private GherkinFileEditorInfo DoParsePartial(string fileContent, I18n languageService, int lineOffset, out ScenarioEditorInfo firstUnchangedScenario, ITextSnapshot textSnapshot, GherkinFileEditorInfo previousGherkinFileEditorInfo, int changeLastLine, int changeLineDelta)
         {
             var gherkinListener = new GherkinFileEditorParserListener(textSnapshot, classifications, previousGherkinFileEditorInfo, lineOffset, changeLastLine, changeLineDelta);
+            return DoScan(fileContent, textSnapshot, lineOffset, languageService, gherkinListener, 0, out firstUnchangedScenario);
+        }
+
+        private GherkinFileEditorInfo DoScan(string fileContent, ITextSnapshot textSnapshot, int lineOffset, I18n languageService, GherkinFileEditorParserListener gherkinListener, int errorRertyCount, out ScenarioEditorInfo firstUnchangedScenario)
+        {
+            const int MAX_ERROR_RETRY = 5;
+            const int NO_ERROR_RETRY_FOR_LINES = 5;
+
             firstUnchangedScenario = null;
             try
             {
@@ -222,13 +230,46 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             {
                 firstUnchangedScenario = partialListeningDoneException.FirstUnchangedScenario;
             }
-            catch (Exception ex)
+            catch(LexingError lexingError)
             {
-                Debug.WriteLine(ex, "PARSER ERROR");
-                //TODO: add error classification, continue
+                int? errorLine = GetErrorLine(lexingError, lineOffset);
+                if (errorLine != null && 
+                    errorLine.Value < textSnapshot.LineCount - NO_ERROR_RETRY_FOR_LINES &&
+                    errorRertyCount < MAX_ERROR_RETRY)
+                {
+                    //add error classification & continue
+
+                    var restartLineNumber = errorLine.Value + 1;
+                    int restartPosition = textSnapshot.GetLineFromLineNumber(restartLineNumber).Start;
+                    string restartFileContent = textSnapshot.GetText(restartPosition, textSnapshot.Length - restartPosition);
+
+                    gherkinListener.LineOffset = restartLineNumber;
+                    return DoScan(restartFileContent, textSnapshot, 
+                                  restartLineNumber, languageService, gherkinListener, 
+                                  errorRertyCount + 1,
+                                  out firstUnchangedScenario);
+                }
+            }
+// ReSharper disable EmptyGeneralCatchClause
+            catch
+// ReSharper restore EmptyGeneralCatchClause
+            {
+                // unknown error
             }
 
             return gherkinListener.GetResult();
+        }
+
+        private int? GetErrorLine(LexingError lexingError, int lineOffset)
+        {
+            Regex lineNoRe = new Regex(@"^Lexing error on line (?<lineno>\d+):");
+
+            var match = lineNoRe.Match(lexingError.Message);
+            if (!match.Success)
+                return null;
+
+            int parserdLine = int.Parse(match.Groups["lineno"].Value);
+            return parserdLine - 1 + lineOffset;
         }
 
         private GherkinFileEditorInfo DoParse(string fileContent, I18n languageService, ITextSnapshot textSnapshot)
