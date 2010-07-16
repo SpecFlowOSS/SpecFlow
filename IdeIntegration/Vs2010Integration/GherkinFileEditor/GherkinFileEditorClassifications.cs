@@ -10,19 +10,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public readonly IClassificationType MultilineText;
         public readonly IClassificationType Placeholder;
         public readonly IClassificationType ScenarioTitle;
+        public readonly IClassificationType FeatureTitle;
         public readonly IClassificationType TableCell;
         public readonly IClassificationType TableHeader;
+        public readonly IClassificationType Description;
 
         public GherkinFileEditorClassifications(IClassificationTypeRegistryService registry)
         {
-            Keyword = registry.GetClassificationType("keyword");
-            Comment = registry.GetClassificationType("comment");
+            Keyword = registry.GetClassificationType("gherkin.keyword");
+            Comment = registry.GetClassificationType("gherkin.comment");
             Tag = registry.GetClassificationType("gherkin.tag");
-            MultilineText = registry.GetClassificationType("string");
+            MultilineText = registry.GetClassificationType("gherkin.multilinetext");
             Placeholder = registry.GetClassificationType("gherkin.placeholder");
             ScenarioTitle = registry.GetClassificationType("gherkin.scenariotitle");
+            FeatureTitle = registry.GetClassificationType("gherkin.featuretitle");
             TableCell = registry.GetClassificationType("gherkin.tablecell");
             TableHeader = registry.GetClassificationType("gherkin.tableheader");
+            Description = registry.GetClassificationType("gherkin.description");
         }
     }
 }

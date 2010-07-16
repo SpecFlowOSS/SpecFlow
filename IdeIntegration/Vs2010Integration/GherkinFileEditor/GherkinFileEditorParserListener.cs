@@ -79,6 +79,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             return snapshotLine.GetText();
         }
 
+        private void DecreaseLineWhile(ref int regionEndLine, Predicate<string> predicate, int minLine = 0)
+        {
+            var lineText = GetLineText(regionEndLine);
+
+            while (regionEndLine > minLine && lineText != null && predicate(lineText))
+            {
+                regionEndLine--;
+                lineText = GetLineText(regionEndLine);
+            }
+        }
+
+        private void IncreaseLineWhile(ref int editorLine, Predicate<string> predicate, int maxLine = int.MaxValue)
+        {
+            maxLine = Math.Min(maxLine, textSnapshot.LineCount - 1);
+            var lineText = GetLineText(editorLine);
+
+            while (editorLine < maxLine && lineText != null && predicate(lineText))
+            {
+                editorLine++;
+                lineText = GetLineText(editorLine);
+            }
+        }
+
         private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
         {
             var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
@@ -142,11 +165,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             {
                 var regionEndLine = editorLine - 1;
                 // skip comments directly before next scenario start
-                DecreaseLineWhile(ref regionEndLine, lastScenario.KeywordLine,
-                    lineText => lineText.TrimStart().StartsWith("#"));
+                DecreaseLineWhile(ref regionEndLine,
+                    lineText => lineText.TrimStart().StartsWith("#"), lastScenario.KeywordLine);
                 // skip empty lines directly before next scenario start + comments
-                DecreaseLineWhile(ref regionEndLine, lastScenario.KeywordLine,
-                    lineText => string.IsNullOrWhiteSpace(lineText));
+                DecreaseLineWhile(ref regionEndLine,
+                    lineText => string.IsNullOrWhiteSpace(lineText), lastScenario.KeywordLine);
 
                 AddOutline(
                     lastScenario.KeywordLine,
@@ -154,17 +177,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                     lastScenario.FullTitle);
 
                 lastScenario.IsClosed = true;
-            }
-        }
-
-        private void DecreaseLineWhile(ref int regionEndLine, int minLine, Predicate<string> predicate)
-        {
-            var lineText = GetLineText(regionEndLine);
-
-            while (regionEndLine > minLine && lineText != null && predicate(lineText))
-            {
-                regionEndLine--;
-                lineText = GetLineText(regionEndLine);
             }
         }
 
@@ -210,6 +222,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             var editorLine = GetEditorLine(line);
             beforeFeature = false;
             RegisterKeyword(keyword, editorLine);
+            ColorizeLinePart(title, editorLine, classifications.FeatureTitle);
+            ColorizeDescription(description, editorLine);
+        }
+
+        private void ColorizeDescription(string description, int titleEditorLine)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+                return;
+
+            int descriptionStartLine = titleEditorLine + 1;
+            IncreaseLineWhile(ref descriptionStartLine,
+                lineText => string.IsNullOrWhiteSpace(lineText));
+
+            int lineCount = description.Count(c => c.Equals('\n')) + 1;
+            for (int currentLine = descriptionStartLine; currentLine < descriptionStartLine + lineCount; currentLine++)
+            {
+                ColorizeLine(currentLine, classifications.Description);
+            }
         }
 
         public void background(string keyword, string str2, string str3, int line)
@@ -218,30 +248,31 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             RegisterKeyword(keyword, GetEditorLine(line));
         }
 
-        public void scenario(string keyword, string name, string description, int line)
+        public void scenario(string keyword, string title, string description, int line)
         {
             var editorLine = GetEditorLine(line);
-            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, name);
+            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, title, description);
             scenario.IsScenarioOutline = false;
         }
 
-        public void scenarioOutline(string keyword, string name, string description, int line)
+        public void scenarioOutline(string keyword, string title, string description, int line)
         {
             var editorLine = GetEditorLine(line);
-            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, name);
+            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, title, description);
             scenario.IsScenarioOutline = true;
         }
 
-        private ScenarioEditorInfo ProcessScenario(int editorLine, string keyword, string name)
+        private ScenarioEditorInfo ProcessScenario(int editorLine, string keyword, string title, string description)
         {
             EnsureNewScenario(editorLine);
 
             RegisterKeyword(keyword, editorLine);
-            ColorizeLinePart(name, editorLine, classifications.ScenarioTitle);
+            ColorizeLinePart(title, editorLine, classifications.ScenarioTitle);
+            ColorizeDescription(description, editorLine);
 
             var scenario = gherkinFileEditorInfo.ScenarioEditorInfos.Last();
             scenario.KeywordLine = editorLine;
-            scenario.Title = name;
+            scenario.Title = title;
             scenario.Keyword = keyword;
             return scenario;
         }

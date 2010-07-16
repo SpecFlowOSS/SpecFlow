@@ -7,6 +7,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     // exports a classification format for the classification type gherkin.tag
     [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.keyword")]
+    [Name("gherkin.keyword")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinKeywordClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinKeywordClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Keyword"; 
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.tag
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.comment")]
+    [Name("gherkin.comment")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinCommentClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinCommentClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Comment";
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.tag
+    [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "gherkin.tag")]
     [Name("gherkin.tag")]
     [UserVisible(true)] //this should be visible to the end user
@@ -16,7 +44,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public GherkinTagClassificationFormat()
         {
             this.DisplayName = "Gherkin Tag"; 
-            this.ForegroundColor = Colors.Gray;
             this.IsItalic = true;
         }
     }
@@ -32,6 +59,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public GherkinPlaceholderClassificationFormat()
         {
             this.DisplayName = "Gherkin Scenario Outline Placeholder"; 
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.multilinetext
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.multilinetext")]
+    [Name("gherkin.multilinetext")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinMultilineTextClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinMultilineTextClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Multi-line Text Argument";
         }
     }
 
@@ -61,7 +102,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         {
             this.DisplayName = "Gherkin Table Header";
             this.IsItalic = true;
-            this.ForegroundColor = Colors.DarkGray;
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.description
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.description")]
+    [Name("gherkin.description")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinDescriptionClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinDescriptionClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Feature/Scenario Description";
+            this.IsItalic = true;
         }
     }
 
@@ -76,6 +131,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public GherkinScenarioTitleClassificationFormat()
         {
             this.DisplayName = "Gherkin Scenario Title"; 
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.placeholder
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.featuretitle")]
+    [Name("gherkin.featuretitle")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinFeatureTitleClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinFeatureTitleClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Feature Title"; 
         }
     }
 }
