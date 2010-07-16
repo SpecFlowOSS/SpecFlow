@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public GherkinFileEditorInfo GetResult()
         {
-            CloseScenario(textSnapshot.LineCount - 1);
+            CloseScenario(textSnapshot.LineCount);
 
             return gherkinFileEditorInfo;
         }
