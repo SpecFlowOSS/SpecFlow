@@ -6,6 +6,7 @@ using gherkin;
 using java.util;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Text.Tagging;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -62,6 +63,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public GherkinFileEditorInfo GetResult()
         {
+            CloseScenario(textSnapshot.LineCount - 1);
+
             return gherkinFileEditorInfo;
         }
 
@@ -74,6 +77,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         {
             var snapshotLine = textSnapshot.GetLineFromLineNumber(editorLine);
             return snapshotLine.GetText();
+        }
+
+        private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
+        {
+            var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
+
+            var tagSpans = lastScenario == null
+                               ? gherkinFileEditorInfo.HeaderOutliningRegions
+                               : lastScenario.OutliningRegions;
+
+            int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start;
+            int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
+            var span = new Span(startPosition, endPosition - startPosition);
+
+            if (hooverText == null)
+                hooverText = textSnapshot.GetText(span);
+
+            tagSpans.Add(new TagSpan<IOutliningRegionTag>(
+                             new SnapshotSpan(textSnapshot,
+                                              span),
+                             new OutliningRegionTag(false, false, collapseText, hooverText)));
         }
 
         private void AddClassification(IClassificationType classificationType, int startIndex, int length)
@@ -111,8 +135,43 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             ColorizeLinePart(keyword, editorLine, classifications.Keyword);
         }
 
+        private void CloseScenario(int editorLine)
+        {
+            var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
+            if (lastScenario != null && lastScenario.IsComplete && !lastScenario.IsClosed)
+            {
+                var regionEndLine = editorLine - 1;
+                // skip comments directly before next scenario start
+                DecreaseLineWhile(ref regionEndLine, lastScenario.KeywordLine,
+                    lineText => lineText.TrimStart().StartsWith("#"));
+                // skip empty lines directly before next scenario start + comments
+                DecreaseLineWhile(ref regionEndLine, lastScenario.KeywordLine,
+                    lineText => string.IsNullOrWhiteSpace(lineText));
+
+                AddOutline(
+                    lastScenario.KeywordLine,
+                    regionEndLine,
+                    lastScenario.FullTitle);
+
+                lastScenario.IsClosed = true;
+            }
+        }
+
+        private void DecreaseLineWhile(ref int regionEndLine, int minLine, Predicate<string> predicate)
+        {
+            var lineText = GetLineText(regionEndLine);
+
+            while (regionEndLine > minLine && lineText != null && predicate(lineText))
+            {
+                regionEndLine--;
+                lineText = GetLineText(regionEndLine);
+            }
+        }
+
         private void EnsureNewScenario(int editorLine)
         {
+            CloseScenario(editorLine);
+
             if (isPartialParsing && editorLine > changeLastLine)
             {
                 var firstUnchangedScenario =
@@ -183,6 +242,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             var scenario = gherkinFileEditorInfo.ScenarioEditorInfos.Last();
             scenario.KeywordLine = editorLine;
             scenario.Title = name;
+            scenario.Keyword = keyword;
             return scenario;
         }
 

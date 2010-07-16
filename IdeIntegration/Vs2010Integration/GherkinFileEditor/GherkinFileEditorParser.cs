@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 using gherkin;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Text.Tagging;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     internal class GherkinFileEditorParser
     {
+        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry)
+        {
+            return buffer.Properties.GetOrCreateSingletonProperty(() =>
+                new GherkinFileEditorParser(buffer, classificationRegistry));
+        }
+
         private class IdleHandler
         {
             private DateTime nextParseTime = DateTime.MinValue;
@@ -47,6 +54,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         private readonly GherkinFileEditorClassifications classifications;
 
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         public GherkinFileEditorParser(ITextBuffer buffer, IClassificationTypeRegistryService registry)
         {
@@ -190,22 +198,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         {
             this.GherkinFileEditorInfo = gherkinFileEditorInfo;
 
+            var textSnapshot = changeInfo.TextSnapshot;
+            int startPosition = 0;
+            if (firstAffectedScenario != null)
+                startPosition = textSnapshot.GetLineFromLineNumber(firstAffectedScenario.StartLine).Start;
+            int endPosition = textSnapshot.Length;
+            if (firstUnchangedScenario != null)
+                endPosition = textSnapshot.GetLineFromLineNumber(firstUnchangedScenario.StartLine).Start;
+            var snapshotSpan = new SnapshotSpan(textSnapshot, startPosition, endPosition - startPosition);
+
             if (ClassificationChanged != null)
             {
-                var textSnapshot = changeInfo.TextSnapshot;
-                int startPosition = 0;
-                if (firstAffectedScenario != null)
-                    startPosition = textSnapshot.GetLineFromLineNumber(firstAffectedScenario.StartLine).Start;
-                int endPosition = textSnapshot.Length;
-                if (firstUnchangedScenario != null)
-                    endPosition = textSnapshot.GetLineFromLineNumber(firstUnchangedScenario.StartLine).Start;
-
-                ClassificationChanged(this,
-                                      new ClassificationChangedEventArgs(
-                                          new SnapshotSpan(
-                                              textSnapshot,
-                                              startPosition,
-                                              endPosition - startPosition)));
+                ClassificationChanged(this, new ClassificationChangedEventArgs(snapshotSpan));
+            }
+            if (TagsChanged != null)
+            {
+                TagsChanged(this, new SnapshotSpanEventArgs(snapshotSpan));
             }
         }
 
@@ -268,7 +276,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             if (!match.Success)
                 return null;
 
-            int parserdLine = int.Parse(match.Groups["lineno"].Value);
+            int parserdLine = Int32.Parse(match.Groups["lineno"].Value);
             return parserdLine - 1 + lineOffset;
         }
 
@@ -293,6 +301,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             foreach (var scenarioEditorInfo in GherkinFileEditorInfo.ScenarioEditorInfos)
             {
                 result.AddRange(scenarioEditorInfo.ClassificationSpans);
+            }
+            return result;
+        }
+
+        public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        {
+            if (GherkinFileEditorInfo == null)
+                return new ITagSpan<IOutliningRegionTag>[0];
+
+            var result = new List<ITagSpan<IOutliningRegionTag>>();
+            result.AddRange(GherkinFileEditorInfo.HeaderOutliningRegions);
+            foreach (var scenarioEditorInfo in GherkinFileEditorInfo.ScenarioEditorInfos)
+            {
+                result.AddRange(scenarioEditorInfo.OutliningRegions);
             }
             return result;
         }

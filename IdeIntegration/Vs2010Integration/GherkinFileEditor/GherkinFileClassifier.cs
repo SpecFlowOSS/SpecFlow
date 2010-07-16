@@ -14,17 +14,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [ContentType("gherkin")]
     internal class GherkinFileClassifierProvider : IClassifierProvider
     {
-        /// <summary>
-        /// Import the classification registry to be used for getting a reference
-        /// to the custom classification type later.
-        /// </summary>
         [Import]
         internal IClassificationTypeRegistryService ClassificationRegistry = null; // Set via MEF
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
+            GherkinFileEditorParser parser = 
+                GherkinFileEditorParser.GetParser(buffer, ClassificationRegistry);
+
             return buffer.Properties.GetOrCreateSingletonProperty(() => 
-                new GherkinFileClassifier(buffer, ClassificationRegistry));
+                new GherkinFileClassifier(parser));
         }
     }
     #endregion //provider def
@@ -33,15 +32,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     {
         private readonly GherkinFileEditorParser parser;
 
-        internal GherkinFileClassifier(ITextBuffer buffer, IClassificationTypeRegistryService classificationTypeRegistryService)
+        public GherkinFileClassifier(GherkinFileEditorParser parser)
         {
-            parser = new GherkinFileEditorParser(buffer, classificationTypeRegistryService);
+            this.parser = parser;
 
             parser.ClassificationChanged += (sender, args) =>
-                                                {
-                                                    if (ClassificationChanged != null)
-                                                        ClassificationChanged(this, args);
-                                                };
+            {
+                if (ClassificationChanged != null)
+                    ClassificationChanged(this, args);
+            };
         }
 
         /// <summary>

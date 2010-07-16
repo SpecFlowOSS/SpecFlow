@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -87,11 +86,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     internal class GherkinFileEditorInfo
     {
         public List<ClassificationSpan> HeaderClassificationSpans { get; private set; }
+        public List<ITagSpan<IOutliningRegionTag>> HeaderOutliningRegions { get; set; }
         public List<ScenarioEditorInfo> ScenarioEditorInfos { get; private set; }
 
         public GherkinFileEditorInfo()
         {
             HeaderClassificationSpans = new List<ClassificationSpan>();
+            HeaderOutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
             ScenarioEditorInfos = new List<ScenarioEditorInfo>();
         }
     }
@@ -99,32 +100,47 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     internal class ScenarioEditorInfo
     {
         public string Title { get; set; }
+        public string Keyword { get; set; }
         public bool IsScenarioOutline { get; set; }
         public int StartLine { get; private set; }
         public int KeywordLine { get; set; }
-        public ITagSpan<IOutliningRegionTag> ScenarioOutliningRegion { get; set; }
+        public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; set; }
         public List<ClassificationSpan> ClassificationSpans { get; private set; }
+        public bool IsClosed { get; set; }
 
         public bool IsComplete
         {
             get { return Title != null; }
         }
 
+        public string FullTitle
+        {
+            get
+            {
+                return string.Format("{0}: {1}", Keyword, Title);
+            }
+        }
+
         public ScenarioEditorInfo(int startLine)
         {
             this.StartLine = startLine;
             this.ClassificationSpans = new List<ClassificationSpan>();
+            this.OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
+            this.IsClosed = false;
         }
 
         public ScenarioEditorInfo(ScenarioEditorInfo scenario, ITextSnapshot textSnapshot, int lineCountDelta, int positionDelta)
         {
             this.Title = scenario.Title;
+            this.Keyword = scenario.Keyword;
             this.IsScenarioOutline = scenario.IsScenarioOutline;
+            this.IsClosed = scenario.IsClosed;
             this.StartLine = scenario.StartLine + lineCountDelta;
             this.KeywordLine = scenario.KeywordLine + lineCountDelta;
-            this.ScenarioOutliningRegion = scenario.ScenarioOutliningRegion.Shift(textSnapshot, positionDelta);
             this.ClassificationSpans = new List<ClassificationSpan>(
                 scenario.ClassificationSpans.Select(cs => cs.Shift(textSnapshot, positionDelta)));
+            this.OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>(
+                scenario.OutliningRegions);
         }
     }
 
