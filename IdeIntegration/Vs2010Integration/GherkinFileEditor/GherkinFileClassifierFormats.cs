@@ -5,15 +5,6 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
-    // base format for values (table cell, multiline text, placeholder, etc.)
-    internal abstract class GherkinValueClassificationFormat : ClassificationFormatDefinition
-    {
-        protected GherkinValueClassificationFormat()
-        {
-            this.ForegroundColor = Color.FromRgb(163, 21, 21); // default color for strings
-        }
-    }
-
     // exports a classification format for the classification type gherkin.tag
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "gherkin.tag")]
@@ -36,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [Name("gherkin.placeholder")]
     [UserVisible(true)] //this should be visible to the end user
     [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-    internal sealed class GherkinPlaceholderClassificationFormat : GherkinValueClassificationFormat
+    internal sealed class GherkinPlaceholderClassificationFormat : ClassificationFormatDefinition
     {
         public GherkinPlaceholderClassificationFormat()
         {
@@ -50,7 +41,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [Name("gherkin.tablecell")]
     [UserVisible(true)] //this should be visible to the end user
     [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-    internal sealed class GherkinTableCellClassificationFormat : GherkinValueClassificationFormat
+    internal sealed class GherkinTableCellClassificationFormat : ClassificationFormatDefinition
     {
         public GherkinTableCellClassificationFormat()
         {

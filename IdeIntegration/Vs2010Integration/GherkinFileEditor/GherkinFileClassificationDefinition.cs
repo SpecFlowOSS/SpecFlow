@@ -26,6 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         // exports a classification type for the Gherkin Scenaroio Outline placeholders: gherkin.placeholder
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("gherkin.placeholder")]
+        [BaseDefinition("string")]
         internal static ClassificationTypeDefinition GherkinPlaceholderClassifierType = null;
 
         // exports a classification type for the Gherkin Table Header: gherkin.tableheader
@@ -36,6 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         // exports a classification type for the Gherkin Table Cell: gherkin.tablecell
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("gherkin.tablecell")]
+        [BaseDefinition("string")]
         internal static ClassificationTypeDefinition GherkinTableCellClassifierType = null;
 
         // exports a classification type for the Gherkin Scenario Title: gherkin.scenariotitle
