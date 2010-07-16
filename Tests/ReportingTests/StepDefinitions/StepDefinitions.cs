@@ -122,9 +122,13 @@ namespace ReportingTests.StepDefinitions
                 if (bodyMatch.Success)
                     value = value.Substring(0, bodyMatch.Index);
             }
-            var whitespaceRe = new Regex(@"\<.*?\>");
-            var result = whitespaceRe.Replace(value.Trim(), " ");
-            return result;
+            var htmlTagRe = new Regex(@"\<.*?\>");
+            value = htmlTagRe.Replace(value.Trim(), " ");
+
+            var nbspRe = new Regex(@"\&nbsp;", RegexOptions.IgnoreCase);
+            value = nbspRe.Replace(value, " ");
+
+            return value;
         }
 
         private string GenerateCustomXslt(string content, string templateFileName)
