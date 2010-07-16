@@ -21,63 +21,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Import]
         internal IClassificationTypeRegistryService ClassificationRegistry = null; // Set via MEF
 
-        [Import]
-        internal IBufferTagAggregatorFactoryService BufferTagAggregatorFactoryService { get; set; }
-
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
             return buffer.Properties.GetOrCreateSingletonProperty(() => 
-                new GherkinFileClassifier(buffer, ClassificationRegistry, BufferTagAggregatorFactoryService));
+                new GherkinFileClassifier(buffer, ClassificationRegistry));
         }
     }
     #endregion //provider def
 
     internal class GherkinFileClassifier : IClassifier
     {
-        private readonly IClassificationTypeRegistryService classificationTypeRegistryService;
+        private readonly GherkinFileEditorParser parser;
 
-        internal IBufferTagAggregatorFactoryService BufferTagAggregatorFactoryService { get; private set; }
-
-        internal GherkinFileClassifier(ITextBuffer buffer, IClassificationTypeRegistryService classificationTypeRegistryService, IBufferTagAggregatorFactoryService bufferTagAggregatorFactoryService)
+        internal GherkinFileClassifier(ITextBuffer buffer, IClassificationTypeRegistryService classificationTypeRegistryService)
         {
-            BufferTagAggregatorFactoryService = bufferTagAggregatorFactoryService;
-            this.classificationTypeRegistryService = classificationTypeRegistryService;
+            parser = new GherkinFileEditorParser(buffer, classificationTypeRegistryService);
 
-            buffer.Changed += BufferChanged;
-        }
-
-        private IList<ClassificationSpan> lastClassification = null;
-
-        void BufferChanged(object sender, TextContentChangedEventArgs e)
-        {
-            var chStart = e.Changes.Min(ch => ch.NewPosition);
-            var chEnd = e.Changes.Max(ch => ch.NewPosition + ch.NewLength);
-            var chSpan = new Span(chStart, chEnd);
-
-            SnapshotSpan allText = new SnapshotSpan(e.After, 0, e.After.Length);
-            var newClassification = SyntaxColorer.GetClassificationSpans(allText, classificationTypeRegistryService);
-
-            bool fullRefresh = false;
-
-            if (lastClassification != null)
-            {
-                var overlappingClassifications = lastClassification.Where(cs => cs.Span.OverlapsWith(chSpan)).Select(cs => cs.ClassificationType);
-                fullRefresh |= overlappingClassifications.Any(cl => cl.Classification.Equals("string", StringComparison.InvariantCultureIgnoreCase));
-            }
-            if (!fullRefresh)
-            {
-                var overlappingClassifications = newClassification.Where(cs => cs.Span.OverlapsWith(chSpan)).Select(cs => cs.ClassificationType);
-                fullRefresh |= overlappingClassifications.Any(cl => cl.Classification.Equals("string", StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            lastClassification = newClassification;
-
-            if (fullRefresh)
-            {
-                if (ClassificationChanged != null)
-                    ClassificationChanged(this, new ClassificationChangedEventArgs(
-                        new SnapshotSpan(e.After, 0, e.After.Length)));
-            }
+            parser.ClassificationChanged += (sender, args) =>
+                                                {
+                                                    if (ClassificationChanged != null)
+                                                        ClassificationChanged(this, args);
+                                                };
         }
 
         /// <summary>
@@ -88,13 +52,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
-            if (lastClassification == null)
-            {
-                SnapshotSpan allText = new SnapshotSpan(span.Snapshot, 0, span.Snapshot.Length);
-                lastClassification = SyntaxColorer.GetClassificationSpans(allText, classificationTypeRegistryService);
-            }
-
-            return lastClassification;
+            return parser.GetClassificationSpans(span);
         }
 
         // This event gets raised if a non-text change would affect the classification in some way,
