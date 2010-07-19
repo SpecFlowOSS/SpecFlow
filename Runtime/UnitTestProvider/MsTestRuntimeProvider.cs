@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 
         private const string ASSERT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.Assert";
 
-        Action<string> assertInconclusive = null;
+        Action<string, object[]> assertInconclusive = null;
         
         public virtual string AssemblyName
         {
@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
                 assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethod(AssemblyName, ASSERT_TYPE, "Inconclusive");
             }
 
-            assertInconclusive(message);
+            assertInconclusive(message, new object[0]);
         }
 
         public void TestIgnore(string message)

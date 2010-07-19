@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         private const string MSTEST_ASSEMBLY = "MbUnit";
         private const string ASSERT_TYPE = "MbUnit.Framework.Assert";
 
-        private Action<string> assertInconclusive;
+        private Action<string, object[]> assertInconclusive;
 
         #region IUnitTestRuntimeProvider Members
 
@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
                     .GetAssertMethod(MSTEST_ASSEMBLY, ASSERT_TYPE, "Inconclusive");
             }
 
-            assertInconclusive(message);
+            assertInconclusive(message, new object[0]);
         }
 
         public void TestIgnore(string message)
