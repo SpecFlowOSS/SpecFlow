@@ -18,7 +18,18 @@ namespace TechTalk.SpecFlow.Reporting
 
         }
 
-        public ResourceXmlReader(Assembly assembly, string resourceName) : base(GetResourceStream(assembly, resourceName))
+        public ResourceXmlReader(Assembly assembly, string resourceName) 
+            : this(assembly, resourceName, new NameTable())
+        {
+        }
+
+        public ResourceXmlReader(Type type, string resourceName, XmlNameTable nameTable)
+            : this(type.Assembly, type.Namespace + Type.Delimiter + resourceName, nameTable)
+        {
+        }
+
+        public ResourceXmlReader(Assembly assembly, string resourceName, XmlNameTable nameTable)
+            : base(GetResourceStream(assembly, resourceName), nameTable)
         {
             var resourcePath =
                 Path.GetFileNameWithoutExtension(resourceName).Replace(Type.Delimiter, Path.AltDirectorySeparatorChar) +
