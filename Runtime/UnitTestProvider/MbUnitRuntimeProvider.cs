@@ -16,10 +16,10 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             if (assertInconclusive == null)
             {
                 assertInconclusive = UnitTestRuntimeProviderHelper
-                    .GetAssertMethod(MSTEST_ASSEMBLY, ASSERT_TYPE, "Inconclusive");
+                    .GetAssertMethodWithFormattedMessage(MSTEST_ASSEMBLY, ASSERT_TYPE, "Inconclusive");
             }
 
-            assertInconclusive(message, new object[0]);
+            assertInconclusive("{0}", new object[] { message });
         }
 
         public void TestIgnore(string message)

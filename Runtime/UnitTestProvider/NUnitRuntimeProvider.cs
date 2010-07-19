@@ -17,28 +17,28 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             {
                 try
                 {
-                    assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethod(
+                    assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethodWithFormattedMessage(
                         NUNIT_ASSEMBLY, ASSERT_TYPE, "Inconclusive");
                 }
                 catch(SpecFlowException)
                 {
                     // for earlier nunit versions, where the Inconclusive was not supported yet
-                    assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethod(
+                    assertInconclusive = UnitTestRuntimeProviderHelper.GetAssertMethodWithFormattedMessage(
                         NUNIT_ASSEMBLY, ASSERT_TYPE, "Ignore");
                 }
             }
 
-            assertInconclusive(message, new object[0]);
+            assertInconclusive("{0}", new object[] { message });
         }
 
         public void TestIgnore(string message)
         {
             if (assertIgnore == null)
             {
-                assertIgnore = UnitTestRuntimeProviderHelper.GetAssertMethod(NUNIT_ASSEMBLY, ASSERT_TYPE, "Ignore");
+                assertIgnore = UnitTestRuntimeProviderHelper.GetAssertMethodWithFormattedMessage(NUNIT_ASSEMBLY, ASSERT_TYPE, "Ignore");
             }
 
-            assertIgnore(message, new object[0]);
+            assertIgnore("{0}", new object[] { message });
         }
 
         public bool DelayedFixtureTearDown

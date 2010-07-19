@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 {
     internal static class UnitTestRuntimeProviderHelper
     {
-        public static Action<string, object[]> GetAssertMethod(string assemblyName, string typeName, string methodName)
+        public static Action<string, object[]> GetAssertMethodWithFormattedMessage(string assemblyName, string typeName, string methodName)
         {
             Assembly msTestAssembly = Assembly.Load(assemblyName);
             Type assertType = msTestAssembly.GetType(typeName, true);
