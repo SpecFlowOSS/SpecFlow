@@ -1,7 +1,7 @@
 <VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
   <TemplateData>
-    <DefaultName>EventDefinition.cs</DefaultName>
-    <Name>SpecFlowEventDefinition</Name>
+    <DefaultName>EventDefinition.vb</DefaultName>
+    <Name>SpecFlow Event Definition</Name>
     <Description>SpecFlow Event Definition</Description>
     <ProjectType>VisualBasic</ProjectType>
     <SortOrder>10</SortOrder>
