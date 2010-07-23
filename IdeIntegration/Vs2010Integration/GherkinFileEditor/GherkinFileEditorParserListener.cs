@@ -163,18 +163,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
             if (lastScenario != null && lastScenario.IsComplete && !lastScenario.IsClosed)
             {
+                var regionStartLine = lastScenario.KeywordLine;
                 var regionEndLine = editorLine - 1;
                 // skip comments directly before next scenario start
                 DecreaseLineWhile(ref regionEndLine,
-                    lineText => lineText.TrimStart().StartsWith("#"), lastScenario.KeywordLine);
+                    lineText => lineText.TrimStart().StartsWith("#"), regionStartLine);
                 // skip empty lines directly before next scenario start + comments
                 DecreaseLineWhile(ref regionEndLine,
-                    lineText => string.IsNullOrWhiteSpace(lineText), lastScenario.KeywordLine);
+                    lineText => string.IsNullOrWhiteSpace(lineText), regionStartLine);
 
-                AddOutline(
-                    lastScenario.KeywordLine,
-                    regionEndLine,
-                    lastScenario.FullTitle);
+                if (regionEndLine > regionStartLine)
+                    AddOutline(
+                        regionStartLine,
+                        regionEndLine,
+                        lastScenario.FullTitle);
 
                 lastScenario.IsClosed = true;
             }
