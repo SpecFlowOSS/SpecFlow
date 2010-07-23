@@ -289,11 +289,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             isInTable = false;
 
             var editorLine = GetEditorLine(line);
+
+            RegisterKeyword(keyword, editorLine);
+
             var scenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
             if (scenario == null)
                 return;
-
-            RegisterKeyword(keyword, editorLine);
             if (scenario.IsScenarioOutline)
             {
                 var matches = placeholderRe.Matches(text);
