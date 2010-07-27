@@ -8,7 +8,7 @@
     <ComponentGroup Id="CompGroup_VS2010">
       <ComponentRef Id="Comp_Vs2010Integration_Core" />
       <ComponentRef Id="Comp_Vs2010Integration_Extensions" />
-      
+
       <ComponentRef Id="Comp_VS2010ItemTemplates_CSharp" />
       <ComponentRef Id="Comp_VS2010ItemTemplates_VisualBasic" />
       <ComponentRef Id="Comp_VS2010Registry" />
@@ -23,26 +23,32 @@
         <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\extension.vsixmanifest" />
       </Component>
 
-      <Directory Id="Dir_VS2010_Extensions" Name="Dir_VS2010_Extensions">
-        <Directory Id="Dir_VS2010_Extensions_TechTalk" Name="TechTalk">
-          <Directory Id="Dir_VS2010_Extensions_TechTalk_SpecFlow" Name="SpecFlow">
-            <Component Id="Comp_Vs2010Integration_Extensions" Guid="F7D7B2E6-6490-4BA9-A2EB-53E4095831A0">
-              <Shortcut Id="Shortcut_extension.vsixmanifest_VS2010"
-                        Name="extension.vsixmanifest"
-                        Target="[INSTALLLOCATION]extension.vsixmanifest"
-                        WorkingDirectory="INSTALLLOCATION"/>
-                <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk_SpecFlow" On="uninstall"/>
-                <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk" On="uninstall"/>
-                <!--<RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>-->
-            </Component>
+      <Directory Id="Dir_VS2010_ROOT_FOLDER" Name="VS2010_Root">
+        <Directory Id="Dir_VS2010_Common7" Name="Common7">
+          <Directory Id="Dir_VS2010_IDE" Name="IDE">
+            <Directory Id="Dir_VS2010_Extensions" Name="Extensions">
+              <Directory Id="Dir_VS2010_Extensions_TechTalk" Name="TechTalk">
+                <Directory Id="Dir_VS2010_Extensions_TechTalk_SpecFlow" Name="SpecFlow">
+                  <Component Id="Comp_Vs2010Integration_Extensions" Guid="F7D7B2E6-6490-4BA9-A2EB-53E4095831A0">
+                    <Shortcut Id="Shortcut_extension.vsixmanifest_VS2010"
+                              Name="extension.vsixmanifest"
+                              Target="[INSTALLLOCATION]extension.vsixmanifest"
+                              WorkingDirectory="INSTALLLOCATION"/>
+                    <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk_SpecFlow" On="uninstall"/>
+                    <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk" On="uninstall"/>
+                    <!--<RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>-->
+                  </Component>
+                </Directory>
+              </Directory>
+            </Directory>
           </Directory>
         </Directory>
       </Directory>
     </DirectoryRef>
 
     <PropertyRef Id='VS2010_ROOT_FOLDER'/>
-    <SetDirectory Id="Dir_VS2010_Extensions" Value="[VS2010_ROOT_FOLDER]Common7\IDE\Extensions" Sequence="both" />
-
+    <SetDirectory Id="Dir_VS2010_ROOT_FOLDER" Value="[VS2010_ROOT_FOLDER]" Sequence="both" />     
+    
     <!-- project/item templates -->
 
     <DirectoryRef Id="INSTALLLOCATION">
