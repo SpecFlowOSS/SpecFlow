@@ -85,6 +85,7 @@
     <Compile Include="GherkinBuilder\TableBuilder.cs" />
     <Compile Include="GherkinBuilder\TextHelper.cs" />
     <Compile Include="GherkinLanguageServices.cs" />
+    <Compile Include="Gherkin\IGherkinListener.cs" />
     <Compile Include="SupportedLanguageHelper.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
