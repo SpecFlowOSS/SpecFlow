@@ -13,11 +13,11 @@ using Microsoft.VisualStudio.Shell.Interop;
 using VSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 
-namespace TechTalk.SpecFlow.Vs2008Integration
+namespace TechTalk.SpecFlow.VsIntegration.Common
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [Guid("800FD294-E1AF-4a80-AFF2-FFBCE664D020")]
-    public abstract class BaseCodeGeneratorWithSite : BaseCodeGenerator, VSOLE.IObjectWithSite
+    public abstract partial class BaseCodeGeneratorWithSite : BaseCodeGenerator, VSOLE.IObjectWithSite
     {
         private object site = null;
         private ServiceProvider serviceProvider = null;

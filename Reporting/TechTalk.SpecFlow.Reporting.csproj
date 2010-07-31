@@ -62,6 +62,9 @@
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
     <Compile Include="MsBuildProjectReader.cs" />
+    <Compile Include="MsTestExecutionReport\MsTestExecutionReportGenerator.cs" />
+    <Compile Include="MsTestExecutionReport\MsTestExecutedParameters.cs" />
+    <Compile Include="NUnitExecutionReport\NUnitBasedExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\NUnitExecutionReportGenerator.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\NUnitExecutionReport.cs" />
     <Compile Include="NUnitExecutionReport\ReportElements\ScenarioOutput.cs" />
@@ -87,7 +90,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Common\Common.xslt" />
     <EmbeddedResource Include="Common\GherkinElements.xslt" />
-    <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
+    <EmbeddedResource Include="MsTestExecutionReport\MsTestToNUnit.xslt" />
     <EmbeddedResource Include="StepDefinitionReport\StepDefinitionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +107,9 @@
     <EmbeddedResource Include="..\Languages.xml">
       <Link>Common\Languages.xml</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NUnitExecutionReport\NUnitExecutionReport.xslt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

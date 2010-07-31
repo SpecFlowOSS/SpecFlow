@@ -379,18 +379,22 @@
     <div class="bar">
       <xsl:if test="$successWidth != 0">
         <div class="success" style="width:{$successWidth}em" title="{msxsl:node-set($summary)/*/success} succeeded">
+          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$failureWidth != 0">
         <div class="failure" style="width:{$failureWidth}em" title="{msxsl:node-set($summary)/*/failure} failed">
+          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$pendingWidth != 0">
         <div class="pending" style="width:{$pendingWidth}em" title="{msxsl:node-set($summary)/*/pending} pending/not bound">
+          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
         </div>
       </xsl:if>
       <xsl:if test="$ignoredWidth != 0">
         <div class="ignored" style="width:{$ignoredWidth}em" title="{msxsl:node-set($summary)/*/ignored} ignored">
+          <xsl:text disable-output-escaping="yes"><![CDATA[&nbsp;]]></xsl:text>
         </div>
       </xsl:if>
     </div>

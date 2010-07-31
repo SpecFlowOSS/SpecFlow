@@ -24,11 +24,13 @@ namespace ReportingTests.StepDefinitions
         public string ProjectFolder { get; private set; }
         public string NUnitXmlResultPath { get; private set; }
         public string NUnitTextResultPath { get; private set; }
+        public string MsTestResultPath { get; private set; }
         public string CustomXslt { get; set; }
 
         public string OutputFilePath { get; private set; }
 
         public string ProjectFilePath { get; private set; }
+
 
         public SampleProjectInfo()
         {
@@ -39,6 +41,7 @@ namespace ReportingTests.StepDefinitions
 
             NUnitXmlResultPath = Path.Combine(ProjectFolder, String.Format("NUnitResult{0}TestResult.xml", Path.DirectorySeparatorChar));
             NUnitTextResultPath = Path.Combine(ProjectFolder, String.Format("NUnitResult{0}TestResult.txt", Path.DirectorySeparatorChar));
+            MsTestResultPath = Path.Combine(ProjectFolder, String.Format("MsTestResult{0}TestResult.trx", Path.DirectorySeparatorChar));
 
             OutputFilePath = GenerateTempFilePath(".html");
         }

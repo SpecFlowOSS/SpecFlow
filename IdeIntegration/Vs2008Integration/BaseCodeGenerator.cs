@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace TechTalk.SpecFlow.Vs2008Integration
+namespace TechTalk.SpecFlow.VsIntegration.Common
 {
     [System.Runtime.InteropServices.ComVisible(true)]
     [Guid("8EC3552F-9C6A-472f-8E64-630C7CAE0179")]
-    public abstract class BaseCodeGenerator : IVsSingleFileGenerator
+    public abstract partial class BaseCodeGenerator : IVsSingleFileGenerator
     {
         private IVsGeneratorProgress codeGeneratorProgress;
         private string codeFileNameSpace = String.Empty;
@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             return VSConstants.S_OK;
         }
 
-        private void RefreshMsTestWindow()
+        protected virtual void RefreshMsTestWindow()
         {
             //refreshCmdGuid,cmdID is the command id of refresh command.
             Guid refreshCmdGuid = new Guid("{B85579AA-8BE0-4C4F-A850-90902B317571}");

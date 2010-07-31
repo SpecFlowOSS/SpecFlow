@@ -1,7 +1,7 @@
 <VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
   <TemplateData>
     <DefaultName>SpecFlowFeature.feature</DefaultName>
-    <Name>SpecFlowFeature</Name>
+    <Name>SpecFlow Feature File</Name>
     <Description>SpecFlow Feature</Description>
     <ProjectType>CSharp</ProjectType>
     <SortOrder>10</SortOrder>

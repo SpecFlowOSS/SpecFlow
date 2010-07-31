@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using gherkin;
-using java.lang;
 using TechTalk.SpecFlow.Parser.GherkinBuilder;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using Exception=System.Exception;
@@ -15,20 +12,20 @@ namespace TechTalk.SpecFlow.Parser
 {
     public class SpecFlowLangParser
     {
-        private readonly CultureInfo defaultLanguage;
+        private readonly GherkinLanguageServices languageServices;
 
         public SpecFlowLangParser(CultureInfo defaultLanguage)
         {
-            this.defaultLanguage = defaultLanguage;
+            this.languageServices = new GherkinLanguageServices(defaultLanguage);
         }
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
         {
             var fileContent = featureFileReader.ReadToEnd();
 
-            var language = GetLanguage(fileContent);
+            var language = languageServices.GetLanguage(fileContent);
 
-            I18n languageService = new I18n(language.CompatibleGherkinLanguage ?? language.Language);
+            I18n languageService = languageServices.GetLanguageService(language);
             var gherkinListener = new GherkinListener(languageService);
             Feature feature = Parse(fileContent, sourceFilePath, gherkinListener, languageService);
 
@@ -59,19 +56,6 @@ namespace TechTalk.SpecFlow.Parser
                 gherkinListener.RegisterError(new ErrorDetail(ex));
             }
             return null;
-        }
-
-        static private readonly Regex languageRe = new Regex(@"^\s*#\s*language:\s*(?<lang>[\w-]+)\s*\n");
-        private LanguageInfo GetLanguage(string fileContent)
-        {
-            string langName = defaultLanguage.Name;
-            var langMatch = languageRe.Match(fileContent);
-            if (langMatch.Success)
-                langName = langMatch.Groups["lang"].Value;
-
-            LanguageInfo languageInfo = 
-                SupportedLanguageHelper.GetSupportedLanguage(langName);
-            return languageInfo;
         }
     }
 }
