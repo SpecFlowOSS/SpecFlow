@@ -30,7 +30,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         {
             const int MAX_ERROR_RETRY = 5;
             const int SKIP_LINES_BEFORE_RETRY = 1;
-            const int NO_ERROR_RETRY_FOR_LINES = 5;
 
             listenerExtender.LineOffset = startLine;
             var contentToScan = buffer.GetContentFrom(startLine);
@@ -40,18 +39,18 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                 Lexer lexer = languageService.lexer(listenerExtender);
                 lexer.scan(contentToScan, null, 0);
             }
-            catch(ScanningCancelledException scanningCancelledException)
+            catch(ScanningCancelledException)
             {
                 throw;
             }
             catch (LexingError lexingError)
             {
-                int? errorLine = GetErrorLine(lexingError);
+                int? errorLine = GetErrorLine(lexingError, listenerExtender.LineOffset);
 
                 RegisterError(lexingError, errorLine, listenerExtender.GherkinListener);
 
                 if (errorLine != null &&
-                    errorLine.Value < buffer.LineCount - NO_ERROR_RETRY_FOR_LINES &&
+                    errorLine.Value + SKIP_LINES_BEFORE_RETRY <= buffer.LineCount - 1 &&
                     errorRertyCount < MAX_ERROR_RETRY)
                 {
                     var restartLineNumber = errorLine.Value + SKIP_LINES_BEFORE_RETRY;
@@ -84,14 +83,14 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         }
 
         static private readonly Regex lineNoRe = new Regex(@"^Lexing error on line (?<lineno>\d+):");
-        private int? GetErrorLine(LexingError lexingError)
+        private int? GetErrorLine(LexingError lexingError, int lineOffset)
         {
             var match = lineNoRe.Match(lexingError.Message);
             if (!match.Success)
                 return null;
 
             int parserdLine = Int32.Parse(match.Groups["lineno"].Value);
-            return parserdLine - 1 + buffer.LineOffset;
+            return parserdLine - 1 + lineOffset;
         }
 
         private string GetErrorMessage(LexingError lexingError)

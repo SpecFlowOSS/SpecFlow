@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void RegisterError(ErrorDetail errorDetail)
         {
-            Debug.WriteLine(string.Format("({0},{1}): {2}", errorDetail.Line, errorDetail.Column, errorDetail.Message));
+            //Debug.WriteLine(string.Format("({0},{1}): {2}", errorDetail.Line, errorDetail.Column, errorDetail.Message));
             Errors.Add(errorDetail);
         }
 
