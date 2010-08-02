@@ -37,14 +37,29 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return GherkinBuffer.EndPosition;
         }
 
-        private GherkinBufferSpan GetSingleLineSpan(int editorLine)
+        private GherkinBufferSpan GetSingleLineSpanIgnoreWhitespace(int editorLine)
         {
-            return GherkinBuffer.GetLineSpan(editorLine);
+            var startPosition = GetLineStartPositionIgnoreWhitespace(editorLine);
+            var endPosition = GetLineEndPositionIgnoreWhitespace(editorLine);
+            return new GherkinBufferSpan(startPosition, endPosition);
         }
 
-        private GherkinBufferPosition GetLineStartPosition(int editorLine)
+        static private readonly Regex nonWhitespaceRe = new Regex(@"\S");
+        private GherkinBufferPosition GetLineStartPositionIgnoreWhitespace(int editorLine)
         {
+            var firstNonWSPosition = GherkinBuffer.GetMatchForLine(nonWhitespaceRe, editorLine);
+            if (firstNonWSPosition != null)
+                return firstNonWSPosition;
             return GherkinBuffer.GetLineStartPosition(editorLine);
+        }
+
+        static private readonly Regex lastNonWhitespaceRe = new Regex(@"\s*$");
+        private GherkinBufferPosition GetLineEndPositionIgnoreWhitespace(int editorLine)
+        {
+            var lastNonWSPosition = GherkinBuffer.GetMatchForLine(lastNonWhitespaceRe, editorLine);
+            if (lastNonWSPosition != null && lastNonWSPosition.LinePosition > 0)
+                return lastNonWSPosition;
+            return GherkinBuffer.GetLineEndPosition(editorLine);
         }
 
         private static readonly Regex whitespaceOnlyRe = new Regex(@"^\s*$");
@@ -111,7 +126,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                 return StepKeyword.Given;
 
             if (languageService.keywords("when").contains(keyword))
-                return StepKeyword.Given;
+                return StepKeyword.When;
 
             if (languageService.keywords("then").contains(keyword))
                 return StepKeyword.Then;
@@ -152,7 +167,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         public void tag(string name, int line)
         {
             var editorLine = GetEditorLine(line);
-            var bufferSpan = GetSingleLineSpan(editorLine);
+            var bufferSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
 
             if (IsIncremental || afterFeature)
                 gherkinListener.ScenarioTag(name, bufferSpan);
@@ -163,7 +178,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         public void comment(string comment, int line)
         {
             var editorLine = GetEditorLine(line);
-            var bufferSpan = GetSingleLineSpan(editorLine);
+            var bufferSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             gherkinListener.Comment(comment, bufferSpan);
         }
 
@@ -177,7 +192,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             afterFeature = false;
 
             var editorLine = GetEditorLine(line);
-            var headerSpan = GetSingleLineSpan(editorLine);
+            var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             var descriptionSpan = GetDescriptionSpan(editorLine, description);
             gherkinListener.Feature(keyword, name, description, headerSpan, descriptionSpan);
         }
@@ -187,7 +202,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             ResetScenarioBlocks();
 
             var editorLine = GetEditorLine(line);
-            var headerSpan = GetSingleLineSpan(editorLine);
+            var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             var descriptionSpan = GetDescriptionSpan(editorLine, description);
             gherkinListener.Background(keyword, name, description, headerSpan, descriptionSpan);
         }
@@ -197,7 +212,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             ResetScenarioBlocks();
 
             var editorLine = GetEditorLine(line);
-            var headerSpan = GetSingleLineSpan(editorLine);
+            var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             var descriptionSpan = GetDescriptionSpan(editorLine, description);
             gherkinListener.Scenario(keyword, name, description, headerSpan, descriptionSpan);
         }
@@ -207,7 +222,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             ResetScenarioBlocks();
 
             var editorLine = GetEditorLine(line);
-            var headerSpan = GetSingleLineSpan(editorLine);
+            var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             var descriptionSpan = GetDescriptionSpan(editorLine, description);
             gherkinListener.ScenarioOutline(keyword, name, description, headerSpan, descriptionSpan);
         }
@@ -215,7 +230,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         public void examples(string keyword, string name, string description, int line)
         {
             var editorLine = GetEditorLine(line);
-            var headerSpan = GetSingleLineSpan(editorLine);
+            var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             var descriptionSpan = GetDescriptionSpan(editorLine, description);
             gherkinListener.Examples(keyword, name, description, headerSpan, descriptionSpan);
         }
@@ -225,7 +240,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             ResetStepArguments();
 
             var editorLine = GetEditorLine(line);
-            var stepSpan = GetSingleLineSpan(editorLine);
+            var stepSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
 
             StepKeyword stepKeyword = GetStepKeyword(keyword);
             ScenarioBlock scenarioBlock = CalculateScenarioBlock(stepKeyword);
@@ -244,16 +259,17 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             cellList.toArray(cells);
 
             var editorLine = GetEditorLine(line);
+            var rowSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
             GherkinBufferSpan[] cellSpans = GetCellSpans(editorLine, cells);
 
             if (!inTable)
             {
                 inTable = true;
-                gherkinListener.TableHeader(cells, cellSpans);
+                gherkinListener.TableHeader(cells, rowSpan, cellSpans);
             }
             else
             {
-                gherkinListener.TableRow(cells, cellSpans);
+                gherkinListener.TableRow(cells, rowSpan, cellSpans);
             }
         }
 
@@ -274,11 +290,11 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         {
             //TODO
             var editorLine = GetEditorLine(line);
-            var errorPosition = GetLineStartPosition(editorLine);
+            var errorPosition = GetLineStartPositionIgnoreWhitespace(editorLine);
 
             string message = string.Format("Parser error. State: {0}, Event: {1}", state, eventName);
 
-            gherkinListener.Error(message, errorPosition);
+            gherkinListener.Error(message, errorPosition, null);
         }
     }
 }

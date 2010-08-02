@@ -1,5 +1,6 @@
 ﻿using System;
 using gherkin;
+using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
@@ -22,6 +23,33 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             step.FilePosition = position;
         }
 
+        public StepBuilder(StepKeyword stepKeyword, string text, FilePosition position)
+        {
+            switch (stepKeyword)
+            {
+                case StepKeyword.Given:
+                    step = new Given();
+                    break;
+                case StepKeyword.When:
+                    step = new When();
+                    break;
+                case StepKeyword.Then:
+                    step = new Then();
+                    break;
+                case StepKeyword.And:
+                    step = new And();
+                    break;
+                case StepKeyword.But:
+                    step = new But();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            step.Text = text;
+            step.FilePosition = position;
+        }
+
         public ScenarioStep GetResult()
         {
             step.TableArg = tableBuilder.GetResult();
@@ -34,9 +62,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             step.MultiLineTextArgument = text;
         }
 
-        public void ProcessTableRow(string[] cells, int lineNumber)
+        public void ProcessTableRow(string[] cells, FilePosition rowPosition)
         {
-            tableBuilder.ProcessTableRow(cells, lineNumber);
+            tableBuilder.ProcessTableRow(cells, rowPosition);
         }
     }
 }

@@ -40,6 +40,10 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                 Lexer lexer = languageService.lexer(listenerExtender);
                 lexer.scan(contentToScan, null, 0);
             }
+            catch(ScanningCancelledException scanningCancelledException)
+            {
+                throw;
+            }
             catch (LexingError lexingError)
             {
                 int? errorLine = GetErrorLine(lexingError);
@@ -58,6 +62,15 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                         errorRertyCount + 1);
                 }
             }
+            catch(Exception ex)
+            {
+                RegisterError(ex, listenerExtender.GherkinListener);
+            }
+        }
+
+        private void RegisterError(Exception exception, IGherkinListener gherkinListener)
+        {
+            gherkinListener.Error(exception.Message, buffer.EndPosition, exception);
         }
 
         private void RegisterError(LexingError lexingError, int? errorLine, IGherkinListener gherkinListener)
@@ -67,7 +80,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                                                       ? buffer.EndPosition
                                                       : buffer.GetLineStartPosition(errorLine.Value);
 
-            gherkinListener.Error(message, errorPosition);
+            gherkinListener.Error(message, errorPosition, lexingError);
         }
 
         static private readonly Regex lineNoRe = new Regex(@"^Lexing error on line (?<lineno>\d+):");

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Parser.Gherkin
 {
@@ -29,10 +30,10 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         void FeatureTag(string name, GherkinBufferSpan bufferSpan);
         void ScenarioTag(string name, GherkinBufferSpan bufferSpan);
         void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan);
-        void TableHeader(string[] cells, GherkinBufferSpan[] cellSpans);
-        void TableRow(string[] cells, GherkinBufferSpan[] cellSpans);
+        void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans);
+        void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans);
         void MultilineText(string text, GherkinBufferSpan textSpan);
         void EOF(GherkinBufferPosition eofPosition);
-        void Error(string message, GherkinBufferPosition errorPosition);
+        void Error(string message, GherkinBufferPosition errorPosition, Exception exception);
     }
 }

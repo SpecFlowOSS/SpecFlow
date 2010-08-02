@@ -4,6 +4,6 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal interface ITableProcessor
     {
-        void ProcessTableRow(string[] row, int lineNumber);
+        void ProcessTableRow(string[] cells, FilePosition rowPosition);
     }
 }

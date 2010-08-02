@@ -32,9 +32,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             return new ExampleSet(text, exampleTable);
         }
 
-        public void ProcessTableRow(string[] row, int lineNumber)
+        public void ProcessTableRow(string[] row, FilePosition rowPosition)
         {
-            tableBuilder.ProcessTableRow(row, lineNumber);
+            tableBuilder.ProcessTableRow(row, rowPosition);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using gherkin;
@@ -63,6 +62,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void location(string uri, int offset)
         {
+            //TODO
             featureBuilder.SourceFilePath = uri;
         }
 
@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         {
             string[] rows = new string[list.size()];
             list.toArray(rows);
-            tableProcessor.ProcessTableRow(rows, line);
+            tableProcessor.ProcessTableRow(rows, new FilePosition(line));
         }
 
         public void pyString(string content, int line)
