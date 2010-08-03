@@ -153,6 +153,7 @@
     <Compile Include="GherkinFileEditor\GherkinFileEditorParser.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileEditorParserListener.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileOutliningTagger.cs" />
+    <Compile Include="GherkinFileEditor\PartialListeningDoneException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>

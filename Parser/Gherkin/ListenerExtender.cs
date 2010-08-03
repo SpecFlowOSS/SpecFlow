@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             var result = new GherkinBufferSpan[cells.Length];
             for (int cellIndex = 0; cellIndex < cells.Length; cellIndex++)
             {
-                if (cellSeparatorPositions.Length - 1 > cellIndex + 1)
+                if (cellSeparatorPositions.Length - 1 < cellIndex + 1)
                     break;
 
                 result[cellIndex] = new GherkinBufferSpan(
@@ -122,6 +122,8 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             this.languageService = languageService;
             this.gherkinListener = gherkinListener;
             this.GherkinBuffer = buffer;
+
+            gherkinListener.Init(buffer, IsIncremental);
         }
 
         private int GetLineCount(string text)
@@ -222,7 +224,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
         public void feature(string keyword, string name, string description, int line)
         {
-            afterFeature = false;
+            afterFeature = true;
 
             GherkinBufferSpan descriptionSpan;
             var headerSpan = ProcessComplexLanguageElement(line, description, out descriptionSpan);

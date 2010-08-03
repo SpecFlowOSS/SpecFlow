@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Parser.Gherkin
 {
-    internal class ScanningCancelledException : Exception
+    public class ScanningCancelledException : Exception
     {
         public ScanningCancelledException()
         {

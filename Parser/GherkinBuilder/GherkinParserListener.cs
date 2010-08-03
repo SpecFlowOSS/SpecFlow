@@ -50,6 +50,11 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             return new FilePosition(startPosition.Line + 1, startPosition.LinePosition + 1);
         }
 
+        public void Init(GherkinBuffer buffer, bool isPartialScan)
+        {
+            //nop;
+        }
+
         public void Comment(string commentText, GherkinBufferSpan commentSpan)
         {
             //nop;

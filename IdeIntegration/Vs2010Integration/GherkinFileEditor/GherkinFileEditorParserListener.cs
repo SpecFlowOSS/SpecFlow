@@ -2,43 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using gherkin;
-using java.util;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Parser.Gherkin;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
-    internal class PartialListeningDoneException : Exception
+    internal class GherkinFileEditorParserListener : IGherkinListener
     {
-        public ScenarioEditorInfo FirstUnchangedScenario { get; private set; }
-
-        public PartialListeningDoneException(ScenarioEditorInfo firstUnchangedScenario)
-        {
-            FirstUnchangedScenario = firstUnchangedScenario;
-        }
-    }
-
-    internal class GherkinFileEditorParserListener : Listener
-    {
-        private int lineOffset;
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileEditorInfo previousGherkinFileEditorInfo;
-        private readonly ITextSnapshot textSnapshot;
         private readonly GherkinFileEditorInfo gherkinFileEditorInfo;
 
-        private bool isInTable = false;
-        private bool beforeFeature = true;
+        private GherkinBuffer gherkinBuffer;
+        private readonly ITextSnapshot textSnapshot;
 
         private readonly int changeLastLine;
         private readonly int changeLineDelta;
-
-        public int LineOffset
-        {
-            get { return lineOffset; }
-            set { lineOffset = value; }
-        }
 
         private bool isPartialParsing
         {
@@ -48,17 +29,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
-        public GherkinFileEditorParserListener(ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, GherkinFileEditorInfo previousGherkinFileEditorInfo, int lineOffset, int changeLastLine, int changeLineDelta)
+        public GherkinFileEditorParserListener(ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, GherkinFileEditorInfo previousGherkinFileEditorInfo, int changeLastLine, int changeLineDelta)
         {
             this.textSnapshot = textSnapshot;
             this.changeLineDelta = changeLineDelta;
             this.changeLastLine = changeLastLine;
-            this.lineOffset = lineOffset;
             this.classifications = classifications;
             this.previousGherkinFileEditorInfo = previousGherkinFileEditorInfo;
             gherkinFileEditorInfo = new GherkinFileEditorInfo();
-
-            beforeFeature = !isPartialParsing;
         }
 
         public GherkinFileEditorInfo GetResult()
@@ -68,38 +46,61 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             return gherkinFileEditorInfo;
         }
 
-        private int GetEditorLine(int line)
+        private void AddClassification(IClassificationType classificationType, int startIndex, int length)
         {
-            return line - 1 + lineOffset;
+            var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
+
+            List<ClassificationSpan> classificationSpans = lastScenario == null
+                                                               ? gherkinFileEditorInfo.HeaderClassificationSpans
+                                                               : lastScenario.ClassificationSpans;
+            classificationSpans.Add(
+                new ClassificationSpan(
+                    new SnapshotSpan(textSnapshot, new Span(startIndex, length)),
+                    classificationType));
         }
 
-        private string GetLineText(int editorLine)
+        private void ColorizeSpan(GherkinBufferSpan span, IClassificationType classificationType)
         {
-            var snapshotLine = textSnapshot.GetLineFromLineNumber(editorLine);
-            return snapshotLine.GetText();
+            if (span == null)
+                return;
+
+            var startLine = textSnapshot.GetLineFromLineNumber(span.StartPosition.Line);
+            var endLine = span.StartPosition.Line == span.EndPosition.Line ? startLine :
+                textSnapshot.GetLineFromLineNumber(span.EndPosition.Line);
+            var startIndex = startLine.Start + span.StartPosition.LinePosition;
+
+            AddClassification(classificationType, 
+                startIndex, 
+                endLine.Start + span.EndPosition.LinePosition - startIndex);
         }
 
-        private void DecreaseLineWhile(ref int regionEndLine, Predicate<string> predicate, int minLine = 0)
+        private void ColorizeLinePart(string value, GherkinBufferSpan span, IClassificationType classificationType)
         {
-            var lineText = GetLineText(regionEndLine);
+            var textPosition = gherkinBuffer.IndexOfTextForLine(value, span.StartPosition.Line);
+            if (textPosition == null)
+                return;
 
-            while (regionEndLine > minLine && lineText != null && predicate(lineText))
-            {
-                regionEndLine--;
-                lineText = GetLineText(regionEndLine);
-            }
+            var textSpan = new GherkinBufferSpan(
+                textPosition,
+                textPosition.ShiftByCharacters(value.Length));
+            ColorizeSpan(textSpan, classificationType);
         }
 
-        private void IncreaseLineWhile(ref int editorLine, Predicate<string> predicate, int maxLine = int.MaxValue)
+        private void RegisterKeyword(string keyword, GherkinBufferSpan headerSpan)
         {
-            maxLine = Math.Min(maxLine, textSnapshot.LineCount - 1);
-            var lineText = GetLineText(editorLine);
+            var keywordSpan = new GherkinBufferSpan(headerSpan.StartPosition,
+                headerSpan.StartPosition.ShiftByCharacters(keyword.Length));
+            ColorizeSpan(keywordSpan, classifications.Keyword);
+        }
 
-            while (editorLine < maxLine && lineText != null && predicate(lineText))
-            {
-                editorLine++;
-                lineText = GetLineText(editorLine);
-            }
+        private void ColorizeKeywordLine(string keyword, GherkinBufferSpan headerSpan, IClassificationType classificationType)
+        {
+            RegisterKeyword(keyword, headerSpan);
+            //colorize the rest
+            var textSpan = new GherkinBufferSpan(
+                headerSpan.StartPosition.ShiftByCharacters(keyword.Length),
+                headerSpan.EndPosition);
+            ColorizeSpan(textSpan, classificationType);
         }
 
         private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
@@ -123,41 +124,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                              new OutliningRegionTag(false, false, collapseText, hooverText)));
         }
 
-        private void AddClassification(IClassificationType classificationType, int startIndex, int length)
-        {
-            var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
-
-            List<ClassificationSpan> classificationSpans = lastScenario == null
-                                                               ? gherkinFileEditorInfo.HeaderClassificationSpans
-                                                               : lastScenario.ClassificationSpans;
-            classificationSpans.Add(
-                new ClassificationSpan(
-                    new SnapshotSpan(textSnapshot, new Span(startIndex, length)),
-                    classificationType));
-        }
-
-        private void ColorizeLine(int editorLine, IClassificationType classificationType)
-        {
-            var snapshotLine = textSnapshot.GetLineFromLineNumber(editorLine);
-            AddClassification(classificationType, snapshotLine.Start, snapshotLine.LengthIncludingLineBreak);
-        }
-
-        private void ColorizeLinePart(string lineTextPart, int editorLine, IClassificationType classificationType, int startIndex = 0)
-        {
-            var snapshotLine = textSnapshot.GetLineFromLineNumber(editorLine);
-
-            int lineTextPartStartIndex = snapshotLine.GetText().IndexOf(lineTextPart, startIndex);
-            if (lineTextPartStartIndex < 0)
-                return;
-
-            AddClassification(classificationType, snapshotLine.Start + lineTextPartStartIndex, lineTextPart.Length);
-        }
-
-        private void RegisterKeyword(string keyword, int editorLine)
-        {
-            ColorizeLinePart(keyword, editorLine, classifications.Keyword);
-        }
-
+        private static readonly Regex commentRe = new Regex(@"^\s*#");
+        private static readonly Regex whitespaceOnlyRe = new Regex(@"^\s*$");
         private void CloseScenario(int editorLine)
         {
             var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
@@ -166,11 +134,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 var regionStartLine = lastScenario.KeywordLine;
                 var regionEndLine = editorLine - 1;
                 // skip comments directly before next scenario start
-                DecreaseLineWhile(ref regionEndLine,
-                    lineText => lineText.TrimStart().StartsWith("#"), regionStartLine);
-                // skip empty lines directly before next scenario start + comments
-                DecreaseLineWhile(ref regionEndLine,
-                    lineText => string.IsNullOrWhiteSpace(lineText), regionStartLine);
+                while (gherkinBuffer.GetMatchForLine(commentRe, regionEndLine) != null)
+                    regionEndLine--;
+
+                // skip empty lines directly before next scenario start (+ comments)
+                while (gherkinBuffer.GetMatchForLine(whitespaceOnlyRe, regionEndLine) != null)
+                    regionEndLine--;
 
                 if (regionEndLine > regionStartLine)
                     AddOutline(
@@ -204,95 +173,75 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
-        public void location(string str, int line)
+        public void Init(GherkinBuffer buffer, bool isPartialScan)
         {
-
+            this.gherkinBuffer = buffer;
         }
 
-        public void tag(string tagName, int line)
+        public void Comment(string commentText, GherkinBufferSpan commentSpan)
         {
-            var editorLine = GetEditorLine(line);
-            if (!beforeFeature)
-            {
-                EnsureNewScenario(editorLine);
-            }
-            ColorizeLinePart(tagName, editorLine, classifications.Tag);
+            ColorizeSpan(commentSpan, classifications.Comment);
         }
 
-        public void feature(string keyword, string title, string description, int line)
+        public void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var editorLine = GetEditorLine(line);
-            beforeFeature = false;
-            RegisterKeyword(keyword, editorLine);
-            ColorizeLinePart(title, editorLine, classifications.FeatureTitle);
-            ColorizeDescription(description, editorLine);
+            ColorizeKeywordLine(keyword, headerSpan, classifications.FeatureTitle);
+            ColorizeSpan(descriptionSpan, classifications.Description);
         }
 
-        private void ColorizeDescription(string description, int titleEditorLine)
-        {
-            if (string.IsNullOrWhiteSpace(description))
-                return;
-
-            int descriptionStartLine = titleEditorLine + 1;
-            IncreaseLineWhile(ref descriptionStartLine,
-                lineText => string.IsNullOrWhiteSpace(lineText));
-
-            int lineCount = description.Count(c => c.Equals('\n')) + 1;
-            for (int currentLine = descriptionStartLine; currentLine < descriptionStartLine + lineCount; currentLine++)
-            {
-                ColorizeLine(currentLine, classifications.Description);
-            }
-        }
-
-        public void background(string keyword, string str2, string str3, int line)
+        public void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             //TODO: outline
-            RegisterKeyword(keyword, GetEditorLine(line));
+            RegisterKeyword(keyword, headerSpan);
         }
 
-        public void scenario(string keyword, string title, string description, int line)
+        public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var editorLine = GetEditorLine(line);
-            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, title, description);
+            //TODO: outline
+            RegisterKeyword(keyword, headerSpan);
+        }
+
+        public void Scenario(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        {
+            ScenarioEditorInfo scenario = ProcessScenario(keyword, name, headerSpan, descriptionSpan);
             scenario.IsScenarioOutline = false;
         }
 
-        public void scenarioOutline(string keyword, string title, string description, int line)
+        public void ScenarioOutline(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var editorLine = GetEditorLine(line);
-            ScenarioEditorInfo scenario = ProcessScenario(editorLine, keyword, title, description);
+            ScenarioEditorInfo scenario = ProcessScenario(keyword, name, headerSpan, descriptionSpan);
             scenario.IsScenarioOutline = true;
         }
 
-        private ScenarioEditorInfo ProcessScenario(int editorLine, string keyword, string title, string description)
+        private ScenarioEditorInfo ProcessScenario(string keyword, string name, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            EnsureNewScenario(editorLine);
+            EnsureNewScenario(headerSpan.StartPosition.Line);
 
-            RegisterKeyword(keyword, editorLine);
-            ColorizeLinePart(title, editorLine, classifications.ScenarioTitle);
-            ColorizeDescription(description, editorLine);
+            ColorizeKeywordLine(keyword, headerSpan, classifications.ScenarioTitle);
+            ColorizeSpan(descriptionSpan, classifications.Description);
 
             var scenario = gherkinFileEditorInfo.ScenarioEditorInfos.Last();
-            scenario.KeywordLine = editorLine;
-            scenario.Title = title;
+            scenario.KeywordLine = headerSpan.StartPosition.Line;
+            scenario.Title = name;
             scenario.Keyword = keyword;
             return scenario;
         }
 
-        public void examples(string keyword, string str2, string str3, int line)
+        public void FeatureTag(string name, GherkinBufferSpan tagSpan)
         {
-            //TODO: outline
-            RegisterKeyword(keyword, GetEditorLine(line));
+            ColorizeSpan(tagSpan, classifications.Tag);
+        }
+
+        public void ScenarioTag(string name, GherkinBufferSpan tagSpan)
+        {
+            EnsureNewScenario(tagSpan.StartPosition.Line);
+            ColorizeSpan(tagSpan, classifications.Tag);
         }
 
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
-        public void step(string keyword, string text, int line)
+        public void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            isInTable = false;
-
-            var editorLine = GetEditorLine(line);
-
-            RegisterKeyword(keyword, editorLine);
+            RegisterKeyword(keyword, stepSpan);
 
             var scenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
             if (scenario == null)
@@ -301,59 +250,39 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             {
                 var matches = placeholderRe.Matches(text);
                 foreach (Match match in matches)
-                    ColorizeLinePart(match.Value, editorLine, classifications.Placeholder);
+                    ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
         }
 
-        public void row(List cellList, int line)
+        public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            int editorLine = GetEditorLine(line);
-            var lineText = GetLineText(editorLine);
-            if (lineText == null)
-                return;
-
-            string[] cells = new string[cellList.size()];
-            cellList.toArray(cells);
-
-            IClassificationType classificationType = 
-                isInTable ? classifications.TableCell : classifications.TableHeader;
-            isInTable = true;
-
-            int startIndex = lineText.IndexOf('|');
-            if (startIndex < 0)
-                return;
-            foreach (var cell in cells)
+            foreach (var cellSpan in cellSpans)
             {
-                ColorizeLinePart(cell.Trim(), editorLine, classificationType, startIndex);
-                startIndex = lineText.IndexOf('|', startIndex + 1);
-                if (startIndex < 0)
-                    return;
+                ColorizeSpan(cellSpan, classifications.TableHeader);
             }
         }
 
-        public void pyString(string text, int line)
+        public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            int editorLine = GetEditorLine(line);
-            int lineCount = text.Count(c => c.Equals('\n')) + 1 + 2;
-            for (int currentLine = editorLine; currentLine < editorLine + lineCount; currentLine++)
+            foreach (var cellSpan in cellSpans)
             {
-                ColorizeLine(currentLine, classifications.MultilineText);
+                ColorizeSpan(cellSpan, classifications.TableCell);
             }
         }
 
-        public void comment(string commentText, int line)
+        public void MultilineText(string text, GherkinBufferSpan textSpan)
         {
-            ColorizeLine(GetEditorLine(line), classifications.Comment);
+            ColorizeSpan(textSpan, classifications.MultilineText);
         }
 
-        public void eof()
+        public void EOF(GherkinBufferPosition eofPosition)
         {
-
+            //nop;
         }
 
-        public void syntaxError(string str1, string str2, List l, int line)
+        public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
-
+            //TODO
         }
     }
 }

@@ -115,15 +115,16 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
         public IEnumerable<GherkinBufferPosition> GetMatchesForLine(Regex regex, int line)
         {
-            int startPosition = GetBufferPositionFromLine(line);
+            int lineStartPosition = GetBufferPositionFromLine(line);
             int length = GetLineLength(line);
+            int startPosition = lineStartPosition;
             int endPosition = startPosition + length;
             do
             {
                 var match = regex.Match(content, startPosition, length);
                 if (!match.Success)
                     yield break;
-                yield return new GherkinBufferPosition(this, line, match.Index - startPosition);
+                yield return new GherkinBufferPosition(this, line, match.Index - lineStartPosition);
                 startPosition = match.Index + 1;
                 length = endPosition - startPosition;
             } while (length > 0);
@@ -137,6 +138,16 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             if (!match.Success)
                 return null;
             return new GherkinBufferPosition(this, line, match.Index - startPosition);
+        }
+
+        public GherkinBufferPosition IndexOfTextForLine(string text, int line)
+        {
+            int startPosition = GetBufferPositionFromLine(line);
+            int length = GetLineLength(line);
+            var index = content.IndexOf(text, startPosition, length);
+            if (index < 0)
+                return null;
+            return new GherkinBufferPosition(this, line, index - startPosition);
         }
 
         public string GetContent()
