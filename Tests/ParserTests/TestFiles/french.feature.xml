@@ -5,31 +5,31 @@
     <Scenario xsi:type="ScenarioOutline">
       <Title>Addition de deux nombres</Title>
       <Description />
-      <FilePosition line="7" column="1" />
+      <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>une calculatrice</Text>
-          <FilePosition line="8" column="1" />
+          <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
-          <FilePosition line="9" column="1" />
+          <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que je tape sur la touche "+"</Text>
-          <FilePosition line="10" column="1" />
+          <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
-          <FilePosition line="11" column="1" />
+          <FilePosition line="11" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>je tape sur la touche "="</Text>
-          <FilePosition line="12" column="1" />
+          <FilePosition line="12" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>le résultat affiché doit être &lt;somme&gt;</Text>
-          <FilePosition line="13" column="1" />
+          <FilePosition line="13" column="5" />
         </ScenarioStep>
       </Steps>
       <Examples>
@@ -50,7 +50,7 @@
                     <Value>somme</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="16" column="1" />
+                <FilePosition line="16" column="7" />
               </Header>
               <Body>
                 <Row>
@@ -65,7 +65,7 @@
                       <Value>4</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="17" column="1" />
+                  <FilePosition line="17" column="7" />
                 </Row>
                 <Row>
                   <Cells>
@@ -79,7 +79,7 @@
                       <Value>5</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="18" column="1" />
+                  <FilePosition line="18" column="7" />
                 </Row>
               </Body>
             </Table>

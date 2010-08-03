@@ -25,7 +25,7 @@
                   <Value>error code</Value>
                 </Cell>
               </Cells>
-              <FilePosition line="5" column="1" />
+              <FilePosition line="5" column="2" />
             </Header>
             <Body>
               <Row>
@@ -43,7 +43,7 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="6" column="1" />
+                <FilePosition line="6" column="2" />
               </Row>
               <Row>
                 <Cells>
@@ -60,11 +60,11 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="7" column="1" />
+                <FilePosition line="7" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="4" column="1" />
+          <FilePosition line="4" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>there is a table argument</Text>
@@ -84,7 +84,7 @@
                   <Value>error code</Value>
                 </Cell>
               </Cells>
-              <FilePosition line="9" column="1" />
+              <FilePosition line="9" column="2" />
             </Header>
             <Body>
               <Row>
@@ -102,7 +102,7 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="10" column="1" />
+                <FilePosition line="10" column="2" />
               </Row>
               <Row>
                 <Cells>
@@ -119,11 +119,11 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="11" column="1" />
+                <FilePosition line="11" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="8" column="1" />
+          <FilePosition line="8" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>there is a table argument</Text>
@@ -143,7 +143,7 @@
                   <Value>error code</Value>
                 </Cell>
               </Cells>
-              <FilePosition line="13" column="1" />
+              <FilePosition line="13" column="2" />
             </Header>
             <Body>
               <Row>
@@ -161,7 +161,7 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="14" column="1" />
+                <FilePosition line="14" column="2" />
               </Row>
               <Row>
                 <Cells>
@@ -178,11 +178,11 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="15" column="1" />
+                <FilePosition line="15" column="2" />
               </Row>
             </Body>
           </TableArg>
-          <FilePosition line="12" column="1" />
+          <FilePosition line="12" column="3" />
         </ScenarioStep>
       </Steps>
     </Scenario>

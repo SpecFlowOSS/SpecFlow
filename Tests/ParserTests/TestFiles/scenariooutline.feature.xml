@@ -25,7 +25,7 @@
                   <Value>error code</Value>
                 </Cell>
               </Cells>
-              <FilePosition line="5" column="1" />
+              <FilePosition line="5" column="2" />
             </Header>
             <Body>
               <Row>
@@ -43,7 +43,7 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="6" column="1" />
+                <FilePosition line="6" column="2" />
               </Row>
               <Row>
                 <Cells>
@@ -60,7 +60,7 @@
                     <Value>OK</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="7" column="1" />
+                <FilePosition line="7" column="2" />
               </Row>
             </Body>
           </TableArg>
@@ -93,7 +93,7 @@
                     <Value>date2</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="12" column="1" />
+                <FilePosition line="12" column="2" />
               </Header>
               <Body>
                 <Row>
@@ -108,7 +108,7 @@
                       <Value>2009/09/14</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="13" column="1" />
+                  <FilePosition line="13" column="2" />
                 </Row>
                 <Row>
                   <Cells>
@@ -122,7 +122,7 @@
                       <Value>2009/09/15</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="14" column="1" />
+                  <FilePosition line="14" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -143,7 +143,7 @@
                     <Value>date2</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="17" column="1" />
+                <FilePosition line="17" column="2" />
               </Header>
               <Body>
                 <Row>
@@ -158,7 +158,7 @@
                       <Value>2009/09/14</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="18" column="1" />
+                  <FilePosition line="18" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -179,7 +179,7 @@
                     <Value>date2</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="22" column="1" />
+                <FilePosition line="22" column="2" />
               </Header>
               <Body>
                 <Row>
@@ -194,7 +194,7 @@
                       <Value>2009/09/14</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="23" column="1" />
+                  <FilePosition line="23" column="2" />
                 </Row>
               </Body>
             </Table>
@@ -215,7 +215,7 @@
                     <Value>date2</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="26" column="1" />
+                <FilePosition line="26" column="2" />
               </Header>
               <Body>
                 <Row>
@@ -230,7 +230,7 @@
                       <Value>2009/09/14</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="27" column="1" />
+                  <FilePosition line="27" column="2" />
                 </Row>
                 <Row>
                   <Cells>
@@ -244,7 +244,7 @@
                       <Value>2009/09/15</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="28" column="1" />
+                  <FilePosition line="28" column="2" />
                 </Row>
               </Body>
             </Table>

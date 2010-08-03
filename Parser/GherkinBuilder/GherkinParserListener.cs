@@ -47,8 +47,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         private FilePosition GetFilePosition(GherkinBufferPosition startPosition)
         {
-            //return new FilePosition(startPosition.Line + 1, startPosition.LinePosition + 1);
-            return new FilePosition(startPosition.Line + 1);
+            return new FilePosition(startPosition.Line + 1, startPosition.LinePosition + 1);
         }
 
         public void Comment(string commentText, GherkinBufferSpan commentSpan)
