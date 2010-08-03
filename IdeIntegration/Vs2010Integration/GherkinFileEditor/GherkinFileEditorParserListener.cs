@@ -193,12 +193,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         {
             //TODO: outline
             RegisterKeyword(keyword, headerSpan);
+            ColorizeSpan(descriptionSpan, classifications.Description);
         }
 
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             //TODO: outline
             RegisterKeyword(keyword, headerSpan);
+            ColorizeSpan(descriptionSpan, classifications.Description);
         }
 
         public void Scenario(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
