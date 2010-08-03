@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using Microsoft.CSharp;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Common;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;

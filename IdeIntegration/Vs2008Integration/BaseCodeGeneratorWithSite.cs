@@ -10,6 +10,7 @@ using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Designer.Interfaces;
 using Microsoft.VisualStudio.Shell.Interop;
+using TechTalk.SpecFlow.Common;
 using VSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 
@@ -84,6 +85,17 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                 }
             }
             return codeDomProvider;
+        }
+
+        protected override string GetGeneratedCodeForFailure(string errorMessage)
+        {
+            CodeDomHelper codeDomHelper = new CodeDomHelper(GetCodeProvider());
+
+            string[] messageLines = errorMessage.Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
+
+            var codeLines = messageLines.Select(codeDomHelper.GetErrorStatementString).ToArray();
+
+            return string.Join(Environment.NewLine, codeLines);
         }
 
         public static bool Failed(int hr)

@@ -70,8 +70,13 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var exampleBuilder = new ExampleBuilder(name, description, GetFilePosition(headerSpan.StartPosition));
+            var position = GetFilePosition(headerSpan.StartPosition);
+            var exampleBuilder = new ExampleBuilder(name, description, position);
             tableProcessor = exampleBuilder;
+
+            if (exampleProcessor == null)
+                throw new GherkinSemanticErrorException(
+                    "Examples can only be specified for a scenario outline.", position);
             exampleProcessor.ProcessExample(exampleBuilder);
         }
 
@@ -108,23 +113,47 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            stepBuilder = new StepBuilder(stepKeyword, text, GetFilePosition(stepSpan.StartPosition));
+            var position = GetFilePosition(stepSpan.StartPosition);
+            stepBuilder = new StepBuilder(stepKeyword, text, position);
             tableProcessor = stepBuilder;
+
+            if (stepProcessor == null)
+                throw new GherkinSemanticErrorException(
+                    "Steps can only be specified for scenarios or scenario outlines.", position);
+
             stepProcessor.ProcessStep(stepBuilder);
+        }
+
+        private void AssertTableProcessor(FilePosition position)
+        {
+            if (tableProcessor == null)
+                throw new GherkinSemanticErrorException(
+                    "Table argument can only be specified for steps and examples.", position);
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            tableProcessor.ProcessTableRow(cells, GetFilePosition(rowSpan.StartPosition));
+            var position = GetFilePosition(rowSpan.StartPosition);
+            AssertTableProcessor(position);
+
+            tableProcessor.ProcessTableRow(cells, position);
         }
 
         public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            tableProcessor.ProcessTableRow(cells, GetFilePosition(rowSpan.StartPosition));
+            var position = GetFilePosition(rowSpan.StartPosition);
+            AssertTableProcessor(position);
+
+            tableProcessor.ProcessTableRow(cells, position);
         }
 
         public void MultilineText(string text, GherkinBufferSpan textSpan)
         {
+            var position = GetFilePosition(textSpan.StartPosition);
+            if (stepBuilder == null)
+                throw new GherkinSemanticErrorException(
+                    "Multi-line step argument can only be specified for steps.", position);
+
             stepBuilder.SetMultilineArg(text);
         }
 

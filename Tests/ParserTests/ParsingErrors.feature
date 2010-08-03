@@ -27,6 +27,23 @@ Scenario: Wrongly spelled step keyword
 		| line	| error						|
 		| 5		| Parsing error near 'WhenX	|
 
+Scenario: Wrongly spelled scenario outline
+	Given there is a Gherkin file as
+	"""
+		Feature: Wrongly spelled scenario outline
+
+		@dummy_tag
+		Scenario OutlinX: Wrongly spelled scenario outline
+			Given something
+
+		Examples:
+			| something |
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error									|
+		| 4		| Parsing error near 'Scenario OutlinX	|
+
 Scenario: Table cell count mismatch
 	Given there is a Gherkin file as
 	"""

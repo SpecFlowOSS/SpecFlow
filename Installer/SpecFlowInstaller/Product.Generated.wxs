@@ -9,6 +9,7 @@
       <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Content" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Satellites" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Binaries" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Common.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Tools.Binaries" />
     </ComponentGroup>
   </Fragment>
