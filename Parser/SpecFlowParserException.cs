@@ -30,10 +30,6 @@ namespace TechTalk.SpecFlow.Parser
 
         public const string DefaultMessage = "Invalid Gherkin file!";
 
-        public SpecFlowParserException() : base(DefaultMessage)
-        {
-        }
-
         public SpecFlowParserException(List<ErrorDetail> errorDetails)
             : base(DefaultMessage)
         {

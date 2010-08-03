@@ -74,8 +74,8 @@
     <Compile Include="GherkinBuilder\BackgroundBuilder.cs" />
     <Compile Include="GherkinBuilder\ExampleBuilder.cs" />
     <Compile Include="GherkinBuilder\FeatureBuilder.cs" />
-    <Compile Include="GherkinBuilder\GherkinListener.cs" />
     <Compile Include="GherkinBuilder\GherkinParserListener.cs" />
+    <Compile Include="GherkinBuilder\GherkinSemanticErrorException.cs" />
     <Compile Include="GherkinBuilder\IExampleProcessor.cs" />
     <Compile Include="GherkinBuilder\IScenarioBuilder.cs" />
     <Compile Include="GherkinBuilder\IStepProcessor.cs" />
@@ -84,13 +84,13 @@
     <Compile Include="GherkinBuilder\ScenarioOutlineBuilder.cs" />
     <Compile Include="GherkinBuilder\StepBuilder.cs" />
     <Compile Include="GherkinBuilder\TableBuilder.cs" />
-    <Compile Include="GherkinBuilder\TextHelper.cs" />
     <Compile Include="GherkinLanguageServices.cs" />
     <Compile Include="Gherkin\GherkinBuffer.cs" />
     <Compile Include="Gherkin\GherkinScanner.cs" />
     <Compile Include="Gherkin\IGherkinListener.cs" />
     <Compile Include="Gherkin\ListenerExtender.cs" />
     <Compile Include="Gherkin\ScanningCancelledException.cs" />
+    <Compile Include="Gherkin\ScanningErrorException.cs" />
     <Compile Include="SupportedLanguageHelper.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />

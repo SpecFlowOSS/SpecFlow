@@ -10,8 +10,8 @@ Scenario: Wrongly spelled feature keyword
 	"""
 	When I parse the file
 	Then the the following errors are provided
-		| line	| error		|
-		| 1		| FeaturX	|
+		| line	| error							|
+		| 1		| Parsing error near 'FeaturX	|
 
 Scenario: Wrongly spelled step keyword
 	Given there is a Gherkin file as
@@ -24,24 +24,8 @@ Scenario: Wrongly spelled step keyword
 	"""
 	When I parse the file
 	Then the the following errors are provided
-		| line	| error	|
-		| 5		| WhenX	|
-
-Scenario: Restart parsing after a syntax error
-	Given there is a Gherkin file as
-	"""
-		Feature: misspelled step keyword
-
-		Scenario: misspelled step keyword 1
-			Given something
-			WhenX something is misspelled
-			ThenX something is also misspelled
-	"""
-	When I parse the file
-	Then the the following errors are provided
-		| line	| error	|
-		| 5		| WhenX	|
-		| 6		| ThenX	|
+		| line	| error						|
+		| 5		| Parsing error near 'WhenX	|
 
 Scenario: Table cell count mismatch
 	Given there is a Gherkin file as
@@ -56,22 +40,98 @@ Scenario: Table cell count mismatch
 	When I parse the file
 	Then the the following errors are provided
 		| line	| error																			|
-		| 6		| Number of cells in the row does not match the number of cells in the header!	|
+		| 6		| Number of cells in the row does not match the number of cells in the header	|
 
-Scenario: Restart parsing after a semantic error
+Scenario: Scenario outline without examples
 	Given there is a Gherkin file as
 	"""
-		Feature: Table cell count mismatch
+		Feature: Delayed semantic error
 
-		Scenario: Table cell count mismatch
-			Given a table
-				| h1 | h2 |
-				| c1 | c2 | c3 |
-				| c1 | c2 | c3 |
+		Scenario Outline: Scenario outline without examples
+			Given something
+
+		Scenario: proper scenario
+			Given something
 	"""
 	When I parse the file
 	Then the the following errors are provided
-		| line	| error																			|
-		| 6		| Number of cells in the row does not match the number of cells in the header!	|
-		| 7		| Number of cells in the row does not match the number of cells in the header!	|
+		| line	| error														|
+		| 3		| There are no examples defined for the scenario outline	|
+
+Scenario: Empty example set
+	Given there is a Gherkin file as
+	"""
+		Feature: Empty example set
+
+		Scenario Outline: Scenario outline without examples
+			Given <something>
+
+		Examples: 
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error			|
+		| 7		| Parsing error	|
+
+Scenario: Language not supported
+	Given there is a Gherkin file as
+	"""
+		#language: invalid-lang
+		Feature: Invalid language
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error																|
+		| 1		| The specified feature file language ('invalid') is not supported.	|
+
+Scenario: Duplicated scenario name
+	Given there is a Gherkin file as
+	"""
+		Feature: Duplicated scenario name
+
+		Scenario: Duplicated scenario
+			Given something
+
+		Scenario: Duplicated scenario 
+			Given something
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error																		|
+		| 6		| Feature file already contains a scenario with name 'Duplicated scenario'	|
+
+Scenario: Duplicated example set name
+	Given there is a Gherkin file as
+	"""
+		Feature: Duplicated example set name
+
+		Scenario Outline: Scenario outline
+			Given <something>
+
+		Examples: duplicated example set
+			| something |
+
+		Examples: duplicated example set
+			| something |
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error																				|
+		| 9		| Scenario outline already contains an example set name 'duplicated example set'	|
+
+Scenario: Duplicated background
+	Given there is a Gherkin file as
+	"""
+		Feature: Duplicated background
+
+		Background: 
+			Given something
+
+		Background: 
+			Given something else
+	"""
+	When I parse the file
+	Then the the following errors are provided
+		| line	| error													|
+		| 6		| Feature file already contains a background section.	|
 

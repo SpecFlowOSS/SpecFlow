@@ -4,6 +4,7 @@
   <Scenarios>
     <Scenario>
       <Title>två tal</Title>
+      <Description />
       <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
@@ -26,6 +27,7 @@
     </Scenario>
     <Scenario>
       <Title>tre tal</Title>
+      <Description />
       <FilePosition line="13" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

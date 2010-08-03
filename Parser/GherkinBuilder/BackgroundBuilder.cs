@@ -6,13 +6,20 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class BackgroundBuilder : IStepProcessor
     {
-        private readonly string text;
+        private readonly string name;
+        private readonly string description;
         private readonly FilePosition position;
         private readonly IList<StepBuilder> steps = new List<StepBuilder>();
 
+        public FilePosition Position
+        {
+            get { return position; }
+        }
+
         public BackgroundBuilder(string name, string description, FilePosition position)
         {
-            this.text = TextHelper.GetText(name, description);
+            this.name = name;
+            this.description = description;
             this.position = position;
         }
 
@@ -23,7 +30,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Background GetResult()
         {
-            return new Background(text, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
+            return new Background(name, description, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
         }
     }
 }

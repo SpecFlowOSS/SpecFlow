@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -22,6 +21,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         private readonly List<ErrorDetail> errors = new List<ErrorDetail>();
 
+        private Feature parsedResult;
+
         public GherkinParserListener(string filePath)
         {
             this.filePath = filePath;
@@ -32,21 +33,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             get { return errors; }
         }
 
-        public void RegisterError(int? line, int? column, string message)
-        {
-            var errorDetail = new ErrorDetail { Message = message, Line = line, Column = column };
-            RegisterError(errorDetail);
-        }
-
-        public void RegisterError(ErrorDetail errorDetail)
-        {
-            //Debug.WriteLine(string.Format("({0},{1}): {2}", errorDetail.Line, errorDetail.Column, errorDetail.Message));
-            Errors.Add(errorDetail);
-        }
-
         public Feature GetResult()
         {
-            return featureBuilder.GetResult();
+            return parsedResult;
         }
 
         private Tags FlushTags()
@@ -142,12 +131,18 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void EOF(GherkinBufferPosition eofPosition)
         {
-            //nop
+            parsedResult = featureBuilder.GetResult();
         }
 
         public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
-            RegisterError(errorPosition.Line + 1, errorPosition.LinePosition + 1, message);
+            var errorDetail = new ErrorDetail
+                                  {
+                                      Message = message,
+                                      Line = errorPosition.Line + 1,
+                                      Column = errorPosition.LinePosition + 1
+                                  };
+            errors.Add(errorDetail);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
@@ -20,15 +21,17 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     public class ExampleSet
     {
         public string Title { get; set; }
+        public string Description { get; set; }
         public Table Table { get; set; }
 
         public ExampleSet()
         {
         }
 
-        public ExampleSet(string title, Table table)
+        public ExampleSet(string title, string description, Table table)
         {
             Title = title ?? string.Empty;
+            Description = description;
             Table = table;
         }
     }

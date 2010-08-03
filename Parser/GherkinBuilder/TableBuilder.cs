@@ -22,13 +22,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
             if (tableRows.Count > 0 && tableRows[0].Cells.Length != row.Cells.Length)
             {
-                throw new SpecFlowParserException(
-                    new ErrorDetail
-                    {
-                        Line = row.FilePosition.Line,
-                        Column = row.FilePosition.Column,
-                        Message = "Number of cells in the row does not match the number of cells in the header!"
-                    });
+                throw new GherkinSemanticErrorException(
+                    "Number of cells in the row does not match the number of cells in the header.", row.FilePosition);
             }
 
             tableRows.Add(row);

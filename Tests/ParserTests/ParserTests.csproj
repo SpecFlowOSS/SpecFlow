@@ -51,6 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlingParserErrors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
+    </Compile>
     <Compile Include="ParsingErrors.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -66,6 +71,10 @@
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="HandlingParserErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
+    </None>
     <None Include="ParsingErrors.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ParsingErrors.feature.cs</LastGenOutput>

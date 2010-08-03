@@ -26,6 +26,7 @@
         </Tag>
       </Tags>
       <Title>a simple scenario</Title>
+      <Description />
       <FilePosition line="9" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

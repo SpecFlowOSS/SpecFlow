@@ -4,6 +4,7 @@
   <Scenarios>
     <Scenario>
       <Title>a scenario with a table argument</Title>
+      <Description />
       <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

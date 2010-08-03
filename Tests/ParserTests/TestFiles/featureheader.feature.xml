@@ -4,6 +4,7 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
+      <Description />
       <FilePosition line="10" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

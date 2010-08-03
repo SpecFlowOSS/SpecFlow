@@ -4,6 +4,7 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>Twee getallen optellen</Title>
+      <Description />
       <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
@@ -27,6 +28,7 @@
         <ExampleSets>
           <ExampleSet>
             <Title />
+            <Description />
             <Table>
               <Header>
                 <Cells>
