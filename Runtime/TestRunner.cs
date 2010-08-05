@@ -64,8 +64,12 @@ namespace TechTalk.SpecFlow
             FireEvents(BindingEvent.TestRunEnd, null);
         }
 
+        private FeatureInfo currentFeatureInfo;
+
         public void OnFeatureStart(FeatureInfo featureInfo)
         {
+            currentFeatureInfo = featureInfo;
+
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we automatically close 
             // the current feature if necessary
@@ -220,7 +224,7 @@ namespace TechTalk.SpecFlow
             return filterTags.Intersect(currentTags).Any();
         }
 
-        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching)
+        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching, bool isScoped)
         {
             Match match = stepBinding.Regex.Match(stepArgs.Text);
 
@@ -258,7 +262,7 @@ namespace TechTalk.SpecFlow
                 }
             }
 
-            return new BindingMatch(stepBinding, match, extraArgs, stepArgs);
+            return new BindingMatch(stepBinding, match, extraArgs, stepArgs, isScoped);
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];
@@ -343,9 +347,33 @@ namespace TechTalk.SpecFlow
         {
             List<BindingMatch> matches = new List<BindingMatch>();
 
-            foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
+            // look for Feature scoped steps for the current feature
+            var scopedStepBindings = bindingRegistry
+                .Where(b => b.Type == stepArgs.Type && b.IsScoped && b.FeatureName == currentFeatureInfo.Title);
+            foreach (StepBinding binding in scopedStepBindings)
             {
-                BindingMatch match = Match(binding, stepArgs, true);
+                BindingMatch match = Match(binding, stepArgs, true, true);
+                if (match == null)
+                    continue;
+
+                matches.Add(match);
+                if (!RuntimeConfiguration.Current.DetectAmbiguousMatches)
+                    break;
+            }
+
+            if (matches.Count > 1)
+            {
+                throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
+            }
+
+            if (matches.Count == 1)
+                return matches[0];
+
+            // if there are no scoped matches then look for the step amongst the unscoped ones.
+            var unscopedStepBindings = bindingRegistry.Where(b => b.Type == stepArgs.Type && b.IsScoped == false);
+            foreach (StepBinding binding in unscopedStepBindings)
+            {
+                BindingMatch match = Match(binding, stepArgs, true, false);
                 if (match == null)
                     continue;
 
@@ -359,8 +387,7 @@ namespace TechTalk.SpecFlow
                 // there were either no regex match of it was filtered out by the param matching
                 // to provide better error message for the param matching error, we re-run 
                 // the matching without param check
-
-                List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
+                List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs, false);
                 if (matchesWithoutParamCheck.Count == 1)
                 {
                     // no ambiguouity, but param error -> execute will find it out
@@ -384,13 +411,14 @@ namespace TechTalk.SpecFlow
             return matches[0];
         }
 
-        private List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
+        private List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs, bool isScoped)
         {
             List<BindingMatch> matches = new List<BindingMatch>();
 
-            foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
+            var stepBindings = bindingRegistry.Where(b => b.Type == stepArgs.Type && b.IsScoped == isScoped);
+            foreach (StepBinding binding in stepBindings)
             {
-                BindingMatch match = Match(binding, stepArgs, false);
+                BindingMatch match = Match(binding, stepArgs, false, isScoped);
                 if (match != null)
                     matches.Add(match);
             }

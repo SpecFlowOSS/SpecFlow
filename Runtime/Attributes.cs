@@ -7,7 +7,22 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class BindingAttribute : Attribute
     {
+        private readonly string featureName;
 
+        public BindingAttribute()
+        {
+        }
+
+        public BindingAttribute(string featureName)
+            : this()
+        {
+            this.featureName = featureName;
+        }
+
+        public string FeatureName
+        {
+            get { return featureName; }
+        }
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
