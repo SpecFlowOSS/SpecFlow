@@ -153,18 +153,19 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             get
             {
                 DTE dte = Dte;
-                if (dte != null)
-                {
-                    IEnumerable activeProjects = dte.ActiveSolutionProjects as IEnumerable;
-                    if (activeProjects != null)
-                    {
-                        Project project = activeProjects.OfType<Project>().First();
-                        if (project != null)
-                            return project;
-                    }
-                }
-                throw new InvalidOperationException("Unable to detect current project.");
+                return GetProjectForSourceFile(dte);
             }
+        }
+
+        private Project GetProjectForSourceFile(DTE dte)
+        {
+            if (dte != null)
+            {
+                ProjectItem prjItem = dte.Solution.FindProjectItem(CodeFilePath);
+                if (prjItem != null)
+                    return prjItem.ContainingProject;
+            }
+            throw new InvalidOperationException("Unable to detect current project.");
         }
 
         /*
