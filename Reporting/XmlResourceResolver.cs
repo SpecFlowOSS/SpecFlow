@@ -23,8 +23,10 @@ namespace TechTalk.SpecFlow.Reporting
 		
 		private static Assembly GetAssemblyFor(string assemblyName)
 		{
+			// Due to the fact that Uri lowercase's the assembly name and 
+			// that *nix file system's are case sensitive we 
+			// need to locate the assembly manually and return it
             if (MonoHelper.IsMono)
-                //TODO: find out why Assembly.Load does not work on Mono
                 return MonoHelper.GetLoadedAssembly(assemblyName);
 
 		    return Assembly.Load(assemblyName);
