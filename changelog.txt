@@ -3,6 +3,7 @@ vNext - ???
 Fixed issues:
 + Generating code randomly for the wrong testing engine
 + Test class generation problem for Russian feature files
++ Fix tag support for Silverlight
 
 1.3.4 - 2010/07/28
 
