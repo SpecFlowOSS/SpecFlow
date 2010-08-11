@@ -181,16 +181,20 @@ namespace TechTalk.SpecFlow
                                                                 };
         #endregion
 
-        static private readonly Regex accentRe = new Regex("[^a-zA-Z0-9_]");
+        static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}]");
+        static private readonly Regex nonLatinRe = new Regex("[^a-zA-Z]");
 
         private static string RemoveAccentChars(string text)
         {
-            return accentRe.Replace(text, match =>
+            var nonIdRemoved = nonIdentifierRe.Replace(text, String.Empty);
+
+            return nonLatinRe.Replace(nonIdRemoved, match =>
                {
                    string result;
+                   // if there is a Latin substitute, we use that
                    if (accentReplacements.TryGetValue(match.Value, out result))
                        return result;
-                   return string.Empty;
+                   return match.Value;
                });
         }
     }
