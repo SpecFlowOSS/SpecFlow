@@ -1,6 +1,6 @@
 <AddinProject appVersion="2.4">
 	<Project>
-		<AddinFile>IdeIntegration/MonoDevelopIntegration/bin/Debug/MonoDevelop.TechTalk.SpecFlow.dll</AddinFile>
+		<AddinFile>IdeIntegration/MonoDevelopIntegration/bin/Release/MonoDevelop.TechTalk.SpecFlow.dll</AddinFile>
 		<BuildFile>IdeIntegration/MonoDevelopIntegration/MonoDevelop.TechTalk.SpecFlow.csproj</BuildFile>
 		<BuildConfiguration>Release</BuildConfiguration>
 	</Project>
