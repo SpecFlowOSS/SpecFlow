@@ -80,9 +80,9 @@
       <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
       <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TechTalk.SpecFlow.Common\TechTalk.SpecFlow.Common.csproj">
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
-      <Name>TechTalk.SpecFlow.Common</Name>
+      <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\ParserTests\ParserTests.csproj">
       <Project>{70376361-0BE1-478D-8EEC-47BD1C768165}</Project>

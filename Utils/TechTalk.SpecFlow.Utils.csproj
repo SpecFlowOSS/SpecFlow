@@ -8,8 +8,8 @@
     <ProjectGuid>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TechTalk.SpecFlow.Common</RootNamespace>
-    <AssemblyName>TechTalk.SpecFlow.Common</AssemblyName>
+    <RootNamespace>TechTalk.SpecFlow.Utils</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.Utils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>

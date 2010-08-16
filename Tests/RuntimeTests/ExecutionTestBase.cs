@@ -8,11 +8,11 @@ using System.Linq;
 using Microsoft.CSharp;
 using NUnit.Framework;
 using ParserTests;
-using TechTalk.SpecFlow.Common;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace TechTalk.SpecFlow.Common
+namespace TechTalk.SpecFlow.Utils
 {
     public enum GenerationTargetLanguage
     {

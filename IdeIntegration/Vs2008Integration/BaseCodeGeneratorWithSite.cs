@@ -10,7 +10,7 @@ using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Designer.Interfaces;
 using Microsoft.VisualStudio.Shell.Interop;
-using TechTalk.SpecFlow.Common;
+using TechTalk.SpecFlow.Utils;
 using VSOLE = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 

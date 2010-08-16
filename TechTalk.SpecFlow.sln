@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.TechTalk.SpecFl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Vs2010Integration", "IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj", "{96294E6F-8875-4D12-8577-4EC83E60BD6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Common", "TechTalk.SpecFlow.Common\TechTalk.SpecFlow.Common.csproj", "{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Utils", "Utils\TechTalk.SpecFlow.Utils.csproj", "{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
