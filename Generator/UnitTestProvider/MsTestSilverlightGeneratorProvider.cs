@@ -15,7 +15,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
         private const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
-
+        private const string CATEGORY_ATTR = "Microsoft.Silverlight.Testing.TagAttribute";
+        
         private const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
         private const string FEATURE_TITILE_KEY = "FeatureTitle";
 
@@ -23,7 +24,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private CodeTypeDeclaration currentTestTypeDeclaration = null;
 
-        public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
+        public virtual void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
             typeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
@@ -56,12 +57,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodePrimitiveExpression(value))));
         }
 
-        public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        public virtual void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
         {
             //MsTest does not support caregories... :(
         }
 
-        public void SetTest(CodeMemberMethod memberMethod, string title)
+        public virtual void SetTest(CodeMemberMethod memberMethod, string title)
         {
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
@@ -77,19 +78,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
         }
 
-        public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
+        public virtual void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
         {
-            //MsTest does not support caregories... :(
+            SetCategories(memberMethod.CustomAttributes, categories);
         }
-
-        public void SetTestSetup(CodeMemberMethod memberMethod)
+        
+        public virtual void SetTestSetup(CodeMemberMethod memberMethod)
         {
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTSETUP_ATTR)));
         }
 
-        public void SetTestFixtureSetup(CodeMemberMethod memberMethod)
+        public virtual void SetTestFixtureSetup(CodeMemberMethod memberMethod)
         {
             memberMethod.Attributes |= MemberAttributes.Static;
 
@@ -98,7 +99,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReference(TESTFIXTURESETUP_ATTR)));
         }
 
-        public void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
+        public virtual void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
         {
             memberMethod.Attributes |= MemberAttributes.Static;
 
@@ -107,18 +108,30 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReference(TESTFIXTURETEARDOWN_ATTR)));
         }
 
-        public void SetTestTearDown(CodeMemberMethod memberMethod)
+        public virtual void SetTestTearDown(CodeMemberMethod memberMethod)
         {
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(TESTTEARDOWN_ATTR)));
         }
 
-        public void SetIgnore(CodeTypeMember codeTypeMember)
+        public virtual void SetIgnore(CodeTypeMember codeTypeMember)
         {
             codeTypeMember.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(IGNORE_ATTR)));
+        }
+
+        private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
+        {
+            foreach (var category in categories)
+            {
+                customAttributes.Add(
+                    new CodeAttributeDeclaration(
+                        new CodeTypeReference(CATEGORY_ATTR),
+                        new CodeAttributeArgument(
+                            new CodePrimitiveExpression(category))));
+            }
         }
     }
 }

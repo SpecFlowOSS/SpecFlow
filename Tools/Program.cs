@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Tools
 
         #region Reports
 
+		// TODO: Make the default value for binFolder more cross-platform compatible.  Easy to work around for now, by providing a value.  This could mean not using NConsoler.
         [Action("Generates a report about usage and binding of steps")]
         public static void StepDefinitionReport(
             [Required(Description = "Visual Studio Project File containing specs")] string projectFile,

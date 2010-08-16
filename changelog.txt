@@ -3,6 +3,25 @@ next - ???
 Fixed issues:
 + Better error reporting for wrong Gherkin files
 
+1.3.5.2 - 2010/08/11
++ Sorry, we're ironing out our deploy strategy with the new Mono/MonoDevelop integration.  We didn't 
+  change the version in the MonoDevelop Add-In XML file.
+
+1.3.5.1 - 2010/08/11
+
+New features:
++ Support for hosting add-in on http://addins.monodevelop.com
+
+1.3.5 - 2010/08/11
+
+New features:
++ Support for Mono (v2.6.7) & MonoDevelop (v2.4) by Dale Ragan
+
+Fixed issues:
++ Generating code randomly for the wrong testing engine
++ Test class generation problem for Russian feature files
++ Fix tag support for Silverlight
+
 1.3.4 - 2010/07/28
 
 Fixed issues:

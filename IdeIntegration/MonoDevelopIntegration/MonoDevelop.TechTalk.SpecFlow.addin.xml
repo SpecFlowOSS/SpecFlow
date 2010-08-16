@@ -6,7 +6,7 @@
        url         = "http://www.specflow.org" 
        description = "Integrates SpecFlow into the MonoDevelop IDE." 
        category    = "IDE extensions" 
-       version     = "2.4">
+       version     = "1.3.5.2">
 
 	<Runtime>
 		<Import assembly="Gherkin.dll"/>

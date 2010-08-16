@@ -15,3 +15,4 @@ _ReSharper*/
 *.resharper
 *.cache
 *.gpState
+test-results

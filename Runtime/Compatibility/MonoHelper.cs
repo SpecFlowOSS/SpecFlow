@@ -24,7 +24,8 @@ namespace TechTalk.SpecFlow.Compatibility
         {
             Assembly locatedAssembly = null;
 
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            // TODO: This may have to change, for now just load the assemblies from the domain
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 AssemblyName loadedAssemblyName = assembly.GetName();
 
