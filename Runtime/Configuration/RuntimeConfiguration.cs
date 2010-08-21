@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         //language settings
         public CultureInfo ToolLanguage { get; set; }
+        public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
         public Type RuntimeUnitTestProviderType { get; set; }
@@ -53,9 +54,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public RuntimeConfiguration()
         {
-            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ?
-                CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage) :
-                CultureInfoHelper.GetCultureInfo(ConfigDefaults.ToolLanguage);
+            ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+            BindingCulture = null;
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 
@@ -89,6 +89,11 @@ namespace TechTalk.SpecFlow.Configuration
                 config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
                     CultureInfo.GetCultureInfo(configSection.Language.Feature) :
                     CultureInfo.GetCultureInfo(configSection.Language.Tool);
+            }
+
+            if (configSection.BindingCulture.ElementInformation.IsPresent)
+            {
+                config.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
             }
 
             if (configSection.UnitTestProvider != null)

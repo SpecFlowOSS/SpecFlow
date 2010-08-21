@@ -1,3 +1,4 @@
+using System.Globalization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
@@ -75,10 +76,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
 
             // everything else than double cannot convert is false
-            converter.Stub(c => c.CanConvert("argument", typeof(double), Language)).Return(true);
+            converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
-            converter.Expect(c => c.Convert("argument", typeof(double), Language)).Return(1.23);
+            converter.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArg(1.23));
 
             MockRepository.ReplayAll();
@@ -100,8 +101,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
 
             // everything else than double and int cannot convert is false
-            converter.Stub(c => c.CanConvert("argument", typeof(double), Language)).Return(true);
-            converter.Stub(c => c.CanConvert("argument", typeof(int), Language)).Return(true);
+            converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
+            converter.Stub(c => c.CanConvert("argument", typeof(int), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
             MockRepository.ReplayAll();
@@ -125,10 +126,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Table table = new Table("h1");
 
             // everything else than double cannot convert is false
-            converter.Stub(c => c.CanConvert("argument", typeof(double), Language)).Return(true);
+            converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
-            converter.Expect(c => c.Convert("argument", typeof(double), Language)).Return(1.23);
+            converter.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArgWithTable(1.23, table));
 
             MockRepository.ReplayAll();

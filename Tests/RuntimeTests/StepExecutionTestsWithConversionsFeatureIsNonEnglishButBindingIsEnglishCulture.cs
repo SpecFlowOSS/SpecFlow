@@ -7,31 +7,26 @@ using Rhino.Mocks;
 namespace TechTalk.SpecFlow.RuntimeTests
 {
     [Binding]
-    public class StepExecutionTestsBindingsForArgumentConvertInNonEnglishCulture
+    public class StepExecutionTestsBindingsForArgumentConvertInEnglishCulture
     {
-        [Given("argument (.*) should be able to convert to (.*)")]
+        [Given("argument (.*) should be able to convert to (.*) even though it has english localization")]
         public virtual void InBindingConversion(string doubleParam, double expectedValue)
         {
             double value = Convert.ToDouble(doubleParam);
             Assert.AreEqual(expectedValue, value);
 
-            Assert.AreEqual("de-DE", Thread.CurrentThread.CurrentCulture.Name);
+            Assert.AreEqual("en-US", Thread.CurrentThread.CurrentCulture.Name);
         }
     }
 
 
     [TestFixture]
-    public class StepExecutionTestsWithConversionsInNonEnglishCulture : StepExecutionTestsBase
+    public class StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture : StepExecutionTestsBase
     {
         protected override CultureInfo GetFeatureLanguage()
         {
             return new CultureInfo("de-DE");
-        }          
-        
-        protected override CultureInfo GetBindingCulture()
-        {
-            return new CultureInfo("de-DE");
-        }     
+        }           
 
         [Test]
         public void ShouldCallBindingWithSimpleConvertParam()
@@ -43,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             MockRepository.ReplayAll();
 
-            testRunner.Given("sample step with simple convert param: 1,23"); // German uses , as decimal separator
+            testRunner.Given("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
 
             Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
             MockRepository.VerifyAll();
@@ -52,11 +47,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldExecuteBindingWithTheProperCulture()
         {
-            TestRunner testRunner = GetTestRunnerFor(typeof(StepExecutionTestsBindingsForArgumentConvertInNonEnglishCulture));
+            TestRunner testRunner = GetTestRunnerFor(typeof(StepExecutionTestsBindingsForArgumentConvertInEnglishCulture));
 
             MockRepository.ReplayAll();
 
-            testRunner.Given("argument 1,23 should be able to convert to 1,23"); // German uses , as decimal separator
+            testRunner.Given("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
 
             Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
             MockRepository.VerifyAll();

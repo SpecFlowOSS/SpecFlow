@@ -75,7 +75,10 @@ namespace TechTalk.SpecFlow
                 OnFeatureEnd();
             }
 
-            ObjectContainer.FeatureContext = new FeatureContext(featureInfo);
+            // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
+            // The runtime can define the binding-culture: Value is configured on App.config, else it is null
+            CultureInfo bindingCulture = ObjectContainer.Configuration.BindingCulture ?? featureInfo.Language;
+            ObjectContainer.FeatureContext = new FeatureContext(featureInfo, bindingCulture);
             FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
         }
 
@@ -239,7 +242,7 @@ namespace TechTalk.SpecFlow
                     return null;
 
                 // Check if regex arguments can be converted to the method parameters
-                CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.Language;
+                CultureInfo cultureInfo = FeatureContext.Current.BindingCulture;
                 for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
                 {
                     Type parameterType = stepBinding.ParameterTypes[regexArgIndex];
@@ -431,7 +434,7 @@ namespace TechTalk.SpecFlow
             if (regexArgs.Length + match.ExtraArguments.Length != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, regexArgs.Length + match.ExtraArguments.Length);
 
-            CultureInfo cultureInfo = FeatureContext.Current.FeatureInfo.Language;
+            CultureInfo cultureInfo = FeatureContext.Current.BindingCulture;
             for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
             {
                 Type parameterType = match.StepBinding.ParameterTypes[regexArgIndex];

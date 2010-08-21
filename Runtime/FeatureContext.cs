@@ -1,6 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.Linq;
+using System.Globalization;
 
 #if SILVERLIGHT
 using TechTalk.SpecFlow.Compatibility;
@@ -10,20 +9,22 @@ namespace TechTalk.SpecFlow
 {
     public class FeatureContext : SpecFlowContext
     {
-        static public FeatureContext Current
+        public FeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
+        {
+            Stopwatch = new Stopwatch();
+            Stopwatch.Start();
+
+            BindingCulture = bindingCulture;
+            FeatureInfo = featureInfo;
+        }
+
+        public static FeatureContext Current
         {
             get { return ObjectContainer.FeatureContext; }
         }
 
         public FeatureInfo FeatureInfo { get; private set; }
+        public CultureInfo BindingCulture { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
-
-        public FeatureContext(FeatureInfo featureInfo)
-        {
-            Stopwatch = new Stopwatch();
-            Stopwatch.Start();
-
-            FeatureInfo = featureInfo;
-        }
     }
 }

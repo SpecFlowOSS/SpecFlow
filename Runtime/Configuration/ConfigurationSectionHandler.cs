@@ -14,6 +14,13 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (LanguageConfigElement)this["language"]; }
             set { this["language"] = value; }
+        }  
+        
+        [ConfigurationProperty("bindingCulture", IsRequired = false)]
+        public BindingCultureConfigElement BindingCulture
+        {
+            get { return (BindingCultureConfigElement)this["bindingCulture"]; }
+            set { this["bindingCulture"] = value; }
         }
 
         [ConfigurationProperty("unitTestProvider", IsRequired = false)]
@@ -95,6 +102,17 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (String)this["tool"]; }
             set { this["tool"] = value; }
+        }
+    }   
+    
+    public class BindingCultureConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("name", DefaultValue = "en-US", IsRequired = false)]
+        [RegexStringValidator(@"\w{2}(-\w{2})?")]
+        public string Name
+        {
+            get { return (String)this["name"]; }
+            set { this["name"] = value; }
         }
     }
 

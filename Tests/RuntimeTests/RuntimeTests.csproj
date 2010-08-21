@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />
     <Compile Include="StepExecutionTests.cs" />
     <Compile Include="StepExecutionTestsBase.cs" />
     <Compile Include="StepExecutionTestsWithConversions.cs" />

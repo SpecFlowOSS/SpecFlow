@@ -85,6 +85,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="StepArgumentTransfomation\StepArgumentTransformationGermanFeatureEnglishBinding.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepArgumentTransformationGermanFeatureEnglishBinding.feature</DependentUpon>
+    </Compile>
     <Compile Include="StepArgumentTransfomation\StepArgumentTransformationSteps.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +125,10 @@
     <None Include="ExternalSteps\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StepArgumentTransfomation\StepArgumentTransformationGermanFeatureEnglishBinding.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepArgumentTransformationGermanFeatureEnglishBinding.feature.cs</LastGenOutput>
     </None>
     <None Include="StepArgumentTransfomation\StepArgumentTransformation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

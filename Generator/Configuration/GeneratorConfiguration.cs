@@ -21,8 +21,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public GeneratorConfiguration()
         {
             FeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-            ToolLanguage = string.IsNullOrEmpty(ConfigDefaults.ToolLanguage) ? FeatureLanguage :
-                CultureInfo.GetCultureInfo(ConfigDefaults.ToolLanguage);
+            ToolLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
 
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 

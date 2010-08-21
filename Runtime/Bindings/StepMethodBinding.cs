@@ -155,7 +155,7 @@ namespace TechTalk.SpecFlow.Bindings
             var cultureInfo = CultureInfo.CurrentCulture;
             if (FeatureContext.Current != null)
             {
-                cultureInfo = FeatureContext.Current.FeatureInfo.Language;
+                cultureInfo = FeatureContext.Current.BindingCulture;
             }
             return new CultureInfoScope(cultureInfo);
         }

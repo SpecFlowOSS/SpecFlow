@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         protected MockRepository MockRepository;
         private BindingRegistry bindingRegistry;
-        protected CultureInfo Language;
+        protected CultureInfo FeatureLanguage;
 
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
@@ -67,10 +67,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
         #endregion
 
-        protected virtual CultureInfo GetLanguage()
+        protected virtual CultureInfo GetFeatureLanguage()
         {
             return new CultureInfo("en-US");
-        }
+        }     
+        
+        protected virtual CultureInfo GetBindingCulture()
+        {
+            return new CultureInfo("en-US");
+        }        
 
         [SetUp]
         public void SetUp()
@@ -80,8 +85,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository = new MockRepository();
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
-            Language = GetLanguage();
-            ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(Language, "test feature", null));
+            FeatureLanguage = GetFeatureLanguage();
+            CultureInfo bindingCulture = GetBindingCulture();
+            ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
             ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
 
             ObjectContainer.StepFormatter = MockRepository.Stub<IStepFormatter>();

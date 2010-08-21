@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
 {
@@ -51,7 +53,25 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
         
         [Given("(.*) has been registered at (.*)")]
         public void RegistrationStep(User user, Terminal terminal)
-        { }     
+        { }
+
+        [When("in App.config die bindingCulture auf 'en-US' konfiguriert ist")]
+        public void AppConfig()
+        {
+            // check App.config of project
+        }       
+        
+        [Then("ist (.*) kleiner als (.*)")]
+        public void SmallerThan(double val1, int val2)
+        {
+            Assert.Less(val1, val2);
+        }
+
+        [Then("die CurrentCulture während der Ausführung des Steps ist '(.*)'")]
+        public void RegistrationStep(string culture)
+        {
+            Assert.AreEqual(culture, Thread.CurrentThread.CurrentCulture.Name);
+        }     
 
     }
 }
