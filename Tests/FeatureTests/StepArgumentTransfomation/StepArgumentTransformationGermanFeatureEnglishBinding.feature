@@ -1,7 +1,7 @@
 ﻿#language:de
 Funktionalität: Argument transformation mit englischer Formatierung
 	Als Programmierer 
-	Will is die "binding-culture" spezifiuieren können, welche für die Konvertierung von Step-Argumenten verwendet werden soll
+	Will ich die "binding-culture" spezifizieren können, welche für die Konvertierung von Step-Argumenten verwendet werden soll
 	Damit ein nicht-englisches Feature trotzdem Step-Argumente mit englischer Formattierung (z.B. Nummern) verwenden kann
 	
 Szenario: Steps mit englisch formatierten Argumenten
