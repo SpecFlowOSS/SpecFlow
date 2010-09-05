@@ -83,9 +83,12 @@
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
+    <Compile Include="Tracing\IStepDefinitionSkeletonProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
-    <Compile Include="Tracing\StepDefinitonSkeletonProvider.cs" />
+    <Compile Include="Tracing\StepDefinitionSkeletonProviderBase.cs" />
+    <Compile Include="Tracing\StepDefinitionSkeletonProviderCS.cs" />
+    <Compile Include="Tracing\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
