@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Tracing
 
             StringBuilder result = new StringBuilder();
 
-            // in VB "When" is a keyword - use the namespace to help qualify the When() attribute
+            // in VB "When" and "Then" are language keywords - use the fully qualified namespace
             string namespaceAddition = "TechTalk.SpecFlow.";
             if (stepArgs.Type == BindingType.Given)
             {
