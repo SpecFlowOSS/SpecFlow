@@ -30,6 +30,31 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreSame(expected, actual);
         }
 
+        [Test]
+        public void Can_set_object_according_to_generic_type_and_string()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set<IScenarioTestInterface>(expected, "test");
+
+            var actual = scenarioContext["test"];
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Can_get_object_according_to_generic_type_and_string()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+            scenarioContext["test"] = expected;
+
+            var actual = scenarioContext.Get<IScenarioTestInterface>("test");
+
+            Assert.AreSame(expected, actual);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
             return new ScenarioContext(new ScenarioInfo("Test", new string[] {}));
