@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace TechTalk.SpecFlow
+﻿namespace TechTalk.SpecFlow
 {
     public static class DictionaryHelpers
     {
         public static void Set<T>(this ScenarioContext scenarioContext, T data)
         {
             var id = typeof (T).ToString();
-            scenarioContext.Set<T>(data, id);
+            scenarioContext.Set(data, id);
         }
 
         public static void Set<T>(this ScenarioContext scenarioContext, T data, string id)
@@ -25,7 +23,5 @@ namespace TechTalk.SpecFlow
         {
             return scenarioContext[id] as T;
         }
-
-  
     }
 }
