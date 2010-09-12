@@ -56,11 +56,13 @@
     <Compile Include="Compatibility\CultureInfoHelper.cs" />
     <Compile Include="Compatibility\EnumHelper.cs" />
     <Compile Include="Compatibility\ExceptionHelper.cs" />
+    <Compile Include="GenerationTargetLanguageAttribute.cs" />
     <Compile Include="Compatibility\MonoHelper.cs" />
     <Compile Include="Configuration\ConfigDefaults.cs" />
     <Compile Include="Configuration\ConfigurationServices.cs" />
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
+    <Compile Include="GenerationTargetLanguage.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
     <Compile Include="Bindings\StepArgumentTypeConverter.cs" />

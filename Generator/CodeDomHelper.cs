@@ -156,6 +156,11 @@ namespace TechTalk.SpecFlow.Generator
             result.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(CompilerGeneratedAttribute))));
+            result.CustomAttributes.Add(
+                new CodeAttributeDeclaration( 
+                    new CodeTypeReference(typeof(GenerationTargetLanguageAttribute)),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(TargetLanguage.ToString()))));
+
             return result;
         }
     }

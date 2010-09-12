@@ -61,6 +61,9 @@
     <Compile Include="..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
       <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\GenerationTargetLanguageAttribute.cs">
+      <Link>GenerationTargetLanguageAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
@@ -90,6 +93,9 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Compatibility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
