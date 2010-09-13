@@ -74,13 +74,6 @@
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\TechTalk.SpecFlow.Common\TechTalk.SpecFlow.Utils.csproj">
-      <Name>TechTalk.SpecFlow.Utils</Name>
-      <Project>{c0af4a43-0c3b-47c7-86de-79fb632b1453}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\Tools\TechTalk.SpecFlow.Tools.csproj">
       <Name>TechTalk.SpecFlow.Tools</Name>
       <Project>{87be7fe6-c3de-4409-abf6-fa5b60af3de1}</Project>
@@ -94,6 +87,13 @@
       <Private>True</Private>
       <RefProjectOutputGroups>
       </RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Name>TechTalk.SpecFlow.Utils</Name>
+      <Project>{c0af4a43-0c3b-47c7-86de-79fb632b1453}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
   </ItemGroup>

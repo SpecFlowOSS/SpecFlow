@@ -10,6 +10,7 @@
       <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Satellites" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Tools.Binaries" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Utils.Binaries" />
     </ComponentGroup>
   </Fragment>
 </Wix>
