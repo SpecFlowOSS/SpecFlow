@@ -118,6 +118,9 @@
     <Compile Include="..\Runtime\FeatureInfo.cs">
       <Link>FeatureInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\GenerationTargetLanguage.cs">
+      <Link>GenerationTargetLanguage.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\ITestRunner.cs">
       <Link>ITestRunner.cs</Link>
     </Compile>

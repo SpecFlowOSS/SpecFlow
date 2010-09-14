@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
-        private readonly IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
+        private IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
         private readonly BindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
 
@@ -30,7 +30,6 @@ namespace TechTalk.SpecFlow
             testTracer = ObjectContainer.TestTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
-            _stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
  
             bindingRegistry = ObjectContainer.BindingRegistry;
             stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
@@ -74,6 +73,8 @@ namespace TechTalk.SpecFlow
             {
                 OnFeatureEnd();
             }
+
+            _stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(featureInfo.GenerationTargetLanguage);
 
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
@@ -375,7 +376,7 @@ namespace TechTalk.SpecFlow
                     throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepArgs);
                 }
 
-                testTracer.TraceNoMatchingStepDefinition(stepArgs);
+                testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
                     _stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();

@@ -61,9 +61,6 @@
     <Compile Include="..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
       <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\GenerationTargetLanguageAttribute.cs">
-      <Link>GenerationTargetLanguageAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
