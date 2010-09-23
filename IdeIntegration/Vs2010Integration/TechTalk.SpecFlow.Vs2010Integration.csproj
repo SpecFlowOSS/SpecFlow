@@ -192,7 +192,7 @@
   <PropertyGroup>
     <CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" />
+  <Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
