@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.Shell.StartPage</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.ContentLoadError">
+      <summary>ContentLoadError</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.ContentLoadError.#ctor"></member>
+    <member name="P:Microsoft.VisualStudio.PlatformUI.ContentLoadError.Detail">
+      <summary>Error details</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.ContentLoadError.DetailProperty"></member>
+    <member name="P:Microsoft.VisualStudio.PlatformUI.ContentLoadError.Heading">
+      <summary>Error heading</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.ContentLoadError.HeadingProperty"></member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.ContentLoadError.InitializeComponent">
+      <summary>InitializeComponent</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.ContentLoadError.System#Windows#Markup#IComponentConnector#Connect(System.Int32,System.Object)">
+      <param name="connectionId"></param>
+      <param name="target"></param>
+    </member>
+    <member name="P:Microsoft.VisualStudio.PlatformUI.ContentLoadError.Title">
+      <summary>Error title</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.ContentLoadError.TitleProperty"></member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.MruListBox">
+      <summary>MRU ListBox control to display project MRU items</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.MruListBox.#ctor"></member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.MruListBox.DoNothingCommand">
+      <summary>Do nothing routed command We bind to this command handler when we need to eat a UI gesture (ex. LeftDoubleClick)</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.MruListBox.OpenFolderMruItem">
+      <summary>OpenFolderMruItem routed command (opens the currently selected item's folder)</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.MruListBox.OpenMruItem">
+      <summary>OpenMruItem routed command (opens the currently selected item)</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.MruListBox.RemoveMruItem">
+      <summary>RemoveMruItem routed command</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.RssCommands">
+      <summary>Provides the routed commands supported by the VS shell Rss feed reader.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.RssCommands.EnableDownload">
+      <summary>Enable downloading of Rss content</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.RssCommands.PromptForCredentials">
+      <summary>Prompt the user for web proxy credentials</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.RssCommands.SetUrl">
+      <summary>Set Rss feed Url</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.StartPageHelper">
+      <summary>Contains functionality shared by the start page package and public APIs for custom start pages.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.StartPageHelper.GetCustomStartPageFullyQualifiedFilename(Microsoft.VisualStudio.Shell.Interop.IVsUIDataSource)">
+      <param name="startPageDataSource"></param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.StartPageHelper.GetUserStartPagesFolder"></member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.StartPageHelper.StartPagesDirectoryName"></member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.StartPageHelper.DataSourceId"></member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.StartPageHelper.DataSourceId.StartPage">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.StartPageHelper.DataSourceId.RssFeed">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.StartPageRelativeExtension"></member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.StartPageRelativeExtension.#ctor(System.String)">
+      <param name="relativePath"></param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.PlatformUI.StartPageRelativeExtension.ProvideValue(System.IServiceProvider)">
+      <param name="serviceProvider"></param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.PlatformUI.VSCommands">
+      <summary>Provides the routed commands supported by the VS shell.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.VSCommands.Browse">
+      <summary>Opens the Web Browser window in VS</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.PlatformUI.VSCommands.ExecuteCommand">
+      <summary>Executes a Visual Studio command table command</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Shell.Interop.IVsDataSourceFactory"></member>
+    <member name="M:Microsoft.VisualStudio.Shell.Interop.IVsDataSourceFactory.GetDataSource(System.Guid@,System.UInt32,Microsoft.VisualStudio.Shell.Interop.IVsUIDataSource@)">
+      <param name="guid"></param>
+      <param name="dw"></param>
+      <param name="ppUIDataSource"></param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Shell.Interop.IVsUIDispatch"></member>
+    <member name="M:Microsoft.VisualStudio.Shell.Interop.IVsUIDispatch.Invoke(System.String,System.Object,System.Object@)">
+      <param name="verb"></param>
+      <param name="pvaIn"></param>
+      <param name="pvaOut"></param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Shell.Interop.IVsUIFactory"></member>
+    <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+      <summary>A class generated by the workflow designer used to generate CLR types for XAML documents.</summary>
+    </member>
+    <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.#ctor">
+      <summary>Creates a new instance of the <see cref="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper" /> class.</summary>
+    </member>
+  </members>
+</doc>

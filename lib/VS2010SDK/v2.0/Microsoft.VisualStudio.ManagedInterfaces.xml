@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.ManagedInterfaces</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage">
+      <summary>An optional interface which may be implemented by property pages hosted inside the Project Designer. Implementing this interface allows the page to participate in advanced scenarios supported by the Project Designer (for instance, automatic Undo and Redo functionality). However, <see cref="T:Microsoft.VisualStudio.OLE.Interop.IPropertyPage" /> (or <see cref="T:Microsoft.VisualStudio.OLE.Interop.IPropertyPage2" />) is still required.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.FinishPendingValidations">
+      <summary>Completes all pending validations before continuing.</summary>
+      <returns>true to continue, false to cancel the action that triggered the validation.</returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.GetProperty(System.String)">
+      <summary>Gets the current value for the given property.  </summary>
+      <returns>The value of the property.</returns>
+      <param name="propertyName"> The name of the property to get.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.GetPropertyMultipleValues(System.String,System.Object[]@,System.Object[]@)">
+      <summary>Gets the current values for the given property for each of the supplied configurations. </summary>
+      <returns>If the method succeeds, it returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK" />, otherwise an error code.</returns>
+      <param name="propertyName">The name of the property to get.</param>
+      <param name="objects">[out] Returns an array of configurations that may be affected.</param>
+      <param name="values">[out] Returns an array of values for each of the configurations.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.OnActivated(System.Boolean)">
+      <summary>Raised when the property page is activated or deactivated as the active designer.</summary>
+      <param name="activated">true if the page has been activated, false if it has been deactivated.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.SetProperty(System.String,System.Object)">
+      <summary>Sets the given value for the given property.  </summary>
+      <param name="propertyName">The name of the property.</param>
+      <param name="value">The value to set.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.SetPropertyMultipleValues(System.String,System.Object[],System.Object[])">
+      <summary>Sets the given values for the given properties, one for each of the supplied configurations.  </summary>
+      <param name="propertyName">The name of the property.</param>
+      <param name="objects">The configurations in which to set the property.</param>
+      <param name="values">The values to set.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.SetSite(Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite)">
+      <summary>Notifies the property page of the <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjDesignerPageSite" /> site.</summary>
+      <param name="site">
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite" />.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPage.SupportsMultipleValueUndo(System.String)">
+      <summary>Determines the given property supports getting and setting multiple values at the same time.</summary>
+      <returns>true if the given property supports getting and setting multiple values at the same time.</returns>
+      <param name="propertyName">The name of the property.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite">
+      <summary>An interface which is implemented (in addition to <see cref="T:Microsoft.VisualStudio.OLE.Interop.IPropertyPageSite" />) by the Project Designer on sites that host property pages. It is necessary for some advanced scenarios supported by the Project Designer (for instance, automatic Undo and Redo), but it is not necessary to use this interface in order to be hosted as a property page in the Project Designer. </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.GetTransaction(System.String)">
+      <summary>Gets a transaction to group multiple property changes into a single undo/redo unit.  </summary>
+      <returns>
+        <see cref="T:System.ComponentModel.Design.DesignerTransaction" />.</returns>
+      <param name="description">The description of the transaction.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanged(System.String,System.ComponentModel.PropertyDescriptor,System.Object,System.Object)">
+      <summary>Raised after a property on the property page has changed.</summary>
+      <param name="propertyName">The name of the property whose value has changed.</param>
+      <param name="propertyDescriptor">A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that applies to the property.</param>
+      <param name="oldValue">The previous value of the property.</param>
+      <param name="newValue">The new value of the property.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.ProjectDesigner.IVsProjectDesignerPageSite.OnPropertyChanging(System.String,System.ComponentModel.PropertyDescriptor)">
+      <summary>Raised before a property value is changed.</summary>
+      <param name="propertyName">The name of the property to be changed.</param>
+      <param name="propertyDescriptor">A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that applies to the property.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation">
+      <summary>Specifies the location from which packages should be downloaded at install time.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation.HomeSite">
+      <summary>The component vendor's site.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation.Relative">
+      <summary>The same location as the bootstrapper.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation.Absolute">
+      <summary>An absolute path specified by <see cref="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.BootstrapperDownloadUrl" />.</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage">
+      <summary>An interface defining a bootstrapper package.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage.Install">
+      <summary>Gets or sets whether or not this package should be installed.</summary>
+      <returns>true if the package should be installed.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage.Name">
+      <summary>Gets the name of the package.</summary>
+      <returns>The name of the package.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage.ProductCode">
+      <summary>Gets the unique identifier of the package.</summary>
+      <returns>The unique identifier of the package.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackageCollection">
+      <summary>A collection of <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage" /> objects.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackageCollection.Count">
+      <summary>Gets the number of items contained by the collection.</summary>
+      <returns>The number of items contained by the collection.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackageCollection.Item(System.Object)">
+      <summary>Gets an <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage" /> interface given its product code.</summary>
+      <returns>A bootstrapper package.</returns>
+      <param name="key">The <see cref="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackage.ProductCode" /> of the bootstrapper package.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom">
+      <summary>This enumeration describes possible installation sources.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom.Web">
+      <summary>Installation source is a website.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom.Unc">
+      <summary>Installation source is a UNC path.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom.Disk">
+      <summary>Installation source is disk.</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile">
+      <summary>A wrapper for a COM publishing interface.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.Group">
+      <summary>Gets and sets the published group.</summary>
+      <returns>The published group.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsAssembly">
+      <summary>Gets whether or not the interface's file is an assembly.</summary>
+      <returns>true if the file is an assembly, otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsDataFile">
+      <summary>Gets whether or not the file is a data file.</summary>
+      <returns>true if the file is a data file, otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsOrphaned">
+      <summary>Gets whether or not the file cannot be mapped to an item in the project.</summary>
+      <returns>true if the file cannot be mapped to an item in the project; false if it can be mapped.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsPrerequisite">
+      <summary>Gets whether or not the file is a prerequisite for deployment.</summary>
+      <returns>true if the file is a prerequisite for deployment, otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsPublished">
+      <summary>Gets whether or not the file is to be deployed.</summary>
+      <returns>true if the file should be deployed, otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.IsReadOnly">
+      <summary>Gets whether or not the file is read-only.</summary>
+      <returns>true if the file is read-only, otherwise false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.Name">
+      <summary>Gets the name of the file.</summary>
+      <returns>The name of the file.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.PublishStatus">
+      <summary>Gets or sets the current status of the file.</summary>
+      <returns>The current <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus" /> value.</returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.Reset">
+      <summary>Returns this file to the default state.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile.TargetPath">
+      <summary>Gets or sets the target path of this file.</summary>
+      <returns>The target path of this file.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFileCollection">
+      <summary>An interface defining a collection of objects implementing <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile" />.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFileCollection.Count">
+      <summary>Gets the number of files in the collection.</summary>
+      <returns>The number of files in the collection.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFileCollection.Item(System.Object)">
+      <summary>Gets the file with the specified name.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile" />.</returns>
+      <param name="key">The name of the file.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties">
+      <summary>Defines the properties of a published application.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.ApplicationRevision">
+      <summary>Gets or sets the revision number of the application.</summary>
+      <returns>The revision number of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.ApplicationVersion">
+      <summary>Gets or sets the version of the application.</summary>
+      <returns>The version of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.AutorunEnabled">
+      <summary>Gets or sets whether to create an autorun.ini file for this application.</summary>
+      <returns>true if an autorun.ini file should be created for this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.BootstrapperComponentsLocation">
+      <summary>Gets or sets the way the bootstrapper should download components.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.BootstrapperDownloadUrl">
+      <summary>Gets or sets the URL from which to download bootstrapper components of this application.</summary>
+      <returns>The URL from which to download bootstrapper components of this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.BootstrapperEnabled">
+      <summary>Gets or sets whether the bootstrapper should be generated.</summary>
+      <returns>true if the bootstrapper should be generated.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.BootstrapperPackages">
+      <summary>Gets the collection of bootstrapper packages.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackageCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.CreateWebPageOnPublish">
+      <summary>Gets or sets whether to generate a Web page when this application is published.</summary>
+      <returns>true if a Web page should be created.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.DisallowUrlActivation">
+      <summary>Gets or sets whether to run the application after installation</summary>
+      <returns>true if the application should be started after installation.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.Install">
+      <summary>Gets or sets whether to install the application on the user's machine.</summary>
+      <returns>true to install the application on the user's machine.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.InstallFrom">
+      <summary>Gets or sets the type of install location.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.InstallUrl">
+      <summary>Gets or sets the URL from which the user should install the application.</summary>
+      <returns>The URL from which the user should install the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.MapFileExtensions">
+      <summary>Gets or sets whether to add ".deploy" as an extension to all deployed files.</summary>
+      <returns>true to add ".deploy" as an extension to all deployed files.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.MinimumRequiredVersion">
+      <summary>Gets or sets the minimum version users can install.</summary>
+      <returns>The minimum version users can install.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.OpenBrowserOnPublish">
+      <summary>Gets or sets whether to open the default browser after each publish.</summary>
+      <returns>true to open the default browser every time the application is published.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.ProductName">
+      <summary>Gets and sets the name of the application.</summary>
+      <returns>The name of the application that will be displayed on the installation program.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.PublisherName">
+      <summary>Gets or sets the name of the publisher.</summary>
+      <returns>The name of the publisher that will be displayed in the installation program.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.PublishFiles">
+      <summary>Gets a collection of files that can be deployed.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFileCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.PublishUrl">
+      <summary>Gets or sets the URL to which the application will be deployed.</summary>
+      <returns>The URL to which the application will be deployed.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.SupportUrl">
+      <summary>Gets or sets the URL to which users can go for support.</summary>
+      <returns>The URL to which users can go for support.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.TargetCulture">
+      <summary>Gets or sets the culture for which the deployment will be generated.</summary>
+      <returns>The culture for which the deployment will be generated.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.TrustUrlParameters">
+      <summary>Gets or sets whether to allow users to pass parameters to the application via the URL.</summary>
+      <returns>true to allow users to pass parameters to the application via the URL.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateEnabled">
+      <summary>Gets or sets whether users are allowed to update their application.</summary>
+      <returns>true if users are allowed to update their application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateInterval">
+      <summary>Gets or sets the number of units for the application to wait before checking for updates.</summary>
+      <returns>The number of units for the application to wait before checking for updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateIntervalUnits">
+      <summary>Gets or sets the units of time for the application to wait before checking for updates.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateMode">
+      <summary>Gets or sets the mode by which the application will check for updates.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdatePeriodically">
+      <summary>Gets or sets whether the application should check for updates.</summary>
+      <returns>true if the application should check for updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateRequired">
+      <summary>Gets or sets whether update is required.</summary>
+      <returns>true if update is required.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.UpdateUrl">
+      <summary>Gets or sets the URL to use to check for future updates.</summary>
+      <returns>The URL to use to check for future updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.VerifyUploadedFiles">
+      <summary>Gets or sets whether the uploaded files will be validated after publish.</summary>
+      <returns>true if uploaded files will be validated after publish.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties.WebPageFileName">
+      <summary>Gets or sets the name of the web page that should be created or opened on publish.</summary>
+      <returns>The name of the web page that should be created or opened on publish.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus">
+      <summary>An enumeration of possible publish statuses.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus.Auto">
+      <summary>Auto</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus.Include">
+      <summary>Include</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus.Exclude">
+      <summary>Exclude</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus.DataFile">
+      <summary>DataFile</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.PublishStatus.Prerequisite">
+      <summary>Prerequisite</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits">
+      <summary>An enumeration with values that describe the frequency of updates.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits.Hours">
+      <summary>Specifies that publishing updates should occur in hours.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits.Days">
+      <summary>Specifies that publishing updates should occur in days.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits.Weeks">
+      <summary>Specifies that publishing updates should occur in weeks.</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode">
+      <summary>An enumeration that describes valid publishing update modes.</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode.Foreground">
+      <summary>Foreground</summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode.Background">
+      <summary>Background</summary>
+    </member>
+  </members>
+</doc>

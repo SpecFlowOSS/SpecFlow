@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.Language.StandardClassification</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService">
+            <summary>
+            Provides access to standard classifications.
+            </summary>
+            <remarks>This is a MEF Component, and should be imported with the following attribute:
+            [Import(typeof(IStandardClassificationService))]
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.NaturalLanguage">
+            <summary>
+            Gets a classification type representing a natural language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.FormalLanguage">
+            <summary>
+            Gets a classification type representing a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Comment">
+            <summary>
+            Gets a classification type representing comments in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Identifier">
+            <summary>
+            Gets a classification type representing identifiers in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Keyword">
+            <summary>
+            Gets a classification type representing keywords in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.WhiteSpace">
+            <summary>
+            Gets a classification type representing whitespace in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Operator">
+            <summary>
+            Gets a classification type representing whitespace in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Literal">
+            <summary>
+            Gets a classification type representing literals in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.NumberLiteral">
+            <summary>
+            Gets a classification type representing numerical literals which derives from the literal classification type in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.StringLiteral">
+            <summary>
+            Gets a classification type representing string literals which derives from the literal classification type in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.CharacterLiteral">
+            <summary>
+            Gets a classification type representing character literals which derives from the literal classification type in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.Other">
+            <summary>
+            Gets a classification type representing anything in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.ExcludedCode">
+            <summary>
+            Gets a classification type representing blocks excluded by the preprocessor or other means in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.PreprocessorKeyword">
+            <summary>
+            Gets a classification type representing preprocessor keywords in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.SymbolDefinition">
+            <summary>
+            Gets a classification type representing the definition of a symbol in a formal language.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService.SymbolReference">
+            <summary>
+            Gets a classification type representing the reference to a symbol in a formal language.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.StandardClassification.LanguagePriority">
+            <summary>
+            Represents the built-in priorities for language classifications.
+            </summary>
+            <remarks>
+            <para>
+            The set of default classification types and format definitions provided by the <see cref="T:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService"/> define
+            natural language and formal language classification types. These classification types act as classification types upon which other
+            classification types are based.
+            </para>
+            <para>
+            Formal language classifications have higher priority than natural language classification types (and by definition all derivatives of
+            formal language classifications have higher priority than derivatives of the natural language classification types).
+            </para>
+            <para>
+            Both the formal and natural language classification types fall between the <see cref="F:Microsoft.VisualStudio.Text.Classification.Priority.Default"/> and <see cref="F:Microsoft.VisualStudio.Text.Classification.Priority.High"/>
+            generic priorities.
+            </para>
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.LanguagePriority.NaturalLanguage">
+            <summary>
+            Priority for the natural language classification definitions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.LanguagePriority.FormalLanguage">
+            <summary>
+            Priority for the formal language classificaiton definitions.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames">
+            <summary>
+            Defines a list of predefined classification type names.
+            </summary>
+            <remarks>
+            The classification type names defined herein are used by the <see cref="T:Microsoft.VisualStudio.Language.StandardClassification.IStandardClassificationService"/> to create the set of pre-existing classification types.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Comment">
+            <summary>
+            Name of the classification type representing comments.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Identifier">
+            <summary>
+            Name of the classification type representing identifiers. In C# for instance, these would be variable names.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Keyword">
+            <summary>
+            Name of the classification type representing keywords. In C# for instance, foreach would be a keyword.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.WhiteSpace">
+            <summary>
+            Name of the classification type representing white space.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Operator">
+            <summary>
+            Name of the classification type representing operators. In C# for instance, + would be an operator.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Literal">
+            <summary>
+            Name of the classification type representing literals.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.String">
+            <summary>
+            Name of the classification type representing strings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Character">
+            <summary>
+            Name of the classification type representing characters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Number">
+            <summary>
+            Name of the classification type representing numbers.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.Other">
+            <summary>
+            Name of the classification type representing all other types of classifications.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.ExcludedCode">
+            <summary>
+            Name of the classification type representing items that are excluded via a preprocessor macro or other means.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.PreprocessorKeyword">
+            <summary>
+            Name of the classification type representing preprocessor keywords.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.SymbolDefinition">
+            <summary>
+            Name of the classification type representing definition of symbols.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.SymbolReference">
+            <summary>
+            Name of the classification type representing symbol references.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.NaturalLanguage">
+            <summary>
+            Name of the classification type representing a natural language classification. This classification type is intended to be used
+            as a base classification type for other classification types belonging to a set of natural language classifications.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.StandardClassification.PredefinedClassificationTypeNames.FormalLanguage">
+            <summary>
+            Name of the classification type representing a formal language. This classification type is intended to be used as a base
+            classification type for all classification types belonging to a set of formal langauge classifications. For example literals
+            and keywords.
+            </summary>
+        </member>
+    </members>
+</doc>

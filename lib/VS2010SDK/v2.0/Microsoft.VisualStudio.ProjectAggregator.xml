@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.ProjectAggregator</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.ProjectAggregator.CProjectAggregator"></member>
+    <member name="T:Microsoft.VisualStudio.ProjectAggregator.CProjectAggregatorClass"></member>
+    <member name="M:Microsoft.VisualStudio.ProjectAggregator.CProjectAggregatorClass.#ctor"></member>
+    <member name="M:Microsoft.VisualStudio.ProjectAggregator.CProjectAggregatorClass.SetInner(System.Object)">
+      <param name="punkInner"></param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ProjectAggregator.IVSProjectAggregator"></member>
+    <member name="M:Microsoft.VisualStudio.ProjectAggregator.IVSProjectAggregator.SetInner(System.Object)">
+      <param name="punkInner"></param>
+    </member>
+  </members>
+</doc>

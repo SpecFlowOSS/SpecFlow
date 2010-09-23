@@ -1,0 +1,462 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.Editor</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory" -->
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.#ctor(System.Guid,System.Guid,System.Guid)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>.
+            </summary>
+            <param name="languageService">The language service guid for this <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>.</param>
+            <param name="fontCategory">The font category guid for this <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>.</param>
+            <param name="colorCategory">The color category guid for this <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.SetColorCategory(System.Guid)">
+            <summary>
+            Sets the color category Guid.
+            </summary>
+            <param name="newColorCategory">The color category Guid.</param>
+            <returns>A new <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/> with the color category guid set to be <paramref name="newColorCategory"/>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.SetFontCategory(System.Guid)">
+            <summary>
+            Sets the font category Guid.
+            </summary>
+            <param name="newFontCategory">The font category Guid.</param>
+            <returns>A new <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/> with the font category guid set to be <paramref name="newFontCategory"/>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.SetLanguageService(System.Guid)">
+            <summary>
+            Sets the language service Guid. 
+            </summary>
+            <param name="newLanguageService">The language service Guid.</param>
+            <returns>A new <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/> with the font category guid set to be <paramref name="newLanguageService"/>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.Equals(System.Object)">
+            <summary>
+            Determines whether two <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>s are the same.
+            </summary>
+            <param name="obj">The object to compare with.</param>
+            <returns>True if the two <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>s are the same, false otherwise</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.GetHashCode">
+            <summary>
+            Serves as a hash function for this type.
+            </summary>
+            <returns>The hash code.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Editor.FontsAndColorsCategory.AppearanceCategory">
+            <summary>
+            Returns a string representating the textual key that's used in the editor's (platform side)
+            EditorFormatMap and ClassificationFormatMap groupings.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation">
+            <summary>
+            Encapsulates information about a language's color information.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation.GetClassificationType(System.Int32)">
+            <summary>
+            Returns a <see cref="T:Microsoft.VisualStudio.Text.Classification.IClassificationType"/>s that is created to be used by the language service classifier 
+            for the colorable item at index colorableItemIndex.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation.GetFontAndColorPreferences">
+            <summary>
+            Returns the <see cref="T:Microsoft.VisualStudio.TextManager.Interop.FONTCOLORPREFERENCES2"/> of the language service. This corresponds to the color definitions
+            inside Visual Studio (not the information available in the classification format map, editor format map, etc.)
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation.AddLanguageService(System.Guid)">
+            <summary>
+            Adds an additional language service that contributes to coloring information of this class. This method can be
+            used to add additional color sources where multiple buffers of the same font and color category guid have 
+            varying language service GUIDs.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation.Updated">
+            <summary>
+            Raised when information about the language service's colors is changed.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformationService">
+            <summary>
+            Provides <see cref="T:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation"/>s for given languages and <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>ies.
+            </summary>
+            <remarks>
+            This is a MEF Component, and should be imported with the following attribute:
+            [Import(typeof(IFontsAndColorsInformationService))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformationService.GetFontAndColorInformation(Microsoft.VisualStudio.Editor.FontsAndColorsCategory)">
+            <summary>
+            Returns an <see cref="T:Microsoft.VisualStudio.Editor.IVsFontsAndColorsInformation"/> which represents the coloring information for the provided
+            <see cref="T:Microsoft.VisualStudio.Editor.FontsAndColorsCategory"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextBufferString">
+            <summary>
+            String representing the Guid used to co-create a VsTextBuffer
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_SecondaryVsTextBufferAdapterString">
+            <summary>
+            String representing the Guid used to co-create a SecondaryVsTextBufferAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextViewString">
+            <summary>
+            String representing the Guid used to co-create a VsTextView
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsDocDataAdapterString">
+            <summary>
+            String representing the Guid used to co-create a VsDocDataAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsCodeWindowString">
+            <summary>
+            String representing the Guid used to co-create a VsCodeWindow
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextBufferCoordinatorAdapterString">
+            <summary>
+            String representing the Guid used to co-create a VsTextBufferCoordinatorAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsHiddenTextManagerAdapterString">
+            <summary>
+            String representing the Guid used to co-create a VsHiddenTextManagerAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_PlatformFactoryString">
+            <summary>
+            String representing the Guid used to co-create a PlatformFactory
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_TextEditorFactoryString">
+            <summary>
+            String representing the Guid used to co-create a TextEditorFactory
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_TextEditorFactoryWithEncodingString">
+            <summary>
+            String representing the Guid used to co-create a TextEditorFactoryWithEncoding
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_PrimeEditorString">
+            <summary>
+            String representing the Guid used to co-create a PrimeEditor
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidEditorPkgString">
+            <summary>
+            String representing the Guid for the editor package
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidTextEditorFontCategory">
+            <summary>
+            Guid for the code editor font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidOutputWindowFontCategory">
+            <summary>
+            Guid for the ouput window's font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidPrinterFontCategory">
+            <summary>
+            Guid for the printer font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidToolTipFontCategory">
+            <summary>
+            Guid for the tooltip font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidStatementCompletionFontCategory">
+            <summary>
+            Guid for the statement completion font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidFindResultsFontCategory">
+            <summary>
+            Guid for the find results font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidCommandWindowFontCategory">
+            <summary>
+            Guid for the command window's font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidSystemWindowFontCategory">
+            <summary>
+            Guid for the system window font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidImmediateWindowFontCategory">
+            <summary>
+            Guid for the immediate window's font and color category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidEditPropCategoryViewMasterSettings">
+            <summary>
+            Guid for the master settings for a certain TextView
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextBuffer">
+            <summary>
+            Guid used to co-create a VsTextBuffer
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextView">
+            <summary>
+            Guid used to co-create a VsTextView
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_SecondaryVsTextViewAdapter">
+            <summary>
+            Guid used to co-create a SecondaryVsTextViewAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsDocDataAdapter">
+            <summary>
+            Guid used to co-create a VsDocDataAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsCodeWindow">
+            <summary>
+            Guid used to co-create a VsCodeWindow
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsTextBufferCoordinatorAdapter">
+            <summary>
+            Guid used to co-create a VsTextBufferCoordinatorAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_VsHiddenTextManagerAdapter">
+            <summary>
+            Guid used to co-create a VsHiddenTextManagerAdapter
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_PlatformFactory">
+            <summary>
+            Guid used to co-create a PlatformFactory
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_TextEditorFactory">
+            <summary>
+            Guid used to co-create a TextEditorFactory
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_TextEditorFactoryWithEncoding">
+            <summary>
+            Guid used to co-create a TextEditorFactoryWithEncoding
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.CLSID_PrimeEditor">
+            <summary>
+            Guid used to co-create a PrimeEditor
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidIVxTextBuffer">
+            <summary>
+            Guid used to get an IVxTextBuffer from an ITextBuffer
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost">
+            <summary>
+            Guid used to get an IWpfTextViewHost from an IWpfTextView
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Editor.DefGuidList.guidEditorPkg">
+            <summary>
+            Guid for the editor package
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService">
+            <summary>
+            A factory service for creating Editor Adapter objects and mapping between such objects and
+            the underlying new editor objects.
+            </summary>
+            <remarks>This is a MEF Component, and should be exported with the following attribute:
+            [Export(NameSource=typeof(IVsCodeWindowFactoryService))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextBufferAdapter(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">
+            <summary>
+            Create an IVsTextBuffer.
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsTextBuffer.</param>
+            <returns>The new IVsTextBuffer.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextBufferAdapter(Microsoft.VisualStudio.OLE.Interop.IServiceProvider,Microsoft.VisualStudio.Utilities.IContentType)">
+            <summary>
+            Create an IVsTextBuffer with a specified content type.
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsTextBuffer.</param>
+            <param name="contentType">The <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"/> for the underlying <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>.</param>
+            <returns>The new IVsTextBuffer.</returns>
+            <remarks>This operation is intended for text buffers that will be initialized by IVsTextBuffer.InitializeContent.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextBufferAdapterForSecondaryBuffer(Microsoft.VisualStudio.OLE.Interop.IServiceProvider,Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Create an IVsTextBuffer for the SecondaryBuffer (used in BufferCoordinator) given an <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsTextBuffer.</param>
+            <param name="secondaryBuffer">The <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> with which to create the IVsTextBuffer.</param>
+            <returns>The new IVsTextBuffer.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextViewAdapter(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">
+            <summary>
+            Create an IVsTextView.
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsTextView.</param>
+            <returns>The new IVsTextView.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextViewAdapter(Microsoft.VisualStudio.OLE.Interop.IServiceProvider,Microsoft.VisualStudio.Text.Editor.ITextViewRoleSet)">
+            <summary>
+            Create an IVsTextView with a specified set of text view roles.
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsTextView.</param>
+            <param name="roles">The roles with which to initialize the text view.</param>
+            <returns>The new IVsTextView.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsCodeWindowAdapter(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">
+            <summary>
+            Create an IVsCodeWindow.
+            </summary>
+            <param name="serviceProvider">The IServiceProvider with which to site the IVsCodeWindow.</param>
+            <returns>The new IVsCodeWindow.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.CreateVsTextBufferCoordinatorAdapter">
+            <summary>
+            Create an IVsTextBuffercoordinator.
+            </summary>
+            <returns>The new IVsTextBufferCoordinator.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetDataBuffer(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer)">
+            <summary>
+            Get the DataBuffer of an IVsTextBuffer adapter (this is the top buffer of
+            the data model buffer graph). This buffer will be
+            the same as the DocumentBuffer except in BufferCoordinator scenarios.
+            </summary>
+            <param name="bufferAdapter">The text buffer adapter of interest.</param>
+            <returns>Null if this method is called before content has been established for 
+            the adapter, otherwise the DataBuffer that is presented to the view model.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="bufferAdapter"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="bufferAdapter"/> was not produced
+            by this factory.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetDocumentBuffer(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer)">
+            <summary>
+            Get the DocumentBuffer of an IVsTextBuffer adapter (this is the bottom buffer
+            of the data model buffer graph). This buffer will be
+            the same as the DataBuffer except in BufferCoordinator scenarios.
+            </summary>
+            <param name="bufferAdapter">The text buffer adapter of interest.</param>
+            <returns>Null if this method is called before content has been established for 
+            the adapter, otherwise the DocumentBuffer that is presented to the view model.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="bufferAdapter"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="bufferAdapter"/> was not produced
+            by this factory.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetWpfTextView(Microsoft.VisualStudio.TextManager.Interop.IVsTextView)">
+            <summary>
+            Get the WpfTextView of an IVsTextView adapter. 
+            </summary>
+            <param name="viewAdapter">The text view adapter of interest.</param>
+            <returns>Null if this method is called before content has been established for the 
+            adapter, otherwise the IWpfTextView that presents the text in the UI.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="viewAdapter"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="viewAdapter"/> was not produced
+            by this factory.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetWpfTextViewHost(Microsoft.VisualStudio.TextManager.Interop.IVsTextView)">
+            <summary>
+            Get the WpfTextViewHost of an IVsTextView adapter. 
+            </summary>
+            <param name="viewAdapter">The text view adapter of interest.</param>
+            <returns>Null if this method is called before content has been established for the 
+            adapter, otherwise the IWpfTextViewHost that presents the text in the UI.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="viewAdapter"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="viewAdapter"/> was not produced
+            by this factory.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.SetDataBuffer(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer,Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Set the DataBuffer of an IVsTextBuffer adapter that is being used together
+            with an IVsTextBufferCoordinator adapter.
+            </summary>
+            <param name="bufferAdapter">The buffer adapter of interest.</param>
+            <param name="dataBuffer">The new data buffer.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="bufferAdapter"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="dataBuffer"/>is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="bufferAdapter"/> was not produced
+            by this factory.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetBufferAdapter(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Get the IVsTextBuffer adapter for this text buffer (if it exists).
+            </summary>
+            <param name="textBuffer">The text buffer of interest.</param>
+            <returns>Null if no adapter exists, or else the adapter.</returns>
+            <remarks>Adapters are generally built only for document windows.</remarks>
+            <exception cref="T:System.ArgumentNullException">textBuffer is null.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsEditorAdaptersFactoryService.GetViewAdapter(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Get the IVsTextView adapter for this text view (if it exists).
+            </summary>
+            <param name="textView">The text view of interest.</param>
+            <returns>Null if no adapter exists, or else the adapter.</returns>
+            <remarks>Adapters are generally built only for document windows.</remarks>
+            <exception cref="T:System.ArgumentNullException">textView is null.</exception>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Editor.IVsTextViewCreationListener">
+            <summary>
+            A listener for when a text view adapter (<see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextView"/>) is created and initialized that 
+            has matching roles and was created over a text data model having a matching content type.
+            Exporters must specify at least one ContentTypeAttribute and one TextViewRole, and should mark their export using the following attribute:
+            [Export(typeof(IVsTextViewCreationListener))], along with [ContentType] and [TextViewRole].
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Editor.IVsTextViewCreationListener.VsTextViewCreated(Microsoft.VisualStudio.TextManager.Interop.IVsTextView)">
+            <summary>
+            Called when a <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextView"/> adapter has been created and initialized.
+            </summary>
+            <param name="textViewAdapter">The newly created and initialized text view
+            adapter.</param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Editor.IVsVisibleTextMarkerTag">
+            <summary>
+            These tags are generated from the visible legacy markers created using <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextLines"/>.CreateLineMarker and <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextStream"/>.CreateStreamMarker.
+            </summary>
+            <remarks>No extension should produce these tags.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Editor.IVsVisibleTextMarkerTag.Type">
+            <summary>
+            The integer type of the marker.
+            </summary>
+            <remarks>This is equivalent to the type produced by IVsTextLineMarker.GetType().</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Editor.IVsVisibleTextMarkerTag.MarkerType">
+            <summary>
+            The marker's <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextMarkerType"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Editor.IVsVisibleTextMarkerTag.LineMarker">
+            <summary>
+            The marker as an <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextLineMarker"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Editor.IVsVisibleTextMarkerTag.StreamMarker">
+            <summary>
+            The marker as an <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextStreamMarker"/>.
+            </summary>
+        </member>
+    </members>
+</doc>

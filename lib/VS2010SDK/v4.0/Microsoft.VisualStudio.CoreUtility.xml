@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.CoreUtility</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.VisualStudio.Utilities.SingletonBaseMetadataAttribute">
+            <summary>
+            A base class for attributes that can appear only once on a single component part.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.MultipleBaseMetadataAttribute">
+            <summary>
+            A base class for attributes that can appear multiple times on a single component part.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.BaseDefinitionAttribute">
+            <summary>
+            Represents a base definition of the current definition.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.BaseDefinitionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Utilities.BaseDefinitionAttribute"/>.
+            </summary>
+            <param name="name">The base definition name. Definition names are case-insensitive.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/>is null or an empty string.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.BaseDefinitionAttribute.BaseDefinition">
+            <summary>
+            Gets the base definition name.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.DisplayNameAttribute">
+            <summary>
+            Provides a display name for an editor component part.
+            </summary>    
+            <remarks>
+            This attribute should be localized wherever it is used.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.DisplayNameAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Utilities.DisplayNameAttribute"/>.
+            </summary>
+            <param name="displayName">The display name of an editor component part.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.DisplayNameAttribute.DisplayName">
+            <summary>
+            Gets the display name of an editor component part.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IOrderable">
+            <summary>
+            Associated with an orderable part. 
+            </summary>
+            <remarks>This interface is helpful when importing orderable parts.</remarks> 
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IOrderable.Name">
+            <summary>
+            Uniquely identifies a part with respect to parts of the same type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IOrderable.Before">
+            <summary>
+            The parts before which this part should appear in the list.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IOrderable.After">
+            <summary>
+            The parts after which this part should appear in the list.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IPropertyOwner">
+            <summary>
+            Provides ownership of an arbitrary set of properties.
+            </summary>
+            <remarks>This interface should be implemented for classes that need to control the lifetimes of their properties.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IPropertyOwner.Properties">
+            <summary>
+            The collection of properties controlled by the property owner.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.NameAttribute">
+            <summary>
+            Associates a name with an editor extension part.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.NameAttribute.#ctor(System.String)">
+            <summary>
+            Constructs a new instance of the attribute.
+            </summary>
+            <param name="name">The name of the editor extension part.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/> is null.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="name"/> is an empty string.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.NameAttribute.Name">
+            <summary>
+            The name of the editor extension part.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.Node`1">
+            <summary>
+            Holds information about a node of an order graph. Used internally by the orderer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Node`1.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">The item's name</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.Node`1.OriginalIndex">
+            <summary>
+            The original index of the item.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.Node`1.Name">
+            <summary>
+            Name of the node.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.Node`1.Item">
+            <summary>
+            The item that being sorted the node represents.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.Node`1.ComesBeforeNodes">
+            <summary>
+            Nodes that come later in the list.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.Node`1.ComesAfterNodes">
+            <summary>
+            Nodes that come earlier in the list.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.OrderAttribute">
+            <summary>
+            Orders multiple instances of an extension part.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.OrderAttribute.Before">
+            <summary>
+            The extension part to which this attribute is applied should be ordered before 
+            the extension part with the name specified.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The value is null.</exception>
+            <exception cref="T:System.ArgumentException">The value is an empty string.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.OrderAttribute.After">
+            <summary>
+            The extension part to which this attribute is applied should be ordered after
+            the extension part with the name specified.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The value is null.</exception>
+            <exception cref="T:System.ArgumentException">The value is an empty string.</exception>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.Orderer">
+            <summary>
+            Performs a topological sort of orderable extension parts.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.Order``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+            <summary>
+            Orders a list of items that are all orderable, that is, items that implement the IOrderable interface. 
+            </summary>
+            <param name="itemsToOrder">The list of items to sort.</param>
+            <returns>The list of sorted items.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="itemsToOrder"/> is null.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.TopologicalSort``2(System.Collections.Generic.Dictionary{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Int32})">
+            <summary>
+            Orders nodes of the graph using a topological sort algorithm.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.RemoveIncomingEdgesFromChildNodes``2(Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Collections.Generic.List{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}}})">
+            <summary>
+            Removes references to the root from all the nodes that follow it.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.BuildGraphData``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+            <summary>
+            Builds a graph that represents relationships between the items.
+            </summary>
+            <param name="itemsToOrder">The list of items that are being ordered.</param>
+            <returns>Set of graph nodes for the given items.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.TryGetNodeDetails``2(System.Lazy{``0,``1},System.String@,System.Collections.Generic.IEnumerable{System.String}@,System.Collections.Generic.IEnumerable{System.String}@)">
+            <summary>
+            Check the node and try to extract its ordering details.
+            </summary>
+            <param name="item">The item to interrogate</param>
+            <param name="name">The name of the item if s available</param>
+            <param name="comesBeforeItem">The list of names items this one comes before</param>
+            <param name="comesAfterItem">The list of names of items this one comes after</param>
+            <returns>true if the item needs to be a part of the ordering, false if it should be skipped</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.UpdateReferenceToLaterNode``2(System.Collections.Generic.Dictionary{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Int32},System.Collections.Generic.Dictionary{System.String,Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}}},Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.String)">
+            <summary>
+            Fix up references between the node that is being added to graph and the one that comes after it.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.UpdateReferenceToEarlierNode``2(System.Collections.Generic.Dictionary{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Int32},System.Collections.Generic.Dictionary{System.String,Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}}},Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.String)">
+            <summary>
+            Fix up references between the node that is being added to graph and the one that comes before it.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.FindRoots``2(System.Collections.Generic.Dictionary{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Int32})">
+            <summary>
+            Finds all nodes with no incoming edges 
+            (which represent items that don't have any other ones before them).
+            The returned list contains item sorted in the order corresponding to their position in the original list. 
+            This is done to make this topological sort implementation into a stable sort.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.AddRoot``2(System.Collections.Generic.List{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}}},Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}})">
+            <summary>
+            Add a new root to the list of current roots while keeping the list sorted based on the original index positions
+            (this is done to make this sort implementation stable).
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.BreakCircularReference``2(System.Collections.Generic.Dictionary{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},System.Int32})">
+            <summary>
+            Break a circular reference in the graph.
+            </summary>
+            <returns>Returns a new root node.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.RemoveNodeFromList``2(System.Collections.Generic.List{Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}}},Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}})">
+            <summary>
+             Removes a node from the list. The node MUST exist in the list.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.Orderer.CompareTwoRootsByOrigIndex``2(Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}},Microsoft.VisualStudio.Utilities.Node{System.Lazy{``0,``1}})">
+            <summary>
+            Compares two nodes by their original index.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.PropertyCollection">
+            <summary>
+            Allows property owners to control the lifetimes of the properties in the collection. 
+            </summary>
+            <remarks>This collection is synchronized in order to allow access by multiple threads.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.AddProperty(System.Object,System.Object)">
+            <summary>
+            Adds a new property to the collection.
+            </summary>
+            <param name="key">The key by which the property can be retrieved. Must be non-null.</param>
+            <param name="property">The property to associate with the key.</param>
+            <exception cref="T:System.ArgumentException">An element with the same key already exists in the PropertyCollection.</exception>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.RemoveProperty(System.Object)">
+            <summary>
+            Removes the property associated with the specified key.
+            </summary>
+            <param name="key">The key of the property to remove.</param>
+            <returns><c>true</c> if the property was found and removed, <c>false</c> if the property was not found.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.GetOrCreateSingletonProperty``1(System.Object,System.Func{``0})">
+            <summary>
+            Gets or creates a property of type <typeparamref name="T"/> from the property collection. If
+            there is already a property with the specified <paramref name="key"/>, returns the existing property. Otherwise,
+            uses <paramref name="creator"/> to create an instance of that type and add it to the collection with the specified <paramref name="key"/>.
+            </summary>
+            <typeparam name="T">The type of the property.</typeparam>
+            <param name="key">The key of the property to get or create.</param>
+            <param name="creator">The delegate used to create the property (if needed).</param>
+            <returns>The property that was requested.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.GetOrCreateSingletonProperty``1(System.Func{``0})">
+            <summary>
+            Gets or creates a property of type <typeparamref name="T"/> from the property collection. If
+            there is already a property of that type, it returns the existing property. Otherwise, it
+            uses <paramref name="creator"/> to create an instance of that type.
+            </summary>
+            <typeparam name="T">The type of the property.</typeparam>
+            <param name="creator">The delegate used to create the property (if needed).</param>
+            <returns>An instance of the property.</returns>
+            <remarks>The key used in the property collection will be typeof(T).</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.GetProperty``1(System.Object)">
+            <summary>
+            Gets the property associated with the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The property value, or null if the property is not set.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"><paramref name="key"/> does not exist in the property collection.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.GetProperty(System.Object)">
+            <summary>
+            Gets the property associated with the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>The property value, or null if the property is not set.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException"><paramref name="key"/> does not exist in the property collection.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.TryGetProperty``1(System.Object,``0@)">
+            <summary>
+            Gets the property associated with the specified key.
+            </summary>
+            <typeparam name="TProperty">The type of the property associated with the specified key.</typeparam>
+            <param name="key">The key.</param>
+            <param name="property">The retrieved property, or default(TValue) if there is
+            no property associated with the specified key.</param>
+            <returns><c>true</c> if the property was found, otherwise <c>false</c>.</returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.ContainsProperty(System.Object)">
+            <summary>
+            Determines whether the property collection contains a property for the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns><c>true</c> if the property exists, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.PropertyCollection.SetProperty(System.Object,System.Object)">
+            <summary>
+            Sets the property value for a given key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="property">The property to set.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is null.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.PropertyCollection.Item(System.Object)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.PropertyCollection.PropertyList">
+            <summary>
+            Returns the property collection as a read-only collection.
+            </summary>
+            <value>The read-only collection.</value>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.FileExtensionToContentTypeDefinition">
+            <summary>
+            Specifies a mapping between a content type and a file extension.
+            </summary>
+            <remarks> 
+            Because you cannot subclass this type, you can use the [Export] attribute with no type.
+            </remarks>
+            <example>
+            internal sealed class Components
+            {
+               [Export]
+               [FileExtension(".abc")]
+               [ContentType("alphabet")]
+               internal FileExtensionToContentTypeDefinition abcFileExtensionDefinition;
+               
+               { other components }
+            }
+            </example>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.FileExtensionAttribute">
+            <summary>
+            Identifies a file extension.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.FileExtensionAttribute.#ctor(System.String)">
+            <summary>
+            Constructs a new instance of the attribute.
+            </summary>
+            <param fileExtension="fileExtension">The file extension.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="fileExtension"/> is null or empty.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.FileExtensionAttribute.FileExtension">
+            <summary>
+            Gets the file extension.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IContentTypeDefinition">
+            <summary>
+            Describes a content type that is being introduced using <see cref="T:Microsoft.VisualStudio.Utilities.IContentTypeDefinitionSource"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentTypeDefinition.Name">
+            <summary>
+            The case-insensitive name of the content type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentTypeDefinition.BaseDefinitions">
+            <summary>
+            The case-insensitive names of the base types of the content type. May be of zero length.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IContentTypeDefinitionSource">
+            <summary>
+            Defines an alternate source for content type definitions that should be processed together
+            with content types introduced statically using <see cref="T:Microsoft.VisualStudio.Utilities.ContentTypeDefinition"/>. This is intended
+            primarily for legacy VS content types.
+            This is a MEF contract type. There is no associated metadata.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentTypeDefinitionSource.Definitions">
+            <summary>
+            Content type definitions.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService">
+            <summary>
+            The service that maintains the collection of content types.
+            </summary>
+            <remarks>This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IContentTypeRegistryService))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.GetContentType(System.String)">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see> object with the specified <paramref name="typeName"/>.
+            </summary>
+            <param name="typeName">The name of the content type. Name comparisons are case-insensitive.</param>
+            <returns>The content type, or null if no content type is found.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.AddContentType(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates and adds a new content type.
+            </summary>
+            <param name="typeName">The name of the content type.</param>
+            <param name="baseTypeNames">The list of content type names to be used as base content types. Optional.</param>
+            <returns>The <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see>.</returns>
+            <exception cref="T:System.ArgumentException"><paramref name="typeName"/> is null or empty.</exception>
+            <exception cref="T:System.InvalidOperationException"><paramref name="typeName"/> or one of the <paramref name="baseTypeNames"/> 
+            is the name of <see cref="P:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.UnknownContentType"/>, or the content type already exists, or one of the base types would
+            introduce a cyclic base type relationship.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.RemoveContentType(System.String)">
+            <summary>
+            Removes a content type.
+            </summary>
+            <remarks>The "unknown" content type cannot be removed. Any content type that is used for file extension 
+            mapping or as a base for other content types cannot be removed.</remarks>
+            <param name="typeName">The content type to be removed. </param>
+            <exception cref="T:System.InvalidOperationException">The specified content type cannot be removed.</exception>
+            <remarks>Has no effect if <paramref name="typeName"/> is not the name of a registered content type.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.UnknownContentType">
+            <summary>
+            Gets the "unknown" content type.
+            </summary>
+            <remarks>The "unknown" content type indicates that the content type cannot be determined.</remarks>
+            <value>This value is never null.</value>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService.ContentTypes">
+            <summary>Gets an enumeration of all content types, including the "unknown" content type.</summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IFileExtensionRegistryService">
+            <summary>
+            The service that manages associations between file extensions and content types.
+            </summary>
+            <remarks>This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IFileExtensionRegistryService))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IFileExtensionRegistryService.GetContentTypeForExtension(System.String)">
+            <summary>
+            Gets the content type associated with the given file extension.
+            </summary>
+            <param name="extension">The file extension.  It cannot be null, and it should not contain a period.</param>
+            <returns>The <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see> associated with this extension. If no association exists, it returns the "unknown" content type. It never returns null.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IFileExtensionRegistryService.GetExtensionsForContentType(Microsoft.VisualStudio.Utilities.IContentType)">
+            <summary>
+            Gets the list of file extensions associated with the specified content type.
+            </summary>
+            <param name="contentType">The content type. It cannot be null.</param>
+            <returns>The list of file extensions associated with the content type.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IFileExtensionRegistryService.AddFileExtension(System.String,Microsoft.VisualStudio.Utilities.IContentType)">
+            <summary>
+            Adds a new file extension to the registry.
+            </summary>
+            <param name="extension">The file extension (the period is optional).</param>
+            <param name="contentType">The content type for the file extension.</param>
+            <exception cref="T:System.InvalidOperationException"><see paramref="extension"/> is already present in the registry.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IFileExtensionRegistryService.RemoveFileExtension(System.String)">
+            <summary>
+            Removes the specified file extension from the registry.
+            </summary>
+            <remarks>If the specified extension does not exist, then the method does nothing.</remarks>
+            <param name="extension">The file extension (the period is optional).</param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.ContentTypeAttribute">
+            <summary>
+            Declares an association between an extension part and a particular content type.
+            </summary>
+            <seealso cref="T:Microsoft.VisualStudio.Utilities.IContentType"></seealso>
+            <seealso cref="T:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService"></seealso>
+            <seealso cref="T:Microsoft.VisualStudio.Utilities.ContentTypeDefinition"></seealso>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.ContentTypeAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Utilities.ContentTypeAttribute"/>.
+            </summary>
+            <param name="name">The content type name. 
+            Content type names are case-insensitive.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="name"/>is null or an empty string.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.ContentTypeAttribute.ContentTypes">
+            <summary>
+            The content type name.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.ContentTypeDefinition">
+            <summary>
+            Defines a content type.
+            </summary>
+            <remarks> 
+            Because you cannot subclass this type, you can use the [Export] attribute with no type.
+            </remarks>
+            <example>
+            internal sealed class Components
+            {
+               [Export]
+               [Name("Example")]            // required
+               [BaseDefinition("text")]     // zero or more BaseDefinitions are allowed
+               internal ContentTypeDefinition exampleDefinition;
+               
+               { other components }
+            }
+            </example>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Utilities.IContentType">
+            <summary>
+            The content type of an object.
+            </summary>
+            <remarks>All content types are identified by a unique name. 
+            The <see cref="T:Microsoft.VisualStudio.Utilities.IContentTypeRegistryService"></see> can return an <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see> object to allow clients to access additional information.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Utilities.IContentType.IsOfType(System.String)">
+            <summary>
+            Returns <c>true</c> if this <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see>
+            derives from the content type specified by <paramref name="type"/>.
+            </summary>
+            <param name="type">The name of the base content type.</param>
+            <returns><c>true</c> if this content type derives from the one specified by <paramref name="type"/>otherwise <c>false</c>.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentType.TypeName">
+            <summary>
+            The name of the content type.
+            </summary>
+            <value>This name must be unique, and must not be null.</value>
+            <remarks>Comparisons performed on this name are case-insensitive.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentType.DisplayName">
+            <summary>
+            The display name of the content type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Utilities.IContentType.BaseTypes">
+            <summary>
+            The set of all content types from which the current <see cref="T:Microsoft.VisualStudio.Utilities.IContentType"></see> is derived.
+            </summary>
+            <value>This value is never null, though it may be the empty set.</value>
+        </member>
+    </members>
+</doc>

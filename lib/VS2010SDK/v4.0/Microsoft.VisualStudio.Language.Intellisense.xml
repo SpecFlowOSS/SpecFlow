@@ -1,0 +1,2405 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.Language.Intellisense</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1">
+            <summary>
+            Represents an ObservableCollection that allows the AddRange operation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.#ctor">
+            <summary>
+            Initializes a new instance of a <see cref="T:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a list of items to the ObservableCollection without firing an event for each item.
+            </summary>
+            <param name="items">A list of items to add.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.BeginBulkOperation">
+            <summary>
+            Suspends change events on the collection in order to perform a bulk change operation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.EndBulkOperation">
+            <summary>
+            Restores change events on the collection after a bulk change operation has been completed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.AsReadOnly">
+            <summary>
+            Gets a read-only version of the collection.
+            </summary>
+            <returns>A read-only version of the collection.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            Occurs when the collection has changed.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.SetItem(System.Int32,`0)">
+            <summary>
+            Replaces the item at the specified index.
+            </summary>
+            <param name="index">The place at which to replace the item.</param>
+            <param name="item">The item to replace.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.InsertItem(System.Int32,`0)">
+            <summary>
+            Inserts an item at the specified index.
+            </summary>
+            <param name="index">The location at which to insert the item.</param>
+            <param name="item">The item to insert.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.MoveItem(System.Int32,System.Int32)">
+            <summary>
+            Moves the item from one location to another.
+            </summary>
+            <param name="oldIndex">The original location.</param>
+            <param name="newIndex">The new location.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.RemoveItem(System.Int32)">
+            <summary>
+            Removes an item from the collection at the specified location.
+            </summary>
+            <param name="index">The location at which to remove the item.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.BulkObservableCollection`1.ClearItems">
+            <summary>
+            Removes all items from the collection.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.Completion">
+            <summary>
+            Represents an item in a completion set. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.Completion.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.Completion"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.Completion.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.Completion"/> with the specified text and description.
+            </summary>
+            <param name="displayText">The text that is to be displayed by an IntelliSense presenter.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.Completion.#ctor(System.String,System.String,System.String,System.Windows.Media.ImageSource,System.String)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.Completion"/> with the specified text and description.
+            </summary>
+            <param name="displayText">The text that is to be displayed by an IntelliSense presenter.</param>
+            <param name="insertionText">The text that is to be inserted into the buffer if this completion is committed.</param>
+            <param name="description">A description that could be displayed with the display text of the completion.</param>
+            <param name="iconSource">The icon to describe the completion item.</param>
+            <param name="iconAutomationText">The automation name for the icon.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.DisplayText">
+            <summary>
+            Gets/Sets the text that is to be displayed by an IntelliSense presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.InsertionText">
+            <summary>
+            Gets/Sets the text that is to be inserted into the buffer if this completion is committed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.Description">
+            <summary>
+            Gets/Sets a description that could be displayed with the display text of the completion.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.IconSource">
+            <summary>
+            Gets/Sets an icon that could be used to describe the completion.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.IconAutomationText">
+            <summary>
+            Gets/Sets the text to be used as the automation name for the icon when it's displayed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.Completion.Properties">
+            <summary>
+            Gets the properties of the completion.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType">
+            <summary>
+            Defines the types of matching that can be done on completion items.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType.MatchDisplayText">
+            <summary>
+            Match the display text of the completion.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType.MatchInsertionText">
+            <summary>
+            Match the insertion text of the completion.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus">
+            <summary>
+            Represents the full selection status of a completion set. 
+            </summary>
+            <remarks>
+            Completion sets maintain their own selection status, which is a
+            combination of a completion item, a value indicating whether or not the completion is fully selected, and a value
+            indicating whether or not the completion is a unique match.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.#ctor(Microsoft.VisualStudio.Language.Intellisense.Completion,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/>.
+            </summary>
+            <param name="completion">The selected completion in this selection status.</param>
+            <param name="isSelected"><c>true</c> if the completion is fully-selected, <c>false</c> otherwise.</param>
+            <param name="isUnique"><c>true</c> if the completion is a unique match, <c>false</c> otherwise.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.Equals(System.Object)">
+            <summary>
+            Determines whether two instances of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/> are the same.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.GetHashCode">
+            <summary>
+            Gets the hash code of this instance.
+            </summary>
+            <returns>The hash code.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.op_Equality(Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus,Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus)">
+            <summary>
+            Determines whether two instances of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/> are the same.
+            </summary>
+            <param name="status1">The first instance.</param>
+            <param name="status2">The second instance.</param>
+            <returns><c>true</c> if the instances are the same, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.op_Inequality(Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus,Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus)">
+            <summary>
+            Determines whether two instances of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/> are different.
+            </summary>
+            <param name="status1">The first instance.</param>
+            <param name="status2">The second instance.</param>
+            <returns><c>true</c> if the instances are different, otherwise <c>false</c>.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.Completion">
+            <summary>
+            Gets the selected completion represented by this selection status instance.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.IsSelected">
+            <summary>
+            Determines whether the completion is fully-selected.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus.IsUnique">
+            <summary>
+            Determines whether the completion is a unique match.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet">
+            <summary>
+            Represents a set of completions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.#ctor(System.String,System.String,Microsoft.VisualStudio.Text.ITrackingSpan,System.Collections.Generic.IEnumerable{Microsoft.VisualStudio.Language.Intellisense.Completion},System.Collections.Generic.IEnumerable{Microsoft.VisualStudio.Language.Intellisense.Completion})">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/> with the specified name and text.
+            </summary>
+            <param name="moniker">The unique, non-localized identifier for the completion set.</param>
+            <param name="displayName">The localized name of the completion set.</param>
+            <param name="applicableTo">The tracking span to which the completions apply.</param>
+            <param name="completions">The list of completions.</param>
+            <param name="completionBuilders">The list of completion builders.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.SelectBestMatch">
+            <summary>
+            Determines the best match in the completion set.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.Filter">
+            <summary>
+            Filters the set of completions to those that match the applicability text of the completion
+            set and determines the best match.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Both the completions and the completion builders have been overridden.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.Recalculate">
+            <summary>
+            Recalculates the set of completions for this completion set. 
+            </summary>
+            <remarks>
+            The base implementation of Recalculate() does nothing.  
+            Derived classes should override this method to implement custom
+            recalculation behavior.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.Filter(Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType,System.Boolean)">
+            <summary>
+            Filters the set of completions to those that match the applicability text of the completion
+            set and determines the best match.
+            </summary>
+            <param name="matchType">The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType"/>.</param>
+            <param name="caseSensitive"><c>true</c> if the match is case-sensitive, otherwise <c>false</c>.</param>
+            <exception cref="T:System.InvalidOperationException">Both the completions and the completion builders have been overridden.</exception>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.SelectBestMatch(Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType,System.Boolean)">
+            <summary>
+            Redetermines the best matching completion in the completion set.
+            </summary>
+            <param name="matchType">The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType"/>.</param>
+            <param name="caseSensitive"><c>true</c> if the match is case-sensitive, otherwise <c>false</c>.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.MatchCompletionList(System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.Completion},Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType,System.Boolean)">
+            <summary>
+            Matches the completion list.
+            </summary>
+            <param name="completionList">The list of completions.</param>
+            <param name="matchType">The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionMatchType"/>.</param>
+            <param name="caseSensitive"><c>true</c> if the match is case-sensitive, otherwise <c>false</c>.</param>
+            <returns>A <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.CompletionMatchResult"/>.</returns>
+            <exception cref="T:System.InvalidOperationException">The span to which this completion applies is null.</exception>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.Moniker">
+            <summary>
+            The unique, non-localized identifier for the completion set.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.DisplayName">
+            <summary>
+            Gets or sets the localized name of this completion set.  
+            </summary>
+            <remarks>In the default presenter, the display name
+            appears as the header of a tab item in a WPF TabControl.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.ApplicableTo">
+            <summary>
+            Gets or sets the text tracking span to which this completion applies.  
+            </summary>
+            <remarks>If this completion is committed to the buffer, the
+            span will be replaced with the completion insertion text.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.Completions">
+            <summary>
+            Gets or sets the list of completions that are part of this completion set.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.CompletionBuilders">
+            <summary>
+            Gets or sets the list of completion builders that are part of this completion set.  
+            </summary>
+            <remarks>
+            Completion builders are completions that are displayed separately from the other completions in the completion set.
+            In the default presentation, completion builders appear in a non-scrolled list above the scrolled list of completions.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.SelectionStatus">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/>.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The value is null.</exception>
+            <exception cref="T:System.ArgumentException">The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSelectionStatus"/> is not contained in either the 
+            completions or the completion builders.</exception>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.SelectionStatusChanged">
+            <summary>
+            Occurs when the selection status has changed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.WritableCompletions">
+            <summary>
+            Gets the ObservableCollection of writable completions.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.WritableCompletionBuilders">
+            <summary>
+            Gets the ObservableCollection of writable completion builders.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.CompletionMatchResult">
+            <summary>
+            Stores information about the completion match result.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.CompletionMatchResult.SelectionStatus">
+            <summary>
+            The selection status of the completion set.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionSet.CompletionMatchResult.CharsMatchedCount">
+            <summary>
+            The number of characters matched in the completion set.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CurrentParameterChangedEventArgs">
+            <summary>
+            Provides information about the change of the current parameter in a signature help session.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.CurrentParameterChangedEventArgs.#ctor(Microsoft.VisualStudio.Language.Intellisense.IParameter,Microsoft.VisualStudio.Language.Intellisense.IParameter)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CurrentParameterChangedEventArgs"/>.
+            </summary>
+            <param name="previousCurrentParameter">The parameter that was previously the current parameter.</param>
+            <param name="newCurrentParameter">The parameter that is now the current parameter.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CurrentParameterChangedEventArgs.PreviousCurrentParameter">
+            <summary>
+            Gets the parameter that was previously the current parameter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CurrentParameterChangedEventArgs.NewCurrentParameter">
+            <summary>
+            Gets the parameter that is now the current parameter.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle">
+            <summary>
+             Defines a set of properties that will be used to style the default completion presenter.
+            </summary>
+             <remarks>
+             This is a MEF component part, and should be exported with the following attributes:
+             [Export(typeof(CompletionPresenterStyle))]
+             [ContentType]
+             [Name]
+             [Order]
+             All exports of this component part should be ordered after the "default" completion presenter style.  At a minimum,
+             this means adding [Order(After="default")] to the export metadata.
+             </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.CompletionTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of the individual completion items.
+            </summary>
+            <remarks>
+            The individual completion items may override this value by implementing the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ITextFormattable"/> interface.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.BorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the borders in the completion presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.BackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the completion presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.SelectionBorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the border rectangle around the selected completion item.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.SelectionBackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the selected completion item.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.SelectionTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to paint the text of the selected completion item.
+            </summary>
+            <remarks>
+            This <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> object should be constructed so as to keep from clashing with the
+            SelectionBackgroundBrush.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TooltipBorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the border around the completion tooltip.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TooltipBackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the completion tooltip.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TooltipTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text in the completion tooltip.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TabPanelBackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the completion tab panel.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TabItemHotBorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the border of a completion tab item when the mouse is
+            hovering over it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TabItemHotBackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of a completion tab item when the mouse is
+            hovering over it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.TabItemHotTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of a completion tab item when the mouse is
+            hovering over it.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.CompletionPresenterStyle.AreGradientsAllowed">
+            <summary>
+            Gets a value determining whether or not gradients should be used in the presentation of a
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker">
+            <summary>
+            Represents the central broker responsible for statement completion.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.TriggerCompletion(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Starts the process of statement completion, assuming the caret position to be the position at which completions should
+            be inserted.  
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to trigger statement completion.</param>
+            <returns>A valid statement completion session. May be null if no session could be created.</returns>
+            <remarks>When the caret leaves the
+            applicability span of all the completions in this session, the session will be automatically dismissed.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.TriggerCompletion(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Starts the process of statement completion at a particular position. When called with a specific trigger point, caret
+            movements will be ignored and the broker will not be responsible for dismissing the session.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to trigger statement completion.</param>
+            <param name="triggerPoint">The point in the text buffer at which statement completion is requested.</param>
+            <param name="trackCaret">
+            <c>true</c> if this session should track the caret, <c>false</c> otherwise. When the caret is tracked, only completion items whose
+            applicability span contains the caret will be displayed.
+            </param>
+            <returns>A valid statement completion session.  May be null if no session could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.CreateCompletionSession(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Creates a completion session, but does not start it.  
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to create a completion session.</param>
+            <param name="triggerPoint">The point in the text buffer at which statement completion is requested.</param>
+            <param name="trackCaret">
+            <c>true</c> if this session should track the caret, <c>false</c> otherwise. When the caret is tracked, only completion items whose
+            applicability span contains the caret will be displayed.
+            </param>
+            <returns>A valid statement completion session.  May be null if no session could be created.</returns>
+            <remarks>This method is useful if you want to set some properties on the session
+            before starting it.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.DismissAllSessions(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Dismisses all active statement completion sessions.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to dismiss all sessions.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.IsCompletionActive(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Determines whether or not statement completion is active over the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which to determine if statement completion is active.</param>
+            <remarks>This property is <c>true</c> when Sessions.Count &gt; 0 and <c>false</c>
+            otherwise.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionBroker.GetSessions(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Gets the list of active statement completion sessions.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which to get completions.</param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession">
+            <summary>
+            Defines a statement completion session, which is a type of IntelliSense session.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession">
+            <summary>
+            Represents an IntelliSense session, or a single instance of the IntelliSense process.  
+            </summary>
+            <remarks>
+            A session is returned by each
+            IntelliSense triggering operation, and can be used to control the process of IntelliSense operations. IntelliSense sessions
+            are aggregated into a stack, managed by an <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack"/> instance.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.GetTriggerPoint(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Text.ITrackingPoint"/> at which this IntelliSense session was triggered in terms of the specified
+            <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>.
+            </summary>
+            <remarks>
+            Callers should take care to pass only <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>s that are part of the session.TextView.BufferGraph
+            </remarks>
+            <param name="textBuffer">The <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> for which a trigger point should be returned.</param>
+            <returns>
+            The trigger point of the session as a <see cref="T:Microsoft.VisualStudio.Text.ITrackingSpan"/> in terms of the specified <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.GetTriggerPoint(Microsoft.VisualStudio.Text.ITextSnapshot)">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Text.SnapshotPoint"/> at which this IntelliSense session was triggered in terms of the specified
+            <see cref="T:Microsoft.VisualStudio.Text.ITextSnapshot"/>.
+            </summary>
+            <remarks>
+            Callers should take care to pass only <see cref="T:Microsoft.VisualStudio.Text.ITextSnapshot"/>s that are part of the session.TextView.BufferGraph
+            </remarks>
+            <param name="textSnapshot">The <see cref="T:Microsoft.VisualStudio.Text.ITextSnapshot"/> for which a trigger point should be returned.</param>
+            <returns>
+            The trigger point of the session as a <see cref="T:Microsoft.VisualStudio.Text.SnapshotPoint"/> in terms of the specified <see cref="T:Microsoft.VisualStudio.Text.ITextSnapshot"/>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Start">
+            <summary>
+            Starts the session.  
+            </summary>
+            <remarks>
+            Before this method is called, the session is in an initialization state. It begins processing only when Start()
+            is called.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Dismiss">
+            <summary>
+            Dismisses the session, causing the presenter to be destroyed and the session to be removed from the session stack.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Recalculate">
+            <summary>
+            Recalculates the underlying IntelliSense items pertaining to this session, using the same trigger point.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Match">
+            <summary>
+            Determines the best matching item in the session and sets the selection to this item.  
+            </summary>
+            <remarks>
+            The best match is determined by
+            querying the highest-priority provider for the buffer over which this session is running.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Collapse">
+            <summary>
+            Collapses the session to an unobtrusive state in which it doesn't get in the way of the user.  If the session has no
+            such state, the session will be dismissed.
+            </summary>
+            <remarks>
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession"/>s are the only default <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession"/>s that have a collapsed state.
+            All other default sessions (<see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession"/>s, <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/>s, and
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession"/>s) will be dismissed when collapsed.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.TextView">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> inside of which this IntelliSense session was triggered.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Presenter">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisensePresenter"/> that is used to render IntelliSense for this session.  
+            </summary>
+            <remarks>This property can
+            change due to session updates.</remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.PresenterChanged">
+            <summary>
+            Occurs when the IntelliSense presenter for this session changes.  
+            </summary>
+            <remarks>
+            Any consumers of the presenter should re-render the presenter at this time.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Dismissed">
+            <summary>
+            Occurs when the session is dismissed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.IsDismissed">
+            <summary>
+            Determines whether the session is dismissed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Recalculated">
+            <summary>
+            Occurs when the session is recalculated.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.Filter">
+            <summary>
+            Filters the session's completion items, based on the current state of the text buffer.  
+            </summary>
+            <remarks>
+            If a completion's display text
+            or insertion text contains the text in its applicability span, it remains part of the CompletionSets
+            collection, otherwise it will be removed. The underlying providers will not be asked for additional completion
+            information because of this call.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.Commit">
+            <summary>
+            Commits a completion session. The selected completion's insertion text is inserted into the buffer in place of
+            its applicability span.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.CompletionSets">
+            <summary>
+            Gets the collection of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/> objects.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.SelectedCompletionSet">
+            <summary>
+            Gets or sets the selected <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/>.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.SelectedCompletionSetChanged">
+            <summary>
+            Occurs when the SelectedCompletionSet property changes.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.Committed">
+            <summary>
+            Occurs after a completion session is committed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession.IsStarted">
+            <summary>
+            Determines whether the completion session has been started.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSource">
+            <summary>
+            Provides completions for a given content type.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionSource.AugmentCompletionSession(Microsoft.VisualStudio.Language.Intellisense.ICompletionSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.CompletionSet})">
+            <summary>
+            Determines which <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/>s should be part of the specified <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession"/>.
+            </summary>
+            <param name="session">The session for which completions are to be computed.</param>
+            <param name="completionSets">The set of the completionSets to be added to the session.</param>
+            <remarks>
+            Each applicable <see cref="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionSource.AugmentCompletionSession(Microsoft.VisualStudio.Language.Intellisense.ICompletionSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.CompletionSet})"/> instance will be called in-order to
+            (re)calculate a <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSession"/>.  <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/>s can be added to the session by adding
+            them to the completionSets collection passed-in as a parameter.  In addition, by removing items from the collection, a
+            source may filter <see cref="T:Microsoft.VisualStudio.Language.Intellisense.CompletionSet"/>s provided by <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSource"/>s earlier in the calculation
+            chain.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSourceProvider">
+            <summary>
+            Provides completion sources.  
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(ICompletionSourceProvider))]
+            You must provide the ContentType and Order
+            attributes.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICompletionSourceProvider.TryCreateCompletionSource(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Creates a completion provider for the given context.
+            </summary>
+            <param name="textBuffer">The text buffer over which to create a provider.</param>
+            <returns>A valid <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ICompletionSource"/> instance, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IconDescription">
+            <summary>
+            Describes the icon to use for displaying items in statement completion.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IconDescription.#ctor(Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup,Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem)">
+            <summary>
+            Initializes a new instance of an <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IconDescription"/> from a group and an item within the group.
+            </summary>
+            <param name="group">The icon group of the icon to be displayed.</param>
+            <param name="item">The specific icon within the icon group to be displayed.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IconDescription.ToString">
+            <summary>
+            Provides a description of the specific icon. 
+            </summary>
+            <returns>Group.Item</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IconDescription.Group">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup"/> of the icon to be displayed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IconDescription.Item">
+            <summary>
+            Gets the specific <see cref="T:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem"/> within the icon group to be displayed.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICustomCommit">
+            <summary>
+            Provides custom commit operations for completions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICustomCommit.Commit">
+            <summary>
+            Commits the completion using the completion's own commit logic.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICustomIntellisensePresenter">
+            <summary>
+            Defines a custom IntelliSense presenter.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisensePresenter">
+            <summary>
+            Defines a presenter of IntelliSense information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisensePresenter.Session">
+            <summary>
+            Gets the session that this presenter is rendering.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICustomIntellisensePresenter.Render">
+            <summary>
+            Renders the IntelliSense session.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ICustomKeyboardHandler">
+            <summary>
+            Defines a custom handler of keyboard events
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICustomKeyboardHandler.CaptureKeyboard">
+            <summary>
+            Signals the handler that it's ok to begin capturing keyboard events.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ICustomKeyboardHandler.ReleaseKeyboard">
+            <summary>
+            Signals the handler that it should cease capturing keyboard events.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IGlyphService">
+            <summary>
+            Gets a standard set of glyphs.
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IGlyphService))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IGlyphService.GetGlyph(Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup,Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem)">
+            <summary>
+            Gets a glyph in the form of a WPF <see cref="T:System.Windows.Media.ImageSource"/>.
+            </summary>
+            <param name="group">The group description for this glyph.</param>
+            <param name="item">The item description for this glyph.</param>
+            <returns>A valid WPF <see cref="T:System.Windows.Media.ImageSource"/> that contains the requested glyph.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseCommandTarget">
+            <summary>
+            Provides a way to intercede in the command-handling chain to handle keyboard commands.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseCommandTarget.ExecuteKeyboardCommand(Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand)">
+            <summary>
+            Executes a user-initiated keyboard command.  
+            </summary>
+            <param name="command">The keyboard command to execute.</param>
+            <returns><c>true</c> if the command was handled, <c>false</c> otherwise.</returns>
+            <remarks>
+            Keyboard commands are normally handled by the underlying view, but
+            IntelliSense presenters may intercede in the command-handling chain in order to handle certain keyboard commands.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseController">
+            <summary>
+            Controls the IntelliSense process for one or more subject <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> objects
+            exposed through a single <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseController.Detach(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Detaches the controller from the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> from which the controller should detach.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseController.ConnectSubjectBuffer(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Called when a new subject <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> appears in the graph of buffers associated with
+            the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>, due to a change in projection or content type.
+            </summary>
+            <param name="subjectBuffer">The newly-connected text buffer.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseController.DisconnectSubjectBuffer(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Called when a subject <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> is removed from the graph of buffers associated with
+            the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>, due to a change in projection or content type. 
+            </summary>
+            <param name="subjectBuffer">The disconnected text buffer.</param>
+            <remarks>
+            It is not guaranteed that
+            the subject buffer was previously connected to this controller.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseControllerProvider">
+            <summary>
+            Creates IntelliSense controllers for individual <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> instances.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseControllerProvider.TryCreateIntellisenseController(Microsoft.VisualStudio.Text.Editor.ITextView,System.Collections.Generic.IList{Microsoft.VisualStudio.Text.ITextBuffer})">
+            <summary>
+            Attempts to create an IntelliSense controller for a specific text view opened in a specific context.
+            </summary>
+            <param name="textView">The text view for which a controller should be created.</param>
+            <param name="subjectBuffers">The set of text buffers with matching content types that are potentially visible in the view.</param>
+            <returns>A valid IntelliSense controller, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisensePresenterProvider">
+            <summary>
+            Creates IntelliSense presenters over a given IntelliSense session.  
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IIntellisensePresenterProvider))]
+            Component exporters must add the Order attribute to define the order of the presenter in the presenter chain.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisensePresenterProvider.TryCreateIntellisensePresenter(Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession)">
+            <summary>
+            Attempts to create an IntelliSense presenter for a given IntelliSense session.
+            </summary>
+            <param name="session">The session for which a presenter should be created.</param>
+            <returns>A valid IntelliSense presenter, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack">
+            <summary>
+            Defines a stack of IntelliSense sessions that manages session activation and currency.  
+            </summary>
+            <remarks>
+            Each IntelliSense session is
+            part of the stack, whether or not it appears in a TextView popup. The topmost session on the stack has
+            special privileges, such as being able to capture the keyboard.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.PushSession(Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession)">
+            <summary>
+            Adds a session to the top of the stack.
+            </summary>
+            <param name="session">An <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession"/> to add to the top of the stack.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.PopSession">
+            <summary>
+            Removes the topmost session from the stack and returns it.
+            </summary>
+            <returns>The session that was removed.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.MoveSessionToTop(Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession)">
+            <summary>
+            Moves a session already in the session stack to the top of the stack.  The keyboard session will be re-evaluated.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.CollapseAllSessions">
+            <summary>
+            Reduces all sessions in the session stack to their collapsed state, or dismisses them if they have no such state.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.Sessions">
+            <summary>
+            Gets the list of sessions in the stack, ordered from bottom to top.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack.TopSession">
+            <summary>
+            Gets the topmost session in the stack.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStackMapService">
+            <summary>
+            Provides access to all the IntelliSense session stacks created for all the different
+            <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> instances in the application.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStackMapService.GetStackForTextView(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Gets an <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack"/> for a specific <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> instance.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.</param>
+            <returns>The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSessionStack"/>.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand">
+            <summary>
+            Represents the set of keyboard commands that can be issued to IntelliSense presenters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.Up">
+            <summary>
+            The up arrow command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.Down">
+            <summary>
+            The down arrow command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.PageUp">
+            <summary>
+            The page up command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.PageDown">
+            <summary>
+            The page down command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.TopLine">
+            <summary>
+            The go to the top line command
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.BottomLine">
+            <summary>
+            The go to the bottom line command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.Home">
+            <summary>
+            The home command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.End">
+            <summary>
+            The end command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.Enter">
+            <summary>
+            The enter, or return, command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.Escape">
+            <summary>
+            The escape command.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.IncreaseFilterLevel">
+            <summary>
+            The increase filter level command. 
+            </summary>
+            <remarks>
+             This command is most often used in tabbed completion to switch between the completion tabs.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseKeyboardCommand.DecreaseFilterLevel">
+            <summary>
+            The decrease filter level command.  
+            </summary>
+            <remarks>
+            This command is most often used in tabbed completion to switch between the completion tabs.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IntellisenseSpaceReservationManagerNames">
+            <summary>
+            Defines the names of the space reservation managers used by the default IntelliSense presenters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseSpaceReservationManagerNames.CompletionSpaceReservationManagerName">
+            <summary>
+            The space reservation manager name for statement completion.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseSpaceReservationManagerNames.SignatureHelpSpaceReservationManagerName">
+            <summary>
+            The space reservation manager name for signature help.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseSpaceReservationManagerNames.QuickInfoSpaceReservationManagerName">
+            <summary>
+            The space reservation manager name for Quick Info.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.IntellisenseSpaceReservationManagerNames.SmartTagSpaceReservationManagerName">
+            <summary>
+            The space reservation manager name for smart tags.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IParameter">
+            <summary>
+            Represents an individual parameter description inside the description of a signature.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IParameter.Signature">
+            <summary>
+            Gets the signature of which this parameter is a part.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IParameter.Name">
+            <summary>
+            Gets the name of this parameter. 
+            </summary>
+            <remarks>
+            This is displayed to identify the parameter.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IParameter.Documentation">
+            <summary>
+            Gets the documentation associated with the parameter.  
+            </summary>
+            <remarks>
+            This is displayed to describe
+            the parameter.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IParameter.Locus">
+            <summary>
+            Gets the text location of this parameter relative to the signature's content.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IParameter.PrettyPrintedLocus">
+            <summary>
+            Gets the text location of this parameter relative to the signature's pretty-printed content.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter">
+            <summary>
+            Defines an IntelliSense presenter that is rendered as a popup within an
+            <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.SurfaceElement">
+            <summary>
+            Gets the WPF <see cref="T:System.Windows.UIElement"/> that the presenter wants to be displayed inside a
+            <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> popup.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.SurfaceElementChanged">
+            <summary>
+            Occurs when the WPF SurfaceElement is changed.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.PresentationSpan">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Text.ITrackingSpan"/> to which this presenter is related.  
+            </summary>
+            <remarks>
+            This property is used to determine where to
+            place the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> popup inside of which the presenter's
+            SurfaceElement is hosted.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.PresentationSpanChanged">
+            <summary>
+            Occurs when the PresentationSpan property changes.  
+            </summary>
+            <remarks>
+            This is the way popup presenters signal that they should be moved.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.PopupStyles">
+            <summary>
+            Gets a set of flags that determine the popup style.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.PopupStylesChanged">
+            <summary>
+            Occurs when the PopupStyles property changes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.SpaceReservationManagerName">
+            <summary>
+            Gets the name of the space reservation manager that should be used to create popups for this presenter.  
+            </summary>
+            <remarks>
+            Space reservation
+            managers can be ordered, thus ensuring predictable popup placement.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IPopupIntellisensePresenter.Opacity">
+            <summary>
+            Gets or sets the opacity of this popup presenter.  
+            </summary>
+            <remarks>
+            The presenter should use this property to set the
+            opacity of its surface element and of any other text-obscuring UI elements it has provided.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker">
+            <summary>
+            Defines a Quick Info broker.  
+            </summary>
+            <remarks>
+            The broker is responsible for triggering Quick Info sessions
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker.IsQuickInfoActive(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Determines whether there is at least one active Quick Info session in the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which Quick Info session status is to be determined.</param>
+            <returns>
+            <c>true</c> if there is at least one active Quick Info session over the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>, <c>false</c>
+            otherwise.
+            </returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker.TriggerQuickInfo(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Triggers Quick Info at the position of the caret in the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.  
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which Quick Info is to be triggered.</param>
+            <returns>A valid Quick Info session, or null if none could be created.</returns>
+            <remarks>
+            Quick Info is triggered in the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> to which this
+            broker is attached.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker.TriggerQuickInfo(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Triggers Quick Info at the specified position in the buffer, either tracking or not tracking the mouse.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which Quick Info is to be triggered.</param>
+            <param name="triggerPoint">
+            The <see cref="T:Microsoft.VisualStudio.Text.ITrackingPoint"/> in the text buffer at which Quick Info should be triggered.
+            </param>
+            <param name="trackMouse">
+            <c>true</c> if the session should be dismissed when the mouse leaves the applicability span of the session,
+            <c>false</c> otherwise.
+            </param>
+            <returns>A valid Quick Info session, or null if none could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker.CreateQuickInfoSession(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Creates but does not start a Quick Info session at the specified location in the <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/>.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which a Quick Info should be created.</param>
+            <param name="triggerPoint">
+            The <see cref="T:Microsoft.VisualStudio.Text.ITrackingPoint"/> in the text buffer at which Quick Info should be triggered.
+            </param>
+            <param name="trackMouse">
+            <c>true</c> if the session should be auto-dismissed when the mouse leaves the applicability span of the session,
+            otherwise <c>false</c>.
+            </param>
+            <returns>A valid Quick Info session, or null if none could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoBroker.GetSessions(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Gets the set of active Quick Info sessions for the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> in which this broker operates.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> for which Quick Info sessions should be returned.</param>
+            <returns>The list of valid Quick Info sessions active over the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession">
+            <summary>
+            Defines an IntelliSense session used to display Quick Info information.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession.QuickInfoContent">
+            <summary>
+            Gets the content that will be displayed by this session.  
+            </summary>
+            <remarks>
+            Several types of content are supported, including strings,
+            <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> instances, and <see cref="T:System.Windows.UIElement"/> instances.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession.ApplicableToSpan">
+            <summary>
+            Gets the applicability span for this session.  
+            </summary>
+            <remarks>
+            The applicability span is the span of text in the <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> to which this
+            session pertains. The default Quick Info presenter renders a popup near this location. If this session tracks the
+            mouse, the session will be dismissed when the mouse leaves this <see cref="T:Microsoft.VisualStudio.Text.ITrackingSpan"/>.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession.ApplicableToSpanChanged">
+            <summary>
+            Occurs when the ApplicableToSpan property on this session changes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession.TrackMouse">
+            <summary>
+            Determines whether this session tracks the mouse.  
+            </summary>
+            <remarks>
+            When the session tracks the mouse, it will be dismissed
+            when the mouse pointer leaves the applicability span for this session.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSource">
+            <summary>
+            Defines a QuickInfo provider, which acts as a provider of QuickInfo information over a text buffer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSource.AugmentQuickInfoSession(Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession,System.Collections.Generic.IList{System.Object},Microsoft.VisualStudio.Text.ITrackingSpan@)">
+            <summary>
+            Determines which pieces of QuickInfo content should be part of the specified <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession"/>.
+            </summary>
+            <param name="session">The session for which completions are to be computed.</param>
+            <param name="quickInfoContent">The QuickInfo content to be added to the session.</param>
+            <param name="applicableToSpan">The <see cref="T:Microsoft.VisualStudio.Text.ITrackingSpan"/> to which this session applies.</param>
+            <remarks>
+            Each applicable <see cref="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSource.AugmentQuickInfoSession(Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession,System.Collections.Generic.IList{System.Object},Microsoft.VisualStudio.Text.ITrackingSpan@)"/> instance will be called in-order to (re)calculate a
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession"/>. Objects can be added to the session by adding them to the quickInfoContent collection
+            passed-in as a parameter.  In addition, by removing items from the collection, a source may filter content provided by
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSource"/>s earlier in the calculation chain.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSourceProvider">
+            <summary>
+            Describes a factory of Quick Info providers.  
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IQuickInfoSourceProvider))]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSourceProvider.TryCreateQuickInfoSource(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Creates a Quick Info provider for the specified context.
+            </summary>
+            <param name="textBuffer">The text buffer for which to create a provider.</param>
+            <returns>A valid <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSource"/> instance, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISignature">
+            <summary>
+            Represents an individual signature displayed in a tool, such as the signature help tool.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.ApplicableToSpan">
+            <summary>
+            Gets the span of text in the buffer to which this signature help is applicable.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.Content">
+            <summary>
+            Gets the content of the signature, including all the characters to be displayed.  
+            </summary>
+            <remarks>
+            This text may appear in a text view, and can be colored using a standard classifier mechanism.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.PrettyPrintedContent">
+            <summary>
+            Gets the content of the signature, pretty-printed into a form suitable for display on-screen.
+            </summary>
+            <remarks>
+            Pretty-printed signatures are usually displayed in width-constrained environments when the regular signature content
+            cannot be displayed on one line.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.Documentation">
+            <summary>
+            Gets the content of the documentation associated with this signature.  
+            </summary>
+            <remarks>
+            This text may appear
+            alongside the signature in an IntelliSense tool.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.Parameters">
+            <summary>
+            Gets the list of parameters that this signature knows about.  
+            </summary>
+            <remarks>
+            Each parameter has information relating to its text position
+            within the signature string.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignature.CurrentParameter">
+            <summary>
+            Gets the current parameter for this signature.  
+            </summary>
+            <remarks>
+            When the caret is within the signature's applicability
+            span, this value is the parameter over which the caret is positioned. When the caret is not within the signature's
+            applicability span, this value is undefined.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISignature.CurrentParameterChanged">
+            <summary>
+            Occurs when the current parameter changes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker">
+            <summary>
+            Defines the signature help broker, which is the primary component of the signature help process.  
+            </summary>
+            <remarks>
+            The broker is responsible for
+            handling each signature help session from beginning to end. IntelliSense controllers
+            request this broker to trigger or dismiss signature help. The broker can also be used by other components to determine the
+            state of signature help or to trigger the process.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.TriggerSignatureHelp(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Begins the process of signature help at the position of the caret.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to trigger signature help.</param>
+            <returns>A valid signature help session. May be null if no session could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.TriggerSignatureHelp(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Starts the process of signature help at the specified point.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to trigger signature help.</param>
+            <param name="triggerPoint">The point in the text buffer at which signature help is requested.</param>
+            <param name="trackCaret">
+            <c>true</c> if this session should track the caret, <c>false</c> otherwise. When the caret is tracked,
+            the only items to be displayed are those whose applicability
+            span contains the caret.
+            </param>
+            <returns>A valid signature help session. May be null if no session could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.CreateSignatureHelpSession(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Text.ITrackingPoint,System.Boolean)">
+            <summary>
+            Creates a signature help session without starting it.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which signature help is requested.</param>
+            <param name="triggerPoint">The point in the text buffer at which signature help is requested.</param>
+            <param name="trackCaret">
+            <c>true</c> if this session should track the caret, <c>false</c> otherwise. When the caret is tracked,
+            the only items to be displayed are those whose applicability
+            span contains the caret.
+            </param>
+            <returns>A valid, unstarted signature help session. May be null if no session could be created.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.DismissAllSessions(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Dismisses any active signature help sessions in this broker's <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>. 
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which all signature help sessions should be dismissed.</param>
+            <remarks>
+            This method is valid only when called while signature help is active.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.IsSignatureHelpActive(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Determines whether signature help is active.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over signature help status should be determined.</param>
+            <returns>
+            <c>true</c> if there is at least one signature help session over the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>, <c>false</c>
+            otherwise.
+            </returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpBroker.GetSessions(Microsoft.VisualStudio.Text.Editor.ITextView)" -->
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession">
+            <summary>
+            Defines an IntelliSense session used for displaying signature help.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession.Signatures">
+            <summary>
+            Gets the set of valid signatures for this session.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession.SelectedSignature">
+            <summary>
+            Gets the signature from among the set of valid signatures that is currently selected.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession.SelectedSignatureChanged">
+            <summary>
+            Occurs when the SelectedSignature property changes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSource">
+            <summary>
+            Defines a provider of signature help information that is used in the IntelliSense process.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSource.AugmentSignatureHelpSession(Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.ISignature})">
+            <summary>
+            Determines which <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/>s should be part of the specified <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/>.
+            </summary>
+            <param name="session">The session for which completions are to be computed.</param>
+            <param name="signatures">The set of the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/>s to be added to the session.</param>
+            <remarks>
+            Each applicable <see cref="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSource.AugmentSignatureHelpSession(Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.ISignature})"/> instance will be called in-order to
+            (re)calculate a <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/>.  <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/>s can be added to the session by adding
+            them to the signatures collection passed-in as a parameter.  In addition, by removing items from the collection, a
+            source may filter <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/>s provided by <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSource"/>s earlier in the calculation
+            chain.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSource.GetBestMatch(Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession)">
+            <summary>
+            Computes the best matching <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/> instance for the given signature help session. Only the highest-
+            priority signature help provider is asked for this information.
+            </summary>
+            <param name="session">
+            The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/> for which the best matching <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/> should be determined.
+            </param>
+            <returns>
+            A valid <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignature"/> that is also a member of the Signatures collection of the specified
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/>. It can return null if no best match could be determined, 
+            and the next highest-priority signature help provider will be asked to determine the best match.
+            </returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSourceProvider">
+            <summary>
+            Defines an extension used to create signature help providers from a given <see cref="T:Microsoft.VisualStudio.Text.ITextBuffer"/> opened in a given
+            context.
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(ISignaturehelpSourceProvider))]
+            Component exporters must add at least one ContentType attribute to specify the
+            content types for which the component is valid, and an Order to specify its order in the chain of signature help providers.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSourceProvider.TryCreateSignatureHelpSource(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Attempts to create a signature help provider for the given text buffer opened in the given context.
+            </summary>
+            <param name="textBuffer">The text buffer for which to create a signature help provider.</param>
+            <returns>A valid signature help provider, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction">
+            <summary>
+            Defines a smart tag action.  
+            </summary>
+            <remarks>
+            Smart tag sessions contain zero or more actions, which are provided by smart tag sources.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction.Invoke">
+            <summary>
+            A callback used to invoke the smart tag action.  
+            </summary>
+            <remarks>
+            You should implement this method to perform the action
+            when this method is called.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction.ActionSets">
+            <summary>
+            Gets the list of smart tag action sets contained inside this smart tag action.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction.Icon">
+            <summary>
+            Gets image information that is displayed as an icon alongside the display text in the default smart tag.
+            presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction.DisplayText">
+            <summary>
+            Gets the text that is displayed in the default smart tag presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction.IsEnabled">
+            <summary>
+            Determines whether the smart tag action is enabled. By default, disabled smart tags are
+            rendered but not invokable.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ITextFormattable">
+            <summary>
+            Defines a contract for implementors to override the text formatting properties for an object.
+            </summary>
+            <remarks>
+            This will mainly be implemented by <see cref="T:Microsoft.VisualStudio.Language.Intellisense.Completion"/> instances that wish to override their textual presentation in
+            the statement completion presenter.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ITextFormattable.GetTextRunProperties(System.Windows.Media.TextFormatting.TextRunProperties)">
+            <summary>
+            Gets a set of <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will override the "default" <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> used to
+            display this object's text.
+            </summary>
+            <param name="defaultTextRunProperties">
+            The set of <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that would have been used to present this object had no overriding taken
+            place.
+            </param>
+            <returns>A set of <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that should be used to display this object's text.</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Microsoft.VisualStudio.Language.Intellisense.ITextFormattable.GetHighlightedTextRunProperties(System.Windows.Media.TextFormatting.TextRunProperties)" -->
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.QuickInfoPresenterStyle">
+            <summary>
+             Defines a set of properties that will be used to style the default QuickInfo presenter.
+            </summary>
+             <remarks>
+             This is a MEF component part, and should be exported with the following attributes:
+             [Export(typeof(QuickInfoPresenterStyle))]
+             [ContentType]
+             [Name]
+             [Order]
+             All exports of this component part should be ordered after the "default" QuickInfo presenter style.  At a minimum, this
+             means adding [Order(After="default")] to the export metadata.
+             </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.QuickInfoPresenterStyle.BorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the borders in the completion presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.QuickInfoPresenterStyle.BackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the completion presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.QuickInfoPresenterStyle.QuickInfoAppearanceCategory">
+            <summary>
+            Gets a string that identifies the appearance category for the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>s displayed in the default
+            QuickInfo presenter.
+            </summary>
+            <remarks>
+            Manipulating this value will change the classification format map used in the translation of classification types to
+            classification formats in the QuickInfo <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.QuickInfoPresenterStyle.AreGradientsAllowed">
+            <summary>
+            Gets a value determining whether or not gradients should be used in the presentation of a
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.IQuickInfoSession"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle">
+            <summary>
+             Defines a set of properties that will be used to style the default signature help presenter.
+            </summary>
+             <remarks>
+             This is a MEF component part, and should be exported with the following attributes:
+             [Export(typeof(SignatureHelpPresenterStyle))]
+             [ContentType]
+             [Name]
+             [Order]
+             All exports of this component part should be ordered after the "default" signature help presenter style.  At a minimum,
+             this means adding [Order(After="default")] to the export metadata.
+             </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.ForegroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the foreground of the signature help presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.BorderBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the borders in the signature help presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.BackgroundBrush">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.Brush"/> that will be used to paint the background of the signature help presenter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.SignatureAppearanceCategory">
+            <summary>
+            Gets a string that identifies the appearance category for the <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>s displayed in the default
+            signature help presenter.
+            </summary>
+            <remarks>
+            Manipulating this value will change the classification format map used in the translation of classification types to
+            classification formats in the signature <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.UpDownSignatureTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of up/down signature spinner.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.SignatureDocumentationTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of the signature documentation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.CurrentParameterNameTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of the current parameter name.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.CurrentParameterDocumentationTextRunProperties">
+            <summary>
+            Gets a <see cref="T:System.Windows.Media.TextFormatting.TextRunProperties"/> that will be used to format the text of the current parameter documentation.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SignatureHelpPresenterStyle.AreGradientsAllowed">
+            <summary>
+            Gets a value determining whether or not gradients should be used in the presentation of a
+            <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISignatureHelpSession"/>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SmartTag">
+            <summary>
+            A tag used to contain actions that may be performed on a span of text. This tag is consumed by the Intellisense
+            infrastructure and will spawn smart tag Intellisense sessions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.SmartTag.#ctor(Microsoft.VisualStudio.Language.Intellisense.SmartTagType,System.Collections.ObjectModel.ReadOnlyCollection{Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet})">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTag"/>.
+            </summary>
+            <param name="smartTagType">The type of smart tag session that should be created.</param>
+            <param name="actionSets">The set of actions that should be a part of the smart tag session.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SmartTag.SmartTagType">
+            <summary>
+            The type of smart tag session that should be created.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SmartTag.ActionSets">
+            <summary>
+            The set of actions that should be a part of the smart tag session.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet">
+            <summary>
+            Represents a set of smart tag actions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet.#ctor(System.Collections.ObjectModel.ReadOnlyCollection{Microsoft.VisualStudio.Language.Intellisense.ISmartTagAction})">
+            <summary>
+            Constructions a <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet"/>.
+            </summary>
+            <param name="actions"></param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet.Actions">
+            <summary>
+            The collection of smart tag actions.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagBroker">
+            <summary>
+            Defines a smart tag broker, which is responsible for triggering smart tags. Components call methods on the
+            broker in order to trigger smart tags.
+            </summary>
+            <remarks>
+            To create a smart tag session, use <see cref="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagBroker.CreateSmartTagSession(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Language.Intellisense.SmartTagType,Microsoft.VisualStudio.Text.ITrackingPoint,Microsoft.VisualStudio.Language.Intellisense.SmartTagState)"/>,
+            add some context data into the session's property bag, and call <see cref="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Start"/>.
+            During the <see cref="M:Microsoft.VisualStudio.Language.Intellisense.IIntellisenseSession.Start"/> call, the session is calculated
+            for the first time, and in <see cref="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource.AugmentSmartTagSession(Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet})"/> the smart tag source
+            can return actions that will be added to the <see cref="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ActionSets"/>.  <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource"/>s
+            should also set the <see cref="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ApplicableToSpan"/> property based on the context data that was earlier added
+            to the session's property bag. If, during any smart tag session calculation,
+            the session doesn't get any actions or an applicability span, then the session will be immediately dismissed.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagBroker.CreateSmartTagSession(Microsoft.VisualStudio.Text.Editor.ITextView,Microsoft.VisualStudio.Language.Intellisense.SmartTagType,Microsoft.VisualStudio.Text.ITrackingPoint,Microsoft.VisualStudio.Language.Intellisense.SmartTagState)">
+            <summary>
+            Creates a smart tag session for smart tags of the specified type at the specified location.
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to create a smart tag session.</param>
+            <param name="type">The type of smart tag that should be created.</param>
+            <param name="triggerPoint">The location in the buffer where the smart tag session should be created.</param>
+            <param name="state">The initial state of the smart tag session.</param>
+            <returns>A valid smart tag session or null.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagBroker.GetSessions(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Gets the list of currently-active smart tag sessions for the textview and subject buffer over which the broker is active
+            </summary>
+            <param name="textView">The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to retrieve a list of smart tag sessions.</param>
+            <returns>A list of smart tag sessions for the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagBroker.IsSmartTagActive(Microsoft.VisualStudio.Text.Editor.ITextView)">
+            <summary>
+            Determines whether a smart tag is active.
+            </summary>
+            <param name="textView">
+            The <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/> over which to determine if there are any active smart tag sessions.
+            </param>
+            <returns>
+            <c>true</c> if there is at least one smart tag session for the specified <see cref="T:Microsoft.VisualStudio.Text.Editor.ITextView"/>, <c>false</c>otherwise.
+            </returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession">
+            <summary>
+            Defines a smart tag session, which encapsulates all the information about a particular invocation of the smart tag system.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ApplicableToSpan">
+            <summary>
+            Gets or sets the span to which this session is applicable in the text buffer. This is used to position any popups that are rendered by smart tag
+            presenters.
+            </summary>
+            <remarks>
+            If, during smart tag session calculation, no smart tag source sets this property then the session will be dismissed.
+            </remarks>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ApplicableToSpanChanged">
+            <summary>
+            Occurs when the <see cref="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ApplicableToSpan"/> property changes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.TagSpan">
+            <summary>
+            The span over which the tag should be rendered
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.TagSpanChanged">
+            <summary>
+            Raised when the TagSpan property changes.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.ActionSets">
+            <summary>
+            Gets the collection of actions that this session displays.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.TagText">
+            <summary>
+            Gets or sets the text to be displayed with the tag.  
+            </summary>
+            <remarks>
+            This text is independent of any individual action. The default presenter
+            displays this text as a tooltip alongside the tag in its intermediate state.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.Type">
+            <summary>
+            The type of this smart tag session.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.State">
+            <summary>
+            Gets or sets the current state of this session. Collapsed sessions are rendered as a small colored rectangle by the
+            default presenter. Expanded sessions are rendered as a menu containing all of the valid actions.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.StateChanged">
+            <summary>
+            Fired when the state of this session changes
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.IconSource">
+            <summary>
+            Gets/Sets an icon that could be used in the display of this session.  The default presenter renders this icon in the
+            smart tag button which appears when hovering over the tag.
+            </summary>
+        </member>
+        <member name="E:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession.IconSourceChanged">
+            <summary>
+            Fired when the session's icon changes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource">
+            <summary>
+            Defines a provider of smart tag data.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource.AugmentSmartTagSession(Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet})">
+            <summary>
+            Determines which <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet"/>s should be part of the specified <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession"/>.
+            </summary>
+            <param name="session">The session for which completions are to be computed.</param>
+            <param name="smartTagActionSets">The set of the <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet"/>s to be added to the session.</param>
+            <remarks>
+            Each applicable <see cref="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource.AugmentSmartTagSession(Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession,System.Collections.Generic.IList{Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet})"/> instance will be called in-order to (re)calculate
+            a <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSession"/>.  <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet"/>s can be added to the session by adding them to the
+            smartTagActionSets collection passed-in as a parameter.  In addition, by removing items from the collection, a source
+            may filter <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagActionSet"/>s provided by <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource"/>s earlier in the calculation chain.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSourceProvider">
+            <summary>
+            Defines a provider of a smart tag source. 
+            </summary>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(ISmartTagSourceProvider))]
+            [Order]
+            [Name]
+            [ContentType]
+            You must specify the ContentType so that the source provider creates sources for buffers of content types that it
+            recognizes, and Order to specify the order in which the sources are called.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSourceProvider.TryCreateSmartTagSource(Microsoft.VisualStudio.Text.ITextBuffer)">
+            <summary>
+            Attempts to create a smart tag source for the specified buffer.
+            </summary>
+            <param name="textBuffer">The text buffer for which to create a smart tag source.</param>
+            <returns>The <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ISmartTagSource"/>, or null if no smart tag source could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IUIElementProvider`2">
+            <summary>
+            Defines the provider of WPF UIElements for objects of a certain type, for a specified context.
+            </summary>
+            <typeparam name="TItem">The type of the item.</typeparam>
+            <typeparam name="TContext">The type of the context.</typeparam>
+            <remarks>
+            This is a MEF component part, and should be exported with the following attribute:
+            [Export(typeof(IUIElementProvider&lt;T&gt;))]
+            [Name("")]
+            [Order()]
+            [ContentType("")]
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IUIElementProvider`2.GetUIElement(`0,`1,Microsoft.VisualStudio.Language.Intellisense.UIElementType)">
+            <summary>
+            Gets a UIElement to display an item for teh specified the context.
+            </summary>
+            <param name="itemToRender">The item for which to return a UIElement.</param>
+            <param name="context">The context in which the item is to be rendered.</param>
+            <param name="elementType">The type of UIElement to be returned.</param>
+            <returns>A valid WPF UIElement, or null if none could be created.</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.IWpfKeyboardTrackingService">
+            <summary>
+            Defines a MEF service responsible for tracking the keyboard in hosts of the WPF editor.  Keyboard tracking is necessary as
+            some hosts (such as VisualStudio) do their own keyboard handling, causing inconsistent behavior of WPF elements, even when
+            they have keyboard focus.  By tracking the keyboard, all keyboard events will be routed to WPF first, giving focused WPF
+            controls a shot at handling keyboard events.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IWpfKeyboardTrackingService.BeginTrackingKeyboard(System.IntPtr,System.Collections.Generic.IList{System.UInt32})">
+            <summary>
+            Starts tracking the keyboard.  Once called, all keyboard events will be routed to WPF first, before the host application
+            sees them.
+            </summary>
+            <param name="handle">A valid Win32 window handle (HWND) to which messages should be redirected</param>
+            <param name="messagesToCapture">A list of Win32 messages to redirect to the specified window handle</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.IWpfKeyboardTrackingService.EndTrackingKeyboard">
+            <summary>
+            Stops tracking the keyboard.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SelectedSignatureChangedEventArgs">
+            <summary>
+            Provides information about selected signature changes in signature help IntelliSense sessions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.SelectedSignatureChangedEventArgs.#ctor(Microsoft.VisualStudio.Language.Intellisense.ISignature,Microsoft.VisualStudio.Language.Intellisense.ISignature)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.SelectedSignatureChangedEventArgs"/>.
+            </summary>
+            <param name="previousSelectedSignature">The signature that was previously selected.</param>
+            <param name="newSelectedSignature">The signature that is currently selected.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SelectedSignatureChangedEventArgs.PreviousSelectedSignature">
+            <summary>
+            Gets the signature that was previously selected.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.SelectedSignatureChangedEventArgs.NewSelectedSignature">
+            <summary>
+            Gets the signature that is currently selected.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagState">
+            <summary>
+            The set of smart tag session states.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.SmartTagState.Collapsed">
+            <summary>
+            The session is rendered in collapsed mode, which in the default presenter is indicated by a small colored rectangle
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.SmartTagState.Intermediate">
+            <summary>
+            The session is neither collapsed nor expanded. In the default presenter, this is indicated by a button
+            but no action menu.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.SmartTagState.Expanded">
+            <summary>
+            The session is rendered in expanded mode, which in the default presenter is indicated by a menu from which the user
+            can select actions.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.SmartTagType">
+            <summary>
+            The set of smart tag session types.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.SmartTagType.Factoid">
+            <summary>
+            A general tag that is valid for a long period of time.  
+            </summary>
+            <remarks>
+            This type of tag indicates 
+            that an action may be performed on a region of text, and is displayed independently of user action.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.SmartTagType.Ephemeral">
+            <summary>
+            A tag that is valid only for a specific period of time.  
+            </summary>
+            <remarks>
+            This type of tag is displayed in response to a modification of the
+            buffer that could trigger additional actions, such as refactorings.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup">
+            <summary>
+            Describes the different types of glyphs that can be displayed in the default completion tool implementation.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupClass">
+            <summary>
+            Describes symbols for classes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupConstant">
+            <summary>
+            Describes symbols for constants.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupDelegate">
+            <summary>
+            Describes symbols for delegates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupEnum">
+            <summary>
+            Describes symbols for enumerations.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupEnumMember">
+            <summary>
+            Describes symbols for enumeration members.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupEvent">
+            <summary>
+            Describes symbols for events.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupException">
+            <summary>
+            Describes symbols for exceptions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupField">
+            <summary>
+            Describes symbols for fields.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupInterface">
+            <summary>
+            Describes symbols for interfaces.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupMacro">
+            <summary>
+            Describes symbols for macros.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupMap">
+            <summary>
+            Describes symbols for maps.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupMapItem">
+            <summary>
+            Describes symbols for map items.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupMethod">
+            <summary>
+            Describes symbols for methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupOverload">
+            <summary>
+            Describes symbols for overloads.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupModule">
+            <summary>
+            Describes symbols for modules.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupNamespace">
+            <summary>
+            Describes symbols for namespaces.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupOperator">
+            <summary>
+            Describes symbols for operators.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupProperty">
+            <summary>
+            Describes symbols for properties.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupStruct">
+            <summary>
+            Describes symbols for structs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupTemplate">
+            <summary>
+            Describes symbols for templates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupTypedef">
+            <summary>
+            Describes symbols for typedefs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupType">
+            <summary>
+            Describes symbols for types.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupUnion">
+            <summary>
+            Describes symbols for unions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupVariable">
+            <summary>
+            Describes symbols for variables.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupValueType">
+            <summary>
+            Describes symbols for value types.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupIntrinsic">
+            <summary>
+            Describes intrinsic symbols.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupJSharpMethod">
+            <summary>
+            Describes symbols for J# methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupJSharpField">
+            <summary>
+            Describes symbols for J# fields.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupJSharpClass">
+            <summary>
+            Describes symbols for J# classes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupJSharpNamespace">
+            <summary>
+            Describes symbols for J# namespaces.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupJSharpInterface">
+            <summary>
+            Describes symbols for J# interfaces.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupError">
+            <summary>
+            Describes symbols for errors.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphBscFile">
+            <summary>
+            Describes symbols for BSC files.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphAssembly">
+            <summary>
+            Describes symbols for assemblies.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphLibrary">
+            <summary>
+            Describes symbols for libraries.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphVBProject">
+            <summary>
+            Describes symbols for VB projects.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCoolProject">
+            <summary>
+            Describes symbols for C# projects.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCppProject">
+            <summary>
+            Describes symbols for C++ projects.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphDialogId">
+            <summary>
+            Describes symbols for dialog identifiers.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphOpenFolder">
+            <summary>
+            Describes symbols for open folders.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphClosedFolder">
+            <summary>
+            Describes symbols for closed folders.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphArrow">
+            <summary>
+            Describes arrow symbols.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCSharpFile">
+            <summary>
+            Describes symbols for C# files.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCSharpExpansion">
+            <summary>
+            Describes symbols for C# expansions.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphKeyword">
+            <summary>
+            Describes symbols for keywords.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphInformation">
+            <summary>
+            Describes symbols for information.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphReference">
+            <summary>
+            Describes symbols for references.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphRecursion">
+            <summary>
+            Describes symbols for recursion.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlItem">
+            <summary>
+            Describes symbols for XML items.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphJSharpProject">
+            <summary>
+            Describes symbols for J# projects.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphJSharpDocument">
+            <summary>
+            Describes symbols for J# documents.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphForwardType">
+            <summary>
+            Describes symbols for forwarded types.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCallersGraph">
+            <summary>
+            Describes symbols for callers graphs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphCallGraph">
+            <summary>
+            Describes symbols for call graphs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphWarning">
+            <summary>
+            Describes symbols for build warnings.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphMaybeReference">
+            <summary>
+            Describes symbols for something that may be a reference.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphMaybeCaller">
+            <summary>
+            Describes symbols for something that may be a caller.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphMaybeCall">
+            <summary>
+            Describes symbols for something that may be a call.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethod">
+            <summary>
+            Describes symbols for extension methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethodInternal">
+            <summary>
+            Describes symbols for internal extension methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethodFriend">
+            <summary>
+            Describes symbols for friend extension methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethodProtected">
+            <summary>
+            Describes symbols for protected extension methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethodPrivate">
+            <summary>
+            Describes symbols for private extension methods.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphExtensionMethodShortcut">
+            <summary>
+            Describes symbols for extension method shortcuts.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlAttribute">
+            <summary>
+            Describes symbols for XML attributes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlChild">
+            <summary>
+            Describes symbols for child XML elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlDescendant">
+            <summary>
+            Describes symbols for descendant XML elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlNamespace">
+            <summary>
+            Describes symbols for XML namespaces.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlAttributeQuestion">
+            <summary>
+            Describes symbols with a question mark for XML attributes. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlAttributeCheck">
+            <summary>
+            Describes symbols with a check mark for XML attributes. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlChildQuestion">
+            <summary>
+            Describes symbols with a question mark for XML child elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlChildCheck">
+            <summary>
+            Describes symbols with a check mark for XML child elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlDescendantQuestion">
+            <summary>
+            Describes symbols with a question mark for XML descendant elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphXmlDescendantCheck">
+            <summary>
+            Describes symbols with a check mark for XML descendant elements.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphGroup.GlyphGroupUnknown">
+            <summary>
+            Describes symbols for unknown types.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem">
+            <summary>
+            Describes icons or glyphs that are used in statement completion.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemPublic">
+            <summary>
+            Describes a public symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemInternal">
+            <summary>
+            Describes an internal symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemFriend">
+            <summary>
+            Describes a friend symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemProtected">
+            <summary>
+            Describes a protected symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemPrivate">
+            <summary>
+            Describes a private symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.GlyphItemShortcut">
+            <summary>
+            Describes a shortcut symbol.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.StandardGlyphItem.TotalGlyphItems">
+            <summary>
+            Describes a symbol that has all (or none) of the standard attributes.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Microsoft.VisualStudio.Language.Intellisense.UIElementType" -->
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.UIElementType.Small">
+            <summary>
+            Small UIElement representing the object in question.
+            </summary>
+            <remarks>Small UIElements will most likely be placed in a list alongside other small UIElements.</remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.UIElementType.Large">
+            <summary>
+            Large UIElement representing the object in question.
+            </summary>
+            <remarks>
+            Large UIElements will most likely be displayed on their own and should present detailed information about the object in
+            question.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.Language.Intellisense.UIElementType.Tooltip">
+            <summary>
+            UIElement to be hosted in a tooltip representing the object in question.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Language.Intellisense.ValueChangedEventArgs`1">
+            <summary>
+            Provides information about value changes of all kinds.
+            </summary>
+            <typeparam name="TValue">The type of the value.</typeparam>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Language.Intellisense.ValueChangedEventArgs`1.#ctor(`0,`0)">
+            <summary>
+            Initializes a new instance of <see cref="T:Microsoft.VisualStudio.Language.Intellisense.ValueChangedEventArgs`1"/> with the new and old values of a property.
+            </summary>
+            <param name="oldValue">The old value.</param>
+            <param name="newValue">The new value.</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ValueChangedEventArgs`1.OldValue">
+            <summary>
+            Gets the old value.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Language.Intellisense.ValueChangedEventArgs`1.NewValue">
+            <summary>
+            Gets the new value.
+            </summary>
+        </member>
+    </members>
+</doc>

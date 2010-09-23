@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.ManagedInterfaces.9.0</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociation">
+      <summary>Represents an association between a file type and a specific program.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociation.DefaultIcon">
+      <summary>Gets or sets the default icon that is associated with files of this type.</summary>
+      <returns>The default icon that is associated with files of this type.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociation.Description">
+      <summary>Gets or sets the description of the program that is used to open files of this type.</summary>
+      <returns>The description of the program that is used to open files of this type.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociation.Extension">
+      <summary>Gets the file name extension for the file type.</summary>
+      <returns>The file name extension for the file type.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociation.Progid">
+      <summary>Gets or sets the ProgID that identifies the program that is used to open files of this type.</summary>
+      <returns>The ProgID that identifies the program that is used to open files of this type.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection">
+      <summary>Represents a collection of file type associations.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection.Add(System.String,System.String,System.String,System.String)">
+      <summary>Creates a file association and adds it to the collection.</summary>
+      <param name="extension">The file name extension for the file type.</param>
+      <param name="defaultIcon">The default icon that is associated with files of this type.</param>
+      <param name="description">The description of the program used to open files of this type.</param>
+      <param name="progid">The ProgID that identifies the program used to open files of this type.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="extension" /> is null or an invalid file name extension.</exception>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection.Clear">
+      <summary>Removes all items from the collection.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection.GetFileAssociations">
+      <summary>Returns the items in the collection as an array.</summary>
+      <returns>The array of file associations.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection.Item(System.Object)">
+      <summary>Gets the file association for a specified file name extension.</summary>
+      <returns>The file association for the file name extension; or null if the file name extension is not found.</returns>
+      <param name="key">The file name extension.</param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IFileAssociationCollection.Remove(System.String)">
+      <summary>Removes a file association from the collection.</summary>
+      <param name="extension">The file name extension for the file type to remove.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="extension" /> is null.</exception>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2">
+      <summary>Defines the ClickOnce properties of one file in a deployment on computers that have Visual Studio 2008 Service Pack 1 or later versions.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.Group">
+      <summary>Gets or sets the download group for this file.</summary>
+      <returns>The download group for this file.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IncludeHash">
+      <summary>Gets or sets a value that indicates whether to include the hash of the file in the output manifest.</summary>
+      <returns>true if the hash of the file is included in the output manifest; otherwise, false. The default value is true.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsAssembly">
+      <summary>Gets a value that indicates whether the file is an assembly.</summary>
+      <returns>true if the file is an assembly; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsDataFile">
+      <summary>Gets a value that indicates whether the file is a data file.</summary>
+      <returns>true if the file is a data file; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsOrphaned">
+      <summary>Gets a value that indicates whether the file cannot be mapped to a file in the project.</summary>
+      <returns>true if the file cannot be mapped to a file in the project; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsPrerequisite">
+      <summary>Gets a value that indicates whether the file is a prerequisite for the deployment.</summary>
+      <returns>true if the file is a prerequisite for the deployment; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsPublished">
+      <summary>Gets a value that indicates whether the file will be deployed.</summary>
+      <returns>true if the file will be deployed; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.IsReadOnly">
+      <summary>Gets a value that indicates whether the file is required.</summary>
+      <returns>true if the file is required; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.Name">
+      <summary>Gets the local name of the file.</summary>
+      <returns>The local name of the file.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.PublishStatus">
+      <summary>Gets or sets a value that indicates how a file should be treated by the build system.</summary>
+      <returns>A value that indicates how a file should be treated by the build system.</returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.Reset">
+      <summary>Sets file properties to their default values.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFile2.TargetPath">
+      <summary>Gets or sets the target name of the file.</summary>
+      <returns>The target name of the file.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2">
+      <summary>Defines the ClickOnce properties of a published application.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.ApplicationRevision">
+      <summary>Gets or sets the revision number of the application.</summary>
+      <returns>The revision number of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.ApplicationVersion">
+      <summary>Gets or sets the version of the application.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.AutorunEnabled">
+      <summary>Gets or sets whether to create an autorun.ini file for this application.</summary>
+      <returns>true if an autorun.ini file should be created for this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.BootstrapperComponentsLocation">
+      <summary>Gets or sets the way the bootstrapper should download components.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.BootstrapperDownloadUrl">
+      <summary>Gets or sets the URL from which to download bootstrapper components of this application.</summary>
+      <returns>The URL from which to download bootstrapper components of this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.BootstrapperEnabled">
+      <summary>Gets or sets whether the bootstrapper should be generated.</summary>
+      <returns>true if the bootstrapper should be generated.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.BootstrapperPackages">
+      <summary>Gets the collection of bootstrapper packages.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IBootstrapperPackageCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.CreateWebPageOnPublish">
+      <summary>Gets or sets whether to generate a Web page when this application is published.</summary>
+      <returns>true if a Web page should be created.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.DisallowUrlActivation">
+      <summary>Gets or sets whether to run the application after installation</summary>
+      <returns>true if the application should be started after installation.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.Install">
+      <summary>Gets or sets whether to install the application on the user's machine.</summary>
+      <returns>true to install the application on the user's machine.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.InstallFrom">
+      <summary>Gets or sets the type of install location.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.InstallUrl">
+      <summary>Gets or sets the URL from which the user should install the application.</summary>
+      <returns>The URL from which the user should install the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.MapFileExtensions">
+      <summary>Gets or sets whether to add ".deploy" as an extension to all deployed files.</summary>
+      <returns>true to add ".deploy" as an extension to all deployed files.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.MinimumRequiredVersion">
+      <summary>Gets or sets the minimum version users can install.</summary>
+      <returns>The minimum version users can install.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.OpenBrowserOnPublish">
+      <summary>Gets or sets whether to open the default browser after each publish.</summary>
+      <returns>true to open the default browser every time the application is published.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.ProductName">
+      <summary>Gets and sets the name of the application.</summary>
+      <returns>The name of the application that will be displayed on the installation program.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.PublisherName">
+      <summary>Gets or sets the name of the publisher.</summary>
+      <returns>The name of the publisher that will be displayed in the installation program.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.PublishFiles">
+      <summary>Gets a collection of files that can be deployed.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishFileCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.PublishUrl">
+      <summary>Gets or sets the URL to which the application will be deployed.</summary>
+      <returns>The URL to which the application will be deployed.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.SupportUrl">
+      <summary>Gets or sets the URL to which users can go for support.</summary>
+      <returns>The URL to which users can go for support.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.TargetCulture">
+      <summary>Gets or sets the culture for which the deployment will be generated.</summary>
+      <returns>The culture for which the deployment will be generated.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.TrustUrlParameters">
+      <summary>Gets or sets whether to allow users to pass parameters to the application via the URL.</summary>
+      <returns>true to allow users to pass parameters to the application via the URL.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateEnabled">
+      <summary>Gets or sets whether users are allowed to update their application.</summary>
+      <returns>true if users are allowed to update their application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateInterval">
+      <summary>Gets or sets the number of units for the application to wait before checking for updates.</summary>
+      <returns>The number of units for the application to wait before checking for updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateIntervalUnits">
+      <summary>Gets or sets the units of time for the application to wait before checking for updates.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateMode">
+      <summary>Gets or sets the mode by which the application will check for updates.</summary>
+      <returns>
+        <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode" />.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdatePeriodically">
+      <summary>Gets or sets whether the application should check for updates.</summary>
+      <returns>true if the application should check for updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateRequired">
+      <summary>Gets or sets whether update is required.</summary>
+      <returns>true if update is required.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UpdateUrl">
+      <summary>Gets or sets the URL to use to check for future updates.</summary>
+      <returns>The URL to use to check for future updates.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.UseApplicationTrust">
+      <summary>Gets or sets if manifest trust info as well as publisher and product information is added to the application manifest</summary>
+      <returns>true if trust information is added to the manifest.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.VerifyUploadedFiles">
+      <summary>Gets or sets whether the uploaded files will be validated after publish.</summary>
+      <returns>true if uploaded files will be validated after publish.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties2.WebPageFileName">
+      <summary>Gets or sets the name of the web page that should be created or opened on publish.</summary>
+      <returns>The name of the web page that should be created or opened on publish.</returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3">
+      <summary>Defines the ClickOnce properties of a published application on computers that have Visual Studio 2008 Service Pack 1 or later versions.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.ApplicationRevision">
+      <summary>Gets or sets the revision number of the publish version of the application.</summary>
+      <returns>The revision number of the publish version of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.ApplicationVersion">
+      <summary>Gets or sets the publish version of the application.</summary>
+      <returns>The publish version of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.AutorunEnabled">
+      <summary>Gets or sets a value that indicates whether to create an autorun.inf file for this application.</summary>
+      <returns>true to create an autorun.inf file for this application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.BootstrapperComponentsLocation">
+      <summary>Gets or sets how the bootstrapping application will download components.</summary>
+      <returns>One of the <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.ComponentsLocation" /> values.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.BootstrapperDownloadUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) from which to download the bootstrapping application components of this application.</summary>
+      <returns>The URI from which to download the bootstrapping application components of this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.BootstrapperEnabled">
+      <summary>Gets or sets a value that indicates whether to generate the bootstrapping application.</summary>
+      <returns>true to generate the bootstrapping application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.BootstrapperPackages">
+      <summary>Gets the collection of packages for the bootstrapping application.</summary>
+      <returns>The collection of packages for the bootstrapping application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.CreateDesktopShortcut">
+      <summary>Gets or sets a value that indicates whether the installer adds a shortcut to the desktop.</summary>
+      <returns>true if the installer adds a shortcut to the desktop; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.CreateWebPageOnPublish">
+      <summary>Gets or sets a value that indicates whether Visual Studio generates a Web page for the application when the application is published.</summary>
+      <returns>true if Visual Studio generates a Web page for the application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.DisallowUrlActivation">
+      <summary>Gets or sets a value that indicates whether to prevent an installed application from starting when the deployment uniform resource identifier (URI) is visited.</summary>
+      <returns>true to prevent an installed application from starting when the deployment URI is visited; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.ErrorReportUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) to which the installer will post information if the application installation fails.</summary>
+      <returns>The URI to which the installer will post information if the application installation fails.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.ExcludeDeploymentUrl">
+      <summary>Gets or sets a value that indicates whether a deployment uniform resource identifier (URI) is included in the application manifest.</summary>
+      <returns>true if a deployment URI is included in the application manifest; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.FileAssociations">
+      <summary>Gets the collection of file associations for this application.</summary>
+      <returns>The collection of file associations for this application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.Install">
+      <summary>Gets or sets a value that indicates whether the installer will install the application. </summary>
+      <returns>true if the installer installs the application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.InstallFrom">
+      <summary>Gets or sets the kind of location from which the application is installed.</summary>
+      <returns>One of the <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.InstallFrom" /> values.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.InstallUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) from which the user will install the application.</summary>
+      <returns>The URI from which the user will install the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.MapFileExtensions">
+      <summary>Gets or sets a value that indicates whether to add the .deploy file name extension to all deployed files.</summary>
+      <returns>true to add the .deploy file name extension to all deployed files; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.MinimumRequiredVersion">
+      <summary>Gets or sets the minimum required version for this application for this deployment.</summary>
+      <returns>The minimum required version for this application for this deployment.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.OpenBrowserOnPublish">
+      <summary>Gets or sets a value that indicates whether Visual Studio opens the default browser when the application is published.</summary>
+      <returns>true if Visual Studio opens the default browser when the application is published; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.ProductName">
+      <summary>Gets or sets the name of the application.</summary>
+      <returns>The name of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.PublisherName">
+      <summary>Gets or sets the name of the publisher.</summary>
+      <returns>The name of the publisher.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.PublishFiles">
+      <summary>Gets the collection of files in the project.</summary>
+      <returns>The collection of files in the project.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.PublishUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) to which the application is published.</summary>
+      <returns>The URI to which the application is published.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.SuiteName">
+      <summary>Gets or sets the name of the product suite of which the application is a part.</summary>
+      <returns>The name of the product suite of which the application is a part.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.SupportUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) for support for the application.</summary>
+      <returns>The URI for support for the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.TargetCulture">
+      <summary>Gets or sets the publish language Visual Studio uses to publish the application.</summary>
+      <returns>The publish language of the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.TrustUrlParameters">
+      <summary>Gets or sets a value that indicates whether to allow uniform resource identifier (URI) parameters to be passed to application.</summary>
+      <returns>true to allow URI parameters to be passed to application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateEnabled">
+      <summary>Gets or sets a value that indicates whether users can update the application.</summary>
+      <returns>true to let users update the application; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateInterval">
+      <summary>Gets or sets how long the application waits before it checks for updates.</summary>
+      <returns>How long the application waits before it checks for updates, in units defined by the <see cref="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateIntervalUnits" /> property.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateIntervalUnits">
+      <summary>Gets or sets the units of time of the <see cref="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateInterval" /> property.</summary>
+      <returns>One of the <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateIntervalUnits" /> values.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateMode">
+      <summary>Gets or sets the strategy that the application uses to check for available updates.</summary>
+      <returns>One of the <see cref="T:Microsoft.VisualStudio.ManagedInterfaces.Publish.UpdateMode" /> values.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdatePeriodically">
+      <summary>Gets or sets a value that indicates whether the application checks for updates.</summary>
+      <returns>true if the application checks for updates; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateRequired">
+      <summary>Gets or sets a value that indicates whether this version represents a required update.</summary>
+      <returns>ture if this version represents a required update; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UpdateUrl">
+      <summary>Gets or sets the uniform resource identifier (URI) for updates for the application.</summary>
+      <returns>The URI for updates for the application.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.UseApplicationTrust">
+      <summary>Gets or sets a value that indicates whether manifest trust information, in addition to publisher and product information, is added to the application manifest.</summary>
+      <returns>true to add manifest trust information to the application manifest; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.VerifyUploadedFiles">
+      <summary>Gets or sets a value that indicates whether Visual Studio verifies the uploaded files after they are published.</summary>
+      <returns>true if Visual Studio verifies the uploaded files after they are published; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.VisualStudio.ManagedInterfaces.Publish.IPublishProperties3.WebPageFileName">
+      <summary>Gets or sets the name of the Web page that Visual Studio creates when the application is published.</summary>
+      <returns>The name of the Web page that Visual Studio creates when the application is published.</returns>
+    </member>
+  </members>
+</doc>

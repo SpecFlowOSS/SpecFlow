@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.TextTemplating.Interfaces.10.0</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback">
+            <summary>
+            Callback interface to be implemented by clients of the STextTemplating service that wish to process errors and information
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback.ErrorCallback(System.Boolean,System.String,System.Int32,System.Int32)">
+            <summary>
+            Process an error or warning
+            </summary>
+            <param name="warning">Whether this message is a warning or an error</param>
+            <param name="message">The text of the message</param>
+            <param name="line">The line in the file the error occurred at</param>
+            <param name="column">The column in the file the error occurred at</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback.SetFileExtension(System.String)">
+            <summary>
+            Inform the client the extension specified by the template
+            </summary>
+            <param name="extension">The file extension specified</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback.SetOutputEncoding(System.Text.Encoding,System.Boolean)">
+            <summary>
+            Informs the client of the output file encoding requested by the
+            template or directive processors. 
+            </summary>
+            <param name="encoding">Encoding</param>
+            <param name="fromOutputDirective">Whether the request was from an output directive in the template</param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating">
+            <summary>
+            The principal worker interface for the STextTemplating service
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating.ProcessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback,System.Object)">
+            <summary>
+            Process the contents of a templated file running inline code to produce completed output
+            </summary>
+            <param name="inputFile">The filename of the template to process. Can be the empty string.</param>
+            <param name="content">The actual content of the template to process</param>
+            <param name="callback">The (optional) interface to call back on with error information</param>
+            <param name="hierarchy">The (optional) hierarchy of the template. This should be of type IVsHierarchy</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating.PreprocessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback,System.String,System.String,System.String[]@)">
+            <summary>
+            Process the contents of a templated file running inline code to produce a class that represents the template
+            </summary>
+            <param name="inputFile">The filename of the template to process. Can be the empty string.</param>
+            <param name="content">The actual content of the template to process</param>
+            <param name="callback">The (optional) interface to call back on with error information</param>
+            <param name="className">The name of the class to generate</param>
+            <param name="classNamespace">The namespace within which to generate the class</param>
+            <param name="references">The set of references demanded by the template</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating.BeginErrorSession">
+            <summary>
+            Setup/Reset the system that causes only unique errors to be logged. Also creates an implicit code generation session.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating.EndErrorSession">
+            <summary>
+            Finish a session using the system that causes only unique errors to be logged.
+            </summary>
+            <returns>True if errors were encountered during the session, false otherwise</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents">
+            <summary>
+            Interface on the STextTemplating service to support advanced scenarios requiring manipulation of the components of the text templating service 
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents.Host">
+            <summary>
+            Get the singleton Vs Host
+            </summary>
+            <remarks>
+            This host can be passed to a text transformation engine instance to transform templates in exactly the same way the 
+            main ITextTemplating service interface operates.
+            Typically calls the InputFile property and Hierarchy are set for each template to be transformed before any calls to ProcessTemplate on the Engine.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents.Engine">
+            <summary>
+            Get the singleton text templating engine
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents.InputFile">
+            <summary>
+            The input filename that the host uses to report errors
+            </summary>
+            <remarks>Null is an acceptable value if the transformation is not file-based</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents.Callback">
+            <summary>
+            The error reporting and file extension callback that the host uses.
+            </summary>
+            <remarks>Null is an acceptable value if no callback is required</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingComponents.Hierarchy">
+            <summary>
+            The hierarchy to use to help resolve project references.
+            </summary>
+            <remarks>
+            This value should be of type IVsHierarchy.  It is reperesented as object to avoid dependency issues.
+            Null is an acceptable value if no hierarchy is required
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngine">
+            <summary>
+            The main processing interface for text templating files
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngine.ProcessTemplate(System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost)">
+            <summary>
+            Process the contents of a templated file running inline code to produce completed output
+            </summary>
+            <param name="content">The content of the templated file</param>
+            <param name="host">The hosting environment using this engine</param>
+            <returns>The processed contents of the file</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngine.PreprocessTemplate(System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost,System.String,System.String,System.String@,System.String[]@)">
+            <summary>
+            Process the contents of a templated file running inline code to produce a class that represents the template.
+            </summary>
+            <param name="content">The content of the templated file</param>
+            <param name="host">The hosting environment using this engine</param>
+            <param name="className">The name of the class to produce</param>
+            <param name="classNamespace">The namespace of the class to produce</param>
+            <param name="language">The language that the template's control code was written in</param>
+            <param name="references">The set of references required by the template</param>
+            <returns>The preprocessed contents of the file</returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost">
+            <summary>
+            Interface to implement for applications wanting to host the T4 engine
+            </summary>
+            <remarks>
+            An interface as it seems quite possible the host may be
+            derived from something else 
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.LoadIncludeText(System.String,System.String@,System.String@)">
+            <summary>
+            Acquire the text corresponding to a request
+            to include a partial template file
+            </summary>
+            <param name="requestFileName">The file to include</param>
+            <param name="content">The content of the included file</param>
+            <param name="location">The location of the included file</param>
+            <remarks>
+            Location can be null or empty for non filesystem based hosts
+            </remarks>
+            <returns>Whether the resolve was successful.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.ResolveAssemblyReference(System.String)">
+            <summary>
+            Allow host to provide more context for an assembly reference
+            </summary>
+            <remarks>
+            Host could choose to prepend a path for instance.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.ResolveDirectiveProcessor(System.String)">
+            <summary>
+            Return the type of a directive processor, given its friendly name
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.ResolvePath(System.String)">
+            <summary>
+            Resolve a relative to its absolute path
+            </summary>
+            <remarks>
+            DirectiveProcessors can use this to locate files to load etc.
+            Used for any file types that do not have a specific
+            resolve method.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.ResolveParameterValue(System.String,System.String,System.String)">
+            <summary>
+            Resolve the value of a parameter for a directive processor 
+            </summary>
+            <remarks>
+            The value returned can depend on the ID of the 
+            directive being processed.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.ProvideTemplatingAppDomain(System.String)">
+            <summary>
+            Provide an AppDomain to run the generated transformation class
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.LogErrors(System.CodeDom.Compiler.CompilerErrorCollection)">
+            <summary>
+            Log a collection of errors or warnings from the templating process
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.SetFileExtension(System.String)">
+            <summary>
+            Tell the host about the file extension that the 
+            template expects for the generated text
+            </summary>
+            <remarks>
+            The method should not be renamed to a property in
+            FxCop – exception should be made.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.SetOutputEncoding(System.Text.Encoding,System.Boolean)">
+            <summary>
+            Tell the host what encoding the output file should
+            be written out in.
+            </summary>
+            <param name="encoding">The encoding to use</param>
+            <param name="fromOutputDirective">true of the encoding was set by an output directive</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.GetHostOption(System.String)">
+            <summary>
+            Get the value of a control option from the host.
+            </summary>
+            <param name="optionName">The name of the option</param>
+            <returns>The value of the option or null to specify that the host doesn't care</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.StandardAssemblyReferences">
+            <summary>
+            Allow host to specify standard assemblies
+            referenced by generated transformation class
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.StandardImports">
+            <summary>
+            Allow host to specify standard namespaces imported
+            by generated transformation class
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingEngineHost.TemplateFile">
+            <summary>
+            Ask the host what the filename of the template is
+            </summary>
+            <remarks>
+            It's fine to throw not implemented from this property if the implementing host is not file-based.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingSessionHost">
+            <summary>
+            Interface that allows an object to create and hold on to an ITextTransformationSession object.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingSessionHost.CreateSession">
+            <summary>
+            Make an instance of a user session
+            </summary>
+            <returns>A new session</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingSessionHost.Session">
+            <summary>
+            The session this host is presently using.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingSession">
+            <summary>
+            Interface denoting an object that marks out a set of runs of the Text Templating engine.
+            </summary>
+            <remarks>
+            Sessions are objects serialized across application domains and processes.  They have dictionary behavior to allow parameters to be
+            passed into the T4 engine and are compared by comparing their Guid-based Id property to allow different implementation types 
+            to be directly compared.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingSession.Id">
+            <summary>
+            Identity of this session - used to compare session instances by value
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.Interfaces.STextTemplating">
+            <summary>
+            The service interface for the STextTemplating service
+            </summary>
+            <remarks>
+            Empty, the real work is done by interfaces you cast this to.
+            </remarks>
+        </member>
+    </members>
+</doc>

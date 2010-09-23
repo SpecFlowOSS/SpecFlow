@@ -1,0 +1,1676 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.VisualStudio.TextTemplating.VSHost.10.0</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices">
+            <summary>
+            Class to standardize usage of MEF within T4.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.servicesInitialized">
+            <summary>
+            Have the MEF services been set up yet in this AppDomain?
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.InitializeServices(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)">
+            <summary>
+            One-time initialization of the services
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.CurrentDomain_Cleanup(System.Object,System.EventArgs)">
+            <summary>
+            Event handler to cleanup the AppDomain before it goes away.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.CleanupFields">
+            <summary>
+            Clean up fields in the correct order if they are initialized
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.ServiceProvider">
+            <summary>
+            Service provider to ask for local services within the AppDomain
+            Query for SComponentModel to acquire MEF services.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.CompositionServices.ServiceContainer">
+            <summary>
+            Service container to add local services within the AppDomain
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel">
+            <summary>
+            Class to provide a service shim over the AppDomain-local versions of the standard MEF structures
+            </summary>
+            <remarks>
+            TODO: once we get new pieces from main in early June, make this class internal
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.#ctor(Microsoft.VisualStudio.ExtensibilityHosting.VsCatalogProvider,System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.GetCatalog(System.String)">
+            <summary>
+            Retrieve a named catalog from the catalog provider
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.GetService``1">
+            <summary>
+            Get a singleton component from the export provider
+            </summary>
+            <remarks>TODO: Should just be removed when this method is removed from the service interface definition in later main builds.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.GetExtensions``1">
+            <summary>
+            Get a set of components from the export provider
+            </summary>
+            <remarks>TODO: Should just be removed when this method is removed from the service interface definition in later main builds.</remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.DefaultCatalog">
+            <summary>
+            Get the DefaultCatalog
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.DefaultExportProvider">
+            <summary>
+            Get the ExportProvider
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.DefaultCompositionService">
+            <summary>
+            Get the composition service
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.ExportProvider">
+            <summary>
+            Get the ExportProvider
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.LocalComponentModel.CompositionService">
+            <summary>
+            Get the composition service
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet">
+            <summary>
+            Commands for the Orchestrator package
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.codeMarkers">
+            <summary>
+            Code markers to measure performance
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.OnStatusGenerateAllCode(System.Object,System.EventArgs)">
+            <summary>
+            Status callback
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.CalculateCommandStatus">
+            <summary>
+            Returns a flag indicating whether the transform all command should be shown or not
+            </summary>
+            <remarks>The command should be shown if any project in the solution contains a service
+            reference to the T4 VS service.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.OnMenuGenerateAllCode(System.Object,System.EventArgs)">
+            <summary>
+            Menu handler
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.SaveAllOpenFiles">
+            <summary>
+            Ask VS to save any files that are open
+            </summary>
+            <returns>
+            Whether the user has asked for an abort.
+            </returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.FindProjectItems(EnvDTE.Project,System.Collections.Generic.List{EnvDTE.ProjectItem})">
+            <summary>
+            Find all project items in the given project and nested projects (if project is a solution folder)
+            that have T4's custom tool defined.
+            </summary>
+            <param name="project"></param>
+            <param name="toProcess"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.ExecuteCommandIfEnabled(System.String)">
+            <summary>
+            Helper method to execute a command.  First checks that the command is enabled
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.FindProjectItemDependents(EnvDTE.ProjectItem,System.Collections.Generic.List{EnvDTE.ProjectItem})">
+            <summary>
+            Recursive method to process project files that have custom tool elements in depth first pre-order traversal
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.GetCustomTool(EnvDTE.ProjectItem)">
+            <summary>
+            Get the custom tool value from the given project item or return null if it doesn't have one
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.RunCustomTool(EnvDTE.ProjectItem)">
+            <summary>
+            Run the custom tool of an item we know to be in possession of one
+            </summary>
+            <param name="item"></param>
+            <returns>Whether the run produced errors in the error list - true == errors</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.FindCustomTextTemplatingToolErrorStatus">
+            <summary>
+            Check whether a custom tool usign our service has raised an error.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.ClearCustomTextTemplatingToolErrorStatus">
+            <summary>
+            CLear the flag indicating whether a custom tool using our service has raised an error.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.BeginErrorSession">
+            <summary>
+            Begin a session that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.EndErrorSession">
+            <summary>
+            Finish a session using the system that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.GetStartUpServices(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Returns the VS Startup Services object, or null if it could not be retrieved.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.StartupServicesReferencesService(Microsoft.VisualStudio.Shell.Interop.IVsProjectStartupServices,System.Guid)">
+            <summary>
+            Returns a flag indicating whether the startup service references
+            the specified service
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.MenuService">
+            <summary>
+            The MenuService.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.Dte">
+            <summary>
+            The DTE
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorCommandSet.ServiceProvider">
+            <summary>
+            The ServiceProvider.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.CommandIds">
+            <summary>
+            CommandIDs for the T4 Orchestrator package.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.CommandIds.cmdIdGenerateAllCode">
+            <summary>
+            cmdIds
+            </summary>
+            
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.CommandIds.GuidOrchestratorMenus">
+            <summary>
+            Keep in sync with PkgCmdId.ctc
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.CommandIds.GenerateAllCode">
+            <summary>
+            Command Ids for Corona
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.LocalizedBooleanTypeConverter">
+            <summary>
+            Type converter to allow a string in the property grid to have localized values for True/False.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.LocalizedBooleanTypeConverter.StringToBool(System.String)">
+            <summary>
+            Return a bool if the string contains a valid boolean value else null;
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsPage">
+            <summary>
+            Summary description for OrchestratorOptionsPage.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation">
+            <summary>
+            OrchestratorOptionsAutomation Object to store settings for code generation
+            </summary>
+            <remarks>
+            Provides storage for options page and also for DTE.Properties
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.LoadSettingsFromStorage">
+            <summary>
+            Load settings from registry
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.SaveSettingsToStorage">
+            <summary>
+            Save settings to registry
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.ResetSettings">
+            <summary>
+            Reset Settings
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.ShowSecurityWarningDialog(System.IServiceProvider)">
+            <summary>
+            Show the security warning dialog if the user has the registry value set to enable it.
+            </summary>
+            <param name="serviceProvider">Global service provider</param>
+            <returns>Whether the process should be cancelled due to the user's security choice.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.ServiceProvider">
+            <summary>
+            The ServiceProvider.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorOptionsAutomation.ShowWarningDialog">
+            <summary>
+            True if you want to show a security warning dialog each time T4 is run.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage">
+            <summary>
+            Entry point for the CodeGenerators package. An instance of this class is created by the VS
+            shell whenever a project with our service include tag is loaded or when the options page is opened.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.textTemplatingService">
+            <summary>
+            The templated file processor service implementation
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.singletonInstance">
+            <summary>
+            Pointer to the singleton instance of this package, used for unit testing.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.optionsAutomation">
+            <summary>
+            The automation objet maintaining our settings
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.solutionEvents">
+            <summary>
+            The DTE object that fires solution events
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.showSecurityDialogDuringBatchRun">
+            <summary>
+            Whether or not the security dialog needs to be shown (we set it to false
+            if we've shown it once already during batch processing)
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.#ctor">
+            <summary>
+            Class constructor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.Initialize">
+            <summary>
+            This is called by the package base class when our package is loaded. When devenv is run
+            with the "/setup" command line switch it is not able to do a lot of the normal things,
+            such as creating output windows and tool windows. Under normal circumstances our package
+            isn't loaded when run with this switch. However, our package will be loaded when items 
+            are added to the toolbox, even when run with "/setup". To be safe we'll check for "setup"
+            and we don't do anything interesting in MgdSetSite if we find it. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.Dispose(System.Boolean)">
+            <summary>
+            This is called by the package base class when our package gets unloaded.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.FindTextTemplatingServiceErrorStatus">
+            <summary>
+            Find whether the last invocation of the service raised an error.
+            </summary>
+            <returns>true if an error was raised on last service invocation</returns>
+            <remarks>This call resets the error flag</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.BeginErrorSession">
+            <summary>
+            Reset the system that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.EndErrorSession">
+            <summary>
+            Finish a session using the system that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage.ShowSecurityDialogDuringBatchRun">
+            <summary>
+            Whether or not the security dialog needs to be shown (we set it to false 
+            if we've shown it once alredy during batch processing).
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.AppDomainFailed">
+            <summary>
+              Looks up a localized string similar to Failed to create AppDomain for text templating..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.AssemblyReferenceFailed">
+            <summary>
+              Looks up a localized string similar to Failed to resolve assembly reference. {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.BooleanFalse">
+            <summary>
+              Looks up a localized string similar to False.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.BooleanTrue">
+            <summary>
+              Looks up a localized string similar to True.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.DPAssemblyLoadFail">
+             <summary>
+               Looks up a localized string similar to Failed to load Assembly &apos;{0}&apos; for registered directive processor &apos;{1}&apos;
+            {2}.
+             </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.DPTypeLoadFail">
+             <summary>
+               Looks up a localized string similar to Failed to find type &apos;{0}&apos; in Assembly &apos;{1}&apos; for registered directive processor &apos;{2}&apos;
+            {3}.
+             </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ExtensionMalformed">
+            <summary>
+              Looks up a localized string similar to Extension must begin with a &apos;.&apos; character..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.FallbackCodeGenOutput">
+            <summary>
+              Looks up a localized string similar to --- Failed to generate code ---.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.IncludeDirectiveFailed">
+            <summary>
+              Looks up a localized string similar to Failed to resolve include text for file:{0}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.IndexOutOfRange">
+            <summary>
+              Looks up a localized string similar to Index must be greater than or equal to zero..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ModelingDomainModelFail">
+            <summary>
+              Looks up a localized string similar to Unable to load domain model: {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ModelingModelFail">
+            <summary>
+              Looks up a localized string similar to Unable to load models..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ModelingValidateFail">
+            <summary>
+              Looks up a localized string similar to Unable to validate models..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.MultipleAssemblyMatch">
+            <summary>
+              Looks up a localized string similar to Multiple assembly references match &apos;{0}&apos; under Extensions directories.  Using &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.NoFullTrust">
+            <summary>
+              Looks up a localized string similar to The assembly &apos;{0}&apos; for directive processor &apos;{1}&apos; was not granted the FullTrust permission set. Only trusted assemblies are allowed to provide directive processors. This directive processor will not be loaded. .
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ObjectNotSited">
+            <summary>
+              Looks up a localized string similar to Object is not sited..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OptionsPageUIFail">
+            <summary>
+              Looks up a localized string similar to Options page UI failure..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestrationLineFailed">
+            <summary>
+              Looks up a localized string similar to failed..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestrationLineSucceeded">
+            <summary>
+              Looks up a localized string similar to succeeded..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestrationSeparator">
+            <summary>
+              Looks up a localized string similar to -------------------------------------.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestrationSkippingNoPath">
+            <summary>
+              Looks up a localized string similar to Skipping transformation of {0} because full path is not available..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestrationSkippingReadOnly">
+            <summary>
+              Looks up a localized string similar to Skipping transformation of {0} because it is read-only..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestratorEndCodeGen">
+            <summary>
+              Looks up a localized string similar to Text templating transformation complete..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestratorRunLine">
+            <summary>
+              Looks up a localized string similar to Transforming template {1} with {0} ... .
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OrchestratorStartCodeGen">
+            <summary>
+              Looks up a localized string similar to Transforming templates for all project items..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.OutputPaneName">
+            <summary>
+              Looks up a localized string similar to Transform text templates .
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.PathNotTrusted">
+            <summary>
+              Looks up a localized string similar to The path &apos;{0}&apos; must be either local to this computer or part of your trusted zone..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideAutomationPropertiesLogRegistered">
+            <summary>
+              Looks up a localized string similar to AutomationProperties: &apos;{0}.{1}&apos;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideAutomationPropertiesLogUnregistered">
+            <summary>
+              Looks up a localized string similar to AutomationProperties: &apos;{0}.{1}&apos;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideCodeGeneratorAttributeRegisterLog">
+            <summary>
+              Looks up a localized string similar to Code generator:  {0}, {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideCodeGeneratorAttributeUnregisterLog">
+            <summary>
+              Looks up a localized string similar to Code generator:  {0}, {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideCodeGeneratorExtensionAttributeRegisterLog">
+            <summary>
+              Looks up a localized string similar to Code generator extension:  {0}, {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideCodeGeneratorExtensionAttributeUnregisterLog">
+            <summary>
+              Looks up a localized string similar to Code generator extension:  {0}, {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideDirectiveProcessorLogRegistered">
+            <summary>
+              Looks up a localized string similar to Directive processor: {0}, {1}, {2}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideDirectiveProcessorLogUnregistered">
+            <summary>
+              Looks up a localized string similar to Directive processor: {0}, {1}, {2}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideIncludeFolderLogRegistered">
+            <summary>
+              Looks up a localized string similar to Include folder: {0}, {1}, {2}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideIncludeFolderLogUnregistered">
+            <summary>
+              Looks up a localized string similar to Include folder: {0}, {1}, {2}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideSolutionPersistenceLogRegistered">
+            <summary>
+              Looks up a localized string similar to SolutionPersistence: &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ProvideSolutionPersistenceLogUnregistered">
+            <summary>
+              Looks up a localized string similar to SolutionPersistence: &apos;{0}&apos;.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.ResolveParameterNotImplemented">
+            <summary>
+              Looks up a localized string similar to ResolveParameterValue is not implemented by this text templating host..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.SecurityDialogOptionCategory">
+            <summary>
+              Looks up a localized string similar to Security.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.SecurityDialogOptionDescription">
+            <summary>
+              Looks up a localized string similar to Display a dialog prompting users to ensure that text templates are from a trusted source when a text transformation operation is initiated..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.SecurityDialogOptionDisplayName">
+            <summary>
+              Looks up a localized string similar to Show Security Message.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.SiteInterfaceNotSupported">
+            <summary>
+              Looks up a localized string similar to Site does not support requested interface..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.TextTemplatingStatusBarLabel">
+            <summary>
+              Looks up a localized string similar to Transforming text templates.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.TextTemplatingUnavailable">
+            <summary>
+              Looks up a localized string similar to TextTemplating service unavailable.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.TransformationCancelled">
+            <summary>
+              Looks up a localized string similar to The transformation was cancelled..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.TypeResolveFailed">
+            <summary>
+              Looks up a localized string similar to Failed to resolve type for directive processor {0}..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.UnableToGenerateReferences">
+            <summary>
+              Looks up a localized string similar to Unable to add DLL to project references: {0}. Please add it manually..
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.Resources.UnableToLocateFile">
+            <summary>
+              Looks up a localized string similar to Unable to locate file.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideAutomationPropertiesAttribute">
+            <summary>
+            Attribute class to provide the registry entries for contributing to DTE.Properties
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideAutomationPropertiesAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Register for inclusion in DTE.Properties
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute">
+            <summary>
+            Attribute class to provide registration of a code generator
+            </summary>
+            <remarks>
+            Should be applied to the package class itself, not the generator.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.CSharpProjectGuid">
+            <summary>
+            Guid of the C# Project System package
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.VisualBasicProjectGuid">
+            <summary>
+            Guid of the Visual Basic Project System package
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.AspNetProjectGuid">
+            <summary>
+            Guid of the ASP.Net Project System package
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.#ctor(System.Type,System.String,System.String,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name"></param>
+            <param name="description"></param>
+            <param name="generatesDesignTimeSource"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Register this generator
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.Unregister(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Delete our specified keys
+            </summary>
+            <param name="context">The context that this registration attribute is being used in</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.Type">
+            <summary>
+            The type implementing the Code Generator
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.Description">
+            <summary>
+            A human readable description of this generator
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.Name">
+            <summary>
+            The name of this generator
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.GeneratesDesignTimeSource">
+            <summary>
+            Whether to flag this code generator as providing design-time source code
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.RegisterCodeBase">
+            <summary>
+            Whether or not to register the generator using a codebase
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorAttribute.ProjectSystem">
+            <summary>
+            The project system that this code generator is registered with
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute">
+            <summary>
+            Attribute class to provide registration of a code generator against a specific file extension
+            </summary>
+            <remarks>
+            Should be applied to the package class, not the generator.
+            This attribute works in addition to ProvideCodeGenerator to set up two things
+            a) Default application of the specified generator to files with the extension provided
+            b) Correct working with the ASP.Net project system which requires file extensions to be registered
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.AspNetProjectSystemGuid">
+            <summary>
+            Actual project GUID (as opposed to package Guid) for ASP.Net
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.CSharpProjectSystemGuid">
+            <summary>
+            Actual project GUID (as opposed to package Guid) for CSharp
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.VisualBasicProjectSystemGuid">
+            <summary>
+            Actual project GUID (as opposed to package Guid) for Visual Basic
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name"></param>
+            <param name="description"></param>
+            <param name="generatesDesignTimeSource"></param>
+            <param name="type"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Register this generator
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.Unregister(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Delete our specified keys
+            </summary>
+            <param name="context">The context that this registration attribute is being used in</param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.Name">
+            <summary>
+            The name of the generator to add an extension for
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.Extension">
+            <summary>
+            The extension to bind the named generator to
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.ProjectSystem">
+            <summary>
+            The project system that this code generator is registered with
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideCodeGeneratorExtensionAttribute.ProjectSystemPackage">
+            <summary>
+            The package implementing the project system that this code generator is registered with
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute">
+            <summary>
+            Attribute class to provide the registry entries for a T4.VSHost Directive Processor
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.TextTemplatingKeyName">
+            <summary>
+            Name of the root registry key for Text templating
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.DirectiveProcessorsKeyName">
+            <summary>
+            Name of the specific registry key for Directive processors
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.#ctor(System.Type,System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <param name="description"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Register a Text Templating Directive Processor
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.Unregister(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Unregister a Text Templating Directive Processor 
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.Name">
+            <summary>
+            The Name of the directive processor
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.Description">
+            <summary>
+            The human description of the directive processor
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideDirectiveProcessorAttribute.Type">
+            <summary>
+            The type implementing the directive processor
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute">
+            <summary>
+            Attribute class to provide the registry entries for a T4.VSHost include folder.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.TextTemplatingKeyName">
+            <summary>
+            Name of the root registry key for Text templating
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.IncludeFoldersKeyName">
+            <summary>
+            Name of the specific registry key for Directive processors
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="type"></param>
+            <param name="name"></param>
+            <param name="description"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Register a Text Templating Include Folder
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.Unregister(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Unregister a Text Templating Include Folder 
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.Extension">
+            <summary>
+            The extension of template files to apply this inclusion folder with.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.Index">
+            <summary>
+            The zero-based index of the folder 
+            </summary>
+            <remarks>
+            Multiple inclusion folders for a given extension are indexed 0...n
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideIncludeFolderAttribute.Folder">
+            <summary>
+            The path of the inclusion folder being registered.  This path is relative to the component path
+            of the assembly being registered.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideSolutionPersistenceAttribute">
+            <summary>
+            Attribute class to provide the registry entries for solution persistence for a package
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.ProvideSolutionPersistenceAttribute.Register(Microsoft.VisualStudio.Shell.RegistrationAttribute.RegistrationContext)">
+            <summary>
+            Extract specified resources from our target DLL and write them into a zip file as a vstemplate archive
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Modeling.Shell.DialogBase">
+            <summary>
+            Base class for dialogs that will be hosted in the VS shell.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.OnLoad(System.EventArgs)">
+             <summary>
+            
+             </summary>
+             <param name="e"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructor take a service provider. The dialog owner will eb the main VS window.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.OnUserPreferenceChanged(System.Object,Microsoft.Win32.UserPreferenceChangedEventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.OnHelpRequested(System.Windows.Forms.HelpEventArgs)">
+            <summary>
+            Override to show help via the Visual Studio help system
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.WndProc(System.Windows.Forms.Message@)">
+            <summary>
+            Process window messages for the dialog.  Translates clicks on the "?" button to F1 help requests.
+            </summary>
+            <param name="m"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.ProcessDialogKey(System.Windows.Forms.Keys)">
+            <summary>
+            Overridden to make sure that only critical exceptions ripple up to the base class.
+            Any exceptions which reach there will result invoke the WinForms unhandled exeption dlg. 
+            In Whidbey that menas an IDE crash.
+            </summary>
+            <param name="keyData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.ProcessDialogChar(System.Char)">
+            <summary>
+            Overridden to make sure that only critical exceptions ripple up to the base class.
+            Any exceptions which reach there will result invoke the WinForms unhandled exeption dlg. 
+            In Whidbey that menas an IDE crash.
+            </summary>
+            <param name="charCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.Shell.DialogBase.Dispose(System.Boolean)">
+            <summary>
+            Cleans up resources being used.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.ServiceProvider">
+            <summary>
+            Service provider used to get shell services.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.DisableSafeWindowTargetHardeningCheck">
+            <summary>
+            Returns whether to disable SafeWindowTarget hardening check in the debug build. By default, DialogBase derived forms
+            will check each and every child control to make sure it's hardened
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.CreateParams">
+            <summary>
+            
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.EnableModeless">
+            <summary>
+            Gets modless property on the form. Form modal by default.
+            Provided override functionality instead of allowing to set the property as this is used in CreateParams, which is 
+            called before constructor as well. 
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.FormBorderStyle">
+            <summary>
+            Hide base implementation here so we can provide appropriate handling of FormBorderStyle.Sizable.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.F1Keyword">
+            <summary>
+            Override to specify the F1 keyword for this dialog.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.Shell.DialogBase.DialogFont">
+            <summary>
+            The font that Dialogs should use according to IUIService, based on system and application settings.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="provider"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.ShowSecurityWarningDialog(System.IServiceProvider,System.Boolean@,System.Boolean@)">
+            <summary>
+            Static helper method to show the dialog and return output.
+            </summary>
+            <param name="provider">service provider</param>
+            <param name="cancel">If the user hit cancel on the dialog</param>
+            <param name="showAgain">If the user wants the dialog to show again</param>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.SecurityWarningDialog.F1Keyword">
+            <summary>
+            F1 keyword
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator">
+            <summary>
+            A managed wrapper for VS's concept of an IVsSingleFileGenerator which is
+            a custom tool invoked during the build which can take any file as an input 
+            and provide a compilable code file as output.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.GetDefaultExtension">
+            <summary>
+            gets the default extension for this generator
+            </summary>
+            <returns>string with the default extension for this generator</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.GenerateCode(System.String,System.String)">
+            <summary>
+            the method that does the actual work of generating code given the input
+            file.
+            </summary>
+            <param name="inputFileName">input file name</param>
+            <param name="inputFileContent">file contents as a string</param>
+            <returns>the generated code file as a byte-array</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.GeneratorErrorCallback(System.Boolean,System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            method that will communicate an error via the shell callback mechanism.
+            </summary>
+            <param name="warning">true if this is a warning</param>
+            <param name="level">level or severity</param>
+            <param name="message">text displayed to the user</param>
+            <param name="line">line number of error/warning</param>
+            <param name="column">column number of error/warning</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.Generate(System.String,System.String,System.String,System.IntPtr@,System.Int32@,Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress)" -->
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.FileNamespace">
+            <summary>
+            namespace for the file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.InputFilePath">
+            <summary>
+            file-path for the input file.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator.CodeGeneratorProgress">
+            <summary>
+            interface to the VS shell object we use to tell our
+            progress while we are generating.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite">
+            <summary>
+            This class exists to be cocreated a in a preprocessor build step.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.GetService(System.Guid)">
+            <summary>
+            method to get a service by its GUID
+            </summary>
+            <param name="service">GUID of service to retrieve</param>
+            <returns>an object that implements the requested service</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.GetService(System.Type)">
+            <summary>
+            Method to get a service by its Type
+            </summary>
+            <param name="service">Type of service to retrieve</param>
+            <returns>an object that implements the requested service</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.SetSite(System.Object)">
+            <summary>
+            SetSite method of IOleObjectWithSite
+            </summary>
+            <param name="pUnkSite">site for this object to use</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.GetSite(System.Guid@,System.IntPtr@)">
+            <summary>
+            GetSite method of IOleObjectWithSite
+            </summary>
+            <param name="riid">interface to get</param>
+            <param name="ppvSite">array in which to stuff return value</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.CreateExceptionMessage(System.Exception)">
+            <summary>
+            method to create an exception message given an exception
+            </summary>
+            <param name="e">exception caught</param>
+            <returns>message to display to the user</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.SetWaitCursor">
+            <summary>
+            Set the wait cursor until the end of this generation
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.SiteServiceProvider">
+            <summary>
+            Get a wrapper on the containing project system's Service provider
+            <remarks>
+            This is a limited service provider that can only reliably provide
+            VxDTE::SID_SVSProjectItem 
+            SID_SVSWebReferenceDynamicProperties 
+            IID_IVsHierarchy 
+            SID_SVsApplicationSettings
+            
+            To get the global provider, call GetSite on IVSHierarchy or use the GlobalServiceProvider property
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.GlobalServiceProvider">
+            <summary>
+            Provides a wrapper on the global service provider for Visual Studio
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.Dte">
+            <summary>
+            Get the DTE object
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGeneratorWithSite.ErrorList">
+            <summary>
+            Get the Vs ErrorList object
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator">
+            <summary>
+            Text Templating Code Generator
+            </summary>
+            <remarks>
+            Parses an file template to produce its output.
+            Only a single generator is needed for any style of template as the custom code is handled with directive providers.
+            </remarks>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.outputEncoding">
+            <summary>
+            Encoding to use to write out output file
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.encodingSetFromOutputDirective">
+            <summary>
+            Whether the encoding has already been set from an output directive
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.GetDefaultExtension">
+            <summary>
+            Get the extension of the file that should be created
+            </summary>
+            <remarks>
+            This is called after generate and this behaviour is relied upon as templates specify the extension in their input file
+            </remarks>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.GenerateCode(System.String,System.String)">
+            <summary>
+            Generate the final code from the input template and its parameters
+            </summary>
+            <param name="inputFileName"></param>
+            <param name="inputFileContent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.ProcessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Do the actual template processig that forms the core of this generator
+            </summary>
+            <param name="inputFileName"></param>
+            <param name="inputFileContent"></param>
+            <param name="processor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.MarkProjectForTextTemplating(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Mark the project that the given hierarchy belongs to as needing the T4 service.
+            </summary>
+            <param name="hierarchy"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.ShowWarningDialog">
+            <summary>
+            Show the warning dialog to the user.
+            </summary>
+            <returns>Whether to cancel the operation.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.BaseTemplatedCodeGenerator.TextTemplating">
+            <summary>
+            Get the TextTemplating service from Visual Studio
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedPreprocessor">
+            <summary>
+            Text Templating Preprocessor
+            </summary>
+            <remarks>
+            Parses a file template to produce the code class needed to generate the output of the template.
+            Only a single generator is needed for any style of template as the custom code is handled with directive providers.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedPreprocessor.ProcessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplating,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Do the actual template processing that forms the core of this generator
+            </summary>
+            <param name="inputFileName"></param>
+            <param name="inputFileContent"></param>
+            <param name="processor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedPreprocessor.MakeClassName(System.String,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Make a valid C# or VB identifier for the filename.
+            </summary>
+            <param name="inputFileName"></param>
+            <param name="hierarchy"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedPreprocessor.CreateValidIdentifier(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.String)">
+            <summary>
+            Make a valid identifier 
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedPreprocessor.ToDteProject(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+            <summary>
+            Convert a hierarchy into a DTE project.
+            </summary>
+            <param name="hierarchy"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.TemplatedCodeGenerator">
+            <summary>
+            Text Templating Code Generator
+            </summary>
+            <remarks>
+            Parses an file template to produce its output.
+            Only a single generator is needed for any style of template as the custom code is handled with directive providers.
+            </remarks>
+        </member>
+        <member name="T:Microsoft.Internal.Performance.CodeMarkerStartEnd">
+            <summary>
+            Use CodeMarkerStartEnd in a using clause when you need to bracket an
+            operation with a start/end CodeMarker event pair.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.GlobalAssemblyCacheHelper">
+            <summary>
+            Provides helper methods for dealing with the GAC.
+            In particular, looking up assembly paths given a strong name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.GlobalAssemblyCacheHelper.GetLocationImpl(Microsoft.VisualStudio.TextTemplating.IAssemblyCache,System.String,System.String)">
+            <summary>
+            Given a strong name, find its path in the GAC.
+            </summary>
+            <param name="strongName">The strong name.</param>
+            <param name="targetProcessorArchitecture">x86 or MSIL.</param>
+            <returns>The path to the assembly. Empty if none exists.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.GlobalAssemblyCacheHelper.GetLocation(System.String)">
+            <summary>
+            Given a strong name, find its path in the GAC.
+            </summary>
+            <param name="strongName">The strong name.</param>
+            <returns>The path to the assembly. Empty if none exists.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.CriticalException.IsCriticalException(System.Exception)">
+            <summary>
+            	Gets whether exception is a critical one and can't be ignored with corrupting
+            	AppDomain state.
+            </summary>
+            <param name="ex">Exception to test.</param>
+            <returns>True if exception should not be swallowed.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.CriticalException.ThrowOrShow(System.IServiceProvider,System.Exception)">
+            <summary>
+            	Shows non-critical exceptions to the user and returns false or
+            	returns true for critical exceptions.
+            </summary>
+            <param name="serviceProvider">Service provider to use to display error message.</param>
+            <param name="ex">Exception to handle.</param>
+            <returns>True if exception is critical and can't be ignored.</returns>
+        </member>
+        <member name="P:Microsoft.VisualStudio.Modeling.CriticalException.DisableExceptionFilter">
+            <summary>
+            	Gets whether exception filtering is disabled base on registry settings.
+            </summary>
+        </member>
+        <member name="T:Microsoft.VisualStudio.Modeling.SafeWindowTarget">
+            <summary>
+            Exception hardening work.  This class can be used to filter messages sent to a control,
+            and catch/display all non-critical exceptions.  Otherwise, Watson will
+            be invoked and will take down the process, potentially resulting in data loss.  See
+            document referenced in bug 427820 for more details.	 Use this class to wrap an existing 
+            IWindowTarget as follows (c is a Control):
+            
+            c.WindowTarget = new SafeWindowTarget(c.WindowTarget);
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.SafeWindowTarget.System#Windows#Forms#IWindowTarget#OnMessage(System.Windows.Forms.Message@)">
+            <devdoc>
+            The main wndproc for the control.  Wrapped to display non-critical exceptions to the user.
+            </devdoc>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.SafeWindowTarget.ReplaceWindowTargetRecursive(System.IServiceProvider,System.Collections.ICollection)">
+            <summary>
+            Replaces the WindowTarget for all child controls of the specified collection.
+            In Debug builds, this will assert that any child controls added after this call must have their WindowTarget replaced as well.
+            </summary>
+            <param name="serviceProvider">The ServiceProvider.</param>
+            <param name="controls">The collection of controls to recurse through and replace their target.</param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.Modeling.SafeWindowTarget.ReplaceWindowTargetRecursive(System.IServiceProvider,System.Collections.ICollection,System.Boolean)">
+            <summary>
+            Replaces the WindowTarget for all child controls of the specified collection.
+            </summary>
+            <param name="serviceProvider">The ServiceProvider.</param>
+            <param name="controls">The collection of controls to recurse through and replace their target.</param>
+            <param name="checkControlAdded">If true, in Debug builds, this will assert that any controls 
+            added after this call must have their WindowTarget replaced as well.</param>
+        </member>
+        <member name="T:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService">
+            <summary>
+            Main implementation class for the templated file processor service
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.NamespaceHintName">
+            <summary>
+            Name of the slot in CallContext that the T4 Service will respect as a provided parameter.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.IncludeContentType">
+            <summary>
+            ExtensionManager content type for T4 include directories
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.vsMacroRegExPattern">
+            <summary>
+            RegEx pattern to match VS Macro variables e.g. $(SolutionDir), $(ProjectDir).
+            The value inside the brackets will be returned as the named group "macroName".
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.package">
+            <summary>
+            The package this service is running in.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.dte">
+            <summary>
+            Cache of the package's DTE object
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.engine">
+            <summary>
+            The engine used to do the templating work
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.callback">
+            <summary>
+            Callback to the current client using the service
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.inputFile">
+            <summary>
+            The path to the file currently being processed
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.transformationSession">
+            <summary>
+            The text transformation session that is currently active.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.transformationSessionImplicitlyCreated">
+            <summary>
+            Whether or not the TransformationSession was implicitly created
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.transformDomain">
+            <summary>
+            AppDomain to generate code in temporary assemblies in.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.transformDomainUseCount">
+            <summary>
+            Count of how many times the generated domain has been used.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.lastInvocationRaisedErrors">
+            <summary>
+            Did the last usage raise any errors
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.currentErrors">
+            <summary>
+            Errors logged during the current request series.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.serviceProvider">
+            <summary>
+            Multi-implementation service provider cache
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.hierarchy">
+            <summary>
+            Hierarchy of the template file to process
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.errorProvider">
+            <summary>
+            Provider for the ErrorList items that this service pushes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.errorSessionDepth">
+            <summary>
+            Count to mark an error session in progress (>0) to allow nested error sessions.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.#ctor(Microsoft.VisualStudio.TextTemplating.VSHost.OrchestratorPackage)">
+            <summary>
+            VS Service hosting T4
+            </summary>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.task_Navigate(System.Object,System.EventArgs)">
+            <summary>
+            Callback for error task navigation
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.UnloadGenerationAppDomain">
+            <summary>
+            Helper method to unload the generation appdomain. Called by the package when 
+            the solution closes
+            </summary>
+        </member>
+        <member name="F:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.vsMacroRegEx">
+            <summary>
+            Compiled RegEx expression to match VS Macros.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ExpandAllVariables(System.String)">
+            <summary>
+            Returns the input string with any environment and VS macro variables expanded.
+            Note: MSBuild variables are not supported.
+            </summary>
+            <remarks>Unrecognised variables are *not* removed as they could be filenames (both
+            %test% and $(test) are valid file names.
+            Macro variables are resolved after enviroment variables, so enviroment variables that contain macro variables will have those macro variables expanded.
+            Variable are not expanded recursively by this method; recursive behavior is defined by the underlying APIs that the method calls.
+            In the case of environment variables, this is Environment.ExpandEnvironmentVariables(...). This does not expand recursively.</remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ExpandEnvironmentVariables(System.String)">
+            <summary>
+            Helper to consistently expand environment variables in a path.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ExpandVsMacroVariables(System.String)">
+            <summary>
+            Returns the input string with any VS build macro variables replaced by the corresponding string value.
+            </summary>
+            <param name="input">The string to be processed.</param>
+            <returns>The input string with any VS build macro variables replaced by the corresponding string value.</returns>
+            <remarks>If buildMacroInfo is null, the input string will be returned unchanged. If a build macro cannot be resolved, it will not
+            be replaced.
+            Note that $(test).txt is a valid file name, so unrecognised macros will not be removed as they could be file names.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.LogErrors(System.CodeDom.Compiler.CompilerErrorCollection)">
+            <summary>
+            Log a user-visible error
+            </summary>
+            <param name="errors"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.LoadIncludeText(System.String,System.String@,System.String@)">
+            <summary>
+            Acquire the text corresponding to a request
+            to include a partial template file
+            </summary>
+            <param name="requestFileName">The file to include</param>
+            <param name="content">The content of the included file</param>
+            <param name="location">The location of the included file</param>
+            <remarks>
+            Location can be null or empty for non filesystem based hosts
+            </remarks>
+            <returns>Whether the resolve was successful.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.GetExtensionManagerIncludeFolders(System.Collections.Generic.List{System.String})">
+            <summary>
+            Get set of include folders to search from ExtensionManager
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.GetRegistryIncludeFolders(System.Collections.Generic.List{System.String})">
+            <summary>
+            Get the set of folders from the registry for the extension of the current input file.
+            </summary>
+            <param name="includeFolders"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.CheckSecurityZone(System.String)">
+            <summary>
+            Is th esecurity zone of the given path acceptable.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.LoadIncludeFileContent(System.String)">
+            <summary>
+            Helper to attempt to load and return the content of a file.
+            </summary>
+            <param name="absolutepath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ProvideTemplatingAppDomain(System.String)">
+            <summary>
+            Provide app domain to do text templating in
+            </summary>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolveAssemblyReference(System.String)">
+            <summary>
+            Resolve a reference to an assembly
+            </summary>
+            <param name="assemblyReference"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolveAssemblyReferenceViaExtensionManager(System.String,Microsoft.VisualStudio.ExtensionManager.IVsExtensionManager)">
+            <summary>
+            Try to resolve the given reference against the install locations of all enabled extensions.
+            </summary>
+            <returns>Resolved reference or null</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.GetVSInstallDir(Microsoft.Win32.RegistryKey)">
+            <summary>
+            Simple helper to get the VS install directory.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolveDirectiveProcessor(System.String)">
+            <summary>
+            Resolve the named directive processor to a type.
+            </summary>
+            <param name="processorName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolvePath(System.String)">
+            <summary>
+            Resolve relative paths to be alongside the template that is being generated from
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolveParameterValue(System.String,System.String,System.String)">
+            <summary>
+            Resolve the value of a parameter that is not specified in the template text.
+            </summary>
+            <param name="directiveId">Id of the directive call to which the parameter belongs.</param>
+            <param name="processorName">Name of the directive processor to which the directive belongs.</param>
+            <param name="parameterName">Name of the parameter to be resolved.</param>
+            <returns>The resolved value, or an empty string if the parameter could not be resolved.</returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ResolveProjectParameter(System.String)">
+            <summary>
+            Returns a project parameter
+            </summary>
+            <param name="parameterName">Directive processor parameter name to be resolved</param>
+            <returns>The resolved paramter value, or an empty string if the value could not be resolved</returns>
+            <remarks>The parameterName is expected to be in the form "projectName:parameterName".
+            The project name is either just the name of the project, or "parentproject1/parentproject2/.../project".
+            
+            Currently the only supported parameter is "OutputPath".
+            </remarks>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.SetFileExtension(System.String)">
+            <summary>
+            Specify the file extension to output
+            </summary>
+            <param name="extension"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.SetOutputEncoding(System.Text.Encoding,System.Boolean)">
+            <summary>
+            Specify the encoding to use for the output file.
+            </summary>
+            <param name="encoding"></param>
+            <param name="fromOutputDirective"></param>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.GetHostOption(System.String)">
+            <summary>
+            Provide control options for text templating
+            </summary>
+            <param name="optionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.ProcessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback,System.Object)">
+            <summary>
+            Process the contents of a templated file running inline code to produce completed output
+            </summary>
+            <param name="templateInputFile"></param>
+            <param name="templateContent"></param>
+            <param name="callback"></param>
+            <param name="hierarchy"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.PreprocessTemplate(System.String,System.String,Microsoft.VisualStudio.TextTemplating.Interfaces.ITextTemplatingCallback,System.String,System.String,System.String[]@)">
+            <summary>
+            Process the contents of a templated file running inline code to produce a class that represents the template
+            </summary>
+            <param name="inputFile"></param>
+            <param name="content"></param>
+            <param name="callback"></param>
+            <param name="hierarchy">The hierarchy of the template</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.BeginErrorSession">
+            <summary>
+            Reset the system that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="M:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.EndErrorSession">
+            <summary>
+            Finish a session using the system that causes only unique errors to be logged.
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.LastInvocationRaisedErrors">
+            <summary>
+            Did the last usage of the service raise errors.
+            </summary>
+            <remarks>
+            This property is by way of an error status, as the custom tool method of running the service currently used robs
+            us of any way to know whether we succeeded.
+            </remarks>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.Dte">
+            <summary>
+            The DTE
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.StandardAssemblyReferences">
+            <summary>
+            Provide standard assembly references for this host
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.StandardImports">
+            <summary>
+            Provide standard import statements for this host
+            </summary>
+        </member>
+        <member name="P:Microsoft.VisualStudio.TextTemplating.VSHost.TextTemplatingService.TemplateFile">
+            <summary>
+            Provide the name of the template being processed.
+            </summary>
+        </member>
+    </members>
+</doc>

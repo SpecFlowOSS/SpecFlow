@@ -1,0 +1,1861 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.WCFReference.Interop</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory">
+      <summary>
+                    Provides an enumeration for categorizing collection types.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory.CC_Dictionary">
+      <summary>
+                    The collection is similar to a <see cref="P:System.Collections.DictionaryBase.Dictionary" /> collection type.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory.CC_List">
+      <summary>
+                    The collection is similar to a <see cref="P:System.Collections.CollectionBase.List" /> collection type.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory.CC_Unknown">
+      <summary>
+                    The collection is not similar to either a <see cref="P:System.Collections.DictionaryBase.Dictionary" /> or <see cref="P:System.Collections.CollectionBase.List" /> collection type.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol">
+      <summary>
+                    Provides an enumeration to specify the protocol to use for discovery of Windows Communication Foundation (WCF) services.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol.DP_DiscoveryClientProtocol">
+      <summary>
+                    Use the <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> protocol.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol.DP_DiscoveryDataServiceProtocol"></member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol.DP_MetadataExchangeProtocol">
+      <summary>
+                    Use the <see cref="T:System.ServiceModel.Description.IMetadataExchange" /> protocol.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority">
+      <summary>
+                    Provides an enumeration for use in discovering Windows Communication Foundation (WCF) services.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority.DSPP_DiscoveryProtocolFirst">
+      <summary>
+                    Use the <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> protocol first.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority.DSPP_MetadataExchangeFirst">
+      <summary>
+                    Use the <see cref="T:System.ServiceModel.Description.IMetadataExchange" /> protocol first.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority.DSPP_NoPriority">
+      <summary>
+                    Use either protocol.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IDiscoveryResult3">
+      <summary>
+                    Provides an interface supported by the <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult" /> object to specify which <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol" /> was used in a discovery session.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IDiscoveryResult3.GetProtocol">
+      <summary>
+                    Returns a value that specifies which <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol" /> was used in a discovery session.
+                </summary>
+      <returns>
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoveryProtocol" /> enumeration
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IDiscoverySession2">
+      <summary>
+                    Provides an interface for returning Windows Communication Foundation (WCF) metadata by using the metadata exchange protocol.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IDiscoverySession2.DiscoverUrlAsyncWithMetadataExchange(System.String,Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority,System.Int32,System.String,Microsoft.VisualStudio.Shell.Interop.IDiscoverUrlCallBack,System.Int32@)">
+      <summary>
+                    Returns the discovery result (<see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult" />) interface for a Windows Communication Foundation (WCF) service asynchronously.
+                </summary>
+      <param name="url">
+                    Specifies the URL for the discovery session.
+                </param>
+      <param name="protocolPriority">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority" /> enumeration specifying the preferred protocol.
+                </param>
+      <param name="resolveAllFiles">
+                    0 to skip files that cannot be resolved; otherwise 1.
+                </param>
+      <param name="toolConfigurationPath">
+                    Specifies the location of the configuration file.
+                </param>
+      <param name="pDiscoverUrlCallBack">
+                    Pointer to the <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverUrlCallBack" /> interface. This interface returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK" /> when the discovery is completed.
+                </param>
+      <param name="pCookieID">
+                    Specifies a cookie that identifies the discovery result.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IDiscoverySession2.DiscoverUrlWithMetadataExchange(System.String,Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority,System.Int32,System.String,Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult@)">
+      <summary>
+                    Returns the discovery result (<see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult" />) interface for a Windows Communication Foundation (WCF) service.
+                </summary>
+      <param name="url">
+                    Specifies the URL for the discovery session.
+                </param>
+      <param name="protocolPriority">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.DiscoverySessionProtocolPriority" /> enumeration specifying the preferred protocol.
+                </param>
+      <param name="resolveAllFiles">
+                    0 to skip files that cannot be resolved; otherwise 1.
+                </param>
+      <param name="toolConfigurationPath">
+                    Specifies the location of the configuration file.
+                </param>
+      <param name="ppDiscoverResult">
+                    Specifies the <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult" />.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts">
+      <summary>
+                    An enumerator for Windows Communication Foundation (WCF) service contracts. 
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts.Clone(Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts@)">
+      <summary>
+                    Clones this <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts" /> interface by creating another instance.
+                </summary>
+      <param name="ppenum">
+                    Reference to the cloned <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts" /> interface.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts.Next(System.UInt32,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract[],System.UInt32@)">
+      <summary>
+                    Retrieves the next <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract" />. 
+                </summary>
+      <param name="celt">
+                    Number of contract interfaces to return, or zero to indicate a request for all the objects.
+                </param>
+      <param name="rgelt">
+                    An array of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract" /> objects. Contains <paramref name="pceltFetched" /> objects.
+                </param>
+      <param name="pceltFetched">
+                    Actual number of contract interfaces retrieved.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts.Reset">
+      <summary>
+                    Returns the enumerator to its initial state.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceContracts.Skip(System.UInt32)">
+      <summary>
+                    Skips a specified number of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract" /> interfaces.
+                </summary>
+      <param name="celt">
+                    The number of interfaces to skip.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints">
+      <summary>
+                    An enumerator for Windows Communication Foundation (WCF) service endpoints.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints.Clone(Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints@)">
+      <summary>
+                    Clones this <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints" /> interface by creating another instance.
+                </summary>
+      <param name="ppenum">
+                    Reference to the cloned <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints" /> interface.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints.Next(System.UInt32,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint[],System.UInt32@)">
+      <summary>
+                    Retrieves the next <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint" />.
+                </summary>
+      <param name="celt">
+                    Number of endpoint interfaces to return, or zero to indicate a request for all the objects.
+                </param>
+      <param name="rgelt">
+                    An array of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint" /> objects. Contains <paramref name="pceltFetched" /> objects.
+                </param>
+      <param name="pceltFetched">
+                    Actual number of endpoint interfaces retrieved.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints.Reset">
+      <summary>
+                    Return the enumerator to its initial state.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints.Skip(System.UInt32)">
+      <summary>
+                    Skips a specified number of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint" /> interfaces.
+                </summary>
+      <param name="celt">
+                    The number of interfaces to skip.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems">
+      <summary>
+                    An enumerator for Windows Communication Foundation (WCF) service metadata items.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems.Clone(Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems@)">
+      <summary>
+                    Clones this <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems" /> interface by creating another instance.
+                </summary>
+      <param name="ppenum">
+                    Reference to the cloned <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems" /> interface.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems.Next(System.UInt32,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem[],System.UInt32@)">
+      <summary>
+                    Retrieves the next <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem" />.
+                </summary>
+      <param name="celt">
+                    Number of contract interfaces to return, or zero to indicate a request for all the objects.
+                </param>
+      <param name="rgelt">
+                    An array of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem" /> objects. Contains <paramref name="pceltFetched" /> objects.
+                </param>
+      <param name="pceltFetched">
+                    Actual number of contract interfaces that are retrieved.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems.Reset">
+      <summary>
+                    Returns the enumerator to its initial state.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceGroupMetadataItems.Skip(System.UInt32)">
+      <summary>
+                    Skips a specified number of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem" /> interfaces.
+                </summary>
+      <param name="celt">
+                    The number of interfaces to skip.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IReferenceInfo2">
+      <summary>
+                    Provides an interface for working with Windows Communication Foundation (WCF) service reference configuration files.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IReferenceInfo2.GetDefaultFileName">
+      <summary>
+                    Gets the default file name for a configuration file.
+                </summary>
+      <returns>
+                    A String that contains the file name. Can return Null.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IReferenceInfo2.GetDocumentContents">
+      <summary>
+                    Gets the contents of a configuration file.
+                </summary>
+      <returns>
+                    A Byte array that contains the file contents.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceDlg3">
+      <summary>
+                    Provides an interface for displaying the Add Service Reference dialog box and displaying the results.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceDlg3.ShowAddWebReferenceDialog(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,Microsoft.VisualStudio.Shell.Interop.IDiscoverySession,Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType,System.String,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup,System.String,Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult@,System.Int32@)">
+      <summary>
+                    Displays the Add Service Reference dialog box.
+                </summary>
+      <param name="pProject">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsHierarchy" /> for the project where the reference will be added.
+                </param>
+      <param name="pDiscoverySession">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsDiscoveryService" /> session to use for the metadata download.
+                </param>
+      <param name="referenceTypesAllowed">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType" /> for the reference; either Windows Communication Foundation (WCF) or or Web services (ASMX) that use ASP.NET.
+                </param>
+      <param name="pszDialogName">
+                    A <see cref="T:System.String" /> that contains the title for the dialog box. Can be Null.
+                </param>
+      <param name="pExistingReferenceGroup">
+                    An existing <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" />. Can be Null.
+                </param>
+      <param name="pszReferenceConfigContents">
+                    A <see cref="T:System.String" /> that contains the configuration contents.
+                </param>
+      <param name="ppReferenceResult">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult" /> object that contains the results. Can be Null if the dialog box was canceled.
+                </param>
+      <param name="pfCancelled">
+                    An Integer specifying whether the dialog box was canceled.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceDlg3.ShowDiscoveredServicesInCurrentDialog(System.Int32,System.String[],System.String[],System.String,System.String)">
+      <summary>
+                    Displays a list of Windows Communication Foundation (WCF) services in an Add Service Reference dialog box.
+                </summary>
+      <param name="cItems">
+                    A Long that contains the number of items to display.
+                </param>
+      <param name="ServiceUrls">
+                    A <see cref="T:System.String" /> array that contains the URL addresses for the services.
+                </param>
+      <param name="ServiceDisplayNames">
+                    A <see cref="T:System.String" /> array that contains the names of the services.
+                </param>
+      <param name="pszStatusText">
+                    A <see cref="T:System.String" /> that contains the status text. Can be Null for default status.
+                </param>
+      <param name="pszErrorText">
+                    A <see cref="T:System.String" /> that contains the error text. Null if there were no errors.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult">
+      <summary>
+                    Contains data gathered by the Add Service Reference dialog box.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.GetDetail">
+      <summary>
+                    Returns an interface that exposes additional properties of a service reference in the Add Service Reference dialog box.
+                </summary>
+      <returns>
+                    An <see cref="T:Microsoft.VisualStudio.ManagedInterfaces9.IVsWCFReferenceGroupDetails" /> interface.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.GetReferenceName">
+      <summary>
+                    Returns the name of a service reference in the Add Service Reference dialog box.
+                </summary>
+      <returns>
+                    A String that contains the name of the service reference.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.GetReferenceNamespace">
+      <summary>
+                    Returns the namespace of a service reference in the Add Service Reference dialog box.
+                </summary>
+      <returns>
+                    A String that contains the namespace of the service reference.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.GetReferenceType">
+      <summary>
+                    Returns the <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType" /> of a service reference in the Add Service Reference dialog box.
+                </summary>
+      <returns>
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType" /> representing the type of the service reference.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.GetReferenceUrl">
+      <summary>
+                    Returns the URL for a service reference in the Add Service Reference dialog box.
+                </summary>
+      <returns>
+                    A String that contains the URL for the service reference.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceResult.Save">
+      <summary>
+                    Saves reference metadata in the project and creates a new Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> object.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsASMXMetadataStorageProvider">
+      <summary>
+                    Provides an interface for saving metadata for Web services (.asmx) that use ASP.NET in the project system.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsASMXMetadataStorageProvider.AddWebReference(System.String,System.String,Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult)">
+      <summary>
+                    Adds the metadata to a project for reference to a Web service (.asmx) that uses ASP.NET.
+                </summary>
+      <returns>
+                    A string that contains the actual namespace for the reference.
+                </returns>
+      <param name="pszUrl">
+                    A string that contains the URL for the reference.
+                </param>
+      <param name="pszSuggestName">
+                    A string that contains the suggested namespace for the reference.
+                </param>
+      <param name="pDiscoveryResult">
+                    An <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoveryResult" /> that contains the metadata for the reference.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsASMXMetadataStorageProvider.IsValidNewASMXReferenceName(System.String)">
+      <summary>
+                    Returns a value that determines whether a namespace for a reference to a Web service (asmx) that uses ASP.NET is unique.
+                </summary>
+      <returns>
+                    0 if the namespace already exists; otherwise a non-zero Integer.
+                </returns>
+      <param name="pszNewName">
+                    A string that contains the namespace for the reference.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages.Clone(Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages.Next(System.UInt32,Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage[],System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages.Reset"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumServiceReferenceMetadataStorages.Skip(System.UInt32)"></member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages">
+      <summary>
+                    Provides an enumerator for Windows Communication Foundation (WCF) metadata storages.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages.Clone(Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages@)">
+      <summary>
+                    Clones this <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages" /> interface by creating another instance.
+                </summary>
+      <param name="ppenum">
+                    Reference to the cloned <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages" /> interface.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages.Next(System.UInt32,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage[],System.UInt32@)">
+      <summary>
+                    Retrieves the next <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage" />.
+                </summary>
+      <returns>
+                    The index of the next storage in <paramref name="rgelt" />.
+                </returns>
+      <param name="celt">
+                    Number of contract interfaces to return, or zero to indicate a request for all the objects.
+                </param>
+      <param name="rgelt">
+                    An array of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage" /> objects. Contains <paramref name="pceltFetched" /> objects.
+                </param>
+      <param name="pceltFetched">
+                    Actual number of contract interfaces retrieved.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages.Reset">
+      <summary>
+                    Returns the enumerator to its initial state.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsEnumWCFMetadataStorages.Skip(System.UInt32)">
+      <summary>
+                    Skips a specified number of <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage" /> interfaces.
+                </summary>
+      <param name="celt">
+                    The number of interfaces to skip.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.AdviseServiceReferenceMetadataStorageEvents(Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents,System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.BeginUpdate"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.CreateMetadataFile(System.String,System.Byte[])"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.DeleteMetadataFile(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.EndUpdate"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.FileCodeModel"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.GetMapFilePath"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.GetName"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.GetNamespace"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.GetStorageType"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.LoadMapFileData"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.LoadMetadataFile(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.ProjectItemId"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.Remove"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.RunProxyGenerator"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.SaveMapFileData(System.Byte[])"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.SaveMetadataFile(System.String,System.Byte[])"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.SetName(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.SetNamespace(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage.UnadviseServiceReferenceMetadataStorageEvents(System.UInt32)"></member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents.OnMapFileUpdated"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents.OnMetadataFileAdded(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents.OnMetadataFileDeleted(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents.OnMetadataFileRenamed(System.String,System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageEvents.OnMetadataFileUpdated(System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.AdviseMetadataStorageProviderEvents(Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents,System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.CreateMetadataStorage(System.String,System.String,System.String,Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.GetMetadataStorageFromMapFile(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.GetMetadataStorages"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.IsStorageTypeSupported(System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.IsValidNewServiceReferenceName(System.String,System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.MakeValidServiceReferenceName(System.String,System.String,System.String,System.String@,System.String@)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProvider.UnadviseMetadataStorageProviderEvents(System.UInt32)"></member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents.OnAdded(Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorage)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents.OnMoved(System.String,System.String,System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents.OnRemoved(System.String,System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents.OnRemoving(System.String,System.String)"></member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsServiceReferenceMetadataStorageProviderEvents.OnRenamed(System.String,System.String,System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult">
+      <summary>
+                    Provides an interface for monitoring the progress of asynchronous calls to Windows Communication Foundation (WCF) service providers.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult.Cancel">
+      <summary>
+                    Cancels an asynchronous method call.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult.GetCustomState">
+      <summary>
+                    Returns custom state object passed to an asynchronous method
+                </summary>
+      <returns>
+                    A custom state object.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult.GetMethodResult">
+      <summary>
+                    Returns the <see cref="P:System.Exception.HResult" /> returned by the method that was called asynchronously.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult.IsCancelled">
+      <summary>
+                    Returns a value determining whether an asynchronous method was canceled.
+                </summary>
+      <returns>
+                    0 if the method was canceled; otherwise a non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult.IsCompleted">
+      <summary>
+                    Returns a value determining whether an asynchronous method was completed.
+                </summary>
+      <returns>
+                    0 if the method was completed; otherwise a non-zero Integer.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback">
+      <summary>
+                    Provides a callback interface for monitoring the progress of asynchronous calls to Windows Communication Foundation (WCF) service providers.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback.OnFinished(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult)">
+      <summary>
+                    Provides notification for an asynchronous method call.
+                </summary>
+      <param name="pResult">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult" /> object.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage">
+      <summary>
+                    Stores the metadata for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.AdviseWCFMetadataStorageEvents(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents,System.UInt32@)">
+      <summary>
+                    Registers the caller for metadata storage event notification.
+                </summary>
+      <param name="pSink">
+                    Reference that provides notifications of metadata storage events.
+                </param>
+      <param name="pdwCookie">
+                    A token representing the completed registration.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.BeginUpdate">
+      <summary>
+                    Initiates an update to Windows Communication Foundation (WCF) metadata storage files.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.CreateMetadataFile(System.String,System.Byte[])">
+      <summary>
+                    Creates a new metadata file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <returns>
+                    The name of the new metadata file.
+                </returns>
+      <param name="pszMetadataSuggestedName">
+                    The suggested name for the file. May be overridden if a file that uses the same name already exists.
+                </param>
+      <param name="content">
+                    A Byte array that contains the metadata for the file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.DeleteMetadataFile(System.String)">
+      <summary>
+                    Deletes an existing metadata file from a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="pszMetadataFileName">
+                    The name of the metadata file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.EndUpdate">
+      <summary>
+                    Concludes an update to Windows Communication Foundation (WCF) metadata storage files.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.FileCodeModel">
+      <summary>
+                    Returns the proxy code model for a Windows Communication Foundation (WCF) metadata storage. 
+                </summary>
+      <returns>
+                    A file code model object if one exists; otherwise Null.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.GetMapFilePath">
+      <summary>
+                    Returns the path for the .svcmap file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <returns>
+                    The path of the .svcmap file.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.GetName">
+      <summary>
+                    Returns the name of the .svcmap file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <returns>
+                    The name of the file without the extension.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.GetNamespace">
+      <summary>
+                    Returns the namespace for a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <returns>
+                    The namespace for the storage.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.LoadMapFileData">
+      <summary>
+                    Loads the metadata into a .svcmap file.
+                </summary>
+      <returns>
+                    A Byte array that contains the metadata.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.LoadMetadataFile(System.String)">
+      <summary>
+                    Loads the metadata into a metadata file.
+                </summary>
+      <returns>
+                    A Byte array that contains the metadata.
+                </returns>
+      <param name="pszMetadataFileName">
+                    The name of the file to load.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.ProjectItemId">
+      <summary>
+                    Returns the <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.ProjectItemId" /> for a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <returns>
+                    A ProjectItemID.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.Remove">
+      <summary>
+                    Deletes the complete Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.RunProxyGenerator">
+      <summary>
+                    Runs the code generator to create a Windows Communication Foundation (WCF) service client.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.SaveMapFileData(System.Byte[])">
+      <summary>
+                    Saves the .svcmap file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="content">
+                    A Byte array that contains the metadata.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.SaveMetadataFile(System.String,System.Byte[])">
+      <summary>
+                    Saves a metadata file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="pszMetadataFileName">
+                    The name of the metadata file.
+                </param>
+      <param name="content">
+                    A Byte array that contains the metadata.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.SetName(System.String)">
+      <summary>
+                    Sets the name of the .svcmap file in a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="pszName">
+                    The name for the file without the extension.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.SetNamespace(System.String)">
+      <summary>
+                    Sets the namespace for a Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="pszNamespace">
+                    The name to use for the namespace.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage.UnadviseWCFMetadataStorageEvents(System.UInt32)">
+      <summary>
+                    Cancels registration for metadata storage event notification.
+                </summary>
+      <param name="dwCookie">
+                    A token representing the registration to be canceled.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents">
+      <summary>
+                    Provides an interface for Windows Communication Foundation (WCF) metadata storage events.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents.OnMapFileUpdated">
+      <summary>
+                    Raises an event after .svcmap files have been updated.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents.OnMetadataFileAdded(System.String)">
+      <summary>
+                    Raises an event after a new metadata file has been added.
+                </summary>
+      <param name="pszFileName">
+                    The name of the metadata file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents.OnMetadataFileDeleted(System.String)">
+      <summary>
+                    Raises an event after a metadata file has been deleted.
+                </summary>
+      <param name="pszFileName">
+                    The name of the metadata file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents.OnMetadataFileRenamed(System.String,System.String)">
+      <summary>
+                    Raises an event after a metadata file has been renamed.
+                </summary>
+      <param name="pszFileNameOld">
+                    The original name of the metadata file.
+                </param>
+      <param name="pszFileNameNew">
+                    The new name of the metadata file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageEvents.OnMetadataFileUpdated(System.String)">
+      <summary>
+                    Raises an event after metadata files have been updated.
+                </summary>
+      <param name="pszFileName">
+                    The name of the metadata file.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider">
+      <summary>
+                    Provides an interface for saving Windows Communication Foundation (WCF) service metadata in the project system.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.AdviseWCFMetadataStorageProviderEvents(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents,System.UInt32@)">
+      <summary>
+                    Registers the caller for metadata storage provider event notification.
+                </summary>
+      <param name="pSink">
+                    Reference that provides notifications of metadata storage events.
+                </param>
+      <param name="pdwCookie">
+                    A token representing the completed registration.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.CreateStorage(System.String,System.String,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@)">
+      <summary>
+                    Creates a new Windows Communication Foundation (WCF) metadata storage.
+                </summary>
+      <param name="pszNamespace">
+                    The namespace for the storage.
+                </param>
+      <param name="pszReferenceName">
+                    The name of the WCF service reference.
+                </param>
+      <param name="pWCFMetadataStorage">
+                    The new <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage" />.
+                </param>
+      <param name="pNameValidationState">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState" /> object.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.GetStorageFromMapFile(System.String)">
+      <summary>
+                    Returns a Windows Communication Foundation (WCF) metadata storage based on the full path of a .svcmap file.
+                </summary>
+      <returns>
+                    A WCF metadata storage object.
+                </returns>
+      <param name="pszMapFilePath">
+                    The path of the file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.GetStorages">
+      <summary>
+                    Enumerates Windows Communication Foundation (WCF) metadata storages in a project.
+                </summary>
+      <returns>
+                    A metadata storages enumerator,
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)">
+      <summary>
+                    Returns a value that determines whether a name for a Windows Communication Foundation (WCF) service reference is unique.
+                </summary>
+      <param name="pszNamespace">
+                    A string that contains the namespace for the reference.
+                </param>
+      <param name="pszReferenceName">
+                    A string that contains the name of the reference.
+                </param>
+      <param name="pbValid">true if the name is valid; otherwise false.
+                </param>
+      <param name="pValidationState">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState" /> object.
+                </param>
+      <param name="pbstrMessage">
+                    A string that contains an error message. Can be Null.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.MakeValidReferenceName(System.String,System.String,System.String@,System.String@)">
+      <summary>
+                    Returns a unique name and namespace for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="pszNamespace">
+                    A string that contains the namespace for the reference.
+                </param>
+      <param name="pszReferenceName">
+                    A string that contains the name of the reference.
+                </param>
+      <param name="pbstrSuggestedNamespace">
+                    A string that contains the new namespace for the reference.
+                </param>
+      <param name="pbstrSuggestedReferenceName">
+                    A string that contains the new name of the reference.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.UnadviseWCFMetadataStorageProviderEvents(System.UInt32)">
+      <summary>
+                    Cancels registration for metadata storage provider event notification.
+                </summary>
+      <param name="dwCookie">
+                    A token representing the registration to be canceled.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents">
+      <summary>
+                    Provides an interface for Windows Communication Foundation (WCF) metadata storage provider events.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents.OnAdded(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorage)">
+      <summary>
+                    Raises an event after a new file or folder has been added.
+                </summary>
+      <param name="pIVsWCFMetadataStorage">
+                    A metadata storage interface.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents.OnMoved(System.String,System.String)">
+      <summary>
+                    Raises an event when a file or folder has been moved.
+                </summary>
+      <param name="pszOldSvcmapFilePath">
+                    The previous path of the .svcmap file.
+                </param>
+      <param name="pszNewSvcmapFilePath">
+                    The new path of the .svcmap file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents.OnRemoved(System.String)">
+      <summary>
+                    Raises an event when a file or folder has been removed.
+                </summary>
+      <param name="pszOldSvcmapFilePath">
+                    The previous path of the .svcmap file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents.OnRemoving(System.String)">
+      <summary>
+                    Raises an event before a file or folder is removed.
+                </summary>
+      <param name="pszOldSvcmapFilePath">
+                    The path of the .svcmap file.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProviderEvents.OnRenamed(System.String,System.String)">
+      <summary>
+                    Raises an event when a file or folder has been renamed.
+                </summary>
+      <param name="pszOldSvcmapFilePath">
+                    The previous path of the .svcmap file.
+                </param>
+      <param name="pszNewSvcmapFilePath">
+                    The new path of the .svcmap file.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFObject">
+      <summary>
+                    Provides an interface for validating and reloading Windows Communication Foundation (WCF) service reference objects.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFObject.IsValid">
+      <summary>
+                    Determines whether a Windows Communication Foundation (WCF) service reference object has been invalidated.
+                </summary>
+      <returns>false if the object has been invalidated; otherwise true.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFObject.Reload">
+      <summary>
+                    Reloads a Windows Communication Foundation (WCF) service reference object.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract">
+      <summary>
+                    Represents a Windows Communication Foundation (WCF) reference contract interface generated by the proxy generator.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetName">
+      <summary>
+                    Returns the contract name from the configuration file.
+                </summary>
+      <returns>
+                    A String that contains the contract name.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetPortTypeName">
+      <summary>
+                    Returns the port type name from the Web Services Description Language (WSDL).
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetReferenceEndpointEnumerator">
+      <summary>
+                    Returns the collection of endpoints for the Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    An <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IEnumWCFReferenceEndpoints" /> enumerator.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetReferenceGroup">
+      <summary>
+                    Returns the reference group that contains the contract.
+                </summary>
+      <returns>
+                    An <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetTargetNamespace">
+      <summary>
+                    Returns the target namespace of the Web Services Description Language (WSDL).
+                </summary>
+      <returns>
+                    A String that contains the target namespace.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceContract.GetTypeName">
+      <summary>
+                    Returns the full name of the contract <see cref="T:System.Type" />.
+                </summary>
+      <returns>
+                    A String that contains the name.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint">
+      <summary>
+                    Represents an endpoint definition in a configuration file.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetAddress">
+      <summary>
+                    Returns the <see cref="T:System.ServiceModel.EndpointAddress" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="T:System.ServiceModel.EndpointAddress" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetBehaviorConfiguration">
+      <summary>
+                    Returns the endpoint <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.BehaviorConfiguration" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.BehaviorConfiguration" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetBinding">
+      <summary>
+                    Returns the endpoint <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.Binding" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.Binding" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetBindingConfiguration">
+      <summary>
+                    Returns the endpoint <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.BindingConfiguration" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="P:System.ServiceModel.Configuration.ServiceEndpointElement.BindingConfiguration" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetContract">
+      <summary>
+                    Returns the endpoint <see cref="P:System.ServiceModel.Description.ServiceEndpoint.Contract" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="P:System.ServiceModel.Description.ServiceEndpoint.Contract" />.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEndpoint.GetName">
+      <summary>
+                    Returns the endpoint <see cref="P:System.ServiceModel.Description.ServiceEndpoint.Name" /> from the configuration file.
+                </summary>
+      <returns>
+                    A <see cref="T:System.String" /> that contains the <see cref="P:System.ServiceModel.Description.ServiceEndpoint.Name" />.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents">
+      <summary>
+                    Raises events for Windows Communication Foundation (WCF) service references.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnConfigurationChanged">
+      <summary>
+                    Raises the <see cref="E:Microsoft.VisualStudio.ManagedInterfaces9.IVsApplicationConfiguration.ConfigurationChanged" /> event.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnMetadataChanged(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup)">
+      <summary>
+                    Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.
+                </summary>
+      <param name="pReferenceGroup">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> that contains the metadata.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnMetadataChanging(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup)">
+      <summary>
+                    Raises the <see cref="E:System.Windows.Forms.CurrencyManager.MetaDataChanged" /> event.
+                </summary>
+      <param name="pReferenceGroup">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> that contains the metadata.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnReferenceGroupCollectionChanged">
+      <summary>
+                    Raises an event after a new reference is added or an existing reference is deleted.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnReferenceGroupCollectionChanging">
+      <summary>
+                    Raises an event after a new reference is added or an existing reference is deleted.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanged(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup)">
+      <summary>
+                    Raises an event after reference group properties (including name, namespace, proxy generation options and URL) for a particular reference group are changed.
+                </summary>
+      <param name="pReferenceGroup">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> that contains the properties.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents.OnReferenceGroupPropertiesChanging(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup)">
+      <summary>
+                    Raises an event before reference group properties (including name, namespace, proxy generation options and URL) for a particular reference group are changed.
+                </summary>
+      <param name="pReferenceGroup">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> that contains the properties.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup">
+      <summary>
+                    Provides an interface for generating Windows Communication Foundation (WCF) service clients.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.AddReference(Microsoft.VisualStudio.Shell.Interop.IDiscoverySession,System.String)">
+      <summary>
+                    Adds a Windows Communication Foundation (WCF) service reference to a reference group.
+                </summary>
+      <param name="pDiscoverySession">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverySession" /> to use. Can be Null.
+                </param>
+      <param name="pszUrl">
+                    A <see cref="T:System.String" /> that contains the URL for the service.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.AsyncAddReference(Microsoft.VisualStudio.Shell.Interop.IDiscoverySession,System.String,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback,System.Object,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult@)">
+      <summary>
+                    Adds a Windows Communication Foundation (WCF) service reference to a reference group asynchronously.
+                </summary>
+      <param name="pDiscoverySession">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverySession" /> to use. Can be Null.
+                </param>
+      <param name="pszUrl">
+                    A <see cref="T:System.String" /> that contains the URL for the service.
+                </param>
+      <param name="pCallback">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback" /> interface to use for notification.
+                </param>
+      <param name="punknownCustomState">
+                    A custom state object that can be accessed from the <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult" /> interface. Can be Null.
+                </param>
+      <param name="ppResult">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult" /> interface that contains the results.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.AsyncUpdate(Microsoft.VisualStudio.Shell.Interop.IDiscoverySession,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback,System.Object,Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult@)">
+      <summary>
+                    Updates a Windows Communication Foundation (WCF) service reference asynchronously.
+                </summary>
+      <param name="pDiscoverySession">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverySession" /> to use. Can be Null.
+                </param>
+      <param name="pCallback">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFCompletionCallback" /> interface to use for notification.
+                </param>
+      <param name="punknownCustomState">
+                    A custom state object that can be accessed from the <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult" /> interface. Can be Null.
+                </param>
+      <param name="ppResult">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFAsyncResult" /> interface that contains the results.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.BeginBatch">
+      <summary>
+                    Begins batch processing of Windows Communication Foundation (WCF) service references in a reference group.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.DeleteReference(System.Int32)">
+      <summary>
+                    Deletes a Windows Communication Foundation (WCF) service reference from a reference group.
+                </summary>
+      <param name="index">
+                    An Integer representing the index of the reference to delete.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.EndBatch">
+      <summary>
+                    Ends batch processing of Windows Communication Foundation (WCF) service references in a reference group.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetCollection">
+      <summary>
+                    Returns the reference group collection.
+                </summary>
+      <returns>
+                    The reference group collection.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetContractsEnumerator">
+      <summary>
+                    Returns an enumerator for a Windows Communication Foundation (WCF) service contract in a reference group.
+                </summary>
+      <returns>
+                    An enumerator for a contract in a reference group.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetExtensionData(System.String)">
+      <summary>
+                    Returns the extension data for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    A Byte array that contains the data in <paramref name="name" />.
+                </returns>
+      <param name="name">
+                    A string that contains the file name.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetFileCodeModel">
+      <summary>
+                    Returns a code model for generating a proxy.
+                </summary>
+      <returns>
+                    An object that represents a code model.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetID">
+      <summary>
+                    Returns a GUID for a reference group.
+                </summary>
+      <returns>
+                    A string that contains the GUID.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetMapFileProjectItem">
+      <summary>
+                    Returns the project item with which a service reference is associated.
+                </summary>
+      <returns>
+                    An object that represents a project item.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetMetadataItemsEnumerator">
+      <summary>
+                    Returns an enumerator for the metadata items in a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <returns>
+                    An enumerator for metadata items.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetName">
+      <summary>
+                    Returns the name of a .svcmap file for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <returns>
+                    A string that contains the name.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetNamespace">
+      <summary>
+                    Returns the namespace for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <returns>
+                    A string that contains the namespace.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetOptions">
+      <summary>
+                    Returns the code generation options for a Windows Communication Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    An object that represents code generation options.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetProxyNamespace">
+      <summary>
+                    Returns the namespace for proxy classes generated from a Windows Communication Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    A string that contains the namespace.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetReferenceCount">
+      <summary>
+                    Returns a count of Windows Communication Foundation (WCF) service references in a WCF reference group.
+                </summary>
+      <returns>
+                    An Integer that contains the number of references.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.GetReferenceUrl(System.Int32)">
+      <summary>
+                    Returns the URL from which metadata for a Windows Communication Foundation (WCF) service reference is downloaded.
+                </summary>
+      <returns>
+                    A string that contains the URL.
+                </returns>
+      <param name="index">
+                    An Integer that contains the index of the service reference.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.IsValid">
+      <summary>
+                    Determines whether a Windows Communication Foundation (WCF) service reference group object has been invalidated.
+                </summary>
+      <returns>false if the object has been invalidated; otherwise true.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.Reload">
+      <summary>
+                    Reloads a Windows Communication Foundation (WCF) service reference group object.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.SetExtensionData(System.String,System.Byte[])">
+      <summary>
+                    Sets the extension data for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="name">
+                    A <see cref="T:System.String" /> that contains the file name.
+                </param>
+      <param name="content">
+                    A Byte array that contains the extension data.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.SetName(System.String)">
+      <summary>
+                    Sets the name of a .svcmap file for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <param name="pszName">
+                    A string that contains the name for the file without the extension.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.SetNamespace(System.String)">
+      <summary>
+                    Sets the namespace for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <param name="pszNamespace">
+                    A string that contains the namespace.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.SetOptions(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions)">
+      <summary>
+                    Sets the code generation options for a Windows Communication Foundation (WCF) reference group.
+                </summary>
+      <param name="pOptions">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions" /> object to copy the options from.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.SetReferenceUrl(System.Int32,System.String)">
+      <summary>
+                    Sets URL from which metadata for a Windows Communication Foundation (WCF) service reference is downloaded.
+                </summary>
+      <param name="index">
+                    An Integer that contains the index of the service reference.
+                </param>
+      <param name="pszReferenceUrl">
+                    A string that contains the URL.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.ShowOptionsDialog">
+      <summary>
+                    Displays the Configure Service Reference dialog box for the reference group.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.Update(Microsoft.VisualStudio.Shell.Interop.IDiscoverySession)">
+      <summary>
+                    Updates a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+      <param name="pDiscoverySession">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverySession" /> to use. Can be Null.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup.UpdateConfiguration">
+      <summary>
+                    Updates the configuration for a Windows Communication Foundation (WCF) service reference group.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection">
+      <summary>
+                    Provides an interface for managing Windows Communication Foundation (WCF) reference groups.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.Add(System.String,System.String)">
+      <summary>
+                    Adds a Windows Communication Foundation (WCF) reference group to the collection.
+                </summary>
+      <returns>
+                    A WCF reference group.
+                </returns>
+      <param name="pszNamespace">
+                    A string that contains the namespace for the reference group.
+                </param>
+      <param name="pszName">
+                    A string that contains the name of the reference group.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.ContainingProject">
+      <summary>
+                    Returns the project hierarchy for the project that contains the collection.
+                </summary>
+      <returns>
+                    A project hierarchy interface.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.Count">
+      <summary>
+                    Returns a count of Windows Communication Foundation (WCF) reference groups in the collection.
+                </summary>
+      <returns>
+                    The number of reference groups.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.GetReferenceGroupByName(System.String,System.String)">
+      <summary>
+                    Returns a specified Windows Communication Foundation (WCF) reference group in the collection.
+                </summary>
+      <returns>
+                    A WCF reference group.
+                </returns>
+      <param name="pszNamespace">
+                    A string that contains the namespace for the reference group.
+                </param>
+      <param name="pszName">
+                    A string that contains the name of the reference group.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.GetReferenceGroupFromMapFile(System.String)">
+      <summary>
+                    Returns a specified Windows Communication Foundation (WCF) reference group in the collection.
+                </summary>
+      <returns>
+                    A WCF reference group.
+                </returns>
+      <param name="pszMapFilePath">
+                    A string that contains the path of a .svcmap file for the WCF reference group.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.IsValid">
+      <summary>
+                    Determines if the index for a Windows Communication Foundation (WCF) reference group is valid in the collection.
+                </summary>
+      <returns>
+                    0 if the index is not valid; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.Item(System.Int32)">
+      <summary>
+                    Returns a specified Windows Communication Foundation (WCF) reference group in the collection.
+                </summary>
+      <returns>
+                    A WCF reference group.
+                </returns>
+      <param name="index">
+                    An Integer representing the index of a WCF reference group in the collection.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.Reload">
+      <summary>
+                    Refreshes a Windows Communication Foundation (WCF) reference group collection.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.Remove(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup)">
+      <summary>
+                    Removes a Windows Communication Foundation (WCF) reference group from the collection.
+                </summary>
+      <param name="pWCFReferenceGroup">
+                    The <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroup" /> to remove.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.RemoveAt(System.Int32)">
+      <summary>
+                    Removes a Windows Communication Foundation (WCF) reference group from the collection by index.
+                </summary>
+      <param name="index">
+                    An Integer representing the index of the WCF reference group to remove.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupCollection.UpdateAll(Microsoft.VisualStudio.Shell.Interop.IDiscoverySession)">
+      <summary>
+                    Updates all Windows Communication Foundation (WCF) reference group in the collection.
+                </summary>
+      <param name="pDiscoverySession">
+                    A <see cref="T:Microsoft.VisualStudio.Shell.Interop.IDiscoverySession" /> interface for the project.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem">
+      <summary>
+                    Represents a single metadata document related to a particular Windows Communications Foundation (WCF) service reference.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem.GetContent">
+      <summary>
+                    Returns the contents of a metadata document in a Windows Communications Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    A Byte array that contains the contents.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem.GetFileName">
+      <summary>
+                    Returns the file name for a metadata document in a Windows Communications Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    A string that contains the file name.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem.GetNodeType">
+      <summary>
+                    Returns the <see cref="T:Microsoft.VisualStudio.Shell.Interop.DiscoveryNodeType" /> for a metadata document in a Windows Communications Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    A discovery node type object.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem.GetSourceUrl">
+      <summary>
+                    Returns the URL where a metadata document in a Windows Communications Foundation (WCF) reference group originated.
+                </summary>
+      <returns>
+                    A string that contains the URL.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupMetadataItem.GetTargetNamespace">
+      <summary>
+                    Returns the target namespace for a metadata document in a Windows Communications Foundation (WCF) reference group.
+                </summary>
+      <returns>
+                    A string that contains the namespace.
+                </returns>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions">
+      <summary>
+                    Provides an interface to manage code generation options for Windows Communication Foundation (WCF) service references.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetCollectionMappings(Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory,System.Int32,System.String[])">
+      <summary>
+                    Returns a list of types that will be used for collections when you generate a Windows Communication Foundation (WCF) client.
+                </summary>
+      <param name="category">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory" /> item.
+                </param>
+      <param name="cItems">
+                    An Integer that represents the number of mappings.
+                </param>
+      <param name="rgbstrCollectionMappings">
+                    A String that contains the mappings.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetCollectionMappingsCount(Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory)">
+      <summary>
+                    Returns a count of collection mappings.
+                </summary>
+      <returns>
+                    An integer that contains the count.
+                </returns>
+      <param name="category">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory" /> item.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetEnableDataBinding">
+      <summary>
+                    Determines whether data binding is enabled for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if data binding is not enabled; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetExcludedTypes(System.Int32,System.String[])">
+      <summary>
+                    Returns a list of types that are excluded from type sharing in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="cItems">
+                    An Integer that represents the number of types.
+                </param>
+      <param name="rgbstrExcludedTypes">
+                    A String that contains the excluded types.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetExcludedTypesCount">
+      <summary>
+                    Returns a count of excluded types.
+                </summary>
+      <returns>
+                    An integer that contains the count.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetGenerateAsynchronousMethods">
+      <summary>
+                    Determines whether asynchronous methods are supported for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if asynchronous methods are not supported; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetGenerateInternalTypes">
+      <summary>
+                    Determines whether internal types are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if internal types will not be generated; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetGenerateMessageContracts">
+      <summary>
+                    Determines whether message contracts are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if message contracts will not be generated; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetGenerateSerializableTypes">
+      <summary>
+                    Determines whether serializable types are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if serializable types will not be generated; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetImportXmlTypes">
+      <summary>
+                    Determines whether XML types are imported for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if XML types will not be imported; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetReferenceAllAssemblies">
+      <summary>
+                    Determines whether type sharing is enabled for all referenced assemblies in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    0 if type sharing is disabled; otherwise any non-zero Integer.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetReferencedAssemblies(System.Int32,System.String[])">
+      <summary>
+                    Returns a list of referenced assemblies in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="cItems">
+                    An Integer that represents the number of assemblies.
+                </param>
+      <param name="rgbstrReferencedAssemblies">
+                    A String that contains the assembly names.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetReferencedAssembliesCount">
+      <summary>
+                    Returns a count of referenced assemblies for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    An Integer that contains the count.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.GetSerializer">
+      <summary>
+                    Returns the serializer to use when you generate code for a Windows Communication Foundation (WCF) client.
+                </summary>
+      <returns>
+                    A proxy serializer type object.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetCollectionMappings(Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory,System.Int32,System.String[])">
+      <summary>
+                    Sets a list of types that will be used for collections when you generate a Windows Communication Foundation (WCF) client.
+                </summary>
+      <param name="category">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.CollectionCategory" /> item.
+                </param>
+      <param name="cItems">
+                    An Integer that represents the number of mappings.
+                </param>
+      <param name="lpstrCollectionMappings">
+                    A String that contains the mappings.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetEnableDataBinding(System.Int32)">
+      <summary>
+                    Sets a value that determines whether data binding is enabled for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bEnableDataBinding">
+                    Any non-zero Integer to enable data binding; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetExcludedTypes(System.Int32,System.String[])">
+      <summary>
+                    Sets a list of types that are excluded from type sharing in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="cItems">
+                    An Integer that represents the number of types.
+                </param>
+      <param name="lpstrExcludedTypes">
+                    A String that contains the excluded types.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetGenerateAsynchronousMethods(System.Int32)">
+      <summary>
+                    Sets a value that determines whether asynchronous methods are supported for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bGenerateAsynchronousMethods">
+                    Any non-zero Integer to support asynchronous methods; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetGenerateInternalTypes(System.Int32)">
+      <summary>
+                    Sets a value that determines whether internal types are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="fGenerateInternalTypes">
+                    Any non-zero Integer to generate internal types; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetGenerateMessageContracts(System.Int32)">
+      <summary>
+                    Sets a value that determines whether message contracts are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bGenerateMessageContracts">
+                    Any non-zero Integer to generate message contracts; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetGenerateSerializableTypes(System.Int32)">
+      <summary>
+                    Sets a value that determines whether serializable types are generated for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bGenerateSerializableTypes">
+                    Any non-zero Integer to generate serializable types; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetImportXmlTypes(System.Int32)">
+      <summary>
+                    Sets a value that determines whether XML types are imported for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bImportXmlTypes">
+                    Any non-zero Integer to import XML types; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetReferenceAllAssemblies(System.Int32)">
+      <summary>
+                    Sets a value that determines whether type sharing is enabled for all referenced assemblies in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="bReferenceAllAssemblies">
+                    Any non-zero Integer to reference all assemblies; otherwise 0.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetReferencedAssemblies(System.Int32,System.String[])">
+      <summary>
+                    Sets a list of referenced assemblies in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <param name="cItems">
+                    An Integer that represents the number of assemblies.
+                </param>
+      <param name="lpstrReferencedAssemblies">
+                    A String that contains the assembly names.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceGroupOptions.SetSerializer(Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType)">
+      <summary>
+                    Sets the serializer to use when you generate code for a Windows Communication Foundation (WCF) client.
+                </summary>
+      <param name="ProxySerializerType">
+                    A <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType" /> object.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager">
+      <summary>
+                    Provides an interface for managing Windows Communication Foundation (WCF) service references.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager.AdviseWCFReferenceEvents(Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceEvents,System.UInt32@)">
+      <summary>
+                    Registers the caller for Windows Communication Foundation (WCF) service event notification.
+                </summary>
+      <param name="pSink">
+                    Reference that provides notifications of WCF service reference events.
+                </param>
+      <param name="pCookie">
+                    A token representing the completed registration.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager.GetReferenceEndpointEnumerator">
+      <summary>
+                    Returns an enumerator for endpoints in a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    A reference endpoints enumerator that contains all endpoints for the service reference.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager.GetReferenceGroupCollection">
+      <summary>
+                    Returns a collection of reference groups for a Windows Communication Foundation (WCF) service reference.
+                </summary>
+      <returns>
+                    A reference group collection object.
+                </returns>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager.UnadviseWCFReferenceEvents(System.UInt32)">
+      <summary>
+                    Cancels registration for Windows Communication Foundation (WCF) service reference event notification.
+                </summary>
+      <param name="cookie">
+                    A token representing the registration to be canceled.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManagerFactory">
+      <summary>
+                    Provides an interface for creating <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManager" /> instances.
+                </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManagerFactory.GetReferenceManager(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+      <summary>
+                    Returns a Windows Communication Foundation (WCF) reference manager for a project.
+                </summary>
+      <returns>
+                    A WCF reference manager object.
+                </returns>
+      <param name="pHierProject">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsHierarchy" /> for the project.
+                </param>
+    </member>
+    <member name="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManagerFactory.IsReferenceManagerSupported(Microsoft.VisualStudio.Shell.Interop.IVsHierarchy)">
+      <summary>
+                    Returns a value that determines whether a project supports Windows Communication Foundation (WCF) service references.
+                </summary>
+      <returns>
+                    0 if WCF service references are not supported; otherwise any non-zero Integer.
+                </returns>
+      <param name="pHierProject">
+                    The <see cref="T:Microsoft.VisualStudio.Shell.Interop.IVsHierarchy" /> for the project.
+                </param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType">
+      <summary>
+                    Provides an enumeration for use in selecting the serializer to use when you generate code.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType.PST_Auto">
+      <summary>
+                    Automatically choose the serializer.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType.PST_DataContractSerializer">
+      <summary>
+                    Generate the code based on the data contract.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.ProxySerializerType.PST_XmlSerializer">
+      <summary>
+                    Generate the code based on XML.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType">
+      <summary>
+                    Provides an enumeration for differentiating between references to a Windows Communication Foundation (WCF) service and references to Web services (.asmx) that use ASP.NET.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType.SRT_ASMXReference">
+      <summary>
+                    Display only references to Web services (.asmx) that use ASP.NET.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.ServiceReferenceType.SRT_WCFReference">
+      <summary>
+                    Display only WCF service references.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState">
+      <summary>
+                    Provides an enumeration used to validate a new reference name and namespace in an <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider" /> object.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_ExistingNamespace">
+      <summary>
+                    The namespace is already being used. If the project system supports two storages that share a single namespace, the <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return true.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_InvalidNamespace">
+      <summary>
+                    The namespace is invalid for the project language. The reference name is invalid in the file system. The <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return false.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_InvalidReferenceName">
+      <summary>
+                    The reference name is invalid in the file system. The <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return false.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_NewNamespace">
+      <summary>
+                    The namespace is valid. The <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return true.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_ReferenceNameConflicts">
+      <summary>
+                    A file (<paramref name="referenceName" />.svcmap) already exists in the directory. The <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return false.
+                </summary>
+    </member>
+    <member name="F:Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState.SNVS_UnsupportedNamespace">
+      <summary>
+                    The namespace is valid for the project language, but it is not supported in the current project system. The <see cref="M:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFMetadataStorageProvider.IsValidNewReferenceName(System.String,System.String,System.SByte@,Microsoft.VisualStudio.WCFReference.Interop.StorageNameValidationState@,System.String@)" /> method will return false.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.SVsAddWebReferenceDlg3">
+      <summary>
+                    A service that exposes the unmanaged <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsAddWebReferenceDlg3" /> interface.
+                </summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.WCFReference.Interop.SVsWCFReferenceManagerFactory">
+      <summary>
+                    A service that exposes the unmanaged <see cref="T:Microsoft.VisualStudio.WCFReference.Interop.IVsWCFReferenceManagerFactory" /> interface.
+                </summary>
+    </member>
+  </members>
+</doc>

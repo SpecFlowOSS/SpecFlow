@@ -1,0 +1,851 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualStudio.Debugger.Interop.10.0</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USESHOWWINDOW">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USESIZE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USEPOSITION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USECOUNTCHARS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USEFILLATTRIBUTE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_RUNFULLSCREEN">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_FORCEONFEEDBACK">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_FORCEOFFFEEDBACK">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USESTDHANDLES">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_USECREATIONFLAGS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop._PSI_FLAGS.PSI_INHERITHANDLES">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.AttachOptions1"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.AttachOptions2"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.dwProcessId"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.guidEngine"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.JitFlags"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.ProgramId"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.pSetEventCallback"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.RuntimeVersion"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100.szExceptionText"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_LOWEST_CONFIDENCY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_LOW_CONFIDENCY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAM_PRI_DEFAULT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_NORMAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_HIGH">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_HIGHEST">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_LOWEST_CONFIDENCY_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_LOW_CONFIDENCY_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAM_PRI_DEFAULT_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_NORMAL_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_HIGH_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_HIGHEST_100">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_MAP_DOCPOSITION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_DONT_STOP">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_TRACEPOINT_CONTINUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_ALLOW_NON_USER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BP_FLAGS90.BP90_FLAG_USE_REQUEST_LANGUAGE">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_BPLOCATION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_LANGUAGE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_PROGRAM">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_PROGRAMNAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_THREAD">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_THREADNAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_PASSCOUNT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_CONDITION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_FLAGS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_ALLOLDFIELDS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_VENDOR">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_CONSTRAINT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_TRACEPOINT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_MACROTRACEPOINT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_BPREQI_FIELDS90.BPREQI90_ALLFIELDS">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_OBJ_IS_EXPANDABLE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_OBJ_HAS_ID">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_OBJ_CAN_HAVE_ID">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_READONLY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_ERROR">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_SIDE_EFFECT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_OVERLOADED_CONTAINER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_BOOLEAN">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_BOOLEAN_TRUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_INVALID">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_NAT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_AUTOEXPANDED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_TIMEOUT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_RAW_STRING">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_CUSTOM_VIEWER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_PUBLIC">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_PRIVATE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_PROTECTED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_FINAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_ACCESS_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_STORAGE_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_STORAGE_GLOBAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_STORAGE_STATIC">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_STORAGE_REGISTER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_STORAGE_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_VIRTUAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_CONSTANT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_SYNCHRONIZED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_VOLATILE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_TYPE_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_DATA">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_METHOD">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_PROPERTY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_CLASS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_BASECLASS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_INTERFACE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_INNERCLASS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_MOSTDERIVEDCLASS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_CHILD_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_MULTI_CUSTOM_VIEWERS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_EVENT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_ERROR_THREAD_SLIP_REQUIRED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DBG_ATTRIB_FLAGS_100.DBG_ATTRIB_VALUE_ILINTERPRETER">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_FULLNAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_TYPE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_VALUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_ATTRIB">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_PROP">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_VALUE_AUTOEXPAND">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NOFUNCEVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_VALUE_RAW">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_VALUE_NO_TOSTRING">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NO_NONPUBLIC_MEMBERS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_STANDARD">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NOSIDEEFFECTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_NO_IL_INTERPRETER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_ALLOW_FUNC_EVALS_EVEN_IF_NO_SIDE_EFFECTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS100.DEBUGPROP100_INFO_ALLOW_THREADSLIPPING">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_FULLNAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_TYPE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_VALUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_ATTRIB">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_PROP">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_VALUE_AUTOEXPAND">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_NOFUNCEVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_VALUE_RAW">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_VALUE_NO_TOSTRING">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_NO_NONPUBLIC_MEMBERS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_STANDARD">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_ALL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DEBUGPROP_INFO_FLAGS90.DEBUGPROP90_INFO_NOSIDEEFFECTS">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_LOWEST_CONFIDENCY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_LOW_CONFIDENCY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAM_PRI_DEFAULT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_NORMAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_HIGH">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY.DISPLAY_NAME_PRI_HIGHEST">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_LOWEST_CONFIDENCY_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_LOW_CONFIDENCY_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAM_PRI_DEFAULT_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_NORMAL_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_HIGH_100">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_DISPLAY_NAME_PRIORITY100.DISPLAY_NAME_PRI_HIGHEST_100">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_SHOW_SECURITY_WARNING">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_SYSTEM_PROCESS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_MASK">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_UNTRUSTED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_LOW">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_MEDIUM">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_HIGH">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_SYSTEM">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_ENUMERATED_PROCESS_FLAGS90.EPFLAG90_INTEGRITY_LEVEL_PROTECTED">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_RETURNVALUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_NOSIDEEFFECTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_ALLOWBPS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_ALLOWERRORREPORT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_FUNCTION_AS_ADDRESS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_NOFUNCEVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_NOEVENTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_DESIGN_TIME_EXPR_EVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_ALLOW_IMPLICIT_VARS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_FORCE_EVALUATION_NOW">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_NO_IL_INTERPRETER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_ALLOW_FUNC_EVALS_EVEN_IF_NO_SIDE_EFFECTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS100.EVAL100_ALLOW_THREADSLIPPING">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_RETURNVALUE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_NOSIDEEFFECTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_ALLOWBPS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_ALLOWERRORREPORT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_FUNCTION_AS_ADDRESS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_NOFUNCEVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_NOEVENTS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_DESIGN_TIME_EXPR_EVAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_ALLOW_IMPLICIT_VARS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_EVALFLAGS90.EVAL90_FORCE_EVALUATION_NOW">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_FRAMEINFO_FLAGS_VALUES100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_FRAMEINFO_FLAGS_VALUES100.FIFV_MAXFRAMES_EXCEEDED">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_JIT_FLAGS100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_JIT_FLAGS100.JIT_FLAG_SHOW_DEBUGGER_PRESENT_WARNING">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_JIT_FLAGS100.JIT_FLAG_LEGACY_CLR_LOADED_WARNING">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_LAUNCH_FLAGS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_LAUNCH_FLAGS90.LAUNCH_WAIT_FOR_EVENT">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_MESSAGETYPE90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MESSAGETYPE90.MT_REASON_STEP_FILTER">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MESSAGETYPE90.MT_REASON_JMC_PROMPT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MESSAGETYPE90.MT_REASON_STEP_FILTER_PROMPT">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_NONE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_SYSTEM">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_SYMBOLS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_64BIT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_OPTIMIZED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_UNOPTIMIZED">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_ENGINEWILLLOADSYMS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_MODULE100_FLAGS.MODULE100_FLAG_SYMBOLSUNAVAILABLE">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_UNKNOWN">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_IN">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_NORMAL">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_OUT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_THREAD_EXIT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_STEPSTATUS.STEPSTATUS_CUSTOM">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_ID">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_SUSPENDCOUNT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_STATE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_PRIORITY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_LOCATION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_ALLFIELDS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_DISPLAY_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_DISPLAY_NAME_PRIORITY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_CATEGORY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_AFFINITY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS100.TPF100_PRIORITY_ID">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_ID">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_SUSPENDCOUNT">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_STATE">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_PRIORITY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_LOCATION">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_ALLFIELDS">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_DISPLAY_NAME">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_DISPLAY_NAME_PRIORITY">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.enum_THREADPROPERTY_FIELDS90.TPF90_CATEGORY">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugBinderDirect100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugBinderDirect100.GetErrorMessage(System.Int32,System.String@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugBinderDirect100.IsDump(System.Int32@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugCodeContext100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugCodeContext100.GetProgram(Microsoft.VisualStudio.Debugger.Interop.IDebugProgram2@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugCodePath90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugCodePath90.GetName(System.String@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugCodePath90.GetStepper(Microsoft.VisualStudio.Debugger.Interop.IDebugStepper90@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugCoreServer90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugCoreServer90.CreateManagedInstanceInServer(System.String,System.String,System.UInt16,System.Guid@,System.IntPtr@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugCurrentThreadChangedEvent100"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugDumpModule100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugDumpModule100.IsBinaryLoaded(System.Int32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugDumpModule100.LoadBinary(Microsoft.VisualStudio.Debugger.Interop.IDebugDumpModule100@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugEngineLaunch100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugEngineLaunch100.LaunchSuspended(System.String,Microsoft.VisualStudio.Debugger.Interop.IDebugPort2,System.String,System.String,System.String,System.String,System.String,System.UInt32,Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO[],Microsoft.VisualStudio.Debugger.Interop.IDebugEventCallback2,Microsoft.VisualStudio.Debugger.Interop.IDebugProcess2@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugEngineStepFilterManager90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugEngineStepFilterManager90.ReceiveStepFilterSettings(System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugExpressionEvaluator100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugExpressionEvaluator100.NotifyFuncEval"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugExpressionEvaluator100.SetAttachedCLRMajorMinorVersion(System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugJIT100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugJIT100.JITDebug(Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugModuleReloadOperationCompleteEvent100"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugObject90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugObject90.CreateStrongAlias(System.Guid@,System.IntPtr@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessContinueEvent100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessContinueEvent100.GetProcess(Microsoft.VisualStudio.Debugger.Interop.IDebugProcess2@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessEnhancedStep90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessEnhancedStep90.Step(Microsoft.VisualStudio.Debugger.Interop.IDebugThread2,Microsoft.VisualStudio.Debugger.Interop.IDebugStepper90)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessJITInfo100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessJITInfo100.GetAttachOptions(System.Guid@,System.Object@,System.Object@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugProcessJITInfo100.GetJITCallback(System.Guid@,Microsoft.VisualStudio.Debugger.Interop.IDebugSetJITEventCallback2@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugProgramEnhancedStep90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugProgramEnhancedStep90.EnumCodePaths(Microsoft.VisualStudio.Debugger.Interop.IDebugThread2,Microsoft.VisualStudio.Debugger.Interop.IDebugCodeContext2,System.UInt32,Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugStepCompleteEvent90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugStepCompleteEvent90.EnumBreakpoints(Microsoft.VisualStudio.Debugger.Interop.IEnumDebugBoundBreakpoints2@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugStepCompleteEvent90.GetStepStatus(System.UInt32@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugStepper90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugStepper90.GetStepKind(System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugStepper90.Step(Microsoft.VisualStudio.Debugger.Interop.IDebugProgram2,Microsoft.VisualStudio.Debugger.Interop.IDebugThread2)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugSymbolSettings100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugSymbolSettings100.SetSymbolLoadState(System.Int32,System.Int32,System.String,System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.CanDoFuncEval"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.GetFlags(System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.GetThreadDisplayName(System.String@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.GetThreadProperties100(System.UInt32,Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100[])"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.SetFlags(System.UInt32)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread100.SetThreadDisplayName(System.String)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugThread90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThread90.GetThreadProperties90(System.UInt32,Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90[])"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadDisplayNameChangeEvent100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadDisplayNameChangeEvent100.GetThread(Microsoft.VisualStudio.Debugger.Interop.IDebugThread100@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadFlagChangeEvent100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadFlagChangeEvent100.GetThread(Microsoft.VisualStudio.Debugger.Interop.IDebugThread100@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadSuspendChangeEvent100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugThreadSuspendChangeEvent100.GetThread(Microsoft.VisualStudio.Debugger.Interop.IDebugThread100@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IDebugVirtualBaseClass"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugVirtualBaseClass.GetVirtualBaseInfo(System.Int32@,System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IDebugVirtualBaseClass.IsVirtualBaseClass(System.Int32@)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90.Clone(Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90.GetCount(System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90.Next(System.UInt32,Microsoft.VisualStudio.Debugger.Interop.IDebugCodePath90[],System.UInt32@)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90.Reset"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IEnumDebugCodePaths90.Skip(System.UInt32)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.IJITDebuggingHost100"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.Interop.IJITDebuggingHost100.JITAsLoggedInUser(Microsoft.VisualStudio.Debugger.Interop.CRASHING_PROGRAM_INFO100)"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwCreationFlags"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwFillAttribute"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwX"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwXCountChars"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwXSize"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwY"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwYCountChars"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.dwYSize"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.flags"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.hStdError"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.hStdInput"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.hStdOutput"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.lpDesktop"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.lpTitle"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.PROCESS_STARTUP_INFO.wShowWindow"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.THREADFLAG"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADFLAG.THREADFLAG_None">
+      <summary />
+    </member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADFLAG.THREADFLAG_Interesting">
+      <summary />
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.AffinityMask"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.bstrDisplayName"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.bstrLocation"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.bstrName"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.bstrPriority"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.DisplayNamePriority"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwFields"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwManagedThreadId"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwSuspendCount"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwThreadCategory"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwThreadId"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.dwThreadState"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES100.priorityId"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.bstrDisplayName"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.bstrLocation"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.bstrName"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.bstrPriority"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.DisplayNamePriority"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.dwFields"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.dwSuspendCount"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.dwThreadCategory"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.dwThreadId"></member>
+    <member name="F:Microsoft.VisualStudio.Debugger.Interop.THREADPROPERTIES90.dwThreadState"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.EngineProvider">
+      <summary>Class used to provide a debugger engine.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.EngineProvider.#ctor(System.Guid,System.String)">
+      <summary>Constructor for <see cref="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.EngineProvider" />.</summary>
+      <param name="engineGuid">A GUID that uniquely identifies a debugger engine.</param>
+      <param name="engineName">The name of the debugger engine.</param>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.EngineProvider.EngineGuid">
+      <summary>Gets a GUID that uniquely identifies the debug engine from this provider.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.EngineProvider.EngineName">
+      <summary>Gets the name of the debugger engine from this provider.</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IDumpExtension">
+      <summary>Extends the Dump Summary Page to enable additional debug engines to be used with the dump file.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IDumpExtension.Engines">
+      <summary>Gets a list of customer debugger engines against which a dump file can be launched.</summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IDumpExtension.SupportDumpFileFormat(System.String)">
+      <summary>Tests whether or not the specified dump file is support by the current list of debugger engines.</summary>
+      <returns>true if the debugger engines support debugging <paramref name="fileName" />. </returns>
+      <param name="fileName">A dump file.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IExeProjectExtension">
+      <summary>Extends the .exe project system to make additional debug engines and port suppliers available.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IExeProjectExtension.Engines">
+      <summary>Gets a list of debugger engines an executable can be launched against.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IExeProjectExtension.PortSuppliers">
+      <summary>Gets a list of available port suppliers against with an executable can be launched. </summary>
+    </member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.IExeProjectExtension.RemoteMachineIsPortName(System.Guid)">
+      <summary>Determines whether the bstrPortName member from the VsDebugTargetInfo2 struct should be populated with the remote machine name.</summary>
+      <param name="portSupplierGuid">A GUID that uniquely identifies the port.</param>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.PortSupplierProvider"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.PortSupplierProvider.#ctor(System.Guid,System.String)">
+      <param name="portSupplierGuid">A GUID that identifies the port supplier</param>
+      <param name="portSupplierName">The name of the port supplier.</param>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.PortSupplierProvider.PortSupplierGuid">
+      <summary>Gets a unique identifier for the port supplier.</summary>
+    </member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.PortSupplierProvider.PortSupplierName">
+      <summary>Gets the name of the port supplier.</summary>
+    </member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTip"></member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTip.Identity"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener.DecorateTip(Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTip,System.Windows.FrameworkElement)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener.DecorateToolbar(Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTip,System.Windows.FrameworkElement)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener.LoadFromStorage(System.Collections.Generic.IDictionary{System.String,System.String})"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener.ModifyToolbarButtons(Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTip,System.Windows.Controls.Panel)"></member>
+    <member name="M:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListener.SaveToStorage(System.Collections.Generic.IDictionary{System.String,System.String})"></member>
+    <member name="T:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListenerMetaData"></member>
+    <member name="P:Microsoft.VisualStudio.Debugger.VsDebugPresentationExtension.Internal.IDataTipListenerMetaData.Name"></member>
+  </members>
+</doc>

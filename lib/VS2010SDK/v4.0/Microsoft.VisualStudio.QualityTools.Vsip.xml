@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+	<assembly>
+		<name>Microsoft.VisualStudio.QualityTools.Vsip</name>
+	</assembly>
+	<members>
+		<member name="T:Microsoft.VisualStudio.TestTools.Vsip.IRunConfigurationCustomHostEditor">
+			<summary>To display a new page in the test run configuration editor, implement the methods of the IRunConfigurationCustomHostEditor interface. The class that implements this interface must inherit from the UserControl class. This UserControl is displayed on the Hosts page in the test run configuration editor. For more information about the test run configuration editor, see Configuring Test Executionhttp://go.microsoft.com/fwlink/?LinkId=70666. </summary>
+		</member>
+		<member name="M:Microsoft.VisualStudio.TestTools.Vsip.IRunConfigurationCustomHostEditor.GetData">
+			<summary>Use the IRunConfigurationCustomHostEditor.GetData method to persist data that you use in the test run configuration editor for your host adapter. For example, your test host can use SetData to persist a Visual Studio registry hive. Then, you can retrieve the hive later, if you have to, by using GetData. </summary>
+			<returns>A value that represents the host-specific data to be retrieved. </returns>
+		</member>
+		<member name="M:Microsoft.VisualStudio.TestTools.Vsip.IRunConfigurationCustomHostEditor.SetData(Microsoft.VisualStudio.TestTools.Common.IHostSpecificRunConfigurationData)">
+			<summary>Use the IRunConfigurationCustomHostEditor.SetData method to retrieve data that you use in the test run configuration editor for your host adapter. For example, your test host can use SetData to persist a Visual Studio registry hive. Then, you can retrieve the hive later, if you have to, by using IRunConfigurationCustomHostEditor.GetData. </summary>
+			<param name="data">The data to be persisted. </param>
+		</member>
+		<member name="P:Microsoft.VisualStudio.TestTools.Vsip.IRunConfigurationCustomHostEditor.HostType">
+			<summary>Gets a value that indicates the name of the host. </summary>
+			<returns>The <see cref="T:System.String"></see> that contains the name of the host.</returns>
+		</member>
+	</members>
+</doc>

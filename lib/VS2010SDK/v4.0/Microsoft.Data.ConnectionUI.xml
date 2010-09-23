@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.Data.ConnectionUI</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Data.ConnectionUI.IDataConnectionProperties">
+      <summary>Provides a set of methods and properties that enable the Data Connection dialog box to interact with a specified data provider's connection properties.</summary>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Add(System.String)">
+      <summary>Adds a custom property to the existing set of data connection properties recognized by the data provider.</summary>
+      <param name="propertyName">Name of the custom property added to the existing set of connection properties.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="propertyName" /> parameter is null.</exception>
+      <exception cref="T:System.InvalidOperationException">The specified connection properties are not extensible.</exception>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Contains(System.String)">
+      <summary>Tests whether a given set of connection properties contains a specified property.</summary>
+      <returns>true if the set of connection properties contains the specified property; otherwise, false.</returns>
+      <param name="propertyName">Name of the property whose presence is being tested.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="propertyName" /> parameter is null.</exception>
+    </member>
+    <member name="P:Microsoft.Data.ConnectionUI.IDataConnectionProperties.IsComplete">
+      <summary>Retrieves a Boolean value indicating whether the current set of connection property values provides sufficient information to open a connection to the data source.</summary>
+      <returns>true if the connection properties are complete; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.Data.ConnectionUI.IDataConnectionProperties.IsExtensible">
+      <summary>Retrieves a Boolean value indicating whether the specified set of connection properties is extensible; that is, whether it is possible to add and remove custom properties to the set of connection properties.</summary>
+      <returns>true if the connection properties are extensible; otherwise, false.</returns>
+    </member>
+    <member name="P:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Item(System.String)">
+      <summary>Represents a property instance of specified type and value.</summary>
+      <returns>A property object instance of the specified name.</returns>
+      <param name="propertyName">Name of the property.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="propertyName" /> parameter is null.</exception>
+      <exception cref="T:System.InvalidCastException">When setting a property value, the specified value cannot be converted to the property type.</exception>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Parse(System.String)">
+      <summary>Parses a data connection string that is built from a set of properties into the corresponding set of connection properties.</summary>
+      <param name="s">The connection string that is being parsed.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="s" /> parameter is null.</exception>
+      <exception cref="T:System.FormatException">The format specified for <paramref name="s" /> in not valid.</exception>
+    </member>
+    <member name="E:Microsoft.Data.ConnectionUI.IDataConnectionProperties.PropertyChanged">
+      <summary>Event that is raised when a data provider connection property is changed.</summary>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Remove(System.String)">
+      <summary>Removes a custom property from a specified set of data connection properties.</summary>
+      <param name="propertyName">Name of the custom property to be removed.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="propertyName" /> parameter is null.</exception>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Reset">
+      <summary>Resets all connection properties and restores the object to its initial state.</summary>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Reset(System.String)">
+      <summary>Resets a specified connection property to its initial value.</summary>
+      <param name="propertyName">Name of the connection property being set to its default value.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="propertyName" /> parameter is null.</exception>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.Test">
+      <summary>Tests whether the current set of connection properties can successfully open a connection.</summary>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.ToDisplayString">
+      <summary>Retrieves a connection string for on-screen display reflecting the current set of connection properties, minus "sensitive" information that should not be displayed.</summary>
+      <returns>The set of connection properties that are suitable for display on-screen.</returns>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionProperties.ToFullString">
+      <summary>Retrieves the complete connection string representing the current set of connection properties.</summary>
+      <returns>The entire connection string, including secure or sensitive information.</returns>
+    </member>
+    <member name="T:Microsoft.Data.ConnectionUI.IDataConnectionUIControl">
+      <summary>Provides a set of methods and properties through which the Data Connection dialog box interacts with a third-party data connection user interface (UI) control, which is shown as the body of the Data Connection dialog box.</summary>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionUIControl.Initialize(Microsoft.Data.ConnectionUI.IDataConnectionProperties)">
+      <summary>Initializes the data connection user interface (UI) control with an instance of the <see cref="T:Microsoft.Data.ConnectionUI.IDataConnectionProperties" /> interface, which serves as the store for the data shown on the data connection UI control.</summary>
+      <param name="connectionProperties">The set of connection properties serving as stores for data shown on the data connection UI control.</param>
+      <exception cref="T:System.ArgumentNullException">The <paramref name="connectionProperties" /> parameter is null.</exception>
+      <exception cref="T:System.ArgumentException">The <paramref name="connectionProperties" /> parameter is not a valid implementation of DataConnectionProperties understood by this connection UI control.</exception>
+    </member>
+    <member name="M:Microsoft.Data.ConnectionUI.IDataConnectionUIControl.LoadProperties">
+      <summary>Loads connection property values into the data connection UI controls from an instance of the <see cref="T:Microsoft.Data.ConnectionUI.IDataConnectionProperties" /> interface.</summary>
+    </member>
+  </members>
+</doc>
