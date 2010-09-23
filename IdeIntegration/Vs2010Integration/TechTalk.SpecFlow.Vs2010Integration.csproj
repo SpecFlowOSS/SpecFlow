@@ -17,6 +17,7 @@
     <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
     <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
+    <BypassVsixValidation>true</BypassVsixValidation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
