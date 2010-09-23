@@ -16,6 +16,7 @@
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
+    <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
