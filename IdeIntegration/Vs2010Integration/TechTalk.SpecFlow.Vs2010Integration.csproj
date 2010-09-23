@@ -15,6 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
+    <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
