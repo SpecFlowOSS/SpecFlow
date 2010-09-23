@@ -12,6 +12,7 @@
     <WixTasksPath>WixTasks.dll</WixTasksPath>
     <LuxTargetsPath>Lux.targets</LuxTargetsPath>
     <LuxTasksPath>LuxTasks.dll</LuxTasksPath>
+    <WixToolPath>..\..\lib\WiX</WixToolPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
