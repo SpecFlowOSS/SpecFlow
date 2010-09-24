@@ -1,17 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    internal class StepDefinitionSkeletonProvider
+    internal class StepDefinitionSkeletonProviderVB : StepDefinitionSkeletonProviderBase
     {
-        public const string CODEINDENT = "    ";
-
-        public string GetStepDefinitionSkeleton(StepArgs stepArgs)
+        public override string GetStepDefinitionSkeleton(StepArgs stepArgs)
         {
             List<string> extraArgs = new List<string>();
             if (stepArgs.MultilineTextArgument != null)
@@ -20,29 +16,38 @@ namespace TechTalk.SpecFlow.Tracing
                 extraArgs.Add("Table table");
 
             StringBuilder result = new StringBuilder();
-            result.AppendFormat(@"[{0}(@""{2}"")]
-public void {1}{3}({4})
-{{
-    ScenarioContext.Current.Pending();
-}}",
+
+            // in VB "When" and "Then" are language keywords - use the fully qualified namespace
+            string namespaceAddition = "TechTalk.SpecFlow.";
+            if (stepArgs.Type == BindingType.Given)
+            {
+                namespaceAddition = "";
+            }
+
+            result.AppendFormat(@"<{5}{0}(""{2}"")>
+Public Sub {1}{3}({4})
+    ScenarioContext.Current.Pending()
+End Sub",
                 stepArgs.Type,
                 LanguageHelper.GetDefaultKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
                 EscapeRegex(stepArgs.Text),
                 stepArgs.Text.ToIdentifier(),
-                string.Join(", ", extraArgs.ToArray())
+                string.Join(", ", extraArgs.ToArray()),
+                namespaceAddition
                 );
             result.AppendLine();
 
             return result.ToString();
         }
 
-        public string GetBindingClassSkeleton(string stepDefinitions)
+        public override string GetBindingClassSkeleton(string stepDefinitions)
         {
             StringBuilder result = new StringBuilder();
-            result.AppendFormat(@"[{0}]
-public class StepDefinitions
-{{
-{1}}}",
+            result.AppendFormat(@"<{0}>
+Public Class StepDefinitions
+
+{1}
+End Class",
                 GetAttributeName(typeof(BindingAttribute)),
                 stepDefinitions.Indent(CODEINDENT));
             result.AppendLine();
@@ -50,14 +55,6 @@ public class StepDefinitions
             return result.ToString();
         }
 
-        private string GetAttributeName(Type attributeType)
-        {
-            return attributeType.Name.Substring(0, attributeType.Name.Length - "Attribute".Length);
-        }
-
-        private string EscapeRegex(string text)
-        {
-            return Regex.Escape(text).Replace("\"", "\"\"").Replace("\\ ", " ");
-        }
     }
+
 }

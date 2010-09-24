@@ -151,6 +151,9 @@
     <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
       <Link>Tracing\DefaultListener.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\Tracing\IStepDefinitionSkeletonProvider.cs">
+      <Link>Tracing\IStepDefinitionSkeletonProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Tracing\ITraceListener.cs">
       <Link>Tracing\ITraceListener.cs</Link>
     </Compile>
@@ -160,8 +163,14 @@
     <Compile Include="..\Runtime\Tracing\NullListener.cs">
       <Link>Tracing\NullListener.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\StepDefinitonSkeletonProvider.cs">
-      <Link>Tracing\StepDefinitonSkeletonProvider.cs</Link>
+    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderBase.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderCS.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderCS.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderVB.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderVB.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\Tracing\StepFormatter.cs">
       <Link>Tracing\StepFormatter.cs</Link>

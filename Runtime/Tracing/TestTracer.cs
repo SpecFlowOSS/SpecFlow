@@ -22,13 +22,13 @@ namespace TechTalk.SpecFlow.Tracing
     internal class TestTracer : ITestTracer
     {
         private readonly ITraceListener traceListener;
-        private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
         private readonly IStepFormatter stepFormatter;
 
         public TestTracer()
         {
             this.traceListener = ObjectContainer.TraceListener;
-            this.stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
+            this._stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
             this.stepFormatter = ObjectContainer.StepFormatter;
         }
 
@@ -75,9 +75,9 @@ namespace TechTalk.SpecFlow.Tracing
             StringBuilder message = new StringBuilder();
             message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
             message.Append(
-                stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
-                        .Indent(StepDefinitionSkeletonProvider.CODEINDENT));
+                _stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    _stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
+                        .Indent(StepDefinitionSkeletonProviderCS.CODEINDENT));
 
             traceListener.WriteToolOutput(message.ToString());
         }

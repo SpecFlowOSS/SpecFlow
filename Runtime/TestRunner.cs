@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
-        private readonly StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
         private readonly BindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
 
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow
             testTracer = ObjectContainer.TestTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
-            stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
+            _stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
  
             bindingRegistry = ObjectContainer.BindingRegistry;
             stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow
             {
                 var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
-                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    _stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
                 errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
@@ -377,7 +377,7 @@ namespace TechTalk.SpecFlow
 
                 testTracer.TraceNoMatchingStepDefinition(stepArgs);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                    _stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)

@@ -202,14 +202,15 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        #region StepDefinitionSkeletonProvider
-        private static StepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = null;
-
-        public static StepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
+        #region StepDefinitionSkeletonProviderCS
+        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider = null;
+        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
         {
-            get 
+            get
             {
-                return GetOrCreate(ref stepDefinitionSkeletonProvider);
+                // TODO: How do we "figure" out what this should be - or add it to the configuration file?
+                return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderVB));
+                //return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderCS));
             }
         }
         #endregion
