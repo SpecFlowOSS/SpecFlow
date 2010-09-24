@@ -209,8 +209,8 @@ namespace TechTalk.SpecFlow
             get
             {
                 // TODO: How do we "figure" out what this should be - or add it to the configuration file?
-                return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderVB));
-                //return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderCS));
+                //return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderVB));
+                return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderCS));
             }
         }
         #endregion
