@@ -42,6 +42,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalStepsCS", "Tests\FeatureTests\ExternalSteps\ExternalStepsCS\ExternalStepsCS.csproj", "{3836A6FC-4ECC-413A-AC8F-83A0A773EC9E}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SpecFlowInstaller", "Installer\SpecFlowInstaller\SpecFlowInstaller.wixproj", "{89167EB9-F458-48DA-9D8F-F639A74F5871}"
+	ProjectSection(ProjectDependencies) = postProject
+		{27B6695E-7049-4C1B-8820-812722128D9E} = {27B6695E-7049-4C1B-8820-812722128D9E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Silverlight", "Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj", "{B93F95CF-BF89-4D92-BB0F-86885B9B6DCE}"
 EndProject
@@ -58,6 +61,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Vs2010Integration", "IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj", "{96294E6F-8875-4D12-8577-4EC83E60BD6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBinPackage", "Installer\SpecFlowBinPackage\SpecFlowBinPackage.csproj", "{27B6695E-7049-4C1B-8820-812722128D9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{199D2315-F5BD-463C-B16A-BE31A845792B} = {199D2315-F5BD-463C-B16A-BE31A845792B}
+		{96294E6F-8875-4D12-8577-4EC83E60BD6C} = {96294E6F-8875-4D12-8577-4EC83E60BD6C}
+		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E} = {5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}
+		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4} = {FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}
+		{B93F95CF-BF89-4D92-BB0F-86885B9B6DCE} = {B93F95CF-BF89-4D92-BB0F-86885B9B6DCE}
+		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F} = {7CCEF6D6-FC17-422E-9BED-EDD752B6496F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
