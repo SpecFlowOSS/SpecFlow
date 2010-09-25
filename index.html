@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+	<head>
+		<title>SpecFlow &mdash; Pragmatic BDD for .NET</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" type="image/png" href="http://specflow.org/App_Themes/specFlow/sf.ico" />
+
+		<link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
+
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="header">
+				<h1><a href="./">SpecFlow</a></h1>
+				<p id="subtitle"><strong>Binding business requirements to .NET code</strong></p>
+			</div>
+
+			<div id="informations">
+				<ul>
+  					<li>
+						<div class="group row">
+								<p>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation.</p>
+						</div>
+					</li>
+					<li>
+						<div class="group row">
+							<div class="col-1">
+								<p>Write your business readable examples in plain text.</p>
+							</div>
+							<div class="col-2">
+                                <pre style="font-family: consolas"><span style="color: #999999">Scenario</span>: All Strikes<br />&#160; <span style="color: #999999">Given </span>a new bowling game<br />&#160; <span style="color: #999999">When </span>all of my rolls are strikes<br />&#160; <span style="color: #999999">Then </span>my total score should be 300</pre>
+
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="group row">
+							<div class="col-1">
+								<p>Write binding code to implement the steps from the plain text examples.</p>
+							</div>
+							<div class="col-2">
+<pre style="font-family: consolas">[<span style="color: #2b91af">When</span>(<span style="color: #a31515">@&quot;all of my rolls are strikes&quot;</span>)]<br /><span style="color: #999999">public</span>&#160;<span style="color: #999999">void</span> WhenAllOfMyRollsAreStrikes()<br />{<br />&#160;&#160;&#160; <span style="color: #999999">for</span> (<span style="color: #999999">int</span> i = 0; i &lt; 12; i++)<br />&#160;&#160;&#160; {<br />&#160;&#160;&#160;&#160;&#160;&#160;&#160; _game.Roll(10);<br />&#160;&#160;&#160; }<br />}</pre>						</div>
+					</div>
+                    </li>
+					<li>
+						<div class="group row">
+							<div class="col-1">
+								<p>Execute the examples with any supported unit-testing framework.</p>
+							</div>
+							<div class="col-2">
+								<img src="img/step7.png">
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="group row">
+							<div class="col-1">
+								<p>Installation is simple. Just grab the installer and get the VisualStudio integration.</p>
+							</div>
+							<div class="col-2">
+								<p class="button"><a href="http://github.com/techtalk/SpecFlow/downloads">Download the installer now!</a></p>
+							</div>
+						</div>
+					</li>
+
+					<li>
+						<div class="group row">
+								<p>SpecFlow uses the <a href="http://github.com/aslakhellesoy/gherkin/">Gherkin language</a>, a business-readable domain-specific DSL for behaviour-driven development (BDD).</p>
+                                <p>SpecFlow is heavily inspired and influenced by <a href="http://github.com/aslakhellesoy/cucumber/wiki">Cucumber</a>.</p>
+						</div>
+					</li>
+					<li>
+						<div class="row group button button-large">
+							<p><a href="http://wiki.github.com/techtalk/SpecFlow/">Find out more about SpecFlow!</a></p>
+						</div>
+					</li>
+					<li>
+						<div class="group row quote">
+							<blockquote>
+								<span>“</span>
+								If you want to write step definitions in a .NET language, I don’t know why you wouldn’t just use SpecFlow.
+								<span>”</span>
+							</blockquote>
+							<cite>— <a href="http://blog.stevensanderson.com/2010/03/03/behavior-driven-development-bdd-with-specflow-and-aspnet-mvc/">Steve Sanderson</a></cite>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<a href="http://github.com/techtalk/SpecFlow/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+	</body>
+</html>
