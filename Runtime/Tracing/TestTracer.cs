@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
-        void TraceNoMatchingStepDefinition(StepArgs stepArgs);
+        void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage);
         void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
@@ -22,13 +22,11 @@ namespace TechTalk.SpecFlow.Tracing
     internal class TestTracer : ITestTracer
     {
         private readonly ITraceListener traceListener;
-        private readonly IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
         private readonly IStepFormatter stepFormatter;
 
         public TestTracer()
         {
             this.traceListener = ObjectContainer.TraceListener;
-            this._stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider;
             this.stepFormatter = ObjectContainer.StepFormatter;
         }
 
@@ -70,14 +68,16 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
-        public void TraceNoMatchingStepDefinition(StepArgs stepArgs)
+        public void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage)
         {
+            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(targetLanguage);
+
             StringBuilder message = new StringBuilder();
             message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
             message.Append(
-                _stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                    _stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
-                        .Indent(StepDefinitionSkeletonProviderCS.CODEINDENT));
+                stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
+                        .Indent(StepDefinitionSkeletonProviderBase.CODEINDENT));
 
             traceListener.WriteToolOutput(message.ToString());
         }

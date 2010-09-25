@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow
@@ -8,6 +7,7 @@ namespace TechTalk.SpecFlow
     public class FeatureInfo
     {
         public string[] Tags { get; private set; }
+        public GenerationTargetLanguage GenerationTargetLanguage { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public CultureInfo Language { get; private set; }
@@ -15,6 +15,11 @@ namespace TechTalk.SpecFlow
         public CultureInfo CultureInfo { get { throw new NotSupportedException(); } }
 
         public FeatureInfo(CultureInfo language, string title, string description, params string[] tags)
+            : this(language, title, description, SpecFlow.GenerationTargetLanguage.CSharp, tags)
+        {
+        }
+
+        public FeatureInfo(CultureInfo language, string title, string description, GenerationTargetLanguage generationTargetLanguage, params string[] tags)
         {
             if (language.IsNeutralCulture)
             {
@@ -25,6 +30,7 @@ namespace TechTalk.SpecFlow
             Language = language;
             Title = title;
             Description = description;
+            GenerationTargetLanguage = generationTargetLanguage;
             Tags = tags;
         }
     }

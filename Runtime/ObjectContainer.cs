@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow
 
         public static ITestRunner TestRunner
         {
-            get 
+            get
             {
                 return EnsureTestRunner(Assembly.GetCallingAssembly());
             }
@@ -62,13 +62,13 @@ namespace TechTalk.SpecFlow
 
         internal static ITestRunner EnsureTestRunner(Assembly callingAssembly)
         {
-            return GetOrCreate(ref testRunner, 
-                delegate 
+            return GetOrCreate(ref testRunner,
+                delegate
                 {
                     var result = new TestRunner();
 
                     List<Assembly> bindingAssemblies = new List<Assembly>();
-                    bindingAssemblies.Add(callingAssembly); 
+                    bindingAssemblies.Add(callingAssembly);
 
                     bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
 
@@ -203,14 +203,16 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region StepDefinitionSkeletonProviderCS
-        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider = null;
-        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
+        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderCS = null;
+        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderVB = null;
+        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider(GenerationTargetLanguage targetLanguage)
         {
-            get
+            switch (targetLanguage)
             {
-                // TODO: How do we "figure" out what this should be - or add it to the configuration file?
-                //return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderVB));
-                return GetOrCreate(ref _stepDefinitionSkeletonProvider, typeof(StepDefinitionSkeletonProviderCS));
+                case GenerationTargetLanguage.VB:
+                    return GetOrCreate(ref _stepDefinitionSkeletonProviderVB, typeof(StepDefinitionSkeletonProviderVB));
+                default:
+                    return GetOrCreate(ref _stepDefinitionSkeletonProviderCS, typeof(StepDefinitionSkeletonProviderCS));
             }
         }
         #endregion
@@ -220,7 +222,7 @@ namespace TechTalk.SpecFlow
 
         public static IStepArgumentTypeConverter StepArgumentTypeConverter
         {
-            get 
+            get
             {
                 return GetOrCreate(ref stepArgumentTypeConverter, typeof(StepArgumentTypeConverter));
             }
@@ -249,7 +251,7 @@ namespace TechTalk.SpecFlow
 
         public static BindingRegistry BindingRegistry
         {
-            get 
+            get
             {
                 return GetOrCreate(ref bindingRegistry);
             }
@@ -286,7 +288,7 @@ namespace TechTalk.SpecFlow
 
         internal static void Reset()
         {
-            foreach (var fieldInfo in typeof(ObjectContainer).GetFields(BindingFlags.Static | BindingFlags.NonPublic| BindingFlags.Public))
+            foreach (var fieldInfo in typeof(ObjectContainer).GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
             {
                 fieldInfo.SetValue(null, null);
             }

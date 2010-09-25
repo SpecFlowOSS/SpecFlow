@@ -132,6 +132,9 @@ namespace TechTalk.SpecFlow.Generator
                             new CodePrimitiveExpression(feature.Language)),
                         new CodePrimitiveExpression(feature.Title),
                         new CodePrimitiveExpression(feature.Description),
+                        new CodeFieldReferenceExpression(
+                            new CodeTypeReferenceExpression("GenerationTargetLanguage"),
+                            codeDomHelper.TargetLanguage.ToString()),
                         GetStringArrayExpression(feature.Tags))));
 
             //testRunner.OnFeatureStart(featureInfo);
