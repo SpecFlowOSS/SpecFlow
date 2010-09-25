@@ -1,2 +1,0 @@
-#!/bin/bash
-mono ../../../lib/nunit/nunit-console.exe ../bin/Debug/ReportingTest.SampleProject.dll -labels -xml=TestResult.xml -out:TestResult.txt -err:TestResult.err
