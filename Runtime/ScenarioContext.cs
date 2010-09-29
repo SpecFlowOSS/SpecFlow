@@ -80,5 +80,7 @@ namespace TechTalk.SpecFlow
         {
             bindingInstances[bindingType] = instance;
         }
+
+
     }
 }
