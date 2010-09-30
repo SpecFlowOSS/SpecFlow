@@ -9,6 +9,8 @@ Fixed issues:
 + Better error reporting for wrong Gherkin files
 
 1.3.5.2 - 2010/08/11
+
+Fixed issues:
 + Sorry, we're ironing out our deploy strategy with the new Mono/MonoDevelop integration.  We didn't 
   change the version in the MonoDevelop Add-In XML file.
 
