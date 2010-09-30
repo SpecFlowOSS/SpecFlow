@@ -4,19 +4,20 @@
   <Scenarios>
     <Scenario>
       <Title>a simple scenario</Title>
-      <FilePosition line="4" column="1" />
+      <Description />
+      <FilePosition line="4" column="2" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>some precondition</Text>
-          <FilePosition line="5" column="1" />
+          <FilePosition line="5" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>I do something</Text>
-          <FilePosition line="6" column="1" />
+          <FilePosition line="6" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>something happens</Text>
-          <FilePosition line="7" column="1" />
+          <FilePosition line="7" column="2" />
         </ScenarioStep>
       </Steps>
     </Scenario>

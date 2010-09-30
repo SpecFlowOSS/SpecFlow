@@ -4,29 +4,31 @@
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Title>Zwei Zahlen hinzufügen</Title>
-      <FilePosition line="7" column="1" />
+      <Description />
+      <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
           <Text>ich habe &lt;Eingabe_1&gt; in den Taschenrechner eingegeben</Text>
-          <FilePosition line="8" column="1" />
+          <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <Text>ich habe &lt;Eingabe_2&gt; in den Taschenrechner eingegeben</Text>
-          <FilePosition line="9" column="1" />
+          <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
           <Text>ich &lt;Knopf&gt; drücke</Text>
-          <FilePosition line="10" column="1" />
+          <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
           <Text>sollte das Ergebniss auf dem Bildschirm &lt;Ausgabe&gt; sein</Text>
-          <FilePosition line="11" column="1" />
+          <FilePosition line="11" column="5" />
         </ScenarioStep>
       </Steps>
       <Examples>
         <ExampleSets>
           <ExampleSet>
             <Title />
+            <Description />
             <Table>
               <Header>
                 <Cells>
@@ -43,7 +45,7 @@
                     <Value>Ausgabe</Value>
                   </Cell>
                 </Cells>
-                <FilePosition line="14" column="1" />
+                <FilePosition line="14" column="5" />
               </Header>
               <Body>
                 <Row>
@@ -61,7 +63,7 @@
                       <Value>50</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="15" column="1" />
+                  <FilePosition line="15" column="5" />
                 </Row>
                 <Row>
                   <Cells>
@@ -78,7 +80,7 @@
                       <Value>7</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="16" column="1" />
+                  <FilePosition line="16" column="5" />
                 </Row>
                 <Row>
                   <Cells>
@@ -95,7 +97,7 @@
                       <Value>40</Value>
                     </Cell>
                   </Cells>
-                  <FilePosition line="17" column="1" />
+                  <FilePosition line="17" column="5" />
                 </Row>
               </Body>
             </Table>

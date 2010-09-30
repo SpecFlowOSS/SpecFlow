@@ -5,39 +5,24 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
-    internal class ScenarioOutlineBuilder : IScenarioBuilder, IExampleProcessor
+    internal class ScenarioOutlineBuilder : ScenarioBuilder, IExampleProcessor
     {
-        private readonly string title;
-        private readonly Tags tags;
-        private readonly FilePosition position;
-        private readonly IList<StepBuilder> steps = new List<StepBuilder>();
         private readonly IList<ExampleBuilder> examples = new List<ExampleBuilder>();
 
-        public ScenarioOutlineBuilder(string name, string description, Tags tags, FilePosition position)
+        public ScenarioOutlineBuilder(string name, string description, Tags tags, FilePosition position) :
+            base(name, description, tags, position)
         {
-            this.title = TextHelper.GetText(name, description);
-            this.tags = tags;
-            this.position = position;
         }
 
-        public void ProcessStep(StepBuilder step)
-        {
-            steps.Add(step);
-        }
-
-        public Scenario GetResult()
+        public override Scenario GetResult()
         {
             if (examples.Count == 0)
-                throw new SpecFlowParserException(
-                    new ErrorDetail
-                        {
-                            Line = position.Line, 
-                            Column = position.Column, 
-                            Message = "There are no examples defined for the scenario outline."
-                        });
+                throw new GherkinSemanticErrorException(
+                    "There are no examples defined for the scenario outline.", position);
 
             return new ScenarioOutline(
                 title,
+                description,
                 tags,
                 new ScenarioSteps(steps.Select(step => step.GetResult()).ToArray()),
                 new Examples(examples.Select(example => example.GetResult()).ToArray())) { FilePosition = position };
@@ -45,6 +30,12 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void ProcessExample(ExampleBuilder examplebuilder)
         {
+            if (!string.IsNullOrEmpty(examplebuilder.Title) &&
+                examples.Any(s => s.Title.Equals(examplebuilder.Title)))
+                throw new GherkinSemanticErrorException(
+                    string.Format("Scenario outline already contains an example set name '{0}'", examplebuilder.Title),
+                    examplebuilder.Position);
+
             examples.Add(examplebuilder);
         }
     }

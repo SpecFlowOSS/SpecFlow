@@ -2,20 +2,20 @@
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>en-US</Language>
   <Background>
-    <Title>some background
-with multi-line title</Title>
+    <Title>some background</Title>
+    <Description>with multi-line title</Description>
     <Steps>
       <ScenarioStep xsi:type="Given">
         <Text>some precondition</Text>
-        <FilePosition line="5" column="1" />
+        <FilePosition line="5" column="3" />
       </ScenarioStep>
     </Steps>
     <FilePosition line="3" column="1" />
   </Background>
   <Scenarios>
     <Scenario>
-      <Title>a simple scenario
-with multi-line title</Title>
+      <Title>a simple scenario</Title>
+      <Description>with multi-line title</Description>
       <FilePosition line="7" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace TechTalk.SpecFlow.Generator
+namespace TechTalk.SpecFlow.Utils
 {
     public enum GenerationTargetLanguage
     {
@@ -158,6 +158,17 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeTypeReference(typeof(CompilerGeneratedAttribute))));
 
             return result;
+        }
+
+        public string GetErrorStatementString(string msg)
+        {
+            switch (TargetLanguage)
+            {
+                case GenerationTargetLanguage.CSharp:
+                    return "#error " + msg;
+                default:
+                    return msg;
+            }
         }
     }
 }

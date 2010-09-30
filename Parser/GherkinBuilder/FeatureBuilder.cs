@@ -28,23 +28,34 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Feature GetResult()
         {
+            var scenarioResults = scenarios.Select(sb => sb.GetResult()).ToArray();
+
             var feature = new Feature(
                 title,
                 tags,
                 description,
                 background == null ? null : background.GetResult(),
-                scenarios.Select(sb => sb.GetResult()).ToArray());
+                scenarioResults);
             feature.SourceFile = sourceFilePath;
             return feature;
         }
 
         public void AddScenario(IScenarioBuilder scenarioBuilder)
         {
+            if (scenarios.Any(s => s.Title.Equals(scenarioBuilder.Title)))
+                throw new GherkinSemanticErrorException(
+                    string.Format("Feature file already contains a scenario with name '{0}'", scenarioBuilder.Title),
+                    scenarioBuilder.Position);
+
             scenarios.Add(scenarioBuilder);
         }
 
         public void AddBackground(BackgroundBuilder backgroundBuilder)
         {
+            if (background != null)
+                throw new GherkinSemanticErrorException(
+                    "Feature file already contains a background section.",
+                    backgroundBuilder.Position);
             background = backgroundBuilder;
         }
     }
