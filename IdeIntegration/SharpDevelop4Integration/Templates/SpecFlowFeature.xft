@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<Template author="Charles Weld" version="1.0">
+	
+	<Config
+		  name        = "SpecFlow Feature"
+		  icon        = "res:SpecFlowFeatureIcon.ico"
+		  category    = "SpecFlow"
+		  defaultname = "Feature${Number}.feature"/>
+	 
+	<Description>Creates a SpecFlow Feature template.</Description>
+	
+	<!-- 
+	Special new file templates:
+		${StandardNamespace}        -> Standardnamespace of the current project or FileNameWithoutExtension
+		${FullName}                 -> Full generated path name
+		${FileName}                 -> File name with extension
+		${FileNameWithoutExtension} -> File name without extension
+		${Extension}                -> Extension in the form ".cs"
+		${Path}                     -> Full path of the file
+		${ClassName}                -> Class name (generally FileNameWithoutExtension w/o 'bad' characters)
+	-->
+	<!--<Properties>
+		<Property
+			name          = "IsSealed"
+			localizedName = "${res:Templates.File.Properties.IsSealed}"
+			type          = "System.Boolean"
+			defaultValue  = "False"
+			category      = "${res:Templates.File.Properties.ContextCategory}"
+			description   = "${res:Templates.File.Properties.IsSealed.Description}"
+		/>
+	</Properties>-->
+
+	<Files>
+		<File name="${FullName}" customTool="SpecFlowSingleFileGenerator"><![CDATA[
+Feature: Addition
+	In order to avoid silly mistakes
+	As a math idiot
+	I want to be told the sum of two numbers
+	
+@mytag
+Scenario: Add two numbers
+	Given I have entered 50 into the calculator
+	And I have entered 70 into the calculator
+	When I press add
+	Then the result should be 120 on the screen
+]]></File>
+	</Files>
+	
+	<AdditionalOptions/>
+</Template>
+
