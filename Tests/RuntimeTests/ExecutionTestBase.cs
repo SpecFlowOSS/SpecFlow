@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -173,7 +174,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             string className = Path.GetFileNameWithoutExtension(fileName);
             const string targetNamespace = "Target.Namespace";
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(SpecFlow.Generator.GenerationTargetLanguage.CSharp), true);
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(CodeDomProviderLanguage.CSharp), true);
             var codeNamespace = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
             var compileUnit = new CodeCompileUnit();
             compileUnit.Namespaces.Add(codeNamespace);

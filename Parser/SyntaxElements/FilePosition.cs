@@ -7,9 +7,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     public class FilePosition
     {
         [XmlAttribute("line")]
-        public int Line;
+        public int Line; // 1-based index
         [XmlAttribute("column")]
-        public int Column;
+        public int Column; // 1-based index
 
         public FilePosition()
         {

@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

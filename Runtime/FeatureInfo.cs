@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow
         public CultureInfo CultureInfo { get { throw new NotSupportedException(); } }
 
         public FeatureInfo(CultureInfo language, string title, string description, params string[] tags)
-            : this(language, title, description, SpecFlow.GenerationTargetLanguage.CSharp, tags)
+            : this(language, title, description, GenerationTargetLanguage.CSharp, tags)
         {
         }
 

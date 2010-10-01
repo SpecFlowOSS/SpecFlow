@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             {
                 string message = GenerateError(pGenerateProgress, ex);
                 AfterCodeGenerated(true);
-                bytes = Encoding.UTF8.GetBytes(message);
+                bytes = Encoding.UTF8.GetBytes(GetGeneratedCodeForFailure(message));
             }
 
             int outputLength = bytes.Length;
@@ -81,6 +81,11 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             RefreshMsTestWindow();
 
             return VSConstants.S_OK;
+        }
+
+        protected virtual string GetGeneratedCodeForFailure(string errorMessage)
+        {
+            return errorMessage;
         }
 
         protected virtual void RefreshMsTestWindow()

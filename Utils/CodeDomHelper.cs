@@ -5,15 +5,8 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace TechTalk.SpecFlow.Generator
+namespace TechTalk.SpecFlow.Utils
 {
-    public enum GenerationTargetLanguage
-    {
-        CSharp,
-        VB,
-        Other
-    }
-
     public interface ICodeDomHelperRequired
     {
         CodeDomHelper CodeDomHelper { get; set; }
@@ -21,25 +14,25 @@ namespace TechTalk.SpecFlow.Generator
 
     public class CodeDomHelper
     {
-        public GenerationTargetLanguage TargetLanguage { get; private set; }
+        public CodeDomProviderLanguage TargetLanguage { get; private set; }
 
         public CodeDomHelper(CodeDomProvider codeComProvider)
         {
             switch (codeComProvider.FileExtension.ToLower(CultureInfo.InvariantCulture))
             {
                 case "cs":
-                    TargetLanguage = GenerationTargetLanguage.CSharp;
+                    TargetLanguage = CodeDomProviderLanguage.CSharp;
                     break;
                 case "vb":
-                    TargetLanguage = GenerationTargetLanguage.VB;
+                    TargetLanguage = CodeDomProviderLanguage.VB;
                     break;
                 default:
-                    TargetLanguage = GenerationTargetLanguage.Other;
+                    TargetLanguage = CodeDomProviderLanguage.Other;
                     break;
             }
         }
 
-        public CodeDomHelper(GenerationTargetLanguage targetLanguage)
+        public CodeDomHelper(CodeDomProviderLanguage targetLanguage)
         {
             TargetLanguage = targetLanguage;
         }
@@ -53,7 +46,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             // this hack is necessary for VB.NET code generation
 
-            if (TargetLanguage == GenerationTargetLanguage.VB)
+            if (TargetLanguage == CodeDomProviderLanguage.VB)
             {
                 var isInterfaceField = typeReference.GetType().GetField("isInterface",
                     BindingFlags.Instance | BindingFlags.NonPublic);
@@ -75,10 +68,10 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     statements.Add(new CodeSnippetStatement("//" + comment));
                     break;
-                case GenerationTargetLanguage.VB:
+                case CodeDomProviderLanguage.VB:
                     statements.Add(new CodeSnippetStatement("'" + comment));
                     break;
             }
@@ -88,7 +81,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     typeDeclaration.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", fileName)));
                     typeDeclaration.Members.Add(new CodeSnippetTypeMember("#line hidden"));
                     break;
@@ -99,7 +92,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
                     AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
                     break;
@@ -110,7 +103,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     statements.Add(new CodeSnippetStatement("#line hidden"));
                     break;
             }
@@ -120,9 +113,9 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     return new CodeSnippetStatement("#region " + regionText);
-                case GenerationTargetLanguage.VB:
+                case CodeDomProviderLanguage.VB:
                     return new CodeSnippetStatement("#Region \"" + regionText + "\"");
             }
             return new CodeCommentStatement("#region " + regionText);
@@ -132,9 +125,9 @@ namespace TechTalk.SpecFlow.Generator
         {
             switch (TargetLanguage)
             {
-                case GenerationTargetLanguage.CSharp:
+                case CodeDomProviderLanguage.CSharp:
                     return new CodeSnippetStatement("#endregion");
-                case GenerationTargetLanguage.VB:
+                case CodeDomProviderLanguage.VB:
                     return new CodeSnippetStatement("#End Region");
             }
             return new CodeCommentStatement("#endregion");
@@ -158,6 +151,17 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeTypeReference(typeof(CompilerGeneratedAttribute))));
 
             return result;
+        }
+
+        public string GetErrorStatementString(string msg)
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.CSharp:
+                    return "#error " + msg;
+                default:
+                    return msg;
+            }
         }
     }
 }

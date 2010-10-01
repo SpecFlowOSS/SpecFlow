@@ -51,6 +51,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandlingParserErrors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ParsingErrors.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParsingErrors.feature</DependentUpon>
+    </Compile>
+    <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="SuccessfulMbUnitGenerationTest.cs" />
     <Compile Include="SuccessfulXUnitGenerationTest.cs" />
     <Compile Include="SuccessfulGenerationTest.cs" />
@@ -60,6 +71,15 @@
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="HandlingParserErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ParsingErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ParsingErrors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="TestFilesForErrors\simple.feature" />
     <None Include="TestFiles\asterisks.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>asterisks.feature.cs</LastGenOutput>
@@ -114,6 +134,14 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\asterisks.feature.xml" />
@@ -138,6 +166,7 @@
     <Content Include="TestFiles\tags.feature.xml" />
     <Content Include="TestFiles\whitespaces.feature.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

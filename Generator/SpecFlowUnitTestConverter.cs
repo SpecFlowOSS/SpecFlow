@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {

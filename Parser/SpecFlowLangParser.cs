@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using gherkin;
+using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.GherkinBuilder;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using Exception=System.Exception;
@@ -26,8 +27,12 @@ namespace TechTalk.SpecFlow.Parser
             var language = languageServices.GetLanguage(fileContent);
 
             I18n languageService = languageServices.GetLanguageService(language);
-            var gherkinListener = new GherkinListener(languageService);
-            Feature feature = Parse(fileContent, sourceFilePath, gherkinListener, languageService);
+            var gherkinListener = new GherkinParserListener(sourceFilePath);
+
+            GherkinScanner scanner = new GherkinScanner(languageService, fileContent);
+            scanner.Scan(gherkinListener);
+
+            Feature feature = gherkinListener.GetResult();
 
             if (gherkinListener.Errors.Count > 0)
                 throw new SpecFlowParserException(gherkinListener.Errors);
@@ -36,26 +41,6 @@ namespace TechTalk.SpecFlow.Parser
             feature.Language = language.LanguageForConversions.Name;
 
             return feature;
-        }
-
-        private Feature Parse(string fileContent, string sourceFilePath, GherkinListener gherkinListener, I18n languageService)
-        {
-            try
-            {
-                Lexer lexer = languageService.lexer(gherkinListener);
-                lexer.scan(fileContent, sourceFilePath, 0);
-                return gherkinListener.GetResult();
-            }
-            catch(SpecFlowParserException specFlowParserException)
-            {
-                foreach (var errorDetail in specFlowParserException.ErrorDetails)
-                    gherkinListener.RegisterError(errorDetail);
-            }
-            catch (Exception ex)
-            {
-                gherkinListener.RegisterError(new ErrorDetail(ex));
-            }
-            return null;
         }
     }
 }

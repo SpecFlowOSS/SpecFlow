@@ -88,6 +88,8 @@ namespace TechTalk.SpecFlow.Parser
             if (lastDashIndex <= 0)
                 throw new SpecFlowParserException(new ErrorDetail
                                                       {
+                                                          Line = 1,
+                                                          Column = 1,
                                                           Message = string.Format("The specified feature file language ('{0}') is not supported.", langName)
                                                       });
 

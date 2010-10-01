@@ -13,6 +13,7 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace ParserTests
 {
@@ -164,7 +165,7 @@ namespace ParserTests
 
         private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
         {
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(GenerationTargetLanguage.CSharp), true);
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(CodeDomProviderLanguage.CSharp), true);
             var codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();

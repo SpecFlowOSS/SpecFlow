@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using gherkin;
@@ -11,6 +10,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Parser.Gherkin;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -225,65 +225,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         private GherkinFileEditorInfo DoParsePartial(string fileContent, I18n languageService, int lineOffset, out ScenarioEditorInfo firstUnchangedScenario, ITextSnapshot textSnapshot, GherkinFileEditorInfo previousGherkinFileEditorInfo, int changeLastLine, int changeLineDelta)
         {
-            var gherkinListener = new GherkinFileEditorParserListener(textSnapshot, classifications, previousGherkinFileEditorInfo, lineOffset, changeLastLine, changeLineDelta);
-            return DoScan(fileContent, textSnapshot, lineOffset, languageService, gherkinListener, 0, out firstUnchangedScenario);
-        }
+            GherkinScanner scanner = new GherkinScanner(languageService, fileContent, lineOffset);
 
-        private GherkinFileEditorInfo DoScan(string fileContent, ITextSnapshot textSnapshot, int lineOffset, I18n languageService, GherkinFileEditorParserListener gherkinListener, int errorRertyCount, out ScenarioEditorInfo firstUnchangedScenario)
-        {
-            const int MAX_ERROR_RETRY = 5;
-            const int NO_ERROR_RETRY_FOR_LINES = 5;
-
+            var gherkinListener = new GherkinFileEditorParserListener(textSnapshot, classifications, previousGherkinFileEditorInfo, changeLastLine, changeLineDelta);
             firstUnchangedScenario = null;
             try
             {
-                Lexer lexer = languageService.lexer(gherkinListener);
-                lexer.scan(fileContent, null, 0);
+                scanner.Scan(gherkinListener);
             }
             catch (PartialListeningDoneException partialListeningDoneException)
             {
                 firstUnchangedScenario = partialListeningDoneException.FirstUnchangedScenario;
             }
-            catch(LexingError lexingError)
-            {
-                int? errorLine = GetErrorLine(lexingError, lineOffset);
-                if (errorLine != null && 
-                    errorLine.Value < textSnapshot.LineCount - NO_ERROR_RETRY_FOR_LINES &&
-                    errorRertyCount < MAX_ERROR_RETRY)
-                {
-                    //add error classification & continue
-
-                    var restartLineNumber = errorLine.Value + 1;
-                    int restartPosition = textSnapshot.GetLineFromLineNumber(restartLineNumber).Start;
-                    string restartFileContent = textSnapshot.GetText(restartPosition, textSnapshot.Length - restartPosition);
-
-                    gherkinListener.LineOffset = restartLineNumber;
-                    return DoScan(restartFileContent, textSnapshot, 
-                                  restartLineNumber, languageService, gherkinListener, 
-                                  errorRertyCount + 1,
-                                  out firstUnchangedScenario);
-                }
-            }
-// ReSharper disable EmptyGeneralCatchClause
-            catch
-// ReSharper restore EmptyGeneralCatchClause
-            {
-                // unknown error
-            }
 
             return gherkinListener.GetResult();
-        }
-
-        private int? GetErrorLine(LexingError lexingError, int lineOffset)
-        {
-            Regex lineNoRe = new Regex(@"^Lexing error on line (?<lineno>\d+):");
-
-            var match = lineNoRe.Match(lexingError.Message);
-            if (!match.Success)
-                return null;
-
-            int parserdLine = Int32.Parse(match.Groups["lineno"].Value);
-            return parserdLine - 1 + lineOffset;
         }
 
         private GherkinFileEditorInfo DoParse(string fileContent, I18n languageService, ITextSnapshot textSnapshot)

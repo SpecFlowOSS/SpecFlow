@@ -9,6 +9,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     {
         public Tags Tags { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
         public FilePosition FilePosition { get; set; }
         public ScenarioSteps Steps { get; set; }
 
@@ -16,9 +17,10 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Scenario(string title, Tags tags, ScenarioSteps scenarioSteps)
+        public Scenario(string title, string description, Tags tags, ScenarioSteps scenarioSteps)
         {
             Title = title;
+            Description = description;
             Tags = tags;
             Steps = scenarioSteps ?? new ScenarioSteps();
         }

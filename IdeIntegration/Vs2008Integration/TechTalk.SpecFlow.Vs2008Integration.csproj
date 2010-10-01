@@ -147,6 +147,10 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeature1.feature" />
