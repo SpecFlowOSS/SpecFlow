@@ -1,12 +1,16 @@
-Next Release
+ï»¿Next Release
+
+Breaking changes:
++ The generator has been improved to provide source code language. Because of this, SpecFlow test generated 
+  with this version will be incompatible with older runtimes.
 
 New features:
 + Adding binding-culture to App.config. If set, this culture is used during execution of steps.
 + VB-Step-Definition Skeleton Provider: For VB-projects, the suggested step skeletons are generated in VB.
-+ Merging strongly typed context accessors from Darren Cauthon´s SpecFlowAssist
++ Merging strongly typed context accessors from Darren Cauthon's SpecFlowAssist
 
 Fixed issues:
-+ Better error reporting for wrong Gherkin files
++ Better error reporting for wrong Gherkin files (multiple errors displayed, detect duplicate scenario names)
 
 1.3.5.2 - 2010/08/11
 
