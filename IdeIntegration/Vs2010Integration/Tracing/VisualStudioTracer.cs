@@ -11,8 +11,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
     {
         private const string TracingCategory = "Tracing";
 
+        private IOutputWindowService outputWindowService;
+
         [Import]
-        public IOutputWindowService OutputWindowService = null;
+        public IOutputWindowService OutputWindowService
+        {
+            get { return outputWindowService; }
+            set
+            {
+                outputWindowService = value;
+                if (value != null)
+                    ShowInitTrace();
+            }
+        }
 
         private readonly bool traceEnabled;
         private readonly bool traceAll;
@@ -38,12 +49,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
                     Debug.Assert(traceSettings != null);
                     traceCategories = traceSettings.Split(',').Select(cat => cat.Trim().ToLower()).ToArray();
                 }
-
-                if (traceAll)
-                    Trace("Tracing enabled for all categories", TracingCategory);
-                else
-                    Trace("Tracing enabled for categories: " + string.Join(", ", traceCategories), TracingCategory);
             }
+        }
+
+        private void ShowInitTrace()
+        {
+            if (!traceEnabled)
+                return; 
+
+            if (traceAll)
+                Trace("Tracing enabled for all categories", TracingCategory);
+            else
+                Trace("Tracing enabled for categories: " + string.Join(", ", traceCategories), TracingCategory);
         }
 
         public void Trace(string message, string category)
