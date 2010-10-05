@@ -285,6 +285,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
             //TODO
+            var lastScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault();
+            if (lastScenario != null)
+            {
+                lastScenario.Errors++;
+            }
+            else
+            {
+                gherkinFileEditorInfo.HeaderErrors++;
+            }
         }
     }
 }

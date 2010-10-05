@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
-        private const string ParserTraceCategory = "Parser";
+        private const string ParserTraceCategory = "EditorParser";
 
         private readonly ITextBuffer buffer;
         private readonly IVisualStudioTracer visualStudioTracer;
@@ -61,6 +61,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         private Task parsingTask;
         private ChangeInfo pendingChangeInfo;
         private readonly GherkinFileEditorClassifications classifications;
+
+        private int partialParseCount = 0;
+        private const int PartialParseCountLimit = 30;
 
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
@@ -141,12 +144,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 return;
             }
 
+            if (partialParseCount >= PartialParseCountLimit)
+            {
+                visualStudioTracer.Trace("Forced full parse after " + partialParseCount + " incremental parse", ParserTraceCategory);
+                FullParse(changeInfo);
+                return;
+            }
+
             // incremental parsing
             var firstAffectedScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault(
                 s => s.StartLine <= changeInfo.ChangeFirstLine);
 
             if (firstAffectedScenario == null)
             {
+                // We would not need to do a full parse when the header chenges, but it would
+                // be too complicated to bring this case through the logic now.
+                // So the side-effect is that we do a full parse when the header changes instead of an incremental.
                 FullParse(changeInfo);
                 return;
             }
@@ -159,6 +172,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             visualStudioTracer.Trace("Start incremental parsing", ParserTraceCategory);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            partialParseCount++;
 
             int parseStartPosition = 
                 changeInfo.TextSnapshot.GetLineFromLineNumber(firstAffectedScenario.StartLine).Start;
@@ -204,7 +219,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TriggerChanges(partialResult, changeInfo, firstAffectedScenario, firstUnchangedScenario);
 
             stopwatch.Stop();
-            visualStudioTracer.Trace("Finished incremental parsing in " + stopwatch.ElapsedMilliseconds + " ms", ParserTraceCategory);
+            TraceFinishParse(stopwatch, "incremental");
         }
 
         private void FullParse(ChangeInfo changeInfo)
@@ -212,6 +227,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             visualStudioTracer.Trace("Start full parsing", ParserTraceCategory);
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
+
+            partialParseCount = 0;
 
             string fileContent = changeInfo.TextSnapshot.GetText();
             I18n languageService = GetLanguageService(fileContent);
@@ -221,7 +238,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TriggerChanges(result, changeInfo);
 
             stopwatch.Stop();
-            visualStudioTracer.Trace("Finished full parsing in " + stopwatch.ElapsedMilliseconds + " ms", ParserTraceCategory);
+            TraceFinishParse(stopwatch, "full");
+        }
+
+        private void TraceFinishParse(Stopwatch stopwatch, string parseKind)
+        {
+            visualStudioTracer.Trace(
+                string.Format("Finished {0} parsing in {1} ms, {2} errors", parseKind, stopwatch.ElapsedMilliseconds, GherkinFileEditorInfo.TotalErrorCount), ParserTraceCategory);
         }
 
         private void TriggerChanges(GherkinFileEditorInfo gherkinFileEditorInfo, ChangeInfo changeInfo, ScenarioEditorInfo firstAffectedScenario = null, ScenarioEditorInfo firstUnchangedScenario = null)

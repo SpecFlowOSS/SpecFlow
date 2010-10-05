@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
 
         public VisualStudioTracer()
         {
-            var traceSettings = Environment.GetEnvironmentVariable("SPECFLOW_VS_TRACE");
+            var traceSettings = Environment.GetEnvironmentVariable("SPECFLOW_TRACE");
             traceEnabled = !string.IsNullOrWhiteSpace(traceSettings);
             if (traceEnabled)
             {
