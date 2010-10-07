@@ -80,17 +80,14 @@
       <DependentUpon>ExternalSteps.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScopedSteps\FeatureScopedStepsFeature.feature.cs">
+    <Compile Include="ScopedSteps\GeneralBindings.cs" />
+    <Compile Include="ScopedSteps\ScopedSteps.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>FeatureScopedStepsFeature.feature</DependentUpon>
+      <DependentUpon>ScopedSteps.feature</DependentUpon>
     </Compile>
-    <Compile Include="ScopedSteps\FeatureScopeImplementation.cs" />
-    <Compile Include="ScopedSteps\FeatureUnscopedStepsFeature.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FeatureUnscopedStepsFeature.feature</DependentUpon>
-    </Compile>
+    <Compile Include="ScopedSteps\ScopedStepsBindings.cs" />
+    <Compile Include="ScopedSteps\StepTracker.cs" />
     <Compile Include="StepArgumentTransfomation\StepArgumentTransformation.feature.cs">
       <DependentUpon>StepArgumentTransformation.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -137,17 +134,13 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
     </None>
+    <None Include="ScopedSteps\ScopedSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ScopedSteps.feature.cs</LastGenOutput>
+    </None>
     <None Include="StepArgumentTransfomation\StepArgumentTransformationGermanFeatureEnglishBinding.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StepArgumentTransformationGermanFeatureEnglishBinding.feature.cs</LastGenOutput>
-    </None>
-    <None Include="ScopedSteps\FeatureScopedStepsFeature.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FeatureScopedStepsFeature.feature.cs</LastGenOutput>
-    </None>
-    <None Include="ScopedSteps\FeatureUnscopedStepsFeature.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>FeatureUnscopedStepsFeature.feature.cs</LastGenOutput>
     </None>
     <None Include="StepArgumentTransfomation\StepArgumentTransformation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

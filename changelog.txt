@@ -5,6 +5,10 @@ Breaking changes:
   with this version will be incompatible with older runtimes.
 
 New features:
++ Scoped Step Definitions: you can scope step definitions (bindings) to tags, features and scenarios. Scope filter 
+  can be applied to a class or a method with the [StepScope] attribute.
+  See examples in Tests/FeatureTests/ScopedSteps/ScopedSteps.feature and Tests/FeatureTests/ScopedSteps/ScopedStepsBindings.cs
+  (Thanks to Jose Simas for the contribution.)
 + Adding binding-culture to App.config. If set, this culture is used during execution of steps.
 + VB-Step-Definition Skeleton Provider: For VB-projects, the suggested step skeletons are generated in VB.
 + Merging strongly typed context accessors from Darren Cauthon's SpecFlowAssist

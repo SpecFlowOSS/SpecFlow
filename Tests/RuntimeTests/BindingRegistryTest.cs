@@ -31,20 +31,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         /*        Steps that are feature scoped               */
 
-        [Binding("SomeFeature")]
+        [Binding]
         public class ScopedStepTransformationExample
         {
             [Then("SpecificBindingRegistryTests")]
+            [StepScope(Feature = "SomeFeature")]
             public int Transform(string val)
             {
                 return 42;
             }
         }
 
-        [Binding("AnotherFeature")]
+        [Binding]
         public class ScopedStepTransformationExampleTheOther
         {
             [Then("SpecificBindingRegistryTests")]
+            [StepScope(Feature = "AnotherFeature")]
             public int Transform(string val)
             {
                 return 24;

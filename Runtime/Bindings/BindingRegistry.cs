@@ -42,11 +42,11 @@ namespace TechTalk.SpecFlow.Bindings
                 if (bindingAttr == null)
                     continue;
 
-                BuildBindingsFromType(type, bindingAttr);
+                BuildBindingsFromType(type);
             }
         }
 
-        internal void BuildBindingsFromType(Type type, BindingAttribute binding)
+        internal void BuildBindingsFromType(Type type)
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
@@ -54,10 +54,7 @@ namespace TechTalk.SpecFlow.Bindings
                 if (scenarioStepAttrs != null)
                     foreach (ScenarioStepAttribute scenarioStepAttr in scenarioStepAttrs)
                     {
-                        if (binding == null || string.IsNullOrEmpty(binding.FeatureName))
-                            BuildStepBindingFromMethod(method, scenarioStepAttr);
-                        else
-                            BuildScopedStepBindingFromMethod(method, scenarioStepAttr, binding.FeatureName);
+                        BuildStepBindingFromMethod(method, scenarioStepAttr);
                     }
 
                 var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(BindingEventAttribute));
@@ -126,17 +123,34 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckStepBindingMethod(method);
 
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method);
+            var scopeAttrs = 
+                Attribute.GetCustomAttributes(method.DeclaringType, typeof(StepScopeAttribute)).Concat(
+                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute)));
 
-            stepBindings.Add(stepBinding);
+            if (scopeAttrs.Any())
+            {
+                foreach (StepScopeAttribute scopeAttr in scopeAttrs)
+                {
+                    AddStepBinding(method, scenarioStepAttr, CreateScope(scopeAttr));
+                }
+            }
+            else
+            {
+                AddStepBinding(method, scenarioStepAttr, null);
+            }
         }
 
-        private void BuildScopedStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, string featureName)
+        private BindingScope CreateScope(StepScopeAttribute scopeAttr)
         {
-            CheckStepBindingMethod(method);
+            if (scopeAttr.Tag == null && scopeAttr.Feature == null && scopeAttr.Scenario == null)
+                return null;
 
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, featureName);
+            return new BindingScope(scopeAttr.Tag, scopeAttr.Feature, scopeAttr.Scenario);
+        }
 
+        private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
+        {
+            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
             stepBindings.Add(stepBinding);
         }
 
