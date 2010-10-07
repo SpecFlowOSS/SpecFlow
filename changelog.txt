@@ -12,6 +12,9 @@ New features:
 + Adding binding-culture to App.config. If set, this culture is used during execution of steps.
 + VB-Step-Definition Skeleton Provider: For VB-projects, the suggested step skeletons are generated in VB.
 + Merging strongly typed context accessors from Darren Cauthon's SpecFlowAssist
++ Merging table/row extension methods from Darren Cauthon's SpecFlowAssist 
+  Add a using statement for the namespace TechTalk.SpecFlow.Assist to use the extension methods.
+  See also Darren's youtube tutorial: http://bit.ly/aY4VOd
 + Diagnostic tracing: VS2010 integration can display trace messages to the Output window
   if tracing is enabled. Tracing can be enabled by setting the environment variable SPECFLOW_TRACE
   to either "all" or to the comma separated list of individual SpecFlow traing categories (currently

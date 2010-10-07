@@ -41,6 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\mocking\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <Reference Include="Should">
+      <HintPath>..\..\lib\Should\Should.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -56,6 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\CreateSetHelperMethodTests.cs" />
+    <Compile Include="AssistTests\CreateSetWithNullableValuesTests.cs" />
+    <Compile Include="AssistTests\PropertyExtensionMethodsTests.cs" />
+    <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />
