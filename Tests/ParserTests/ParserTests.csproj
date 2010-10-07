@@ -81,7 +81,6 @@
     </None>
     <None Include="TestFilesForErrors\simple.feature" />
     <None Include="TestFiles\asterisks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>asterisks.feature.cs</LastGenOutput>
     </None>
     <None Include="TestFiles\background.feature">
@@ -168,7 +167,6 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
