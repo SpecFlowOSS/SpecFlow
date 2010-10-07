@@ -42,11 +42,11 @@ namespace TechTalk.SpecFlow.Bindings
                 if (bindingAttr == null)
                     continue;
 
-                BuildBindingsFromType(type);
+                BuildBindingsFromType(type, bindingAttr);
             }
         }
 
-        internal void BuildBindingsFromType(Type type)
+        internal void BuildBindingsFromType(Type type, BindingAttribute binding)
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
@@ -54,7 +54,10 @@ namespace TechTalk.SpecFlow.Bindings
                 if (scenarioStepAttrs != null)
                     foreach (ScenarioStepAttribute scenarioStepAttr in scenarioStepAttrs)
                     {
-                        BuildStepBindingFromMethod(method, scenarioStepAttr);
+                        if (binding == null || string.IsNullOrEmpty(binding.FeatureName))
+                            BuildStepBindingFromMethod(method, scenarioStepAttr);
+                        else
+                            BuildScopedStepBindingFromMethod(method, scenarioStepAttr, binding.FeatureName);
                     }
 
                 var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(BindingEventAttribute));
@@ -124,6 +127,15 @@ namespace TechTalk.SpecFlow.Bindings
             CheckStepBindingMethod(method);
 
             StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method);
+
+            stepBindings.Add(stepBinding);
+        }
+
+        private void BuildScopedStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, string featureName)
+        {
+            CheckStepBindingMethod(method);
+
+            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, featureName);
 
             stepBindings.Add(stepBinding);
         }

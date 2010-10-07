@@ -98,10 +98,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected TestRunner GetTestRunnerFor(params Type[] bindingTypes)
         {
+            return GetTestRunnerFor(null, bindingTypes);
+        }
+
+        protected TestRunner GetTestRunnerFor(BindingAttribute bindingAttribute, Type[] bindingTypes)
+        {
             bindingRegistry = new BindingRegistry();
             foreach (var bindingType in bindingTypes)
             {
-                bindingRegistry.BuildBindingsFromType(bindingType);
+                bindingRegistry.BuildBindingsFromType(bindingType, bindingAttribute);
             }
             ObjectContainer.BindingRegistry = bindingRegistry;
 
