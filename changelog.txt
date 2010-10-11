@@ -1,4 +1,9 @@
-﻿1.4.0 - 2010/10/07
+﻿Next
+
+Fixed issues:
++ Scoped Steps does not recognize feature tags (Issue 12)
+
+1.4.0 - 2010/10/07
 
 Breaking changes:
 + The generator has been improved to provide source code language. Because of this, SpecFlow test generated 

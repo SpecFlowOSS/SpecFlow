@@ -18,13 +18,17 @@ namespace TechTalk.SpecFlow.Bindings
             ScenarioTitle = scenarioTitle;
         }
 
+        private readonly string[] emptyTagList = new string[0];
         public bool Match(StepContext stepContext, out int scopeMatches)
         {
             scopeMatches = 0;
 
+            var tags = (stepContext.FeatureInfo.Tags ?? emptyTagList).Concat(
+                stepContext.ScenarioInfo.Tags ?? emptyTagList);
+
             if (Tag != null)
             {
-                if (stepContext.ScenarioInfo.Tags == null || !stepContext.ScenarioInfo.Tags.Contains(Tag))
+                if (!tags.Contains(Tag))
                     return false;
 
                 scopeMatches++;
