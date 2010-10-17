@@ -109,5 +109,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public int NumberOfIdeas { get; set; }
         public decimal Salary { get; set; }
         public bool IsRational { get; set; }
+
+        public DateTime? NullableDateTime { get; set; }
     }
 }

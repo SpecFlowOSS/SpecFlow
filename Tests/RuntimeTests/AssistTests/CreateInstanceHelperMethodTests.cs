@@ -81,5 +81,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             person.BirthDate.ShouldEqual(new DateTime(2010, 12, 31));
         }
+
+        [Test]
+        public void Sets_nullable_datetime_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableDateTime", "11/30/2010");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableDateTime.ShouldEqual(new DateTime(2010, 11, 30));
+        }
     }
 }
