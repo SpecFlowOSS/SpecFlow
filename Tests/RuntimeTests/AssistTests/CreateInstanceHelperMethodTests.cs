@@ -125,5 +125,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             person.NullableDateTime.ShouldEqual(new DateTime(2010, 11, 30));
         }
+
+        [Test]
+        public void Sets_double_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Double", "4.235");
+
+            var person = table.CreateInstance<Person>();
+
+            person.Double.ShouldEqual(4.235);
+        }
+
+        [Test]
+        public void Sets_nullable_double_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableDouble", "7.218");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableDouble.ShouldEqual(7.218);
+        }
     }
 }

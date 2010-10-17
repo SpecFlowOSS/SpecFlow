@@ -114,5 +114,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public bool? NullableBool { get; set; }
         public decimal? NullableDecimal { get; set; }
         public int? NullableInt { get; set; }
+
+        public double Double { get; set; }
+        public double? NullableDouble { get; set; }
     }
 }

@@ -56,7 +56,9 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},
                            {typeof (bool?), (TableRow row, string id) => row.GetBoolean("Value")},
                            {typeof (DateTime), (TableRow row, string id) => row.GetDateTime("Value")},
-                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime("Value")}
+                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime("Value")},
+                           {typeof (Double), (TableRow row, string id) => row.GetDouble("Value")},
+                           {typeof (Double?), (TableRow row, string id) => row.GetDouble("Value")}
                        };
         }
 

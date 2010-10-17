@@ -181,5 +181,33 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             }
             exceptionThrown.ShouldBeTrue();
         }
+
+        [Test]
+        public void GetDouble_should_return_the_double_from_the_row()
+        {
+            var table = new Table("Amount");
+            table.AddRow("4.01");
+            table.Rows.First()
+                .GetDouble("Amount").ShouldEqual(4.01);
+        }
+
+        [Test]
+        public void GetDouble_should_return_MinValue_when_the_value_is_not_defined()
+        {
+            var table = new Table("Amount");
+            table.AddRow("4.01");
+            table.Rows.First()
+                .GetDouble("SomethingThatDoesNotExist").ShouldEqual(double.MinValue);
+        }
+
+        [Test]
+        public void GetDouble_should_return_MinValue_when_the_value_is_empty()
+        {
+            var table = new Table("Amount");
+            table.AddRow("");
+            table.Rows.First()
+                .GetDouble("Amount").ShouldEqual(double.MinValue);
+        }
+
     }
 }

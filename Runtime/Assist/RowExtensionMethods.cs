@@ -44,6 +44,13 @@ namespace TechTalk.SpecFlow.Assist
             return row[id] == "true";
         }
 
+        public static double GetDouble(this TableRow row, string id)
+        {
+            return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
+                       ? Convert.ToDouble(row[id])
+                       : double.MinValue;
+        }
+
         private static bool TheBooleanValueIsEmpty(TableRow row, string id)
         {
             return AValueWithThisIdExists(row, id) && string.IsNullOrEmpty(row[id]);
