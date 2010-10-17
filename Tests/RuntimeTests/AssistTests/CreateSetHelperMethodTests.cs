@@ -99,6 +99,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             people.First().IsRational.ShouldBeTrue();
         }
+
+        [Test]
+        public void Sets_doubless_on_the_instance_when_type_is_double()
+        {
+            var table = new Table("Double", "NullableDouble");
+            table.AddRow("4.193", "7.28");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().Double.ShouldEqual(4.193);
+            people.First().NullableDouble.ShouldEqual(7.28);
+        }
+
     }
 
     public class Person
