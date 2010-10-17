@@ -68,14 +68,14 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString(id)},
                            {typeof (int), (TableRow row, string id) => row.GetInt32(id)},
-                           {typeof (decimal), (TableRow row, string id) => row.GetDecimal(id)},
-                           {typeof (bool), (TableRow row, string id) => row.GetBoolean(id)},
-                           {typeof (DateTime), (TableRow row, string id) => row.GetDateTime(id)},
-                           {typeof (double), (TableRow row, string id) => row.GetDouble(id)},
                            {typeof (int?), (TableRow row, string id) => row.GetInt32(id)},
+                           {typeof (decimal), (TableRow row, string id) => row.GetDecimal(id)},
                            {typeof (decimal?), (TableRow row, string id) => row.GetDecimal(id)},
+                           {typeof (bool), (TableRow row, string id) => row.GetBoolean(id)},
                            {typeof (bool?), (TableRow row, string id) => row.GetBoolean(id)},
+                           {typeof (DateTime), (TableRow row, string id) => row.GetDateTime(id)},
                            {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime(id)},
+                           {typeof (double), (TableRow row, string id) => row.GetDouble(id)},
                            {typeof (double?), (TableRow row, string id) => row.GetDouble(id)},
                        };
         }
