@@ -61,6 +61,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Sets_nullable_decimal_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableDecimal", "19.78");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableDecimal.ShouldEqual(19.78M);
+        }
+
+        [Test]
         public void Sets_bool_values()
         {
             var table = new Table("Field", "Value");

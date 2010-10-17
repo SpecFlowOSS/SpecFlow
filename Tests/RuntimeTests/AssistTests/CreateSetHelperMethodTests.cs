@@ -112,6 +112,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public DateTime? NullableDateTime { get; set; }
         public bool? NullableBool { get; set; }
-
+        public decimal? NullableDecimal { get; set; }
     }
 }
