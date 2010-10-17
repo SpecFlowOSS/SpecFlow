@@ -72,6 +72,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Sets_nullable_bool_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableBool", "true");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableBool.ShouldEqual(true);
+        }
+
+        [Test]
         public void Sets_datetime_values()
         {
             var table = new Table("Field", "Value");

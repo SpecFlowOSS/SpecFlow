@@ -111,5 +111,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public bool IsRational { get; set; }
 
         public DateTime? NullableDateTime { get; set; }
+        public bool? NullableBool { get; set; }
+
     }
 }
