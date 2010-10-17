@@ -50,6 +50,7 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString("Value")},
                            {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
+                           {typeof (int?), (TableRow row, string id) => row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},
                            {typeof (decimal?), (TableRow row, string id) => row.GetDecimal("Value")},
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},

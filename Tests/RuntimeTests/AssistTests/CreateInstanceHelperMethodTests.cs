@@ -50,6 +50,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Sets_nullable_int_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableInt", "9");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableInt.ShouldEqual(9);
+        }
+
+        [Test]
         public void Sets_decimal_values()
         {
             var table = new Table("Field", "Value");
