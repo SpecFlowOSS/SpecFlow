@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
 
@@ -27,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new ComparisonTest { StringProperty = "Howard Roark" };
+            var test = new ComparisonTest {StringProperty = "Howard Roark"};
 
             var exception = ExceptionWasThrownByThisComparison(table, test);
 
@@ -41,9 +40,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("StringProperty", "Howard Roark");
             table.AddRow("IntProperty", "10");
 
-            var test = new ComparisonTest { 
-                StringProperty = "Howard Roark", 
-                IntProperty = 10};
+            var test = new ComparisonTest
+                           {
+                               StringProperty = "Howard Roark",
+                               IntProperty = 10
+                           };
 
             var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
 
