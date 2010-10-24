@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("IDoNotExist");
             table.AddRow("nananana boo boo");
 
-            var items = new[]{new SetTestObject()};
+            var items = new[] {new SetTestObject()};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
@@ -165,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("");
 
-            var items = new[]{new SetTestObject{StringProperty = null}};
+            var items = new[] {new SetTestObject {StringProperty = null}};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
@@ -178,7 +178,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("");
 
-            var items = new[] { new SetTestObject { StringProperty = "ketchup" } };
+            var items = new[] {new SetTestObject {StringProperty = "ketchup"}};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
@@ -191,11 +191,47 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("mustard");
 
-            var items = new[] { new SetTestObject { StringProperty = null } };
+            var items = new[] {new SetTestObject {StringProperty = null}};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
             exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Throw_exception_if_first_item_in_sets_match_but_second_item_does_not()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("ketchup");
+            table.AddRow("mustard");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "ketchup"},
+                                new SetTestObject {StringProperty = "spicy mustard"}
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Does_not_throw_exception_if_two_items_in_both_sets_match()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("ketchup");
+            table.AddRow("mustard");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "ketchup"},
+                                new SetTestObject {StringProperty = "mustard"}
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
         }
 
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
