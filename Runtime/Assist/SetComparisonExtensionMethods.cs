@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -15,14 +16,11 @@ namespace TechTalk.SpecFlow.Assist
 
             var tableItems = table.CreateSet<T>();
 
-            var id = table.Header.First();
-            if (set.First().GetPropertyValue(id) != tableItems.First().GetPropertyValue(id))
-                throw new ComparisonException("");
-
-            if (table.Header.Count() > 1)
-                id = table.Header.ToList()[1];
-            if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
-                throw new ComparisonException("");
+            foreach (var id in table.Header)
+            {
+                if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
+                    throw new ComparisonException("");
+            }
         }
     }
 }

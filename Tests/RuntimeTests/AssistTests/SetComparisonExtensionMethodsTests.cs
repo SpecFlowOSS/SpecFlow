@@ -104,6 +104,48 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeFalse();
         }
 
+        [Test]
+        public void Throws_an_exception_when_the_first_two_properties_match_but_the_third_does_not()
+        {
+            var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
+            table.AddRow("Taggart Transcontinental", "10", "12/25/2010");
+
+            var items = new[]
+                            {
+                                new SetTestObject
+                                    {
+                                        StringProperty = "Taggart Transcontinental",
+                                        IntProperty = 10,
+                                        DateTimeProperty = new DateTime(2010, 12, 26)
+                                    }
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Does_not_throw_an_exception_if_all_three_properties_match()
+        {
+            var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
+            table.AddRow("Taggart Transcontinental", "10", "12/25/2010");
+
+            var items = new[]
+                            {
+                                new SetTestObject
+                                    {
+                                        StringProperty = "Taggart Transcontinental",
+                                        IntProperty = 10,
+                                        DateTimeProperty = new DateTime(2010, 12, 25)
+                                    }
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
