@@ -44,6 +44,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeTrue();            
         }
 
+        [Test]
+        public void Does_not_throw_an_exception_when_there_is_one_row_and_one_matching_item_in_the_set()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("Taggart Transcontinental");
+
+            var items = new[] { new SetTestObject{StringProperty = "Taggart Transcontinental"} };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();             
+        }
+
+        [Test]
+        public void Throws_an_exception_when_the_table_has_one_item_and_the_set_has_one_item_that_does_not_match()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("Taggart Transcontinental");
+
+            var items = new[] { new SetTestObject { StringProperty = "Phoenix-Durango" } };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
