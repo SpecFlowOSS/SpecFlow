@@ -65,6 +65,7 @@
     <Compile Include="AssistTests\CreateSetWithNullableValuesTests.cs" />
     <Compile Include="AssistTests\PropertyExtensionMethodsTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
+    <Compile Include="AssistTests\SetComparisonExtensionMethodsTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />
