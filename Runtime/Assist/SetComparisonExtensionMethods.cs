@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -15,7 +13,6 @@ namespace TechTalk.SpecFlow.Assist
             if (set.Count() == 0)
                 return;
 
-
             var tableItems = table.CreateSet<T>();
 
             var id = table.Header.First();
@@ -24,8 +21,8 @@ namespace TechTalk.SpecFlow.Assist
 
             if (table.Header.Count() > 1)
                 id = table.Header.ToList()[1];
-                if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
-                    throw new ComparisonException("");
+            if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
+                throw new ComparisonException("");
         }
     }
 }
