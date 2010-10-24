@@ -51,6 +51,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\ComparisonHelper.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
