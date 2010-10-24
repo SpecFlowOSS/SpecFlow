@@ -28,9 +28,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var test = new ComparisonTest {StringProperty = "Howard Roark"};
 
-            var exception = ExceptionWasThrownByThisComparison(table, test);
+            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
 
-            exception.ShouldBeFalse();
+            exceptionThrown.ShouldBeFalse();
         }
 
         [Test]
