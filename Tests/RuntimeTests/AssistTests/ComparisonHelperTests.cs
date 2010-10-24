@@ -34,6 +34,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exception.ShouldBeFalse();
         }
 
+        [Test]
+        public void Throws_exception_when_first_row_matches_but_second_does_not()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("StringProperty", "Howard Roark");
+            table.AddRow("IntProperty", "10");
+
+            var test = new ComparisonTest { 
+                StringProperty = "Howard Roark", 
+                IntProperty = 10};
+
+            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+
+            exceptionThrown.ShouldBeTrue();
+        }
+
         private static bool ExceptionWasThrownByThisComparison(Table table, ComparisonTest test)
         {
             var exception = false;
@@ -52,5 +68,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     public class ComparisonTest
     {
         public string StringProperty { get; set; }
+        public int IntProperty { get; set; }
     }
 }
