@@ -15,9 +15,17 @@ namespace TechTalk.SpecFlow.Assist
             if (set.Count() == 0)
                 return;
 
+
+            var tableItems = table.CreateSet<T>();
+
             var id = table.Header.First();
-            if (set.First().GetPropertyValue(id) != table.Rows.First()[id])
+            if (set.First().GetPropertyValue(id) != tableItems.First().GetPropertyValue(id))
                 throw new ComparisonException("");
+
+            if (table.Header.Count() > 1)
+                id = table.Header.ToList()[1];
+                if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
+                    throw new ComparisonException("");
         }
     }
 }

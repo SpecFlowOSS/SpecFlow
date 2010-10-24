@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
 
@@ -37,11 +38,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("this is not an empty table");
 
-            var items = new SetTestObject[] { };
+            var items = new SetTestObject[] {};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();            
+            exceptionWasThrown.ShouldBeTrue();
         }
 
         [Test]
@@ -50,11 +51,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("Taggart Transcontinental");
 
-            var items = new[] { new SetTestObject{StringProperty = "Taggart Transcontinental"} };
+            var items = new[] {new SetTestObject {StringProperty = "Taggart Transcontinental"}};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();             
+            exceptionWasThrown.ShouldBeFalse();
         }
 
         [Test]
@@ -63,11 +64,44 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("Taggart Transcontinental");
 
-            var items = new[] { new SetTestObject { StringProperty = "Phoenix-Durango" } };
+            var items = new[] {new SetTestObject {StringProperty = "Phoenix-Durango"}};
 
             var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
             exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Throws_an_exception_when_the_first_property_matches_but_the_second_does_not()
+        {
+            var table = new Table("StringProperty", "IntProperty");
+            table.AddRow("Taggart Transcontinental", "10");
+
+            var items = new[] {new SetTestObject {StringProperty = "Taggart Transcontinental", IntProperty = 20}};
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Does_not_throw_an_exception_when_there_are_two_matching_properties_of_varying_types()
+        {
+            var table = new Table("StringProperty", "IntProperty");
+            table.AddRow("Taggart Transcontinental", "10");
+
+            var items = new[]
+                            {
+                                new SetTestObject
+                                    {
+                                        StringProperty = "Taggart Transcontinental",
+                                        IntProperty = 10
+                                    }
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
         }
 
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
@@ -88,5 +122,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     public class SetTestObject
     {
         public string StringProperty { get; set; }
+        public int IntProperty { get; set; }
+
+        public DateTime DateTimeProperty { get; set; }
     }
 }
