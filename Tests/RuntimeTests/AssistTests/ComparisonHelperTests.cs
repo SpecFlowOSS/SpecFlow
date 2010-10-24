@@ -51,6 +51,55 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionThrown.ShouldBeTrue();
         }
 
+        [Test]
+        public void Exception_returns_an_exception_for_one_error_when_there_is_one_difference()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("StringProperty", "Howard Roark");
+
+            var test = new ComparisonTest {StringProperty = "Peter Keating"};
+
+            var exception = GetExceptionThrownByThisComparison(table, test);
+
+            exception.Message.ShouldEqual(
+                @"The following fields did not match:
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>");
+        }
+
+        [Test]
+        public void Exception_returns_an_exception_for_two_errors_when_there_are_two_differences()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("StringProperty", "Howard Roark");
+            table.AddRow("IntProperty", "1");
+
+            var test = new ComparisonTest
+                           {
+                               StringProperty = "Peter Keating",
+                               IntProperty = 2
+                           };
+
+            var exception = GetExceptionThrownByThisComparison(table, test);
+
+            exception.Message.ShouldEqual(
+                @"The following fields did not match:
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
+IntProperty: Expected <1>, Actual <2>");
+        }
+
+        private static ComparisonException GetExceptionThrownByThisComparison(Table table, ComparisonTest test)
+        {
+            try
+            {
+                table.CompareToInstance(test);
+            }
+            catch (ComparisonException ex)
+            {
+                return ex;
+            }
+            return null;
+        }
+
         private static bool ExceptionWasThrownByThisComparison(Table table, ComparisonTest test)
         {
             var exception = false;
