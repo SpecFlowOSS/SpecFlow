@@ -159,6 +159,45 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeTrue();
         }
 
+        [Test]
+        public void Does_not_throw_exception_if_string_is_empty_in_table_and_null_on_item()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("");
+
+            var items = new[]{new SetTestObject{StringProperty = null}};
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Throws_exception_if_string_is_empty_in_table_and_not_null_on_item()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("");
+
+            var items = new[] { new SetTestObject { StringProperty = "ketchup" } };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Throws_exception_if_string_is_not_empty_in_table_and_null_on_item()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("mustard");
+
+            var items = new[] { new SetTestObject { StringProperty = null } };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;

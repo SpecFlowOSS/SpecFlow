@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -8,8 +7,8 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set)
         {
-            foreach(var id in table.Header)
-                if (typeof(T).GetProperties().Select(x => x.Name).Contains(id) == false)
+            foreach (var id in table.Header)
+                if (typeof (T).GetProperties().Select(x => x.Name).Contains(id) == false)
                     throw new ComparisonException("");
 
             if (set.Count() != table.Rows.Count())
@@ -22,8 +21,18 @@ namespace TechTalk.SpecFlow.Assist
 
             foreach (var id in table.Header)
             {
-                if (set.First().GetPropertyValue(id).ToString() != tableItems.First().GetPropertyValue(id).ToString())
+                var propertyValue = set.First().GetPropertyValue(id);
+                var tableValue = tableItems.First().GetPropertyValue(id);
+
+                if (propertyValue != null && tableValue == null)
                     throw new ComparisonException("");
+
+                if (propertyValue == null && tableValue != null)
+                    throw new ComparisonException("");
+
+                if (propertyValue != null && tableValue != null)
+                    if (propertyValue.ToString() != tableValue.ToString())
+                        throw new ComparisonException("");
             }
         }
     }
