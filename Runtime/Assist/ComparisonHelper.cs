@@ -25,23 +25,32 @@ namespace TechTalk.SpecFlow.Assist
                                          (sum, next) => sum + ("\r\n" + DescribeTheErrorForThisDifference(next)));
         }
 
-        private static string DescribeTheErrorForThisDifference(Difference next)
+        private static string DescribeTheErrorForThisDifference(Difference difference)
         {
+            if (difference.DoesNotExist)
+                return string.Format("{0}: Property does not exist", difference.Property);
+
             return string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                 next.Property, next.Expected,
-                                 next.Actual);
+                                 difference.Property, difference.Expected,
+                                 difference.Actual);
         }
 
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
             return from row in table.Rows
-                   where TheValuesDoNotMatch(instance, row)
+                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
                    select CreateDifferenceForThisRow(instance, row);
         }
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
         {
             return differences.Count() > 0;
+        }
+
+        private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
+        {
+            return instance.GetType().GetProperties()
+                .Any(property => property.Name == row["Field"]) == false;
         }
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
@@ -51,6 +60,13 @@ namespace TechTalk.SpecFlow.Assist
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
+            if (ThePropertyDoesNotExist(instance, row))
+                return new Difference
+                           {
+                               Property = row["Field"],
+                               DoesNotExist = true
+                           };
+
             return new Difference
                        {
                            Property = row["Field"],
@@ -64,6 +80,7 @@ namespace TechTalk.SpecFlow.Assist
             public string Property { get; set; }
             public object Expected { get; set; }
             public object Actual { get; set; }
+            public bool DoesNotExist { get; set; }
         }
     }
 

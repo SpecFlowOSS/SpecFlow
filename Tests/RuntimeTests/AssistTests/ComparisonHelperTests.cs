@@ -87,6 +87,20 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
 IntProperty: Expected <1>, Actual <2>");
         }
 
+        [Test]
+        public void Exception_returns_a_descriptive_error_when_property_in_table_does_not_exist()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("IDoNotExist", "Ok, mister");
+
+            var test = new ComparisonTest();
+
+            var exception = GetExceptionThrownByThisComparison(table, test);
+
+            exception.Message.ShouldEqual(@"The following fields did not match:
+IDoNotExist: Property does not exist");
+        }
+
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, ComparisonTest test)
         {
             try
