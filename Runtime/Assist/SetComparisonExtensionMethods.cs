@@ -7,8 +7,6 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set)
         {
-            var setItems = set.ToList();
-
             foreach (var id in table.Header)
                 if (typeof (T).GetProperties().Select(x => x.Name).Contains(id) == false)
                     throw new ComparisonException("");
@@ -20,6 +18,8 @@ namespace TechTalk.SpecFlow.Assist
                 return;
 
             var tableItems = table.CreateSet<T>().ToList();
+
+            var setItems = set.ToList();
 
             for (var index = 0; index < tableItems.Count(); index++)
             {
