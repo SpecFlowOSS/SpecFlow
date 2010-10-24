@@ -23,21 +23,31 @@ namespace TechTalk.SpecFlow.Assist
 
             for (var index = 0; index < tableItems.Count(); index++)
             {
-                foreach (var id in table.Header)
+                var successfulCheck = false;
+                for(var secondIndex = 0; secondIndex < setItems.Count(); secondIndex++)
                 {
-                    var propertyValue = setItems[index].GetPropertyValue(id);
-                    var tableValue = tableItems[index].GetPropertyValue(id);
+                    var failHit = false;
+                    foreach (var id in table.Header)
+                    {
+                        var tableValue = tableItems[index].GetPropertyValue(id);
+                        var propertyValue = setItems[secondIndex].GetPropertyValue(id);
 
-                    if (propertyValue != null && tableValue == null)
-                        throw new ComparisonException("");
+                        if (propertyValue != null && tableValue == null)
+                            failHit = true;
 
-                    if (propertyValue == null && tableValue != null)
-                        throw new ComparisonException("");
+                        if (propertyValue == null && tableValue != null)
+                            failHit = true;
 
-                    if (propertyValue != null && tableValue != null)
-                        if (propertyValue.ToString() != tableValue.ToString())
-                            throw new ComparisonException("");
+                        if (propertyValue != null && tableValue != null)
+                            if (propertyValue.ToString() != tableValue.ToString())
+                                failHit = true;
+                        
+                    }
+                    if (failHit == false)
+                        successfulCheck = true;
                 }
+                if (successfulCheck == false)
+                    throw new ComparisonException("");
             }
         }
     }

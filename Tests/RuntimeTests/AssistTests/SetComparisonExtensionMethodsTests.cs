@@ -234,6 +234,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeFalse();
         }
 
+        [Test]
+        public void Does_not_throw_exception_if_all_items_match_but_not_in_the_same_order()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("relish");
+            table.AddRow("mustard");
+            table.AddRow("ketchup");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "ketchup"},
+                                new SetTestObject {StringProperty = "relish"},
+                                new SetTestObject {StringProperty = "mustard"}
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
