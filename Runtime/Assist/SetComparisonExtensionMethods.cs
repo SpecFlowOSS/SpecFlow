@@ -23,19 +23,17 @@ namespace TechTalk.SpecFlow.Assist
                 var indexOfItemToRemove = -1;
                 for(var actualItemIndex = 0; actualItemIndex < actualItems.Count(); actualItemIndex++)
                 {
-                    var thisItemDoesNotMatchTheExpectedItem = false;
-                    foreach (var property in GetAllPropertiesToTest(table))
-                    {
-                        var expectedValue = GetTheExpectedValue(expectedItemIndex, expectedItems, property);
-                        var actualValue = GetTheActualValue(actualItemIndex, actualItems, property);
+                    var expectedItem = expectedItems[expectedItemIndex];
+                    var actualItem = actualItems[actualItemIndex];
 
-                        if (TheseValuesDoNotMatch(actualValue, expectedValue))
-                            thisItemDoesNotMatchTheExpectedItem = true;
+                    var propertiesToTest = GetAllPropertiesToTest(table);
 
-                        if (thisItemDoesNotMatchTheExpectedItem == false && indexOfItemToRemove == -1)
-                            indexOfItemToRemove = actualItemIndex;
-                    }
-                    if (thisItemDoesNotMatchTheExpectedItem == false)
+                    var thisItemIsNotAMatch = ThisItemIsNotAMatch(propertiesToTest, expectedItem, actualItem);
+
+                    if (thisItemIsNotAMatch == false && indexOfItemToRemove == -1)
+                        indexOfItemToRemove = actualItemIndex;
+
+                    if (thisItemIsNotAMatch == false)
                         successfulCheck = true;
                 }
                 if (successfulCheck == false)
@@ -44,14 +42,18 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
-        private static object GetTheActualValue<T>(int actualItemIndex, List<T> actualItems, string fieldToCheck)
+        private static bool ThisItemIsNotAMatch<T>(IEnumerable<string> propertiesToTest, T expectedItem, T actualItem)
         {
-            return actualItems[actualItemIndex].GetPropertyValue(fieldToCheck);
-        }
+            var thisItemDoesNotMatchTheExpectedItem = false;
+            foreach (var propertyName in propertiesToTest)
+            {
+                var expectedValue = expectedItem.GetPropertyValue(propertyName);
+                var actualValue = actualItem.GetPropertyValue(propertyName);
 
-        private static object GetTheExpectedValue<T>(int expectedItemIndex, List<T> expectedItems, string fieldToCheck)
-        {
-            return expectedItems[expectedItemIndex].GetPropertyValue(fieldToCheck);
+                if (TheseValuesDoNotMatch(actualValue, expectedValue))
+                    thisItemDoesNotMatchTheExpectedItem = true;
+            }
+            return thisItemDoesNotMatchTheExpectedItem;
         }
 
         private static IEnumerable<string> GetAllPropertiesToTest(Table table)
