@@ -146,6 +146,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeFalse();
         }
 
+        [Test]
+        public void Throws_exception_if_property_in_table_does_not_exist_on_item()
+        {
+            var table = new Table("IDoNotExist");
+            table.AddRow("nananana boo boo");
+
+            var items = new[]{new SetTestObject()};
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
