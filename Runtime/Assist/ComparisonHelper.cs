@@ -11,14 +11,25 @@ namespace TechTalk.SpecFlow.Assist
             var differences = FindAnyDifferences(table, instance);
 
             if (ThereAreAnyDifferences(differences))
-            {
-                throw new ComparisonException(
-                    differences.Aggregate(@"The following fields did not match:",
-                                          (sum, next) => sum + ("\r\n" +
-                                                                string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                                                              next.Property, next.Expected,
-                                                                              next.Actual))));
-            }
+                ThrowAnExceptionThatDescribesThoseDifferences(differences);
+        }
+
+        private static void ThrowAnExceptionThatDescribesThoseDifferences(IEnumerable<Difference> differences)
+        {
+            throw new ComparisonException(CreateDescriptiveErrorMessage(differences));
+        }
+
+        private static string CreateDescriptiveErrorMessage(IEnumerable<Difference> differences)
+        {
+            return differences.Aggregate(@"The following fields did not match:",
+                                         (sum, next) => sum + ("\r\n" + DescribeTheErrorForThisDifference(next)));
+        }
+
+        private static string DescribeTheErrorForThisDifference(Difference next)
+        {
+            return string.Format("{0}: Expected <{1}>, Actual <{2}>",
+                                 next.Property, next.Expected,
+                                 next.Actual);
         }
 
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
