@@ -8,32 +8,44 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToInstance<T>(this Table table, T instance)
         {
-            var list = new List<Difference>();
+            var differences = FindAnyDifferences(table, instance);
 
-            foreach (var row in table.Rows)
+            if (ThereAreAnyDifferences(differences))
             {
-                var value = instance.GetPropertyValue(row["Field"]);
-                if (value != row["Value"])
-                {
-                    list.Add(new Difference
-                                 {
-                                     Property = row["Field"],
-                                     Expected = row["Value"],
-                                     Actual = instance.GetPropertyValue(row["Field"])
-                                 });
-                }
-            }
-
-            if (list.Count > 0)
-            {
-                var aggregate = list.Aggregate(@"The following fields did not match:",
-                                               (sum, next) => sum + ("\r\n" +
-                                                                     string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                                                                   next.Property, next.Expected,
-                                                                                   next.Actual)));
                 throw new ComparisonException(
-                    aggregate);
+                    differences.Aggregate(@"The following fields did not match:",
+                                          (sum, next) => sum + ("\r\n" +
+                                                                string.Format("{0}: Expected <{1}>, Actual <{2}>",
+                                                                              next.Property, next.Expected,
+                                                                              next.Actual))));
             }
+        }
+
+        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
+        {
+            return from row in table.Rows
+                   where TheValuesDoNotMatch(instance, row)
+                   select CreateDifferenceForThisRow(instance, row);
+        }
+
+        private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
+        {
+            return differences.Count() > 0;
+        }
+
+        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
+        {
+            return instance.GetPropertyValue(row["Field"]) != row["Value"];
+        }
+
+        private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
+        {
+            return new Difference
+                       {
+                           Property = row["Field"],
+                           Expected = row["Value"],
+                           Actual = instance.GetPropertyValue(row["Field"])
+                       };
         }
 
         private class Difference
