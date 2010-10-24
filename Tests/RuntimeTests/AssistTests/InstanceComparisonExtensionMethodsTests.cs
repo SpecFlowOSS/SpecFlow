@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class ComparisonHelperTests
+    public class InstanceComparisonExtensionMethodsTests
     {
         [Test]
         public void Throws_exception_when_value_of_matching_string_property_does_not_match()
