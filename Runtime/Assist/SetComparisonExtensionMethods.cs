@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Assist
             for (var index = 0; index < tableItems.Count(); index++)
             {
                 var successfulCheck = false;
+                var indexOfItemToRemove = -1;
                 for(var secondIndex = 0; secondIndex < setItems.Count(); secondIndex++)
                 {
                     var failHit = false;
@@ -41,13 +42,16 @@ namespace TechTalk.SpecFlow.Assist
                         if (propertyValue != null && tableValue != null)
                             if (propertyValue.ToString() != tableValue.ToString())
                                 failHit = true;
-                        
+
+                        if (failHit == false && indexOfItemToRemove == -1)
+                            indexOfItemToRemove = secondIndex;
                     }
                     if (failHit == false)
                         successfulCheck = true;
                 }
                 if (successfulCheck == false)
                     throw new ComparisonException("");
+                setItems.RemoveAt(indexOfItemToRemove);
             }
         }
     }

@@ -254,6 +254,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeFalse();
         }
 
+        [Test]
+        public void Throws_an_exception_if_items_do_not_match_the_correct_number_of_times()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("Burt");
+            table.AddRow("Ernie");
+            table.AddRow("Burt");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "Burt"},
+                                new SetTestObject {StringProperty = "Ernie"},
+                                new SetTestObject {StringProperty = "Ernie"}
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
