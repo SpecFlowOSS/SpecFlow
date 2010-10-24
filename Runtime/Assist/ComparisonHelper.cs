@@ -50,12 +50,12 @@ namespace TechTalk.SpecFlow.Assist
         private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
-                .Any(property => property.Name == row["Field"]) == false;
+                       .Any(property => property.Name == row.Id()) == false;
         }
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            return instance.GetPropertyValue(row["Field"]) != row["Value"];
+            return instance.GetPropertyValue(row.Id()) != row.Value();
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
@@ -63,15 +63,15 @@ namespace TechTalk.SpecFlow.Assist
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
                            {
-                               Property = row["Field"],
+                               Property = row.Id(),
                                DoesNotExist = true
                            };
 
             return new Difference
                        {
-                           Property = row["Field"],
-                           Expected = row["Value"],
-                           Actual = instance.GetPropertyValue(row["Field"])
+                           Property = row.Id(),
+                           Expected = row.Value(),
+                           Actual = instance.GetPropertyValue(row.Id())
                        };
         }
 
@@ -81,6 +81,22 @@ namespace TechTalk.SpecFlow.Assist
             public object Expected { get; set; }
             public object Actual { get; set; }
             public bool DoesNotExist { get; set; }
+        }
+    }
+
+    public static class TableHelpers
+    {
+        private const string FieldId = "Field";
+        private const string ValueId = "Value";
+
+        public static string Id(this TableRow row)
+        {
+            return row[FieldId];
+        }
+
+        public static object Value(this TableRow row)
+        {
+            return row[ValueId];
         }
     }
 
