@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class SetComparisonExtensionMethodsTests
+    public class SetComparisonExtensionMethods_ThrowTests
     {
         [Test]
         public void Throws_exception_when_the_table_is_empty_and_the_set_has_one_item()
