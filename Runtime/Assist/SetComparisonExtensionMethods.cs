@@ -5,35 +5,50 @@ namespace TechTalk.SpecFlow.Assist
 {
     public static class SetComparisonExtensionMethods
     {
-        private const int MatchNotFound = -1;
-
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set)
         {
-            AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType<T>(table);
+            var checker = new SetComparer<T>(table);
+            checker.CompareToSet(set);
+        }
+    }
 
-            AssertThatTheTableAndSetHaveTheSameNumberOfRows(table, set);
+    public class SetComparer<T>
+    {
+        private const int MatchNotFound = -1;
+        private readonly Table table;
+        private readonly IEnumerable<string> propertiesToTest;
+        private readonly List<T> expectedItems;
+
+        public SetComparer(Table table)
+        {
+            this.table = table;
+            propertiesToTest = GetAllPropertiesToTest(table);
+            expectedItems = GetTheExpectedItems<T>(table);
+        }
+
+        public void CompareToSet(IEnumerable<T> set)
+        {
+            AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
+
+            AssertThatTheTableAndSetHaveTheSameNumberOfRows(set);
 
             if (ThereAreNoItems(set))
                 return;
 
-            AssertThatTheItemsMatchTheExpectedResults(table, set);
+            AssertThatTheItemsMatchTheExpectedResults(set);
         }
 
-        private static void AssertThatTheItemsMatchTheExpectedResults<T>(Table table, IEnumerable<T> set)
+        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
         {
-            var expectedItems = GetTheExpectedItems<T>(table);
             var actualItems = GetTheActualItems(set);
 
-            var propertiesToTest = GetAllPropertiesToTest(table);
-
             foreach (var expectedItem in expectedItems)
-                AssertThatAnActualitemMatchesThisExpectedItem(expectedItem, actualItems, propertiesToTest);
+                AssertThatAnActualitemMatchesThisExpectedItem(expectedItem, actualItems);
         }
 
-        private static void AssertThatAnActualitemMatchesThisExpectedItem<T>(T expectedItem, List<T> actualItems,
-                                                                             IEnumerable<string> propertiesToTest)
+        private void AssertThatAnActualitemMatchesThisExpectedItem(T expectedItem, List<T> actualItems)
         {
-            var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems, propertiesToTest);
+            var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems);
 
             if (matchIndex == MatchNotFound)
                 ThrowAComparisonException();
@@ -41,7 +56,7 @@ namespace TechTalk.SpecFlow.Assist
             RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
         }
 
-        private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain<T>(List<T> actualItems, int matchIndex)
+        private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain(List<T> actualItems, int matchIndex)
         {
             actualItems.RemoveAt(matchIndex);
         }
@@ -51,21 +66,20 @@ namespace TechTalk.SpecFlow.Assist
             throw new ComparisonException("");
         }
 
-        private static int GetTheIndexOfTheMatchingItem<T>(T expectedItem,
-                                                           List<T> actualItems,
-                                                           IEnumerable<string> propertiesToTest)
+        private int GetTheIndexOfTheMatchingItem<T>(T expectedItem,
+                                                    List<T> actualItems)
         {
             for (var actualItemIndex = 0; actualItemIndex < actualItems.Count(); actualItemIndex++)
             {
                 var actualItem = actualItems[actualItemIndex];
 
-                if (ThisItemIsAMatch(propertiesToTest, expectedItem, actualItem))
+                if (ThisItemIsAMatch(expectedItem, actualItem))
                     return actualItemIndex;
             }
             return MatchNotFound;
         }
 
-        private static bool ThisItemIsAMatch<T>(IEnumerable<string> propertiesToTest, T expectedItem, T actualItem)
+        private bool ThisItemIsAMatch<T>(T expectedItem, T actualItem)
         {
             foreach (var propertyName in propertiesToTest)
             {
@@ -106,13 +120,13 @@ namespace TechTalk.SpecFlow.Assist
             return set.Count() == 0;
         }
 
-        private static void AssertThatTheTableAndSetHaveTheSameNumberOfRows<T>(Table table, IEnumerable<T> set)
+        private void AssertThatTheTableAndSetHaveTheSameNumberOfRows<T>(IEnumerable<T> set)
         {
             if (set.Count() != table.Rows.Count())
                 ThrowAComparisonException();
         }
 
-        private static void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType<T>(Table table)
+        private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
             foreach (var id in table.Header)
                 if (typeof (T).GetProperties().Select(x => x.Name).Contains(id) == false)
