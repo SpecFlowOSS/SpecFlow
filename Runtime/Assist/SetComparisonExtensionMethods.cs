@@ -128,9 +128,16 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
-            foreach (var id in table.Header)
-                if (typeof (T).GetProperties().Select(x => x.Name).Contains(id) == false)
-                    ThrowAComparisonException();
+            var propertiesThatDoNotExist = from property in table.Header
+                                           where
+                                               typeof (T).GetProperties().Select(x => x.Name).Contains(property)
+                                               == false
+                                           select property;
+
+            if (propertiesThatDoNotExist.Any())
+                throw new ComparisonException(
+                    propertiesThatDoNotExist.Aggregate(@"The following fields do not exist:",
+                                                       (running, next) => running + string.Format("\r\n{0}", next)));
         }
     }
 }
