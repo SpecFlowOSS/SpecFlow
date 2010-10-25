@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Returns_the_names_of_any_fields_that_do_not_match()
         {
-            var table = new Table("AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
+            var table = new Table("StringProperty", "AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
 
             var items = new[] { new SetTestObject() };
 
@@ -28,8 +28,6 @@ AnotherFieldThatDoesNotExist");
 
         private ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
         {
-            ComparisonException exception = null;
-
             try
             {
                 table.CompareToSet(items);
