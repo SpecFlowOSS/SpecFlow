@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     public class SetComparisonExtensionMethods_MessageTests
     {
         [Test]
-        public void Returns_the_names_of_any_fields_that_do_not_match()
+        public void Returns_the_names_of_any_fields_that_do_not_exist()
         {
             var table = new Table("StringProperty", "AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
 
