@@ -26,6 +26,32 @@ AFieldThatDoesNotExist
 AnotherFieldThatDoesNotExist");
         }
 
+        [Test]
+        public void Returns_descriptive_message_when_one_result_exists_but_there_should_be_no_results()
+        {
+            var table = new Table("StringProperty");
+
+            var items = new[] { new SetTestObject()};
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(
+                @"There was 1 result when expecting no results.");
+        }
+
+        [Test]
+        public void Returns_descriptive_message_when_two_results_exist_but_there_should_be_no_results()
+        {
+            var table = new Table("StringProperty");
+
+            var items = new[] { new SetTestObject(), new SetTestObject() };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(
+                @"There were 2 results when expecting no results.");
+        }
+
         private ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
         {
             try

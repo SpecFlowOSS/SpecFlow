@@ -34,9 +34,17 @@ namespace TechTalk.SpecFlow.Assist
                 return;
 
             if (ThereAreResultsWhenThereShouldBeNone(set))
-                ThrowAComparisonException();
+                ThrowAnExpectedNoResultsError(set);
 
             AssertThatTheItemsMatchTheExpectedResults(set);
+        }
+
+        private static void ThrowAnExpectedNoResultsError(IEnumerable<T> set)
+        {
+            throw new ComparisonException(string.Format("There {0} {1} result{2} when expecting no results.",
+                                                        set.Count() == 1 ? "was" : "were",
+                                                        set.Count(),
+                                                        set.Count() == 1 ? "" : "s"));
         }
 
         private bool ThereAreResultsWhenThereShouldBeNone(IEnumerable<T> set)
