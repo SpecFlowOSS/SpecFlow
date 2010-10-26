@@ -76,8 +76,9 @@ namespace TechTalk.SpecFlow.Assist
 
             if (listOfMissingItems.Any())
                 throw new ComparisonException(
-                    listOfMissingItems.Aggregate(@"The expected items at the following line numbers could not be matched:", (running, next) => running + "\r\n" + next));
-
+                    listOfMissingItems.Aggregate(
+                        @"The expected items at the following line numbers could not be matched:",
+                        (running, next) => running + "\r\n" + next));
         }
 
         private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain(List<T> actualItems, int matchIndex)
