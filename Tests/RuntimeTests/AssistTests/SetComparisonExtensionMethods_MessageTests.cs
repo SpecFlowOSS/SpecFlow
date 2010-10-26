@@ -104,7 +104,7 @@ AnotherFieldThatDoesNotExist");
 2");
         }
 
-        private ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
+        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
         {
             try
             {

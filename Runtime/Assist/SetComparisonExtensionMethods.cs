@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             this.table = table;
             propertiesToTest = GetAllPropertiesToTest(table);
-            expectedItems = GetTheExpectedItems<T>(table);
+            expectedItems = GetTheExpectedItems(table);
         }
 
         public void CompareToSet(IEnumerable<T> set)
@@ -59,6 +59,14 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
         {
+            var listOfMissingItems = GetListOfExpectedItemsThatCouldNotBeFound(set);
+
+            if (ExpectedItemsCouldNotBeFound(listOfMissingItems))
+                ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
+        }
+
+        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFound(IEnumerable<T> set)
+        {
             var actualItems = GetTheActualItems(set);
 
             var listOfMissingItems = new List<int>();
@@ -73,12 +81,20 @@ namespace TechTalk.SpecFlow.Assist
                 else
                     RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
             }
+            return listOfMissingItems;
+        }
 
-            if (listOfMissingItems.Any())
-                throw new ComparisonException(
-                    listOfMissingItems.Aggregate(
-                        @"The expected items at the following line numbers could not be matched:",
-                        (running, next) => running + "\r\n" + next));
+        private static void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
+        {
+            throw new ComparisonException(
+                listOfMissingItems.Aggregate(
+                    @"The expected items at the following line numbers could not be matched:",
+                    (running, next) => running + "\r\n" + next));
+        }
+
+        private static bool ExpectedItemsCouldNotBeFound(IEnumerable<int> listOfMissingItems)
+        {
+            return listOfMissingItems.Any();
         }
 
         private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain(List<T> actualItems, int matchIndex)
@@ -86,13 +102,8 @@ namespace TechTalk.SpecFlow.Assist
             actualItems.RemoveAt(matchIndex);
         }
 
-        private static void ThrowAComparisonException()
-        {
-            throw new ComparisonException("");
-        }
-
-        private int GetTheIndexOfTheMatchingItem<T>(T expectedItem,
-                                                    List<T> actualItems)
+        private int GetTheIndexOfTheMatchingItem(T expectedItem,
+                                                 IList<T> actualItems)
         {
             for (var actualItemIndex = 0; actualItemIndex < actualItems.Count(); actualItemIndex++)
             {
@@ -104,7 +115,7 @@ namespace TechTalk.SpecFlow.Assist
             return MatchNotFound;
         }
 
-        private bool ThisItemIsAMatch<T>(T expectedItem, T actualItem)
+        private bool ThisItemIsAMatch(T expectedItem, T actualItem)
         {
             foreach (var propertyName in propertiesToTest)
             {
@@ -126,16 +137,16 @@ namespace TechTalk.SpecFlow.Assist
         {
             return (actualValue != null && expectedValue == null) ||
                    (actualValue == null && expectedValue != null) ||
-                   ((actualValue != null && expectedValue != null) &&
+                   ((actualValue != null) &&
                     (actualValue.ToString() != expectedValue.ToString()));
         }
 
-        private static List<T> GetTheActualItems<T>(IEnumerable<T> set)
+        private static List<T> GetTheActualItems(IEnumerable<T> set)
         {
             return set.ToList();
         }
 
-        private static List<T> GetTheExpectedItems<T>(Table table)
+        private static List<T> GetTheExpectedItems(Table table)
         {
             return table.CreateSet<T>().ToList();
         }
