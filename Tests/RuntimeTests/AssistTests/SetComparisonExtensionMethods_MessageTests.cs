@@ -52,6 +52,56 @@ AnotherFieldThatDoesNotExist");
                 @"There were 2 results when expecting no results.");
         }
 
+        [Test]
+        public void Returns_1_as_the_missing_item_when_only_one_item_exists()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+
+            var items = new[] { new SetTestObject{StringProperty = "apple"} };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(
+                @"The expected items at the following line numbers could not be matched:
+1");
+        }
+
+        [Test]
+        public void Returns_2_as_the_missing_item_when_the_second_item_does_not_match()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+            table.AddRow("apple");
+
+            var items = new[] { new SetTestObject { StringProperty = "orange" },
+            new SetTestObject{StringProperty = "rotten apple"}};
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(
+                @"The expected items at the following line numbers could not be matched:
+2");
+        }
+
+        [Test]
+        public void Returns_both_1_and_two_as_the_missing_items_when_both_cannot_be_found()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+            table.AddRow("apple");
+
+            var items = new[] { new SetTestObject { StringProperty = "rotten orange" },
+            new SetTestObject{StringProperty = "rotten apple"}};
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(
+                @"The expected items at the following line numbers could not be matched:
+1
+2");            
+        }
+
         private ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
         {
             try

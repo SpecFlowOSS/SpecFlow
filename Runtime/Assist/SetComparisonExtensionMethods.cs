@@ -61,15 +61,23 @@ namespace TechTalk.SpecFlow.Assist
         {
             var actualItems = GetTheActualItems(set);
 
-            foreach (var expectedItem in expectedItems)
+            var listOfMissingItems = new List<int>();
+
+            for (var index = 0; index < expectedItems.Count(); index++)
             {
+                var expectedItem = expectedItems[index];
                 var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems);
 
                 if (matchIndex == MatchNotFound)
-                    ThrowAComparisonException();
-
-                RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
+                    listOfMissingItems.Add(index + 1);
+                else
+                    RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
             }
+
+            if (listOfMissingItems.Any())
+                throw new ComparisonException(
+                    listOfMissingItems.Aggregate(@"The expected items at the following line numbers could not be matched:", (running, next) => running + "\r\n" + next));
+
         }
 
         private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain(List<T> actualItems, int matchIndex)
