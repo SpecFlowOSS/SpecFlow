@@ -30,12 +30,23 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
 
-            AssertThatTheTableAndSetHaveTheSameNumberOfRows(set);
-
-            if (ThereAreNoItems(set))
+            if (ThereAreNoResultsAndNoExpectedResults(set))
                 return;
 
+            if (ThereAreResultsWhenThereShouldBeNone(set))
+                ThrowAComparisonException();
+
             AssertThatTheItemsMatchTheExpectedResults(set);
+        }
+
+        private bool ThereAreResultsWhenThereShouldBeNone(IEnumerable<T> set)
+        {
+            return set.Count() > 0 && table.Rows.Count() == 0;
+        }
+
+        private bool ThereAreNoResultsAndNoExpectedResults(IEnumerable<T> set)
+        {
+            return set.Count() == 0 && table.Rows.Count() == 0;
         }
 
         private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
@@ -43,17 +54,14 @@ namespace TechTalk.SpecFlow.Assist
             var actualItems = GetTheActualItems(set);
 
             foreach (var expectedItem in expectedItems)
-                AssertThatAnActualitemMatchesThisExpectedItem(expectedItem, actualItems);
-        }
+            {
+                var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems);
 
-        private void AssertThatAnActualitemMatchesThisExpectedItem(T expectedItem, List<T> actualItems)
-        {
-            var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems);
+                if (matchIndex == MatchNotFound)
+                    ThrowAComparisonException();
 
-            if (matchIndex == MatchNotFound)
-                ThrowAComparisonException();
-
-            RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
+                RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
+            }
         }
 
         private static void RemoveFromActualItemsSoItWillNotBeCheckedAgain(List<T> actualItems, int matchIndex)
@@ -113,17 +121,6 @@ namespace TechTalk.SpecFlow.Assist
         private static List<T> GetTheExpectedItems<T>(Table table)
         {
             return table.CreateSet<T>().ToList();
-        }
-
-        private static bool ThereAreNoItems<T>(IEnumerable<T> set)
-        {
-            return set.Count() == 0;
-        }
-
-        private void AssertThatTheTableAndSetHaveTheSameNumberOfRows<T>(IEnumerable<T> set)
-        {
-            if (set.Count() != table.Rows.Count())
-                ThrowAComparisonException();
         }
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
