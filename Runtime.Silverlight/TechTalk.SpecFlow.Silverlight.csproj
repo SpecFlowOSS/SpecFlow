@@ -61,6 +61,9 @@
     <Compile Include="..\Runtime\Bindings\BindingRegistry.cs">
       <Link>Bindings\BindingRegistry.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\Bindings\BindingScope.cs">
+      <Link>Bindings\BindingScope.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Bindings\BindingType.cs">
       <Link>Bindings\BindingType.cs</Link>
     </Compile>
@@ -75,6 +78,9 @@
     </Compile>
     <Compile Include="..\Runtime\Bindings\StepBinding.cs">
       <Link>Bindings\StepBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Bindings\StepContext.cs">
+      <Link>Bindings\StepContext.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\Bindings\StepDefinitionKeyword.cs">
       <Link>Bindings\StepDefinitionKeyword.cs</Link>
@@ -209,6 +215,7 @@
     <Compile Include="Compatibility\CultureInfoHelper.cs" />
     <Compile Include="Compatibility\EnumHelper.cs" />
     <Compile Include="Compatibility\ExceptionHelper.cs" />
+    <Compile Include="Compatibility\ListHelper.cs" />
     <Compile Include="Compatibility\Stopwatch.cs" />
     <Compile Include="Configuration\ConfigDefaults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -123,8 +123,34 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckStepBindingMethod(method);
 
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method);
+            var scopeAttrs = 
+                Attribute.GetCustomAttributes(method.DeclaringType, typeof(StepScopeAttribute)).Concat(
+                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute)));
 
+            if (scopeAttrs.Any())
+            {
+                foreach (StepScopeAttribute scopeAttr in scopeAttrs)
+                {
+                    AddStepBinding(method, scenarioStepAttr, CreateScope(scopeAttr));
+                }
+            }
+            else
+            {
+                AddStepBinding(method, scenarioStepAttr, null);
+            }
+        }
+
+        private BindingScope CreateScope(StepScopeAttribute scopeAttr)
+        {
+            if (scopeAttr.Tag == null && scopeAttr.Feature == null && scopeAttr.Scenario == null)
+                return null;
+
+            return new BindingScope(scopeAttr.Tag, scopeAttr.Feature, scopeAttr.Scenario);
+        }
+
+        private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
+        {
+            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
             stepBindings.Add(stepBinding);
         }
 

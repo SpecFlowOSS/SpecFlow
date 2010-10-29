@@ -7,7 +7,22 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class BindingAttribute : Attribute
     {
-
+//        private readonly string featureName;
+//
+//        public BindingAttribute()
+//        {
+//        }
+//
+//        public BindingAttribute(string featureName)
+//            : this()
+//        {
+//            this.featureName = featureName;
+//        }
+//
+//        public string FeatureName
+//        {
+//            get { return featureName; }
+//        }
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
@@ -136,5 +151,13 @@ namespace TechTalk.SpecFlow
         public StepTransformationAttribute()
         {
         }
+    }
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
+    public class StepScopeAttribute : Attribute
+    {
+        public string Tag { get; set; }
+        public string Feature { get; set; }
+        public string Scenario { get; set; }
     }
 }

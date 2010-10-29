@@ -224,7 +224,7 @@ namespace TechTalk.SpecFlow
             return filterTags.Intersect(currentTags).Any();
         }
 
-        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching)
+        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)
         {
             Match match = stepBinding.Regex.Match(stepArgs.Text);
 
@@ -233,6 +233,7 @@ namespace TechTalk.SpecFlow
                 return null;
 
             var extraArgs = CalculateExtraArgs(stepArgs);
+            int scopeMatches = 0;
 
             if (useParamMatching)
             {
@@ -262,7 +263,13 @@ namespace TechTalk.SpecFlow
                 }
             }
 
-            return new BindingMatch(stepBinding, match, extraArgs, stepArgs);
+            if (useScopeMatching && stepBinding.IsScoped)
+            {
+                if (!stepBinding.BindingScope.Match(stepArgs.StepContext, out scopeMatches))
+                    return null;
+            }
+
+            return new BindingMatch(stepBinding, match, extraArgs, stepArgs, scopeMatches);
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];
@@ -345,24 +352,37 @@ namespace TechTalk.SpecFlow
 
         private BindingMatch GetStepMatch(StepArgs stepArgs)
         {
-            List<BindingMatch> matches = new List<BindingMatch>();
+            List<BindingMatch> matches = bindingRegistry
+                .Where(b => b.Type == stepArgs.Type)
+                .Select(binding => Match(binding, stepArgs, true, true))
+                .Where(match => match != null)
+                .ToList();
 
-            foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
+            if (matches.Count > 1)
             {
-                BindingMatch match = Match(binding, stepArgs, true);
-                if (match == null)
-                    continue;
+                // if there are both scoped and non-scoped matches, we take the ones with the higher degree of scope matches
+                int maxScopeMatches = matches.Max(m => m.ScopeMatches);
+                matches.RemoveAll(m => m.ScopeMatches < maxScopeMatches);
+            }
 
-                matches.Add(match);
-                if (!RuntimeConfiguration.Current.DetectAmbiguousMatches)
-                    break;
+            if (matches.Count > 1)
+            {
+                // we remove duplicate maches for the same method (take the first from each)
+                matches = matches.GroupBy(m => m.StepBinding.MethodInfo, (methodInfo, methodMatches) => methodMatches.First()).ToList();
             }
 
             if (matches.Count == 0)
             {
-                // there were either no regex match of it was filtered out by the param matching
+                // there were either no regex match or it was filtered out by the param/scope matching
                 // to provide better error message for the param matching error, we re-run 
                 // the matching without param check
+
+                List<BindingMatch> matchesWithoutScopeCheck = GetMatchesWithoutScopeCheck(stepArgs);
+                if (matchesWithoutScopeCheck.Count > 0)
+                {
+                    // no match, because of scope filter
+                    throw errorProvider.GetNoMatchBecauseOfScopeFilterError(matchesWithoutScopeCheck, stepArgs);
+                }
 
                 List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
                 if (matchesWithoutParamCheck.Count == 1)
@@ -373,7 +393,7 @@ namespace TechTalk.SpecFlow
                 if (matchesWithoutParamCheck.Count > 1)
                 {
                     // ambiguouity, because of param error
-                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matches, stepArgs);
+                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
                 }
 
                 testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage);
@@ -383,23 +403,20 @@ namespace TechTalk.SpecFlow
             }
             if (matches.Count > 1)
             {
-                throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
+                if (RuntimeConfiguration.Current.DetectAmbiguousMatches)
+                    throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
             }
             return matches[0];
         }
 
         private List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
         {
-            List<BindingMatch> matches = new List<BindingMatch>();
+            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
+        }
 
-            foreach (StepBinding binding in bindingRegistry.Where(b => b.Type == stepArgs.Type))
-            {
-                BindingMatch match = Match(binding, stepArgs, false);
-                if (match != null)
-                    matches.Add(match);
-            }
-
-            return matches;
+        private List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
+        {
+            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
         }
 
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
@@ -455,31 +472,36 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region Given-When-Then
+        public StepContext GetStepContext()
+        {
+            return new StepContext(ObjectContainer.FeatureContext.FeatureInfo, ObjectContainer.ScenarioContext.ScenarioInfo);
+        }
+
         public void Given(string text, string multilineTextArg, Table tableArg)
         {
-            ExecuteStep(new StepArgs(BindingType.Given, StepDefinitionKeyword.Given, text, multilineTextArg, tableArg));
+            ExecuteStep(new StepArgs(BindingType.Given, StepDefinitionKeyword.Given, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void When(string text, string multilineTextArg, Table tableArg)
         {
-            ExecuteStep(new StepArgs(BindingType.When, StepDefinitionKeyword.When, text, multilineTextArg, tableArg));
+            ExecuteStep(new StepArgs(BindingType.When, StepDefinitionKeyword.When, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void Then(string text, string multilineTextArg, Table tableArg)
         {
-            ExecuteStep(new StepArgs(BindingType.Then, StepDefinitionKeyword.Then, text, multilineTextArg, tableArg));
+            ExecuteStep(new StepArgs(BindingType.Then, StepDefinitionKeyword.Then, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void And(string text, string multilineTextArg, Table tableArg)
         {
             BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
-            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.And, text, multilineTextArg, tableArg));
+            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.And, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void But(string text, string multilineTextArg, Table tableArg)
         {
             BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
-            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.But, text, multilineTextArg, tableArg));
+            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.But, text, multilineTextArg, tableArg, GetStepContext()));
         }
         #endregion
 

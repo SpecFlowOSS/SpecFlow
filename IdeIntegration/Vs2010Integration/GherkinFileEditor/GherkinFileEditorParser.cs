@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -11,15 +12,16 @@ using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     internal class GherkinFileEditorParser
     {
-        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry, SpecFlowProject specFlowProject)
+        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry, IVisualStudioTracer visualStudioTracer, SpecFlowProject specFlowProject)
         {
             return buffer.Properties.GetOrCreateSingletonProperty(() =>
-                new GherkinFileEditorParser(buffer, classificationRegistry, specFlowProject));
+                new GherkinFileEditorParser(buffer, classificationRegistry, visualStudioTracer, specFlowProject));
         }
 
         private class IdleHandler
@@ -45,7 +47,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
+        private const string ParserTraceCategory = "EditorParser";
+
         private readonly ITextBuffer buffer;
+        private readonly IVisualStudioTracer visualStudioTracer;
         private readonly SpecFlowProject specFlowProject;
         public GherkinFileEditorInfo GherkinFileEditorInfo { get; set; }
 
@@ -57,18 +62,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         private ChangeInfo pendingChangeInfo;
         private readonly GherkinFileEditorClassifications classifications;
 
+        private int partialParseCount = 0;
+        private const int PartialParseCountLimit = 30;
+
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
-        public GherkinFileEditorParser(ITextBuffer buffer, IClassificationTypeRegistryService registry, SpecFlowProject specFlowProject)
+        public GherkinFileEditorParser(ITextBuffer buffer, IClassificationTypeRegistryService registry, IVisualStudioTracer visualStudioTracer, SpecFlowProject specFlowProject)
         {
             this.buffer = buffer;
+            this.visualStudioTracer = visualStudioTracer;
             this.specFlowProject = specFlowProject;
             this.buffer.Changed += BufferChanged;
 
             this.classifications = new GherkinFileEditorClassifications(registry);
 
             // initial parsing
+            visualStudioTracer.Trace("Initial parsing scheduled", ParserTraceCategory);
             ChangeInfo changeInfo = new ChangeInfo(buffer);
             parsingTask = parsingTaskFactory.StartNew(() =>
                 ParseAndTriggerChanges(GherkinFileEditorInfo, changeInfo));
@@ -81,6 +91,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             if (parsingTask == null || (parsingTask.IsCompleted && isIdleTime))
             {
                 // no parsing in progress -> we start parsing
+                visualStudioTracer.Trace("Trigger new parsing", ParserTraceCategory);
                 ChangeInfo changeInfo = new ChangeInfo(e);
                 parsingTask = parsingTaskFactory.StartNew(() => 
                     ParseAndTriggerChanges(GherkinFileEditorInfo, changeInfo));
@@ -93,6 +104,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 if (pendingChangeInfo == null)
                 {
                     // parsing in progress, no pending request -> we queue up a pending request
+                    visualStudioTracer.Trace("Queue new parsing", ParserTraceCategory);
                     pendingChangeInfo = new ChangeInfo(e);
                     parsingTask = parsingTask
                         .ContinueWith(prevTask =>
@@ -105,6 +117,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 else
                 {
                     // there is already a pending request -> we merge our new request into it
+                    visualStudioTracer.Trace("Merge change to queued parse request", ParserTraceCategory);
                     pendingChangeInfo = pendingChangeInfo.Merge(e);
                 }
             }
@@ -131,12 +144,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 return;
             }
 
+            if (partialParseCount >= PartialParseCountLimit)
+            {
+                visualStudioTracer.Trace("Forced full parse after " + partialParseCount + " incremental parse", ParserTraceCategory);
+                FullParse(changeInfo);
+                return;
+            }
+
             // incremental parsing
             var firstAffectedScenario = gherkinFileEditorInfo.ScenarioEditorInfos.LastOrDefault(
                 s => s.StartLine <= changeInfo.ChangeFirstLine);
 
             if (firstAffectedScenario == null)
             {
+                // We would not need to do a full parse when the header chenges, but it would
+                // be too complicated to bring this case through the logic now.
+                // So the side-effect is that we do a full parse when the header changes instead of an incremental.
                 FullParse(changeInfo);
                 return;
             }
@@ -146,6 +169,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         private void PartialParse(GherkinFileEditorInfo gherkinFileEditorInfo, ChangeInfo changeInfo, ScenarioEditorInfo firstAffectedScenario)
         {
+            visualStudioTracer.Trace("Start incremental parsing", ParserTraceCategory);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            partialParseCount++;
+
             int parseStartPosition = 
                 changeInfo.TextSnapshot.GetLineFromLineNumber(firstAffectedScenario.StartLine).Start;
 
@@ -188,16 +217,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
 
             TriggerChanges(partialResult, changeInfo, firstAffectedScenario, firstUnchangedScenario);
+
+            stopwatch.Stop();
+            TraceFinishParse(stopwatch, "incremental");
         }
 
         private void FullParse(ChangeInfo changeInfo)
         {
+            visualStudioTracer.Trace("Start full parsing", ParserTraceCategory);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            partialParseCount = 0;
+
             string fileContent = changeInfo.TextSnapshot.GetText();
             I18n languageService = GetLanguageService(fileContent);
 
             var result = DoParse(fileContent, languageService, changeInfo.TextSnapshot);
 
             TriggerChanges(result, changeInfo);
+
+            stopwatch.Stop();
+            TraceFinishParse(stopwatch, "full");
+        }
+
+        private void TraceFinishParse(Stopwatch stopwatch, string parseKind)
+        {
+            visualStudioTracer.Trace(
+                string.Format("Finished {0} parsing in {1} ms, {2} errors", parseKind, stopwatch.ElapsedMilliseconds, GherkinFileEditorInfo.TotalErrorCount), ParserTraceCategory);
         }
 
         private void TriggerChanges(GherkinFileEditorInfo gherkinFileEditorInfo, ChangeInfo changeInfo, ScenarioEditorInfo firstAffectedScenario = null, ScenarioEditorInfo firstUnchangedScenario = null)

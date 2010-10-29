@@ -28,5 +28,42 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.AreEqual(1, registry.StepTransformations.Where(s => s.Regex.Match("BindingRegistryTests").Success).Count());
         }
+
+        /*        Steps that are feature scoped               */
+
+        [Binding]
+        public class ScopedStepTransformationExample
+        {
+            [Then("SpecificBindingRegistryTests")]
+            [StepScope(Feature = "SomeFeature")]
+            public int Transform(string val)
+            {
+                return 42;
+            }
+        }
+
+        [Binding]
+        public class ScopedStepTransformationExampleTheOther
+        {
+            [Then("SpecificBindingRegistryTests")]
+            [StepScope(Feature = "AnotherFeature")]
+            public int Transform(string val)
+            {
+                return 24;
+            }
+        }
+
+        [Test]
+        public void ShouldFindScopedExampleConverter()
+        {
+            BindingRegistry registry = new BindingRegistry();
+            registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(2,
+                registry.Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped).Count());
+
+            Assert.AreEqual(0,
+                registry.Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped == false).Count());
+        }
     }
 }

@@ -1,16 +1,34 @@
-﻿Next Release
+﻿Next
+
+Fixed issues:
++ Scoped Steps does not recognize feature tags (Issue 12)
++ Support for double and nullable types in table-helpers of SpecFlow.Assist
+
+1.4.0 - 2010/10/07
 
 Breaking changes:
 + The generator has been improved to provide source code language. Because of this, SpecFlow test generated 
   with this version will be incompatible with older runtimes.
 
 New features:
++ Scoped Step Definitions: you can scope step definitions (bindings) to tags, features and scenarios. Scope filter 
+  can be applied to a class or a method with the [StepScope] attribute.
+  See examples in Tests/FeatureTests/ScopedSteps/ScopedSteps.feature and Tests/FeatureTests/ScopedSteps/ScopedStepsBindings.cs
+  (Thanks to Jose Simas for the contribution.)
 + Adding binding-culture to App.config. If set, this culture is used during execution of steps.
 + VB-Step-Definition Skeleton Provider: For VB-projects, the suggested step skeletons are generated in VB.
 + Merging strongly typed context accessors from Darren Cauthon's SpecFlowAssist
++ Merging table/row extension methods from Darren Cauthon's SpecFlowAssist 
+  Add a using statement for the namespace TechTalk.SpecFlow.Assist to use the extension methods.
+  See also Darren's youtube tutorial: http://bit.ly/aY4VOd
++ Diagnostic tracing: VS2010 integration can display trace messages to the Output window
+  if tracing is enabled. Tracing can be enabled by setting the environment variable SPECFLOW_TRACE
+  to either "all" or to the comma separated list of individual SpecFlow traing categories (currently
+  only the category "EditorParser" is supported).
 
 Fixed issues:
 + Better error reporting for wrong Gherkin files (multiple errors displayed, detect duplicate scenario names)
++ Visual Studio 2010 editor slows down after editing a feature file for a longer time (Issue 9)
 
 1.3.5.2 - 2010/08/11
 

@@ -59,6 +59,15 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
         }
 
+        public Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepArgs stepArgs)
+        {
+            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            return new BindingException(
+                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
+                    stepDescription,
+                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
+        }
+
         public MissingStepDefinitionException GetMissingStepDefinitionError()
         {
             return new MissingStepDefinitionException();

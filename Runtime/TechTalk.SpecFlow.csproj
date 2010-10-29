@@ -51,6 +51,11 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\PropertyExtensionMethods.cs" />
+    <Compile Include="Assist\RowExtensionMethods.cs" />
+    <Compile Include="Assist\TableExtensionMethods.cs" />
+    <Compile Include="Bindings\BindingScope.cs" />
+    <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
     <Compile Include="Compatibility\CultureInfoHelper.cs" />

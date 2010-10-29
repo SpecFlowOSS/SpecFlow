@@ -87,7 +87,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     {
         public List<ClassificationSpan> HeaderClassificationSpans { get; private set; }
         public List<ITagSpan<IOutliningRegionTag>> HeaderOutliningRegions { get; set; }
+        public int HeaderErrors { get; set; }
         public List<ScenarioEditorInfo> ScenarioEditorInfos { get; private set; }
+
+        public int TotalErrorCount
+        {
+            get { return HeaderErrors + ScenarioEditorInfos.Sum(sei => sei.Errors); }
+        }
 
         public GherkinFileEditorInfo()
         {
@@ -107,6 +113,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; set; }
         public List<ClassificationSpan> ClassificationSpans { get; private set; }
         public bool IsClosed { get; set; }
+        public int Errors { get; set; }
 
         public bool IsComplete
         {

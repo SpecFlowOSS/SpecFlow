@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.VsIntegration.Common;
 using VSLangProj80;
 
@@ -23,11 +24,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Import]
         internal IVsEditorAdaptersFactoryService AdaptersFactory = null;
 
+        [Import]
+        internal IVisualStudioTracer VisualStudioTracer = null;
+
         protected GherkinFileEditorParser GetParser(ITextBuffer buffer)
         {
             var specFlowProject = GetSpecFlowProject(buffer);
 
-            return GherkinFileEditorParser.GetParser(buffer, ClassificationRegistry, specFlowProject);
+            return GherkinFileEditorParser.GetParser(buffer, ClassificationRegistry, VisualStudioTracer, specFlowProject);
         }
 
         private SpecFlowProject GetSpecFlowProject(ITextBuffer buffer)
