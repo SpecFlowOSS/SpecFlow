@@ -37,6 +37,9 @@ namespace TechTalk.SpecFlow.Assist
                 ThrowAnExpectedNoResultsError(set);
 
             AssertThatTheItemsMatchTheExpectedResults(set);
+
+            if (set.Count() != table.Rows.Count())
+                throw new ComparisonException("x");
         }
 
         private static void ThrowAnExpectedNoResultsError(IEnumerable<T> set)

@@ -274,6 +274,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeTrue();
         }
 
+        [Test]
+        public void Throws_an_exception_if_the_result_set_has_extra_items_that_are_not_in_the_expected_results()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("Burt");
+            table.AddRow("Ernie");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "Burt"},
+                                new SetTestObject {StringProperty = "Ernie"},
+                                new SetTestObject {StringProperty = "Grover"}
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeTrue();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
