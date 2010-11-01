@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
-            table.AddRow("IntProperty", "10");
+            table.AddRow("IntProperty", "20");
 
             var test = new ComparisonTest
                            {
