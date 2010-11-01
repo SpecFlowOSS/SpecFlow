@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
 
@@ -49,6 +50,42 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
 
             exceptionThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Should_not_throw_an_exception_when_the_ToString_values_of_each_match()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("StringProperty", "Howard Roark");
+            table.AddRow("IntProperty", "10");
+            table.AddRow("DateTimeProperty", "12/25/2010 12:00:00 AM");
+
+            var test = new ComparisonTest
+            {
+                StringProperty = "Howard Roark",
+                IntProperty = 10,
+                DateTimeProperty = new DateTime(2010, 12, 25)
+            };
+
+            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+
+            exceptionThrown.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_not_throw_an_exception_when_actual_value_is_null_and_expected_is_empty()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableField", "");
+
+            var test = new ComparisonTest
+            {
+                NullableField = null,
+            };
+
+            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+
+            exceptionThrown.ShouldBeFalse();
         }
 
         [Test]
@@ -133,5 +170,8 @@ IDoNotExist: Property does not exist");
     {
         public string StringProperty { get; set; }
         public int IntProperty { get; set; }
+        public DateTime DateTimeProperty { get; set; }
+
+        public int? NullableField { get; set; }
     }
 }

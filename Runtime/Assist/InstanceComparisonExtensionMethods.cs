@@ -55,7 +55,12 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            return instance.GetPropertyValue(row.Id()) != row.Value();
+            var expected = row.Value().ToString();
+
+            var propertyValue = instance.GetPropertyValue(row.Id());
+            var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
+            
+            return actual != expected;
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
