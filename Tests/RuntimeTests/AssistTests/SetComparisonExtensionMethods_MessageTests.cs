@@ -104,6 +104,43 @@ AnotherFieldThatDoesNotExist");
 2");
         }
 
+        [Test]
+        public void Returns_a_descriptive_error_when_three_results_exist_when_two_expected()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+            table.AddRow("apple");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "orange"},
+                                new SetTestObject {StringProperty = "apple"},
+                                new SetTestObject {StringProperty = "this is an extra row"}
+                            };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(@"Expected 2 results, but found 3.");
+        }
+
+        [Test]
+        public void Returns_a_descriptive_error_when_three_results_exist_when_one_expected()
+        {
+            var table = new Table("StringProperty");
+            table.AddRow("orange");
+
+            var items = new[]
+                            {
+                                new SetTestObject {StringProperty = "orange"},
+                                new SetTestObject {StringProperty = "apple"},
+                                new SetTestObject {StringProperty = "this is an extra row"}
+                            };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.ShouldEqual(@"Expected 1 result, but found 3.");
+        }
+
         private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
         {
             try
