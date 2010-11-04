@@ -155,6 +155,26 @@ IDoNotExist: Property does not exist");
 
         }
 
+        [Test]
+        public void Throws_exception_when_the_result_is_null()
+        {
+            var table = new Table("Field", "Value");
+
+            var exceptionThrown = ExceptionWasThrownByThisComparison(table, null);
+
+            exceptionThrown.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Exception_returns_a_descriptive_error_when_the_result_is_null()
+        {
+            var table = new Table("Field", "Value");
+
+            var exception = GetExceptionThrownByThisComparison(table, null);
+
+            exception.Message.ShouldEqual("The item to compare was null.");
+        }
+
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, ComparisonTest test)
         {
             try

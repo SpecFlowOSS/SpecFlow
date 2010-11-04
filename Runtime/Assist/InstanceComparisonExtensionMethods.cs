@@ -8,10 +8,18 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToInstance<T>(this Table table, T instance)
         {
+            AssertThatTheInstanceExists(instance);
+
             var differences = FindAnyDifferences(table, instance);
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
+        }
+
+        private static void AssertThatTheInstanceExists<T>(T instance)
+        {
+            if (instance == null)
+                throw new ComparisonException("The item to compare was null.");
         }
 
         private static void ThrowAnExceptionThatDescribesThoseDifferences(IEnumerable<Difference> differences)
