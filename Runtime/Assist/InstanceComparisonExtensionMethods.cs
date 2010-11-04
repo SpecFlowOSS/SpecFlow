@@ -57,10 +57,26 @@ namespace TechTalk.SpecFlow.Assist
         {
             var expected = row.Value().ToString();
 
-            var propertyValue = instance.GetPropertyValue(row.Id());
-            var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
-            
+            var actual = GetTheActualValue(row, instance);
+
             return actual != expected;
+        }
+
+        private static string GetTheActualValue<T>(TableRow row, T instance)
+        {
+            var propertyValue = instance.GetPropertyValue(row.Id());
+
+            var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
+
+            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
+                actual = actual.ToLower();
+
+            return actual;
+        }
+
+        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
+        {
+            return propertyValue != null && propertyValue.GetType() == typeof (bool);
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)

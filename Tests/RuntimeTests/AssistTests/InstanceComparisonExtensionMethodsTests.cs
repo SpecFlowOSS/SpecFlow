@@ -138,6 +138,23 @@ IntProperty: Expected <1>, Actual <2>");
 IDoNotExist: Property does not exist");
         }
 
+        [Test]
+        public void Will_property_handle_true_boolean_matches()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("BooleanProperty", "true");
+
+            ExceptionWasThrownByThisComparison(table, new ComparisonTest{
+                                                              BooleanProperty = true
+                                                          }).ShouldBeFalse();
+
+            ExceptionWasThrownByThisComparison(table, new ComparisonTest
+                                                        {
+                                                            BooleanProperty = false
+                                                        }).ShouldBeTrue();
+
+        }
+
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, ComparisonTest test)
         {
             try
@@ -171,6 +188,8 @@ IDoNotExist: Property does not exist");
         public string StringProperty { get; set; }
         public int IntProperty { get; set; }
         public DateTime DateTimeProperty { get; set; }
+
+        public bool BooleanProperty { get; set; }
 
         public int? NullableField { get; set; }
     }
