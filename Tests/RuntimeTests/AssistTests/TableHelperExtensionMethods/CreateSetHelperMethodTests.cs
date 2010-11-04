@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
-namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
+
+namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
     public class CreateSetHelperMethodTests
     {
-        [SetUp]
-        public void TestSetup()
+        private static Table CreatePersonTableHeaders()
         {
-            // this is required, because the tests depend on parsing decimals with the en-US culture
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
         }
 
         [Test]
@@ -47,8 +45,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Sets_string_values_on_the_instance_when_type_is_string()
         {
-            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
-            table.AddRow("John", "Galt", "", "", "", "");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("John", "Galt", "", "", "", "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -59,19 +57,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Sets_int_values_on_the_instance_when_type_is_int()
         {
-            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
-            table.AddRow("", "", "", "3", "", "");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "", "3", "", "", "");
 
             var people = table.CreateSet<Person>();
 
             people.First().NumberOfIdeas.ShouldEqual(3);
         }
 
+
+
+        [Test]
+        public void Sets_Enum_values_on_the_instance_when_type_is_int()
+        {
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "", "", "", "", "Male");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().Sex.ShouldEqual(Sex.Male);
+        }
+
         [Test]
         public void Sets_datetime_on_the_instance_when_type_is_datetime()
         {
-            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
-            table.AddRow("", "", "4/28/2009", "3", "", "");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "4/28/2009", "3", "", "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -81,8 +92,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
-            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
-            table.AddRow("", "", "4/28/2009", "3", "9997.43", "");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "4/28/2009", "3", 9997.43M.ToString(), "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -92,43 +103,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Sets_booleans_on_the_instance_when_type_is_boolean()
         {
-            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
-            table.AddRow("", "", "4/28/2009", "3", "", "true");
+            var table = CreatePersonTableHeaders();
+            table.AddRow("", "", "4/28/2009", "3", "", "true", "");
 
             var people = table.CreateSet<Person>();
 
             people.First().IsRational.ShouldBeTrue();
         }
-
-        [Test]
-        public void Sets_doubless_on_the_instance_when_type_is_double()
-        {
-            var table = new Table("Double", "NullableDouble");
-            table.AddRow("4.193", "7.28");
-
-            var people = table.CreateSet<Person>();
-
-            people.First().Double.ShouldEqual(4.193);
-            people.First().NullableDouble.ShouldEqual(7.28);
-        }
-
-    }
-
-    public class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public int NumberOfIdeas { get; set; }
-        public decimal Salary { get; set; }
-        public bool IsRational { get; set; }
-
-        public DateTime? NullableDateTime { get; set; }
-        public bool? NullableBool { get; set; }
-        public decimal? NullableDecimal { get; set; }
-        public int? NullableInt { get; set; }
-
-        public double Double { get; set; }
-        public double? NullableDouble { get; set; }
     }
 }

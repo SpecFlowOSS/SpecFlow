@@ -51,6 +51,40 @@ namespace TechTalk.SpecFlow.Assist
                        : double.MinValue;
         }
 
+        public static Enum GetEnum<T>(this TableRow row, string id)
+        {
+            var value = row[id].Replace(" ", string.Empty);
+
+            var p = (from property in typeof(T).GetProperties()
+                     where property.PropertyType.IsEnum &&
+                           EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
+                     select property.PropertyType).ToList();
+
+            if (p.Count == 1)
+                return Enum.Parse(p[0], value, true) as Enum;
+
+            if (p.Count == 0)
+                throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
+
+            throw new InvalidOperationException(string.Format("Found sevral enums with the value {0} in type {1}", value, typeof(T).Name));
+        }
+
+        private static bool EnumValueIsDefinedCaseInsensitve(Type @enum, string value)
+        {
+            Enum parsedEnum = null;
+            try
+            {
+                parsedEnum = Enum.Parse(@enum, value, true) as Enum;
+            }
+            catch
+            {
+                // just catch it
+            }
+
+            return parsedEnum != null;
+        }
+
+
         private static bool TheBooleanValueIsEmpty(TableRow row, string id)
         {
             return AValueWithThisIdExists(row, id) && string.IsNullOrEmpty(row[id]);

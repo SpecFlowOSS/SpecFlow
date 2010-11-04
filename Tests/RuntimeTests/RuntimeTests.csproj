@@ -59,9 +59,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
-    <Compile Include="AssistTests\CreateSetHelperMethodTests.cs" />
-    <Compile Include="AssistTests\CreateSetWithNullableValuesTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\NullablePerson.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetWithNullableValuesTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\Person.cs" />
+    <Compile Include="AssistTests\ExampleEntities\Enums.cs" />
+    <Compile Include="AssistTests\ExampleEntities\PersonWithStyle.cs" />
     <Compile Include="AssistTests\PropertyExtensionMethodsTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />

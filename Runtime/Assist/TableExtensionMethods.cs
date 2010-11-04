@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public static class TableExtensionMethods
+    public static class TableHelperExtensionMethods
     {
         public static T CreateInstance<T>(this Table table)
         {
@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Assist
             var enumerable = table.Rows.Select(row =>
             {
                 var instance = (T)Activator.CreateInstance(typeof(T));
-                LoadInstanceWithPropertyData(table, instance, row);
+                LoadInstanceWithPropertyData<T>(table, instance, row);
                 return instance;
             });
 
@@ -27,62 +27,60 @@ namespace TechTalk.SpecFlow.Assist
 
         private static void LoadInstanceWithPropertyData<T>(Table table, T instance, TableRow row)
         {
-            foreach (var key in GetTypeHandlersForProperties().Keys)
+            foreach (var key in GetTypeHandlersForProperties<T>().Keys)
                 SetData(table, instance, row, key);
         }
 
         private static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs();
+            var handlers = GetTypeHandlersForFieldValuePairs<T>();
 
-            var propertiesThatNeedToBeSet = (from property in typeof(T).GetProperties()
-                                             join key in handlers.Keys on property.PropertyType equals key
-                                             join row in table.Rows on property.Name equals row["Field"]
-                                             select new { Row = row, property.Name, Handler = handlers[key] });
+            var propertiesThatNeedToBeSet = from property in typeof(T).GetProperties()
+                                            from key in handlers.Keys
+                                            from row in table.Rows
+                                            where key.IsAssignableFrom(property.PropertyType)
+                                                && property.Name == row["Field"]
+                                            select new { Row = row, property.Name, Handler = handlers[key] };
+
+
 
             propertiesThatNeedToBeSet.ToList()
                 .ForEach(x => instance.SetPropertyValue(x.Name, x.Handler(x.Row, x.Row["Value"])));
         }
 
-        private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForFieldValuePairs()
+        private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForFieldValuePairs<T>()
         {
             return new Dictionary<Type, Func<TableRow, string, object>>
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString("Value")},
                            {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
-                           {typeof (int?), (TableRow row, string id) => row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},
-                           {typeof (decimal?), (TableRow row, string id) => row.GetDecimal("Value")},
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},
-                           {typeof (bool?), (TableRow row, string id) => row.GetBoolean("Value")},
                            {typeof (DateTime), (TableRow row, string id) => row.GetDateTime("Value")},
-                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime("Value")},
-                           {typeof (Double), (TableRow row, string id) => row.GetDouble("Value")},
-                           {typeof (Double?), (TableRow row, string id) => row.GetDouble("Value")}
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")}
                        };
         }
 
-        private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForProperties()
+        private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForProperties<T>()
         {
             return new Dictionary<Type, Func<TableRow, string, object>>
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString(id)},
                            {typeof (int), (TableRow row, string id) => row.GetInt32(id)},
-                           {typeof (int?), (TableRow row, string id) => row.GetInt32(id)},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal(id)},
-                           {typeof (decimal?), (TableRow row, string id) => row.GetDecimal(id)},
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean(id)},
-                           {typeof (bool?), (TableRow row, string id) => row.GetBoolean(id)},
                            {typeof (DateTime), (TableRow row, string id) => row.GetDateTime(id)},
-                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime(id)},
-                           {typeof (double), (TableRow row, string id) => row.GetDouble(id)},
-                           {typeof (double?), (TableRow row, string id) => row.GetDouble(id)},
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>(id)},
+                           {typeof (int?), (TableRow row, string id) => row.GetInt32(id)},
+                           {typeof (decimal?), (TableRow row, string id) => row.GetDecimal(id)},
+                           {typeof (bool?), (TableRow row, string id) => row.GetBoolean(id)},
+                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime(id)}
                        };
         }
 
         private static void SetData<T>(Table table, T instance, TableRow row, Type type)
         {
-            var handler = GetTypeHandlersForProperties()[type];
+            var handler = GetTypeHandlersForProperties<T>()[type];
             var propertiesToUpdate = GetPropertiesOfThisTypeToUpdate<T>(table, type);
             foreach (var property in propertiesToUpdate)
                 if (string.IsNullOrEmpty(row[property]))
@@ -103,7 +101,7 @@ namespace TechTalk.SpecFlow.Assist
         private static IEnumerable<string> GetPropertiesOfThisType<T>(Type type)
         {
             return typeof(T).GetProperties().ToList()
-                .Where(x => x.PropertyType == type)
+                .Where(x => type.IsAssignableFrom(x.PropertyType))
                 .Select(x => x.Name);
         }
     }
