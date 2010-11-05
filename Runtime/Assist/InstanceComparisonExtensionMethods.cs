@@ -79,7 +79,15 @@ namespace TechTalk.SpecFlow.Assist
             if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
                 actual = actual.ToLower();
 
+            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
+                actual = actual.ToUpper();
+
             return actual;
+        }
+
+        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
+        {
+            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
         }
 
         private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)

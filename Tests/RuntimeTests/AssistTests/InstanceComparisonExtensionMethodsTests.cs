@@ -156,6 +156,18 @@ IDoNotExist: Property does not exist");
         }
 
         [Test]
+        public void Will_match_guids_without_case_insensitivity()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("GuidProperty", "DFFC3F4E-670A-400A-8212-C6841E2EA055");
+
+            ExceptionWasThrownByThisComparison(table, new ComparisonTest
+            {
+                GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
+            }).ShouldBeFalse();
+        }
+
+        [Test]
         public void Throws_exception_when_the_result_is_null()
         {
             var table = new Table("Field", "Value");
@@ -208,6 +220,7 @@ IDoNotExist: Property does not exist");
         public string StringProperty { get; set; }
         public int IntProperty { get; set; }
         public DateTime DateTimeProperty { get; set; }
+        public Guid GuidProperty { get; set; }
 
         public bool BooleanProperty { get; set; }
 
