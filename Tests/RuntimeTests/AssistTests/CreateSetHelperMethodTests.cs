@@ -130,5 +130,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
         public double Double { get; set; }
         public double? NullableDouble { get; set; }
+
+        public Guid GuidId { get; set; }
+        public Guid? NullableGuidId { get; set; }
     }
 }

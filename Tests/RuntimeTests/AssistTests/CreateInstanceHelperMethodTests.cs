@@ -147,5 +147,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             person.NullableDouble.ShouldEqual(7.218);
         }
+
+        [Test]
+        public void Sets_Guid_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("GuidId", "B48D8AF4-405F-4286-B83E-774EA773CFA3");
+
+            var person = table.CreateInstance<Person>();
+
+            person.GuidId.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
+        }
+
+        [Test]
+        public void Sets_nullable_guid_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableGuidId", "B48D8AF4-405F-4286-B83E-774EA773CFA3");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableGuidId.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
+        }
     }
 }

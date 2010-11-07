@@ -51,6 +51,13 @@ namespace TechTalk.SpecFlow.Assist
                        : double.MinValue;
         }
 
+        public static Guid GetGuid(this TableRow row, string id)
+        {
+            return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
+                       ? new Guid(row[id])
+                       : new Guid();
+        }
+
         private static bool TheBooleanValueIsEmpty(TableRow row, string id)
         {
             return AValueWithThisIdExists(row, id) && string.IsNullOrEmpty(row[id]);
