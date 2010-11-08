@@ -293,6 +293,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             exceptionWasThrown.ShouldBeTrue();
         }
 
+        [Test]
+        public void Can_compare_guids_properly()
+        {
+            var table = new Table("GuidProperty");
+            table.AddRow("5F270095-FF26-4CE1-9C43-DA909FF228F4");
+
+            var items = new[]
+                            {
+                                new SetTestObject {GuidProperty = new Guid("5F270095-FF26-4CE1-9C43-DA909FF228F4")},
+                            };
+
+            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            exceptionWasThrown.ShouldBeFalse();
+        }
+
         private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
         {
             var exceptionWasThrown = false;
@@ -314,5 +330,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public int IntProperty { get; set; }
 
         public DateTime DateTimeProperty { get; set; }
+
+        public Guid GuidProperty { get; set; }
     }
 }

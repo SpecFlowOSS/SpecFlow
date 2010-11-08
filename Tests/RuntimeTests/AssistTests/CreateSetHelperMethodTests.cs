@@ -112,6 +112,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             people.First().NullableDouble.ShouldEqual(7.28);
         }
 
+        [Test]
+        public void Sets_guids_on_the_instance_when_the_type_is_guid()
+        {
+            var table = new Table("GuidId", "NullableGuidId");
+            table.AddRow("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82", "11116FB0-3E49-473A-B79F-A77D0A5A1526");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().GuidId.ShouldEqual(new Guid("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82"));
+            people.First().NullableGuidId.ShouldEqual(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
+        }
     }
 
     public class Person
