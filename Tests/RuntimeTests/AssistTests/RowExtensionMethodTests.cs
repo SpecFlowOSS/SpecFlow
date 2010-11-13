@@ -12,6 +12,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     [TestFixture]
     public class RowExtensionMethodTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
 
         [Test]
         public void GetString_should_return_the_string_value_from_the_row()
