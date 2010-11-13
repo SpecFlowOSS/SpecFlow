@@ -110,5 +110,50 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             people.First().IsRational.ShouldBeTrue();
         }
+
+        [Test]
+        public void Sets_doubless_on_the_instance_when_type_is_double()
+        {
+            var table = new Table("Double", "NullableDouble");
+            table.AddRow("4.193", "7.28");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().Double.ShouldEqual(4.193);
+            people.First().NullableDouble.ShouldEqual(7.28);
+        }
+
+        [Test]
+        public void Sets_guids_on_the_instance_when_the_type_is_guid()
+        {
+            var table = new Table("GuidId", "NullableGuidId");
+            table.AddRow("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82", "11116FB0-3E49-473A-B79F-A77D0A5A1526");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().GuidId.ShouldEqual(new Guid("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82"));
+            people.First().NullableGuidId.ShouldEqual(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
+        }
     }
+
+//    public class Person
+//    {
+//        public string FirstName { get; set; }
+//        public string LastName { get; set; }
+//        public DateTime BirthDate { get; set; }
+//        public int NumberOfIdeas { get; set; }
+//        public decimal Salary { get; set; }
+//        public bool IsRational { get; set; }
+//
+//        public DateTime? NullableDateTime { get; set; }
+//        public bool? NullableBool { get; set; }
+//        public decimal? NullableDecimal { get; set; }
+//        public int? NullableInt { get; set; }
+//
+//        public double Double { get; set; }
+//        public double? NullableDouble { get; set; }
+//
+//        public Guid GuidId { get; set; }
+//        public Guid? NullableGuidId { get; set; }
+//    }
 }
