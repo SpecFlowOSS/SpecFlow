@@ -59,48 +59,6 @@ namespace TechTalk.SpecFlow.SharpDevelop4Integration
 				});
 		}
 		
-//		private void GenerateCodeAsync(FileProjectItem item)
-//		{
-//			string fileName = item.FileName;
-//			if(IsFeatureFile(fileName)) {
-//				var projectNode = item.Project;
-//				var codeProvider = projectNode.LanguageProperties.CodeDomProvider;
-//
-//				SpecFlowProject specFlowProject = CreateSpecFlowProjectFrom(projectNode);
-//				var specFlowGenerator = new SpecFlowGenerator(specFlowProject);
-//
-//				string outputFile =
-//
-//					SpecFlowFeatureFile specFlowFeatureFile = specFlowProject.GetOrCreateFeatureFile(fileName);
-//
-//				try {
-//					var fileContents = File.ReadAllText(fileName);
-//					string outputFileContents;
-//					using(var reader = new StringReader(fileContents)) {
-//						using (var writer = new StringWriter(new StringBuilder())) {
-//							specFlowGenerator.GenerateTestFile(specFlowFeatureFile, codeProvider, reader, writer);
-//							outputFileContents = writer.ToString();
-//						}
-//					}
-//					File.WriteAllText(outputFile, outputFileContents);
-//					WorkbenchSingleton.SafeThreadAsyncCall(
-//						() => {
-//							FileUtility.RaiseFileSaved(new FileNameEventArgs(outputFile));
-//							if(!projectNode.IsFileInProject(outputFile)) {
-//								var outputFileProjectItem = new FileProjectItem(projectNode, ItemType.Compile);
-//								outputFileProjectItem.
-//									outputFileProjectItem.FileName = outputFile;
-//								ProjectService.AddProjectItem(projectNode, outputFileProjectItem);
-//								ProjectBrowserPad.RefreshViewAsync();
-//								projectNode.Save();
-//							}
-//						});
-//				} catch(IOException) {
-//					// IOExceptions are possible and expected since the read/writer is asynchrously accessing shared files which could be locked (for instance due to a save).
-//				}
-//			}
-//		}
-//
 		private SpecFlowProject CreateSpecFlowProjectFrom(IProject project)
 		{
 			var specFlowProject = new SpecFlowProject();

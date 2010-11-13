@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TechTalk.SpecFlow.SharpDevelopIntegration")]
+[assembly: AssemblyTitle("TechTalk.SpecFlow.SharpDevelop4Integration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TechTalk.SpecFlow.SharpDevelopIntegration")]
+[assembly: AssemblyProduct("TechTalk.SpecFlow.SharpDevelop4Integration")]
 [assembly: AssemblyCopyright("Copyright 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
