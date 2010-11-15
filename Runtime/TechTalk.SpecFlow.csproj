@@ -51,8 +51,10 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
+    <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\StepContext.cs" />

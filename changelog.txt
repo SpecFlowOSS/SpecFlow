@@ -4,6 +4,7 @@ Fixed issues:
 + Scoped Steps does not recognize feature tags (Issue 12)
 + Support for double and nullable types in table-helpers of SpecFlow.Assist
 + Support for enum parsing in table-helpers of SpecFlow.Assist
++ Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
 
 1.4.0 - 2010/10/07
 

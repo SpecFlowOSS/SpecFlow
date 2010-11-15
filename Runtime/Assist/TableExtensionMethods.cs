@@ -54,10 +54,18 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString("Value")},
                            {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
+                           {typeof (int?), (TableRow row, string id) => row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},
+                           {typeof (decimal?), (TableRow row, string id) => row.GetDecimal("Value")},
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},
+                           {typeof (bool?), (TableRow row, string id) => row.GetBoolean("Value")},
                            {typeof (DateTime), (TableRow row, string id) => row.GetDateTime("Value")},
-                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")}
+                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime("Value")},
+                           {typeof (Double), (TableRow row, string id) => row.GetDouble("Value")},
+                           {typeof (Double?), (TableRow row, string id) => row.GetDouble("Value")},
+                           {typeof (Guid), (TableRow row, string id) => row.GetGuid("Value")},
+                           {typeof (Guid?), (TableRow row, string id) => row.GetGuid("Value")},
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")},
                        };
         }
 
@@ -67,14 +75,18 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString(id)},
                            {typeof (int), (TableRow row, string id) => row.GetInt32(id)},
-                           {typeof (decimal), (TableRow row, string id) => row.GetDecimal(id)},
-                           {typeof (bool), (TableRow row, string id) => row.GetBoolean(id)},
-                           {typeof (DateTime), (TableRow row, string id) => row.GetDateTime(id)},
-                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>(id)},
                            {typeof (int?), (TableRow row, string id) => row.GetInt32(id)},
+                           {typeof (decimal), (TableRow row, string id) => row.GetDecimal(id)},
                            {typeof (decimal?), (TableRow row, string id) => row.GetDecimal(id)},
+                           {typeof (bool), (TableRow row, string id) => row.GetBoolean(id)},
                            {typeof (bool?), (TableRow row, string id) => row.GetBoolean(id)},
-                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime(id)}
+                           {typeof (DateTime), (TableRow row, string id) => row.GetDateTime(id)},
+                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime(id)},
+                           {typeof (double), (TableRow row, string id) => row.GetDouble(id)},
+                           {typeof (double?), (TableRow row, string id) => row.GetDouble(id)},
+                           {typeof (Guid), (TableRow row, string id) => row.GetGuid(id)},
+                           {typeof (Guid?), (TableRow row, string id) => row.GetGuid(id)},
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>(id)}
                        };
         }
 

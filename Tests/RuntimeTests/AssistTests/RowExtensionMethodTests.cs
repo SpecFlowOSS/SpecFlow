@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using Should;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
@@ -191,6 +189,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .GetDouble("Amount").ShouldEqual(4.01);
         }
 
+
         [Test]
         public void GetDouble_should_return_MinValue_when_the_value_is_not_defined()
         {
@@ -207,6 +206,33 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("");
             table.Rows.First()
                 .GetDouble("Amount").ShouldEqual(double.MinValue);
+        }
+
+        [Test]
+        public void GetGuid_should_return_guid_version_of_string()
+        {
+            var table = new Table("Guid");
+            table.AddRow("285B31CC-C5C2-4630-A1C5-EE7431717C3F");
+            table.Rows.First()
+                .GetGuid("Guid").ShouldEqual(new Guid("285B31CC-C5C2-4630-A1C5-EE7431717C3F"));
+        }
+
+        [Test]
+        public void GetGuid_should_return_MinValue_when_the_value_is_not_defined()
+        {
+            var table = new Table("Guid");
+            table.AddRow("285B31CC-C5C2-4630-A1C5-EE7431717C3F");
+            table.Rows.First()
+                .GetGuid("SomethingThatDoesNotExist").ShouldEqual(new Guid());
+        }
+
+        [Test]
+        public void GetGuid_should_return_MinValue_when_the_value_is_empty()
+        {
+            var table = new Table("GetGuid");
+            table.AddRow("");
+            table.Rows.First()
+                .GetGuid("GetGuid").ShouldEqual(new Guid());
         }
 
         [Test]
