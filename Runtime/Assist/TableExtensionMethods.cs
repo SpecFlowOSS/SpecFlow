@@ -66,6 +66,8 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Guid), (TableRow row, string id) => row.GetGuid("Value")},
                            {typeof (Guid?), (TableRow row, string id) => row.GetGuid("Value")},
                            {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")},
+                           {typeof (char), (TableRow row, string id) => row.GetChar("Value")},
+                           {typeof (char?), (TableRow row, string id) => row.GetChar("Value")}
                        };
         }
 

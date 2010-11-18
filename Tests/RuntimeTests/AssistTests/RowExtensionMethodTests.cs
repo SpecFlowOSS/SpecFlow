@@ -191,6 +191,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .GetDouble("Amount").ShouldEqual(4.01);
         }
 
+        [Test]
+        public void GetChar_should_return_the_character_from_the_row()
+        {
+            var table = new Table("Character");
+            table.AddRow("M");
+            table.Rows.First()
+                .GetChar("Character").ShouldEqual('M');
+        }
 
         [Test]
         public void GetDouble_should_return_MinValue_when_the_value_is_not_defined()

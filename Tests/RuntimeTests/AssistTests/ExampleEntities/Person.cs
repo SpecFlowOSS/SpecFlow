@@ -6,11 +6,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
     {
         public Sex Sex { get; set; }
         public string FirstName { get; set; }
+        public char MiddleInitial { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public int NumberOfIdeas { get; set; }
         public decimal Salary { get; set; }
         public bool IsRational { get; set; }
+
+        public char? NullableChar { get; set; }
 
         public DateTime? NullableDateTime { get; set; }
         public bool? NullableBool { get; set; }
