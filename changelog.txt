@@ -5,6 +5,7 @@ Fixed issues:
 + Support for double and nullable types in table-helpers of SpecFlow.Assist
 + Support for enum parsing in table-helpers of SpecFlow.Assist
 + Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
++ Support for char parsing in table-helpers of SpecFlow.Assist (Issue 19)
 
 1.4.0 - 2010/10/07
 
