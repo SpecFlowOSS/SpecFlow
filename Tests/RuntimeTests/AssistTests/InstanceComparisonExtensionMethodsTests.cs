@@ -1,24 +1,33 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
     public class InstanceComparisonExtensionMethodsTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
         [Test]
         public void Throws_exception_when_value_of_matching_string_property_does_not_match()
         {
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new ComparisonTest {StringProperty = "Peter Keating"};
+            var test = new InstanceComparisonTestObject {StringProperty = "Peter Keating"};
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            exceptionThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue();
         }
 
         [Test]
@@ -27,11 +36,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new ComparisonTest {StringProperty = "Howard Roark"};
+            var test = new InstanceComparisonTestObject {StringProperty = "Howard Roark"};
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            exceptionThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -41,15 +50,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("StringProperty", "Howard Roark");
             table.AddRow("IntProperty", "20");
 
-            var test = new ComparisonTest
+            var test = new InstanceComparisonTestObject
                            {
                                StringProperty = "Howard Roark",
                                IntProperty = 10
                            };
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            exceptionThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue();
         }
 
         [Test]
@@ -58,18 +67,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
             table.AddRow("IntProperty", "10");
-            table.AddRow("DateTimeProperty", "12/25/2010 12:00:00 AM");
+            table.AddRow("DateTimeProperty", "12/25/2010 8:00:00 AM");
 
-            var test = new ComparisonTest
+            var test = new InstanceComparisonTestObject
             {
                 StringProperty = "Howard Roark",
                 IntProperty = 10,
-                DateTimeProperty = new DateTime(2010, 12, 25)
+                DateTimeProperty = new DateTime(2010, 12, 25, 8, 0, 0)
             };
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            exceptionThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -78,14 +87,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("NullableField", "");
 
-            var test = new ComparisonTest
+            var test = new InstanceComparisonTestObject
             {
                 NullableField = null,
             };
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, test);
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            exceptionThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -94,7 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new ComparisonTest {StringProperty = "Peter Keating"};
+            var test = new InstanceComparisonTestObject {StringProperty = "Peter Keating"};
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
@@ -110,7 +119,7 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>");
             table.AddRow("StringProperty", "Howard Roark");
             table.AddRow("IntProperty", "1");
 
-            var test = new ComparisonTest
+            var test = new InstanceComparisonTestObject
                            {
                                StringProperty = "Peter Keating",
                                IntProperty = 2
@@ -130,7 +139,7 @@ IntProperty: Expected <1>, Actual <2>");
             var table = new Table("Field", "Value");
             table.AddRow("IDoNotExist", "Ok, mister");
 
-            var test = new ComparisonTest();
+            var test = new InstanceComparisonTestObject();
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
@@ -144,15 +153,19 @@ IDoNotExist: Property does not exist");
             var table = new Table("Field", "Value");
             table.AddRow("BooleanProperty", "true");
 
-            ExceptionWasThrownByThisComparison(table, new ComparisonTest{
-                                                              BooleanProperty = true
-                                                          }).ShouldBeFalse();
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
+                                                                                                        {
+                                                                                                            BooleanProperty = true
+                                                                                                        });
+            
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
 
-            ExceptionWasThrownByThisComparison(table, new ComparisonTest
-                                                        {
-                                                            BooleanProperty = false
-                                                        }).ShouldBeTrue();
+            comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
+                                                                                                    {
+                                                                                                        BooleanProperty = false
+                                                                                                    });
 
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -161,10 +174,12 @@ IDoNotExist: Property does not exist");
             var table = new Table("Field", "Value");
             table.AddRow("GuidProperty", "DFFC3F4E-670A-400A-8212-C6841E2EA055");
 
-            ExceptionWasThrownByThisComparison(table, new ComparisonTest
-            {
-                GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
-            }).ShouldBeFalse();
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
+                                                                                                        {
+                                                                                                            GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
+                                                                                                        });
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -172,9 +187,9 @@ IDoNotExist: Property does not exist");
         {
             var table = new Table("Field", "Value");
 
-            var exceptionThrown = ExceptionWasThrownByThisComparison(table, null);
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, null);
 
-            exceptionThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -187,7 +202,7 @@ IDoNotExist: Property does not exist");
             exception.Message.ShouldEqual("The item to compare was null.");
         }
 
-        private static ComparisonException GetExceptionThrownByThisComparison(Table table, ComparisonTest test)
+        private static ComparisonException GetExceptionThrownByThisComparison(Table table, InstanceComparisonTestObject test)
         {
             try
             {
@@ -200,30 +215,19 @@ IDoNotExist: Property does not exist");
             return null;
         }
 
-        private static bool ExceptionWasThrownByThisComparison(Table table, ComparisonTest test)
+        private static ComparisonTestResult ExceptionWasThrownByThisComparison(Table table, InstanceComparisonTestObject test)
         {
-            var exception = false;
+            var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try
             {
                 table.CompareToInstance(test);
             }
             catch (ComparisonException ex)
             {
-                exception = true;
+                result.ExceptionWasThrown = true;
+                result.ExceptionMessage = ex.Message;
             }
-            return exception;
+            return result;
         }
-    }
-
-    public class ComparisonTest
-    {
-        public string StringProperty { get; set; }
-        public int IntProperty { get; set; }
-        public DateTime DateTimeProperty { get; set; }
-        public Guid GuidProperty { get; set; }
-
-        public bool BooleanProperty { get; set; }
-
-        public int? NullableField { get; set; }
     }
 }

@@ -1,23 +1,32 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
     public class SetComparisonExtensionMethods_ThrowTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
         [Test]
         public void Throws_exception_when_the_table_is_empty_and_the_set_has_one_item()
         {
             var table = new Table("StringProperty");
 
-            var items = new[] {new SetTestObject()};
+            var items = new[] {new SetComparisonTestObject()};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -25,11 +34,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var table = new Table("StringProperty");
 
-            var items = new SetTestObject[] {};
+            var items = new SetComparisonTestObject[] {};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -38,11 +47,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("this is not an empty table");
 
-            var items = new SetTestObject[] {};
+            var items = new SetComparisonTestObject[] {};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -51,11 +60,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("Taggart Transcontinental");
 
-            var items = new[] {new SetTestObject {StringProperty = "Taggart Transcontinental"}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = "Taggart Transcontinental"}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -64,11 +73,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("Taggart Transcontinental");
 
-            var items = new[] {new SetTestObject {StringProperty = "Phoenix-Durango"}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = "Phoenix-Durango"}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -77,11 +86,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty", "IntProperty");
             table.AddRow("Taggart Transcontinental", "10");
 
-            var items = new[] {new SetTestObject {StringProperty = "Taggart Transcontinental", IntProperty = 20}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = "Taggart Transcontinental", IntProperty = 20}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -92,58 +101,58 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject
+                                new SetComparisonTestObject
                                     {
                                         StringProperty = "Taggart Transcontinental",
                                         IntProperty = 10
                                     }
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
         public void Throws_an_exception_when_the_first_two_properties_match_but_the_third_does_not()
         {
             var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
-            table.AddRow("Taggart Transcontinental", "10", "12/25/2010");
+            table.AddRow("Taggart Transcontinental", "10", "12/25/2010 8:00:00 AM");
 
             var items = new[]
                             {
-                                new SetTestObject
+                                new SetComparisonTestObject
                                     {
                                         StringProperty = "Taggart Transcontinental",
                                         IntProperty = 10,
-                                        DateTimeProperty = new DateTime(2010, 12, 26)
+                                        DateTimeProperty = new DateTime(2010, 12, 26, 8, 0, 0)
                                     }
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
         public void Does_not_throw_an_exception_if_all_three_properties_match()
         {
             var table = new Table("StringProperty", "IntProperty", "DateTimeProperty");
-            table.AddRow("Taggart Transcontinental", "10", "12/25/2010");
+            table.AddRow("Taggart Transcontinental", "10", "12/25/2010 8:00:00 AM");
 
             var items = new[]
                             {
-                                new SetTestObject
+                                new SetComparisonTestObject
                                     {
                                         StringProperty = "Taggart Transcontinental",
                                         IntProperty = 10,
-                                        DateTimeProperty = new DateTime(2010, 12, 25)
+                                        DateTimeProperty = new DateTime(2010, 12, 25, 8, 0, 0)
                                     }
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -152,11 +161,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("IDoNotExist");
             table.AddRow("nananana boo boo");
 
-            var items = new[] {new SetTestObject()};
+            var items = new[] {new SetComparisonTestObject()};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -165,11 +174,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("");
 
-            var items = new[] {new SetTestObject {StringProperty = null}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = null}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+
         }
 
         [Test]
@@ -178,11 +188,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("");
 
-            var items = new[] {new SetTestObject {StringProperty = "ketchup"}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = "ketchup"}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -191,11 +201,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("StringProperty");
             table.AddRow("mustard");
 
-            var items = new[] {new SetTestObject {StringProperty = null}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = null}};
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -207,13 +217,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "ketchup"},
-                                new SetTestObject {StringProperty = "spicy mustard"}
+                                new SetComparisonTestObject {StringProperty = "ketchup"},
+                                new SetComparisonTestObject {StringProperty = "spicy mustard"}
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -225,13 +235,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "ketchup"},
-                                new SetTestObject {StringProperty = "mustard"}
+                                new SetComparisonTestObject {StringProperty = "ketchup"},
+                                new SetComparisonTestObject {StringProperty = "mustard"}
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -244,14 +254,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "ketchup"},
-                                new SetTestObject {StringProperty = "relish"},
-                                new SetTestObject {StringProperty = "mustard"}
+                                new SetComparisonTestObject {StringProperty = "ketchup"},
+                                new SetComparisonTestObject {StringProperty = "relish"},
+                                new SetComparisonTestObject {StringProperty = "mustard"}
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -264,14 +274,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "Burt"},
-                                new SetTestObject {StringProperty = "Ernie"},
-                                new SetTestObject {StringProperty = "Ernie"}
+                                new SetComparisonTestObject {StringProperty = "Burt"},
+                                new SetComparisonTestObject {StringProperty = "Ernie"},
+                                new SetComparisonTestObject {StringProperty = "Ernie"}
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -283,14 +293,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "Burt"},
-                                new SetTestObject {StringProperty = "Ernie"},
-                                new SetTestObject {StringProperty = "Grover"}
+                                new SetComparisonTestObject {StringProperty = "Burt"},
+                                new SetComparisonTestObject {StringProperty = "Ernie"},
+                                new SetComparisonTestObject {StringProperty = "Grover"}
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -301,36 +311,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var items = new[]
                             {
-                                new SetTestObject {GuidProperty = new Guid("5F270095-FF26-4CE1-9C43-DA909FF228F4")},
+                                new SetComparisonTestObject {GuidProperty = new Guid("5F270095-FF26-4CE1-9C43-DA909FF228F4")},
                             };
 
-            var exceptionWasThrown = DetermineIfExceptionWasThrownByComparingThese(table, items);
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            exceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
-        private static bool DetermineIfExceptionWasThrownByComparingThese(Table table, SetTestObject[] items)
+        private static ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese(Table table, SetComparisonTestObject[] items)
         {
-            var exceptionWasThrown = false;
+            var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try
             {
                 table.CompareToSet(items);
             }
             catch (ComparisonException ex)
             {
-                exceptionWasThrown = true;
+                result.ExceptionWasThrown = true;
+                result.ExceptionMessage = ex.Message;
             }
-            return exceptionWasThrown;
+            return result;
         }
-    }
-
-    public class SetTestObject
-    {
-        public string StringProperty { get; set; }
-        public int IntProperty { get; set; }
-
-        public DateTime DateTimeProperty { get; set; }
-
-        public Guid GuidProperty { get; set; }
     }
 }

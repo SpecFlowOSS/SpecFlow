@@ -59,8 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
+    <Compile Include="AssistTests\TestInfrastructure\ComparisonTestResult.cs" />
     <Compile Include="AssistTests\ExampleEntities\NullablePerson.cs" />
     <Compile Include="AssistTests\InstanceComparisonExtensionMethodsTests.cs" />
+    <Compile Include="AssistTests\TestInfrastructure\SetComparisonTestObject.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetWithNullableValuesTests.cs" />
@@ -113,6 +116,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

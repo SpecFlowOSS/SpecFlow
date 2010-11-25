@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var table = new Table("StringProperty", "AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
 
-            var items = new[] {new SetTestObject()};
+            var items = new[] {new SetComparisonTestObject()};
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
@@ -27,7 +28,7 @@ AnotherFieldThatDoesNotExist");
         {
             var table = new Table("StringProperty");
 
-            var items = new[] {new SetTestObject()};
+            var items = new[] {new SetComparisonTestObject()};
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
@@ -40,7 +41,7 @@ AnotherFieldThatDoesNotExist");
         {
             var table = new Table("StringProperty");
 
-            var items = new[] {new SetTestObject(), new SetTestObject()};
+            var items = new[] {new SetComparisonTestObject(), new SetComparisonTestObject()};
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
@@ -54,7 +55,7 @@ AnotherFieldThatDoesNotExist");
             var table = new Table("StringProperty");
             table.AddRow("orange");
 
-            var items = new[] {new SetTestObject {StringProperty = "apple"}};
+            var items = new[] {new SetComparisonTestObject {StringProperty = "apple"}};
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
@@ -72,8 +73,8 @@ AnotherFieldThatDoesNotExist");
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "orange"},
-                                new SetTestObject {StringProperty = "rotten apple"}
+                                new SetComparisonTestObject {StringProperty = "orange"},
+                                new SetComparisonTestObject {StringProperty = "rotten apple"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
@@ -92,8 +93,8 @@ AnotherFieldThatDoesNotExist");
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "rotten orange"},
-                                new SetTestObject {StringProperty = "rotten apple"}
+                                new SetComparisonTestObject {StringProperty = "rotten orange"},
+                                new SetComparisonTestObject {StringProperty = "rotten apple"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
@@ -113,9 +114,9 @@ AnotherFieldThatDoesNotExist");
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "orange"},
-                                new SetTestObject {StringProperty = "apple"},
-                                new SetTestObject {StringProperty = "this is an extra row"}
+                                new SetComparisonTestObject {StringProperty = "orange"},
+                                new SetComparisonTestObject {StringProperty = "apple"},
+                                new SetComparisonTestObject {StringProperty = "this is an extra row"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
@@ -131,9 +132,9 @@ AnotherFieldThatDoesNotExist");
 
             var items = new[]
                             {
-                                new SetTestObject {StringProperty = "orange"},
-                                new SetTestObject {StringProperty = "apple"},
-                                new SetTestObject {StringProperty = "this is an extra row"}
+                                new SetComparisonTestObject {StringProperty = "orange"},
+                                new SetComparisonTestObject {StringProperty = "apple"},
+                                new SetComparisonTestObject {StringProperty = "this is an extra row"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
@@ -141,7 +142,7 @@ AnotherFieldThatDoesNotExist");
             exception.Message.ShouldEqual(@"Expected 1 result, but found 3.");
         }
 
-        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetTestObject[] items)
+        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
         {
             try
             {
