@@ -66,6 +66,8 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Guid), (TableRow row, string id) => row.GetGuid("Value")},
                            {typeof (Guid?), (TableRow row, string id) => row.GetGuid("Value")},
                            {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")},
+                           {typeof (char), (TableRow row, string id) => row.GetChar("Value")},
+                           {typeof (char?), (TableRow row, string id) => row.GetChar("Value")}
                        };
         }
 
@@ -86,7 +88,9 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (double?), (TableRow row, string id) => row.GetDouble(id)},
                            {typeof (Guid), (TableRow row, string id) => row.GetGuid(id)},
                            {typeof (Guid?), (TableRow row, string id) => row.GetGuid(id)},
-                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>(id)}
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>(id)},
+                           {typeof (char), (TableRow row, string id) => row.GetChar(id)},
+                           {typeof (char?), (TableRow row, string id) => row.GetChar(id)}
                        };
         }
 

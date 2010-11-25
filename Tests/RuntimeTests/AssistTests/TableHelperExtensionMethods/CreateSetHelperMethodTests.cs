@@ -142,6 +142,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().GuidId.ShouldEqual(new Guid("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82"));
             people.First().NullableGuidId.ShouldEqual(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
         }
+
+        [Test]
+        public void Sets_chars_on_the_instance_when_the_type_is_char()
+        {
+            var table = new Table("MiddleInitial", "NullableChar");
+            table.AddRow("O", "K");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().MiddleInitial.ShouldEqual('O');
+            people.First().NullableChar.ShouldEqual('K');
+        }
     }
 
 //    public class Person

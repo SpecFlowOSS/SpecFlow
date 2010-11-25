@@ -51,6 +51,11 @@ namespace TechTalk.SpecFlow.Assist
                        : double.MinValue;
         }
 
+        public static char GetChar(this TableRow row, string id)
+        {
+            return Convert.ToChar(row[id]);
+        }
+
         public static Enum GetEnum<T>(this TableRow row, string id)
         {
             var value = row[id].Replace(" ", string.Empty);

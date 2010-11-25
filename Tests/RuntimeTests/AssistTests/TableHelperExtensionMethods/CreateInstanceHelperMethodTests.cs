@@ -92,5 +92,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             person.BirthDate.ShouldEqual(new DateTime(2010, 12, 31));
         }
+
+        [Test]
+        public void Sets_char_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("MiddleInitial", "T");
+            table.AddRow("NullableChar", "S");
+
+            var person = table.CreateInstance<Person>();
+
+            person.MiddleInitial.ShouldEqual('T');
+            person.NullableChar.ShouldEqual('S');
+        }
     }
 }
