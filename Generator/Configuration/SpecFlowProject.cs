@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
@@ -27,11 +28,13 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public string DefaultNamespace { get; set; }
         public List<SpecFlowFeatureFile> FeatureFiles { get; private set; }
         public GeneratorConfiguration GeneratorConfiguration { get; set; }
+        public RuntimeConfigurationForGenerator RuntimeConfiguration { get; set; }
 
         public SpecFlowProject()
         {
             FeatureFiles = new List<SpecFlowFeatureFile>();
             GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
+            RuntimeConfiguration = new RuntimeConfigurationForGenerator(); // load defaults
         }
 
         public SpecFlowFeatureFile GetOrCreateFeatureFile(string featureFileName)

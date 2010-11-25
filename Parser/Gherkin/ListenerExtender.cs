@@ -131,27 +131,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return newLineRe.Matches(text).Count + 1;
         }
 
-        private StepKeyword GetStepKeyword(string keyword)
-        {
-            if (languageService.keywords("and").contains(keyword))
-                return StepKeyword.And;
-            // this is checked at the first place to interpret "*" as "and"
-
-            if (languageService.keywords("given").contains(keyword))
-                return StepKeyword.Given;
-
-            if (languageService.keywords("when").contains(keyword))
-                return StepKeyword.When;
-
-            if (languageService.keywords("then").contains(keyword))
-                return StepKeyword.Then;
-
-            if (languageService.keywords("but").contains(keyword))
-                return StepKeyword.But;
-
-            return StepKeyword.And; // if we dont find it, we suppose an "and"
-        }
-
         private void ResetScenarioBlocks()
         {
             lastScenarioBlock = ScenarioBlock.Given;
@@ -276,7 +255,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
             var stepSpan = ProcessSimpleLanguageElement(line);
 
-            StepKeyword stepKeyword = GetStepKeyword(keyword);
+            StepKeyword stepKeyword = languageService.GetStepKeyword(keyword) ?? StepKeyword.And; // if we dont find it, we suppose an "and"
             ScenarioBlock scenarioBlock = CalculateScenarioBlock(stepKeyword);
 
             gherkinListener.Step(keyword, stepKeyword, scenarioBlock, text, stepSpan);
