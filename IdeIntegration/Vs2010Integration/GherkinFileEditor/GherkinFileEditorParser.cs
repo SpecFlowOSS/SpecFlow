@@ -18,12 +18,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
     internal class GherkinFileEditorParser
     {
-        public static GherkinFileEditorParser GetParser(ITextBuffer buffer, IClassificationTypeRegistryService classificationRegistry, IVisualStudioTracer visualStudioTracer, SpecFlowProject specFlowProject)
-        {
-            return buffer.Properties.GetOrCreateSingletonProperty(() =>
-                new GherkinFileEditorParser(buffer, classificationRegistry, visualStudioTracer, specFlowProject));
-        }
-
         private class IdleHandler
         {
             private DateTime nextParseTime = DateTime.MinValue;
@@ -222,6 +216,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TraceFinishParse(stopwatch, "incremental");
         }
 
+        private GherkinFileEditorInfo DoFullParse(ITextSnapshot textSnapshot)
+        {
+            string fileContent = textSnapshot.GetText();
+            I18n languageService = GetLanguageService(fileContent);
+
+            return DoParse(fileContent, languageService, textSnapshot);
+        }
+
+        public GherkinFileEditorInfo EnsureParsingResult(ITextSnapshot textSnapshot)
+        {
+            if (this.GherkinFileEditorInfo != null)
+                return this.GherkinFileEditorInfo;
+            return DoFullParse(textSnapshot);
+        }
+
         private void FullParse(ChangeInfo changeInfo)
         {
             visualStudioTracer.Trace("Start full parsing", ParserTraceCategory);
@@ -230,10 +239,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
             partialParseCount = 0;
 
-            string fileContent = changeInfo.TextSnapshot.GetText();
-            I18n languageService = GetLanguageService(fileContent);
-
-            var result = DoParse(fileContent, languageService, changeInfo.TextSnapshot);
+            var result = DoFullParse(changeInfo.TextSnapshot);
 
             TriggerChanges(result, changeInfo);
 
@@ -285,7 +291,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                 firstUnchangedScenario = partialListeningDoneException.FirstUnchangedScenario;
             }
 
-            return gherkinListener.GetResult();
+            var result = gherkinListener.GetResult();
+            result.LanguageService = languageService;
+            return result;
         }
 
         private GherkinFileEditorInfo DoParse(string fileContent, I18n languageService, ITextSnapshot textSnapshot)

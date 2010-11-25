@@ -85,6 +85,7 @@
     <Compile Include="GherkinBuilder\StepBuilder.cs" />
     <Compile Include="GherkinBuilder\TableBuilder.cs" />
     <Compile Include="GherkinLanguageServices.cs" />
+    <Compile Include="Gherkin\LanguageServiceExtensions.cs" />
     <Compile Include="Gherkin\GherkinBuffer.cs" />
     <Compile Include="Gherkin\GherkinScanner.cs" />
     <Compile Include="Gherkin\IGherkinListener.cs" />

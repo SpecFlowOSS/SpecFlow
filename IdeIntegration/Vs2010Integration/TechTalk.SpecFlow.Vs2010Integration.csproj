@@ -77,6 +77,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\VS2010SDK\v4.0\Microsoft.VisualStudio.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Language.Intellisense, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\VS2010SDK\v4.0\Microsoft.VisualStudio.Language.Intellisense.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\VS2010SDK\v2.0\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
@@ -151,6 +155,13 @@
     <Compile Include="..\Vs2008Integration\BaseCodeGeneratorWithSite.cs">
       <Link>SingleFileGenerator\BaseCodeGeneratorWithSite.cs</Link>
     </Compile>
+    <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
+    <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
+    <Compile Include="AutoComplete\CompletionSource.cs" />
+    <Compile Include="GherkinProcessorServices.cs" />
+    <Compile Include="DteProjectReader.cs" />
+    <Compile Include="IGherkinProcessorServices.cs" />
+    <Compile Include="SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs" />
     <Compile Include="Tracing\IVisualStudioTracer.cs" />
     <Compile Include="Tracing\OutputWindow\IOutputWindowDefinitionMetadata.cs" />
     <Compile Include="Tracing\OutputWindow\IOutputWindowPane.cs" />
@@ -162,15 +173,13 @@
     <Compile Include="Tracing\OutputWindowDefinitions.cs" />
     <Compile Include="Tracing\OutputWindow\VsOutputWindowPaneAdapter.cs" />
     <Compile Include="Tracing\VisualStudioTracer.cs" />
+    <Compile Include="VsxHelper.cs" />
     <None Include="..\Vs2008Integration\CodeGeneratorRegistrationAttribute.cs">
       <Link>SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs</Link>
     </None>
     <None Include="..\Vs2008Integration\SingleFileGeneratorSupportRegistrationAttribute.cs">
       <Link>SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs</Link>
     </None>
-    <Compile Include="..\Vs2008Integration\SpecFlowSingleFileGeneratorBase.cs">
-      <Link>SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs</Link>
-    </Compile>
     <Compile Include="GherkinFileEditor\EditorExtensionProviderBase.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifierFormats.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassificationDefinition.cs" />
@@ -220,6 +229,7 @@
       <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>
