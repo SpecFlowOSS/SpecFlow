@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -179,24 +180,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return attrValue.Substring(1, attrValue.Length - 2); //TODO: handle \ maskings
         }
 
-        private static readonly Regex reParamRe = new Regex(@"\([^\)]+\)");
-
         private string GetRecommendedStepText(string regexAttrValue, CodeFunction codeFunction)
         {
             string unmaskAttributeValue = UnmaskAttributeValue(regexAttrValue);
-            string regexString = unmaskAttributeValue;
 
-            var parameters = codeFunction.Parameters.Cast<CodeParameter>().ToArray();
-            int currentParamIndex = 0;
-            const string defaultParamPlaceholder = "{param}";
-            regexString = reParamRe.Replace(regexString,
-                                     match => currentParamIndex >= parameters.Length
-                                                  ? defaultParamPlaceholder
-                                                  : string.Format("{{{0}}}", parameters[currentParamIndex++].Name));
+            var parameters = codeFunction.Parameters.Cast<CodeParameter>().Select(p => p.Name).ToArray();
 
-            regexString = regexString.Replace(".*", "");
-
-            return regexString.Length == 0 ? unmaskAttributeValue : regexString;
+            return RegexSampler.GetRegexSample(unmaskAttributeValue, parameters);
         }
 
         private Completion CreateCompletion(string stepText)
