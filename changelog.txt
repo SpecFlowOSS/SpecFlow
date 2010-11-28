@@ -6,6 +6,7 @@ Fixed issues:
 + Support for enum parsing in table-helpers of SpecFlow.Assist
 + Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
 + Support for char parsing in table-helpers of SpecFlow.Assist (Issue 19)
++ Support for datetime comparisons that ignore 12:00:00 AM (issue from Google Group)
 
 1.4.0 - 2010/10/07
 
