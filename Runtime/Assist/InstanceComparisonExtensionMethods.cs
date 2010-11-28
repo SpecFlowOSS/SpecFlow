@@ -48,9 +48,14 @@ namespace TechTalk.SpecFlow.Assist
             var expected = table.CreateInstance<T>();
 
             return from row in table.Rows
-                   where ThePropertyDoesNotExist(actual, row) || 
-                   (TheValuesDoNotMatchForThisProperty(row.Id(), actual, expected) && TheValuesDoNotMatch(actual, row)) 
+                   where TheValuesDoNotMatch(actual, row, expected) 
                    select CreateDifferenceForThisRow(actual, row);
+        }
+
+        private static bool TheValuesDoNotMatch<T>(T actual, TableRow row, T expected)
+        {
+            return ThePropertyDoesNotExist(actual, row) || 
+                   (TheValuesDoNotMatchForThisProperty(row.Id(), actual, expected) && TheValuesDoNotMatchForThisRow(actual, row));
         }
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
@@ -79,7 +84,7 @@ namespace TechTalk.SpecFlow.Assist
             return actual.ToString() != expected.ToString();
         }
 
-        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
+        private static bool TheValuesDoNotMatchForThisRow<T>(T instance, TableRow row)
         {
             var expected = row.Value().ToString();
 
