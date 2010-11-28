@@ -82,6 +82,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Should_not_throw_an_exception_when_the_date_time_value_is_midnight_and_the_table_does_not_include_a_time()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("DateTimeProperty", "12/25/2010");
+
+            var test = new InstanceComparisonTestObject
+            {
+                DateTimeProperty = new DateTime(2010, 12, 25, 0, 0, 0)
+            };
+
+            ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Test]
         public void Should_not_throw_an_exception_when_actual_value_is_null_and_expected_is_empty()
         {
             var table = new Table("Field", "Value");
