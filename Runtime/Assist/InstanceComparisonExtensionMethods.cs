@@ -99,23 +99,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
 
-            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
-                actual = actual.ToLower();
-
-            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
-                actual = actual.ToUpper();
-
             return actual;
-        }
-
-        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
-        }
-
-        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof (bool);
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
