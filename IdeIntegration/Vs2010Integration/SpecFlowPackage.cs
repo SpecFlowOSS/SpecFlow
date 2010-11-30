@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [PackageRegistration(UseManagedResourcesOnly = true)]
     // This attribute is used to register the informations needed to show the this package
     // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "1.4.0", IconResourceID = 400)]
     [Guid(GuidList.guidSpecFlowPkgString)]
     public sealed class SpecFlowPackagePackage : Package
     {
@@ -40,12 +40,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
-
-
-        /////////////////////////////////////////////////////////////////////////////
-        // Overriden Package Implementation
-        #region Package Members
-
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initilaization code that rely on services provided by VisualStudio.
@@ -56,7 +50,5 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             base.Initialize();
 
         }
-        #endregion
-
     }
 }

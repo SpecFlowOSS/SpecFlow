@@ -132,7 +132,8 @@
     <value>SpecFlow</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>TechTalk SpecFlow - Pragmatic BDD for .NET</value>
+    <value>TechTalk SpecFlow - Pragmatic BDD for .NET, http://www.specflow.org
+Copyright © 2009–2010 TechTalk</value>
   </data>
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\specflowpackage.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
