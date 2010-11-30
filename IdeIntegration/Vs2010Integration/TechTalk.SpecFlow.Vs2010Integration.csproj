@@ -177,6 +177,11 @@
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IGherkinProcessorServices.cs" />
+    <Compile Include="Options\OptionsPageGeneral.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Options\IntegrationOptionsProvider.cs" />
+    <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -262,7 +267,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <PropertyGroup> <!-- VSSDK Settings -->
+  <PropertyGroup>
+    <!-- VSSDK Settings -->
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
     <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
     <UseCodebase>true</UseCodebase>

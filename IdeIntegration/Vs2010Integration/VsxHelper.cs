@@ -12,6 +12,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 {
     internal class VsxHelper
     {
+        public static DTE GetDte(SVsServiceProvider serviceProvider)
+        {
+            return (DTE)serviceProvider.GetService(typeof(DTE));
+        }
+
         public static Project GetCurrentProject(ITextBuffer buffer, IVsEditorAdaptersFactoryService adaptersFactory, SVsServiceProvider serviceProvider)
         {
             IPersistFileFormat persistFileFormat = adaptersFactory.GetBufferAdapter(buffer) as IPersistFileFormat;
@@ -25,7 +30,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             if (String.IsNullOrWhiteSpace(ppzsFilename))
                 return null;
 
-            DTE dte = (DTE)serviceProvider.GetService(typeof(DTE));
+            DTE dte = GetDte(serviceProvider);
 
             ProjectItem prjItem = dte.Solution.FindProjectItem(ppzsFilename);
 
@@ -139,6 +144,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             {
                 return project.Name == name;
             });
+        }
+
+        public static T GetOption<T>(DTE dte, string categoryName, string pageName, string optionName, T defaultValue = default(T))
+        {
+            Properties properties = dte.Properties[categoryName, pageName];
+            if (properties == null)
+                return defaultValue;
+
+            Property property = properties.Item(optionName);
+            if (property == null || !(property.Value is T))
+                return defaultValue;
+
+            return (T)property.Value;
         }
     }
 }

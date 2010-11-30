@@ -23,6 +23,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
+            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+                return null;
+
             return new GherkinStepCompletionSource(textBuffer, GherkinProcessorServices);
         }
     }
