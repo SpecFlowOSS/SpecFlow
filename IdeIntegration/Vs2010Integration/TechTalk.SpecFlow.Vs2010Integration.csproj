@@ -13,11 +13,6 @@
     <AssemblyName>TechTalk.SpecFlow.Vs2010Integration</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <GeneratePkgDefFile>false</GeneratePkgDefFile>
-    <CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>
-    <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
-    <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
-    <BypassVsixValidation>true</BypassVsixValidation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +23,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DeployExtension>False</DeployExtension>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'VS2010IntegrationTest|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\VS2010IntegrationTest\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -255,20 +259,26 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>
+  <PropertyGroup> <!-- VSSDK Settings -->
+    <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
+    <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
+    <UseCodebase>true</UseCodebase>
+    <!--<BypassVsixValidation>true</BypassVsixValidation>-->
+    <!--<CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>-->
+    <!--<CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>-->
   </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   -->
-  <Target Name="AfterBuild">
+  <!--<Target Name="AfterBuild">
     <XmlPoke XmlInputPath="$(OutDir)\TechTalk.SpecFlow.Vs2010Integration\extension.vsixmanifest" Query="/vsx:Vsix/vsx:Identifier/vsx:InstalledByMsi" Value="true" Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010' /&gt;">
     </XmlPoke>
-  </Target>
+  </Target>-->
 </Project>
