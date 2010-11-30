@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.Shell
 	public sealed class CodeGeneratorRegistrationAttribute : RegistrationAttribute
 	{
 		private string _contextGuid;
-		private Type _generatorType;
+	    private Type _generatorType;
         private Guid _generatorGuid;
 		private string _generatorName;
         private string _generatorRegKeyName;
@@ -51,13 +51,15 @@ namespace Microsoft.VisualStudio.Shell
                 throw new ArgumentNullException("contextGuid");
 
             _contextGuid = contextGuid;
-            _generatorType = generatorType;
+		    _generatorType = generatorType;
             _generatorName = generatorName;
             _generatorRegKeyName = generatorType.Name;
             _generatorGuid = generatorType.GUID;
         }
 
-		/// <summary>
+	    public string FileExtension { get; set; }
+
+	    /// <summary>
 		/// Get the generator Type
 		/// </summary>
 		public Type GeneratorType
@@ -124,6 +126,11 @@ namespace Microsoft.VisualStudio.Shell
         {
             get { return string.Format(CultureInfo.InvariantCulture, @"Generators\{0}\{1}", ContextGuid, GeneratorRegKeyName); }
         }
+
+        private string FileExtensionGeneratorRegKey
+        {
+            get { return string.Format(CultureInfo.InvariantCulture, @"Generators\{0}\{1}", ContextGuid, FileExtension); }
+        }
 		/// <summary>
 		///     Called to register this attribute with the given context.  The context
 		///     contains the location where the registration inforomation should be placed.
@@ -142,6 +149,14 @@ namespace Microsoft.VisualStudio.Shell
                 if (GeneratesSharedDesignTimeSource)
                     childKey.SetValue("GeneratesSharedDesignTimeSource", 1);
 
+            }
+
+            if (FileExtension != null)
+            {
+                using (Key childKey = context.CreateKey(FileExtensionGeneratorRegKey))
+                {
+                    childKey.SetValue(string.Empty, GeneratorRegKeyName);
+                }
             }
 
         }
