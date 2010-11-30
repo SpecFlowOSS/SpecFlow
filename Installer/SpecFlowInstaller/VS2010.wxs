@@ -19,8 +19,8 @@
       <Component Id="Comp_Vs2010Integration_Core" Guid="122C987F-37FF-4383-AF8D-81325A218F31">
         <File Id="specflowsetup.ico_VS2010" Name="specflowsetup.ico" Source="$(var.SetupResourcesDir)\specflowsetup.ico" />
         <File Id="specflow_preview.png_VS2010" Name="specflow_preview.png" Source="$(var.SetupResourcesDir)\specflow_preview.png" />
-        <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.dll" />
-        <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\extension.vsixmanifest" />
+        <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration.dll" />
+        <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\extension.vsixmanifest" />
       </Component>
 
       <Directory Id="Dir_VS2010_ROOT_FOLDER" Name="VS2010_Root">
