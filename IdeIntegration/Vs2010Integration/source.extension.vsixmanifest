@@ -28,5 +28,6 @@
   <Content>
     <MefComponent>|%CurrentProject%|</MefComponent>
     <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
+    <ItemTemplate>ItemTemplates</ItemTemplate>
   </Content>
 </Vsix>

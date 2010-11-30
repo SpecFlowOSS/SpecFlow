@@ -76,7 +76,6 @@
 
     <!-- Custom actions -->
     <CustomActionRef Id="VS90InstallVSTemplates" />
-    <CustomActionRef Id="VS2010InstallVSTemplates" />
 
     <!-- icons -->
     <Icon Id="specflowsetup.ico" SourceFile="$(var.SetupResourcesDir)\specflowsetup.ico"/>
