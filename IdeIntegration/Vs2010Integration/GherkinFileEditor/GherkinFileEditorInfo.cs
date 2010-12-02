@@ -66,7 +66,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             {
                 startPosition = Math.Min(startPosition, change.OldPosition);
                 changeFirstLine = Math.Min(changeFirstLine, beforeTextSnapshot.GetLineNumberFromPosition(change.OldPosition));
-                changeLastLine = Math.Max(changeLastLine, beforeTextSnapshot.GetLineNumberFromPosition(change.OldEnd));
+                changeLastLine = Math.Max(changeLastLine, textSnapshot.GetLineNumberFromPosition(change.NewEnd));
+                //changeLastLine = Math.Max(changeLastLine, beforeTextSnapshot.GetLineNumberFromPosition(change.OldEnd));
                 lineCountDelta += change.LineCountDelta;
                 positionDelta += change.Delta;
             }

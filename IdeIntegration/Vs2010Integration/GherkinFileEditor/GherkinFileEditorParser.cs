@@ -199,18 +199,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
                                                           gherkinFileEditorInfo.ScenarioEditorInfos.TakeUntilItemExclusive(firstAffectedScenario)
                                                               .Select(senario => senario.Shift(changeInfo.TextSnapshot, 0, 0)));
 
+            ScenarioEditorInfo firstUnchangedScenarioShifted = null;
             if (firstUnchangedScenario != null)
             {
                 // inserting the non-effected scenarios at the end
 
+                int firstNewScenarioIndex = partialResult.ScenarioEditorInfos.Count;
                 partialResult.ScenarioEditorInfos.AddRange(
                     gherkinFileEditorInfo.ScenarioEditorInfos.SkipFromItemInclusive(firstUnchangedScenario)
                         .Select(
                             scenario =>
                             scenario.Shift(changeInfo.TextSnapshot, changeInfo.LineCountDelta, changeInfo.PositionDelta)));
+
+                firstUnchangedScenarioShifted = partialResult.ScenarioEditorInfos.Count > firstNewScenarioIndex
+                                             ? partialResult.ScenarioEditorInfos[firstNewScenarioIndex]
+                                             : null;
             }
 
-            TriggerChanges(partialResult, changeInfo, firstAffectedScenario, firstUnchangedScenario);
+            TriggerChanges(partialResult, changeInfo, firstAffectedScenario, firstUnchangedScenarioShifted);
 
             stopwatch.Stop();
             TraceFinishParse(stopwatch, "incremental");
@@ -264,6 +270,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             int endPosition = textSnapshot.Length;
             if (firstUnchangedScenario != null)
                 endPosition = textSnapshot.GetLineFromLineNumber(firstUnchangedScenario.StartLine).Start;
+
+            // safety criteria to avoid argument execption in case of a wrong parser result
+            if (startPosition >= endPosition)
+                return;
+
             var snapshotSpan = new SnapshotSpan(textSnapshot, startPosition, endPosition - startPosition);
 
             if (ClassificationChanged != null)
