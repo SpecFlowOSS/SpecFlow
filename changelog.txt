@@ -6,6 +6,8 @@ New features:
   (Thanks to Marcus Hammarberg for the contribution.)
 + Options for Visual Studio 2010 - you can enable/disable the integration features (syntax coloring, outlining, 
   intellisense) in Visual Studio 2010, Tools / Options / SpecFlow / General
++ Faster installation for VS2010 - if you install SpecFlow only to VS2010, the installation is much faster 
+  as we now entirely using the new VSIX infrastructure for the integaration.
 
 Fixed issues:
 + Scoped Steps does not recognize feature tags (Issue 12)
