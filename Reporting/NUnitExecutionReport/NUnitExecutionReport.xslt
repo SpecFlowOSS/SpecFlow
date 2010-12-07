@@ -107,10 +107,16 @@
             <th class="top">Pending</th>
             <th class="top">Ignored</th>
           </tr>
-          <xsl:apply-templates select="//nunit:test-suite[(child::nunit:results/nunit:test-case)]" mode="summary" />
+          <xsl:apply-templates select="//nunit:test-suite[(child::nunit:results/nunit:test-case)]" mode="summary">
+            <xsl:sort select="@description" />
+            <xsl:sort select="@name"/>
+          </xsl:apply-templates>
         </table>
         <h2>Feature Execution Details</h2>
-        <xsl:apply-templates select="//nunit:test-suite[(child::nunit:results/nunit:test-case)]" />
+        <xsl:apply-templates select="//nunit:test-suite[(child::nunit:results/nunit:test-case)]">
+          <xsl:sort select="@description" />
+          <xsl:sort select="@name"/>
+        </xsl:apply-templates>
       </body>
     </html>
   </xsl:template>

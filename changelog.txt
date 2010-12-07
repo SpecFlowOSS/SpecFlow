@@ -16,6 +16,7 @@ Fixed issues:
 + Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
 + Support for char parsing in table-helpers of SpecFlow.Assist (Issue 19)
 + VS2010 might crash after pasting into a feature file
++ Excution report should list features ordered by feature title
 
 1.4.0 - 2010/10/07
 
