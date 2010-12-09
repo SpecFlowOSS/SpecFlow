@@ -21,6 +21,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public CodeDomHelper CodeDomHelper { get; set; }
 
+        public bool SupportsTestCases { get { return false; } }
+
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
             // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
@@ -113,6 +115,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
 
             SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetTestCase(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            // xUnit does not support test cases
+            throw new NotSupportedException();
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)

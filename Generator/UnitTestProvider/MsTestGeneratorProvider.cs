@@ -24,6 +24,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private CodeTypeDeclaration currentTestTypeDeclaration = null;
 
+        public virtual bool SupportsTestCases { get { return false; } }
+
         public virtual void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
             typeDeclaration.CustomAttributes.Add(
@@ -76,6 +78,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             string featureTitle = currentTestTypeDeclaration.UserData[FEATURE_TITILE_KEY] as string;
             if (featureTitle != null)
                 SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
+        }
+
+        public virtual void SetTestCase(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            //MsTest does not support test cases... :(
+            throw new NotSupportedException();
         }
 
         public virtual void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)

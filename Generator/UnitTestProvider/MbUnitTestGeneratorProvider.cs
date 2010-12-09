@@ -17,6 +17,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string IGNORE_ATTR = "MbUnit.Framework.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "MbUnit.Framework.DescriptionAttribute";
 
+        public bool SupportsTestCases { get { return false; } }
+
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
             typeDeclaration.CustomAttributes.Add(
@@ -59,6 +61,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReference(TEST_ATTR)));
 
             SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetTestCase(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            // xUnit does not support test cases
+            throw new NotSupportedException();
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
