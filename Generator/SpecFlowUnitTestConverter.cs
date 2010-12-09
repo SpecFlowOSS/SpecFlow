@@ -298,15 +298,15 @@ namespace TechTalk.SpecFlow.Generator
 
             var testMethod = GenerateScenarioOutlineBody(feature, scenarioOutline, paramToIdentifier, testType, testMethodName, testSetup);
 
-            if (testGeneratorProvider.SupportsTestCases)
+            if (testGeneratorProvider.SupportsRowTests)
             {
-                SetTestMethodDeclaration(testMethod, scenarioOutline);
+                SetTestMethodDeclaration(testMethod, scenarioOutline, rowTest: true);
 
                 foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
                 {
                     for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                     {
-                        testGeneratorProvider.SetTestCase(testMethod, exampleSet.Table.Body[rowIndex].Cells.Select(c => c.Value));
+                        testGeneratorProvider.SetRow(testMethod, exampleSet.Table.Body[rowIndex].Cells.Select(c => c.Value));
                     }
                 }
             }
@@ -315,15 +315,16 @@ namespace TechTalk.SpecFlow.Generator
                 int exampleSetIndex = 0;
                 foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
                 {
-                    string exampleSetTitle = exampleSet.Title == null ? string.Format("Scenarios{0}", exampleSetIndex + 1) :
-                                                                                                                               exampleSet.Title.ToIdentifier();
+                    string exampleSetTitle = exampleSet.Title == null
+                        ? string.Format("Scenarios{0}", exampleSetIndex + 1)
+                        : exampleSet.Title.ToIdentifier();
 
                     bool useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.Table);
 
                     for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                     {
                         string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifierPart() :
-
+                                                                                                                                          string.Format("Variant{0}", rowIndex);
                         GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], variantName);
                     }
                     exampleSetIndex++;
@@ -360,9 +361,9 @@ namespace TechTalk.SpecFlow.Generator
         private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, string variantName)
         {
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenarioOutline);
-            testMethod.Name = string.IsNullOrEmpty(exampleSetTitle) ?
-                                                                        string.Format("{0}_{1}", testMethod.Name, variantName) :
-                                                                                                                                   string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitle, variantName);
+            testMethod.Name = string.IsNullOrEmpty(exampleSetTitle)
+                ? string.Format("{0}_{1}", testMethod.Name, variantName)
+                : string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitle, variantName);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = new List<CodeExpression>();
@@ -427,12 +428,16 @@ namespace TechTalk.SpecFlow.Generator
             return testMethod;
         }
 
-        private void SetTestMethodDeclaration(CodeMemberMethod testMethod, Scenario scenario)
+        private void SetTestMethodDeclaration(CodeMemberMethod testMethod, Scenario scenario, bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
             testMethod.Name = string.Format(TEST_FORMAT, scenario.Title.ToIdentifier());
 
-            testGeneratorProvider.SetTest(testMethod, scenario.Title);
+            if (rowTest)
+                testGeneratorProvider.SetRowTest(testMethod, scenario.Title);
+            else
+                testGeneratorProvider.SetTest(testMethod, scenario.Title);
+
             if (scenario.Tags != null)
             {
                 testGeneratorProvider.SetTestCategories(testMethod, GetNonIgnoreTags(scenario.Tags));

@@ -12,6 +12,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string FEATURE_TITLE_PROPERTY_NAME = "FeatureTitle";
         private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        private const string THEORY_ATTRIBUTE = "Xunit.TheoryAttribute";
+        private const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
         private const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
@@ -21,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public CodeDomHelper CodeDomHelper { get; set; }
 
-        public bool SupportsTestCases { get { return false; } }
+        public bool SupportsRowTests { get { return true; } }
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -97,13 +99,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTest(CodeMemberMethod memberMethod, string title)
         {
-            memberMethod.CustomAttributes.Add
-            (
-                new CodeAttributeDeclaration
-                (
-                    new CodeTypeReference(FACT_ATTRIBUTE)
-                )
-            );
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(FACT_ATTRIBUTE)));
 
             if (_currentTestTypeDeclaration != null)
             {
@@ -117,10 +115,33 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetDescription(memberMethod.CustomAttributes, title);
         }
 
-        public void SetTestCase(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        public void SetRowTest(CodeMemberMethod memberMethod, string title)
         {
-            // xUnit does not support test cases
-            throw new NotSupportedException();
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(THEORY_ATTRIBUTE)));
+
+            if (_currentTestTypeDeclaration != null)
+            {
+                string featureTitle = _currentTestTypeDeclaration.UserData[FEATURE_TITLE_KEY] as string;
+                if (!string.IsNullOrEmpty(featureTitle))
+                {
+                    SetProperty(memberMethod.CustomAttributes, FEATURE_TITLE_PROPERTY_NAME, featureTitle);
+                }
+            }
+
+            SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            var args = arguments.Select(
+              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg)));
+
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(INLINEDATA_ATTRIBUTE),
+                    args.ToArray()));
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)

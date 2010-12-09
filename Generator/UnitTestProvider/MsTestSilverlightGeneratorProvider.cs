@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private CodeTypeDeclaration currentTestTypeDeclaration = null;
 
-        public bool SupportsTestCases { get { return false; } }
+        public bool SupportsRowTests { get { return false; } }
 
         public virtual void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -81,9 +81,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
         }
 
-        public void SetTestCase(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        public virtual void SetRowTest(CodeMemberMethod memberMethod, string title)
         {
-            //MsTest does not support test cases
+            //MsTest does not support row tests
+            throw new NotSupportedException();
+        }
+
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            //MsTest does not support row tests
             throw new NotSupportedException();
         }
 
