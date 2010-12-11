@@ -160,7 +160,7 @@ namespace ParserTests
 		{
 		    CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
 		    XUnitTestGeneratorProvider xUnitTestGeneratorProvider = new XUnitTestGeneratorProvider();
-		    SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true);
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(xUnitTestGeneratorProvider, codeDomHelper, true, true);
 			var codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
 			CSharpCodeProvider codeProvider = new CSharpCodeProvider();

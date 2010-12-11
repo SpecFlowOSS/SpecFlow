@@ -35,13 +35,15 @@ namespace TechTalk.SpecFlow.Generator
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
         private readonly CodeDomHelper codeDomHelper;
         private readonly bool allowDebugGeneratedFiles;
+        private readonly bool allowRowTests;
 
-        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, bool allowDebugGeneratedFiles)
+        public SpecFlowUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, bool allowDebugGeneratedFiles, bool allowRowTests)
         {
             this.testGeneratorProvider = testGeneratorProvider;
             this.codeDomHelper = codeDomHelper;
             this.codeDomHelper.InjectIfRequired(this.testGeneratorProvider);
             this.allowDebugGeneratedFiles = allowDebugGeneratedFiles;
+            this.allowRowTests = allowRowTests;
         }
 
         public CodeNamespace GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace)
@@ -298,7 +300,7 @@ namespace TechTalk.SpecFlow.Generator
 
             var testMethod = GenerateScenarioOutlineBody(feature, scenarioOutline, paramToIdentifier, testType, testMethodName, testSetup);
 
-            if (testGeneratorProvider.SupportsRowTests)
+            if (testGeneratorProvider.SupportsRowTests && this.allowRowTests)
             {
                 SetTestMethodDeclaration(testMethod, scenarioOutline, rowTest: true);
 
