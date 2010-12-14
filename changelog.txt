@@ -1,5 +1,9 @@
 ﻿Next
 
+Breaking changes:
++ Changing the default value (true) of the allowRowTests configuration setting is not incompatible with older 
+  runtimes.
+
 New features:
 + Step Intellisense for Visual Studio 2010 - displays the list of bound steps when pressing space or ctrl+space 
   after a step keyword
@@ -8,6 +12,9 @@ New features:
   intellisense) in Visual Studio 2010, Tools / Options / SpecFlow / General
 + Faster installation for VS2010 - if you install SpecFlow only to VS2010, the installation is much faster 
   as we now entirely using the new VSIX infrastructure for the integaration.
++ Support for row test generation (NUnit, MbUnit and xUnit). This new feature is enabled by default, but can 
+  be switched off from the configuration with <generator allowRowTests="false" />.
+  (Thanks to John Gietzen (otac0n) for the contribution.)
 
 Fixed issues:
 + Scoped Steps does not recognize feature tags (Issue 12)
