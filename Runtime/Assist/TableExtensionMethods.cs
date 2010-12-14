@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Assist
                                             from key in handlers.Keys
                                             from row in table.Rows
                                             where key.IsAssignableFrom(property.PropertyType)
-                                                && property.Name == row["Field"]
+                                                && property.Name.Equals(row["Field"].Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase)
                                             select new { Row = row, property.Name, Handler = handlers[key] };
 
 
