@@ -174,7 +174,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             string className = Path.GetFileNameWithoutExtension(fileName);
             const string targetNamespace = "Target.Namespace";
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(CodeDomProviderLanguage.CSharp), true, true);
+            // the row test generation has to be set to false, because our verifications support the old style test generation only
+            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(CodeDomProviderLanguage.CSharp), true, false); 
             var codeNamespace = converter.GenerateUnitTestFixture(feature, className, targetNamespace);
             var compileUnit = new CodeCompileUnit();
             compileUnit.Namespaces.Add(codeNamespace);
