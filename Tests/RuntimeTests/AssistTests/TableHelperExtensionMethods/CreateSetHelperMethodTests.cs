@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
         private static Table CreatePersonTableHeaders()
         {
-            return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
+            return new Table("First Name", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
         }
 
         [Test]
