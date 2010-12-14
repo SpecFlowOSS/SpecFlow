@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
         private static Table CreatePersonTableHeaders()
         {
-            return new Table("First Name", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
+            return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
         }
 
         [Test]
@@ -38,6 +38,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             table.AddRow("John");
             var people = table.CreateSet<Person>();
             people.Count().ShouldEqual(1);
+        }
+
+        [Test]
+        public void Sets_properties_with_different_case()
+        {
+            var table = new Table("firstname");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.ShouldEqual("John");
+        }
+
+        [Test]
+        public void Sets_properties_from_column_names_with_blanks()
+        {
+            var table = new Table("first name");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.ShouldEqual("John");
         }
 
         [Test]
