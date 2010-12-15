@@ -15,6 +15,7 @@ New features:
 + Support for row test generation (NUnit, MbUnit and xUnit). This new feature is enabled by default, but can 
   be switched off from the configuration with <generator allowRowTests="false" />.
   (Thanks to John Gietzen (otac0n) for the contribution.)
++ Support for specifying property names with blanks and case insensitive for SpecFlow.Assist (by Steven Zhang, jdomzhang)
 
 Fixed issues:
 + Scoped Steps does not recognize feature tags (Issue 12)
