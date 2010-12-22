@@ -494,15 +494,22 @@ namespace TechTalk.SpecFlow
 
         public void And(string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
+            BindingType bindingType = GetCurrentBindingType();
             ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.And, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void But(string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
+            BindingType bindingType = GetCurrentBindingType();
             ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.But, text, multilineTextArg, tableArg, GetStepContext()));
         }
+
+        private BindingType GetCurrentBindingType()
+        {
+            ScenarioBlock currentScenarioBlock = ObjectContainer.ScenarioContext.CurrentScenarioBlock;
+            return currentScenarioBlock == ScenarioBlock.None ? BindingType.Given : currentScenarioBlock.ToBindingType();
+        }
+
         #endregion
 
         public void Pending()

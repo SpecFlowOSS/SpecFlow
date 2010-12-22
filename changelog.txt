@@ -1,4 +1,13 @@
-﻿Next
+﻿Next - ???
+
+Fixed issues:
++ Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
+
+1.5.0 - 2010/12/17
+
+Breaking changes:
++ Changing the default value (true) of the allowRowTests configuration setting is not incompatible with older 
+  runtimes.
 
 New features:
 + Step Intellisense for Visual Studio 2010 - displays the list of bound steps when pressing space or ctrl+space 
@@ -6,6 +15,12 @@ New features:
   (Thanks to Marcus Hammarberg for the contribution.)
 + Options for Visual Studio 2010 - you can enable/disable the integration features (syntax coloring, outlining, 
   intellisense) in Visual Studio 2010, Tools / Options / SpecFlow / General
++ Faster installation for VS2010 - if you install SpecFlow only to VS2010, the installation is much faster 
+  as we now entirely using the new VSIX infrastructure for the integaration.
++ Support for row test generation (NUnit, MbUnit and xUnit). This new feature is enabled by default, but can 
+  be switched off from the configuration with <generator allowRowTests="false" />.
+  (Thanks to John Gietzen (otac0n) for the contribution.)
++ Support for specifying property names with blanks and case insensitive for SpecFlow.Assist (by Steven Zhang, jdomzhang)
 
 Fixed issues:
 + Scoped Steps does not recognize feature tags (Issue 12)
@@ -14,6 +29,7 @@ Fixed issues:
 + Adding comparison helpers to SpecFlow.Assist (by darrencauthon)
 + Support for char parsing in table-helpers of SpecFlow.Assist (Issue 19)
 + VS2010 might crash after pasting into a feature file
++ Excution report should list features ordered by feature title
 
 1.4.0 - 2010/10/07
 

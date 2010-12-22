@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
+        public bool AllowRowTests { get; set; }
 
         public GeneratorConfiguration()
         {
@@ -26,6 +27,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
 
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
+            AllowRowTests = ConfigDefaults.AllowRowTests;
         }
 
         internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)
@@ -52,6 +54,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             if (configSection.Generator != null)
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
+                AllowRowTests = configSection.Generator.AllowRowTests;
             }
         }
 

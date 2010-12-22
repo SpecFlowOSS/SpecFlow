@@ -9,6 +9,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         private const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
         private const string TEST_ATTR = "NUnit.Framework.TestAttribute";
+        private const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
         private const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
         private const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
         private const string TESTFIXTURESETUP_ATTR = "NUnit.Framework.TestFixtureSetUpAttribute";
@@ -16,6 +17,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
         private const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
+
+        public bool SupportsRowTests { get { return true; } }
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -59,6 +62,22 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReference(TEST_ATTR)));
 
             SetDescription(memberMethod.CustomAttributes, title);
+        }
+        
+        public void SetRowTest(CodeMemberMethod memberMethod, string title)
+        {
+            SetTest(memberMethod, title);
+        }
+
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            var args = arguments.Select(
+              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg)));
+
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(ROW_ATTR),
+                    args.ToArray()));
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)

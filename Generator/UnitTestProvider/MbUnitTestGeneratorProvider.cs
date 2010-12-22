@@ -9,6 +9,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         private const string TESTFIXTURE_ATTR = "MbUnit.Framework.TestFixtureAttribute";
         private const string TEST_ATTR = "MbUnit.Framework.TestAttribute";
+        private const string ROWTEST_ATTR = "MbUnit.Framework.RowTestAttribute";
+        private const string ROW_ATTR = "MbUnit.Framework.RowAttribute";
         private const string CATEGORY_ATTR = "MbUnit.Framework.CategoryAttribute";
         private const string TESTSETUP_ATTR = "MbUnit.Framework.SetUpAttribute";
         private const string TESTFIXTURESETUP_ATTR = "MbUnit.Framework.FixtureSetUpAttribute";
@@ -16,6 +18,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string TESTTEARDOWN_ATTR = "MbUnit.Framework.TearDownAttribute";
         private const string IGNORE_ATTR = "MbUnit.Framework.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "MbUnit.Framework.DescriptionAttribute";
+
+        public bool SupportsRowTests { get { return true; } }
 
         public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -59,6 +63,26 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReference(TEST_ATTR)));
 
             SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetRowTest(CodeMemberMethod memberMethod, string title)
+        {
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(ROWTEST_ATTR)));
+
+            SetDescription(memberMethod.CustomAttributes, title);
+        }
+
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            var args = arguments.Select(
+              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg)));
+
+            memberMethod.CustomAttributes.Add(
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(ROW_ATTR),
+                    args.ToArray()));
         }
 
         public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
