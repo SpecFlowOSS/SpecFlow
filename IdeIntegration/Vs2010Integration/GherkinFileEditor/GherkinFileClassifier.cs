@@ -25,10 +25,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
                 return null;
 
-            GherkinFileEditorParser parser = GetParser(buffer);
-
             return buffer.Properties.GetOrCreateSingletonProperty(() => 
-                new GherkinFileClassifier(parser, GherkinLanguageServiceFactory.GetLanguageService(buffer)));
+                new GherkinFileClassifier(GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
 
     }
@@ -36,19 +34,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
     internal class GherkinFileClassifier : IClassifier
     {
-        private readonly GherkinFileEditorParser parser;
         private readonly GherkinLanguageService gherkinLanguageService;
 
-        public GherkinFileClassifier(GherkinFileEditorParser parser, GherkinLanguageService gherkinLanguageService)
+        public GherkinFileClassifier(GherkinLanguageService gherkinLanguageService)
         {
-            this.parser = parser;
             this.gherkinLanguageService = gherkinLanguageService;
-
-            parser.ClassificationChanged += (sender, args) =>
-            {
-                if (ClassificationChanged != null)
-                    ClassificationChanged(this, args);
-            };
 
             gherkinLanguageService.FileScopeChanged += GherkinLanguageServiceOnFileScopeChanged;
         }
@@ -70,8 +60,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
-            //TODO: use gherkinLanguageService
-            return parser.GetClassificationSpans(span);
+            var fileScope = gherkinLanguageService.GetFileScope();
+            if (fileScope == null)
+                return new ClassificationSpan[0];
+            return fileScope.GetClassificationSpans(span);
         }
 
         // This event gets raised if a non-text change would affect the classification in some way,

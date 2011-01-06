@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Classification;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -46,6 +47,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return new SnapshotSpan(textSnapshot, 0, textSnapshot.Length);
 
             return gherkinFileScopeChange.ChangedBlocks.CreateSpan(textSnapshot);
+        }
+
+        public static IList<ClassificationSpan> GetClassificationSpans(this IGherkinFileScope gherkinFileScope, SnapshotSpan snapshotSpan)
+        {
+            var result = new List<ClassificationSpan>();
+            foreach (var gherkinFileBlock in gherkinFileScope.GetAllBlocks())
+            {
+                result.AddRange(gherkinFileBlock.ClassificationSpans); //TODO: optimize
+            }
+            return result;
         }
     }
 }

@@ -38,7 +38,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             textBuffer.Changed +=
                 (sender, args) => languageService.TextBufferChanged(GetTextBufferChange(args));
 
+            languageService.TextBufferChanged(GetEntireBufferChange(textBuffer));
+
             return languageService;
+        }
+
+        private GherkinTextBufferChange GetEntireBufferChange(ITextBuffer textBuffer)
+        {
+            var textSnapshot = textBuffer.CurrentSnapshot;
+            return new GherkinTextBufferChange(GherkinTextBufferChangeType.EntireFile, 
+                0, textSnapshot.LineCount - 1, 0, textSnapshot.Length, 0, 0, textSnapshot);
         }
 
         private GherkinTextBufferChange GetTextBufferChange(TextContentChangedEventArgs textContentChangedEventArgs)

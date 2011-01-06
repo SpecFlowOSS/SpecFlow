@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (items == null) throw new ArgumentNullException("items");
 
             if (item == null)
-                return Enumerable.Empty<T>();
+                return items;
 
             return items.Append(item);
         }
