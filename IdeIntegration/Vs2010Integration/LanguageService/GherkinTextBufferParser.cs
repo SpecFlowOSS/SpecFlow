@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             bool fullParse = false;
             if (previousScope == null)
                 fullParse = true;
-            else if (previousScope.GherkinDialect != gherkinDialect)
+            else if (!previousScope.GherkinDialect.Equals(gherkinDialect))
                 fullParse = true;
             else if (partialParseCount >= PartialParseCountLimit)
                 fullParse = true;

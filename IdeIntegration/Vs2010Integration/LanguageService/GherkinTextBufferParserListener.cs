@@ -88,7 +88,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IGherkinFileScope GetResult()
         {
-            CloseBlock(textSnapshot.LineCount);
+            if (currentFileBlockBuilder != null)
+                CloseBlock(textSnapshot.LineCount);
 
             return gherkinFileScope;
         }
