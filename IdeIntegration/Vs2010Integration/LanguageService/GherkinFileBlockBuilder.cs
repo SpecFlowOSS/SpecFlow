@@ -10,11 +10,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public List<ClassificationSpan> ClassificationSpans { get; private set; }
         public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; private set; }
-        public List<IErrorInfoTODO> Errors { get; private set; }
+        public List<ErrorInfo> Errors { get; private set; }
         public List<IGherkinStep> Steps { get; private set; }
         public List<IScenarouOutlineExampleSet> ExampleSets { get; private set; }
-
-        public bool SupportsOutlining { get; set; } //TODO
 
         public int StartLine { get; private set; }
 
@@ -42,12 +40,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        public bool SupportsOutlining
+        {
+            get
+            {
+                return BlockType == typeof (IBackgroundBlock) || 
+                       BlockType == typeof (IScenarioBlock) ||
+                       BlockType == typeof (IScenarioOutlineBlock);
+            }
+        }
 
         public GherkinFileBlockBuilder(int startLine)
         {
             ClassificationSpans = new List<ClassificationSpan>();
             OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
-            Errors = new List<IErrorInfoTODO>();
+            Errors = new List<ErrorInfo>();
             Steps = new List<IGherkinStep>();
             ExampleSets = new List<IScenarouOutlineExampleSet>();
 

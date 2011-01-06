@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using EnvDTE;
-using gherkin;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Utils;
 
@@ -95,7 +94,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
             for (var lineNumer = triggerLineNumber; lineNumer > scenarioInfo.KeywordLine; lineNumer--)
             {
-                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, parsingResult.LanguageService);
+                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, parsingResult.GherkinDialect);
 
                 if (stepKeyword != null)
                 {
@@ -108,10 +107,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return ScenarioBlock.Given;
         }
 
-        private StepKeyword? GetStepKeyword(ITextSnapshot snapshot, int lineNumer, I18n languageService)
+        private StepKeyword? GetStepKeyword(ITextSnapshot snapshot, int lineNumer, GherkinDialect gherkinDialect)
         {
             var word = GetFirstWordOfLine(snapshot, lineNumer);
-            return languageService.GetStepKeyword(word);
+            return gherkinDialect.GetStepKeyword(word);
         }
 
         private static string GetFirstWordOfLine(ITextSnapshot snapshot, int lineNumer)

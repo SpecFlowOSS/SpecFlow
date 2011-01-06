@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using gherkin;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -174,10 +173,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
             string fileContent = changeInfo.TextSnapshot.GetText(parseStartPosition, changeInfo.TextSnapshot.Length - parseStartPosition);
             string fileHeader = changeInfo.TextSnapshot.GetText(0, parseStartPosition);
-            I18n languageService = GetLanguageService(fileHeader);
+            var gherkinDialect = GetGherkinDialect(fileHeader);
 
             ScenarioEditorInfo firstUnchangedScenario;
-            var partialResult = DoParsePartial(fileContent, languageService, 
+            var partialResult = DoParsePartial(fileContent, gherkinDialect, 
                                                firstAffectedScenario.StartLine, 
                                                out firstUnchangedScenario, 
                                                changeInfo.TextSnapshot,
@@ -225,9 +224,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         private GherkinFileEditorInfo DoFullParse(ITextSnapshot textSnapshot)
         {
             string fileContent = textSnapshot.GetText();
-            I18n languageService = GetLanguageService(fileContent);
+            var gherkinDialect = GetGherkinDialect(fileContent);
 
-            return DoParse(fileContent, languageService, textSnapshot);
+            return DoParse(fileContent, gherkinDialect, textSnapshot);
         }
 
         public GherkinFileEditorInfo EnsureParsingResult(ITextSnapshot textSnapshot)
@@ -287,9 +286,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
         }
 
-        private GherkinFileEditorInfo DoParsePartial(string fileContent, I18n languageService, int lineOffset, out ScenarioEditorInfo firstUnchangedScenario, ITextSnapshot textSnapshot, GherkinFileEditorInfo previousGherkinFileEditorInfo, int changeLastLine, int changeLineDelta)
+        private GherkinFileEditorInfo DoParsePartial(string fileContent, GherkinDialect gherkinDialect, int lineOffset, out ScenarioEditorInfo firstUnchangedScenario, ITextSnapshot textSnapshot, GherkinFileEditorInfo previousGherkinFileEditorInfo, int changeLastLine, int changeLineDelta)
         {
-            GherkinScanner scanner = new GherkinScanner(languageService, fileContent, lineOffset);
+            GherkinScanner scanner = new GherkinScanner(gherkinDialect, fileContent, lineOffset);
 
             var gherkinListener = new GherkinFileEditorParserListener(textSnapshot, classifications, previousGherkinFileEditorInfo, changeLastLine, changeLineDelta);
             firstUnchangedScenario = null;
@@ -303,24 +302,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             }
 
             var result = gherkinListener.GetResult();
-            result.LanguageService = languageService;
+            result.GherkinDialect = gherkinDialect;
             return result;
         }
 
-        private GherkinFileEditorInfo DoParse(string fileContent, I18n languageService, ITextSnapshot textSnapshot)
+        private GherkinFileEditorInfo DoParse(string fileContent, GherkinDialect gherkinDialect, ITextSnapshot textSnapshot)
         {
             ScenarioEditorInfo firstUnchangedScenario;
-            return DoParsePartial(fileContent, languageService, 0, out firstUnchangedScenario, textSnapshot, null, 0, 0);
+            return DoParsePartial(fileContent, gherkinDialect, 0, out firstUnchangedScenario, textSnapshot, null, 0, 0);
         }
 
-        private I18n GetLanguageService(string fileContent)
+        private GherkinDialect GetGherkinDialect(string fileContent)
         {
             CultureInfo defaultLanguage = specFlowProject == null ? 
                 CultureInfo.GetCultureInfo("en-US") : 
                 specFlowProject.GeneratorConfiguration.FeatureLanguage;
-            var languageServices = new GherkinLanguageServices(defaultLanguage);
+            var languageServices = new GherkinDialectServices(defaultLanguage);
 
-            return languageServices.GetLanguageService(fileContent);
+            return languageServices.GetGherkinDialect(fileContent);
         }
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)

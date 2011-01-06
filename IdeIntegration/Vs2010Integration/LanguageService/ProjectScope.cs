@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         GherkinTextBufferParser GherkinTextBufferParser { get; }
         GherkinScopeAnalyzer GherkinScopeAnalyzer { get; }
-        GherkinLanguageServices GherkinLanguageServices { get; }
+        GherkinDialectServices GherkinDialectServices { get; }
         GherkinFileEditorClassifications Classifications { get; }
     }
 
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { throw new NotImplementedException(); }
         }
 
-        public GherkinLanguageServices GherkinLanguageServices
+        public GherkinDialectServices GherkinDialectServices
         {
             get { throw new NotImplementedException(); }
         }
@@ -47,17 +47,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class VsProjectScope : IProjectScope
     {
         private Project project;
-        private GherkinTextBufferParser parser;
+        private readonly GherkinTextBufferParser parser;
 
-        public VsProjectScope(Project project)
+        public VsProjectScope(Project project, GherkinFileEditorClassifications classifications)
         {
+            Classifications = classifications;
             this.project = project;
             //TODO: register for file changes, etc.
 
             parser = new GherkinTextBufferParser(this);
         }
-
-        #region Implementation of IProjectScope
 
         public GherkinTextBufferParser GherkinTextBufferParser
         {
@@ -69,16 +68,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { throw new NotImplementedException(); }
         }
 
-        public GherkinLanguageServices GherkinLanguageServices
+        public GherkinDialectServices GherkinDialectServices
         {
-            get { return new GherkinLanguageServices(CultureInfo.GetCultureInfo("en-US")); }
+            get { return new GherkinDialectServices(CultureInfo.GetCultureInfo("en-US")); }
         }
 
-        public GherkinFileEditorClassifications Classifications
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        #endregion
+        public GherkinFileEditorClassifications Classifications { get; set; }
     }
 }

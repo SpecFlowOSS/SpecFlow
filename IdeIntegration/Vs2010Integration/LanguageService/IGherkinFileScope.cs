@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
-using gherkin;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     public interface IGherkinFileScope
     {
-        I18n LanguageService { get; }
+        GherkinDialect GherkinDialect { get; }
         IHeaderBlock HeaderBlock { get; }
         IBackgroundBlock BackgroundBlock { get; }
         IEnumerable<IScenarioBlock> ScenarioBlocks { get; }
@@ -16,14 +17,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         ITextSnapshot TextSnapshot { get; }
     }
 
-    public interface IErrorInfoTODO
+    public class ErrorInfo
     {
+        public string Message { get; set; }
+        public int Line { get; set; }
+        public int LinePosition { get; set; }
+        public Exception Exception { get; set; }
 
-    }
-
-    public class ErrorInfo: IErrorInfoTODO
-    {
-        
+        public ErrorInfo(string message, int line, int linePosition, Exception exception)
+        {
+            Message = message;
+            Line = line;
+            LinePosition = linePosition;
+            Exception = exception;
+        }
     }
 
     public interface IGherkinFileBlock
@@ -61,7 +68,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// <summary>
         /// Any parsing errors in this block.
         /// </summary>
-        IEnumerable<IErrorInfoTODO> Errors { get; }
+        IEnumerable<ErrorInfo> Errors { get; }
     }
 
     public interface IKeywordLine

@@ -64,8 +64,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 char.IsWhiteSpace(lineBeforeCaret[lineBeforeCaret.Length - 1]))
             {
                 string keyword = lineBeforeCaret.Substring(0, lineBeforeCaret.Length - 1).TrimStart();
-                var languageService = GherkinProcessorServices.GetLanguageService(caret.Snapshot.TextBuffer);
-                return languageService.IsStepKeyword(keyword);
+                var gherkinDialect = GherkinProcessorServices.GetGherkinDialect(caret.Snapshot.TextBuffer);
+                return gherkinDialect.IsStepKeyword(keyword);
             }
 
             return false;

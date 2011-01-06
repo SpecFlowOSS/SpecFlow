@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 
@@ -12,8 +13,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class GherkinTextBufferParserListener : GherkinTextBufferParserListenerBase
     {
-        public GherkinTextBufferParserListener(ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications) 
-            : base(textSnapshot, classifications)
+        public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
+            : base(gherkinDialect, textSnapshot, classifications)
         {
         }
     }
@@ -34,8 +35,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly int changeLastLine;
         private readonly int changeLineDelta;
 
-        public GherkinTextBufferPartialParserListener(ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, IGherkinFileScope previousScope, int changeLastLine, int changeLineDelta)
-            : base(textSnapshot, classifications)
+        public GherkinTextBufferPartialParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, IGherkinFileScope previousScope, int changeLastLine, int changeLineDelta)
+            : base(gherkinDialect, textSnapshot, classifications)
         {
             this.previousScope = previousScope;
             this.changeLastLine = changeLastLine;
@@ -78,11 +79,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             set { currentFileBlockBuilder = value; }
         }
 
-        protected GherkinTextBufferParserListenerBase(ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
+        protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
         {
             this.textSnapshot = textSnapshot;
             this.classifications = classifications;
-            gherkinFileScope = new GherkinFileScope();
+            gherkinFileScope = new GherkinFileScope(gherkinDialect, textSnapshot);
         }
 
         public IGherkinFileScope GetResult()
@@ -307,6 +308,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (Match match in matches)
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
+
+            //TODO: register step
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
@@ -315,6 +318,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 ColorizeSpan(cellSpan, classifications.TableHeader);
             }
+
+            //TODO: register step argument
+            //TODO: register outline example
         }
 
         public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
@@ -323,11 +329,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
             }
+
+            //TODO: register step argument
+            //TODO: register outline example
         }
 
         public void MultilineText(string text, GherkinBufferSpan textSpan)
         {
             ColorizeSpan(textSpan, classifications.MultilineText);
+
+            //TODO: register step argument
         }
 
         public void EOF(GherkinBufferPosition eofPosition)
@@ -337,8 +348,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
-            //TODO
-            CurrentFileBlockBuilder.Errors.Add(new ErrorInfo());
+            CurrentFileBlockBuilder.Errors.Add(new ErrorInfo(message, errorPosition.Line, errorPosition.LinePosition, exception));
         }
     }
 }

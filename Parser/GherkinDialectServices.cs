@@ -5,11 +5,11 @@ using gherkin;
 
 namespace TechTalk.SpecFlow.Parser
 {
-    public class GherkinLanguageServices
+    public class GherkinDialectServices
     {
         private readonly CultureInfo defaultLanguage;
 
-        public GherkinLanguageServices(CultureInfo defaultLanguage)
+        public GherkinDialectServices(CultureInfo defaultLanguage)
         {
             this.defaultLanguage = defaultLanguage;
         }
@@ -28,21 +28,22 @@ namespace TechTalk.SpecFlow.Parser
             return languageInfo;
         }
 
-        internal I18n GetLanguageService(LanguageInfo language)
+        internal GherkinDialect GetGherkinDialect(LanguageInfo language)
         {
-            return new I18n(language.CompatibleGherkinLanguage ?? language.Language);
+            return new GherkinDialect(language, 
+                new I18n(language.CompatibleGherkinLanguage ?? language.Language));
         }
 
-        public I18n GetLanguageService(string fileContent)
+        public GherkinDialect GetGherkinDialect(string fileContent)
         {
             var language = GetLanguage(fileContent);
-            return GetLanguageService(language);
+            return GetGherkinDialect(language);
         }
 
-        public I18n GetLanguageService(Func<int, string> lineProvider)
+        public GherkinDialect GetGherkinDialect(Func<int, string> lineProvider)
         {
             var language = GetLanguage(lineProvider);
-            return GetLanguageService(language);
+            return GetGherkinDialect(language);
         }
 
         internal LanguageInfo GetLanguage(Func<int, string> lineProvider)

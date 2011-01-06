@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using EnvDTE;
-using gherkin;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -55,9 +55,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             return VsxHelper.GetCurrentProject(textBuffer, AdaptersFactory, ServiceProvider);
         }
 
-        public I18n GetLanguageService(ITextBuffer textBuffer)
+        public GherkinDialect GetGherkinDialect(ITextBuffer textBuffer)
         {
-            return GetParsingResult(textBuffer).LanguageService;
+            return GetParsingResult(textBuffer).GherkinDialect;
         }
 
         public GherkinFileEditorInfo GetParsingResult(ITextBuffer textBuffer)

@@ -109,7 +109,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return baseBlock.OutliningRegions; }
         }
 
-        public IEnumerable<IErrorInfoTODO> Errors
+        public IEnumerable<ErrorInfo> Errors
         {
             get { return baseBlock.Errors; }
         }

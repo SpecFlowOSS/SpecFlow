@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using gherkin;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 
@@ -21,19 +21,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             this.projectScope = projectScope;
         }
 
-        private I18n GetLanguageService(ITextSnapshot textSnapshot)
+        private GherkinDialect GetGherkinDialect(ITextSnapshot textSnapshot)
         {
-            return projectScope.GherkinLanguageServices.GetLanguageService(lineNo => textSnapshot.GetLineFromLineNumber(lineNo).GetText());
+            return projectScope.GherkinDialectServices.GetGherkinDialect(lineNo => textSnapshot.GetLineFromLineNumber(lineNo).GetText());
         }
 
         public GherkinFileScopeChange Parse(GherkinTextBufferChange change, IGherkinFileScope previousScope = null)
         {
-            I18n languageService = GetLanguageService(change.ResultTextSnapshot);
+            var gherkinDialect = GetGherkinDialect(change.ResultTextSnapshot);
 
             bool fullParse = false;
             if (previousScope == null)
                 fullParse = true;
-            else if (previousScope.LanguageService != languageService)
+            else if (previousScope.GherkinDialect != gherkinDialect)
                 fullParse = true;
             else if (partialParseCount >= PartialParseCountLimit)
                 fullParse = true;
@@ -41,18 +41,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 fullParse = true;
 
             if (fullParse)
-                return FullParse(change.ResultTextSnapshot, languageService);
+                return FullParse(change.ResultTextSnapshot, gherkinDialect);
 
             return PartialParse(change, previousScope);
         }
 
-        private GherkinFileScopeChange FullParse(ITextSnapshot textSnapshot, I18n languageService)
+        private GherkinFileScopeChange FullParse(ITextSnapshot textSnapshot, GherkinDialect gherkinDialect)
         {
             partialParseCount = 0;
 
-            var gherkinListener = new GherkinTextBufferParserListener(textSnapshot, projectScope.Classifications);
+            var gherkinListener = new GherkinTextBufferParserListener(gherkinDialect, textSnapshot, projectScope.Classifications);
 
-            var scanner = new GherkinScanner(languageService, textSnapshot.GetText(), 0);
+            var scanner = new GherkinScanner(gherkinDialect, textSnapshot.GetText(), 0);
             scanner.Scan(gherkinListener);
 
             var gherkinFileScope = gherkinListener.GetResult();
@@ -76,11 +76,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             string fileContent = textSnapshot.GetText(parseStartPosition, textSnapshot.Length - parseStartPosition);
 
             var gherkinListener = new GherkinTextBufferPartialParserListener(
+                previousScope.GherkinDialect,
                 textSnapshot, projectScope.Classifications, 
                 previousScope, 
                 change.EndLine, change.LineCountDelta);
 
-            var scanner = new GherkinScanner(previousScope.LanguageService, fileContent, firstAffectedScenario.GetStartLine());
+            var scanner = new GherkinScanner(previousScope.GherkinDialect, fileContent, firstAffectedScenario.GetStartLine());
 
             IScenarioBlock firstUnchangedScenario = null;
             try
@@ -110,7 +111,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             Debug.Assert(partialResult.HeaderBlock == null, "Partial parse cannot re-parse header");
             Debug.Assert(partialResult.BackgroundBlock == null, "Partial parse cannot re-parse background");
 
-            GherkinFileScope fileScope = new GherkinFileScope
+            GherkinFileScope fileScope = new GherkinFileScope(previousScope.GherkinDialect, partialResult.TextSnapshot)
                                              {
                                                  HeaderBlock = previousScope.HeaderBlock,
                                                  BackgroundBlock = previousScope.BackgroundBlock
@@ -128,7 +129,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 // inserting the non-effected scenarios at the end
 
-                int firstNewScenarioIndex = fileScope.ScenarioBlocks.Count;
+//                int firstNewScenarioIndex = fileScope.ScenarioBlocks.Count;
                 shiftedBlocks.AddRange(
                     previousScope.ScenarioBlocks.SkipFromItemInclusive(firstUnchangedScenario)
                         .Select(scenario => scenario.Shift(lineCountDelta)));

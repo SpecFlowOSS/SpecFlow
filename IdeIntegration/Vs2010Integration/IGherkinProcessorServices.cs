@@ -1,7 +1,7 @@
 using EnvDTE;
-using gherkin;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 
@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         Project GetProject(ITextBuffer textBuffer);
         SpecFlowProject GetSpecFlowProjectFromProject(Project project);
         SpecFlowProject GetSpecFlowProjectFromFile(ITextBuffer textBuffer);
-        I18n GetLanguageService(ITextBuffer textBuffer);
+        GherkinDialect GetGherkinDialect(ITextBuffer textBuffer);
         GherkinFileEditorInfo GetParsingResult(ITextBuffer textBuffer);
         GherkinFileEditorParser GetParser(ITextBuffer textBuffer);
     }

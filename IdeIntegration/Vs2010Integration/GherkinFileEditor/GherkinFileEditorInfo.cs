@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using gherkin;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
     internal class GherkinFileEditorInfo
     {
-        public I18n LanguageService { get; set; }
+        public GherkinDialect GherkinDialect { get; set; }
 
         public List<ClassificationSpan> HeaderClassificationSpans { get; private set; }
         public List<ITagSpan<IOutliningRegionTag>> HeaderOutliningRegions { get; set; }

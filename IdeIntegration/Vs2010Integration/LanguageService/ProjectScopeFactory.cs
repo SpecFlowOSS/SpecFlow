@@ -2,6 +2,8 @@
 using System.ComponentModel.Composition;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text.Classification;
+using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -16,7 +18,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal SVsServiceProvider ServiceProvider = null;
 
+        [Import]
+        internal IClassificationTypeRegistryService ClassificationRegistry = null; 
+
         private readonly SynchInitializedInstance<DTE> dteReference;
+        private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
         private readonly SynchronizedResultCache<Project, string, IProjectScope> projectScopeCache;
 
         public ProjectScopeFactory()
@@ -29,11 +35,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         return dtex;
                     });
 
+            classificationsReference = new SynchInitializedInstance<GherkinFileEditorClassifications>(
+                () => new GherkinFileEditorClassifications(ClassificationRegistry));
+
             projectScopeCache = new SynchronizedResultCache<Project, string, IProjectScope>(
                         project =>
                             {
                                 dteReference.EnsureInitialized();
-                                return new VsProjectScope(project);
+                                return new VsProjectScope(project, classificationsReference.Value);
                             },
                         project => project.UniqueName); //TODO: get ID
         }
