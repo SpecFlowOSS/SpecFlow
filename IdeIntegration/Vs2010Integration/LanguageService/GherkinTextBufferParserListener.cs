@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
@@ -16,45 +15,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
             : base(gherkinDialect, textSnapshot, classifications)
         {
-        }
-    }
-
-    internal class PartialListeningDone2Exception : ScanningCancelledException
-    {
-        public IScenarioBlock FirstUnchangedScenario { get; private set; }
-
-        public PartialListeningDone2Exception(IScenarioBlock firstUnchangedScenario)
-        {
-            FirstUnchangedScenario = firstUnchangedScenario;
-        }
-    }
-
-    internal class GherkinTextBufferPartialParserListener : GherkinTextBufferParserListenerBase
-    {
-        private readonly IGherkinFileScope previousScope;
-        private readonly int changeLastLine;
-        private readonly int changeLineDelta;
-
-        public GherkinTextBufferPartialParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, IGherkinFileScope previousScope, int changeLastLine, int changeLineDelta)
-            : base(gherkinDialect, textSnapshot, classifications)
-        {
-            this.previousScope = previousScope;
-            this.changeLastLine = changeLastLine;
-            this.changeLineDelta = changeLineDelta;
-        }
-
-        protected override void OnScenarioBlockCreating(int editorLine)
-        {
-            base.OnScenarioBlockCreating(editorLine);
-
-            if (editorLine > changeLastLine)
-            {
-                var firstUnchangedScenario = previousScope.ScenarioBlocks.FirstOrDefault(
-                    prevScenario => prevScenario.GetStartLine() + changeLineDelta == editorLine);
-
-                if (firstUnchangedScenario != null)
-                    throw new PartialListeningDone2Exception(firstUnchangedScenario);
-            }
         }
     }
 

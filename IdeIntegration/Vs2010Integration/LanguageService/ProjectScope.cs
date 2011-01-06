@@ -4,6 +4,7 @@ using System.Globalization;
 using EnvDTE;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -46,16 +47,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class VsProjectScope : IProjectScope
     {
-        private Project project;
+        private readonly Project project;
+        private readonly IVisualStudioTracer visualStudioTracer;
         private readonly GherkinTextBufferParser parser;
 
-        public VsProjectScope(Project project, GherkinFileEditorClassifications classifications)
+        public GherkinFileEditorClassifications Classifications { get; private set; }
+
+        public VsProjectScope(Project project, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
             Classifications = classifications;
             this.project = project;
+            this.visualStudioTracer = visualStudioTracer;
             //TODO: register for file changes, etc.
 
-            parser = new GherkinTextBufferParser(this);
+            parser = new GherkinTextBufferParser(this, visualStudioTracer);
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser
@@ -70,9 +75,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public GherkinDialectServices GherkinDialectServices
         {
+            //TODO: handle project config
             get { return new GherkinDialectServices(CultureInfo.GetCultureInfo("en-US")); }
         }
-
-        public GherkinFileEditorClassifications Classifications { get; set; }
     }
 }

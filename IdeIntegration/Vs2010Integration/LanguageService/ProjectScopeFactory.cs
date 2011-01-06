@@ -4,6 +4,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -19,7 +20,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         internal SVsServiceProvider ServiceProvider = null;
 
         [Import]
-        internal IClassificationTypeRegistryService ClassificationRegistry = null; 
+        internal IClassificationTypeRegistryService ClassificationRegistry = null;
+
+        [Import]
+        internal IVisualStudioTracer VisualStudioTracer = null;
 
         private readonly SynchInitializedInstance<DTE> dteReference;
         private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
@@ -42,7 +46,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         project =>
                             {
                                 dteReference.EnsureInitialized();
-                                return new VsProjectScope(project, classificationsReference.Value);
+                                return new VsProjectScope(project, classificationsReference.Value, VisualStudioTracer);
                             },
                         project => project.UniqueName); //TODO: get ID
         }

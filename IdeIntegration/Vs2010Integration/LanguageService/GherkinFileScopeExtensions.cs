@@ -42,6 +42,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     .AppendIfNotNull(gherkinFileScope.InvalidFileEndingBlock);
         }
 
+        public static int TotalErrorCount(this IGherkinFileScope gherkinFileScope)
+        {
+            return gherkinFileScope.GetAllBlocks().Sum(block => block.Errors.Count());
+        }
+
         public static int GetStartLine(this IGherkinFileBlock gherkinFileBlock)
         {
             return gherkinFileBlock.KeywordLine + gherkinFileBlock.BlockRelativeStartLine;

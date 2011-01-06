@@ -5,20 +5,23 @@ using System.Linq;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
-using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     public class GherkinTextBufferParser
     {
+        private const string ParserTraceCategory = "EditorParser";
         private const int PartialParseCountLimit = 30;
 
         private int partialParseCount = 0;
         private readonly IProjectScope projectScope;
+        private readonly IVisualStudioTracer visualStudioTracer;
 
-        public GherkinTextBufferParser(IProjectScope projectScope)
+        public GherkinTextBufferParser(IProjectScope projectScope, IVisualStudioTracer visualStudioTracer)
         {
             this.projectScope = projectScope;
+            this.visualStudioTracer = visualStudioTracer;
         }
 
         private GherkinDialect GetGherkinDialect(ITextSnapshot textSnapshot)
@@ -70,6 +73,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private GherkinFileScopeChange FullParse(ITextSnapshot textSnapshot, GherkinDialect gherkinDialect)
         {
+            visualStudioTracer.Trace("Start full parsing", ParserTraceCategory);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             partialParseCount = 0;
 
             var gherkinListener = new GherkinTextBufferParserListener(gherkinDialect, textSnapshot, projectScope.Classifications);
@@ -79,15 +86,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             var gherkinFileScope = gherkinListener.GetResult();
 
-            return new GherkinFileScopeChange(
+            var result = new GherkinFileScopeChange(
                 gherkinFileScope,
                 true, true,
                 gherkinFileScope.GetAllBlocks(),
                 Enumerable.Empty<IGherkinFileBlock>());
+
+            stopwatch.Stop();
+            TraceFinishParse(stopwatch, "full", result);
+
+            return result;
         }
 
         private GherkinFileScopeChange PartialParse(GherkinTextBufferChange change, IGherkinFileScope previousScope)
         {
+            visualStudioTracer.Trace("Start incremental parsing", ParserTraceCategory);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             partialParseCount++;
 
             var textSnapshot = change.ResultTextSnapshot;
@@ -110,14 +126,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 scanner.Scan(gherkinListener);
             }
-            catch (PartialListeningDone2Exception partialListeningDoneException)
+            catch (PartialListeningDoneException partialListeningDoneException)
             {
                 firstUnchangedScenario = partialListeningDoneException.FirstUnchangedScenario;
             }
 
             var partialResult = gherkinListener.GetResult();
 
-            return MergePartialResult(previousScope, partialResult, firstAffectedScenario, firstUnchangedScenario, change.LineCountDelta);
+            var result = MergePartialResult(previousScope, partialResult, firstAffectedScenario, firstUnchangedScenario, change.LineCountDelta);
+            stopwatch.Stop();
+            TraceFinishParse(stopwatch, "incremental", result);
+            return result;
         }
 
         private IScenarioBlock GetFirstAffectedScenario(GherkinTextBufferChange change, IGherkinFileScope previousScope)
@@ -174,6 +193,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
 
             return new GherkinFileScopeChange(fileScope, false, false, changedBlocks, shiftedBlocks);
+        }
+
+        private void TraceFinishParse(Stopwatch stopwatch, string parseKind, GherkinFileScopeChange result)
+        {
+            visualStudioTracer.Trace(
+                string.Format("Finished {0} parsing in {1} ms, {2} errors", parseKind, stopwatch.ElapsedMilliseconds, result.GherkinFileScope.TotalErrorCount()), ParserTraceCategory);
         }
     }
 }

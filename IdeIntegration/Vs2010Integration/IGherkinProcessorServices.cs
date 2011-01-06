@@ -1,8 +1,6 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration

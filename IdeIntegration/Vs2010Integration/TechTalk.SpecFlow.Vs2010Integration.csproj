@@ -175,6 +175,7 @@
     <Compile Include="LanguageService\GherkinTextBufferChange.cs" />
     <Compile Include="LanguageService\GherkinTextBufferParser.cs" />
     <Compile Include="LanguageService\GherkinTextBufferParserListener.cs" />
+    <Compile Include="LanguageService\GherkinTextBufferPartialParserListener.cs" />
     <Compile Include="LanguageService\IGherkinFileScope.cs" />
     <Compile Include="LanguageService\ParsingScheduler.cs" />
     <Compile Include="LanguageService\ProjectScope.cs" />
@@ -211,7 +212,6 @@
     <None Include="..\Vs2008Integration\SingleFileGeneratorSupportRegistrationAttribute.cs">
       <Link>SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs</Link>
     </None>
-    <Compile Include="GherkinFileEditor\EditorExtensionProviderBase.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifierFormats.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassificationDefinition.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifier.cs" />
