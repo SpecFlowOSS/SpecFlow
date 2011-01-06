@@ -89,7 +89,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IGherkinFileScope GetResult()
         {
             if (currentFileBlockBuilder != null)
+            {
+                if (!CurrentFileBlockBuilder.IsComplete)
+                {
+                    CurrentFileBlockBuilder.SetAsInvalidBlock();
+                }
+
                 CloseBlock(textSnapshot.LineCount);
+            }
 
             return gherkinFileScope;
         }
@@ -177,13 +184,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return regionEndLine;
         }
 
+        private Action<int> CloseLevel2Outlinings = null;
+
+        private void OnCloseLevel2Outlinings(int regionEndLine)
+        {
+            if (CloseLevel2Outlinings != null)
+            {
+                CloseLevel2Outlinings(regionEndLine);
+                CloseLevel2Outlinings = null;
+            }
+        }
+
         private void CloseBlock(int editorLine)
         {
+            var regionStartLine = CurrentFileBlockBuilder.KeywordLine;
+            int regionEndLine = CalculateRegionEndLine(editorLine);
+
+            OnCloseLevel2Outlinings(regionEndLine);
+
             if (CurrentFileBlockBuilder.SupportsOutlining)
             {
-                var regionStartLine = CurrentFileBlockBuilder.KeywordLine;
-                int regionEndLine = CalculateRegionEndLine(editorLine);
-
                 if (regionEndLine > regionStartLine)
                     AddOutline(
                         regionStartLine,
@@ -191,13 +211,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         CurrentFileBlockBuilder.FullTitle);
             }
 
-            BuildBlock(CurrentFileBlockBuilder);
+            BuildBlock(CurrentFileBlockBuilder, editorLine - 1);
             CurrentFileBlockBuilder = null;
         }
 
-        protected virtual void BuildBlock(GherkinFileBlockBuilder blockBuilder)
+        protected virtual void BuildBlock(GherkinFileBlockBuilder blockBuilder, int lastLine)
         {
-            blockBuilder.Build(gherkinFileScope);
+            blockBuilder.Build(gherkinFileScope, lastLine);
         }
 
         private void CreateBlock(int editorLine)
@@ -263,9 +283,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            //TODO: outline
+            var editorLine = headerSpan.StartPosition.Line;
+            OnCloseLevel2Outlinings(CalculateRegionEndLine(editorLine));
+
             RegisterKeyword(keyword, headerSpan);
             ColorizeSpan(descriptionSpan, classifications.Description);
+
+            ScenarouOutlineExampleSet exampleSet = new ScenarouOutlineExampleSet(keyword, name, 
+                editorLine - CurrentFileBlockBuilder.KeywordLine);
+            CurrentFileBlockBuilder.ExampleSets.Add(exampleSet);
+
+            CloseLevel2Outlinings += regionEndLine =>
+                                         {
+                                             if (regionEndLine > editorLine)
+                                                 AddOutline(
+                                                     editorLine,
+                                                     regionEndLine,
+                                                     exampleSet.FullTitle());
+                                         };
         }
 
         public void Scenario(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)

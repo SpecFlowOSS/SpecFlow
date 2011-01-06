@@ -61,8 +61,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
             var fileScope = gherkinLanguageService.GetFileScope();
-            if (fileScope == null)
-                return new ClassificationSpan[0];
             return fileScope.GetClassificationSpans(span);
         }
 

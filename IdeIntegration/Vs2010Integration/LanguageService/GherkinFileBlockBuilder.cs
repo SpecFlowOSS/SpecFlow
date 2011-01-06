@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; private set; }
         public List<ErrorInfo> Errors { get; private set; }
         public List<IGherkinStep> Steps { get; private set; }
-        public List<IScenarouOutlineExampleSet> ExampleSets { get; private set; }
+        public List<ScenarouOutlineExampleSet> ExampleSets { get; private set; }
 
         public int StartLine { get; private set; }
 
@@ -23,7 +23,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public string FullTitle
         {
-            get { return Keyword + Title; }
+            get
+            {
+                return GherkinFileScopeExtensions.FormatBlockFullTitle(Keyword, Title);
+            }
         }
 
         public bool IsComplete
@@ -36,7 +39,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get
             {
                 Debug.Assert(IsComplete);
-                return KeywordLine - StartLine;
+                return StartLine - KeywordLine;
             }
         }
 
@@ -56,35 +59,42 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
             Errors = new List<ErrorInfo>();
             Steps = new List<IGherkinStep>();
-            ExampleSets = new List<IScenarouOutlineExampleSet>();
+            ExampleSets = new List<ScenarouOutlineExampleSet>();
 
             StartLine = startLine;
         }
 
-        public void Build(GherkinFileScope gherkinFileEditorInfo)
+        public void Build(GherkinFileScope gherkinFileEditorInfo, int endLine)
         {
             Debug.Assert(IsComplete);
+            int blockRelativeEndLine = endLine - KeywordLine;
 
-            if (BlockType == typeof(IHeaderBlock))
+            if (BlockType == typeof(IInvalidFileBlock))
+            {
+                Debug.Assert(gherkinFileEditorInfo.InvalidFileEndingBlock == null);
+                gherkinFileEditorInfo.InvalidFileEndingBlock =
+                    new InvalidFileBlock(StartLine, endLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+            }
+            else if (BlockType == typeof(IHeaderBlock))
             {
                 Debug.Assert(gherkinFileEditorInfo.HeaderBlock == null);
                 gherkinFileEditorInfo.HeaderBlock =
-                    new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                    new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IBackgroundBlock))
             {
                 Debug.Assert(gherkinFileEditorInfo.BackgroundBlock == null);
                 gherkinFileEditorInfo.BackgroundBlock =
-                    new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
+                    new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
             }
             else if (BlockType == typeof(IScenarioBlock))
             {
-                var scenarioBlock = new ScenarioBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
+                var scenarioBlock = new ScenarioBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
                 gherkinFileEditorInfo.ScenarioBlocks.Add(scenarioBlock);
             }
             else if (BlockType == typeof(IScenarioOutlineBlock))
             {
-                var scenarioBlock = new ScenarioOutlineBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray(), ExampleSets.ToArray());
+                var scenarioBlock = new ScenarioOutlineBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray(), ExampleSets.ToArray());
                 gherkinFileEditorInfo.ScenarioBlocks.Add(scenarioBlock);
             }
             else
@@ -99,6 +109,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             Title = title;
             Keyword = keyword;
             BlockType = blockType;
+        }
+
+        public void SetAsInvalidBlock()
+        {
+            BlockType = typeof(IInvalidFileBlock);
         }
     }
 }

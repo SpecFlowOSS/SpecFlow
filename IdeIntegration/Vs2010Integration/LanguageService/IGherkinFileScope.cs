@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public interface IGherkinFileScope
     {
         GherkinDialect GherkinDialect { get; }
+        IInvalidFileBlock InvalidFileEndingBlock { get; }
         IHeaderBlock HeaderBlock { get; }
         IBackgroundBlock BackgroundBlock { get; }
         IEnumerable<IScenarioBlock> ScenarioBlocks { get; }
@@ -56,6 +57,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         int BlockRelativeStartLine { get; }
 
         /// <summary>
+        /// A line number relative to <see cref="KeywordLine"/> specifying the lase line of the block (can be zero).
+        /// </summary>
+        int BlockRelativeEndLine { get; }
+
+        /// <summary>
         /// The coloring information for this block (null, if no coloring).
         /// </summary>
         IEnumerable<ClassificationSpan> ClassificationSpans { get; }
@@ -69,6 +75,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// Any parsing errors in this block.
         /// </summary>
         IEnumerable<ErrorInfo> Errors { get; }
+    }
+
+    public interface IHeaderBlock : IGherkinFileBlock
+    {
+    }
+
+    public interface IBackgroundBlock : IGherkinFileBlock
+    {
+        IEnumerable<IGherkinStep> Steps { get; }
+    }
+
+    public interface IInvalidFileBlock : IGherkinFileBlock
+    {
     }
 
     public interface IKeywordLine
@@ -89,18 +108,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         int BlockRelativeLine { get; }
     }
 
-    public interface IHeaderBlock : IGherkinFileBlock
-    {
-    }
-
     public interface IGherkinStep : IKeywordLine
     {
         BindingStatus BindingStatus { get; }
-    }
-
-    public interface IBackgroundBlock : IGherkinFileBlock
-    {
-        IEnumerable<IGherkinStep> Steps { get; }
     }
 
     public interface IScenarioBlock : IGherkinFileBlock

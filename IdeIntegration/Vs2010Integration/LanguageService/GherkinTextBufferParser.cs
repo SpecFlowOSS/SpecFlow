@@ -23,17 +23,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private GherkinDialect GetGherkinDialect(ITextSnapshot textSnapshot)
         {
-            return projectScope.GherkinDialectServices.GetGherkinDialect(lineNo => textSnapshot.GetLineFromLineNumber(lineNo).GetText());
+            try
+            {
+                return projectScope.GherkinDialectServices.GetGherkinDialect(
+                        lineNo => textSnapshot.GetLineFromLineNumber(lineNo).GetText());
+            }
+            catch(Exception)
+            {
+                return null;
+            }
         }
 
         public GherkinFileScopeChange Parse(GherkinTextBufferChange change, IGherkinFileScope previousScope = null)
         {
             var gherkinDialect = GetGherkinDialect(change.ResultTextSnapshot);
+            if (gherkinDialect == null)
+                return GetInvalidDialectScopeChange(change);
 
             bool fullParse = false;
             if (previousScope == null)
                 fullParse = true;
-            else if (!previousScope.GherkinDialect.Equals(gherkinDialect))
+            else if (!Equals(previousScope.GherkinDialect, gherkinDialect))
                 fullParse = true;
             else if (partialParseCount >= PartialParseCountLimit)
                 fullParse = true;
@@ -44,6 +54,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return FullParse(change.ResultTextSnapshot, gherkinDialect);
 
             return PartialParse(change, previousScope);
+        }
+
+        private GherkinFileScopeChange GetInvalidDialectScopeChange(GherkinTextBufferChange change)
+        {
+            var fileScope = new GherkinFileScope(null, change.ResultTextSnapshot)
+                                {
+                                    InvalidFileEndingBlock = new InvalidFileBlock(0, 
+                                        change.ResultTextSnapshot.LineCount - 1,
+                                        new ErrorInfo("Invalid Gherkin dialect!", 0, 0, null))
+                                };
+
+            return new GherkinFileScopeChange(fileScope, true, true, fileScope.GetAllBlocks(), Enumerable.Empty<IGherkinFileBlock>());
         }
 
         private GherkinFileScopeChange FullParse(ITextSnapshot textSnapshot, GherkinDialect gherkinDialect)
@@ -111,6 +133,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             Debug.Assert(partialResult.HeaderBlock == null, "Partial parse cannot re-parse header");
             Debug.Assert(partialResult.BackgroundBlock == null, "Partial parse cannot re-parse background");
 
+            List<IGherkinFileBlock> changedBlocks = new List<IGherkinFileBlock>();
+            List<IGherkinFileBlock> shiftedBlocks = new List<IGherkinFileBlock>();
+
             GherkinFileScope fileScope = new GherkinFileScope(previousScope.GherkinDialect, partialResult.TextSnapshot)
                                              {
                                                  HeaderBlock = previousScope.HeaderBlock,
@@ -122,25 +147,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             //inserting partial result
             fileScope.ScenarioBlocks.AddRange(partialResult.ScenarioBlocks);
-
-            List<IScenarioBlock> shiftedBlocks = new List<IScenarioBlock>();
-//            IScenarioBlock firstUnchangedScenarioShifted = null;
-            if (firstUnchangedScenario != null)
+            changedBlocks.AddRange(partialResult.ScenarioBlocks);
+            if (partialResult.InvalidFileEndingBlock != null)
             {
-                // inserting the non-effected scenarios at the end
-
-//                int firstNewScenarioIndex = fileScope.ScenarioBlocks.Count;
-                shiftedBlocks.AddRange(
-                    previousScope.ScenarioBlocks.SkipFromItemInclusive(firstUnchangedScenario)
-                        .Select(scenario => scenario.Shift(lineCountDelta)));
-                fileScope.ScenarioBlocks.AddRange(shiftedBlocks);
-
-//                firstUnchangedScenarioShifted = fileScope.ScenarioBlocks.Count > firstNewScenarioIndex
-//                                                    ? fileScope.ScenarioBlocks[firstNewScenarioIndex]
-//                                                    : null;
+                Debug.Assert(firstUnchangedScenario == null);
+                // the last scenario was changed, but it became invalid
+                fileScope.InvalidFileEndingBlock = partialResult.InvalidFileEndingBlock;
+                changedBlocks.Add(fileScope.InvalidFileEndingBlock);
             }
 
-            return new GherkinFileScopeChange(fileScope, false, false, partialResult.ScenarioBlocks, shiftedBlocks);
+            if (firstUnchangedScenario != null)
+            {
+                Debug.Assert(partialResult.InvalidFileEndingBlock == null);
+
+                // inserting the non-effected scenarios at the end
+                var shiftedScenarioBlocks = previousScope.ScenarioBlocks.SkipFromItemInclusive(firstUnchangedScenario)
+                    .Select(scenario => scenario.Shift(lineCountDelta)).ToArray();
+                fileScope.ScenarioBlocks.AddRange(shiftedScenarioBlocks);
+                shiftedBlocks.AddRange(shiftedScenarioBlocks);
+
+                if (previousScope.InvalidFileEndingBlock != null)
+                {
+                    fileScope.InvalidFileEndingBlock = previousScope.InvalidFileEndingBlock.Shift(lineCountDelta);
+                    shiftedBlocks.Add(fileScope.InvalidFileEndingBlock);
+                }
+            }
+
+            return new GherkinFileScopeChange(fileScope, false, false, changedBlocks, shiftedBlocks);
         }
     }
 }

@@ -11,23 +11,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             if (fileBlock == null) throw new ArgumentNullException("fileBlock");
 
-            if (fileBlock is IHeaderBlock)
-                return Shift((IHeaderBlock)fileBlock, lineShift);
+            if (fileBlock is IInvalidFileBlock)
+                return Shift((IInvalidFileBlock)fileBlock, lineShift);
             if (fileBlock is IBackgroundBlock)
                 return Shift((IBackgroundBlock)fileBlock, lineShift);
             if (fileBlock is IScenarioOutlineBlock)
                 return Shift((IScenarioOutlineBlock)fileBlock, lineShift);
             if (fileBlock is IScenarioBlock)
                 return Shift((IScenarioBlock)fileBlock, lineShift);
+
+            // we cannot shift header block
             throw new NotSupportedException("block type not supported: " + fileBlock.GetType());
-        }
-
-        public static IHeaderBlock Shift(this IHeaderBlock fileBlock, int lineShift)
-        {
-            if (fileBlock == null) throw new ArgumentNullException("fileBlock");
-
-            UnWrapShiftdFileBlock(ref fileBlock, ref lineShift);
-            return new ShiftedHeaderBlock(fileBlock, lineShift);
         }
 
         public static IBackgroundBlock Shift(this IBackgroundBlock fileBlock, int lineShift)
@@ -36,6 +30,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             UnWrapShiftdFileBlock(ref fileBlock, ref lineShift);
             return new ShiftedBackgroundBlock(fileBlock, lineShift);
+        }
+
+        public static IInvalidFileBlock Shift(this IInvalidFileBlock fileBlock, int lineShift)
+        {
+            if (fileBlock == null) throw new ArgumentNullException("fileBlock");
+
+            UnWrapShiftdFileBlock(ref fileBlock, ref lineShift);
+            return new ShiftedInvalidFileBlock(fileBlock, lineShift);
         }
 
         public static IScenarioBlock Shift(this IScenarioBlock fileBlock, int lineShift)
@@ -99,6 +101,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return baseBlock.BlockRelativeStartLine; }
         }
 
+        public int BlockRelativeEndLine
+        {
+            get { return baseBlock.BlockRelativeEndLine; }
+        }
+
         public IEnumerable<ClassificationSpan> ClassificationSpans
         {
             get { return baseBlock.ClassificationSpans; }
@@ -121,9 +128,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    internal class ShiftedHeaderBlock : ShiftedGherkinFileBlock<IHeaderBlock>, IHeaderBlock
+    internal class ShiftedInvalidFileBlock : ShiftedGherkinFileBlock<IInvalidFileBlock>, IInvalidFileBlock
     {
-        public ShiftedHeaderBlock(IHeaderBlock baseBlock, int lineShift) : base(baseBlock, lineShift)
+        public ShiftedInvalidFileBlock(IInvalidFileBlock baseBlock, int lineShift) : base(baseBlock, lineShift)
         {
         }
     }
