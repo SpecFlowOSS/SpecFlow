@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using gherkin;
 
@@ -14,6 +15,7 @@ namespace TechTalk.SpecFlow.Parser
         }
 
         static private readonly Regex languageRe = new Regex(@"^\s*#\s*language:\s*(?<lang>[\w-]+)\s*\n");
+        static private readonly Regex languageLineRe = new Regex(@"^\s*#\s*language:\s*(?<lang>[\w-]+)\s*$");
         internal LanguageInfo GetLanguage(string fileContent)
         {
             string langName = defaultLanguage.Name;
@@ -35,6 +37,33 @@ namespace TechTalk.SpecFlow.Parser
         {
             var language = GetLanguage(fileContent);
             return GetLanguageService(language);
+        }
+
+        public I18n GetLanguageService(Func<int, string> lineProvider)
+        {
+            var language = GetLanguage(lineProvider);
+            return GetLanguageService(language);
+        }
+
+        internal LanguageInfo GetLanguage(Func<int, string> lineProvider)
+        {
+            string langName = defaultLanguage.Name;
+            int lineNo = 0;
+            string line;
+            while ((line = lineProvider(lineNo++)) != null)
+            {
+                var langMatch = languageLineRe.Match(line);
+                if (langMatch.Success)
+                {
+                    langName = langMatch.Groups["lang"].Value;
+                    break;
+                }
+
+                if (line.Trim().Length != 0)
+                    break;
+            }
+
+            return SupportedLanguageHelper.GetSupportedLanguage(langName);
         }
     }
 }

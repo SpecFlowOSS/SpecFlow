@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -16,6 +17,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [ContentType("gherkin")]
     internal class GherkinFileClassifierProvider : EditorExtensionProviderBase, IClassifierProvider
     {
+        [Import]
+        internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
+
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
             if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
@@ -24,7 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             GherkinFileEditorParser parser = GetParser(buffer);
 
             return buffer.Properties.GetOrCreateSingletonProperty(() => 
-                new GherkinFileClassifier(parser));
+                new GherkinFileClassifier(parser, GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
 
     }
@@ -33,16 +37,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     internal class GherkinFileClassifier : IClassifier
     {
         private readonly GherkinFileEditorParser parser;
+        private readonly GherkinLanguageService gherkinLanguageService;
 
-        public GherkinFileClassifier(GherkinFileEditorParser parser)
+        public GherkinFileClassifier(GherkinFileEditorParser parser, GherkinLanguageService gherkinLanguageService)
         {
             this.parser = parser;
+            this.gherkinLanguageService = gherkinLanguageService;
 
             parser.ClassificationChanged += (sender, args) =>
             {
                 if (ClassificationChanged != null)
                     ClassificationChanged(this, args);
             };
+
+            gherkinLanguageService.FileScopeChanged += GherkinLanguageServiceOnFileScopeChanged;
+        }
+
+        private void GherkinLanguageServiceOnFileScopeChanged(object sender, GherkinFileScopeChange gherkinFileScopeChange)
+        {
+            if (ClassificationChanged != null)
+            {
+                ClassificationChangedEventArgs args = new ClassificationChangedEventArgs(gherkinFileScopeChange.CreateChangeSpan());
+                ClassificationChanged(this, args);
+            }
         }
 
         /// <summary>
@@ -53,6 +70,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
+            //TODO: use gherkinLanguageService
             return parser.GetClassificationSpans(span);
         }
 

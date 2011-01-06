@@ -179,7 +179,23 @@
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IGherkinProcessorServices.cs" />
+    <Compile Include="LanguageService\EnumerableExtensions.cs" />
+    <Compile Include="LanguageService\GherkinFileBlockBuilder.cs" />
+    <Compile Include="LanguageService\GherkinFileScope.cs" />
+    <Compile Include="LanguageService\GherkinFileScopeChange.cs" />
+    <Compile Include="LanguageService\GherkinFileScopeExtensions.cs" />
     <Compile Include="LanguageService\GherkinLanguageService.cs" />
+    <Compile Include="LanguageService\GherkinLanguageServiceFactory.cs" />
+    <Compile Include="LanguageService\GherkinScopeAnalyzer.cs" />
+    <Compile Include="LanguageService\GherkinTextBufferChange.cs" />
+    <Compile Include="LanguageService\GherkinTextBufferParser.cs" />
+    <Compile Include="LanguageService\GherkinTextBufferParserListenerBase.cs" />
+    <Compile Include="LanguageService\IGherkinFileScope.cs" />
+    <Compile Include="LanguageService\ParsingScheduler.cs" />
+    <Compile Include="LanguageService\ProjectScope.cs" />
+    <Compile Include="LanguageService\ProjectScopeFactory.cs" />
+    <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />
+    <Compile Include="LanguageService\SynchronizationHelper.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
     </Compile>

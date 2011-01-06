@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
+{
+    internal static class EnumerableExtensions
+    {
+        public static IEnumerable<T> AsSingleItemEnumerable<T>(this T item) where T : class
+        {
+            if (item == null)
+                yield break;
+
+            yield return item;
+        }
+
+        public static IEnumerable<T> AppendIfNotNull<T>(this IEnumerable<T> items, T item) where T : class
+        {
+            if (items == null) throw new ArgumentNullException("items");
+
+            if (item == null)
+                return Enumerable.Empty<T>();
+
+            return items.Append(item);
+        }
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> items, T item) where T : class
+        {
+            if (items == null) throw new ArgumentNullException("items");
+            if (item == null) throw new ArgumentNullException("item");
+
+            return items.Concat(item.AsSingleItemEnumerable());
+        }
+    }
+}
