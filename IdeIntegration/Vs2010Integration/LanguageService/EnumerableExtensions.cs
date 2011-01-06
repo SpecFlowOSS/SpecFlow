@@ -31,5 +31,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             return items.Concat(item.AsSingleItemEnumerable());
         }
+
+        public static IEnumerable<TItem> TakeUntilItemExclusive<TItem>(this IEnumerable<TItem> list, TItem item)
+        {
+            return list.TakeWhile(it => !it.Equals(item));
+        }
+
+        public static IEnumerable<TItem> SkipFromItemInclusive<TItem>(this IEnumerable<TItem> list, TItem item)
+        {
+            return list.SkipWhile(it => !it.Equals(item));
+        }
     }
 }

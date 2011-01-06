@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// </summary>
         /// <param name="waitForLatest">If true, the caller is blocked until the most recent scope is produced.</param>
         /// <returns>The parsed file scope.</returns>
-        public IGherkinFileScope GetFileScope(bool waitForLatest = false)
+        public IGherkinFileScope GetFileScope(bool waitForLatest = false, ITextSnapshot waitForParsingSnapshot = null)
         {
             if (lastGherkinFileScope == null)
                 waitForLatest = true;

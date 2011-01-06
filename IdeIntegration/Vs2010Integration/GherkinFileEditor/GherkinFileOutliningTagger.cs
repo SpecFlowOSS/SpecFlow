@@ -13,8 +13,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [Export(typeof(ITaggerProvider))]
     [TagType(typeof(IOutliningRegionTag))]
     [ContentType("gherkin")]
-    internal sealed class OutliningTaggerProvider : EditorExtensionProviderBase, ITaggerProvider
+    internal sealed class OutliningTaggerProvider : ITaggerProvider
     {
+        [Import]
+        internal IGherkinProcessorServices GherkinProcessorServices = null;
+
         [Import]
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 

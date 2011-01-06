@@ -15,10 +15,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     #region Provider definition
     [Export(typeof(IClassifierProvider))]
     [ContentType("gherkin")]
-    internal class GherkinFileClassifierProvider : EditorExtensionProviderBase, IClassifierProvider
+    internal class GherkinFileClassifierProvider : IClassifierProvider
     {
         [Import]
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
+
+        [Import]
+        internal IGherkinProcessorServices GherkinProcessorServices = null;
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {

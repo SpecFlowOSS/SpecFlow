@@ -13,8 +13,5 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         Project GetProject(ITextBuffer textBuffer);
         SpecFlowProject GetSpecFlowProjectFromProject(Project project);
         SpecFlowProject GetSpecFlowProjectFromFile(ITextBuffer textBuffer);
-        GherkinDialect GetGherkinDialect(ITextBuffer textBuffer);
-        GherkinFileEditorInfo GetParsingResult(ITextBuffer textBuffer);
-        GherkinFileEditorParser GetParser(ITextBuffer textBuffer);
     }
 }

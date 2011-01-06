@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Utils;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -20,12 +22,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         [Import]
         IGherkinProcessorServices GherkinProcessorServices = null;
 
+        [Import]
+        IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
+
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
             if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, GherkinProcessorServices);
+            return new GherkinStepCompletionSource(textBuffer, GherkinProcessorServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
         }
     }
 
@@ -34,11 +39,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
         private readonly IGherkinProcessorServices gherkinProcessorServices;
+        private readonly GherkinLanguageService languageService;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, IGherkinProcessorServices gherkinProcessorServices)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, IGherkinProcessorServices gherkinProcessorServices, GherkinLanguageService languageService)
         {
             this.textBuffer = textBuffer;
             this.gherkinProcessorServices = gherkinProcessorServices;
+            this.languageService = languageService;
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -83,18 +90,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         private ScenarioBlock? GetCurrentScenarioBlock(SnapshotPoint triggerPoint)
         {
-            var parsingResult = gherkinProcessorServices.GetParsingResult(textBuffer);
-            if (parsingResult == null)
+            var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
+            if (fileScope == null)
                 return null;
 
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
-            var scenarioInfo = parsingResult.ScenarioEditorInfos.LastOrDefault(si => si.KeywordLine < triggerLineNumber);
+            var scenarioInfo = fileScope.ScenarioBlocks.LastOrDefault(si => si.KeywordLine < triggerLineNumber);
             if (scenarioInfo == null)
                 return null;
 
             for (var lineNumer = triggerLineNumber; lineNumer > scenarioInfo.KeywordLine; lineNumer--)
             {
-                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, parsingResult.GherkinDialect);
+                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, fileScope.GherkinDialect);
 
                 if (stepKeyword != null)
                 {
