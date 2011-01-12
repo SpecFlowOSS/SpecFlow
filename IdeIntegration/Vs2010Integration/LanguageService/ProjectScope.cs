@@ -8,12 +8,13 @@ using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public interface IProjectScope
+    public interface IProjectScope : IDisposable
     {
         GherkinTextBufferParser GherkinTextBufferParser { get; }
         GherkinScopeAnalyzer GherkinScopeAnalyzer { get; }
         GherkinDialectServices GherkinDialectServices { get; }
         GherkinFileEditorClassifications Classifications { get; }
+        GherkinProcessingScheduler GherkinProcessingScheduler { get; }
     }
 
     internal class NoProjectScope : IProjectScope
@@ -42,7 +43,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { throw new NotImplementedException(); }
         }
 
+        public GherkinProcessingScheduler GherkinProcessingScheduler
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         #endregion
+
+        public void Dispose()
+        {
+            //nop
+        }
     }
 
     public class VsProjectScope : IProjectScope
@@ -53,6 +64,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public GherkinFileEditorClassifications Classifications { get; private set; }
 
+        public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+
         public VsProjectScope(Project project, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
             Classifications = classifications;
@@ -61,6 +74,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             //TODO: register for file changes, etc.
 
             parser = new GherkinTextBufferParser(this, visualStudioTracer);
+            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser
@@ -77,6 +91,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             //TODO: handle project config
             get { return new GherkinDialectServices(CultureInfo.GetCultureInfo("en-US")); }
+        }
+
+        public void Dispose()
+        {
+            GherkinProcessingScheduler.Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel.Composition;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
@@ -62,13 +63,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void OnSolutionClosed()
         {
+            var projectScopes = projectScopeCache.Values.ToArray();
             projectScopeCache.Clear();
+            foreach (var projectScope in projectScopes)
+            {
+                projectScope.Dispose();
+            }
         }
 
         public void Dispose()
         {
             if (dteReference.IsInitialized)
                 dteReference.Value.Events.SolutionEvents.AfterClosing -= OnSolutionClosed;
+            OnSolutionClosed();
         }
     }
 }

@@ -8,10 +8,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     /// </summary>
     public class GherkinLanguageService
     {
-        private IProjectScope projectScope;
-        private ParsingScheduler parsingScheduler;
+        private readonly IProjectScope projectScope;
 
         private IGherkinFileScope lastGherkinFileScope = null;
+
+        public IProjectScope ProjectScope
+        {
+            get { return projectScope; }
+        }
 
         public GherkinLanguageService(IProjectScope projectScope)
         {
@@ -30,19 +34,55 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// </summary>
         public void TextBufferChanged(GherkinTextBufferChange change)
         {
-            //TODO: parsingScheduler.EnqueueParsingRequest(change);
-            var scopeChange = projectScope.GherkinTextBufferParser.Parse(change, lastGherkinFileScope);
+            var task = new ParsingTask(this, change);
+
+            projectScope.GherkinProcessingScheduler.EnqueueParsingRequest(task);
+//            task.Apply(); // synchronous execution
+        }
+
+        private class ParsingTask : IGherkinProcessingTask
+        {
+            private readonly GherkinLanguageService languageService;
+            private readonly GherkinTextBufferChange change;
+
+            public ParsingTask(GherkinLanguageService languageService, GherkinTextBufferChange change)
+            {
+                this.languageService = languageService;
+                this.change = change;
+            }
+
+            public void Apply()
+            {
+                var lastGherkinFileScope = languageService.GetFileScope();
+                var scopeChange = languageService.ProjectScope.GherkinTextBufferParser.Parse(change, lastGherkinFileScope);
+
+                languageService.RegisterScopeChange(scopeChange);
+                languageService.EnqueueAnalyzingRequest(scopeChange);
+            }
+
+            public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
+            {
+                ParsingTask otherParsingTask = other as ParsingTask;
+                if (otherParsingTask == null || languageService != otherParsingTask.languageService)
+                    return null;
+
+                return new ParsingTask(
+                    languageService, GherkinTextBufferChange.Merge(change, otherParsingTask.change));
+            }
+        }
+
+        private void RegisterScopeChange(GherkinFileScopeChange scopeChange)
+        {
             lastGherkinFileScope = scopeChange.GherkinFileScope;
-
             TriggerScopeChange(scopeChange);
-
-            if (AnalyzingEnabled)
-                EnqueueAnalyzingRequest(scopeChange);
         }
 
         private void EnqueueAnalyzingRequest(GherkinFileScopeChange scopeChange)
         {
-            //TODO: parsingScheduler.EnqueueAnalyzingRequest(change);
+            if (!AnalyzingEnabled)
+                return;
+
+            //TODO: GherkinProcessingScheduler.EnqueueAnalyzingRequest(change);
             var newScopeChange = projectScope.GherkinScopeAnalyzer.Analyze(scopeChange, null); //TODO: specify previous scope
             if (newScopeChange != scopeChange)
                 TriggerScopeChange(newScopeChange);

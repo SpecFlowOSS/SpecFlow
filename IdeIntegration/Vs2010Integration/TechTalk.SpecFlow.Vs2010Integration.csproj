@@ -185,7 +185,7 @@
     <Compile Include="LanguageService\GherkinTextBufferParserListener.cs" />
     <Compile Include="LanguageService\GherkinTextBufferPartialParserListener.cs" />
     <Compile Include="LanguageService\IGherkinFileScope.cs" />
-    <Compile Include="LanguageService\ParsingScheduler.cs" />
+    <Compile Include="LanguageService\GherkinProcessingScheduler.cs" />
     <Compile Include="LanguageService\ProjectScope.cs" />
     <Compile Include="LanguageService\ProjectScopeFactory.cs" />
     <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />

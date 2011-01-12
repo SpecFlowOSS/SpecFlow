@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
@@ -42,6 +43,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         public void Clear()
         {
             innerDictionary.Clear();
+        }
+
+        public ICollection<TValue> Values
+        {
+            get { return innerDictionary.Values; }
         }
     }
 
