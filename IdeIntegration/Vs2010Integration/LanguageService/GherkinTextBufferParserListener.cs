@@ -76,13 +76,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return;
 
             var startLine = textSnapshot.GetLineFromLineNumber(span.StartPosition.Line);
-            var endLine = span.StartPosition.Line == span.EndPosition.Line ? startLine :
-                                                                                           textSnapshot.GetLineFromLineNumber(span.EndPosition.Line);
+            var endLine = span.StartPosition.Line == span.EndPosition.Line ? 
+                startLine : textSnapshot.GetLineFromLineNumber(span.EndPosition.Line);
             var startIndex = startLine.Start + span.StartPosition.LinePosition;
-
-            AddClassification(classificationType, 
-                              startIndex, 
-                              endLine.Start + span.EndPosition.LinePosition - startIndex);
+            var endLinePosition = span.EndPosition.LinePosition == endLine.Length ? 
+                endLine.LengthIncludingLineBreak : span.EndPosition.LinePosition;
+            var length = endLine.Start + endLinePosition - startIndex;
+            AddClassification(classificationType, startIndex, length);
         }
 
         private void ColorizeLinePart(string value, GherkinBufferSpan span, IClassificationType classificationType)
