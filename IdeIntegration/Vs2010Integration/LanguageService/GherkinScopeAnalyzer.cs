@@ -1,4 +1,5 @@
 ﻿using System;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -26,15 +27,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class GherkinScopeAnalyzer
     {
         private IProjectScope projectScope;
+        private readonly IVisualStudioTracer visualStudioTracer;
 
-        public GherkinScopeAnalyzer(IProjectScope projectScope)
+        public GherkinScopeAnalyzer(IProjectScope projectScope, IVisualStudioTracer visualStudioTracer)
         {
             this.projectScope = projectScope;
+            this.visualStudioTracer = visualStudioTracer;
         }
 
-        public GherkinFileScopeChange Analyze(GherkinFileScopeChange change, IGherkinFileScope previousScope = null)
+        public GherkinFileScopeChange Analyze(GherkinFileScopeChange change)
         {
-            throw new NotImplementedException();
+            visualStudioTracer.Trace("Analyzing started", "GherkinScopeAnalyzer");
+            return change; //TODO
         }
     }
 }

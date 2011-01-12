@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly Dispatcher parsingDispatcher;
         private readonly IScheduler parsingScheduler;
         private readonly Subject<IGherkinProcessingTask> parsingSubject; 
+        private readonly Subject<IGherkinProcessingTask> analyzingSubject; 
 
         private Dispatcher CreateBackgroundThreadWithDispatcher(ThreadPriority priority)
         {
@@ -50,6 +51,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             parsingSubject = new Subject<IGherkinProcessingTask>(parsingScheduler);
             parsingSubject.BufferWithTimeout(parsingDelay, parsingScheduler, flushFirst: true)
                 .Subscribe(ApplyTask);
+
+            analyzingSubject = parsingSubject; //TODO: create separate thread
         }
 
         private void ApplyTask(IGherkinProcessingTask task)
@@ -88,6 +91,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             visualStudioTracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             parsingSubject.OnNext(change);
+        }
+
+        public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
+        {
+            visualStudioTracer.Trace("Analyzing request queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
+            analyzingSubject.OnNext(task);
         }
 
         public void Dispose()

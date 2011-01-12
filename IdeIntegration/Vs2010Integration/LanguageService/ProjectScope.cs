@@ -61,6 +61,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly Project project;
         private readonly IVisualStudioTracer visualStudioTracer;
         private readonly GherkinTextBufferParser parser;
+        private GherkinScopeAnalyzer analyzer;
 
         public GherkinFileEditorClassifications Classifications { get; private set; }
 
@@ -74,6 +75,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             //TODO: register for file changes, etc.
 
             parser = new GherkinTextBufferParser(this, visualStudioTracer);
+            analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
         }
 
@@ -84,7 +86,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public GherkinScopeAnalyzer GherkinScopeAnalyzer
         {
-            get { throw new NotImplementedException(); }
+            get { return analyzer; }
         }
 
         public GherkinDialectServices GherkinDialectServices

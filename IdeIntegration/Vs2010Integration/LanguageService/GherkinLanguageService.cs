@@ -20,6 +20,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public GherkinLanguageService(IProjectScope projectScope)
         {
             this.projectScope = projectScope;
+            AnalyzingEnabled = true;
         }
 
         public bool AnalyzingEnabled { get; set; }
@@ -77,15 +78,44 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             TriggerScopeChange(scopeChange);
         }
 
+        private class AnalyzingTask : IGherkinProcessingTask
+        {
+            private readonly GherkinLanguageService languageService;
+            private readonly GherkinFileScopeChange change;
+
+            public AnalyzingTask(GherkinLanguageService languageService, GherkinFileScopeChange change)
+            {
+                this.languageService = languageService;
+                this.change = change;
+            }
+
+            public void Apply()
+            {
+                var newScopeChange = languageService.ProjectScope.GherkinScopeAnalyzer.Analyze(change);
+                if (newScopeChange != change)
+                    languageService.TriggerScopeChange(newScopeChange);
+            }
+
+            public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
+            {
+                AnalyzingTask otherAnalyzingTask = other as AnalyzingTask;
+                if (otherAnalyzingTask == null || languageService != otherAnalyzingTask.languageService)
+                    return null;
+
+                //TODO: merge
+                return null;
+            }
+        }
+
         private void EnqueueAnalyzingRequest(GherkinFileScopeChange scopeChange)
         {
             if (!AnalyzingEnabled)
                 return;
 
-            //TODO: GherkinProcessingScheduler.EnqueueAnalyzingRequest(change);
-            var newScopeChange = projectScope.GherkinScopeAnalyzer.Analyze(scopeChange, null); //TODO: specify previous scope
-            if (newScopeChange != scopeChange)
-                TriggerScopeChange(newScopeChange);
+            var task = new AnalyzingTask(this, scopeChange);
+
+            projectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(task);
+            //            task.Apply(); // synchronous execution
         }
 
         private void TriggerScopeChange(GherkinFileScopeChange scopeChange)
