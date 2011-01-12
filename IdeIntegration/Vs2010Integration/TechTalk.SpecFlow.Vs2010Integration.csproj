@@ -126,10 +126,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.CoreEx, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RX\System.CoreEx.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RX\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xaml" />
@@ -181,6 +189,7 @@
     <Compile Include="LanguageService\ProjectScope.cs" />
     <Compile Include="LanguageService\ProjectScopeFactory.cs" />
     <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />
+    <Compile Include="Utils\ObservableExtensions.cs" />
     <Compile Include="Utils\SynchronizationHelper.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
