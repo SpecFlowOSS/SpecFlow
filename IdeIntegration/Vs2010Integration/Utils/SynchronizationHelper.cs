@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
+namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
     public class SynchronizedResultCache<TSource, TKey, TValue> where TValue : class
     {

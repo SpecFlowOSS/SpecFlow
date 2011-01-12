@@ -164,7 +164,7 @@
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IGherkinProcessorServices.cs" />
-    <Compile Include="LanguageService\EnumerableExtensions.cs" />
+    <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="LanguageService\GherkinFileBlockBuilder.cs" />
     <Compile Include="LanguageService\GherkinFileScope.cs" />
     <Compile Include="LanguageService\GherkinFileScopeChange.cs" />
@@ -181,7 +181,7 @@
     <Compile Include="LanguageService\ProjectScope.cs" />
     <Compile Include="LanguageService\ProjectScopeFactory.cs" />
     <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />
-    <Compile Include="LanguageService\SynchronizationHelper.cs" />
+    <Compile Include="Utils\SynchronizationHelper.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -267,6 +267,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <!-- VSSDK Settings -->
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
