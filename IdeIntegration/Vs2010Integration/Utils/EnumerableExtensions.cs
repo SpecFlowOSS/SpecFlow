@@ -37,9 +37,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return list.TakeWhile(it => !it.Equals(item));
         }
 
+        public static IEnumerable<TItem> TakeUntilItemInclusive<TItem>(this IEnumerable<TItem> list, TItem item) where TItem : class
+        {
+            return list.TakeWhile(it => !it.Equals(item)).Append(item);
+        }
+
         public static IEnumerable<TItem> SkipFromItemInclusive<TItem>(this IEnumerable<TItem> list, TItem item)
         {
             return list.SkipWhile(it => !it.Equals(item));
+        }
+
+        public static IEnumerable<TItem> SkipFromItemExclusive<TItem>(this IEnumerable<TItem> list, TItem item)
+        {
+            return list.SkipWhile(it => !it.Equals(item)).Skip(1);
         }
     }
 }

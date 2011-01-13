@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                         new ErrorInfo("Invalid Gherkin dialect!", 0, 0, null))
                                 };
 
-            return new GherkinFileScopeChange(fileScope, true, true, fileScope.GetAllBlocks(), Enumerable.Empty<IGherkinFileBlock>());
+            return GherkinFileScopeChange.CreateEntireScopeChange(fileScope);
         }
 
         private GherkinFileScopeChange FullParse(ITextSnapshot textSnapshot, GherkinDialect gherkinDialect)

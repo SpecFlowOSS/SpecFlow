@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -63,6 +65,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
             {
+                if (other is PingTask)
+                    return this;
+
                 ParsingTask otherParsingTask = other as ParsingTask;
                 if (otherParsingTask == null || languageService != otherParsingTask.languageService)
                     return null;
@@ -98,12 +103,40 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
             {
+                if (other is PingTask)
+                    return this;
+
                 AnalyzingTask otherAnalyzingTask = other as AnalyzingTask;
                 if (otherAnalyzingTask == null || languageService != otherAnalyzingTask.languageService)
                     return null;
 
-                //TODO: merge
-                return null;
+                if (otherAnalyzingTask.change.EntireScopeChanged)
+                    return otherAnalyzingTask;
+
+                if (change.EntireScopeChanged)
+                    return new AnalyzingTask(languageService, GherkinFileScopeChange.CreateEntireScopeChange(otherAnalyzingTask.change.GherkinFileScope));
+
+                return new AnalyzingTask(languageService, Merge(change, otherAnalyzingTask.change));
+            }
+
+            private static GherkinFileScopeChange Merge(GherkinFileScopeChange change1, GherkinFileScopeChange change2)
+            {
+                var ramainingChanged1Blocks = change1.ChangedBlocks.Intersect(change2.GherkinFileScope.GetAllBlocks()).ToArray();
+
+                var firstChanged1 = ramainingChanged1Blocks.FirstOrDefault();
+                var lastChanged1 = ramainingChanged1Blocks.LastOrDefault();
+
+                var firstChanged2 = change2.ChangedBlocks.First();
+                var lastChanged2 = change2.ChangedBlocks.Last();
+
+                var firstChanged = firstChanged1.GetStartLine() < firstChanged2.GetStartLine() ? firstChanged1 : firstChanged2;
+                var lastChanged = lastChanged1.GetEndLine() > lastChanged2.GetEndLine() ? lastChanged1 : lastChanged2;
+
+                var changedBlocks = change2.GherkinFileScope.GetAllBlocks().SkipFromItemInclusive(firstChanged).TakeUntilItemInclusive(lastChanged);
+                var shiftedBlocks = change1.ShiftedBlocks.Any() || change2.ShiftedBlocks.Any() ?
+                    change2.GherkinFileScope.GetAllBlocks().SkipFromItemExclusive(lastChanged) :
+                    Enumerable.Empty<IGherkinFileBlock>();
+                return new GherkinFileScopeChange(change2.GherkinFileScope, false, false, changedBlocks, shiftedBlocks);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.Text;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -21,6 +22,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             EntireScopeChanged = entireScopeChanged;
             ChangedBlocks = changedBlocks;
             ShiftedBlocks = shiftedBlocks;
+        }
+
+        internal static GherkinFileScopeChange CreateEntireScopeChange(IGherkinFileScope fileScope)
+        {
+            return new GherkinFileScopeChange(fileScope, true, true, fileScope.GetAllBlocks(), Enumerable.Empty<IGherkinFileBlock>());
         }
     }
 }

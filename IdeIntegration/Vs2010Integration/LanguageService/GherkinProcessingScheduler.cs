@@ -15,10 +15,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         IGherkinProcessingTask Merge(IGherkinProcessingTask other);
     }
 
+    internal class PingTask : IGherkinProcessingTask
+    {
+        public static readonly IGherkinProcessingTask Instance = new PingTask();
+
+        public void Apply()
+        {
+            //nop;
+        }
+
+        public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
+        {
+            return other;
+        }
+    }
+
+
     public class GherkinProcessingScheduler : IDisposable
     {
         private readonly IVisualStudioTracer visualStudioTracer;
         private static readonly TimeSpan parsingDelay = TimeSpan.FromMilliseconds(250);
+        private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(1000);
 
         private readonly Dispatcher parsingDispatcher;
         private readonly IScheduler parsingScheduler;
@@ -52,16 +69,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             parsingSubject.BufferWithTimeout(parsingDelay, parsingScheduler, flushFirst: true)
                 .Subscribe(ApplyTask);
 
-            analyzingSubject = parsingSubject; //TODO: create separate thread
+            analyzingSubject = new Subject<IGherkinProcessingTask>(parsingScheduler); //TODO: create separate thread?
+            analyzingSubject.BufferWithTimeout(analyzingDelay, parsingScheduler, flushFirst: false)
+                .Subscribe(ApplyTask);
         }
 
         private void ApplyTask(IGherkinProcessingTask task)
         {
-            visualStudioTracer.Trace("Applying task on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
+            if (!(task is PingTask))
+                visualStudioTracer.Trace("Applying task on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             task.Apply();
         }
 
-        private void ApplyTask(IGherkinProcessingTask[] tasks)
+        private void ApplyTask(IEnumerable<IGherkinProcessingTask> tasks)
         {
             IGherkinProcessingTask currentTask = null;
             foreach (var task in tasks)
@@ -78,7 +98,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     }
                     else
                     {
-                        visualStudioTracer.Trace("Task merged", "GherkinProcessingScheduler");
+                        if (!(currentTask is PingTask || task is PingTask))
+                            visualStudioTracer.Trace("Task merged", "GherkinProcessingScheduler");
                         currentTask = mergedTask;
                     }
                 }
@@ -91,6 +112,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             visualStudioTracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             parsingSubject.OnNext(change);
+            analyzingSubject.OnNext(PingTask.Instance);
         }
 
         public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
