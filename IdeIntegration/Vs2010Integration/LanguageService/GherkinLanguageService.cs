@@ -129,8 +129,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 var firstChanged2 = change2.ChangedBlocks.First();
                 var lastChanged2 = change2.ChangedBlocks.Last();
 
-                var firstChanged = firstChanged1.GetStartLine() < firstChanged2.GetStartLine() ? firstChanged1 : firstChanged2;
-                var lastChanged = lastChanged1.GetEndLine() > lastChanged2.GetEndLine() ? lastChanged1 : lastChanged2;
+                var firstChanged = firstChanged1 != null && firstChanged1.GetStartLine() < firstChanged2.GetStartLine() ? firstChanged1 : firstChanged2;
+                var lastChanged = lastChanged1 != null && lastChanged1.GetEndLine() > lastChanged2.GetEndLine() ? lastChanged1 : lastChanged2;
 
                 var changedBlocks = change2.GherkinFileScope.GetAllBlocks().SkipFromItemInclusive(firstChanged).TakeUntilItemInclusive(lastChanged);
                 var shiftedBlocks = change1.ShiftedBlocks.Any() || change2.ShiftedBlocks.Any() ?
