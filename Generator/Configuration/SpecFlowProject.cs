@@ -20,6 +20,18 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         }
     }
 
+    public class SpecFlowProjectConfiguration
+    {
+        public GeneratorConfiguration GeneratorConfiguration { get; set; }
+        public RuntimeConfigurationForGenerator RuntimeConfiguration { get; set; }
+
+        public SpecFlowProjectConfiguration()
+        {
+            GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
+            RuntimeConfiguration = new RuntimeConfigurationForGenerator(); // load defaults
+        }
+    }
+
     public class SpecFlowProject
     {
         public string ProjectName { get; set; }
@@ -27,14 +39,16 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public string ProjectFolder { get; set; }
         public string DefaultNamespace { get; set; }
         public List<SpecFlowFeatureFile> FeatureFiles { get; private set; }
-        public GeneratorConfiguration GeneratorConfiguration { get; set; }
-        public RuntimeConfigurationForGenerator RuntimeConfiguration { get; set; }
+        public GeneratorConfiguration GeneratorConfiguration
+        {
+            get { return Configuration.GeneratorConfiguration; }
+        }
+        public SpecFlowProjectConfiguration Configuration { get; set; }
 
         public SpecFlowProject()
         {
             FeatureFiles = new List<SpecFlowFeatureFile>();
-            GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
-            RuntimeConfiguration = new RuntimeConfigurationForGenerator(); // load defaults
+            Configuration = new SpecFlowProjectConfiguration();
         }
 
         public SpecFlowFeatureFile GetOrCreateFeatureFile(string featureFileName)

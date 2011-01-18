@@ -133,7 +133,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             List<Completion> result = new List<Completion>();
             GetCompletionsFromProject(project, scenarioBlock, result);
 
-            var specFlowProject = gherkinProcessorServices.GetSpecFlowProjectFromProject(project);
+            var specFlowProject = languageService.ProjectScope.SpecFlowProjectConfiguration;
             if (specFlowProject != null)
             {
                 foreach (var assemblyName in specFlowProject.RuntimeConfiguration.AdditionalStepAssemblies)

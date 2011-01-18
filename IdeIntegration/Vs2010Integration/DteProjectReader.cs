@@ -35,6 +35,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             }
         }
 
+        public static SpecFlowProjectConfiguration LoadSpecFlowConfigurationFromDteProject(Project project)
+        {
+            if (project == null || !IsProjectSupported(project))
+                return null;
+
+            try
+            {
+                return LoadSpecFlowConfigurationFromDteProjectInternal(project);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         private static SpecFlowProject LoadSpecFlowProjectFromDteProjectInternal(Project project)
         {
             string projectFolder = Path.GetDirectoryName(project.FullName);
@@ -58,15 +73,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                         featureFile.CustomNamespace = ns;
                     specFlowProject.FeatureFiles.Add(featureFile);
                 }
+            }
 
+            specFlowProject.Configuration = LoadSpecFlowConfigurationFromDteProjectInternal(project);
+
+            return specFlowProject;
+        }
+
+        private static SpecFlowProjectConfiguration LoadSpecFlowConfigurationFromDteProjectInternal(Project project)
+        {
+            string projectFolder = Path.GetDirectoryName(project.FullName);
+            SpecFlowProjectConfiguration configuration = new SpecFlowProjectConfiguration();
+            foreach (ProjectItem projectItem in VsxHelper.GetAllProjectItem(project).Where(IsPhysicalFile))
+            {
+                var fileName = GetRelativePath(GetFileName(projectItem), projectFolder);
                 if (Path.GetFileName(fileName).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string configFileContent = GetFileContent(projectItem);
-                    GeneratorConfigurationReader.UpdateConfigFromFileContent(specFlowProject.GeneratorConfiguration, configFileContent);
-                    RuntimeConfigurationReader.UpdateConfigFromFileContent(specFlowProject.RuntimeConfiguration, configFileContent);
+                    GeneratorConfigurationReader.UpdateConfigFromFileContent(configuration.GeneratorConfiguration, configFileContent);
+                    RuntimeConfigurationReader.UpdateConfigFromFileContent(configuration.RuntimeConfiguration, configFileContent);
                 }
             }
-            return specFlowProject;
+            return configuration;
         }
 
         private static bool IsPhysicalFile(ProjectItem projectItem)

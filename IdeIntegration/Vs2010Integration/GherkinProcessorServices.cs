@@ -26,22 +26,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         [Import]
         internal IClassificationTypeRegistryService ClassificationRegistry = null; // Set via MEF
 
-        public SpecFlowProject GetSpecFlowProjectFromProject(Project project)
-        {
-            //TODO: cache
-            var specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(project);
-            return specFlowProject;
-        }
-
-        public SpecFlowProject GetSpecFlowProjectFromFile(ITextBuffer textBuffer)
-        {
-            Project project = GetProject(textBuffer);
-            if (project == null)
-                return null;
-
-            return GetSpecFlowProjectFromProject(project);
-        }
-
         public IntegrationOptions GetOptions()
         {
             var dte = VsxHelper.GetDte(ServiceProvider);

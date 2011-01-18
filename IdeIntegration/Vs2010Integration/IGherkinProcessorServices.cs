@@ -9,7 +9,5 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     {
         IntegrationOptions GetOptions();
         Project GetProject(ITextBuffer textBuffer);
-        SpecFlowProject GetSpecFlowProjectFromProject(Project project);
-        SpecFlowProject GetSpecFlowProjectFromFile(ITextBuffer textBuffer);
     }
 }

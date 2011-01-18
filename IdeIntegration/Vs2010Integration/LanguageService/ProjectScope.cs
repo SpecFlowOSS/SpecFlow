@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using EnvDTE;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -15,6 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         GherkinDialectServices GherkinDialectServices { get; }
         GherkinFileEditorClassifications Classifications { get; }
         GherkinProcessingScheduler GherkinProcessingScheduler { get; }
+        SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; }
     }
 
     internal class NoProjectScope : IProjectScope
@@ -48,6 +48,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { throw new NotImplementedException(); }
         }
 
+        public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         #endregion
 
         public void Dispose()
@@ -61,11 +66,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly Project project;
         private readonly IVisualStudioTracer visualStudioTracer;
         private readonly GherkinTextBufferParser parser;
-        private GherkinScopeAnalyzer analyzer;
+        private readonly GherkinScopeAnalyzer analyzer;
 
         public GherkinFileEditorClassifications Classifications { get; private set; }
-
         public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+        public SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; private set; }
+        public GherkinDialectServices GherkinDialectServices { get; private set; }
+
+        public Project Project
+        {
+            get { return project; }
+        }
+
+        public IVisualStudioTracer VisualStudioTracer
+        {
+            get { return visualStudioTracer; }
+        }
 
         public VsProjectScope(Project project, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
@@ -77,6 +93,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             parser = new GherkinTextBufferParser(this, visualStudioTracer);
             analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
+
+            SpecFlowProjectConfiguration = DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration();
+            GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser
@@ -87,12 +106,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public GherkinScopeAnalyzer GherkinScopeAnalyzer
         {
             get { return analyzer; }
-        }
-
-        public GherkinDialectServices GherkinDialectServices
-        {
-            //TODO: handle project config
-            get { return new GherkinDialectServices(CultureInfo.GetCultureInfo("en-US")); }
         }
 
         public void Dispose()
