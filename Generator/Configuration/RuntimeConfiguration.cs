@@ -109,5 +109,40 @@ namespace TechTalk.SpecFlow.Configuration
 
             return config;
         }
+
+        #region Equality
+
+        public bool Equals(RuntimeConfigurationForGenerator other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return other._additionalStepAssemblies.SequenceEqual(_additionalStepAssemblies) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.BindingCulture, BindingCulture) && other.DetectAmbiguousMatches.Equals(DetectAmbiguousMatches) && other.StopAtFirstError.Equals(StopAtFirstError) && Equals(other.MissingOrPendingStepsOutcome, MissingOrPendingStepsOutcome) && other.TraceSuccessfulSteps.Equals(TraceSuccessfulSteps) && other.TraceTimings.Equals(TraceTimings) && other.MinTracedDuration.Equals(MinTracedDuration);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (RuntimeConfigurationForGenerator)) return false;
+            return Equals((RuntimeConfigurationForGenerator) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = (ToolLanguage != null ? ToolLanguage.GetHashCode() : 0);
+                result = (result*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
+                result = (result*397) ^ DetectAmbiguousMatches.GetHashCode();
+                result = (result*397) ^ StopAtFirstError.GetHashCode();
+                result = (result*397) ^ MissingOrPendingStepsOutcome.GetHashCode();
+                result = (result*397) ^ TraceSuccessfulSteps.GetHashCode();
+                result = (result*397) ^ TraceTimings.GetHashCode();
+                result = (result*397) ^ MinTracedDuration.GetHashCode();
+                return result;
+            }
+        }
+
+        #endregion
     }
 }

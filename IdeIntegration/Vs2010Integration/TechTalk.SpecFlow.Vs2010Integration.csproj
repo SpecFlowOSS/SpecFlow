@@ -172,6 +172,8 @@
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="IGherkinProcessorServices.cs" />
+    <Compile Include="Utils\VsProjectFileTracker.cs" />
+    <Compile Include="Utils\DteWithEvents.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="LanguageService\GherkinFileBlockBuilder.cs" />
     <Compile Include="LanguageService\GherkinFileScope.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="LanguageService\ProjectScope.cs" />
     <Compile Include="LanguageService\ProjectScopeFactory.cs" />
     <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />
+    <Compile Include="Utils\FileSystemHelper.cs" />
     <Compile Include="Utils\ObservableExtensions.cs" />
     <Compile Include="Utils\SynchronizationHelper.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">

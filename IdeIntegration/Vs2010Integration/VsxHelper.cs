@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using EnvDTE;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using Constants = EnvDTE.Constants;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
-    internal class VsxHelper
+    internal static class VsxHelper
     {
         public static DTE GetDte(SVsServiceProvider serviceProvider)
         {
@@ -37,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             return prjItem.ContainingProject;
         }
 
-        public static IEnumerable<ProjectItem> GetAllProjectItem(EnvDTE.Project project)
+        public static IEnumerable<ProjectItem> GetAllProjectItem(Project project)
         {
             Queue<ProjectItem> items = new Queue<ProjectItem>();
             foreach (ProjectItem item in project.ProjectItems)
@@ -50,6 +53,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                     foreach (ProjectItem subitem in item.ProjectItems)
                         items.Enqueue(subitem);
             }
+        }
+
+        public static IEnumerable<ProjectItem> GetAllPhysicalFileProjectItem(Project project)
+        {
+            return GetAllProjectItem(project).Where(IsPhysicalFile);
+        }
+
+        public static ProjectItem FindProjectItemByProjectRelativePath(Project project, string filePath)
+        {
+            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                    pi => filePath.Equals(GetProjectRelativePath(pi), StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -69,7 +83,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 {
                     return project;
                 }
-                else if (project.ProjectItems != null)
+                
+                if (project.ProjectItems != null)
                 {
                     Project child = FindProjectInternal(project.ProjectItems, match);
                     if (child != null)
@@ -157,6 +172,44 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 return defaultValue;
 
             return (T)property.Value;
+        }
+
+        public static bool IsPhysicalFile(ProjectItem projectItem)
+        {
+            return String.Equals(projectItem.Kind, VSConstants.GUID_ItemType_PhysicalFile.ToString("B"), StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public static string GetFileName(ProjectItem projectItem)
+        {
+            if (!IsPhysicalFile(projectItem))
+                return null;
+
+            return projectItem.FileNames[1];
+        }
+
+        public static string GetProjectRelativePath(ProjectItem projectItem)
+        {
+            string fileName = GetFileName(projectItem);
+            if (fileName == null)
+                return null;
+
+            string projectFolder = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
+            return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
+        static public string GetFileContent(ProjectItem projectItem)
+        {
+            if (projectItem.IsOpen[Constants.vsViewKindAny])
+            {
+                TextDocument textDoc = (TextDocument)projectItem.Document.Object("TextDocument");
+                EditPoint start = textDoc.StartPoint.CreateEditPoint();
+                return start.GetText(textDoc.EndPoint);
+            }
+            
+            using (TextReader file = new StreamReader(GetFileName(projectItem)))
+            {
+                return file.ReadToEnd();
+            }
         }
     }
 }

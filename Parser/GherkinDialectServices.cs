@@ -9,6 +9,11 @@ namespace TechTalk.SpecFlow.Parser
     {
         private readonly CultureInfo defaultLanguage;
 
+        public CultureInfo DefaultLanguage
+        {
+            get { return defaultLanguage; }
+        }
+
         public GherkinDialectServices(CultureInfo defaultLanguage)
         {
             this.defaultLanguage = defaultLanguage;

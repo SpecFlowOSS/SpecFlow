@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.ComponentModel.Composition;
+using System.Threading;
+using System.Windows.Threading;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
@@ -27,17 +29,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal IVisualStudioTracer VisualStudioTracer = null;
 
-        private readonly SynchInitializedInstance<DTE> dteReference;
+        private readonly SynchInitializedInstance<DteWithEvents> dteReference;
         private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
         private readonly SynchronizedResultCache<Project, string, IProjectScope> projectScopeCache;
 
         public ProjectScopeFactory()
         {
-            dteReference = new SynchInitializedInstance<DTE>(
+            dteReference = new SynchInitializedInstance<DteWithEvents>(
                 () =>
                     {
-                        var dtex = VsxHelper.GetDte(ServiceProvider);
-                        dtex.Events.SolutionEvents.AfterClosing += OnSolutionClosed;
+
+                        var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider));
+//                        dtex.Events.SolutionEvents.Opened += () => VisualStudioTracer.Trace("solution opened", "ProjectScopeFactory");
+                        dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
+                        VisualStudioTracer.Trace("subscribed to solution closed " + System.Threading.Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");
                         return dtex;
                     });
 
@@ -45,11 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 () => new GherkinFileEditorClassifications(ClassificationRegistry));
 
             projectScopeCache = new SynchronizedResultCache<Project, string, IProjectScope>(
-                        project =>
-                            {
-                                dteReference.EnsureInitialized();
-                                return new VsProjectScope(project, classificationsReference.Value, VisualStudioTracer);
-                            },
+                        project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer),
                         project => project.UniqueName); //TODO: get ID
         }
 
@@ -63,6 +64,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void OnSolutionClosed()
         {
+            VisualStudioTracer.Trace("solution closed", "ProjectScopeFactory");
+
             var projectScopes = projectScopeCache.Values.ToArray();
             projectScopeCache.Clear();
             foreach (var projectScope in projectScopes)
@@ -74,7 +77,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             if (dteReference.IsInitialized)
-                dteReference.Value.Events.SolutionEvents.AfterClosing -= OnSolutionClosed;
+                dteReference.Value.SolutionEvents.AfterClosing -= OnSolutionClosed;
             OnSolutionClosed();
         }
     }
