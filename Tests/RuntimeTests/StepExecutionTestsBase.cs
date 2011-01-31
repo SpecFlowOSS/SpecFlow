@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using NUnit.Framework;
@@ -51,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceError: {0}", ex);
             }
 
-            public void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage)
+            public void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
             {
                 Console.WriteLine("TraceNoMatchingStepDefinition");
             }
