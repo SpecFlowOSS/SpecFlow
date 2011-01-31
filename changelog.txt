@@ -1,5 +1,8 @@
 ﻿Next - ???
 
+New features:
++ Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
+
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
 + Binding is reported as invalid if there is a matching step definition with different scope
