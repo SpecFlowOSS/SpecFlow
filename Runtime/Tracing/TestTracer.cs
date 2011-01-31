@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
@@ -14,7 +16,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
-        void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage);
+        void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
@@ -68,12 +70,27 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
-        public void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage)
+        public void TraceNoMatchingStepDefinition(StepArgs stepArgs, GenerationTargetLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
         {
+//            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+//            return new BindingException(
+//                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
+//                    stepDescription,
+//                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
+
+
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(targetLanguage);
 
             StringBuilder message = new StringBuilder();
-            message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
+            if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)
+                message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
+            else
+            {
+                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.", 
+                    string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
+                traceListener.WriteToolOutput(preMessage);
+                message.AppendLine("Change the scope or use the following code to create a new step definition:");
+            }
             message.Append(
                 stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                     stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
