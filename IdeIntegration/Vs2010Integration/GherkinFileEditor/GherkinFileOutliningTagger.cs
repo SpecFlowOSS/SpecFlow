@@ -21,18 +21,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Import]
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
+        [Import]
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
             if (!GherkinProcessorServices.GetOptions().EnableOutlining)
                 return null;
 
-            return (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(() =>
+            return (ITagger<T>)GherkinBufferServiceManager.GetOrCreate(buffer, () =>
                 new GherkinFileOutliningTagger(GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
     }
     #endregion
 
-    internal class GherkinFileOutliningTagger : ITagger<IOutliningRegionTag>
+    internal class GherkinFileOutliningTagger : ITagger<IOutliningRegionTag>, IDisposable
     {
         private readonly GherkinLanguageService gherkinLanguageService;
 
@@ -61,5 +64,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+
+        public void Dispose()
+        {
+            gherkinLanguageService.FileScopeChanged -= GherkinLanguageServiceOnFileScopeChanged;
+        }
     }
 }

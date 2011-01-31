@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly IProjectScope projectScope;
         private readonly IVisualStudioTracer visualStudioTracer;
 
+        private bool isDisposed = false;
         private IGherkinFileScope lastGherkinFileScope = null;
 
         public IProjectScope ProjectScope
@@ -58,6 +59,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// </summary>
         public void TextBufferChanged(GherkinTextBufferChange change)
         {
+            if (isDisposed)
+                throw new ObjectDisposedException("GherkinLanguageService");
+
             var task = new ParsingTask(this, change);
 
             projectScope.GherkinProcessingScheduler.EnqueueParsingRequest(task);
@@ -77,6 +81,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public void Apply()
             {
+                if (languageService.isDisposed)
+                    return;
+
                 var lastGherkinFileScope = languageService.GetFileScope();
                 var scopeChange = languageService.ProjectScope.GherkinTextBufferParser.Parse(change, lastGherkinFileScope);
 
@@ -117,6 +124,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public void Apply()
             {
+                if (languageService.isDisposed)
+                    return;
+
                 var newScopeChange = languageService.ProjectScope.GherkinScopeAnalyzer.Analyze(change);
                 if (newScopeChange != change)
                     languageService.TriggerScopeChange(newScopeChange);
@@ -185,6 +195,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// <returns>The parsed file scope.</returns>
         public IGherkinFileScope GetFileScope(bool waitForLatest = false, ITextSnapshot waitForParsingSnapshot = null)
         {
+            if (isDisposed)
+                throw new ObjectDisposedException("GherkinLanguageService");
+
             if (lastGherkinFileScope == null)
                 waitForLatest = true;
 
@@ -195,7 +208,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             visualStudioTracer.Trace("Language service disposed", "GherkinLanguageService");
-            projectScope.GherkinDialectServicesChanged -= GherkinDialectServicesChanged;            
+            isDisposed = true;
+            projectScope.GherkinDialectServicesChanged -= GherkinDialectServicesChanged;
+            lastGherkinFileScope = null;
         }
     }
 }

@@ -2,10 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using EnvDTE80;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
-using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
@@ -23,19 +21,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Import]
         internal IGherkinProcessorServices GherkinProcessorServices = null;
 
+        [Import]
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
             if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
                 return null;
 
-            return buffer.Properties.GetOrCreateSingletonProperty(() => 
+            return GherkinBufferServiceManager.GetOrCreate(buffer, () => 
                 new GherkinFileClassifier(GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
-
     }
     #endregion //provider def
 
-    internal class GherkinFileClassifier : IClassifier
+    internal class GherkinFileClassifier : IClassifier, IDisposable
     {
         private readonly GherkinLanguageService gherkinLanguageService;
 
@@ -71,5 +71,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         // for example typing /* would cause the clssification to change in C# without directly
         // affecting the span.
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
+
+        public void Dispose()
+        {
+            gherkinLanguageService.FileScopeChanged -= GherkinLanguageServiceOnFileScopeChanged;
+        }
     }
 }

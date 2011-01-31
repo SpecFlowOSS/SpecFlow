@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -16,33 +13,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         GherkinLanguageService GetLanguageService(ITextBuffer textBuffer);
     }
 
-//    [Export(typeof(IWpfTextViewConnectionListener))]
-//    [ContentType("gherkin")]
-//    [TextViewRole(PredefinedTextViewRoles.Interactive)]
-//    public class Bla : IWpfTextViewConnectionListener
-//    {
-//        [Import]
-//        internal IVisualStudioTracer VisualStudioTracer = null;
-//
-//        public void SubjectBuffersConnected(IWpfTextView textView, ConnectionReason reason, Collection<ITextBuffer> subjectBuffers)
-//        {
-//            VisualStudioTracer.Trace("SubjectBuffersConnected", "Bla");
-//        }
-//
-//        public void SubjectBuffersDisconnected(IWpfTextView textView, ConnectionReason reason, Collection<ITextBuffer> subjectBuffers)
-//        {
-//            VisualStudioTracer.Trace("SubjectBuffersDisconnected", "Bla");
-//        }
-//    }
-
     [Export(typeof(IGherkinLanguageServiceFactory))]
-    [Export(typeof(IWpfTextViewConnectionListener))]
-    [ContentType("gherkin")]
-    [TextViewRole(PredefinedTextViewRoles.Interactive)]
-    internal class GherkinLanguageServiceFactory : IGherkinLanguageServiceFactory, IWpfTextViewConnectionListener
+    internal class GherkinLanguageServiceFactory : IGherkinLanguageServiceFactory
     {
-        private const string LS_KEY = "GLS";
-
         [Import]
         internal IProjectScopeFactory ProjectScopeFactory = null;
 
@@ -55,9 +28,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal IVisualStudioTracer VisualStudioTracer = null;
 
+        [Import]
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+
         public GherkinLanguageService GetLanguageService(ITextBuffer textBuffer)
         {
-            return textBuffer.Properties.GetOrCreateSingletonProperty(LS_KEY, () => CreateLanguageService(textBuffer));
+            return GherkinBufferServiceManager.GetOrCreate(textBuffer, () => CreateLanguageService(textBuffer));
         }
 
         private GherkinLanguageService CreateLanguageService(ITextBuffer textBuffer)
@@ -104,26 +80,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 startPosition, endPosition,
                 lineCountDelta, positionDelta,
                 afterTextSnapshot);
-        }
-
-        public void SubjectBuffersConnected(IWpfTextView textView, ConnectionReason reason, Collection<ITextBuffer> subjectBuffers)
-        {
-            //nop
-        }
-
-        public void SubjectBuffersDisconnected(IWpfTextView textView, ConnectionReason reason, Collection<ITextBuffer> subjectBuffers)
-        {
-            VisualStudioTracer.Trace("SubjectBuffersDisconnected", "GherkinLanguageServiceFactory");
-            
-            foreach (var subjectBuffer in subjectBuffers)
-            {
-                GherkinLanguageService languageService;
-                if (subjectBuffer.Properties.TryGetProperty<GherkinLanguageService>(LS_KEY, out languageService))
-                {
-                    subjectBuffer.Properties.RemoveProperty(LS_KEY);
-                    languageService.Dispose();
-                }
-            }
         }
     }
 }
