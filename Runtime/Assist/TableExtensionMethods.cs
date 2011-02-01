@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -31,6 +32,11 @@ namespace TechTalk.SpecFlow.Assist
                 SetData(table, instance, row, key);
         }
 
+        private static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
+        {
+            return property.Name.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+        }
+
         private static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
         {
             var handlers = GetTypeHandlersForFieldValuePairs<T>();
@@ -39,7 +45,7 @@ namespace TechTalk.SpecFlow.Assist
                                             from key in handlers.Keys
                                             from row in table.Rows
                                             where key.IsAssignableFrom(property.PropertyType)
-                                                && property.Name == row["Field"]
+                                                && IsPropertyMatchingToColumnName(property, row["Field"])
                                             select new { Row = row, property.Name, Handler = handlers[key] };
 
             propertiesThatNeedToBeSet.ToList()
@@ -95,28 +101,23 @@ namespace TechTalk.SpecFlow.Assist
         private static void SetData<T>(Table table, T instance, TableRow row, Type type)
         {
             var handler = GetTypeHandlersForProperties<T>()[type];
-            var propertiesToUpdate = GetPropertiesOfThisTypeToUpdate<T>(table, type);
-            foreach (var property in propertiesToUpdate)
-                if (string.IsNullOrEmpty(row[property]))
-                    instance.SetPropertyValue(property, null);
+
+            var propertiesThatNeedToBeSet = from property in GetPropertiesOfThisType<T>(type)
+                                            from header in table.Header
+                                            where IsPropertyMatchingToColumnName(property, header)
+                                            select new { Header = header, PropertyName = property.Name };
+
+            foreach (var property in propertiesThatNeedToBeSet)
+                if (string.IsNullOrEmpty(row[property.Header]))
+                    instance.SetPropertyValue(property.PropertyName, null);
                 else
-                    instance.SetPropertyValue(property, handler(row, property));
+                    instance.SetPropertyValue(property.PropertyName, handler(row, property.Header));
         }
 
-        private static IEnumerable<string> GetPropertiesOfThisTypeToUpdate<T>(Table table, Type type)
-        {
-            var propertyNames = GetPropertiesOfThisType<T>(type);
-
-            return from name in propertyNames
-                   join header in table.Header on name equals header
-                   select header;
-        }
-
-        private static IEnumerable<string> GetPropertiesOfThisType<T>(Type type)
+        private static IEnumerable<PropertyInfo> GetPropertiesOfThisType<T>(Type type)
         {
             return typeof(T).GetProperties().ToList()
-                .Where(x => type.IsAssignableFrom(x.PropertyType))
-                .Select(x => x.Name);
+                .Where(x => type.IsAssignableFrom(x.PropertyType));
         }
     }
 }

@@ -26,6 +26,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_properties_with_different_case()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("firstname", "John");
+
+            var person = table.CreateInstance<Person>();
+
+            person.FirstName.ShouldEqual("John");
+        }
+
+        [Test]
+        public void Sets_properties_from_column_names_with_blanks()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("First Name", "John");
+
+            var person = table.CreateInstance<Person>();
+
+            person.FirstName.ShouldEqual("John");
+        }
+
+        [Test]
         public void Sets_string_values()
         {
             var table = new Table("Field", "Value");

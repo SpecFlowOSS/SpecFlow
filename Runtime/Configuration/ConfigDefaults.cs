@@ -16,5 +16,6 @@ namespace TechTalk.SpecFlow.Configuration
         internal const string MinTracedDuration = "0:0:0.1";
 
         internal const bool AllowDebugGeneratedFiles = false;
+        internal const bool AllowRowTests = true;
     }
 }

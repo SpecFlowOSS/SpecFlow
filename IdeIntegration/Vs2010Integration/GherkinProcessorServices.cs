@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using EnvDTE;
 using gherkin;
 using Microsoft.VisualStudio.Editor;
@@ -7,6 +8,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
@@ -40,6 +42,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 return null;
 
             return GetSpecFlowProjectFromProject(project);
+        }
+
+        public IntegrationOptions GetOptions()
+        {
+            var dte = VsxHelper.GetDte(ServiceProvider);
+            return IntegrationOptionsProvider.GetOptions(dte);
         }
 
         public Project GetProject(ITextBuffer textBuffer)

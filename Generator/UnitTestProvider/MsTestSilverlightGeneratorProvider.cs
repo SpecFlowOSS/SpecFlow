@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -23,6 +24,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
         private CodeTypeDeclaration currentTestTypeDeclaration = null;
+
+        public bool SupportsRowTests { get { return false; } }
 
         public virtual void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
         {
@@ -76,6 +79,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             string featureTitle = currentTestTypeDeclaration.UserData[FEATURE_TITILE_KEY] as string;
             if (featureTitle != null)
                 SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
+        }
+
+        public virtual void SetRowTest(CodeMemberMethod memberMethod, string title)
+        {
+            //MsTest does not support row tests
+            throw new NotSupportedException();
+        }
+
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        {
+            //MsTest does not support row tests
+            throw new NotSupportedException();
         }
 
         public virtual void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)

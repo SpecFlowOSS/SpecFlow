@@ -173,6 +173,13 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (bool)this["allowDebugGeneratedFiles"]; }
             set { this["allowDebugGeneratedFiles"] = value; }
         }
+
+        [ConfigurationProperty("allowRowTests", DefaultValue = ConfigDefaults.AllowRowTests, IsRequired = false)]
+        public bool AllowRowTests
+        {
+            get { return (bool)this["allowRowTests"]; }
+            set { this["allowRowTests"] = value; }
+        }
     }
 
     public class TraceConfigElement : ConfigurationElement

@@ -18,6 +18,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     {
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
+            if (!GherkinProcessorServices.GetOptions().EnableOutlining)
+                return null;
+
             GherkinFileEditorParser parser = GetParser(buffer);
 
             return (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(() =>

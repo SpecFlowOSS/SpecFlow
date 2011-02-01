@@ -18,6 +18,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     {
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
+            if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
+                return null;
+
             GherkinFileEditorParser parser = GetParser(buffer);
 
             return buffer.Properties.GetOrCreateSingletonProperty(() => 

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?include Common.wxi?>
+<?define Vs2008RegPath = "Software\Microsoft\VisualStudio\9.0" ?>
+
+<?define VBLangId = "{164B10B9-B200-11D0-8C61-00A0C91E29D5}" ?>
+<?define CSharpLangId = "{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}" ?>
+<?define SilverlightPackageId = "{CB22EE0E-4072-4ae7-96E2-90FCCF879544}" ?>
+
 <?define CLSID_SpecFlowSingleFileGenerator = "{3c9cf10a-a9ab-4899-a0fb-4b3be4a36c15}" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">

@@ -41,6 +41,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_properties_with_different_case()
+        {
+            var table = new Table("firstname");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.ShouldEqual("John");
+        }
+
+        [Test]
+        public void Sets_properties_from_column_names_with_blanks()
+        {
+            var table = new Table("first name");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.ShouldEqual("John");
+        }
+
+        [Test]
         public void Returns_two_instances_when_there_are_two_rows()
         {
             var table = new Table("FirstName");

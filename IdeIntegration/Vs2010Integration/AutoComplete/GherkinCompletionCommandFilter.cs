@@ -27,6 +27,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+                return;
+
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
             Debug.WriteLineIf(view != null, "No WPF editor view found");
             if (view == null)

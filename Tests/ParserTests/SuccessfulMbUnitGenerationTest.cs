@@ -29,7 +29,7 @@ namespace ParserTests
         {
             var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
             var mbUnitTestGeneratorProvider = new MbUnitTestGeneratorProvider();
-            var converter = new SpecFlowUnitTestConverter(mbUnitTestGeneratorProvider, codeDomHelper, true);
+            var converter = new SpecFlowUnitTestConverter(mbUnitTestGeneratorProvider, codeDomHelper, true, true);
             CodeNamespace codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
             var codeProvider = new CSharpCodeProvider();

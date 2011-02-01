@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?include Common.wxi?>
-<?define CLSID_SpecFlowSingleFileGenerator = "{44F8C2E2-18A9-4B97-B830-6BCD0CAA161C}" ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <ComponentGroup Id="CompGroup_VS2010">
       <ComponentRef Id="Comp_Vs2010Integration_Core" />
+      <ComponentRef Id="Comp_Vs2010Integration_ItemTemplates" />
       <ComponentRef Id="Comp_Vs2010Integration_Extensions" />
-
-      <ComponentRef Id="Comp_VS2010ItemTemplates_CSharp" />
-      <ComponentRef Id="Comp_VS2010ItemTemplates_VisualBasic" />
-      <ComponentRef Id="Comp_VS2010Registry" />
     </ComponentGroup>
 
-    <!-- new VS2010 integration components -->
     <DirectoryRef Id="INSTALLLOCATION">
+      <!-- VS2010 integration components -->
       <Component Id="Comp_Vs2010Integration_Core" Guid="122C987F-37FF-4383-AF8D-81325A218F31">
         <File Id="specflowsetup.ico_VS2010" Name="specflowsetup.ico" Source="$(var.SetupResourcesDir)\specflowsetup.ico" />
         <File Id="specflow_preview.png_VS2010" Name="specflow_preview.png" Source="$(var.SetupResourcesDir)\specflow_preview.png" />
-        <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.dll" />
-        <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration\extension.vsixmanifest" />
+        <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration.dll" />
+        <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\extension.vsixmanifest" />
+        <File Id="TechTalk.SpecFlow.Vs2010Integration.pkgdef_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.pkgdef" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration.pkgdef" />
       </Component>
 
+      <!-- project/item templates -->
+      <Directory Id="Dir_ItemTemplates" Name="ItemTemplates" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
+        <Component Id="Comp_Vs2010Integration_ItemTemplates" Guid="75907C42-3DBA-4689-812D-74D6DD93E477">
+          <File Id="File_SpecFlowFeature.zip_VS2010" Name="SpecFlowFeature.zip" />
+          <File Id="File_SpecFlowStepDefinition.zip_VS2010" Name="SpecFlowStepDefinition.zip" />
+          <File Id="File_SpecFlowEventDefinition.zip_VS2010" Name="SpecFlowEventDefinition.zip" />
+          <File Id="File_SpecFlowFeature_VB.zip_VS2010" Name="SpecFlowFeature_VB.zip" />
+          <File Id="File_SpecFlowStepDefinition_VB.zip_VS2010" Name="SpecFlowStepDefinition_VB.zip" />
+          <File Id="File_SpecFlowEventDefinition_VB.zip_VS2010" Name="SpecFlowEventDefinition_VB.zip" />
+        </Component>
+      </Directory>
+
+      <!-- extension shortcuts -->
       <Directory Id="Dir_VS2010_ROOT_FOLDER" Name="VS2010_Root">
         <Directory Id="Dir_VS2010_Common7" Name="Common7">
           <Directory Id="Dir_VS2010_IDE" Name="IDE">
@@ -34,9 +44,12 @@
                               Name="extension.vsixmanifest"
                               Target="[INSTALLLOCATION]extension.vsixmanifest"
                               WorkingDirectory="INSTALLLOCATION"/>
+                    <Shortcut Id="Shortcut_TechTalk.SpecFlow.Vs2010Integration.pkgdef_VS2010"
+                              Name="TechTalk.SpecFlow.Vs2010Integration.pkgdef"
+                              Target="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2010Integration.pkgdef"
+                              WorkingDirectory="INSTALLLOCATION"/>
                     <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk_SpecFlow" On="uninstall"/>
                     <RemoveFolder Id="Dir_VS2010_Extensions_TechTalk" On="uninstall"/>
-                    <!--<RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>-->
                   </Component>
                 </Directory>
               </Directory>
@@ -48,80 +61,5 @@
 
     <PropertyRef Id='VS2010_ROOT_FOLDER'/>
     <SetDirectory Id="Dir_VS2010_ROOT_FOLDER" Value="[VS2010_ROOT_FOLDER]" Sequence="both" />     
-    
-    <!-- project/item templates -->
-
-    <DirectoryRef Id="INSTALLLOCATION">
-      <Directory Id="DIR_VS2010_PROJECTTEMPLATES" Name="VS2010_ProjectTemplates">
-        <!--project templates will come here-->
-      </Directory>
-
-      <Directory Id="Dir_VS2010_ItemTemplates" Name="VS2010_ItemTemplates">
-        <Directory Id="Dir_VS2010_ItemTemplates_CSharp" Name="CSharp" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
-          <Component Id="Comp_VS2010ItemTemplates_CSharp" Guid="23464AB4-D785-48da-80D7-A817AA5D4152">
-            <File Id="File_SpecFlowFeature.zip_VS2010" Name="SpecFlowFeature.zip" />
-            <File Id="File_SpecFlowStepDefinition.zip_VS2010" Name="SpecFlowStepDefinition.zip" />
-            <File Id="File_SpecFlowEventDefinition.zip_VS2010" Name="SpecFlowEventDefinition.zip" />
-          </Component>
-        </Directory>
-        <Directory Id="Dir_VS2010_ItemTemplates_VisualBasic" Name="VisualBasic" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
-          <Component Id="Comp_VS2010ItemTemplates_VisualBasic" Guid="8074242F-AD50-4135-A3BF-69D468C440DF">
-            <File Id="File_SpecFlowFeature_VB.zip_VS2010" Name="SpecFlowFeature_VB.zip" />
-            <File Id="File_SpecFlowStepDefinition_VB.zip_VS2010" Name="SpecFlowStepDefinition_VB.zip" />
-            <File Id="File_SpecFlowEventDefinition_VB.zip_VS2010" Name="SpecFlowEventDefinition_VB.zip" />
-          </Component>
-        </Directory>
-      </Directory>
-    </DirectoryRef>
-
-    <PropertyRef Id='VS2010_PROJECTTEMPLATES_DIR'/>
-    <SetDirectory Id="DIR_VS2010_PROJECTTEMPLATES" Value="[VS2010_PROJECTTEMPLATES_DIR]" Sequence="both" />
-
-    <PropertyRef Id='VS2010_ITEMTEMPLATES_DIR'/>
-    <SetDirectory Id="Dir_VS2010_ItemTemplates" Value="[VS2010_ITEMTEMPLATES_DIR]" Sequence="both" />
-
-    <!-- registry -->
-
-    <DirectoryRef Id="INSTALLLOCATION">
-      <Component Id="Comp_VS2010Registry" Guid="88BDD46F-2005-48a0-A065-4DA9E40039A6">
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\CLSID\$(var.CLSID_SpecFlowSingleFileGenerator)" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="TechTalk.SpecFlow.Vs2010Integration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2010Integration.SpecFlowSingleFileGenerator" Type="string" />
-          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2010Integration.dll" Type="string" />
-          <RegistryValue Name="InprocServer32" Value="C:\\Windows\\SYSTEM32\\MSCOREE.DLL" Type="string" />
-          <RegistryValue Name="ThreadingModel" Value="Both" Type="string" />
-        </RegistryKey>
-
-        <!-- VB.NET registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.VBLangId)\.feature" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
-        </RegistryKey>
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.VBLangId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="VB.NET SpecFlow Generator" Type="string" />
-          <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
-          <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
-        </RegistryKey>
-
-        <!-- C# registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.CSharpLangId)\.feature" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
-        </RegistryKey>
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.CSharpLangId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="C# SpecFlow Generator" Type="string" />
-          <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
-          <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
-        </RegistryKey>
-
-        <!-- Silverlight registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.SilverlightPackageId)\.feature" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
-        </RegistryKey>
-        <RegistryKey Root="HKLM" Key="$(var.Vs2010RegPath)\Generators\$(var.SilverlightPackageId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="Silverlight SpecFlow Generator" Type="string" />
-          <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
-          <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
-        </RegistryKey>
-      </Component>
-    </DirectoryRef>
   </Fragment>
 </Wix>
