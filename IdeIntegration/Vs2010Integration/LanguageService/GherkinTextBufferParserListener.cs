@@ -135,11 +135,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             var regionEndLine = editorLine - 1;
             // skip comments directly before next scenario start
-            while (gherkinBuffer.GetMatchForLine(commentRe, regionEndLine) != null)
+            while (gherkinBuffer.GetMatchForLine(commentRe, regionEndLine) != null && regionEndLine > gherkinBuffer.LineOffset)
                 regionEndLine--;
 
             // skip empty lines directly before next scenario start (+ comments)
-            while (gherkinBuffer.GetMatchForLine(whitespaceOnlyRe, regionEndLine) != null)
+            while (gherkinBuffer.GetMatchForLine(whitespaceOnlyRe, regionEndLine) != null && regionEndLine > gherkinBuffer.LineOffset)
                 regionEndLine--;
             return regionEndLine;
         }

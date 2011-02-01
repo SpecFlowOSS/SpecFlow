@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 fullParse = true;
             else if (partialParseCount >= PartialParseCountLimit)
                 fullParse = true;
-            else if (!previousScope.ScenarioBlocks.Any(s => s.GetStartLine() <= change.StartLine))
+            else if (GetFirstAffectedScenario(change, previousScope) == null)
                 fullParse = true;
 
             if (fullParse)
@@ -110,6 +110,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var textSnapshot = change.ResultTextSnapshot;
 
             IScenarioBlock firstAffectedScenario = GetFirstAffectedScenario(change, previousScope);
+            Debug.Assert(firstAffectedScenario != null);
             int parseStartPosition = textSnapshot.GetLineFromLineNumber(firstAffectedScenario.GetStartLine()).Start;
 
             string fileContent = textSnapshot.GetText(parseStartPosition, textSnapshot.Length - parseStartPosition);
@@ -142,10 +143,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private IScenarioBlock GetFirstAffectedScenario(GherkinTextBufferChange change, IGherkinFileScope previousScope)
         {
-            var firstAffectedScenario = previousScope.ScenarioBlocks.LastOrDefault(
-                s => s.GetStartLine() <= change.StartLine);
-            Debug.Assert(firstAffectedScenario != null);
-            return firstAffectedScenario;
+            if (change.Type == GherkinTextBufferChangeType.SingleLine)
+                //single-line changes on the start cannot influence the previous scenario
+                return previousScope.ScenarioBlocks.LastOrDefault(s => s.GetStartLine() <= change.StartLine);
+
+            // if multiple lines are added at the first line of a block, it can happen that these lines will belong
+            // to the previous block
+            return previousScope.ScenarioBlocks.LastOrDefault(s => s.GetStartLine() < change.StartLine); 
         }
 
         private GherkinFileScopeChange MergePartialResult(IGherkinFileScope previousScope, IGherkinFileScope partialResult, IScenarioBlock firstAffectedScenario, IScenarioBlock firstUnchangedScenario, int lineCountDelta)

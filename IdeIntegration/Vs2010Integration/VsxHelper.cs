@@ -37,6 +37,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             ProjectItem prjItem = dte.Solution.FindProjectItem(ppzsFilename);
 
+            if (prjItem == null)
+                return null;
+
             return prjItem.ContainingProject;
         }
 
