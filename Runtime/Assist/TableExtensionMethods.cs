@@ -48,8 +48,6 @@ namespace TechTalk.SpecFlow.Assist
                                                 && IsPropertyMatchingToColumnName(property, row["Field"])
                                             select new { Row = row, property.Name, Handler = handlers[key] };
 
-
-
             propertiesThatNeedToBeSet.ToList()
                 .ForEach(x => instance.SetPropertyValue(x.Name, x.Handler(x.Row, x.Row["Value"])));
         }
