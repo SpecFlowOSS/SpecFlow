@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                ex.PreserveStackTrace();
+                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(MethodInfo));
                 throw ex;
             }
         }

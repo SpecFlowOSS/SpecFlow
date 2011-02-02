@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
         }
 
-        private string GetMethodText(MethodInfo methodInfo)
+        public string GetMethodText(MethodInfo methodInfo)
         {
             return string.Format("{0}.{1}({2})", methodInfo.DeclaringType.Name, methodInfo.Name,
                 string.Join(", ", methodInfo.GetParameters().Select(pi => pi.ParameterType.Name).ToArray()));
