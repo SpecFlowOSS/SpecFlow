@@ -40,6 +40,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             currentTestTypeDeclaration = typeDeclaration;
         }
 
+        public virtual void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        {
+            SetCategories(typeDeclaration.CustomAttributes, categories);
+        }
+
         private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
         {
             customAttributes.Add(
@@ -58,11 +63,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodePrimitiveExpression(name)),
                     new CodeAttributeArgument(
                         new CodePrimitiveExpression(value))));
-        }
-
-        public virtual void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
-        {
-            //MsTest does not support caregories... :(
         }
 
         public virtual void SetTest(CodeMemberMethod memberMethod, string title)
