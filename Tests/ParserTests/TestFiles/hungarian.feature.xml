@@ -1,25 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>hu-HU</Language>
+  <Keyword>Jellemző</Keyword>
+  <Title>Összeadás</Title>
+  <Description>Azért, hogy elkerüljem a buta hibákat
+amit diszkalkúliásként elkövethetek,
+két szám összegét szeretném kiszámoltatni.</Description>
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Forgatókönyv vázlat</Keyword>
       <Title>Két szám összeadása</Title>
       <Description />
       <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <Keyword>Amennyiben </Keyword>
           <Text>beütök a számológépbe egy &lt;be_1&gt;-est</Text>
           <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <Keyword>És </Keyword>
           <Text>beütök a számológépbe egy &lt;be_2&gt;-est</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <Keyword>Majd </Keyword>
           <Text>megnyomom az &lt;gomb&gt; gombot</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <Keyword>Akkor </Keyword>
           <Text>eredményül &lt;ki&gt;-t kell kapnom</Text>
           <FilePosition line="11" column="5" />
         </ScenarioStep>
@@ -27,6 +37,7 @@
       <Examples>
         <ExampleSets>
           <ExampleSet>
+            <Keyword>Példák</Keyword>
             <Title />
             <Description />
             <Table>
@@ -106,8 +117,4 @@
       </Examples>
     </Scenario>
   </Scenarios>
-  <Title>Összeadás</Title>
-  <Description>Azért, hogy elkerüljem a buta hibákat
-amit diszkalkúliásként elkövethetek,
-két szám összegét szeretném kiszámoltatni.</Description>
 </Feature>

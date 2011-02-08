@@ -1,19 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>a very simple feature</Title>
+  <Description />
   <Scenarios>
     <Scenario>
+      <Keyword>Scenario</Keyword>
       <Title>a simple scenario</Title>
       <Description />
       <FilePosition line="6" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <Keyword>Given </Keyword>
           <Text>some precondition</Text>
           <FilePosition line="7" column="1" />
         </ScenarioStep>
       </Steps>
     </Scenario>
   </Scenarios>
-  <Title>a very simple feature</Title>
-  <Description />
 </Feature>

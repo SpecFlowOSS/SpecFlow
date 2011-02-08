@@ -62,13 +62,13 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            featureBuilder.SetHeader(name, description, FlushTags());
+            featureBuilder.SetHeader(keyword, name, description, FlushTags());
             featureBuilder.SourceFilePath = filePath;
         }
 
         public void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var background = new BackgroundBuilder(name, description, GetFilePosition(headerSpan.StartPosition));
+            var background = new BackgroundBuilder(keyword, name, description, GetFilePosition(headerSpan.StartPosition));
             stepProcessor = background;
             featureBuilder.AddBackground(background);
         }
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             var position = GetFilePosition(headerSpan.StartPosition);
-            var exampleBuilder = new ExampleBuilder(name, description, position);
+            var exampleBuilder = new ExampleBuilder(keyword, name, description, position);
             tableProcessor = exampleBuilder;
 
             if (exampleProcessor == null)
@@ -87,14 +87,14 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void Scenario(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var currentScenario = new ScenarioBuilder(name, description, FlushTags(), GetFilePosition(headerSpan.StartPosition));
+            var currentScenario = new ScenarioBuilder(keyword, name, description, FlushTags(), GetFilePosition(headerSpan.StartPosition));
             stepProcessor = currentScenario;
             featureBuilder.AddScenario(currentScenario);
         }
 
         public void ScenarioOutline(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            var currentScenario = new ScenarioOutlineBuilder(name, description, FlushTags(), GetFilePosition(headerSpan.StartPosition));
+            var currentScenario = new ScenarioOutlineBuilder(keyword, name, description, FlushTags(), GetFilePosition(headerSpan.StartPosition));
             stepProcessor = currentScenario;
             exampleProcessor = currentScenario;
             featureBuilder.AddScenario(currentScenario);
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
             var position = GetFilePosition(stepSpan.StartPosition);
-            stepBuilder = new StepBuilder(stepKeyword, text, position);
+            stepBuilder = new StepBuilder(keyword, stepKeyword, text, position);
             tableProcessor = stepBuilder;
 
             if (stepProcessor == null)

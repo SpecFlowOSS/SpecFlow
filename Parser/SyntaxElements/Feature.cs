@@ -10,17 +10,19 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public string SourceFile { get; set; }
 
         public Tags Tags { get; set; }
-        public Background Background { get; set; }
-        public Scenario[] Scenarios { get; set; }
+        public string Keyword { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public Background Background { get; set; }
+        public Scenario[] Scenarios { get; set; }
 
         public Feature()
         {
         }
 
-        public Feature(string title, Tags tags, string description, Background background, params Scenario[] scenarios)
+        public Feature(string keyword, string title, Tags tags, string description, Background background, params Scenario[] scenarios)
         {
+            Keyword = keyword;
             Tags = tags;
             Description = description ?? string.Empty;
             Background = background;

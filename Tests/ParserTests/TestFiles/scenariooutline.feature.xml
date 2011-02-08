@@ -1,13 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>a feature with a scenario outline</Title>
+  <Description />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
       <Title>a simple scenario outline</Title>
       <Description />
       <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <Keyword>Given </Keyword>
           <Text>some &lt;templated&gt; precondition</Text>
           <TableArg>
             <Header>
@@ -67,10 +72,12 @@
           <FilePosition line="4" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <Keyword>When </Keyword>
           <Text>I do something</Text>
           <FilePosition line="8" column="1" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <Keyword>Then </Keyword>
           <Text>something &lt;templated&gt; happens</Text>
           <FilePosition line="9" column="1" />
         </ScenarioStep>
@@ -78,6 +85,7 @@
       <Examples>
         <ExampleSets>
           <ExampleSet>
+            <Keyword>Examples</Keyword>
             <Title>first examples set</Title>
             <Description />
             <Table>
@@ -128,6 +136,7 @@
             </Table>
           </ExampleSet>
           <ExampleSet>
+            <Keyword>Scenarios</Keyword>
             <Title>second example set</Title>
             <Description />
             <Table>
@@ -164,6 +173,7 @@
             </Table>
           </ExampleSet>
           <ExampleSet>
+            <Keyword>Scenarios</Keyword>
             <Title />
             <Description />
             <Table>
@@ -200,6 +210,7 @@
             </Table>
           </ExampleSet>
           <ExampleSet>
+            <Keyword>Examples</Keyword>
             <Title>last example set with non-unique first column</Title>
             <Description />
             <Table>
@@ -253,6 +264,4 @@
       </Examples>
     </Scenario>
   </Scenarios>
-  <Title>a feature with a scenario outline</Title>
-  <Description />
 </Feature>

@@ -11,8 +11,8 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public ScenarioOutline(string title, string description, Tags tags, ScenarioSteps scenarioSteps, Examples examples) : 
-            base(title, description, tags, scenarioSteps)
+        public ScenarioOutline(string keyword, string title, string description, Tags tags, ScenarioSteps scenarioSteps, Examples examples) : 
+            base(keyword, title, description, tags, scenarioSteps)
         {
             Examples = examples;
         }

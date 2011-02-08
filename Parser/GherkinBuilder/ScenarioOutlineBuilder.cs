@@ -9,8 +9,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
     {
         private readonly IList<ExampleBuilder> examples = new List<ExampleBuilder>();
 
-        public ScenarioOutlineBuilder(string name, string description, Tags tags, FilePosition position) :
-            base(name, description, tags, position)
+        public ScenarioOutlineBuilder(string keyword, string name, string description, Tags tags, FilePosition position) :
+            base(keyword, name, description, tags, position)
         {
         }
 
@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                     "There are no examples defined for the scenario outline.", position);
 
             return new ScenarioOutline(
+                keyword,
                 title,
                 description,
                 tags,

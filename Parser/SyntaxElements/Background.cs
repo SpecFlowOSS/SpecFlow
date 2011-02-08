@@ -6,6 +6,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
     public class Background
     {
+        public string Keyword { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public ScenarioSteps Steps { get; set; }
@@ -16,8 +17,9 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
         }
 
-        public Background(string title, string description, ScenarioSteps scenarioSteps)
+        public Background(string keyword, string title, string description, ScenarioSteps scenarioSteps)
         {
+            Keyword = keyword;
             Title = title ?? "";
             Description = description;
             Steps = scenarioSteps ?? new ScenarioSteps();

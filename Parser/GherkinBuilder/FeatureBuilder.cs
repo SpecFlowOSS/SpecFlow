@@ -6,6 +6,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class FeatureBuilder
     {
+        private string keyword;
         private string title;
         private string description;
         private string sourceFilePath;
@@ -19,8 +20,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             set { sourceFilePath = value; }
         }
 
-        public void SetHeader(string title, string description, Tags tags)
+        public void SetHeader(string keyword, string title, string description, Tags tags)
         {
+            this.keyword = keyword;
             this.title = title;
             this.description = description;
             this.tags = tags;
@@ -31,6 +33,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             var scenarioResults = scenarios.Select(sb => sb.GetResult()).ToArray();
 
             var feature = new Feature(
+                keyword,
                 title,
                 tags,
                 description,

@@ -12,6 +12,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     [XmlInclude(typeof(But))]
     public class ScenarioStep
     {
+        public string Keyword { get; set; }
         public string Text { get; set; }
         public string MultiLineTextArgument { get; set; }
         public Table TableArg { get; set; }

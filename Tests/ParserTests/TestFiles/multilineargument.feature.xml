@@ -1,13 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>a very simple feature</Title>
+  <Description />
   <Scenarios>
     <Scenario>
+      <Keyword>Scenario</Keyword>
       <Title>a scenario with a multiline argument</Title>
       <Description />
       <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <Keyword>Given </Keyword>
           <Text>there is a multiline text argument</Text>
           <MultiLineTextArgument>Some Title, Eh?
 ==============
@@ -16,6 +21,7 @@ consectetur adipiscing elit.</MultiLineTextArgument>
           <FilePosition line="4" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <Keyword>When </Keyword>
           <Text>there is a multiline text argument</Text>
           <MultiLineTextArgument>Some Title, Eh?
 ==============
@@ -24,6 +30,7 @@ consectetur adipiscing elit.</MultiLineTextArgument>
           <FilePosition line="11" column="2" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <Keyword>Then </Keyword>
           <Text>there is a multiline text argument</Text>
           <MultiLineTextArgument>Some Title, Eh?
 ==============
@@ -34,6 +41,4 @@ consectetur adipiscing elit.</MultiLineTextArgument>
       </Steps>
     </Scenario>
   </Scenarios>
-  <Title>a very simple feature</Title>
-  <Description />
 </Feature>

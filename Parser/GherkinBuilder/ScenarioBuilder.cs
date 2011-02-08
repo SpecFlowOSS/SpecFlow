@@ -6,6 +6,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class ScenarioBuilder : IScenarioBuilder
     {
+        protected readonly string keyword;
         protected readonly string title;
         protected readonly string description;
         protected readonly FilePosition position;
@@ -22,8 +23,9 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             get { return position; }
         }
 
-        public ScenarioBuilder(string name, string description, Tags tags, FilePosition position)
+        public ScenarioBuilder(string keyword, string name, string description, Tags tags, FilePosition position)
         {
+            this.keyword = keyword;
             this.title = name;
             this.description = description;
             this.position = position;
@@ -37,7 +39,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public virtual Scenario GetResult()
         {
-            return new Scenario(title, description, tags, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
+            return new Scenario(keyword, title, description, tags, new ScenarioSteps(steps.Select(s => s.GetResult()).ToArray())) { FilePosition = position };
         }
     }
 }

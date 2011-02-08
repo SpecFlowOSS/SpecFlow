@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private readonly ScenarioStep step;
         private readonly TableBuilder tableBuilder = new TableBuilder();
 
-        public StepBuilder(StepKeyword stepKeyword, string text, FilePosition position)
+        public StepBuilder(string keyword, StepKeyword stepKeyword, string text, FilePosition position)
         {
             switch (stepKeyword)
             {
@@ -32,6 +32,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                     throw new NotSupportedException();
             }
 
+            step.Keyword = keyword;
             step.Text = text;
             step.FilePosition = position;
         }

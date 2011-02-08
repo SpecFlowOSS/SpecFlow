@@ -1,25 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Language>de-DE</Language>
+  <Keyword>Funktionalität</Keyword>
+  <Title>Addition</Title>
+  <Description>Um dumme Fehler zu vermeiden
+möchte ich als Matheidiot
+die Summe zweier Zahlen gesagt bekommen</Description>
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Szenariogrundriss</Keyword>
       <Title>Zwei Zahlen hinzufügen</Title>
       <Description />
       <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <Keyword>Gegeben sei </Keyword>
           <Text>ich habe &lt;Eingabe_1&gt; in den Taschenrechner eingegeben</Text>
           <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <Keyword>Und </Keyword>
           <Text>ich habe &lt;Eingabe_2&gt; in den Taschenrechner eingegeben</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <Keyword>Wenn </Keyword>
           <Text>ich &lt;Knopf&gt; drücke</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <Keyword>Dann </Keyword>
           <Text>sollte das Ergebniss auf dem Bildschirm &lt;Ausgabe&gt; sein</Text>
           <FilePosition line="11" column="5" />
         </ScenarioStep>
@@ -27,6 +37,7 @@
       <Examples>
         <ExampleSets>
           <ExampleSet>
+            <Keyword>Beispiele</Keyword>
             <Title />
             <Description />
             <Table>
@@ -106,8 +117,4 @@
       </Examples>
     </Scenario>
   </Scenarios>
-  <Title>Addition</Title>
-  <Description>Um dumme Fehler zu vermeiden
-möchte ich als Matheidiot
-die Summe zweier Zahlen gesagt bekommen</Description>
 </Feature>
