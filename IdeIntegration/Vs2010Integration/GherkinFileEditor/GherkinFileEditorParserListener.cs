@@ -240,6 +240,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             ColorizeSpan(tagSpan, classifications.Tag);
         }
 
+        public void ExamplesTag(string name, GherkinBufferSpan tagSpan)
+        {
+            ColorizeSpan(tagSpan, classifications.Tag);
+        }
+
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
         public void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {

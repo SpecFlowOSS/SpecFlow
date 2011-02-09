@@ -77,6 +77,13 @@ namespace ParserTests
             var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
             CanParseFile(Path.Combine(folder, "tags.feature"));
         }
+ 
+        [Test]
+        public void CanParseTaggedExamplesFeature()
+        {
+            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
+            CanParseFile(Path.Combine(folder, "taggedexamples.feature"));
+        }
 
         [Test]
         public void CanParsebackgroundFeature()

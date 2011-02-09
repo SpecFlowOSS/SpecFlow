@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             var position = GetFilePosition(headerSpan.StartPosition);
-            var exampleBuilder = new ExampleBuilder(keyword, name, description, position);
+            var exampleBuilder = new ExampleBuilder(keyword, name, description, FlushTags(), position);
             tableProcessor = exampleBuilder;
 
             if (exampleProcessor == null)
@@ -112,6 +112,11 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         }
 
         public void ScenarioTag(string name, GherkinBufferSpan bufferSpan)
+        {
+            ProcessTag(name);
+        }
+
+        public void ExamplesTag(string name, GherkinBufferSpan tagSpan)
         {
             ProcessTag(name);
         }

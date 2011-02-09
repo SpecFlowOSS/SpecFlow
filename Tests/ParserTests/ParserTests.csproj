@@ -91,6 +91,7 @@
     </None>
     <None Include="TestFiles\comments.feature">
     </None>
+    <None Include="TestFiles\taggedexamples.feature" />
     <None Include="TestFiles\swedish.feature">
     </None>
     <None Include="TestFiles\dutch.feature">
@@ -162,6 +163,7 @@
     <Content Include="TestFiles\simple.feature.xml" />
     <Content Include="TestFiles\swedish.feature.xml" />
     <Content Include="TestFiles\tableargument.feature.xml" />
+    <Content Include="TestFiles\taggedexamples.feature.xml" />
     <Content Include="TestFiles\tags.feature.xml" />
     <Content Include="TestFiles\whitespaces.feature.xml" />
   </ItemGroup>

@@ -30,6 +30,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         void ScenarioOutline(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan);
         void FeatureTag(string name, GherkinBufferSpan tagSpan);
         void ScenarioTag(string name, GherkinBufferSpan tagSpan);
+        void ExamplesTag(string name, GherkinBufferSpan tagSpan);
         void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan);
         void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans);
         void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans);

@@ -127,8 +127,6 @@ namespace ParserTests
 			CanGenerateFromFile(Path.Combine(folder, "mixedgivenwhenthen.feature"));
 		}
 
-
-		[Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
 		public void CanGenerateFromFile(string fileName)
 		{
 			Console.WriteLine(fileName);
