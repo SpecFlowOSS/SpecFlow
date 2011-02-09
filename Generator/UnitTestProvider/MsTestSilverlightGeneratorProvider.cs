@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -87,7 +88,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             throw new NotSupportedException();
         }
 
-        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //MsTest does not support row tests
             throw new NotSupportedException();

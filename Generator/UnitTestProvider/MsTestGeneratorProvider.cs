@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -86,7 +87,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             throw new NotSupportedException();
         }
 
-        public virtual void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        public virtual void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //MsTest does not support row tests... :(
             throw new NotSupportedException();

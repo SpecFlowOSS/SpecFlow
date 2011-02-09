@@ -2,6 +2,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -74,10 +75,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetDescription(memberMethod.CustomAttributes, title);
         }
 
-        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments)
+        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
+            //TODO: better handle "ignored"
+            if (isIgnored)
+                return;
+
             var args = arguments.Select(
-              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg)));
+              arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
+
+            args.Add(
+                new CodeAttributeArgument(
+                    new CodeArrayCreateExpression(typeof(string[]), tags.Select(t => new CodePrimitiveExpression(t)).ToArray())));
 
             memberMethod.CustomAttributes.Add(
                 new CodeAttributeDeclaration(

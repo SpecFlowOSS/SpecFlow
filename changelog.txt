@@ -2,6 +2,9 @@
 
 New features:
 + Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
++ Support for tagging (including @ignore) scenario outline examples. 
+  NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to 
+  switch off row test generaiton (<generator allowRowTests="false" />)
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"

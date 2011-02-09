@@ -99,6 +99,11 @@
       <DependentUpon>StepArgumentTransformationGermanFeatureEnglishBinding.feature</DependentUpon>
     </Compile>
     <Compile Include="StepArgumentTransfomation\StepArgumentTransformationSteps.cs" />
+    <Compile Include="TaggedExamples\TaggedExamples.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaggedExamples.feature</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
@@ -146,7 +151,12 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StepArgumentTransformation.feature.cs</LastGenOutput>
     </None>
+    <None Include="TaggedExamples\TaggedExamples.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TaggedExamples.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
