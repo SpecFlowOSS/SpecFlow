@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
 
@@ -17,6 +18,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public User Create(string name)
         {
             return new User {Name = name};
+        }
+
+        [StepArgumentTransformation]
+        public IEnumerable<User> CreateUsers(Table table)
+        {
+            return table.Rows.Select(tableRow =>
+                new User { Name = tableRow["Name"] });
         }
     }
 
@@ -62,6 +70,31 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
+        }
+
+        [Test]
+        public void ShouldUseStepArgumentTransformationToConvertTable()
+        {
+            ObjectContainer.ScenarioContext = new ScenarioContext(null);
+            BindingRegistry bindingRegistry = new BindingRegistry();
+            ObjectContainer.BindingRegistry = bindingRegistry;
+
+            UserCreator stepTransformationInstance = new UserCreator();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
+            bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"", transformMethod));
+
+            var stepArgumentTypeConverter = new StepArgumentTypeConverter();
+
+            var table = new Table("Name");
+            table.AddRow("Tom");
+            table.AddRow("Dick");
+            table.AddRow("Harry");
+
+            var result = stepArgumentTypeConverter.ConvertTable(table, typeof(IEnumerable<User>));
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.InstanceOf<IEnumerable<User>>());
+            Assert.That(((IEnumerable<User>)result).Count(), Is.EqualTo(3));
         }
 
 

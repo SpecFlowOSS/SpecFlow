@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             BindingRegistry registry = new BindingRegistry();
             registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
-            Assert.AreEqual(1, registry.StepTransformations.Where(s => s.Regex.Match("BindingRegistryTests").Success).Count());
+            Assert.AreEqual(1, registry.StepTransformations.Where(s => s.Regex.Match("BindingRegistryTests").Success && s.Regex.Match("").Success == false).Count());
         }
 
         /*        Steps that are feature scoped               */

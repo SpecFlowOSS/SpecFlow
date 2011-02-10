@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow.Bindings
     {
         object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
         bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
+        bool CanConvertTable(Table value, Type typeToConvertTo);
+        object ConvertTable(Table value, Type typeToConvertTo);
     }
 
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
@@ -53,6 +55,28 @@ namespace TechTalk.SpecFlow.Bindings
                 return true;
 
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
+        }
+
+        public object ConvertTable(Table value, Type typeToConvertTo)
+        {
+            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo).ToArray();
+            Debug.Assert(stepTransformations.Length <= 1, "You may not call ConvertTable if CanConvertTable returns false");
+            return stepTransformations[0].Transform(value, testTracer);
+        }
+
+        public bool CanConvertTable(Table value, Type typeToConvertTo)
+        {
+            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo).ToArray();
+            if (stepTransformations.Length > 1)
+            {
+                //TODO: error?
+                //TODO: Maybe add scoping for transformations?
+                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
+            }
+            if (stepTransformations.Length >= 1)
+                return true;
+
+            return false;
         }
 
         private object ConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)

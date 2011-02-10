@@ -275,11 +275,11 @@ namespace TechTalk.SpecFlow
         private static readonly object[] emptyExtraArgs = new object[0];
         private object[] CalculateExtraArgs(StepArgs stepArgs)
         {
-            if (stepArgs.MultilineTextArgument == null && stepArgs.TableArgument == null)
+            if (string.IsNullOrEmpty(stepArgs.MultilineTextArgument) && stepArgs.TableArgument == null)
                 return emptyExtraArgs;
 
             var extraArgsList = new List<object>();
-            if (stepArgs.MultilineTextArgument != null)
+            if (string.IsNullOrEmpty(stepArgs.MultilineTextArgument) == false)
                 extraArgsList.Add(stepArgs.MultilineTextArgument);
             if (stepArgs.TableArgument != null)
                 extraArgsList.Add(stepArgs.TableArgument);
@@ -465,12 +465,34 @@ namespace TechTalk.SpecFlow
                 arguments.Add(convertedArg);
             }
 
-            arguments.AddRange(match.ExtraArguments);
+            object transformedTableArgument;
+            if (TryGetTransformedTableArgument(match, out transformedTableArgument))
+                arguments.Add(transformedTableArgument);
+            else
+                arguments.AddRange(match.ExtraArguments);
 
             if (arguments.Count != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, arguments.Count);
 
             return arguments.ToArray();
+        }
+
+        private bool TryGetTransformedTableArgument(BindingMatch match, out object value)
+        {
+            value = null;
+
+            Table tableArgument = match.StepArgs.TableArgument;
+            if (tableArgument == null) return false;
+
+            if (match.StepBinding.ParameterTypes.Length == 0) return false;
+
+            Type lastParameterType = match.StepBinding.ParameterTypes[match.StepBinding.ParameterTypes.Length - 1];
+            if (lastParameterType == typeof(Table)) return false;
+
+            if (stepArgumentTypeConverter.CanConvertTable(tableArgument, lastParameterType) == false) return false;
+
+            value = stepArgumentTypeConverter.ConvertTable(tableArgument, lastParameterType);
+            return true;
         }
         #endregion
 

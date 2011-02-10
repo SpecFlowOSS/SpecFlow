@@ -14,6 +14,13 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
         public string Id { get; set; }
     }
 
+    public class Booking
+    {
+        public string Origin;
+        public string Destination;
+        public DateTime DepartureDate;
+    }
+
     [Binding]
     public class UserLookup 
     {
@@ -45,6 +52,21 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
     }
 
     [Binding]
+    public class BookingConverter
+    {
+        [StepArgumentTransformation]
+        public Booking Transform(Table table)
+        {
+            return new Booking
+            {
+                Origin = table.Rows[0]["Origin"],
+                Destination = table.Rows[0]["Destination"],
+                DepartureDate = DateTime.Parse(table.Rows[0]["Departure Date"])
+            };
+        }
+    }
+
+    [Binding]
     public class StepArgumentTransformationSteps
     {
         [Given("(.*) has been registered at (.*)")]
@@ -53,6 +75,10 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
         
         [Given("(.*) has been registered at (.*)")]
         public void RegistrationStep(User user, Terminal terminal)
+        { }
+
+        [Given("(.*) has booked a flight")]
+        public void FlightBookingStep(User user, Booking booking)
         { }
 
         [When("in App.config die bindingCulture auf 'en-US' konfiguriert ist")]
