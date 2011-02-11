@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using gherkin;
+using gherkin.lexer;
 
 namespace TechTalk.SpecFlow.Parser.Gherkin
 {
@@ -37,7 +38,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             try
             {
                 Lexer lexer = languageService.lexer(listenerExtender);
-                lexer.scan(contentToScan, null, 0);
+                lexer.scan(contentToScan);
             }
             catch (ScanningCancelledException)
             {

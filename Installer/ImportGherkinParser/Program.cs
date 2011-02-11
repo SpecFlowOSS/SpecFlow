@@ -76,7 +76,11 @@ namespace ImportGherkinParser
             ILMerge ilMerge = new ILMerge();
             ilMerge.KeyFile = keyFullPath;
             ilMerge.Version = version;
-            ilMerge.SetInputAssemblies(new[] { gherkinParserFullPath });
+
+            string simpleJsonPath = Path.Combine(Path.GetDirectoryName(gherkinParserFullPath), "com.googlecode.json-simple-json-simple.dll");
+            string base46Path = Path.Combine(Path.GetDirectoryName(gherkinParserFullPath), "net.iharder-base64.dll");
+
+            ilMerge.SetInputAssemblies(new[] { gherkinParserFullPath, simpleJsonPath, base46Path });
 
             ilMerge.OutputFile = outputFileFullPath;
             ilMerge.TargetKind = ILMerge.Kind.Dll;

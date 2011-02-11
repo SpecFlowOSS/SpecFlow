@@ -101,6 +101,7 @@
     <Background>Background</Background>
     <Scenario>Scenario</Scenario>
     <ScenarioOutline>Scenario Outline</ScenarioOutline>
+    <ScenarioOutline>Scenario Template</ScenarioOutline>
     <Examples>Examples</Examples>
     <Examples>Scenarios</Examples>
     <Given>Given</Given>
@@ -109,57 +110,68 @@
     <And>And</And>
     <But>But</But>
   </Language>
-  <Language code="en-au" cultureInfo="en-AU" englishName="English (Australia)">
-    <Feature>Feature</Feature>
+  <Language code="en-AU" cultureInfo="en-AU" englishName="English (Australia)">
+    <Feature>Crikey</Feature>
     <Background>Background</Background>
-    <Scenario>Scenario</Scenario>
-    <ScenarioOutline>Scenario Outline</ScenarioOutline>
-    <Examples>Examples</Examples>
-    <Examples>Scenarios</Examples>
-    <Given>Given</Given>
+    <Scenario>Mate</Scenario>
+    <ScenarioOutline>Blokes</ScenarioOutline>
+    <Examples>Cobber</Examples>
+    <Given>Ya know how</Given>
     <When>When</When>
-    <Then>Then</Then>
-    <And>And</And>
-    <But>But</But>
+    <Then>Ya gotta</Then>
+    <And>N</And>
+    <But>Cept</But>
   </Language>
-  <Language code="en-lol" cultureInfo="en" englishName="English">
-    <Feature>Feature</Feature>
-    <Background>Background</Background>
-    <Scenario>Scenario</Scenario>
-    <ScenarioOutline>Scenario Outline</ScenarioOutline>
-    <Examples>Examples</Examples>
-    <Examples>Scenarios</Examples>
-    <Given>Given</Given>
-    <When>When</When>
-    <Then>Then</Then>
-    <And>And</And>
-    <But>But</But>
+  <Language code="en-LOL" cultureInfo="en" englishName="English">
+    <Feature>OH HAI</Feature>
+    <Background>B4</Background>
+    <Scenario>MISHUN</Scenario>
+    <ScenarioOutline>MISHUN SRSLY</ScenarioOutline>
+    <Examples>EXAMPLZ</Examples>
+    <Given>I CAN HAZ</Given>
+    <When>WEN</When>
+    <Then>DEN</Then>
+    <And>AN</And>
+    <But>BUT</But>
   </Language>
-  <Language code="en-Scouse" cultureInfo="en" englishName="English">
-    <Feature>Feature</Feature>
-    <Background>Background</Background>
-    <Scenario>Scenario</Scenario>
-    <ScenarioOutline>Scenario Outline</ScenarioOutline>
-    <Examples>Examples</Examples>
-    <Examples>Scenarios</Examples>
-    <Given>Given</Given>
-    <When>When</When>
-    <Then>Then</Then>
-    <And>And</And>
-    <But>But</But>
+  <Language code="en-PIRATE" cultureInfo="en" englishName="English">
+    <Feature>Ahoy matey!</Feature>
+    <Background>Yo-ho-ho</Background>
+    <Scenario>Heave to</Scenario>
+    <ScenarioOutline>Shiver me timbers</ScenarioOutline>
+    <Examples>Dead men tell no tales</Examples>
+    <Given>Gangway!</Given>
+    <When>Blimey!</When>
+    <Then>Let go and haul</Then>
+    <And>Aye</And>
+    <But>Avast!</But>
   </Language>
-  <Language code="en-tx" cultureInfo="en" englishName="English">
+  <Language code="en-SCOUSE" cultureInfo="en" englishName="English">
+    <Feature>Feature</Feature>
+    <Background>Dis is what went down</Background>
+    <Scenario>The thing of it is</Scenario>
+    <ScenarioOutline>Wharrimean is</ScenarioOutline>
+    <Examples>Examples</Examples>
+    <Given>Givun</Given>
+    <Given>Youse know when youse got</Given>
+    <When>Wun</When>
+    <When>Youse know like when</When>
+    <Then>Dun</Then>
+    <Then>Den youse gotta</Then>
+    <And>An</And>
+    <But>Buh</But>
+  </Language>
+  <Language code="en-TX" cultureInfo="en" englishName="English">
     <Feature>Feature</Feature>
     <Background>Background</Background>
     <Scenario>Scenario</Scenario>
-    <ScenarioOutline>Scenario Outline</ScenarioOutline>
+    <ScenarioOutline>All y'all</ScenarioOutline>
     <Examples>Examples</Examples>
-    <Examples>Scenarios</Examples>
-    <Given>Given</Given>
-    <When>When</When>
-    <Then>Then</Then>
-    <And>And</And>
-    <But>But</But>
+    <Given>Given y'all</Given>
+    <When>When y'all</When>
+    <Then>Then y'all</Then>
+    <And>And y'all</And>
+    <But>But y'all</But>
   </Language>
   <Language code="es" cultureInfo="es" defaultSpecificCulture="es-ES" englishName="Spanish">
     <Feature>Característica</Feature>
@@ -214,19 +226,17 @@
     <But>Mais</But>
   </Language>
   <Language code="he" cultureInfo="he" defaultSpecificCulture="he-IL" englishName="Hebrew">
-    <Feature>Jellemző</Feature>
-    <Background>Háttér</Background>
-    <Scenario>Forgatókönyv</Scenario>
-    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
-    <Examples>Példák</Examples>
-    <Given>Amennyiben</Given>
-    <Given>Adott</Given>
-    <When>Majd</When>
-    <When>Ha</When>
-    <When>Amikor</When>
-    <Then>Akkor</Then>
-    <And>És</And>
-    <But>De</But>
+    <Feature>תכונה</Feature>
+    <Background>רקע</Background>
+    <Scenario>תרחיש</Scenario>
+    <ScenarioOutline>תבנית תרחיש</ScenarioOutline>
+    <Examples>דוגמאות</Examples>
+    <Given>בהינתן</Given>
+    <When>כאשר</When>
+    <Then>אז</Then>
+    <Then>אזי</Then>
+    <And>וגם</And>
+    <But>אבל</But>
   </Language>
   <Language code="hr" cultureInfo="hr" defaultSpecificCulture="hr-HR" englishName="Croatian">
     <Feature>Osobina</Feature>
@@ -263,19 +273,16 @@
     <But>De</But>
   </Language>
   <Language code="id" cultureInfo="id" defaultSpecificCulture="id-ID" englishName="Indonesian">
-    <Feature>Jellemző</Feature>
-    <Background>Háttér</Background>
-    <Scenario>Forgatókönyv</Scenario>
-    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
-    <Examples>Példák</Examples>
-    <Given>Amennyiben</Given>
-    <Given>Adott</Given>
-    <When>Majd</When>
-    <When>Ha</When>
-    <When>Amikor</When>
-    <Then>Akkor</Then>
-    <And>És</And>
-    <But>De</But>
+    <Feature>Fitur</Feature>
+    <Background>Dasar</Background>
+    <Scenario>Skenario</Scenario>
+    <ScenarioOutline>Skenario konsep</ScenarioOutline>
+    <Examples>Contoh</Examples>
+    <Given>Dengan</Given>
+    <When>Ketika</When>
+    <Then>Maka</Then>
+    <And>Dan</And>
+    <But>Tapi</But>
   </Language>
   <Language code="it" cultureInfo="it" defaultSpecificCulture="it-IT" englishName="Italian">
     <Feature>Funzionalità</Feature>
@@ -383,6 +390,7 @@
     <Feature>Egenskap</Feature>
     <Background>Bakgrunn</Background>
     <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Scenariomal</ScenarioOutline>
     <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
     <Examples>Eksempler</Examples>
     <Given>Gitt</Given>
@@ -398,9 +406,12 @@
     <ScenarioOutline>Szablon scenariusza</ScenarioOutline>
     <Examples>Przykłady</Examples>
     <Given>Zakładając</Given>
+    <Given>Mając</Given>
     <When>Jeżeli</When>
+    <When>Jeśli</When>
     <Then>Wtedy</Then>
     <And>Oraz</And>
+    <And>I</And>
     <But>Ale</But>
   </Language>
   <Language code="pt" cultureInfo="pt" defaultSpecificCulture="pt-PT" englishName="Portuguese">
@@ -473,41 +484,59 @@
     <And>A</And>
     <But>Ale</But>
   </Language>
-  <Language code="sr-Cyrl" cultureInfo="sr" defaultSpecificCulture="sr-Cyrl-RS" englishName="Serbian">
-    <Feature>Jellemző</Feature>
-    <Background>Háttér</Background>
-    <Scenario>Forgatókönyv</Scenario>
-    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
-    <Examples>Példák</Examples>
-    <Given>Amennyiben</Given>
-    <Given>Adott</Given>
-    <When>Majd</When>
-    <When>Ha</When>
-    <When>Amikor</When>
-    <Then>Akkor</Then>
-    <And>És</And>
-    <But>De</But>
+  <Language code="sr-CYRL" cultureInfo="sr" englishName="Serbian">
+    <Feature>Функционалност</Feature>
+    <Feature>Могућност</Feature>
+    <Feature>Особина</Feature>
+    <Background>Контекст</Background>
+    <Background>Основа</Background>
+    <Background>Позадина</Background>
+    <Scenario>Сценарио</Scenario>
+    <Scenario>Пример</Scenario>
+    <ScenarioOutline>Структура сценарија</ScenarioOutline>
+    <ScenarioOutline>Скица</ScenarioOutline>
+    <ScenarioOutline>Концепт</ScenarioOutline>
+    <Examples>Примери</Examples>
+    <Examples>Сценарији</Examples>
+    <Given>Задато</Given>
+    <Given>Задате</Given>
+    <Given>Задати</Given>
+    <When>Када</When>
+    <When>Кад</When>
+    <Then>Онда</Then>
+    <And>И</And>
+    <But>Али</But>
   </Language>
-  <Language code="sr-Latn" cultureInfo="sr" defaultSpecificCulture="sr-Latn-RS" englishName="Serbian">
-    <Feature>Jellemző</Feature>
-    <Background>Háttér</Background>
-    <Scenario>Forgatókönyv</Scenario>
-    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
-    <Examples>Példák</Examples>
-    <Given>Amennyiben</Given>
-    <Given>Adott</Given>
-    <When>Majd</When>
-    <When>Ha</When>
-    <When>Amikor</When>
-    <Then>Akkor</Then>
-    <And>És</And>
-    <But>De</But>
+  <Language code="sr-LATN" cultureInfo="sr" englishName="Serbian">
+    <Feature>Funkcionalnost</Feature>
+    <Feature>Mogućnost</Feature>
+    <Feature>Mogucnost</Feature>
+    <Feature>Osobina</Feature>
+    <Background>Kontekst</Background>
+    <Background>Osnova</Background>
+    <Background>Pozadina</Background>
+    <Scenario>Scenario</Scenario>
+    <Scenario>Primer</Scenario>
+    <ScenarioOutline>Struktura scenarija</ScenarioOutline>
+    <ScenarioOutline>Skica</ScenarioOutline>
+    <ScenarioOutline>Koncept</ScenarioOutline>
+    <Examples>Primeri</Examples>
+    <Examples>Scenariji</Examples>
+    <Given>Zadato</Given>
+    <Given>Zadate</Given>
+    <Given>Zatati</Given>
+    <When>Kada</When>
+    <When>Kad</When>
+    <Then>Onda</Then>
+    <And>I</And>
+    <But>Ali</But>
   </Language>
   <Language code="sv" cultureInfo="sv" defaultSpecificCulture="sv-SE" englishName="Swedish">
     <Feature>Egenskap</Feature>
     <Background>Bakgrund</Background>
     <Scenario>Scenario</Scenario>
     <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <ScenarioOutline>Scenariomall</ScenarioOutline>
     <Examples>Exempel</Examples>
     <Given>Givet</Given>
     <When>När</When>

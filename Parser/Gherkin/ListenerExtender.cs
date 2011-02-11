@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using gherkin;
+using gherkin.lexer;
 using java.util;
 using System.Collections.Generic;
 

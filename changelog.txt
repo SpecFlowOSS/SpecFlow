@@ -5,6 +5,7 @@ New features:
 + Support for tagging (including @ignore) scenario outline examples. 
   NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to 
   switch off row test generaiton (<generator allowRowTests="false" />)
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.3
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
