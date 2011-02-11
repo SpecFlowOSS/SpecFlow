@@ -468,8 +468,8 @@ namespace TechTalk.SpecFlow
             object transformedTableArgument;
             if (TryGetTransformedTableArgument(match, out transformedTableArgument))
                 arguments.Add(transformedTableArgument);
-            else
-                arguments.AddRange(match.ExtraArguments);
+            
+            arguments.AddRange(match.ExtraArguments);
 
             if (arguments.Count != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, arguments.Count);
