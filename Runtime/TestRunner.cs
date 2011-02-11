@@ -275,11 +275,11 @@ namespace TechTalk.SpecFlow
         private static readonly object[] emptyExtraArgs = new object[0];
         private object[] CalculateExtraArgs(StepArgs stepArgs)
         {
-            if (string.IsNullOrEmpty(stepArgs.MultilineTextArgument) && stepArgs.TableArgument == null)
+            if (stepArgs.MultilineTextArgument == null && stepArgs.TableArgument == null)
                 return emptyExtraArgs;
 
             var extraArgsList = new List<object>();
-            if (string.IsNullOrEmpty(stepArgs.MultilineTextArgument) == false)
+            if (stepArgs.MultilineTextArgument != null)
                 extraArgsList.Add(stepArgs.MultilineTextArgument);
             if (stepArgs.TableArgument != null)
                 extraArgsList.Add(stepArgs.TableArgument);
