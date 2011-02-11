@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
-        private IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProvider;
+        private IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly BindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
 
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow
                 OnFeatureEnd();
             }
 
-            _stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(featureInfo.GenerationTargetLanguage);
+            stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(featureInfo.GenerationTargetLanguage);
 
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
@@ -139,7 +139,7 @@ namespace TechTalk.SpecFlow
             {
                 var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
-                    _stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
                 errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
@@ -378,27 +378,30 @@ namespace TechTalk.SpecFlow
                 // the matching without param check
 
                 List<BindingMatch> matchesWithoutScopeCheck = GetMatchesWithoutScopeCheck(stepArgs);
-                if (matchesWithoutScopeCheck.Count > 0)
-                {
+//                if (matchesWithoutScopeCheck.Count > 0)
+//                {
                     // no match, because of scope filter
-                    throw errorProvider.GetNoMatchBecauseOfScopeFilterError(matchesWithoutScopeCheck, stepArgs);
+//                    throw errorProvider.GetNoMatchBecauseOfScopeFilterError(matchesWithoutScopeCheck, stepArgs);
+//                }
+
+                if (matchesWithoutScopeCheck.Count == 0)
+                {
+                    List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
+                    if (matchesWithoutParamCheck.Count == 1)
+                    {
+                        // no ambiguouity, but param error -> execute will find it out
+                        return matchesWithoutParamCheck[0];
+                    }
+                    if (matchesWithoutParamCheck.Count > 1)
+                    {
+                        // ambiguouity, because of param error
+                        throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
+                    }
                 }
 
-                List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
-                if (matchesWithoutParamCheck.Count == 1)
-                {
-                    // no ambiguouity, but param error -> execute will find it out
-                    return matchesWithoutParamCheck[0];
-                }
-                if (matchesWithoutParamCheck.Count > 1)
-                {
-                    // ambiguouity, because of param error
-                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
-                }
-
-                testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage);
+                testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
-                    _stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)
@@ -494,15 +497,22 @@ namespace TechTalk.SpecFlow
 
         public void And(string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
+            BindingType bindingType = GetCurrentBindingType();
             ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.And, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         public void But(string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = ObjectContainer.ScenarioContext.CurrentScenarioBlock.ToBindingType();
+            BindingType bindingType = GetCurrentBindingType();
             ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.But, text, multilineTextArg, tableArg, GetStepContext()));
         }
+
+        private BindingType GetCurrentBindingType()
+        {
+            ScenarioBlock currentScenarioBlock = ObjectContainer.ScenarioContext.CurrentScenarioBlock;
+            return currentScenarioBlock == ScenarioBlock.None ? BindingType.Given : currentScenarioBlock.ToBindingType();
+        }
+
         #endregion
 
         public void Pending()

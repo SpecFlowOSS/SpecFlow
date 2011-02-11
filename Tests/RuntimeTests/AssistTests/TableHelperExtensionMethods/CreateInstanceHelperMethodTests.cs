@@ -109,10 +109,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         {
             var table = new Table("Field", "Value");
             table.AddRow("BirthDate", "12/31/2010");
+            table.AddRow("NullableDateTime", "11/30/2011");
 
             var person = table.CreateInstance<Person>();
 
             person.BirthDate.ShouldEqual(new DateTime(2010, 12, 31));
+            person.NullableDateTime.ShouldEqual(new DateTime(2011, 11, 30));
         }
 
         [Test]
