@@ -88,7 +88,7 @@
           </tr>
           <tr>
             <td class="left">
-              <xsl:value-of select="count(//nunit:test-suite[@type!='ParameterizedTest' and (child::nunit:results/nunit:test-case)])"/> features
+                <xsl:value-of select="count(//nunit:test-suite[@type='TestFixture'])"/> features
             </td>
             <xsl:call-template name="summary-row">
               <xsl:with-param name="summary" select="$summary" />
@@ -107,13 +107,13 @@
             <th class="top">Pending</th>
             <th class="top">Ignored</th>
           </tr>
-          <xsl:apply-templates select="//nunit:test-suite[@type!='ParameterizedTest' and (child::nunit:results/nunit:test-case)]" mode="summary">
+          <xsl:apply-templates select="//nunit:test-suite[@type='TestFixture']" mode="summary">
             <xsl:sort select="@description" />
             <xsl:sort select="@name"/>
           </xsl:apply-templates>
         </table>
         <h2>Feature Execution Details</h2>
-        <xsl:apply-templates select="//nunit:test-suite[@type!='ParameterizedTest' and (child::nunit:results/nunit:test-case)]">
+        <xsl:apply-templates select="//nunit:test-suite[@type='TestFixture']">
           <xsl:sort select="@description" />
           <xsl:sort select="@name"/>
         </xsl:apply-templates>
