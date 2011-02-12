@@ -11,6 +11,8 @@ Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
 + Binding is reported as invalid if there is a matching step definition with different scope
 + Support for datetime comparisons that ignore 12:00:00 AM (issue from Google Group)
++ Fix NUnit execution report to properly select features when .features is solely comprised Scenario Outlines. 
+  (by Jon Archer)
 
 1.5.0 - 2010/12/17
 
