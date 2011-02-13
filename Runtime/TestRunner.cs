@@ -258,7 +258,7 @@ namespace TechTalk.SpecFlow
                 {
                     Type parameterType = stepBinding.ParameterTypes[extraArgIndex + regexArgs.Length];
                     Type argType = extraArgs[extraArgIndex].GetType();
-                    if (argType != parameterType)
+                    if(ArgumentsMatch(argType, parameterType) == false)
                         return null;
                 }
             }
@@ -270,6 +270,14 @@ namespace TechTalk.SpecFlow
             }
 
             return new BindingMatch(stepBinding, match, extraArgs, stepArgs, scopeMatches);
+        }
+
+        private bool ArgumentsMatch(Type argType, Type parameterType)
+        {
+            bool argIsTableThatCanBeConverted = argType == typeof(Table) && parameterType != typeof(Table) && stepArgumentTypeConverter.CouldConvertTable(parameterType);
+            bool argsMatch = argType == parameterType;
+
+            return argIsTableThatCanBeConverted || argsMatch;
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];
@@ -465,12 +473,54 @@ namespace TechTalk.SpecFlow
                 arguments.Add(convertedArg);
             }
 
-            arguments.AddRange(match.ExtraArguments);
+            object transformedTableArgument;
+            if (TryGetTransformedTableArgument(match,out transformedTableArgument))
+            {
+                var argsWithoutTransformedTable =
+                    StripTransformedTableArgumentFromExtraArguments(match.StepArgs.TableArgument, match.ExtraArguments);
+                var newArgumentList = OrderSoTheTransformedArgumentIsLast(transformedTableArgument,
+                                                                          argsWithoutTransformedTable);
+                arguments.AddRange(newArgumentList);
+            }
+            else
+                arguments.AddRange(match.ExtraArguments);
 
             if (arguments.Count != match.StepBinding.ParameterTypes.Length)
                 throw errorProvider.GetParameterCountError(match, arguments.Count);
 
             return arguments.ToArray();
+        }
+
+        private bool TryGetTransformedTableArgument(BindingMatch match, out object value)
+        {
+            value = null;
+
+            var tableArgument = match.StepArgs.TableArgument;
+            if (tableArgument == null) return false;
+
+            var parameterTypes = match.StepBinding.ParameterTypes;
+            if (parameterTypes.Length == 0) return false;
+
+            Type lastParameterType = parameterTypes[parameterTypes.Length - 1];
+            if (lastParameterType == typeof(Table)) return false;
+
+            if (stepArgumentTypeConverter.CanConvertTable(tableArgument, lastParameterType) == false) return false;
+
+            value = stepArgumentTypeConverter.ConvertTable(tableArgument, lastParameterType);
+            return true;
+        }
+
+        private static IEnumerable<object> StripTransformedTableArgumentFromExtraArguments(object tableThatWasTransformed, IEnumerable<object> extraArguments)
+        {
+            return extraArguments.Where(arg => arg != tableThatWasTransformed).ToArray();
+        }
+
+        private static IEnumerable<object> OrderSoTheTransformedArgumentIsLast(object transformedTableArgument, IEnumerable<object> nonTransformedExtraArguments)
+        {
+            //a transformed table argument will always be the last one
+            var orderedarguments = new List<object>(nonTransformedExtraArguments);
+            orderedarguments.Add(transformedTableArgument);
+            return orderedarguments;
         }
         #endregion
 

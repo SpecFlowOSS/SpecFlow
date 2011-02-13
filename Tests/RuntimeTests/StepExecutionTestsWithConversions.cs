@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
 
-            // everything else than double cannot convert is false
+            // return false unless its a Double
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             StepExecutionTestsBindingsForArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
 
-            // everything else than double and int cannot convert is false
+            // return false unless its a Double or an Int
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert("argument", typeof(int), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Table table = new Table("h1");
 
-            // everything else than double cannot convert is false
+            // return false unless its a Double
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
@@ -160,6 +160,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(TestStatus.BindingError, ObjectContainer.ScenarioContext.TestStatus);
             MockRepository.VerifyAll();
         }
+
+
 
     }
 }

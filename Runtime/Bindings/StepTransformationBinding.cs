@@ -36,5 +36,10 @@ namespace TechTalk.SpecFlow.Bindings
             var arguments = GetStepTransformationArguments(value);
             return InvokeAction(arguments, testTracer);
         }
+
+        public object Transform(Table value, ITestTracer testTracer)
+        {
+            return InvokeAction(new object[] { value }, testTracer);
+        }
     }
 }
