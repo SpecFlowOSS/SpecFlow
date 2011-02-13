@@ -31,12 +31,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
 
         }
-
-        [Given("sample step for argument convert with table")]
-        public virtual void SingleTableArg(User table)
-        {
-
-        }
     }
 
     [TestFixture]
@@ -135,6 +129,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
+            //There is no StepArgumentTransformation for this table
+            converter.Stub(c => c.CouldConvertTable(null)).IgnoreArguments().Return(false);
+
             converter.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArgWithTable(1.23, table));
 
@@ -167,33 +164,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.VerifyAll();
         }
 
-        [Test]
-        public void ShouldCallTheUserConverterToConvertTable()
-        {
-            var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
-            ObjectContainer.StepArgumentTypeConverter = converter;
-            ObjectContainer.StepDefinitionSkeletonProvider(GenerationTargetLanguage.CSharp);
 
-            StepExecutionTestsBindingsForArgumentConvert bindingInstance;
-            TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
-
-            Table table = new Table("h1");
-
-            // return false unless its a User
-            converter.Stub(c => c.CanConvertTable(table, typeof(User))).Return(true);
-            converter.Stub(c => c.CanConvertTable(null, null)).IgnoreArguments().Return(false);
-
-            var user = new User();
-            converter.Expect(c => c.ConvertTable(table, typeof(User))).Return(user);
-
-            bindingInstance.Expect(b => b.SingleTableArg(user));
-            MockRepository.ReplayAll();
-
-            testRunner.Given("sample step for argument convert with table", null, table);
-
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
-            MockRepository.VerifyAll();
-        }
 
     }
 }

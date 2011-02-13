@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Bindings
         bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
         bool CanConvertTable(Table value, Type typeToConvertTo);
         object ConvertTable(Table value, Type typeToConvertTo);
+        bool CouldConvertTable(Type typeToConvertTo);
     }
 
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
@@ -77,6 +78,11 @@ namespace TechTalk.SpecFlow.Bindings
                 return true;
 
             return false;
+        }
+
+        public bool CouldConvertTable(Type typeToConvertTo)
+        {
+            return StepTransformations.Any(t => t.ReturnType == typeToConvertTo);
         }
 
         private object ConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)
