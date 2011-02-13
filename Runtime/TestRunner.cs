@@ -256,7 +256,7 @@ namespace TechTalk.SpecFlow
                 // Check if there are corresponting parameters defined for the extra arguments 
                 for (int extraArgIndex = 0; extraArgIndex < extraArgs.Length; extraArgIndex++)
                 {
-                    Type parameterType = stepBinding.ParameterTypes[extraArgIndex + regexArgs.Length]; 
+                    Type parameterType = stepBinding.ParameterTypes[extraArgIndex + regexArgs.Length];
                     Type argType = extraArgs[extraArgIndex].GetType();
                     if(ArgumentsMatch(argType, parameterType) == false)
                         return null;
