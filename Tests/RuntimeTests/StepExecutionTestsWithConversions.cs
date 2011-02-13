@@ -129,9 +129,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
-            //There is no StepArgumentTransformation for this table
-            converter.Stub(c => c.CouldConvertTable(null)).IgnoreArguments().Return(false);
-
             converter.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArgWithTable(1.23, table));
 
