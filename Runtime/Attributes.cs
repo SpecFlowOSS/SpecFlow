@@ -137,7 +137,7 @@ namespace TechTalk.SpecFlow
         
         public StepArgumentTransformationAttribute()
         {
-            Regex = "(.*)";
+            Regex = null;
         }
     }
 

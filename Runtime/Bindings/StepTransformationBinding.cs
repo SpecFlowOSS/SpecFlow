@@ -20,26 +20,25 @@ namespace TechTalk.SpecFlow.Bindings
         public StepTransformationBinding(string regexString, MethodInfo methodInfo)
             : base(methodInfo)
         {
-            Regex regex = new Regex("^" + regexString + "$", RegexOptions);
-            Regex = regex;
+            Regex = regexString == null ? null : new Regex("^" + regexString + "$", RegexOptions);
         }
 
-        private object[] GetStepTransformationArguments(string stepSnippet)
+        private object[] GetStepTransformationArgumentsFromRegex(string stepSnippet)
         {
             var match = Regex.Match(stepSnippet);
             var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
             return argumentStrings;
         }
 
-        public object Transform(string value, ITestTracer testTracer)
+        public object Transform(object value, ITestTracer testTracer)
         {
-            var arguments = GetStepTransformationArguments(value);
-            return InvokeAction(arguments, testTracer);
-        }
+            object[] arguments;
+            if (Regex != null && value is string)
+                arguments = GetStepTransformationArgumentsFromRegex((string)value);
+            else
+                arguments = new object[] {value};
 
-        public object Transform(Table value, ITestTracer testTracer)
-        {
-            return InvokeAction(new object[] { value }, testTracer);
+            return InvokeAction(arguments, testTracer);
         }
     }
 }

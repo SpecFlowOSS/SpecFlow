@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             table.AddRow("Dick");
             table.AddRow("Harry");
 
-            var result = stepArgumentTypeConverter.ConvertTable(table, typeof(IEnumerable<User>));
+            var result = stepArgumentTypeConverter.Convert(table, typeof(IEnumerable<User>), new CultureInfo("en-US"));
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.InstanceOf<IEnumerable<User>>());

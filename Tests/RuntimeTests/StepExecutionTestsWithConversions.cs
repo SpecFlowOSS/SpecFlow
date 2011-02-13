@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Table table = new Table("h1");
 
-            // return false unless its a Double
+            // return false unless its a Double or table->table
             converter.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
             converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 

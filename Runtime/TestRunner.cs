@@ -232,52 +232,38 @@ namespace TechTalk.SpecFlow
             if (!match.Success)
                 return null;
 
-            var extraArgs = CalculateExtraArgs(stepArgs);
             int scopeMatches = 0;
-
-            if (useParamMatching)
-            {
-                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
-
-                // check if the regex + extra arguments match to the binding method parameters
-                if (regexArgs.Length + extraArgs.Length != stepBinding.ParameterTypes.Length)
-                    return null;
-
-                // Check if regex arguments can be converted to the method parameters
-                CultureInfo cultureInfo = FeatureContext.Current.BindingCulture;
-                for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
-                {
-                    Type parameterType = stepBinding.ParameterTypes[regexArgIndex];
-
-                    if (!stepArgumentTypeConverter.CanConvert(regexArgs[regexArgIndex], parameterType, cultureInfo))
-                        return null;
-                }
-
-                // Check if there are corresponting parameters defined for the extra arguments 
-                for (int extraArgIndex = 0; extraArgIndex < extraArgs.Length; extraArgIndex++)
-                {
-                    Type parameterType = stepBinding.ParameterTypes[extraArgIndex + regexArgs.Length];
-                    Type argType = extraArgs[extraArgIndex].GetType();
-                    if(ArgumentsMatch(argType, parameterType) == false)
-                        return null;
-                }
-            }
-
             if (useScopeMatching && stepBinding.IsScoped)
             {
                 if (!stepBinding.BindingScope.Match(stepArgs.StepContext, out scopeMatches))
                     return null;
             }
 
-            return new BindingMatch(stepBinding, match, extraArgs, stepArgs, scopeMatches);
+            var bindingMatch = new BindingMatch(stepBinding, match, CalculateExtraArgs(stepArgs), stepArgs, scopeMatches);
+
+            if (useParamMatching)
+            {
+                // check if the regex + extra arguments match to the binding method parameters
+                if (bindingMatch.Arguments.Length != stepBinding.ParameterTypes.Length)
+                    return null;
+
+                // Check if regex & extra arguments can be converted to the method parameters
+                if (bindingMatch.Arguments.Where(
+                    (arg, argIndex) => !CanConvertArg(arg, stepBinding.ParameterTypes[argIndex])).Any())
+                    return null;
+            }
+            return bindingMatch;
         }
 
-        private bool ArgumentsMatch(Type argType, Type parameterType)
+        private bool CanConvertArg(object value, Type typeToConvertTo)
         {
-            bool argIsTableThatCanBeConverted = argType == typeof(Table) && parameterType != typeof(Table) && stepArgumentTypeConverter.CouldConvertTable(parameterType);
-            bool argsMatch = argType == parameterType;
+            Debug.Assert(value != null);
+            Debug.Assert(typeToConvertTo != null);
 
-            return argIsTableThatCanBeConverted || argsMatch;
+            if (value.GetType().IsAssignableFrom(typeToConvertTo))
+                return true;
+
+            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, FeatureContext.Current.BindingCulture);
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];
@@ -456,72 +442,27 @@ namespace TechTalk.SpecFlow
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
-            List<object> arguments = new List<object>();
+            if (match.Arguments.Length != match.StepBinding.ParameterTypes.Length)
+                throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
-            var regexArgs = match.Match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
+            var arguments = match.Arguments.Select(
+                (arg, argIndex) => ConvertArg(arg, match.StepBinding.ParameterTypes[argIndex]))
+                .ToArray();
 
-            if (regexArgs.Length + match.ExtraArguments.Length != match.StepBinding.ParameterTypes.Length)
-                throw errorProvider.GetParameterCountError(match, regexArgs.Length + match.ExtraArguments.Length);
-
-            CultureInfo cultureInfo = FeatureContext.Current.BindingCulture;
-            for (int regexArgIndex = 0; regexArgIndex < regexArgs.Length; regexArgIndex++)
-            {
-                Type parameterType = match.StepBinding.ParameterTypes[regexArgIndex];
-
-                var convertedArg = stepArgumentTypeConverter.Convert(
-                    regexArgs[regexArgIndex], parameterType, cultureInfo);
-                arguments.Add(convertedArg);
-            }
-
-            object transformedTableArgument;
-            if (TryGetTransformedTableArgument(match,out transformedTableArgument))
-            {
-                var argsWithoutTransformedTable =
-                    StripTransformedTableArgumentFromExtraArguments(match.StepArgs.TableArgument, match.ExtraArguments);
-                var newArgumentList = OrderSoTheTransformedArgumentIsLast(transformedTableArgument,
-                                                                          argsWithoutTransformedTable);
-                arguments.AddRange(newArgumentList);
-            }
-            else
-                arguments.AddRange(match.ExtraArguments);
-
-            if (arguments.Count != match.StepBinding.ParameterTypes.Length)
-                throw errorProvider.GetParameterCountError(match, arguments.Count);
-
-            return arguments.ToArray();
+            return arguments;
         }
 
-        private bool TryGetTransformedTableArgument(BindingMatch match, out object value)
+        private object ConvertArg(object value, Type typeToConvertTo)
         {
-            value = null;
+            Debug.Assert(value != null);
+            Debug.Assert(typeToConvertTo != null);
 
-            var tableArgument = match.StepArgs.TableArgument;
-            if (tableArgument == null) return false;
+            if (value.GetType().IsAssignableFrom(typeToConvertTo))
+                return value;
 
-            var parameterTypes = match.StepBinding.ParameterTypes;
-            if (parameterTypes.Length == 0) return false;
-
-            Type lastParameterType = parameterTypes[parameterTypes.Length - 1];
-            if (lastParameterType == typeof(Table)) return false;
-
-            if (stepArgumentTypeConverter.CanConvertTable(tableArgument, lastParameterType) == false) return false;
-
-            value = stepArgumentTypeConverter.ConvertTable(tableArgument, lastParameterType);
-            return true;
+            return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.Current.BindingCulture);
         }
 
-        private static IEnumerable<object> StripTransformedTableArgumentFromExtraArguments(object tableThatWasTransformed, IEnumerable<object> extraArguments)
-        {
-            return extraArguments.Where(arg => arg != tableThatWasTransformed).ToArray();
-        }
-
-        private static IEnumerable<object> OrderSoTheTransformedArgumentIsLast(object transformedTableArgument, IEnumerable<object> nonTransformedExtraArguments)
-        {
-            //a transformed table argument will always be the last one
-            var orderedarguments = new List<object>(nonTransformedExtraArguments);
-            orderedarguments.Add(transformedTableArgument);
-            return orderedarguments;
-        }
         #endregion
 
         #region Given-When-Then

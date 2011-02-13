@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Xml;
 using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
@@ -67,6 +68,18 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
     }
 
     [Binding]
+    public class XmlDocumentConverter
+    {
+        [StepArgumentTransformation]
+        public XmlDocument Transform(string xml)
+        {
+            XmlDocument result = new XmlDocument();
+            result.LoadXml(xml);
+            return result;
+        }
+    }
+
+    [Binding]
     public class StepArgumentTransformationSteps
     {
         [Given("(.*) has been registered at (.*)")]
@@ -97,7 +110,29 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
         public void RegistrationStep(string culture)
         {
             Assert.AreEqual(culture, Thread.CurrentThread.CurrentCulture.Name);
-        }     
+        }
 
+        [Given(@"I have a step binding with an XmlDocument parameter")]
+        [Given(@"a step argument converter from string to XmlDocument")]
+        public void GivenIHaveAStepBindingWithAnXmlDocumentParameter()
+        {
+            //nop
+        }
+
+        private XmlDocument savedXml = null;
+
+        [When(@"a step is executed that macthes to the binding with a long XML argument")]
+        public void WhenAStepIsExecutedThatMacthesToTheBindingWithALongXMLArgument(XmlDocument xml)
+        {
+            Assert.IsNotNull(xml);
+            savedXml = xml;
+        }
+
+        [Then(@"the parsed XML is passed to the step binding")]
+        public void ThenTheParsedXMLIsPassedToTheStepBinding()
+        {
+            Assert.IsNotNull(savedXml);
+            StringAssert.Contains("<Root>", savedXml.OuterXml);
+        }
     }
 }

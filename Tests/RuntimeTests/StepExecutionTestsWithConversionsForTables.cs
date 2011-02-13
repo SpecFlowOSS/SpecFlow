@@ -43,9 +43,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var user = new User();
 
             // return false unless its a User
-            converter.Stub(c => c.CouldConvertTable(typeof(User))).Return(true);
-            converter.Stub(c => c.CanConvertTable(table, typeof(User))).Return(true);
-            converter.Stub(c => c.ConvertTable(table, typeof(User))).Return(user);
+            converter.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
+            converter.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
 
             bindingInstance.Expect(b => b.SingleTable(user));
             MockRepository.ReplayAll();
@@ -70,9 +70,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var user = new User();
 
             // return false unless its a User
-            converter.Stub(c => c.CouldConvertTable(typeof(User))).Return(true);
-            converter.Stub(c => c.CanConvertTable(table, typeof(User))).Return(true);
-            converter.Stub(c => c.ConvertTable(table, typeof(User))).Return(user);
+            converter.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
+            converter.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
 
             var multiLineArg = "multi-line arg";
             bindingInstance.Expect(b => b.MultilineArgumentAndTable(multiLineArg, user));
@@ -100,11 +100,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // return false unless its a User
             // must also stub CanConvert & Convert for the string argument as we've introduced a parameter
-            converter.Stub(c => c.CouldConvertTable(typeof(User))).Return(true);
-            converter.Stub(c => c.CanConvert(argumentValue, typeof(string), FeatureLanguage)).Return(true);
-            converter.Stub(c => c.CanConvertTable(table, typeof(User))).Return(true);
-            converter.Stub(c => c.Convert(argumentValue, typeof(string), FeatureLanguage)).Return(argumentValue);
-            converter.Stub(c => c.ConvertTable(table, typeof(User))).Return(user);
+            converter.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            converter.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
+            converter.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
 
             var multiLineArg = "multi-line arg";
             bindingInstance.Expect(b => b.ParameterMultilineArgumentAndTable(argumentValue, multiLineArg, user));

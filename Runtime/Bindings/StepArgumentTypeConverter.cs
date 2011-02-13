@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using TechTalk.SpecFlow.Tracing;
@@ -9,11 +8,8 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IStepArgumentTypeConverter
     {
-        object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
-        bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo);
-        bool CanConvertTable(Table value, Type typeToConvertTo);
-        object ConvertTable(Table value, Type typeToConvertTo);
-        bool CouldConvertTable(Type typeToConvertTo);
+        object Convert(object value, Type typeToConvertTo, CultureInfo cultureInfo);
+        bool CanConvert(object value, Type typeToConvertTo, CultureInfo cultureInfo);
     }
 
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
@@ -28,72 +24,64 @@ namespace TechTalk.SpecFlow.Bindings
 
         public ICollection<StepTransformationBinding> StepTransformations { get; private set; }
 
-        public object Convert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
+        private StepTransformationBinding GetMatchingStepTransformation(object value, Type typeToConvertTo, bool traceWarning)
         {
-            if (typeToConvertTo == typeof(string))
+            var stepTransformations = StepTransformations.Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
+            if (stepTransformations.Length > 1 && traceWarning)
+            {
+                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
+            }
+
+            return stepTransformations.Length > 0 ? stepTransformations[0] : null;
+        }
+
+        public object Convert(object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        {
+            if (value == null) throw new ArgumentNullException("value");
+
+            if (typeToConvertTo == value.GetType())
                 return value;
 
-            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).ToArray();
-            Debug.Assert(stepTransformations.Length <= 1, "You may not call Convert if CanConvert returns false");
-            if (stepTransformations.Length > 0)
-                return stepTransformations[0].Transform(value, testTracer);
+            var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
+            if (stepTransformation != null)
+                return stepTransformation.Transform(value, testTracer);
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        public bool CanConvert(string value, Type typeToConvertTo, CultureInfo cultureInfo)
+        public bool CanConvert(object value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
-            if (typeToConvertTo == typeof(string))
+            if (value == null) throw new ArgumentNullException("value");
+
+            if (typeToConvertTo == value.GetType())
                 return true;
 
-            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo && t.Regex.IsMatch(value)).ToArray();
-            if (stepTransformations.Length > 1)
-            {
-                //TODO: error?
-                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
-            }
-            if (stepTransformations.Length >= 1)
+            var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, false);
+            if (stepTransformation != null)
                 return true;
 
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        public object ConvertTable(Table value, Type typeToConvertTo)
+        private bool CanConvert(StepTransformationBinding stepTransformationBinding, object value, Type typeToConvertTo)
         {
-            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo).ToArray();
-            Debug.Assert(stepTransformations.Length <= 1, "You may not call ConvertTable if CanConvertTable returns false");
-            return stepTransformations[0].Transform(value, testTracer);
+            if (stepTransformationBinding.ReturnType != typeToConvertTo)
+                return false;
+
+            if (stepTransformationBinding.Regex != null && value is string)
+                return stepTransformationBinding.Regex.IsMatch((string) value);
+            return true;
         }
 
-        public bool CanConvertTable(Table value, Type typeToConvertTo)
+        private object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
-            var stepTransformations = StepTransformations.Where(t => t.ReturnType == typeToConvertTo).ToArray();
-            if (stepTransformations.Length > 1)
-            {
-                //TODO: error?
-                //TODO: Maybe add scoping for transformations?
-                testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));
-            }
-            if (stepTransformations.Length >= 1)
-                return true;
-
-            return false;
-        }
-
-        public bool CouldConvertTable(Type typeToConvertTo)
-        {
-            return StepTransformations.Any(t => t.ReturnType == typeToConvertTo);
-        }
-
-        private object ConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)
-        {
-            if (typeToConvertTo.IsEnum)
-                return Enum.Parse(typeToConvertTo, value, true);
+            if (typeToConvertTo.IsEnum && value is string)
+                return Enum.Parse(typeToConvertTo, (string)value, true);
 
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }
 
-        public bool CanConvertSimple(Type typeToConvertTo, string value, CultureInfo cultureInfo)
+        public bool CanConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             try
             {
