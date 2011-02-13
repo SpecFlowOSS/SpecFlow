@@ -104,6 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TaggedExamples.feature</DependentUpon>
     </Compile>
+    <Compile Include="TaggedExamples\TaggedExamplesBindings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">

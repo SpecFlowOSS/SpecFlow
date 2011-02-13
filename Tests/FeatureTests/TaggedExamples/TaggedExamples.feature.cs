@@ -56,13 +56,12 @@ namespace TechTalk.SpecFlow.FeatureTests.TaggedExamples
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Examples can be tagged")]
         [NUnit.Framework.CategoryAttribute("tag1")]
-        [NUnit.Framework.TestCaseAttribute("variant in non-tagged examples", "", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("variant in tagged examples", "examples_tag", new string[] {
-                "examples_tag"})]
-        public virtual void ExamplesCanBeTagged(string variant, string tag, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("variant in non-tagged examples", "")]
+        [NUnit.Framework.TestCaseAttribute("variant in tagged examples", "examples_tag")]
+        public virtual void ExamplesCanBeTagged(string variant, string tag)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Examples can be tagged", System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(new string[] {
-                                "tag1"}, exampleTags)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Examples can be tagged", new string[] {
+                        "tag1"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -77,17 +76,21 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Examples can be ignored")]
-        [NUnit.Framework.TestCaseAttribute("ignored variant", new string[0], Ignored=true)]
-        public virtual void ExamplesCanBeIgnored(string variant, string[] exampleTags)
+        [NUnit.Framework.CategoryAttribute("examples_tag")]
+        [NUnit.Framework.CategoryAttribute("buildserver_exclude")]
+        [NUnit.Framework.TestCaseAttribute("ignored variant")]
+        public virtual void ExamplesCanBeIgnored(string variant)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Examples can be ignored", exampleTags);
-#line 21
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Examples can be ignored", new string[] {
+                        "examples_tag",
+                        "buildserver_exclude"});
 #line 22
- testRunner.Given("I have invalid step");
+this.ScenarioSetup(scenarioInfo);
 #line 23
- testRunner.When("I tag the examples with @ignore");
+ testRunner.Given("I have invalid step");
 #line 24
+ testRunner.When("I tag the examples with @ignore");
+#line 25
  testRunner.Then("the execution should be ignored");
 #line hidden
             testRunner.CollectScenarioErrors();

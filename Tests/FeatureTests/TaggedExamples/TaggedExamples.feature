@@ -18,6 +18,7 @@ Examples:
 	| variant                    | tag          |
 	| variant in tagged examples | examples_tag |
 
+@buildserver_exclude
 Scenario Outline: Examples can be ignored
 	Given I have invalid step
 	When I tag the examples with @ignore
