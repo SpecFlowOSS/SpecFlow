@@ -15,6 +15,8 @@ Fixed issues:
 + Support for datetime comparisons that ignore 12:00:00 AM (issue from Google Group)
 + Fix NUnit execution report to properly select features when .features is solely comprised Scenario Outlines. 
   (by Jon Archer)
++ Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
++ Rethrowing exceptions caught during steps would lose the call stack on Silverlight. (by Matt Ellis, citizenmatt)
 
 1.5.0 - 2010/12/17
 
