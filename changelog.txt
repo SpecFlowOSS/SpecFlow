@@ -17,6 +17,7 @@ Fixed issues:
   (by Jon Archer)
 + Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
 + Rethrowing exceptions caught during steps would lose the call stack on Silverlight. (by Matt Ellis, citizenmatt)
++ SpecFlow emits an erroneous suggestion for the step bindings in VB.NET (Issue 32)
 
 1.5.0 - 2010/12/17
 

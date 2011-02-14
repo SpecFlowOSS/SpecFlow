@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.Tracing
         {
             List<string> extraArgs = new List<string>();
             if (stepArgs.MultilineTextArgument != null)
-                extraArgs.Add("string multilineText");
+                extraArgs.Add("ByVal multilineText As String");
             if (stepArgs.TableArgument != null)
-                extraArgs.Add("Table table");
+                extraArgs.Add("ByVal table As Table");
 
             StringBuilder result = new StringBuilder();
 
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Tracing
                 namespaceAddition = "";
             }
 
-            result.AppendFormat(@"<{5}{0}(""{2}"")>
+            result.AppendFormat(@"<{5}{0}(""{2}"")> _
 Public Sub {1}{3}({4})
     ScenarioContext.Current.Pending()
 End Sub",
@@ -43,7 +43,7 @@ End Sub",
         public override string GetBindingClassSkeleton(string stepDefinitions)
         {
             StringBuilder result = new StringBuilder();
-            result.AppendFormat(@"<{0}>
+            result.AppendFormat(@"<{0}> _
 Public Class StepDefinitions
 
 {1}
