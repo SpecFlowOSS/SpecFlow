@@ -4,23 +4,15 @@ using System.Linq;
 using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
     internal class DteProjectReader
     {
-        private static bool IsProjectSupported(Project project)
-        {
-            return
-                project.FullName.EndsWith(".csproj") ||
-                project.FullName.EndsWith(".vbproj");
-            //                kind.Equals(vsContextGuids.vsContextGuidVCSProject, StringComparison.InvariantCultureIgnoreCase) ||
-            //                kind.Equals(vsContextGuids.vsContextGuidVBProject, StringComparison.InvariantCultureIgnoreCase);
-        }
-
         public static SpecFlowProject LoadSpecFlowProjectFromDteProject(Project project)
         {
-            if (project == null || !IsProjectSupported(project))
+            if (project == null || !ProjectScopeFactory.IsProjectSupported(project))
                 return null;
 
             try
@@ -35,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
         public static SpecFlowProjectConfiguration LoadSpecFlowConfigurationFromDteProject(Project project)
         {
-            if (project == null || !IsProjectSupported(project))
+            if (project == null || !ProjectScopeFactory.IsProjectSupported(project))
                 return null;
 
             try
@@ -94,6 +86,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             foreach (Property property in projectItem.Properties)
             {
                 result.AppendLine(property.Name + "=" + property.Value);
+            }
+            return result.ToString();
+        }
+
+        private static string DumpProperties(Project project)
+        {
+            StringBuilder result = new StringBuilder();
+            foreach (Property property in project.Properties)
+            {
+                try
+                {
+                    result.AppendLine(property.Name + "=" + property.Value);
+                }
+                catch (Exception) { }
             }
             return result.ToString();
         }

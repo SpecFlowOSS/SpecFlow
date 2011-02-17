@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using Thread = System.Threading.Thread;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -32,6 +33,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly SynchInitializedInstance<DteWithEvents> dteReference;
         private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
         private readonly SynchronizedResultCache<Project, string, IProjectScope> projectScopeCache;
+        private readonly SynchInitializedInstance<NoProjectScope> noProjectScopeReference;
+
 
         public ProjectScopeFactory()
         {
@@ -42,7 +45,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider));
 //                        dtex.Events.SolutionEvents.Opened += () => VisualStudioTracer.Trace("solution opened", "ProjectScopeFactory");
                         dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
-                        VisualStudioTracer.Trace("subscribed to solution closed " + System.Threading.Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");
+                        VisualStudioTracer.Trace("subscribed to solution closed " + Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");
                         return dtex;
                     });
 
@@ -52,12 +55,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             projectScopeCache = new SynchronizedResultCache<Project, string, IProjectScope>(
                         project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer),
                         project => project.UniqueName); //TODO: get ID
+
+            noProjectScopeReference = new SynchInitializedInstance<NoProjectScope>(() => 
+                new NoProjectScope(classificationsReference.Value, VisualStudioTracer));
         }
 
         public IProjectScope GetProjectScope(Project project)
         {
-            if (project == null)
-                return NoProjectScope.Instance;
+            if (project == null || !IsProjectSupported(project))
+                return noProjectScopeReference.Value;
 
             return projectScopeCache.GetOrCreate(project);
         }
@@ -79,6 +85,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (dteReference.IsInitialized)
                 dteReference.Value.SolutionEvents.AfterClosing -= OnSolutionClosed;
             OnSolutionClosed();
+        }
+
+        public static bool IsProjectSupported(Project project)
+        {
+            return
+                project.FullName.EndsWith(".csproj") ||
+                project.FullName.EndsWith(".vbproj");
+            //                kind.Equals(vsContextGuids.vsContextGuidVCSProject, StringComparison.InvariantCultureIgnoreCase) ||
+            //                kind.Equals(vsContextGuids.vsContextGuidVBProject, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

@@ -90,6 +90,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 EnsureInitialized();
                 return instance;
             }
+            set
+            {
+                lock (this)
+                {
+                    instance = value;
+                }
+            }
         }
     }
 }

@@ -173,6 +173,8 @@
     <Compile Include="Guids.cs" />
     <Compile Include="IGherkinProcessorServices.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
+    <Compile Include="LanguageService\NoProjectScope.cs" />
+    <Compile Include="LanguageService\VsProjectScope.cs" />
     <Compile Include="Utils\VsProjectFileTracker.cs" />
     <Compile Include="Utils\DteWithEvents.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />

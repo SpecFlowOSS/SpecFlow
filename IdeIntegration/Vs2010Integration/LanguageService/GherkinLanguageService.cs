@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.projectScope = projectScope;
             this.visualStudioTracer = visualStudioTracer;
-            AnalyzingEnabled = true;
+            AnalyzingEnabled = projectScope.GherkinScopeAnalyzer != null;
 
             visualStudioTracer.Trace("Language service created", "GherkinLanguageService");
         }
