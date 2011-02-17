@@ -296,7 +296,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            RegisterKeyword(keyword, stepSpan);
+            ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
 
             if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock))
             {

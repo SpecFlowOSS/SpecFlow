@@ -147,4 +147,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             this.DisplayName = "Gherkin Feature Title"; 
         }
     }
+
+    // exports a classification format for the classification type gherkin.steptext
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.steptext")]
+    [Name("gherkin.steptext")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinStepTextClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinStepTextClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Step Text"; 
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 New features:
 + Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
++ Support for specifying color for the step text in VS2010
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"

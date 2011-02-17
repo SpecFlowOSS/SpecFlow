@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public readonly IClassificationType TableCell;
         public readonly IClassificationType TableHeader;
         public readonly IClassificationType Description;
+        public readonly IClassificationType StepText;
 
         public GherkinFileEditorClassifications(IClassificationTypeRegistryService registry)
         {
@@ -27,6 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TableCell = registry.GetClassificationType("gherkin.tablecell");
             TableHeader = registry.GetClassificationType("gherkin.tableheader");
             Description = registry.GetClassificationType("gherkin.description");
+            StepText = registry.GetClassificationType("gherkin.steptext");
         }
     }
 }

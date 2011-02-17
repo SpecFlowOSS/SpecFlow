@@ -73,5 +73,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("gherkin.description")]
         internal static ClassificationTypeDefinition GherkinDescriptionClassifierType = null;
+
+        // exports a classification type for the Gherkin Feature Title: gherkin.steptext
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("gherkin.steptext")]
+        internal static ClassificationTypeDefinition GherkinStepTextClassifierType = null;
     }
 }
