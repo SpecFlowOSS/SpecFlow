@@ -168,10 +168,10 @@
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\CompletionSource.cs" />
-    <Compile Include="GherkinProcessorServices.cs" />
+    <Compile Include="SpecFlowServices.cs" />
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="IGherkinProcessorServices.cs" />
+    <Compile Include="ISpecFlowServices.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
     <Compile Include="LanguageService\NoProjectScope.cs" />
     <Compile Include="LanguageService\VsProjectScope.cs" />

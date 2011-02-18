@@ -20,17 +20,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     internal class GherkinStepCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        IGherkinProcessorServices GherkinProcessorServices = null;
+        ISpecFlowServices SpecFlowServices = null;
 
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, GherkinProcessorServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
+            return new GherkinStepCompletionSource(textBuffer, SpecFlowServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
         }
     }
 
@@ -38,13 +38,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     {
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
-        private readonly IGherkinProcessorServices gherkinProcessorServices;
+        private readonly ISpecFlowServices specFlowServices;
         private readonly GherkinLanguageService languageService;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, IGherkinProcessorServices gherkinProcessorServices, GherkinLanguageService languageService)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, ISpecFlowServices specFlowServices, GherkinLanguageService languageService)
         {
             this.textBuffer = textBuffer;
-            this.gherkinProcessorServices = gherkinProcessorServices;
+            this.specFlowServices = specFlowServices;
             this.languageService = languageService;
         }
 
@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         private IEnumerable<Completion> GetCompletionsForBlock(ScenarioBlock scenarioBlock)
         {
-            var project = gherkinProcessorServices.GetProject(textBuffer);
+            var project = specFlowServices.GetProject(textBuffer);
 
             List<Completion> result = new List<Completion>();
             GetCompletionsFromProject(project, scenarioBlock, result);

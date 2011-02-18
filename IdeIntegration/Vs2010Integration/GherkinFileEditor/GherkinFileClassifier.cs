@@ -19,14 +19,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         [Import]
-        internal IGherkinProcessorServices GherkinProcessorServices = null;
+        internal ISpecFlowServices SpecFlowServices = null;
 
         [Import]
         internal IGherkinBufferServiceManager GherkinBufferServiceManager;
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
+            if (!SpecFlowServices.GetOptions().EnableSyntaxColoring)
                 return null;
 
             return GherkinBufferServiceManager.GetOrCreate(buffer, () => 

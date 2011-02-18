@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using EnvDTE;
@@ -213,6 +214,43 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             {
                 return file.ReadToEnd();
             }
+        }
+
+        static public Guid? GetProjectGuid(Project project)
+        {
+            try
+            {
+                ServiceProvider serviceProvider =
+                    new ServiceProvider(project.DTE as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
+                IVsSolution vsSolution = (IVsSolution)serviceProvider.GetService(typeof(SVsSolution));
+
+                if (vsSolution != null)
+                {
+                    IVsHierarchy hierarchy;
+                    vsSolution.GetProjectOfUniqueName(project.UniqueName, out hierarchy);
+                    if (hierarchy != null)
+                    {
+                        Guid projectId;
+                        vsSolution.GetGuidOfProject(hierarchy, out projectId);
+                        return projectId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "GetProjectGuid");
+            }
+            return null;
+        }
+
+        static public string GetProjectUniqueId(Project project)
+        {
+            var projectGuid = GetProjectGuid(project);
+            if (projectGuid != null)
+                return projectGuid.ToString();
+
+            // if there is a problem, let's use the project file path
+            return project.UniqueName;
         }
     }
 }

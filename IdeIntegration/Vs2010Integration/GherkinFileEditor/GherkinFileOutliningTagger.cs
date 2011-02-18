@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     internal sealed class OutliningTaggerProvider : ITaggerProvider
     {
         [Import]
-        internal IGherkinProcessorServices GherkinProcessorServices = null;
+        internal ISpecFlowServices SpecFlowServices = null;
 
         [Import]
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
-            if (!GherkinProcessorServices.GetOptions().EnableOutlining)
+            if (!SpecFlowServices.GetOptions().EnableOutlining)
                 return null;
 
             return (ITagger<T>)GherkinBufferServiceManager.GetOrCreate(buffer, () =>

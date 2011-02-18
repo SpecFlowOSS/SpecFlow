@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
-    internal interface IGherkinProcessorServices
+    internal interface ISpecFlowServices
     {
         IntegrationOptions GetOptions();
         Project GetProject(ITextBuffer textBuffer);

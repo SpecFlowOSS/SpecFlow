@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.ComponentModel.Composition;
-using System.Threading;
-using System.Windows.Threading;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
@@ -43,7 +41,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     {
 
                         var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider));
-//                        dtex.Events.SolutionEvents.Opened += () => VisualStudioTracer.Trace("solution opened", "ProjectScopeFactory");
                         dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
                         VisualStudioTracer.Trace("subscribed to solution closed " + Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");
                         return dtex;
@@ -54,7 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             projectScopeCache = new SynchronizedResultCache<Project, string, IProjectScope>(
                         project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer),
-                        project => project.UniqueName); //TODO: get ID
+                        VsxHelper.GetProjectUniqueId);
 
             noProjectScopeReference = new SynchInitializedInstance<NoProjectScope>(() => 
                 new NoProjectScope(classificationsReference.Value, VisualStudioTracer));
@@ -62,7 +59,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IProjectScope GetProjectScope(Project project)
         {
-            if (project == null || !IsProjectSupported(project))
+            if (project == null || !SpecFlowServices.IsProjectSupported(project))
                 return noProjectScopeReference.Value;
 
             return projectScopeCache.GetOrCreate(project);
@@ -85,15 +82,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (dteReference.IsInitialized)
                 dteReference.Value.SolutionEvents.AfterClosing -= OnSolutionClosed;
             OnSolutionClosed();
-        }
-
-        public static bool IsProjectSupported(Project project)
-        {
-            return
-                project.FullName.EndsWith(".csproj") ||
-                project.FullName.EndsWith(".vbproj");
-            //                kind.Equals(vsContextGuids.vsContextGuidVCSProject, StringComparison.InvariantCultureIgnoreCase) ||
-            //                kind.Equals(vsContextGuids.vsContextGuidVBProject, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

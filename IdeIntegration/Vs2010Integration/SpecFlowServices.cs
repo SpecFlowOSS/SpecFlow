@@ -11,8 +11,8 @@ using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
-    [Export(typeof(IGherkinProcessorServices))]
-    internal class GherkinProcessorServices : IGherkinProcessorServices
+    [Export(typeof(ISpecFlowServices))]
+    internal class SpecFlowServices : ISpecFlowServices
     {
         [Import]
         internal SVsServiceProvider ServiceProvider = null;
@@ -35,6 +35,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         public Project GetProject(ITextBuffer textBuffer)
         {
             return VsxHelper.GetCurrentProject(textBuffer, AdaptersFactory, ServiceProvider);
+        }
+
+        public static bool IsProjectSupported(Project project)
+        {
+            return
+                project.FullName.EndsWith(".csproj") ||
+                project.FullName.EndsWith(".vbproj");
         }
     }
 }

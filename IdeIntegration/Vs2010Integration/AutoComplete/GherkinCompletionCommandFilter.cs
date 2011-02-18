@@ -24,14 +24,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         ICompletionBroker CompletionBroker = null;
 
         [Import]
-        IGherkinProcessorServices GherkinProcessorServices = null;
+        ISpecFlowServices SpecFlowServices = null;
 
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
                 return;
 
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
