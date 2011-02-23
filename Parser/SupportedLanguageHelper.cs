@@ -13,6 +13,18 @@ namespace TechTalk.SpecFlow.Parser
         public string CompatibleGherkinLanguage;
         public CultureInfo CultureInfo;
         public CultureInfo LanguageForConversions;
+
+        public override bool Equals(object obj)
+        {
+            LanguageInfo other = obj as LanguageInfo;
+
+            return other != null && other.Language.Equals(Language);
+        }
+
+        public override int GetHashCode()
+        {
+            return Language.GetHashCode();
+        }
     }
 
     internal static class SupportedLanguageHelper

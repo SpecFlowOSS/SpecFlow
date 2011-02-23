@@ -3,33 +3,31 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using gherkin;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.GherkinBuilder;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using Exception=System.Exception;
 
 namespace TechTalk.SpecFlow.Parser
 {
     public class SpecFlowLangParser
     {
-        private readonly GherkinLanguageServices languageServices;
+        private readonly GherkinDialectServices dialectServices;
 
         public SpecFlowLangParser(CultureInfo defaultLanguage)
         {
-            this.languageServices = new GherkinLanguageServices(defaultLanguage);
+            this.dialectServices = new GherkinDialectServices(defaultLanguage);
         }
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
         {
             var fileContent = featureFileReader.ReadToEnd();
 
-            var language = languageServices.GetLanguage(fileContent);
+            var language = dialectServices.GetLanguage(fileContent);
 
-            I18n languageService = languageServices.GetLanguageService(language);
+            var gherkinDialect = dialectServices.GetGherkinDialect(language);
             var gherkinListener = new GherkinParserListener(sourceFilePath);
 
-            GherkinScanner scanner = new GherkinScanner(languageService, fileContent);
+            GherkinScanner scanner = new GherkinScanner(gherkinDialect, fileContent);
             scanner.Scan(gherkinListener);
 
             Feature feature = gherkinListener.GetResult();

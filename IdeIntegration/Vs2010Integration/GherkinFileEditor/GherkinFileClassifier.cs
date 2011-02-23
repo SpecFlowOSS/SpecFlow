@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using EnvDTE80;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
-using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -14,35 +13,46 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     #region Provider definition
     [Export(typeof(IClassifierProvider))]
     [ContentType("gherkin")]
-    internal class GherkinFileClassifierProvider : EditorExtensionProviderBase, IClassifierProvider
+    internal class GherkinFileClassifierProvider : IClassifierProvider
     {
+        [Import]
+        internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
+
+        [Import]
+        internal ISpecFlowServices SpecFlowServices = null;
+
+        [Import]
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableSyntaxColoring)
+            if (!SpecFlowServices.GetOptions().EnableSyntaxColoring)
                 return null;
 
-            GherkinFileEditorParser parser = GetParser(buffer);
-
-            return buffer.Properties.GetOrCreateSingletonProperty(() => 
-                new GherkinFileClassifier(parser));
+            return GherkinBufferServiceManager.GetOrCreate(buffer, () => 
+                new GherkinFileClassifier(GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
-
     }
     #endregion //provider def
 
-    internal class GherkinFileClassifier : IClassifier
+    internal class GherkinFileClassifier : IClassifier, IDisposable
     {
-        private readonly GherkinFileEditorParser parser;
+        private readonly GherkinLanguageService gherkinLanguageService;
 
-        public GherkinFileClassifier(GherkinFileEditorParser parser)
+        public GherkinFileClassifier(GherkinLanguageService gherkinLanguageService)
         {
-            this.parser = parser;
+            this.gherkinLanguageService = gherkinLanguageService;
 
-            parser.ClassificationChanged += (sender, args) =>
+            gherkinLanguageService.FileScopeChanged += GherkinLanguageServiceOnFileScopeChanged;
+        }
+
+        private void GherkinLanguageServiceOnFileScopeChanged(object sender, GherkinFileScopeChange gherkinFileScopeChange)
+        {
+            if (ClassificationChanged != null)
             {
-                if (ClassificationChanged != null)
-                    ClassificationChanged(this, args);
-            };
+                ClassificationChangedEventArgs args = new ClassificationChangedEventArgs(gherkinFileScopeChange.CreateChangeSpan());
+                ClassificationChanged(this, args);
+            }
         }
 
         /// <summary>
@@ -53,12 +63,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
-            return parser.GetClassificationSpans(span);
+            var fileScope = gherkinLanguageService.GetFileScope();
+            return fileScope.GetClassificationSpans(span);
         }
 
         // This event gets raised if a non-text change would affect the classification in some way,
         // for example typing /* would cause the clssification to change in C# without directly
         // affecting the span.
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
+
+        public void Dispose()
+        {
+            gherkinLanguageService.FileScopeChanged -= GherkinLanguageServiceOnFileScopeChanged;
+        }
     }
 }

@@ -8,6 +8,7 @@ New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.3
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
++ Support for specifying color for the step text in VS2010
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
@@ -18,6 +19,7 @@ Fixed issues:
 + Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
 + Rethrowing exceptions caught during steps would lose the call stack on Silverlight. (by Matt Ellis, citizenmatt)
 + SpecFlow emits an erroneous suggestion for the step bindings in VB.NET (Issue 32)
++ Refactored VS2010 intagration to better maintanability
 
 1.5.0 - 2010/12/17
 

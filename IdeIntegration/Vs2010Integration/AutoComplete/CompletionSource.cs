@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using EnvDTE;
-using gherkin;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Utils;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -19,14 +20,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     internal class GherkinStepCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        IGherkinProcessorServices GherkinProcessorServices = null;
+        ISpecFlowServices SpecFlowServices = null;
+
+        [Import]
+        IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, GherkinProcessorServices);
+            return new GherkinStepCompletionSource(textBuffer, SpecFlowServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
         }
     }
 
@@ -34,12 +38,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     {
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
-        private readonly IGherkinProcessorServices gherkinProcessorServices;
+        private readonly ISpecFlowServices specFlowServices;
+        private readonly GherkinLanguageService languageService;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, IGherkinProcessorServices gherkinProcessorServices)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, ISpecFlowServices specFlowServices, GherkinLanguageService languageService)
         {
             this.textBuffer = textBuffer;
-            this.gherkinProcessorServices = gherkinProcessorServices;
+            this.specFlowServices = specFlowServices;
+            this.languageService = languageService;
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -84,18 +90,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         private ScenarioBlock? GetCurrentScenarioBlock(SnapshotPoint triggerPoint)
         {
-            var parsingResult = gherkinProcessorServices.GetParsingResult(textBuffer);
-            if (parsingResult == null)
+            var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
+            if (fileScope == null)
                 return null;
 
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
-            var scenarioInfo = parsingResult.ScenarioEditorInfos.LastOrDefault(si => si.KeywordLine < triggerLineNumber);
+            var scenarioInfo = fileScope.ScenarioBlocks.LastOrDefault(si => si.KeywordLine < triggerLineNumber);
             if (scenarioInfo == null)
                 return null;
 
             for (var lineNumer = triggerLineNumber; lineNumer > scenarioInfo.KeywordLine; lineNumer--)
             {
-                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, parsingResult.LanguageService);
+                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, fileScope.GherkinDialect);
 
                 if (stepKeyword != null)
                 {
@@ -108,10 +114,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return ScenarioBlock.Given;
         }
 
-        private StepKeyword? GetStepKeyword(ITextSnapshot snapshot, int lineNumer, I18n languageService)
+        private StepKeyword? GetStepKeyword(ITextSnapshot snapshot, int lineNumer, GherkinDialect gherkinDialect)
         {
             var word = GetFirstWordOfLine(snapshot, lineNumer);
-            return languageService.GetStepKeyword(word);
+            return gherkinDialect.GetStepKeyword(word);
         }
 
         private static string GetFirstWordOfLine(ITextSnapshot snapshot, int lineNumer)
@@ -122,12 +128,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         private IEnumerable<Completion> GetCompletionsForBlock(ScenarioBlock scenarioBlock)
         {
-            var project = gherkinProcessorServices.GetProject(textBuffer);
+            var project = specFlowServices.GetProject(textBuffer);
 
             List<Completion> result = new List<Completion>();
             GetCompletionsFromProject(project, scenarioBlock, result);
 
-            var specFlowProject = gherkinProcessorServices.GetSpecFlowProjectFromProject(project);
+            var specFlowProject = languageService.ProjectScope.SpecFlowProjectConfiguration;
             if (specFlowProject != null)
             {
                 foreach (var assemblyName in specFlowProject.RuntimeConfiguration.AdditionalStepAssemblies)

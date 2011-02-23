@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -23,11 +24,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         ICompletionBroker CompletionBroker = null;
 
         [Import]
-        IGherkinProcessorServices GherkinProcessorServices = null;
+        ISpecFlowServices SpecFlowServices = null;
+
+        [Import]
+        IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            if (!GherkinProcessorServices.GetOptions().EnableIntelliSense)
+            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
                 return;
 
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
@@ -35,7 +39,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (view == null)
                 return;
 
-            var commandFilter = new GherkinCompletionCommandFilter(view, CompletionBroker, GherkinProcessorServices);
+            var languageService = GherkinLanguageServiceFactory.GetLanguageService(view.TextBuffer);
+
+            var commandFilter = new GherkinCompletionCommandFilter(view, CompletionBroker, languageService);
 
             IOleCommandTarget next;
             textViewAdapter.AddCommandFilter(commandFilter, out next);
@@ -45,13 +51,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
     internal class GherkinCompletionCommandFilter : CompletionCommandFilter
     {
-        public GherkinCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker, IGherkinProcessorServices gherkinProcessorServices) : base(textView, broker)
+        private readonly GherkinLanguageService languageService;
+
+        public GherkinCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker, GherkinLanguageService languageService) : base(textView, broker)
         {
-            GherkinProcessorServices = gherkinProcessorServices;
+            this.languageService = languageService;
         }
 
-        public IGherkinProcessorServices GherkinProcessorServices { get; private set; }
-        
         /// <summary>
         /// Displays completion after typing a space after a step keyword
         /// </summary>
@@ -64,8 +70,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 char.IsWhiteSpace(lineBeforeCaret[lineBeforeCaret.Length - 1]))
             {
                 string keyword = lineBeforeCaret.Substring(0, lineBeforeCaret.Length - 1).TrimStart();
-                var languageService = GherkinProcessorServices.GetLanguageService(caret.Snapshot.TextBuffer);
-                return languageService.IsStepKeyword(keyword);
+
+                var fileScope = languageService.GetFileScope(waitForParsingSnapshot: caret.Snapshot);
+                if (fileScope != null && fileScope.GherkinDialect != null)
+                    return fileScope.GherkinDialect.IsStepKeyword(keyword);
             }
 
             return false;

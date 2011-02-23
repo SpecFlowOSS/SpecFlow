@@ -7,23 +7,23 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 {
     public class GherkinScanner
     {
-        private readonly I18n languageService;
+        private readonly GherkinDialect gherkinDialect;
         private readonly GherkinBuffer buffer;
 
-        public GherkinScanner(I18n languageService, string gherkinText)
-            : this(languageService, gherkinText, 0)
+        public GherkinScanner(GherkinDialect gherkinDialect, string gherkinText)
+            : this(gherkinDialect, gherkinText, 0)
         {
         }
 
-        public GherkinScanner(I18n languageService, string gherkinText, int lineOffset)
+        public GherkinScanner(GherkinDialect gherkinDialect, string gherkinText, int lineOffset)
         {
-            this.languageService = languageService;
+            this.gherkinDialect = gherkinDialect;
             this.buffer = new GherkinBuffer(gherkinText, lineOffset);
         }
 
         public void Scan(IGherkinListener listener)
         {
-            ListenerExtender listenerExtender = new ListenerExtender(languageService, listener, buffer);
+            ListenerExtender listenerExtender = new ListenerExtender(gherkinDialect, listener, buffer);
             DoScan(listenerExtender, buffer.LineOffset, 0);
         }
 
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
             try
             {
-                Lexer lexer = languageService.lexer(listenerExtender);
+                Lexer lexer = gherkinDialect.NativeLanguageService.lexer(listenerExtender);
                 lexer.scan(contentToScan);
             }
             catch (ScanningCancelledException)

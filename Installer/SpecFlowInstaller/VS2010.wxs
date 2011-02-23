@@ -18,6 +18,8 @@
         <File Id="TechTalk.SpecFlow.Vs2010Integration.dll_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.dll" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration.dll" />
         <File Id="extension.vsixmanifest_VS2010" Name="extension.vsixmanifest" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\extension.vsixmanifest" />
         <File Id="TechTalk.SpecFlow.Vs2010Integration.pkgdef_VS2010" Name="TechTalk.SpecFlow.Vs2010Integration.pkgdef" Source="$(var.TechTalk.SpecFlow.Vs2010Integration.TargetDir)\TechTalk.SpecFlow.Vs2010Integration.pkgdef" />
+        <File Name="System.CoreEx.dll" Source="$(var.SolutionDir)\lib\RX\System.CoreEx.dll" />
+        <File Name="System.Reactive.dll" Source="$(var.SolutionDir)\lib\RX\System.Reactive.dll" />
       </Component>
 
       <!-- project/item templates -->

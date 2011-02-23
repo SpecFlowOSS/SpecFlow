@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -14,41 +13,61 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     [Export(typeof(ITaggerProvider))]
     [TagType(typeof(IOutliningRegionTag))]
     [ContentType("gherkin")]
-    internal sealed class OutliningTaggerProvider : EditorExtensionProviderBase, ITaggerProvider
+    internal sealed class OutliningTaggerProvider : ITaggerProvider
     {
+        [Import]
+        internal ISpecFlowServices SpecFlowServices = null;
+
+        [Import]
+        internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
+
+        [Import]
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
-            if (!GherkinProcessorServices.GetOptions().EnableOutlining)
+            if (!SpecFlowServices.GetOptions().EnableOutlining)
                 return null;
 
-            GherkinFileEditorParser parser = GetParser(buffer);
-
-            return (ITagger<T>)buffer.Properties.GetOrCreateSingletonProperty(() =>
-                new GherkinFileOutliningTagger(parser));
+            return (ITagger<T>)GherkinBufferServiceManager.GetOrCreate(buffer, () =>
+                new GherkinFileOutliningTagger(GherkinLanguageServiceFactory.GetLanguageService(buffer)));
         }
     }
     #endregion
 
-    internal class GherkinFileOutliningTagger : ITagger<IOutliningRegionTag>
+    internal class GherkinFileOutliningTagger : ITagger<IOutliningRegionTag>, IDisposable
     {
-        private readonly GherkinFileEditorParser parser;
+        private readonly GherkinLanguageService gherkinLanguageService;
 
-        public GherkinFileOutliningTagger(GherkinFileEditorParser parser)
+        public GherkinFileOutliningTagger(GherkinLanguageService gherkinLanguageService)
         {
-            this.parser = parser;
+            this.gherkinLanguageService = gherkinLanguageService;
 
-            parser.TagsChanged += (sender, args) =>
+            gherkinLanguageService.FileScopeChanged += GherkinLanguageServiceOnFileScopeChanged;
+        }
+
+        private void GherkinLanguageServiceOnFileScopeChanged(object sender, GherkinFileScopeChange gherkinFileScopeChange)
+        {
+            if (TagsChanged != null)
             {
-                if (TagsChanged != null)
-                    TagsChanged(this, args);
-            };
+                SnapshotSpanEventArgs args = new SnapshotSpanEventArgs(gherkinFileScopeChange.CreateChangeSpan());
+                TagsChanged(this, args);
+            }
         }
 
         public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            return parser.GetTags(spans);
+            var fileScope = gherkinLanguageService.GetFileScope();
+            if (fileScope == null)
+                return new ITagSpan<IOutliningRegionTag>[0];
+            return fileScope.GetTags(spans);
         }
 
         public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+
+        public void Dispose()
+        {
+            gherkinLanguageService.FileScopeChanged -= GherkinLanguageServiceOnFileScopeChanged;
+        }
     }
 }
