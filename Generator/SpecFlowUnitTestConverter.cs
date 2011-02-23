@@ -317,7 +317,6 @@ namespace TechTalk.SpecFlow.Generator
                 {
                     for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                     {
-                        //TODO: handle examples tags
                         IEnumerable<string> arguments = exampleSet.Table.Body[rowIndex].Cells.Select(c => c.Value);
                         testGeneratorProvider.SetRow(testMethod, arguments, GetNonIgnoreTags(exampleSet.Tags), HasIgnoreTag(exampleSet.Tags));
                     }
@@ -415,15 +414,37 @@ namespace TechTalk.SpecFlow.Generator
             else
             {
                 // merge tags list
-                // Enumerable.ToArray(Enumerable.Concat(tags1, tags1));
-                tagsExpression = new CodeMethodInvokeExpression(
-                    new CodeTypeReferenceExpression(typeof(Enumerable)),
-                    "ToArray",
-                    new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression(typeof(Enumerable)),
-                        "Concat",
-                        GetStringArrayExpression(scenario.Tags),
-                        additionalTagsExpression));
+                // var tags = tags1
+                // if (tags2 != null)
+                //   tags = Enumerable.ToArray(Enumerable.Concat(tags1, tags1));
+                testMethod.Statements.Add(
+                    new CodeVariableDeclarationStatement(typeof(string[]), "__tags", GetStringArrayExpression(scenario.Tags)));
+                tagsExpression = new CodeVariableReferenceExpression("__tags");
+                testMethod.Statements.Add(
+                    new CodeConditionStatement(
+                        new CodeBinaryOperatorExpression(
+                            additionalTagsExpression, 
+                            CodeBinaryOperatorType.IdentityInequality, 
+                            new CodePrimitiveExpression(null)),
+                        new CodeAssignStatement(
+                            tagsExpression, 
+                            new CodeMethodInvokeExpression(
+                                new CodeTypeReferenceExpression(typeof (Enumerable)),
+                                "ToArray",
+                                new CodeMethodInvokeExpression(
+                                    new CodeTypeReferenceExpression(typeof (Enumerable)),
+                                    "Concat",
+                                    tagsExpression,
+                                    additionalTagsExpression)))));
+
+//                tagsExpression = new CodeMethodInvokeExpression(
+//                    new CodeTypeReferenceExpression(typeof(Enumerable)),
+//                    "ToArray",
+//                    new CodeMethodInvokeExpression(
+//                        new CodeTypeReferenceExpression(typeof(Enumerable)),
+//                        "Concat",
+//                        GetStringArrayExpression(scenario.Tags),
+//                        additionalTagsExpression));
             }
             testMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(SCENARIOINFO_TYPE, "scenarioInfo",
