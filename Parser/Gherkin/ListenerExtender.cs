@@ -203,6 +203,14 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
         public void feature(string keyword, string name, string description, int line)
         {
+            if (afterFeature)
+            {
+                var editorLine = GetEditorLine(line);
+                var errorPosition = GetLineStartPositionIgnoreWhitespace(editorLine);
+                gherkinListener.Error("Duplicated feature title", errorPosition, null);
+                return;
+            }
+
             afterFeature = true;
 
             GherkinBufferSpan descriptionSpan;

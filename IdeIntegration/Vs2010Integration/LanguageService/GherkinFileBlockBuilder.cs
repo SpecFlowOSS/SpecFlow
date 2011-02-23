@@ -72,20 +72,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (BlockType == typeof(IInvalidFileBlock))
             {
                 Debug.Assert(gherkinFileEditorInfo.InvalidFileEndingBlock == null);
-                gherkinFileEditorInfo.InvalidFileEndingBlock =
-                    new InvalidFileBlock(StartLine, endLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                if (gherkinFileEditorInfo.InvalidFileEndingBlock == null)
+                    gherkinFileEditorInfo.InvalidFileEndingBlock =
+                        new InvalidFileBlock(StartLine, endLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IHeaderBlock))
             {
                 Debug.Assert(gherkinFileEditorInfo.HeaderBlock == null);
-                gherkinFileEditorInfo.HeaderBlock =
-                    new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                if (gherkinFileEditorInfo.HeaderBlock == null)
+                    gherkinFileEditorInfo.HeaderBlock =
+                        new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IBackgroundBlock))
             {
                 Debug.Assert(gherkinFileEditorInfo.BackgroundBlock == null);
-                gherkinFileEditorInfo.BackgroundBlock =
-                    new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
+                if (gherkinFileEditorInfo.BackgroundBlock == null)
+                    gherkinFileEditorInfo.BackgroundBlock =
+                        new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
             }
             else if (BlockType == typeof(IScenarioBlock))
             {
