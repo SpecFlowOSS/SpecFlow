@@ -94,6 +94,7 @@
     <Compile Include="Gherkin\ScanningCancelledException.cs" />
     <Compile Include="Gherkin\ScanningErrorException.cs" />
     <Compile Include="SupportedLanguageHelper.cs" />
+    <Compile Include="SyntaxElements\Comment.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowLangParser.cs" />
     <Compile Include="SpecFlowParserException.cs" />

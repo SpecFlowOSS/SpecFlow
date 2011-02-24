@@ -71,5 +71,10 @@ namespace TechTalk.SpecFlow.Parser
 
             return SupportedLanguageHelper.GetSupportedLanguage(langName);
         }
+
+        static public bool IsLanguageLine(string line)
+        {
+            return languageLineRe.Match(line).Success;
+        }
     }
 }

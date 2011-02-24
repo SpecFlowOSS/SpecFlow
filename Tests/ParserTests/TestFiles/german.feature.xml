@@ -6,6 +6,7 @@
   <Description>Um dumme Fehler zu vermeiden
 möchte ich als Matheidiot
 die Summe zweier Zahlen gesagt bekommen</Description>
+  <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Keyword>Szenariogrundriss</Keyword>
@@ -117,4 +118,5 @@ die Summe zweier Zahlen gesagt bekommen</Description>
       </Examples>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>

@@ -6,6 +6,7 @@
   <Description>Om domme fouten te vermijden
 wil ik als nul in wiskunde
 de som van twee getallen te weten komen</Description>
+  <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Keyword>Abstract Scenario</Keyword>
@@ -117,4 +118,5 @@ de som van twee getallen te weten komen</Description>
       </Examples>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>

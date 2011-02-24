@@ -6,6 +6,7 @@
   <Description>Azért, hogy elkerüljem a buta hibákat
 amit diszkalkúliásként elkövethetek,
 két szám összegét szeretném kiszámoltatni.</Description>
+  <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Keyword>Forgatókönyv vázlat</Keyword>
@@ -117,4 +118,5 @@ két szám összegét szeretném kiszámoltatni.</Description>
       </Examples>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>

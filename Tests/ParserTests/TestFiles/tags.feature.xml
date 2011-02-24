@@ -15,6 +15,7 @@
   <Keyword>Feature</Keyword>
   <Title>a very simple feature</Title>
   <Description />
+  <FilePosition line="4" column="1" />
   <Scenarios>
     <Scenario>
       <Tags>
@@ -51,4 +52,5 @@
       </Steps>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>

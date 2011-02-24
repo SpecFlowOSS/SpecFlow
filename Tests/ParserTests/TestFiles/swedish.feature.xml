@@ -6,6 +6,7 @@
   <Description>För att slippa att göra dumma fel
 Som räknare
 Vill jag kunna lägga samman</Description>
+  <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario>
       <Keyword>Scenario</Keyword>
@@ -69,4 +70,5 @@ Vill jag kunna lägga samman</Description>
       </Steps>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>

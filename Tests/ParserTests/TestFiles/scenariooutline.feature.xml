@@ -4,6 +4,7 @@
   <Keyword>Feature</Keyword>
   <Title>a feature with a scenario outline</Title>
   <Description />
+  <FilePosition line="1" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
       <Keyword>Scenario Outline</Keyword>
@@ -264,4 +265,10 @@
       </Examples>
     </Scenario>
   </Scenarios>
+  <Comments>
+    <Comment>
+      <Text>third example set without a name</Text>
+      <FilePosition line="20" column="2" />
+    </Comment>
+  </Comments>
 </Feature>

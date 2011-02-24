@@ -57,12 +57,24 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public void Comment(string commentText, GherkinBufferSpan commentSpan)
         {
-            //nop;
+            if (GherkinDialectServices.IsLanguageLine(commentText))
+                return;
+
+            var position = GetFilePosition(commentSpan.StartPosition);
+            string trimmedComment = commentText.TrimStart(' ', '#', '\t');
+            position.Column += commentText.Length - trimmedComment.Length;
+            trimmedComment = trimmedComment.Trim();
+
+            if (trimmedComment.Length == 0)
+                return;
+
+            featureBuilder.AddComment(trimmedComment, position);
         }
 
         public void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            featureBuilder.SetHeader(keyword, name, description, FlushTags());
+            var position = GetFilePosition(headerSpan.StartPosition);
+            featureBuilder.SetHeader(keyword, name, description, FlushTags(), position);
             featureBuilder.SourceFilePath = filePath;
         }
 

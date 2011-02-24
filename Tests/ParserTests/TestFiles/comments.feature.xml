@@ -4,6 +4,7 @@
   <Keyword>Feature</Keyword>
   <Title>a very simple feature</Title>
   <Description />
+  <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario>
       <Keyword>Scenario</Keyword>
@@ -19,4 +20,34 @@
       </Steps>
     </Scenario>
   </Scenarios>
+  <Comments>
+    <Comment>
+      <Text>no tags</Text>
+      <FilePosition line="1" column="3" />
+    </Comment>
+    <Comment>
+      <Text>no scenario tags</Text>
+      <FilePosition line="4" column="3" />
+    </Comment>
+    <Comment>
+      <Text>still nothing</Text>
+      <FilePosition line="5" column="6" />
+    </Comment>
+    <Comment>
+      <Text>When commented out</Text>
+      <FilePosition line="8" column="2" />
+    </Comment>
+    <Comment>
+      <Text>Then commented out</Text>
+      <FilePosition line="9" column="3" />
+    </Comment>
+    <Comment>
+      <Text>empty comment comes:</Text>
+      <FilePosition line="11" column="3" />
+    </Comment>
+    <Comment>
+      <Text>comment at EOF</Text>
+      <FilePosition line="14" column="2" />
+    </Comment>
+  </Comments>
 </Feature>

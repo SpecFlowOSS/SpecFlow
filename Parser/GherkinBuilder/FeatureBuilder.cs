@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Parser.GherkinBuilder
@@ -13,6 +15,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private Tags tags;
         private readonly IList<IScenarioBuilder> scenarios = new List<IScenarioBuilder>();
         private BackgroundBuilder background = null;
+        protected FilePosition position;
+        private readonly List<Comment> comments = new List<Comment>();
 
         public string SourceFilePath
         {
@@ -20,17 +24,20 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             set { sourceFilePath = value; }
         }
 
-        public void SetHeader(string keyword, string title, string description, Tags tags)
+        public void SetHeader(string keyword, string title, string description, Tags tags, FilePosition position)
         {
             this.keyword = keyword;
             this.title = title;
             this.description = description;
             this.tags = tags;
+            this.position = position;
         }
 
         public Feature GetResult()
         {
             var scenarioResults = scenarios.Select(sb => sb.GetResult()).ToArray();
+
+            comments.Sort((c1, c2) => c1.FilePosition.Line.CompareTo(c2.FilePosition.Line));
 
             var feature = new Feature(
                 keyword,
@@ -38,8 +45,11 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                 tags,
                 description,
                 background == null ? null : background.GetResult(),
-                scenarioResults);
+                scenarioResults,
+                comments.ToArray());
+
             feature.SourceFile = sourceFilePath;
+            feature.FilePosition = position;
             return feature;
         }
 
@@ -60,6 +70,11 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
                     "Feature file already contains a background section.",
                     backgroundBuilder.Position);
             background = backgroundBuilder;
+        }
+
+        public void AddComment(string commentText, FilePosition filePosition)
+        {
+            comments.Add(new Comment(commentText, filePosition));
         }
     }
 }

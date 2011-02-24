@@ -4,6 +4,7 @@
   <Keyword>Feature</Keyword>
   <Title>TODO: a complex test file should come here</Title>
   <Description />
+  <FilePosition line="1" column="1" />
   <Scenarios>
     <Scenario>
       <Keyword>Scenario</Keyword>
@@ -29,4 +30,5 @@
       </Steps>
     </Scenario>
   </Scenarios>
+  <Comments />
 </Feature>
