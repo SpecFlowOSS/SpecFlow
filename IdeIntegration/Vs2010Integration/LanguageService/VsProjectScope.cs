@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -66,6 +71,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
         }
 
+        private void ConfirmReGenerateFilesOnConfigChange()
+        {
+            var questionResult = MessageBox.Show(
+                "SpecFlow detected changes in the configuration that might require re-generating the feature files. Do you want to re-generate them now?", 
+                "SpecFlow Configuration Changes",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, 
+                MessageBoxDefaultButton.Button1);
+
+            if (questionResult != DialogResult.Yes)
+                return;
+
+            ReGenerateAll();
+        }
+
+        private void ReGenerateAll()
+        {
+            foreach (ProjectItem projectItem in GetFeatureFileProjectItems())
+            {
+                VSProjectItem vsProjectItem = projectItem.Object as VSProjectItem;
+                if (vsProjectItem != null)
+                    vsProjectItem.RunCustomTool();
+            }
+        }
+
+        private IEnumerable<ProjectItem> GetFeatureFileProjectItems()
+        {
+            return VsxHelper.GetAllPhysicalFileProjectItem(project).Where(pi => ".feature".Equals(Path.GetExtension(pi.Name), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         private void AppConfigTrackerOnFileChanged(ProjectItem appConfigItem)
         {
             var newConfig = DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration();
@@ -75,17 +110,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             bool dialectServicesChanged = !newConfig.GeneratorConfiguration.FeatureLanguage.Equals(GherkinDialectServices.DefaultLanguage);
 
             SpecFlowProjectConfiguration = newConfig;
-            this.visualStudioTracer.Trace("SpecFlow configuration changed", "VsProjectScope");
-            if (SpecFlowProjectConfigurationChanged != null)
-                SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
+            OnSpecFlowProjectConfigurationChanged();
 
             if (dialectServicesChanged)
             {
                 GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
-                this.visualStudioTracer.Trace("default language changed", "VsProjectScope");
-                if (GherkinDialectServicesChanged != null)
-                    GherkinDialectServicesChanged(this, EventArgs.Empty);
+                OnGherkinDialectServicesChanged();
             }
+        }
+
+        private void OnSpecFlowProjectConfigurationChanged()
+        {
+            this.visualStudioTracer.Trace("SpecFlow configuration changed", "VsProjectScope");
+            if (SpecFlowProjectConfigurationChanged != null)
+                SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
+
+            ConfirmReGenerateFilesOnConfigChange();
+        }
+
+        private void OnGherkinDialectServicesChanged()
+        {
+            this.visualStudioTracer.Trace("default language changed", "VsProjectScope");
+            if (GherkinDialectServicesChanged != null)
+                GherkinDialectServicesChanged(this, EventArgs.Empty);
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser

@@ -9,6 +9,7 @@ New features:
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
 + Support for specifying color for the step text in VS2010
++ VS2010: Re-generate feature file when the configuration has changed
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
