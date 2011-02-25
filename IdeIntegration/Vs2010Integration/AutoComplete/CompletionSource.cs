@@ -95,8 +95,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 return null;
 
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
-            var scenarioInfo = fileScope.ScenarioBlocks.LastOrDefault(si => si.KeywordLine < triggerLineNumber);
-            if (scenarioInfo == null)
+            var scenarioInfo = fileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < triggerLineNumber);
+            if (scenarioInfo == null || !(scenarioInfo is IScenarioBlock || scenarioInfo is IBackgroundBlock))
                 return null;
 
             for (var lineNumer = triggerLineNumber; lineNumer > scenarioInfo.KeywordLine; lineNumer--)

@@ -21,6 +21,7 @@ Fixed issues:
 + Rethrowing exceptions caught during steps would lose the call stack on Silverlight. (by Matt Ellis, citizenmatt)
 + SpecFlow emits an erroneous suggestion for the step bindings in VB.NET (Issue 32)
 + Refactored VS2010 intagration to better maintanability
++ Step Intellisense doesn't show in Feature Background (Issue 23)
 
 1.5.0 - 2010/12/17
 
