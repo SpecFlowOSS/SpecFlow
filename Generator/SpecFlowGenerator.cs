@@ -228,7 +228,7 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
-        private Version GetGeneratedFileSpecFlowVersion(StreamReader reader)
+        public static Version GetGeneratedFileSpecFlowVersion(TextReader reader)
         {
             try
             {

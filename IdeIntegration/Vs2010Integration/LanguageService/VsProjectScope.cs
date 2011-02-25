@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -9,44 +7,48 @@ using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
-using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     public class VsProjectScope : IProjectScope
     {
         private readonly Project project;
+        private readonly DteWithEvents dteWithEvents;
         private readonly IVisualStudioTracer visualStudioTracer;
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer;
-        private readonly SynchInitializedInstance<SpecFlowProjectConfiguration> specFlowProjectConfigurationReference;
-        private readonly SynchInitializedInstance<GherkinDialectServices> gherkinDialectServicesReference;
-
-        private readonly VsProjectFileTracker appConfigTracker;
-
         public GherkinFileEditorClassifications Classifications { get; private set; }
         public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+
+        private bool initialized = false;
+        
+        // delay initialized members
+        private SpecFlowProjectConfiguration specFlowProjectConfiguration = null;
+        private GherkinDialectServices gherkinDialectServices = null;
+        private VsProjectFileTracker appConfigTracker = null;
+        private VsProjectFeatureFileTracker featureFileTracker = null;
+
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
         {
-            get { return specFlowProjectConfigurationReference.Value; }
-            set { specFlowProjectConfigurationReference.Value = value; }
+            get
+            {
+                EnsureInitialized();
+                return specFlowProjectConfiguration;
+            }
         }
 
         public GherkinDialectServices GherkinDialectServices
         {
-            get { return gherkinDialectServicesReference.Value; }
-            set { gherkinDialectServicesReference.Value = value; }
+            get
+            {
+                EnsureInitialized();
+                return gherkinDialectServices;
+            }
         }
 
-        public Project Project
-        {
-            get { return project; }
-        }
-
-        public IVisualStudioTracer VisualStudioTracer
-        {
-            get { return visualStudioTracer; }
-        }
+        public Project Project { get { return project; } }
+        public IVisualStudioTracer VisualStudioTracer { get { return visualStudioTracer; } }
+        internal DteWithEvents DteWithEvents { get { return dteWithEvents; } }
 
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
@@ -55,20 +57,69 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             Classifications = classifications;
             this.project = project;
+            this.dteWithEvents = dteWithEvents;
             this.visualStudioTracer = visualStudioTracer;
-            //TODO: register for file changes, etc.
 
             parser = new GherkinTextBufferParser(this, visualStudioTracer);
             analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
+        }
 
-            specFlowProjectConfigurationReference = new SynchInitializedInstance<SpecFlowProjectConfiguration>(()=>
-                DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration());
-            gherkinDialectServicesReference = new SynchInitializedInstance<GherkinDialectServices>(() =>
-                new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage));
+        private void EnsureInitialized()
+        {
+            if (!initialized)
+            {
+                lock(this)
+                {
+                    if (!initialized)
+                    {
+                        Initialize();
+                        initialized = true;
+                    }
+                }
+            }
+        }
+
+        private void Initialize()
+        {
+            specFlowProjectConfiguration = LoadConfiguration();
+            gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
+
+            featureFileTracker = new VsProjectFeatureFileTracker(this);
+            featureFileTracker.Initialized += FeatureFileTrackerOnInitialized;
 
             appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
+            appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
+
+            featureFileTracker.Run();
+        }
+
+        private void FeatureFileTrackerOnInitialized()
+        {
+            //compare generated file versions with the generator version
+            Version generatorVersion = SpecFlowProjectConfiguration.GeneratorConfiguration.GeneratorVersion;
+            if (generatorVersion == null)
+                return;
+
+            // we reset the last numbers as we don't want to force generating the files for every build
+            generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0);
+
+            Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
+            if (featureFileTracker.FeatureFiles.Any(outOfDateFiles))
+            {
+                var questionResult = MessageBox.Show(
+                    "SpecFlow detected that some of the feature files were generated with an earlier version of SpecFlow. Do you want to re-generate them now?",
+                    "SpecFlow Generator Version Change",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button1);
+
+                if (questionResult != DialogResult.Yes)
+                    return;
+
+                featureFileTracker.ReGenerateAll(outOfDateFiles);
+            }
         }
 
         private void ConfirmReGenerateFilesOnConfigChange()
@@ -83,40 +134,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (questionResult != DialogResult.Yes)
                 return;
 
-            ReGenerateAll();
-        }
-
-        private void ReGenerateAll()
-        {
-            foreach (ProjectItem projectItem in GetFeatureFileProjectItems())
-            {
-                VSProjectItem vsProjectItem = projectItem.Object as VSProjectItem;
-                if (vsProjectItem != null)
-                    vsProjectItem.RunCustomTool();
-            }
-        }
-
-        private IEnumerable<ProjectItem> GetFeatureFileProjectItems()
-        {
-            return VsxHelper.GetAllPhysicalFileProjectItem(project).Where(pi => ".feature".Equals(Path.GetExtension(pi.Name), StringComparison.InvariantCultureIgnoreCase));
+            featureFileTracker.ReGenerateAll();
         }
 
         private void AppConfigTrackerOnFileChanged(ProjectItem appConfigItem)
         {
-            var newConfig = DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration();
+            var newConfig = LoadConfiguration();
             if (newConfig.Equals(SpecFlowProjectConfiguration)) 
                 return;
 
             bool dialectServicesChanged = !newConfig.GeneratorConfiguration.FeatureLanguage.Equals(GherkinDialectServices.DefaultLanguage);
 
-            SpecFlowProjectConfiguration = newConfig;
+            specFlowProjectConfiguration = newConfig;
             OnSpecFlowProjectConfigurationChanged();
 
             if (dialectServicesChanged)
             {
-                GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
+                gherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
                 OnGherkinDialectServicesChanged();
             }
+        }
+
+        private void AppConfigTrackerOnFileOutOfScope(ProjectItem projectItem, string projectRelativeFileName)
+        {
+            AppConfigTrackerOnFileChanged(projectItem);                
+        }
+
+        private SpecFlowProjectConfiguration LoadConfiguration()
+        {
+            return DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration();
         }
 
         private void OnSpecFlowProjectConfigurationChanged()
@@ -153,6 +199,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             GherkinProcessingScheduler.Dispose();
+            if (appConfigTracker != null)
+            {
+                appConfigTracker.FileChanged -= AppConfigTrackerOnFileChanged;
+                appConfigTracker.FileOutOfScope -= AppConfigTrackerOnFileOutOfScope;
+                appConfigTracker.Dispose();
+            }
+            if (featureFileTracker != null)
+            {
+                featureFileTracker.Initialized -= FeatureFileTrackerOnInitialized;
+                featureFileTracker.Dispose();
+            }
         }
     }
 }

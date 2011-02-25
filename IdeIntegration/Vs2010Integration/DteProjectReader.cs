@@ -77,6 +77,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 GeneratorConfigurationReader.UpdateConfigFromFileContent(configuration.GeneratorConfiguration, configFileContent);
                 RuntimeConfigurationReader.UpdateConfigFromFileContent(configuration.RuntimeConfiguration, configFileContent);
             }
+
+            //TODO: read generator version from the referenced assembly version
+
             return configuration;
         }
 
