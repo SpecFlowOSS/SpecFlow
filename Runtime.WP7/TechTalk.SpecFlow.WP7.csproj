@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E00271E7-F422-42B9-89D0-E29C96C90CE2}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TechTalk.SpecFlow</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.WP7</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExpressionCompilerWP7">
+      <HintPath>..\lib\ExpressionCompilerWP7\ExpressionCompilerWP7.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\ConfigurationErrorsException.cs">
+      <Link>Compatibility\ConfigurationErrorsException.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\CultureInfoHelper.cs">
+      <Link>Compatibility\CultureInfoHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\EnumHelper.cs">
+      <Link>Compatibility\EnumHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\ExceptionHelper.cs">
+      <Link>Compatibility\ExceptionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\ListHelper.cs">
+      <Link>Compatibility\ListHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight\Compatibility\Stopwatch.cs">
+      <Link>Compatibility\Stopwatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Attributes.cs">
+      <Link>Attributes.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\BindingMatch.cs">
+      <Link>Bindings\BindingMatch.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\BindingRegistry.cs">
+      <Link>Bindings\BindingRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\BindingScope.cs">
+      <Link>Bindings\BindingScope.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\BindingType.cs">
+      <Link>Bindings\BindingType.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\EventBinding.cs">
+      <Link>Bindings\EventBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepArgs.cs">
+      <Link>Bindings\StepArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepArgumentTypeConverter.cs">
+      <Link>Bindings\StepArgumentTypeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepBinding.cs">
+      <Link>Bindings\StepBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepContext.cs">
+      <Link>Bindings\StepContext.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepDefinitionKeyword.cs">
+      <Link>Bindings\StepDefinitionKeyword.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepMethodBinding.cs">
+      <Link>Bindings\StepMethodBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\bindings\StepTransformationBinding.cs">
+      <Link>Bindings\StepTransformationBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\configuration\ConfigurationServices.cs">
+      <Link>Configuration\ConfigurationServices.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\configuration\MissingOrPendingStepsOutcome.cs">
+      <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\configuration\RuntimeConfiguration.cs">
+      <Link>Configuration\RuntimeConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\CultureInfoScope.cs">
+      <Link>CultureInfoScope.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\errorhandling\BindingException.cs">
+      <Link>ErrorHandling\BindingException.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\errorhandling\ErrorProvider.cs">
+      <Link>ErrorHandling\ErrorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\errorhandling\MissingStepDefinitionException.cs">
+      <Link>ErrorHandling\MissingStepDefinitionException.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\errorhandling\PendingStepException.cs">
+      <Link>ErrorHandling\PendingStepException.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\errorhandling\SpecFlowException.cs">
+      <Link>ErrorHandling\SpecFlowException.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\FeatureContext.cs">
+      <Link>FeatureContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\FeatureInfo.cs">
+      <Link>FeatureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\GenerationTargetLanguage.cs">
+      <Link>GenerationTargetLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\ITestRunner.cs">
+      <Link>ITestRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\ObjectContainer.cs">
+      <Link>ObjectContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\ScenarioBlock.cs">
+      <Link>ScenarioBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\ScenarioContext.cs">
+      <Link>ScenarioContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\ScenarioInfo.cs">
+      <Link>ScenarioInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\SpecFlowContext.cs">
+      <Link>SpecFlowContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Steps.cs">
+      <Link>Steps.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\StringExtensions.cs">
+      <Link>StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Table.cs">
+      <Link>Table.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\TestRunner.cs">
+      <Link>TestRunner.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\DefaultListener.cs">
+      <Link>Tracing\DefaultListener.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\IStepDefinitionSkeletonProvider.cs">
+      <Link>Tracing\IStepDefinitionSkeletonProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\ITraceListener.cs">
+      <Link>Tracing\ITraceListener.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\LanguageHelper.cs">
+      <Link>Tracing\LanguageHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\NullListener.cs">
+      <Link>Tracing\NullListener.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\StepDefinitionSkeletonProviderBase.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\StepDefinitionSkeletonProviderCS.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderCS.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\StepDefinitionSkeletonProviderVB.cs">
+      <Link>Tracing\StepDefinitionSkeletonProviderVB.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\StepFormatter.cs">
+      <Link>Tracing\StepFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\tracing\TestTracer.cs">
+      <Link>Tracing\TestTracer.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\unittestprovider\IUnitTestRuntimeProvider.cs">
+      <Link>UnitTestProvider\IUnitTestRuntimeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\unittestprovider\MsTestRuntimeProvider.cs">
+      <Link>UnitTestProvider\MsTestRuntimeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\runtime\unittestprovider\UnitTestRuntimeProviderHelper.cs">
+      <Link>UnitTestProvider\UnitTestRuntimeProviderHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Configuration\ConfigDefaults.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestProvider\MsTestWP7RuntimeProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Languages.xml">
+      <Link>Languages.xml</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
