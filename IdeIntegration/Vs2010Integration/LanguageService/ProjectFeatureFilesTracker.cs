@@ -9,7 +9,6 @@ using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using VSLangProj;
 
@@ -32,7 +31,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class VsProjectFeatureFileTracker : IDisposable
+    public class ProjectFeatureFilesTracker : IDisposable
     {
         private VsProjectScope vsProjectScope;
         private List<FeatureFileInfo> featureFiles;
@@ -44,7 +43,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IEnumerable<FeatureFileInfo> FeatureFiles { get { return featureFiles; } }
 
-        public VsProjectFeatureFileTracker(VsProjectScope vsProjectScope)
+        public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope)
         {
             this.vsProjectScope = vsProjectScope;
 
@@ -164,7 +163,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return;
             }
 
-            vsProjectScope.VisualStudioTracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "VsProjectFeatureFileTracker");
+            vsProjectScope.VisualStudioTracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
             AnalyzeCodeBehind(featureFileInfo, pi);
 
             var fileContent = VsxHelper.GetFileContent(pi);
@@ -188,7 +187,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             catch (Exception ex)
             {
-                vsProjectScope.VisualStudioTracer.Trace("Invalid feature file: " + sourceFileName, "VsProjectFeatureFileTracker");
+                vsProjectScope.VisualStudioTracer.Trace("Invalid feature file: " + sourceFileName, "ProjectFeatureFilesTracker");
                 return null;
             }
         }

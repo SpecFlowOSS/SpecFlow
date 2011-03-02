@@ -17,6 +17,11 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public string MultiLineTextArgument { get; set; }
         public Table TableArg { get; set; }
         public FilePosition FilePosition { get; set; }
+
+        public ScenarioStep Clone()
+        {
+            return (ScenarioStep)MemberwiseClone();
+        }
     }
 
     public class ScenarioSteps : List<ScenarioStep>

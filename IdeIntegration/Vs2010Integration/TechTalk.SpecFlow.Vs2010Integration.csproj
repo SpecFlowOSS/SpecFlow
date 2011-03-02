@@ -168,7 +168,8 @@
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\CompletionSource.cs" />
-    <Compile Include="LanguageService\VsProjectFeatureFileTracker.cs" />
+    <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
+    <Compile Include="LanguageService\ProjectStepSuggestionProvider.cs" />
     <Compile Include="SpecFlowServices.cs" />
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />

@@ -26,7 +26,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private SpecFlowProjectConfiguration specFlowProjectConfiguration = null;
         private GherkinDialectServices gherkinDialectServices = null;
         private VsProjectFileTracker appConfigTracker = null;
-        private VsProjectFeatureFileTracker featureFileTracker = null;
+        private ProjectFeatureFilesTracker featureFilesTracker = null;
+        private ProjectStepSuggestionProvider projectStepSuggestionProvider = null;
 
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
         {
@@ -43,6 +44,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 EnsureInitialized();
                 return gherkinDialectServices;
+            }
+        }
+
+        internal ProjectFeatureFilesTracker FeatureFilesTracker
+        {
+            get
+            {
+                EnsureInitialized();
+                return featureFilesTracker;
             }
         }
 
@@ -74,7 +84,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     if (!initialized)
                     {
                         Initialize();
-                        initialized = true;
                     }
                 }
             }
@@ -85,17 +94,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             specFlowProjectConfiguration = LoadConfiguration();
             gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
 
-            featureFileTracker = new VsProjectFeatureFileTracker(this);
-            featureFileTracker.Initialized += FeatureFileTrackerOnInitialized;
+            featureFilesTracker = new ProjectFeatureFilesTracker(this);
+            featureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
 
             appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
             appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
-            featureFileTracker.Run();
+            projectStepSuggestionProvider = new ProjectStepSuggestionProvider(this);
+            initialized = true;
+
+            projectStepSuggestionProvider.Initialize();
+            featureFilesTracker.Run();
         }
 
-        private void FeatureFileTrackerOnInitialized()
+        private void FeatureFilesTrackerOnInitialized()
         {
             //compare generated file versions with the generator version
             Version generatorVersion = SpecFlowProjectConfiguration.GeneratorConfiguration.GeneratorVersion;
@@ -106,7 +119,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0);
 
             Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
-            if (featureFileTracker.FeatureFiles.Any(outOfDateFiles))
+            if (featureFilesTracker.FeatureFiles.Any(outOfDateFiles))
             {
                 var questionResult = MessageBox.Show(
                     "SpecFlow detected that some of the feature files were generated with an earlier version of SpecFlow. Do you want to re-generate them now?",
@@ -118,7 +131,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (questionResult != DialogResult.Yes)
                     return;
 
-                featureFileTracker.ReGenerateAll(outOfDateFiles);
+                featureFilesTracker.ReGenerateAll(outOfDateFiles);
             }
         }
 
@@ -134,7 +147,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (questionResult != DialogResult.Yes)
                 return;
 
-            featureFileTracker.ReGenerateAll();
+            featureFilesTracker.ReGenerateAll();
         }
 
         private void AppConfigTrackerOnFileChanged(ProjectItem appConfigItem)
@@ -205,10 +218,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 appConfigTracker.FileOutOfScope -= AppConfigTrackerOnFileOutOfScope;
                 appConfigTracker.Dispose();
             }
-            if (featureFileTracker != null)
+            if (projectStepSuggestionProvider != null)
             {
-                featureFileTracker.Initialized -= FeatureFileTrackerOnInitialized;
-                featureFileTracker.Dispose();
+                projectStepSuggestionProvider.Dispose();
+            }
+            if (featureFilesTracker != null)
+            {
+                featureFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
+                featureFilesTracker.Dispose();
             }
         }
     }
