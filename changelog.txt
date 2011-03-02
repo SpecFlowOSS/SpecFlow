@@ -9,6 +9,7 @@ New features:
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
 + Support for specifying color for the step text in VS2010
++ Added a FillInstance<T>(T) extension method off of Table. When passed an instance of T, it will fill the instance with values from the table (like CreateInstance<T>).
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
