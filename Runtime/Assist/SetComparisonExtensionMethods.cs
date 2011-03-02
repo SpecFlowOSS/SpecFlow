@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
@@ -98,7 +99,7 @@ namespace TechTalk.SpecFlow.Assist
             throw new ComparisonException(
                 listOfMissingItems.Aggregate(
                     @"The expected items at the following line numbers could not be matched:",
-                    (running, next) => running + "\r\n" + next));
+                    (running, next) => running + Environment.NewLine + next));
         }
 
         private static bool ExpectedItemsCouldNotBeFound(IEnumerable<int> listOfMissingItems)
@@ -171,7 +172,7 @@ namespace TechTalk.SpecFlow.Assist
             if (propertiesThatDoNotExist.Any())
                 throw new ComparisonException(
                     propertiesThatDoNotExist.Aggregate(@"The following fields do not exist:",
-                                                       (running, next) => running + string.Format("\r\n{0}", next)));
+                                                       (running, next) => running + string.Format("{0}{1}", Environment.NewLine, next)));
         }
     }
 }
