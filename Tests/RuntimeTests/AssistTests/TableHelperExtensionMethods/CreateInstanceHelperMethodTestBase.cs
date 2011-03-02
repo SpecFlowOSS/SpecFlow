@@ -29,14 +29,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public virtual void Create_instance_will_return_an_instance_of_T()
-        {
-            var table = new Table("Field", "Value");
-            var person = GetThePerson(table);
-            person.ShouldNotBeNull();
-        }
-
-        [Test]
         public virtual void Sets_properties_with_different_case()
         {
             var table = new Table("Field", "Value");
