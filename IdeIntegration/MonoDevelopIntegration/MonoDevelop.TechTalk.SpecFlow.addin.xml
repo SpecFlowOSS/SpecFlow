@@ -16,6 +16,7 @@
 		<Import assembly="IKVM.Runtime.dll"/>
 		<Import assembly="TechTalk.SpecFlow.Generator.dll"/>
 		<Import assembly="TechTalk.SpecFlow.Parser.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Utils.dll"/>
 	</Runtime>
 	
 	<Dependencies>
