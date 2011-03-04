@@ -232,9 +232,10 @@
 
   <PropertyGroup>
     <SLWP7>..\lib\Silverlight for Phone</SLWP7>
+    <SL4>..\lib\Silverlight</SL4>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(SL4)\MsBuild\Microsoft.Silverlight.CSharp.targets" />
   <Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <!--Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.CSharp.targets" /-->
   <ProjectExtensions />

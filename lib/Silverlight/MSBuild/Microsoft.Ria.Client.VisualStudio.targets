@@ -1,0 +1,145 @@
+<!--
+***********************************************************************************************
+Microsoft.Ria.Client.VisualStudio.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <Service Include="{5B1259A2-2AA9-449F-94FA-B7CA35A1DAEF}"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RiaServicesIntellisenseTemporaryDirectory>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'LiveIntellisense'))</RiaServicesIntellisenseTemporaryDirectory>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="Exists('$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Setup\VS@ProductDir)\Common7\IDE\Extensions\Microsoft\RiaTools\Intellisense\Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.dll')">
+      <PropertyGroup>
+        <RiaServicesIntellisenseAssembly>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Setup\VS@ProductDir)\Common7\IDE\Extensions\Microsoft\RiaTools\Intellisense\Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.dll</RiaServicesIntellisenseAssembly>
+      </PropertyGroup>
+    </When>
+    <When Condition="Exists('$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VWDExpress\10.0\Setup\VS@ProductDir)\Common7\IDE\VWDExpressExtensions\Microsoft\RiaTools\Intellisense\Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.dll') And '$(RiaServicesIntellisenseAssembly)' == ''">
+      <PropertyGroup>
+        <RiaServicesIntellisenseAssembly>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VWDExpress\10.0\Setup\VS@ProductDir)\Common7\IDE\VWDExpressExtensions\Microsoft\RiaTools\Intellisense\Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.dll</RiaServicesIntellisenseAssembly>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <UsingTask TaskName="Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.MSBuild.CreateMetadataAssemblyTask"
+             AssemblyFile="$(RiaServicesIntellisenseAssembly)"
+             Condition="Exists('$(RiaServicesIntellisenseAssembly)')"/>
+
+  <UsingTask TaskName="Microsoft.VisualStudio.ServiceModel.DomainServices.Intellisense.MSBuild.UpdateRiaTempPETask"
+             AssemblyFile="$(RiaServicesIntellisenseAssembly)"
+             Condition="Exists('$(RiaServicesIntellisenseAssembly)')"/>
+
+  <PropertyGroup Condition="Exists('$(RiaServicesIntellisenseAssembly)') And '$(BuildingInsideVisualStudio)'=='true'">
+    <PrepareForRiaClientCodeGenDependsOn>
+      $(PrepareForRiaClientCodeGenDependsOn);
+      CreateMetadataAssembly;
+    </PrepareForRiaClientCodeGenDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CreateMetadataAssembly" Condition="Exists('$(RiaServicesIntellisenseAssembly)')">
+
+    <!--
+    ================================================================
+    CreateMetadataAssemblyTask
+
+    Task that generates a metadata temporary assembly to provide live
+    intellisense on the client side.
+
+    Arguments are:
+      ContinueOnError:           consequent tasks should continue if this one fails
+      TemporaryDirectory:        the directory where temporary files of intellisense are put
+      ServerBuildOutput:         the list of assemblies containing business objects
+      ServerReferenceAssemblies: the list of core server reference assemblies
+      ToolPath:                  MSBuild tool path
+
+    Outputs are:
+      ServerBuildOutput:         the temporary assembly if generated.
+      ServerReferenceAssemblies: the overriden reference assemblies for live intellisense.
+      LiveIntellisense:          true if the task is called by live intellisense.
+
+    This target will be a no-op in the case of a real build or normal intellisense build.
+    ================================================================
+    -->
+    <CreateMetadataAssemblyTask
+      ContinueOnError="false"
+      TemporaryDirectory="$(RiaServicesIntellisenseTemporaryDirectory)"
+      ServerBuildOutput="@(RiaClientCodeGenServerBuildOutput)"
+      ServerReferenceAssemblies="@(RiaClientCodeGenServerReferenceAssemblies)"
+      ToolPath="$(MSBuildToolsPath)">
+
+      <Output ItemName="ServerBuildOutput" TaskParameter="ServerBuildOutput"/>
+      <Output ItemName="ServerReferenceAssemblies" TaskParameter="ServerReferenceAssemblies"/>
+      <Output PropertyName="RiaClientCodeGenLiveIntellisense" TaskParameter="LiveIntellisense"/>
+    </CreateMetadataAssemblyTask>
+
+    <!-- Replace the contents of the item groups RIA Services will use for code gen -->
+    <ItemGroup>
+      <RiaClientCodeGenServerBuildOutput Remove="@(RiaClientCodeGenServerBuildOutput)"/>
+      <RiaClientCodeGenServerBuildOutput Include="@(ServerBuildOutput)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <RiaClientCodeGenServerReferenceAssemblies Remove="@(RiaClientCodeGenServerReferenceAssemblies)"/>
+      <RiaClientCodeGenServerReferenceAssemblies Include="@(ServerReferenceAssemblies)"/>
+    </ItemGroup>
+
+  </Target>
+
+  <PropertyGroup Condition="Exists('$(RiaServicesIntellisenseAssembly)') And '$(BuildingInsideVisualStudio)'=='true'">
+    <CoreRiaClientCodeGenDependsOn>
+      $(CoreRiaClientCodeGenDependsOn);
+      UpdateRiaTempPE;
+    </CoreRiaClientCodeGenDependsOn>
+  </PropertyGroup>
+
+  <Target Name="UpdateRiaTempPE" Condition="Exists('$(RiaServicesIntellisenseAssembly)')">
+
+    <!--
+    ================================================================
+                        UpdateRiaTempPETask
+
+    Task that generates TempPE assembly for a project
+    
+    Arguments are:
+      AssemblyName:       assembly name
+      ContinueOnError:    consequent tasks should continue if this one fails
+      TemporaryDirectory: the directory where temporary files of intellisense are put
+      Language:           the language of the source files
+      References:         reference assemblies in client project
+      RootNamespace:      root namespace (VB)
+      SdkPath:            silverlight sdk path
+      GeneratedFiles:     the list of all generated code files (does not include copied files)
+      CopiedFiles:        the list of (destination) files copied to the client project from SharedFiles      
+      LinkedFiles:        the list of files visible to both client and server via file links
+      ToolPath:           msbuild tool path
+    ================================================================
+    -->
+    <UpdateRiaTempPETask
+      AssemblyName="$(AssemblyName)"
+      ContinueOnError="true"
+      TemporaryDirectory="$(RiaServicesIntellisenseTemporaryDirectory)"
+      Language="$(Language)"
+      References="@(RiaClientCodeGenClientReferenceAssemblies)"
+      RootNamespace="$(RootNamespace)"
+      SdkPath="$(ProgramFiles)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0"
+      GeneratedFiles="@(RiaClientGeneratedFiles)"
+      CopiedFiles="@(RiaClientCopiedFiles)"
+      LinkedFiles="@(RiaClientLinkedFiles)"
+      ToolPath="$(MSBuildToolsPath)">
+    </UpdateRiaTempPETask>
+
+  </Target>
+
+</Project>
