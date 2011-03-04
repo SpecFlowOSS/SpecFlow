@@ -229,8 +229,13 @@
   <ItemGroup>
     <Folder Include="Utils\" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+
+  <PropertyGroup>
+    <SLWP7>..\lib\Silverlight for Phone</SLWP7>
+    <UseCodebase>true</UseCodebase>
+  </PropertyGroup>
+  <Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
