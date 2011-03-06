@@ -14,14 +14,23 @@ namespace TechTalk.SpecFlow.Assist
 
         public Table GetInstanceTable(int index)
         {
-            if (table.Rows.Count() <= index)
-                throw new IndexOutOfRangeException();
+            AssertThatThisItemExistsInTheSet(index);
 
+            return CreateAnInstanceTableForThisItemInTheSet(index);
+        }
+
+        private Table CreateAnInstanceTableForThisItemInTheSet(int index)
+        {
             var instanceTable = new Table("Field", "Value");
             foreach (var header in table.Header)
                 instanceTable.AddRow(header, table.Rows[index][header]);
-
             return instanceTable;
+        }
+
+        private void AssertThatThisItemExistsInTheSet(int index)
+        {
+            if (table.Rows.Count() <= index)
+                throw new IndexOutOfRangeException();
         }
     }
 }
