@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class PivotTable
+    internal class PivotTable
     {
         private readonly Table table;
 
