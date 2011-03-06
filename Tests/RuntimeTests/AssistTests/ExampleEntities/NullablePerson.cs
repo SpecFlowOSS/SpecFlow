@@ -10,5 +10,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public int? NumberOfIdeas { get; set; }
         public decimal? Salary { get; set; }
         public bool? IsRational { get; set; }
+        public double? NullableDouble { get; set; }
+        public Guid? NullableGuid { get; set; }
+        public char? NullableChar { get; set; }
     }
 }

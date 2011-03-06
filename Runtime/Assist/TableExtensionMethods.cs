@@ -61,20 +61,20 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row, string id) => row.GetString("Value")},
                            {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
-                           {typeof (int?), (TableRow row, string id) => row.GetInt32("Value")},
+                           {typeof (int?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (int?)null : row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},
-                           {typeof (decimal?), (TableRow row, string id) => row.GetDecimal("Value")},
+                           {typeof (decimal?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (decimal?)null : row.GetDecimal("Value")},
                            {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},
-                           {typeof (bool?), (TableRow row, string id) => row.GetBoolean("Value")},
+                           {typeof (bool?), (TableRow row, string id) => row["Value"] == "" ? (bool?)null : row.GetBoolean("Value")},
                            {typeof (DateTime), (TableRow row, string id) => row.GetDateTime("Value")},
-                           {typeof (DateTime?), (TableRow row, string id) => row.GetDateTime("Value")},
+                           {typeof (DateTime?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (DateTime?)null :  row.GetDateTime("Value")},
                            {typeof (Double), (TableRow row, string id) => row.GetDouble("Value")},
-                           {typeof (Double?), (TableRow row, string id) => row.GetDouble("Value")},
+                           {typeof (Double?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (Double?)null : row.GetDouble("Value")},
                            {typeof (Guid), (TableRow row, string id) => row.GetGuid("Value")},
-                           {typeof (Guid?), (TableRow row, string id) => row.GetGuid("Value")},
+                           {typeof (Guid?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (Guid?)null : row.GetGuid("Value")},
                            {typeof (Enum), (TableRow row, string id) => row.GetEnum<T>("Value")},
                            {typeof (char), (TableRow row, string id) => row.GetChar("Value")},
-                           {typeof (char?), (TableRow row, string id) => row.GetChar("Value")}
+                           {typeof (char?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (char?)null : row.GetChar("Value")}
                        };
         }
 
