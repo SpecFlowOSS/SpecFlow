@@ -16,14 +16,10 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
-        private readonly IEnumerable<string> propertiesToTest;
-        //private readonly List<T> expectedItems;
 
         public SetComparer(Table table)
         {
             this.table = table;
-            propertiesToTest = GetAllPropertiesToTest(table);
-            //expectedItems = GetTheExpectedItems(table);
         }
 
         public void CompareToSet(IEnumerable<T> set)
@@ -92,22 +88,8 @@ namespace TechTalk.SpecFlow.Assist
                     listOfMissingItems.Add(index + 1);
                 else
                     RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
-
             }
-
-                //for (var index = 0; index < table.Rows.Count(); index++)
-                //{
-
-                //    //var expectedItem = expectedItems[index];
-
-                //    var matchIndex = GetTheIndexOfTheMatchingItem(expectedItem, actualItems);
-
-                //    if (matchIndex == MatchNotFound)
-                //        listOfMissingItems.Add(index + 1);
-                //    else
-                //        RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
-                //}
-                return listOfMissingItems;
+            return listOfMissingItems;
         }
 
         private static void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
@@ -128,7 +110,7 @@ namespace TechTalk.SpecFlow.Assist
             actualItems.RemoveAt(matchIndex);
         }
 
-        private int GetTheIndexOfTheMatchingItem(Table expectedItem,
+        private static int GetTheIndexOfTheMatchingItem(Table expectedItem,
                                                  IList<T> actualItems)
         {
             for (var actualItemIndex = 0; actualItemIndex < actualItems.Count(); actualItemIndex++)
@@ -141,48 +123,22 @@ namespace TechTalk.SpecFlow.Assist
             return MatchNotFound;
         }
 
-        private bool ThisItemIsAMatch(Table expectedItem, T actualItem)
+        private static bool ThisItemIsAMatch(Table expectedItem, T actualItem)
         {
             try
             {
                 expectedItem.CompareToInstance(actualItem);
                 return true;
-            }catch
+            }
+            catch
             {
                 return false;
             }
-            //foreach (var propertyName in propertiesToTest)
-            //{
-            //    //var expectedValue = expectedItem.GetPropertyValue(propertyName);
-            //    var actualValue = actualItem.GetPropertyValue(propertyName);
-
-            //    if (TheseValuesDoNotMatch(actualValue, expectedValue))
-            //        return false;
-            //}
-            return true;
-        }
-
-        private static IEnumerable<string> GetAllPropertiesToTest(Table table)
-        {
-            return table.Header;
-        }
-
-        private static bool TheseValuesDoNotMatch(object actualValue, object expectedValue)
-        {
-            return (actualValue != null && expectedValue == null) ||
-                   (actualValue == null && expectedValue != null) ||
-                   ((actualValue != null) &&
-                    (actualValue.ToString() != expectedValue.ToString()));
         }
 
         private static List<T> GetTheActualItems(IEnumerable<T> set)
         {
             return set.ToList();
-        }
-
-        private static List<T> GetTheExpectedItems(Table table)
-        {
-            return table.CreateSet<T>().ToList();
         }
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
