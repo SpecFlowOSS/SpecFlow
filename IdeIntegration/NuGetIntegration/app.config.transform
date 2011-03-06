@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="specFlow" type="TechTalk.SpecFlow.Configuration.ConfigurationSectionHandler, TechTalk.SpecFlow"/>
+  </configSections>
+  <specFlow>
+    <!-- Possible values include NUnit (default), MsTest, xUnit -->
+    <unitTestProvider name="NUnit" />
+    
+    <!-- Other SpecFlow Configuration options. For additional details on the options specified here, 
+      see http://cloud.github.com/downloads/techtalk/SpecFlow/SpecFlow%20Guide.pdf
+    <language feature="en-US" tool="" />
+    
+    <generator allowDebugGeneratedFiles="false" />
+    
+    <runtime detectAmbiguousMatches="true"
+      stopAtFirstError="false"
+      missingOrPendingStepsOutcome="Inconclusive" />
+    
+    <trace traceSuccessfulSteps="true"
+      traceTimings="false"
+      minTracedDuration="0:0:0.1"
+      listener="TechTalk.SpecFlow.Tracing.DefaultListener,TechTalk.SpecFlow" />
+    -->
+  </specFlow>
+</configuration>
