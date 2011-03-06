@@ -173,25 +173,4 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableChar.ShouldEqual('K');
         }
     }
-
-//    public class Person
-//    {
-//        public string FirstName { get; set; }
-//        public string LastName { get; set; }
-//        public DateTime BirthDate { get; set; }
-//        public int NumberOfIdeas { get; set; }
-//        public decimal Salary { get; set; }
-//        public bool IsRational { get; set; }
-//
-//        public DateTime? NullableDateTime { get; set; }
-//        public bool? NullableBool { get; set; }
-//        public decimal? NullableDecimal { get; set; }
-//        public int? NullableInt { get; set; }
-//
-//        public double Double { get; set; }
-//        public double? NullableDouble { get; set; }
-//
-//        public Guid GuidId { get; set; }
-//        public Guid? NullableGuidId { get; set; }
-//    }
 }
