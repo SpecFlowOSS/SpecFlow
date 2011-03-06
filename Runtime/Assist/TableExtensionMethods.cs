@@ -16,14 +16,17 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
-            var enumerable = table.Rows.Select(row =>
-            {
-                var instance = (T)Activator.CreateInstance(typeof(T));
-                LoadInstanceWithPropertyData<T>(table, instance, row);
-                return instance;
-            });
+            var pivotTable = new PivotTable(table);
 
-            return enumerable;
+            var list = new List<T>();
+
+            for (var index = 0; index < table.Rows.Count(); index++)
+            {
+                var instance = pivotTable.GetInstanceTable(index).CreateInstance<T>();
+                list.Add(instance);
+            }
+
+            return list;
         }
 
         private static void LoadInstanceWithPropertyData<T>(Table table, T instance, TableRow row)
