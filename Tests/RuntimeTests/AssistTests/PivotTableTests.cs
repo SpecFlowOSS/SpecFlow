@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -29,7 +28,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             try
             {
                 PivotThisTable(setTable, 1);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 exception = ex;
             }
@@ -100,29 +100,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var pivotTable = new PivotTable(setTable);
             return pivotTable.GetInstanceTable(index);
-        }
-
-    }
-
-    public class PivotTable
-    {
-        private readonly Table table;
-
-        public PivotTable(Table table)
-        {
-            this.table = table;
-        }
-
-        public Table GetInstanceTable(int index)
-        {
-            if (table.Rows.Count() <= index)
-                throw new IndexOutOfRangeException();
-            
-            var instanceTable = new Table("Field", "Value");
-            foreach(var header in table.Header)
-                instanceTable.AddRow(header, table.Rows[index][header]);
-
-            return instanceTable;
         }
     }
 }
