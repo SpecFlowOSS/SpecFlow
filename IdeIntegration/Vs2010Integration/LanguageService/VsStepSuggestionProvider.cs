@@ -1,20 +1,52 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Microsoft.VisualStudio.Language.Intellisense;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
+    internal class CompletionWithImage : Completion
+    {
+        public CompletionWithImage(string displayText, string insertionText, string description, ImageSource iconSource, string iconAutomationText) : base(displayText, insertionText, description, iconSource, iconAutomationText)
+        {
+        }
+
+        public string IconDescriptor { get; set; }
+
+        public override ImageSource IconSource
+        {
+            get
+            {
+                if (base.IconSource == null && IconDescriptor != null)
+                {
+                    base.IconSource = new BitmapImage(
+                        new Uri(string.Format("pack://application:,,,/TechTalk.SpecFlow.Vs2010Integration;component/Resources/autocomplete-{0}.png", 
+                            IconDescriptor.ToLowerInvariant())));
+                }
+
+                return base.IconSource;
+            }
+            set
+            {
+                base.IconSource = value;
+            }
+        }
+    }
+
     public class VsSuggestionItemFactory : INativeSuggestionItemFactory<Completion>
     {
         static public readonly VsSuggestionItemFactory Instance = new VsSuggestionItemFactory();
 
-        public Completion Create(string displayText, string insertionText, int level, object parentObject)
+        public Completion Create(string displayText, string insertionText, int level, object parentObject, string iconDescriptor)
         {
-            var result = new Completion(new string(' ', level * 2) + displayText, insertionText, null, null, null);
+            var result = new CompletionWithImage(new string(' ', level*2) + displayText, insertionText, null, null, null) {IconDescriptor = iconDescriptor};
             if (parentObject != null)
                 result.Properties.AddProperty("parentObject", parentObject);
 

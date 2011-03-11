@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             StepBinding = null;
             BindingType = bindingType;
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, this);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, this, null);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             StepBinding = stepBinding;
             BindingType = stepBinding.BindingType;
             string suggestionText = GetSuggestionText(stepBinding);
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, this);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, this, BindingType.ToString().Substring(0, 1) + "-b");
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 

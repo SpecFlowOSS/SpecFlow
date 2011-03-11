@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.step = step;
             this.scenario = scenario;
             this.feature = feature;
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, this);
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, this, BindingType.ToString().Substring(0, 1));
         }
 
         public bool Match(StepBinding binding, bool includeRegexCheck)

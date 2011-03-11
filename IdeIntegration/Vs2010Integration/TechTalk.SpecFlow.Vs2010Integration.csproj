@@ -251,6 +251,7 @@
     <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\AutoCompleteIcons.psd" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -270,6 +271,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\autocomplete-g-b.png" />
+    <Resource Include="Resources\autocomplete-g-t.png" />
+    <Resource Include="Resources\autocomplete-g.png" />
+    <Resource Include="Resources\autocomplete-t-b.png" />
+    <Resource Include="Resources\autocomplete-t-t.png" />
+    <Resource Include="Resources\autocomplete-t.png" />
+    <Resource Include="Resources\autocomplete-w-b.png" />
+    <Resource Include="Resources\autocomplete-w-t.png" />
+    <Resource Include="Resources\autocomplete-w.png" />
     <Content Include="Resources\specflowpackage.ico" />
     <Content Include="Tracing\OutputWindow\readme.txt" />
   </ItemGroup>

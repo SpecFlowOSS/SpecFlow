@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             BindingType = (BindingType)scenarioStep.ScenarioBlock;
 
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, scenarioStep.Text, 1, this);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, scenarioStep.Text, 1, this, BindingType.ToString().Substring(0, 1) + "-t");
             instances = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
             AddInstances(scenarioStep, scenarioOutline, feature, nativeSuggestionItemFactory);
         }
