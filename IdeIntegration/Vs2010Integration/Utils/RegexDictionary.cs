@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
-    public class RegexDictionary<T>
+    public class RegexDictionary<T> : IEnumerable<T>
     {
         private readonly Func<T, Regex> regexLocator;
         private readonly int hashPrefixLenght;
@@ -79,6 +80,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 return string.Empty;
 
             return value.Length > hashPrefixLenght ? value.Substring(0, hashPrefixLenght) : value;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return hashedList.Values.SelectMany(items => items).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

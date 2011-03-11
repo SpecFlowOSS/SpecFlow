@@ -128,6 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (!IsAutoCompleteSessionActive)
                 return;
 
+            currentAutoCompleteSession.SelectedCompletionSet.Filter();
             currentAutoCompleteSession.SelectedCompletionSet.SelectBestMatch();
             currentAutoCompleteSession.SelectedCompletionSet.Recalculate();
         }

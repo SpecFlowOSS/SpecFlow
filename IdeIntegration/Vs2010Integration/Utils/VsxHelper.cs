@@ -9,13 +9,15 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
-using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using Constants = EnvDTE.Constants;
 
-namespace TechTalk.SpecFlow.Vs2010Integration
+namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
     internal static class VsxHelper
     {
+        public const string CSharpLanguage = "{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}";
+        public const string VBLanguage = "{B5E9BD33-6D3E-4B5D-925E-8A43B79820B4}";
+
         public static DTE GetDte(SVsServiceProvider serviceProvider)
         {
             return (DTE)serviceProvider.GetService(typeof(DTE));
@@ -251,6 +253,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             // if there is a problem, let's use the project file path
             return project.UniqueName;
+        }
+
+        static public string ParseCodeStringValue(string value, string language)
+        {
+            switch (language)
+            {
+                case CSharpLanguage:
+                    if (value.StartsWith("@"))
+                        return StringLiteralHelper.StringFromVerbatimLiteral(value.Substring(2, value.Length - 3));
+                    return StringLiteralHelper.StringFromCSharpLiteral(value.Substring(1, value.Length - 2));
+                case VBLanguage:
+                    return StringLiteralHelper.StringFromVerbatimLiteral(value.Substring(1, value.Length - 2));
+                default:
+                    return value;
+            }
         }
     }
 }

@@ -22,6 +22,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return null; }
         }
 
+        public VsStepSuggestionProvider StepSuggestionProvider
+        {
+            get { return null; }
+        }
+
         public NoProjectScope(GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
             GherkinTextBufferParser = new GherkinTextBufferParser(this, visualStudioTracer);

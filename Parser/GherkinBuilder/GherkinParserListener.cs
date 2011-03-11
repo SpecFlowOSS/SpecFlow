@@ -136,7 +136,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         public void Step(string keyword, StepKeyword stepKeyword, ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
             var position = GetFilePosition(stepSpan.StartPosition);
-            stepBuilder = new StepBuilder(keyword, stepKeyword, text, position);
+            stepBuilder = new StepBuilder(keyword, stepKeyword, text, position, scenarioBlock);
             tableProcessor = stepBuilder;
 
             if (stepProcessor == null)

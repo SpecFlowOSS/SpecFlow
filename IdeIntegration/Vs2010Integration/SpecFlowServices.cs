@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using TechTalk.SpecFlow.Parser.Gherkin;
 
 namespace TechTalk.SpecFlow.Parser.SyntaxElements
 {
@@ -12,6 +13,8 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     [XmlInclude(typeof(But))]
     public class ScenarioStep
     {
+        [XmlIgnore] //TODO
+        public ScenarioBlock ScenarioBlock { get; set; }
         public string Keyword { get; set; }
         public string Text { get; set; }
         public string MultiLineTextArgument { get; set; }

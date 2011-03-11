@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Threading;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
@@ -14,6 +15,7 @@ using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
+
     public class FeatureFileInfo
     {
         public string ProjectRelativePath { get; private set; }

@@ -111,7 +111,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var textSpan = new GherkinBufferSpan(
                 headerSpan.StartPosition.ShiftByCharacters(keyword.Length),
                 headerSpan.EndPosition);
-            ColorizeSpan(textSpan, classificationType);
+            if (textSpan.StartPosition < textSpan.EndPosition)
+                ColorizeSpan(textSpan, classificationType);
         }
 
         private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)

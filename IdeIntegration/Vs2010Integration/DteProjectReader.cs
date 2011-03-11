@@ -5,6 +5,7 @@ using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {

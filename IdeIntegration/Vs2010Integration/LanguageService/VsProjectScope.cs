@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private GherkinDialectServices gherkinDialectServices = null;
         private VsProjectFileTracker appConfigTracker = null;
         private ProjectFeatureFilesTracker featureFilesTracker = null;
-        private ProjectStepSuggestionProvider projectStepSuggestionProvider = null;
+        private VsStepSuggestionProvider stepSuggestionProvider = null;
 
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
         {
@@ -53,6 +53,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 EnsureInitialized();
                 return featureFilesTracker;
+            }
+        }
+
+        public VsStepSuggestionProvider StepSuggestionProvider
+        {
+            get
+            {
+                EnsureInitialized();
+                return stepSuggestionProvider;
             }
         }
 
@@ -101,10 +110,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
             appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
-            projectStepSuggestionProvider = new ProjectStepSuggestionProvider(this);
+            stepSuggestionProvider = new VsStepSuggestionProvider(this);
             initialized = true;
 
-            projectStepSuggestionProvider.Initialize();
+            stepSuggestionProvider.Initialize();
             featureFilesTracker.Run();
         }
 
@@ -218,9 +227,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 appConfigTracker.FileOutOfScope -= AppConfigTrackerOnFileOutOfScope;
                 appConfigTracker.Dispose();
             }
-            if (projectStepSuggestionProvider != null)
+            if (stepSuggestionProvider != null)
             {
-                projectStepSuggestionProvider.Dispose();
+                stepSuggestionProvider.Dispose();
             }
             if (featureFilesTracker != null)
             {

@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         GherkinFileEditorClassifications Classifications { get; }
         GherkinProcessingScheduler GherkinProcessingScheduler { get; }
         SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; }
+        VsStepSuggestionProvider StepSuggestionProvider { get; }
 
         event EventHandler SpecFlowProjectConfigurationChanged;
         event EventHandler GherkinDialectServicesChanged;

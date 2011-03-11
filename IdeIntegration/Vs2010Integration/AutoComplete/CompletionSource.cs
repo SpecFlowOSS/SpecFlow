@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Utils;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
 
@@ -31,6 +32,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 return null;
 
             return new GherkinStepCompletionSource(textBuffer, SpecFlowServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
+        }
+    }
+
+    internal class CustomCompletionSet : CompletionSet
+    {
+        public CustomCompletionSet()
+        {
+        }
+
+        public CustomCompletionSet(string moniker, string displayName, ITrackingSpan applicableTo, IEnumerable<Completion> completions, IEnumerable<Completion> completionBuilders) : base(moniker, displayName, applicableTo, completions, completionBuilders)
+        {
+        }
+
+        public override void Filter()
+        {
+            Filter(CompletionMatchType.MatchInsertionText, false);
+        }
+
+        public override void SelectBestMatch()
+        {
+            SelectBestMatch(CompletionMatchType.MatchInsertionText, false);
         }
     }
 
@@ -62,12 +84,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (scenarioBlock == null)
                 return;
 
-            IEnumerable<Completion> completions = GetCompletionsForBlock(scenarioBlock.Value);
+            IEnumerable<Completion> completions = GetCompletionsForBindingType((BindingType)scenarioBlock.Value);
             ITrackingSpan applicableTo = GetApplicableToSpan(snapshot, triggerPoint.Value);
 
             string displayName = string.Format("All {0} Steps", scenarioBlock);
             completionSets.Add(
-                new CompletionSet(
+                new CustomCompletionSet(
                     displayName,
                     displayName,
                     applicableTo,
@@ -126,81 +148,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return theLine.GetText().TrimStart().Split(' ')[0];
         }
 
-        private IEnumerable<Completion> GetCompletionsForBlock(ScenarioBlock scenarioBlock)
+        private IEnumerable<Completion> GetCompletionsForBindingType(BindingType bindingType)
         {
-            var project = specFlowServices.GetProject(textBuffer);
+            var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
+            if (suggestionProvider == null)
+                return Enumerable.Empty<Completion>();
 
-            List<Completion> result = new List<Completion>();
-            GetCompletionsFromProject(project, scenarioBlock, result);
+            if (!suggestionProvider.Populated)
+                return new Completion[] {new Completion("step suggestion list is being populated...")};
 
-            var specFlowProject = languageService.ProjectScope.SpecFlowProjectConfiguration;
-            if (specFlowProject != null)
-            {
-                foreach (var assemblyName in specFlowProject.RuntimeConfiguration.AdditionalStepAssemblies)
-                {
-                    string simpleName = assemblyName.Split(new[] {',' }, 2)[0];
-
-                    var stepProject = VsxHelper.FindProjectByAssemblyName(project.DTE, simpleName);
-                    if (stepProject != null)
-                        GetCompletionsFromProject(stepProject, scenarioBlock, result);
-                }
-            }
-
-            result.Sort((c1, c2) => string.Compare(c1.DisplayText, c2.DisplayText));
-
-            return result;
-        }
-
-        private void GetCompletionsFromProject(Project project, ScenarioBlock scenarioBlock, List<Completion> result)
-        {
-            foreach (ProjectItem projectItem in VsxHelper.GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null))
-            {
-                FileCodeModel codeModel = projectItem.FileCodeModel;
-                GetCompletitionsFromCodeElements(codeModel.CodeElements, scenarioBlock, result);
-            }
-        }
-
-        private void GetCompletitionsFromCodeElements(CodeElements codeElements, ScenarioBlock scenarioBlock, List<Completion> result)
-        {
-            foreach (CodeElement codeElement in codeElements)
-            {
-                if (codeElement.Kind == vsCMElement.vsCMElementFunction)
-                {
-                    CodeFunction codeFunction = (CodeFunction)codeElement;
-                    result.AddRange(
-                        codeFunction.Attributes.Cast<CodeAttribute>()
-                        .Where(attr => attr.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", scenarioBlock)))
-                        .Select(attr => CreateCompletion(GetRecommendedStepText(attr.Value, codeFunction))));
-                }
-                else
-                {
-                    GetCompletitionsFromCodeElements(codeElement.Children, scenarioBlock, result);
-                }
-            }
-        }
-
-        private string UnmaskAttributeValue(string attrValue)
-        {
-            if (attrValue.StartsWith("@"))
-            {
-                return attrValue.Substring(2, attrValue.Length - 3).Replace("\"\"", "\"");
-            }
-
-            return attrValue.Substring(1, attrValue.Length - 2); //TODO: handle \ maskings
-        }
-
-        private string GetRecommendedStepText(string regexAttrValue, CodeFunction codeFunction)
-        {
-            string unmaskAttributeValue = UnmaskAttributeValue(regexAttrValue);
-
-            var parameters = codeFunction.Parameters.Cast<CodeParameter>().Select(p => p.Name).ToArray();
-
-            return RegexSampler.GetRegexSample(unmaskAttributeValue, parameters);
-        }
-
-        private Completion CreateCompletion(string stepText)
-        {
-            return new Completion(stepText);
+            return suggestionProvider.GetNativeSuggestionItems(bindingType);
         }
 
         public void Dispose()
