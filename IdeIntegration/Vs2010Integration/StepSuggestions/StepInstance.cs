@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.step = step;
             this.scenario = scenario;
             this.feature = feature;
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level);
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, this);
         }
 
         public bool Match(StepBinding binding, bool includeRegexCheck)

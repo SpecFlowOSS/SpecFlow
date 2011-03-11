@@ -168,6 +168,7 @@
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\CompletionSource.cs" />
+    <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
     <Compile Include="Bindings\BindingType.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\VsBindingMethod.cs" />

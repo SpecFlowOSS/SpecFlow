@@ -35,27 +35,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         }
     }
 
-    internal class CustomCompletionSet : CompletionSet
-    {
-        public CustomCompletionSet()
-        {
-        }
-
-        public CustomCompletionSet(string moniker, string displayName, ITrackingSpan applicableTo, IEnumerable<Completion> completions, IEnumerable<Completion> completionBuilders) : base(moniker, displayName, applicableTo, completions, completionBuilders)
-        {
-        }
-
-        public override void Filter()
-        {
-            Filter(CompletionMatchType.MatchInsertionText, false);
-        }
-
-        public override void SelectBestMatch()
-        {
-            SelectBestMatch(CompletionMatchType.MatchInsertionText, false);
-        }
-    }
-
     internal class GherkinStepCompletionSource : ICompletionSource
     {
         private bool disposed = false;
@@ -89,7 +68,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
             string displayName = string.Format("All {0} Steps", scenarioBlock);
             completionSets.Add(
-                new CustomCompletionSet(
+                new HierarchicalCompletionSet(
                     displayName,
                     displayName,
                     applicableTo,

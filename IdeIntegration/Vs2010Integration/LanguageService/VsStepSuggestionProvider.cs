@@ -12,9 +12,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         static public readonly VsSuggestionItemFactory Instance = new VsSuggestionItemFactory();
 
-        public Completion Create(string displayText, string insertionText, int level)
+        public Completion Create(string displayText, string insertionText, int level, object parentObject)
         {
-            return new Completion(new string(' ', level * 2) + displayText, insertionText, null, null, null);
+            var result = new Completion(new string(' ', level * 2) + displayText, insertionText, null, null, null);
+            if (parentObject != null)
+                result.Properties.AddProperty("parentObject", parentObject);
+            return result;
         }
 
         public string GetInsertionText(Completion nativeSuggestionItem)

@@ -7,7 +7,12 @@ using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    public class BoundStepSuggestions<TNativeSuggestionItem>
+    public interface IStepSuggestionGroup<TNativeSuggestionItem>
+    {
+        IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get; }
+    }
+
+    public class BoundStepSuggestions<TNativeSuggestionItem> : IStepSuggestionGroup<TNativeSuggestionItem>
     {
         private readonly StepSuggestionList<TNativeSuggestionItem> suggestions;
         public IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return suggestions; } }
@@ -21,7 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             StepBinding = null;
             BindingType = bindingType;
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
@@ -32,7 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             StepBinding = stepBinding;
             BindingType = stepBinding.BindingType;
             string suggestionText = GetSuggestionText(stepBinding);
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
