@@ -5,12 +5,20 @@ using System.Text.RegularExpressions;
 using EnvDTE;
 using EnvDTE80;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class VsStepSuggestionBindingCollector
     {
+        private readonly IVisualStudioTracer visualStudioTracer;
+
+        public VsStepSuggestionBindingCollector(IVisualStudioTracer visualStudioTracer)
+        {
+            this.visualStudioTracer = visualStudioTracer;
+        }
+
         public IEnumerable<StepBinding> CollectBindingsForSpecFlowProject(VsProjectScope projectScope)
         {
             var project = projectScope.Project;
@@ -58,8 +66,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 {
                     CodeClass codeClass = (CodeClass)codeElement;
                     if (codeClass.Attributes.Cast<CodeAttribute>().Any(attr => "TechTalk.SpecFlow.BindingAttribute".Equals(attr.FullName)))
+                    {
+                        visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
                         foreach (var stepBinding in GetCompletitionsFromCodeElements(codeElement.Children))
                             yield return stepBinding;
+                    }
                 }
                 else
                 {

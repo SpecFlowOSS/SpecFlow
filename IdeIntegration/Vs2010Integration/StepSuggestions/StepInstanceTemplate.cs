@@ -7,17 +7,41 @@ using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>, IStepSuggestionGroup<TNativeSuggestionItem>
+    public class BoundInstanceTemplate<TNativeSuggestionItem> : IBoundStepSuggestion<TNativeSuggestionItem>, IStepSuggestionGroup<TNativeSuggestionItem>
     {
+        public StepInstanceTemplate<TNativeSuggestionItem> Template { get; private set; }
+
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
 
-        private readonly StepSuggestionList<TNativeSuggestionItem> instances;
-        public IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return instances; } }
+        private readonly StepSuggestionList<TNativeSuggestionItem> suggestions;
+        public IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return suggestions; } }
 
-        public TNativeSuggestionItem NativeSuggestionItem { get; set; }
+        public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
+        public BindingType BindingType { get { return Template.BindingType; } }
+
+        public BoundInstanceTemplate(StepInstanceTemplate<TNativeSuggestionItem> template, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> suggestions)
+        {
+            Template = template;
+            this.suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory, suggestions);
+            NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
+        }
+
+        public bool Match(StepBinding binding, bool includeRegexCheck)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>//, IStepSuggestionGroup<TNativeSuggestionItem>
+    {
+        private readonly StepSuggestionList<TNativeSuggestionItem> instances;
+        public IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> Instances { get { return instances; } }
+
+        public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
 
         public BindingType BindingType { get; private set; }
+        internal string StepPrefix { get; private set; }
 
         public bool Match(StepBinding binding, bool includeRegexCheck)
         {
@@ -36,9 +60,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             BindingType = (BindingType)scenarioStep.ScenarioBlock;
 
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, scenarioStep.Text, 1, this, BindingType.ToString().Substring(0, 1) + "-t");
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, scenarioStep.Text, 1, BindingType.ToString().Substring(0, 1) + "-t", this);
             instances = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
             AddInstances(scenarioStep, scenarioOutline, feature, nativeSuggestionItemFactory);
+
+            var match = paramRe.Match(scenarioStep.Text);
+            StepPrefix = match.Success ? scenarioStep.Text.Substring(0, match.Index) : scenarioStep.Text;
         }
 
         private void AddInstances(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, Feature feature, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)

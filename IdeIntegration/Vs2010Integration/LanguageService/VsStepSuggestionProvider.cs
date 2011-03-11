@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         static public readonly VsSuggestionItemFactory Instance = new VsSuggestionItemFactory();
 
-        public Completion Create(string displayText, string insertionText, int level, object parentObject, string iconDescriptor)
+        public Completion Create(string displayText, string insertionText, int level, string iconDescriptor, object parentObject)
         {
             var result = new CompletionWithImage(new string(' ', level*2) + displayText, insertionText, null, null, null) {IconDescriptor = iconDescriptor};
             if (parentObject != null)
@@ -52,6 +52,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             result.Properties.AddProperty("level", level);
             return result;
+        }
+
+        public Completion CloneTo(Completion nativeSuggestionItem, object parentObject)
+        {
+            return Create(nativeSuggestionItem.DisplayText.TrimStart(), nativeSuggestionItem.InsertionText,
+                          GetLevel(nativeSuggestionItem), ((CompletionWithImage) nativeSuggestionItem).IconDescriptor,
+                          parentObject);
         }
 
         public string GetInsertionText(Completion nativeSuggestionItem)
@@ -69,10 +76,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public bool Populated { get; private set; }
         private readonly VsProjectScope vsProjectScope;
-        private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector();
+        private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
 
         public VsStepSuggestionProvider(VsProjectScope vsProjectScope) : base(VsSuggestionItemFactory.Instance)
         {
+            stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector(vsProjectScope.VisualStudioTracer);
             this.vsProjectScope = vsProjectScope;
             Populated = false;
         }
@@ -112,11 +120,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             vsProjectScope.VisualStudioTracer.Trace("Building step suggestions...", "ProjectStepSuggestionProvider");
 
+            vsProjectScope.VisualStudioTracer.Trace("Processing bindings...", "ProjectStepSuggestionProvider");
             AddSuggestionsFromBindings();
+
+            vsProjectScope.VisualStudioTracer.Trace("Processing step instances...", "ProjectStepSuggestionProvider");
             AddSuggestionsFromFeatureFiles();
 
             Populated = true;
             vsProjectScope.VisualStudioTracer.Trace("Step suggestions ready", "ProjectStepSuggestionProvider");
+            if (vsProjectScope.VisualStudioTracer.IsEnabled("ProjectStepSuggestionProvider"))  // bypass calculating statistics if trace is not enabled
+                vsProjectScope.VisualStudioTracer.Trace("Statistics:" + boundStepSuggestions.GetStatistics(), "ProjectStepSuggestionProvider");
         }
 
         private void AddSuggestionsFromBindings()

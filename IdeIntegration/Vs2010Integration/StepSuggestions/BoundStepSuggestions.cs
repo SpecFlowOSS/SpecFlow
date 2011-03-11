@@ -8,13 +8,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
     public interface IStepSuggestionGroup<TNativeSuggestionItem>
     {
-        IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get; }
+        IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> Suggestions { get; }
     }
 
-    public class BoundStepSuggestions<TNativeSuggestionItem> : IStepSuggestionGroup<TNativeSuggestionItem>
+    public class BoundStepSuggestions<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>, IStepSuggestionGroup<TNativeSuggestionItem>
     {
         private readonly StepSuggestionList<TNativeSuggestionItem> suggestions;
-        public IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return suggestions; } }
+        public IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return suggestions; } }
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
 
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             StepBinding = null;
             BindingType = bindingType;
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, this, null);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, "nb", this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             StepBinding = stepBinding;
             BindingType = stepBinding.BindingType;
             string suggestionText = GetSuggestionText(stepBinding);
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, this, BindingType.ToString().Substring(0, 1) + "-b");
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, BindingType.ToString().Substring(0, 1) + "-b", this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
@@ -57,13 +57,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return RegexSampler.GetRegexSample(stepBinding.Regex.ToString(), paramNames.ToArray());
         }
 
-        public void AddSuggestion(IStepSuggestion<TNativeSuggestionItem> stepSuggestion)
+        public void AddSuggestion(IBoundStepSuggestion<TNativeSuggestionItem> stepSuggestion)
         {
             suggestions.Add(stepSuggestion);
             stepSuggestion.MatchGroups.Add(this);
         }
 
-        public void RemoveSuggestion(IStepSuggestion<TNativeSuggestionItem> stepSuggestion)
+        public void RemoveSuggestion(IBoundStepSuggestion<TNativeSuggestionItem> stepSuggestion)
         {
             suggestions.Remove(stepSuggestion);
             stepSuggestion.MatchGroups.Remove(this);

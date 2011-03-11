@@ -65,15 +65,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
 
         public void Trace(string message, string category)
         {
-            if (!traceEnabled)
-                return;
-
-            if (!traceAll && !traceCategories.Contains(category.ToLower()) && !category.Equals(TracingCategory, StringComparison.InvariantCultureIgnoreCase))
+            if (!IsEnabled(category))
                 return;
 
             var outputWindow = OutputWindowService.TryGetPane(OutputWindowDefinitions.SpecFlowOutputWindowName);
             if (outputWindow != null)
                 outputWindow.WriteLine(string.Format("{0}: {1}", category, message));
+        }
+
+        public bool IsEnabled(string category)
+        {
+            if (!traceEnabled)
+                return false;
+
+            if (!traceAll && !traceCategories.Contains(category.ToLower()) && !category.Equals(TracingCategory, StringComparison.InvariantCultureIgnoreCase))
+                return false;
+
+            return true;
         }
     }
 

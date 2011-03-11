@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    public class StepInstance<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>
+    public class StepInstance<TNativeSuggestionItem> : IBoundStepSuggestion<TNativeSuggestionItem>
     {
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.step = step;
             this.scenario = scenario;
             this.feature = feature;
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, this, BindingType.ToString().Substring(0, 1));
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, BindingType.ToString().Substring(0, 1), this);
         }
 
         public bool Match(StepBinding binding, bool includeRegexCheck)

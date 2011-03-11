@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    internal class StepSuggestionList<TNativeSuggestionItem> : ICollection<IStepSuggestion<TNativeSuggestionItem>>
+    internal class StepSuggestionList<TNativeSuggestionItem> : ICollection<IBoundStepSuggestion<TNativeSuggestionItem>>
     {
-        private readonly List<IStepSuggestion<TNativeSuggestionItem>> items = new List<IStepSuggestion<TNativeSuggestionItem>>();
+        private readonly List<IBoundStepSuggestion<TNativeSuggestionItem>> items;
         private readonly InsertionTextComparer insertionTextComparer;
 
-        private class InsertionTextComparer : IComparer<IStepSuggestion<TNativeSuggestionItem>>
+        private class InsertionTextComparer : IComparer<IBoundStepSuggestion<TNativeSuggestionItem>>
         {
             private readonly INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory;
 
@@ -18,31 +18,31 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                 this.nativeSuggestionItemFactory = nativeSuggestionItemFactory;
             }
 
-            private StepInstanceTemplate<TNativeSuggestionItem> GetParentTemplate(IStepSuggestion<TNativeSuggestionItem> stepSuggestion)
+            private StepInstanceTemplate<TNativeSuggestionItem> GetParentTemplate(IBoundStepSuggestion<TNativeSuggestionItem> stepSuggestion)
             {
                 StepInstance<TNativeSuggestionItem> stepInstance = stepSuggestion as StepInstance<TNativeSuggestionItem>;
                 return stepInstance != null ? stepInstance.ParentTemplate : null;
             }
 
-            public int Compare(IStepSuggestion<TNativeSuggestionItem> x, IStepSuggestion<TNativeSuggestionItem> y)
+            public int Compare(IBoundStepSuggestion<TNativeSuggestionItem> x, IBoundStepSuggestion<TNativeSuggestionItem> y)
             {
-                var parent1 = GetParentTemplate(x);
-                var parent2 = GetParentTemplate(y);
-                if (parent1 != parent2)
-                {
-                    if (parent1 == y)
-                        return 1;
-                    if (parent2 == x)
-                        return -1;
-
-                    if (parent1 != null && parent2 != null)
-                        return Compare(parent1, parent2);
-
-                    if (parent1 != null)
-                        return Compare(parent1, y);
-                    if (parent2 != null)
-                        return Compare(x, parent2);
-                }
+//                var parent1 = GetParentTemplate(x);
+//                var parent2 = GetParentTemplate(y);
+//                if (parent1 != parent2)
+//                {
+//                    if (parent1 == y)
+//                        return 1;
+//                    if (parent2 == x)
+//                        return -1;
+//
+//                    if (parent1 != null && parent2 != null)
+//                        return Compare(parent1, parent2);
+//
+//                    if (parent1 != null)
+//                        return Compare(parent1, y);
+//                    if (parent2 != null)
+//                        return Compare(x, parent2);
+//                }
 
 
                 string p1 = nativeSuggestionItemFactory.GetInsertionText(x.NativeSuggestionItem);
@@ -51,12 +51,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public StepSuggestionList(INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public StepSuggestionList(INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> initialItems = null)
         {
             insertionTextComparer = new InsertionTextComparer(nativeSuggestionItemFactory);
+            if (initialItems == null)
+                items = new List<IBoundStepSuggestion<TNativeSuggestionItem>>();
+            else
+            {
+                items = new List<IBoundStepSuggestion<TNativeSuggestionItem>>(initialItems);
+                items.Sort(insertionTextComparer);
+            }
         }
 
-        public void Add(IStepSuggestion<TNativeSuggestionItem> item)
+        public void Add(IBoundStepSuggestion<TNativeSuggestionItem> item)
         {
             int index = items.BinarySearch(item, insertionTextComparer);
             if (index < 0)
@@ -70,17 +77,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             items.Clear();
         }
 
-        public bool Contains(IStepSuggestion<TNativeSuggestionItem> item)
+        public bool Contains(IBoundStepSuggestion<TNativeSuggestionItem> item)
         {
             return items.Contains(item);
         }
 
-        public void CopyTo(IStepSuggestion<TNativeSuggestionItem>[] array, int arrayIndex)
+        public void CopyTo(IBoundStepSuggestion<TNativeSuggestionItem>[] array, int arrayIndex)
         {
             items.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(IStepSuggestion<TNativeSuggestionItem> item)
+        public bool Remove(IBoundStepSuggestion<TNativeSuggestionItem> item)
         {
             return items.Remove(item);
         }
@@ -95,7 +102,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             get { return false; }
         }
 
-        public IEnumerator<IStepSuggestion<TNativeSuggestionItem>> GetEnumerator()
+        public IEnumerator<IBoundStepSuggestion<TNativeSuggestionItem>> GetEnumerator()
         {
             return items.GetEnumerator();
         }

@@ -280,6 +280,7 @@
     <Resource Include="Resources\autocomplete-w-b.png" />
     <Resource Include="Resources\autocomplete-w-t.png" />
     <Resource Include="Resources\autocomplete-w.png" />
+    <Resource Include="Resources\autocomplete-nb.png" />
     <Content Include="Resources\specflowpackage.ico" />
     <Content Include="Tracing\OutputWindow\readme.txt" />
   </ItemGroup>

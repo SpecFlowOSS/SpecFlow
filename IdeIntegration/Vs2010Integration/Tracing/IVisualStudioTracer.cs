@@ -3,5 +3,6 @@
     public interface IVisualStudioTracer
     {
         void Trace(string message, string category);
+        bool IsEnabled(string category);
     }
 }
