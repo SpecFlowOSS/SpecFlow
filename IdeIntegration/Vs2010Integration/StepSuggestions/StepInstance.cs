@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 
@@ -24,7 +25,48 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.step = step;
             this.scenario = scenario;
             this.feature = feature;
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, step.Text, level, BindingType.ToString().Substring(0, 1), this);
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, BindingType.ToString().Substring(0, 1), this);
+        }
+
+        private const string stepParamIndent = "         ";
+
+        static internal string GetInsertionText(ScenarioStep step)
+        {
+            if (step.TableArg == null && step.MultiLineTextArgument == null)
+                return step.Text;
+
+            StringBuilder result = new StringBuilder(step.Text);
+            if (step.MultiLineTextArgument != null)
+            {
+                result.AppendLine();
+                result.Append(stepParamIndent);
+                result.AppendLine("\"\"\"");
+                result.AppendLine(stepParamIndent);
+                result.Append(stepParamIndent);
+                result.Append("\"\"\"");
+            }
+            if (step.TableArg != null)
+            {
+                result.AppendLine();
+                result.Append(stepParamIndent);
+                result.Append("|");
+                foreach (var cell in step.TableArg.Header.Cells)
+                {
+                    result.Append(" ");
+                    result.Append(cell.Value);
+                    result.Append(" |");
+                }
+                result.AppendLine();
+                result.Append(stepParamIndent);
+                result.Append("|");
+                foreach (var cell in step.TableArg.Header.Cells)
+                {
+                    result.Append(" ");
+                    result.Append(' ', cell.Value.Length);
+                    result.Append(" |");
+                }
+            }
+            return result.ToString();
         }
 
         public bool Match(StepBinding binding, bool includeRegexCheck)

@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         }
     }
 
-    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>//, IStepSuggestionGroup<TNativeSuggestionItem>
+    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>
     {
         private readonly StepSuggestionList<TNativeSuggestionItem> instances;
         public IEnumerable<IBoundStepSuggestion<TNativeSuggestionItem>> Instances { get { return instances; } }
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         {
             BindingType = (BindingType)scenarioStep.ScenarioBlock;
 
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, scenarioStep.Text, 1, BindingType.ToString().Substring(0, 1) + "-t", this);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, StepInstance<TNativeSuggestionItem>.GetInsertionText(scenarioStep), 1, BindingType.ToString().Substring(0, 1) + "-t", this);
             instances = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
             AddInstances(scenarioStep, scenarioOutline, feature, nativeSuggestionItemFactory);
 
