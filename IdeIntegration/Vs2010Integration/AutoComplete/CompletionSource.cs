@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EnvDTE;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
-using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
@@ -31,7 +29,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (!SpecFlowServices.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, SpecFlowServices, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
+            return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
         }
     }
 
@@ -39,13 +37,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     {
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
-        private readonly ISpecFlowServices specFlowServices;
         private readonly GherkinLanguageService languageService;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, ISpecFlowServices specFlowServices, GherkinLanguageService languageService)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, GherkinLanguageService languageService)
         {
             this.textBuffer = textBuffer;
-            this.specFlowServices = specFlowServices;
             this.languageService = languageService;
         }
 
@@ -80,13 +76,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         {
             var line = triggerPoint.GetContainingLine();
 
-            SnapshotPoint start = triggerPoint;
-            while (start > line.Start && !char.IsWhiteSpace((start - 1).GetChar()))
-            {
-                start -= 1;
-            }
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            ForwardWhile(ref start, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            if (start < triggerPoint)
+                ForwardWhile(ref start, start + 1, p => char.IsWhiteSpace(p.GetChar()));
 
             return snapshot.CreateTrackingSpan(new SnapshotSpan(start, line.End), SpanTrackingMode.EdgeInclusive);
+        }
+
+        private void ForwardWhile(ref SnapshotPoint point, SnapshotPoint triggerPoint, Predicate<SnapshotPoint> predicate)
+        {
+            while (point < triggerPoint && predicate(point))
+                point += 1;
         }
 
         private ScenarioBlock? GetCurrentScenarioBlock(SnapshotPoint triggerPoint)
@@ -134,7 +136,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 return Enumerable.Empty<Completion>();
 
             if (!suggestionProvider.Populated)
-                return new Completion[] {new Completion("step suggestion list is being populated...")};
+                return new[] {new Completion("step suggestion list is being populated...")};
 
             return suggestionProvider.GetNativeSuggestionItems(bindingType);
         }

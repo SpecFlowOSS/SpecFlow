@@ -63,20 +63,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         /// </summary>
         protected override bool ShouldCompletionBeDiplayed(SnapshotPoint caret)
         {
-            var lineStart = caret.GetContainingLine().Start.Position;
-            var lineBeforeCaret = caret.Snapshot.GetText(lineStart, caret.Position - lineStart);
-
-            if (lineBeforeCaret.Length > 0 &&
-                char.IsWhiteSpace(lineBeforeCaret[lineBeforeCaret.Length - 1]))
-            {
-                string keyword = lineBeforeCaret.Substring(0, lineBeforeCaret.Length - 1).TrimStart();
-
-                var fileScope = languageService.GetFileScope(waitForParsingSnapshot: caret.Snapshot);
-                if (fileScope != null && fileScope.GherkinDialect != null)
-                    return fileScope.GherkinDialect.IsStepKeyword(keyword);
-            }
-
-            return false;
+            return true;
+//            var lineStart = caret.GetContainingLine().Start.Position;
+//            var lineBeforeCaret = caret.Snapshot.GetText(lineStart, caret.Position - lineStart);
+//
+//            if (lineBeforeCaret.Length > 0 &&
+//                char.IsWhiteSpace(lineBeforeCaret[lineBeforeCaret.Length - 1]))
+//            {
+//                string keyword = lineBeforeCaret.Substring(0, lineBeforeCaret.Length - 1).TrimStart();
+//
+//                var fileScope = languageService.GetFileScope(waitForParsingSnapshot: caret.Snapshot);
+//                if (fileScope != null && fileScope.GherkinDialect != null)
+//                    return fileScope.GherkinDialect.IsStepKeyword(keyword);
+//            }
+//
+//            return false;
         }
     }
 }
