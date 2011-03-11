@@ -55,24 +55,64 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (triggerPoint == null)
                 return;
 
-            ScenarioBlock? scenarioBlock = GetCurrentScenarioBlock(triggerPoint.Value);
-            if (scenarioBlock == null)
-                return;
+            if (IsKeywordCompletion(triggerPoint.Value))
+            {
+                IEnumerable<Completion> completions = GetKeywordCompletions();
+                ITrackingSpan applicableTo = GetApplicableToForKeyword(snapshot, triggerPoint.Value);
 
-            IEnumerable<Completion> completions = GetCompletionsForBindingType((BindingType)scenarioBlock.Value);
-            ITrackingSpan applicableTo = GetApplicableToSpan(snapshot, triggerPoint.Value);
+                completionSets.Add(
+                    new CustomCompletionSet(
+                        "Keywords",
+                        "Keywords",
+                        applicableTo,
+                        completions,
+                        null));
+            }
+            else
+            {
+                ScenarioBlock? scenarioBlock = GetCurrentScenarioBlock(triggerPoint.Value);
+                if (scenarioBlock == null)
+                    return;
 
-            string displayName = string.Format("All {0} Steps", scenarioBlock);
-            completionSets.Add(
-                new HierarchicalCompletionSet(
-                    displayName,
-                    displayName,
-                    applicableTo,
-                    completions,
-                    null));
+                IEnumerable<Completion> completions = GetCompletionsForBindingType((BindingType) scenarioBlock.Value);
+                ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value);
+
+                string displayName = string.Format("All {0} Steps", scenarioBlock);
+                completionSets.Add(
+                    new HierarchicalCompletionSet(
+                        displayName,
+                        displayName,
+                        applicableTo,
+                        completions,
+                        null));
+            }
         }
 
-        private ITrackingSpan GetApplicableToSpan(ITextSnapshot snapshot, SnapshotPoint triggerPoint)
+        private IEnumerable<Completion> GetKeywordCompletions()
+        {
+            var fileScope = languageService.GetFileScope();
+            GherkinDialect dialect = fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
+
+            return dialect.GetKeywords().Select(k => new Completion(k, k, null, null, null));
+        }
+
+        private bool IsKeywordCompletion(SnapshotPoint triggerPoint)
+        {
+            var line = triggerPoint.GetContainingLine();
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            return start == triggerPoint;
+        }
+
+        private ITrackingSpan GetApplicableToForKeyword(ITextSnapshot snapshot, SnapshotPoint triggerPoint)
+        {
+            var line = triggerPoint.GetContainingLine();
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            return snapshot.CreateTrackingSpan(new SnapshotSpan(start, line.End), SpanTrackingMode.EdgeInclusive);
+        }
+
+        private ITrackingSpan GetApplicableToForStep(ITextSnapshot snapshot, SnapshotPoint triggerPoint)
         {
             var line = triggerPoint.GetContainingLine();
 

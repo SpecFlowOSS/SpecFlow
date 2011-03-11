@@ -33,6 +33,11 @@ namespace TechTalk.SpecFlow.Parser
             return languageInfo;
         }
 
+        public GherkinDialect GetDefaultDialect()
+        {
+            return GetGherkinDialect(SupportedLanguageHelper.GetSupportedLanguage(defaultLanguage.Name));
+        }
+
         internal GherkinDialect GetGherkinDialect(LanguageInfo language)
         {
             return new GherkinDialect(language, 

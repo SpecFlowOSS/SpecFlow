@@ -1,4 +1,6 @@
-﻿using gherkin;
+﻿using System.Linq;
+using System.Collections.Generic;
+using gherkin;
 using TechTalk.SpecFlow.Parser.Gherkin;
 
 namespace TechTalk.SpecFlow.Parser
@@ -59,6 +61,20 @@ namespace TechTalk.SpecFlow.Parser
             return null;
         }
 
-
+        public IEnumerable<string> GetKeywords()
+        {
+            var keywords = Enumerable.Empty<string>();
+            keywords = keywords.Concat(NativeLanguageService.keywords("given").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("when").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("then").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("and").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("but").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("feature").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("background").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("scenario").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("scenario_outline").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("examples").toArray().Cast<string>());
+            return keywords.Distinct().OrderBy(k => k);
+        }
     }
 }
