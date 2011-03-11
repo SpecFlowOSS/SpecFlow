@@ -17,12 +17,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var result = new Completion(new string(' ', level * 2) + displayText, insertionText, null, null, null);
             if (parentObject != null)
                 result.Properties.AddProperty("parentObject", parentObject);
+
+            result.Properties.AddProperty("level", level);
             return result;
         }
 
         public string GetInsertionText(Completion nativeSuggestionItem)
         {
             return nativeSuggestionItem.InsertionText;
+        }
+
+        public int GetLevel(Completion nativeSuggestionItem)
+        {
+            return nativeSuggestionItem.Properties.GetProperty<int>("level");
         }
     }
 

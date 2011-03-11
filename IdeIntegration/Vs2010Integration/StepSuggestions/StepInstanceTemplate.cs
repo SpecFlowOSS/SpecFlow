@@ -7,13 +7,13 @@ using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>
+    public class StepInstanceTemplate<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>, IStepSuggestionGroup<TNativeSuggestionItem>
     {
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
 
         private readonly StepSuggestionList<TNativeSuggestionItem> instances;
-        public IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Instances { get { return instances; } }
+        public IEnumerable<IStepSuggestion<TNativeSuggestionItem>> Suggestions { get { return instances; } }
 
         public TNativeSuggestionItem NativeSuggestionItem { get; set; }
 
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
                     var newStep = scenarioStep.Clone();
                     newStep.Text = replacedText;
-                    instances.Add(new StepInstance<TNativeSuggestionItem>(newStep, scenarioOutline, feature, nativeSuggestionItemFactory, 2));
+                    instances.Add(new StepInstance<TNativeSuggestionItem>(newStep, scenarioOutline, feature, nativeSuggestionItemFactory, 2) { ParentTemplate = this });
                 }
             }
         }

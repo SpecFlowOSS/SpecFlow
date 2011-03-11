@@ -186,6 +186,7 @@
     <Compile Include="StepSuggestions\IStepSuggestion.cs" />
     <Compile Include="StepSuggestions\StepInstance.cs" />
     <Compile Include="StepSuggestions\StepInstanceTemplate.cs" />
+    <Compile Include="StepSuggestions\StepSuggestionList.cs" />
     <Compile Include="StepSuggestions\StepSuggestionProvider.cs" />
     <Compile Include="Utils\RegexDictionary.cs" />
     <Compile Include="Utils\StringLiteralHelper.cs" />

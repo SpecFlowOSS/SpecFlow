@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         protected void HierarchicalFilter(CompletionMatchType matchType, bool caseSensitive)
         {
             ITextSnapshot currentSnapshot = ApplicableTo.TextBuffer.CurrentSnapshot;
-            this._filterBufferText = ApplicableTo.GetText(currentSnapshot);
+            this._filterBufferText = ApplicableTo.GetText(currentSnapshot).TrimEnd();
             if (string.IsNullOrEmpty(this._filterBufferText))
             {
                 ((FilteredObservableCollection<Completion>)Completions).StopFiltering();

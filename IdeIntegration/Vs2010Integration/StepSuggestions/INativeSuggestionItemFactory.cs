@@ -4,5 +4,6 @@
     {
         TNativeSuggestionItem Create(string displayText, string insertionText, int level, object parentObject);
         string GetInsertionText(TNativeSuggestionItem nativeSuggestionItem);
+        int GetLevel(TNativeSuggestionItem nativeSuggestionItem);
     }
 }

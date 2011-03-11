@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             AddStepSuggestionToMatchingItems(stepInstanceTemplate, matchingItems);
 
             //TODO: temporary solution
-            foreach (StepInstance<TNativeSuggestionItem> instance in stepInstanceTemplate.Instances)
+            foreach (StepInstance<TNativeSuggestionItem> instance in stepInstanceTemplate.Suggestions)
             {
                 AddStepInstance(instance);
             }

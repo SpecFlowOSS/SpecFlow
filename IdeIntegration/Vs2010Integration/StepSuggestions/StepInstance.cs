@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
+        public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
         public BindingType BindingType { get { return (BindingType)step.ScenarioBlock; } }
         public string StepText { get { return step.Text; } }
