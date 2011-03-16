@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            var fileScope = gherkinLanguageService.GetFileScope();
+            var fileScope = gherkinLanguageService.GetFileScope(waitForResult: false);
             if (fileScope == null)
                 return new ITagSpan<IOutliningRegionTag>[0];
             return fileScope.GetTags(spans);

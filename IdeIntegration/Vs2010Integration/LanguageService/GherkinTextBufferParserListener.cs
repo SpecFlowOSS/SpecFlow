@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -28,6 +29,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly ITextSnapshot textSnapshot;
 
         private GherkinFileBlockBuilder currentFileBlockBuilder;
+        private GherkinStep currentStep = null;
 
         public GherkinFileBlockBuilder CurrentFileBlockBuilder
         {
@@ -251,7 +253,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             RegisterKeyword(keyword, headerSpan);
             ColorizeSpan(descriptionSpan, classifications.Description);
 
-            ScenarouOutlineExampleSet exampleSet = new ScenarouOutlineExampleSet(keyword, name, 
+            ScenarioOutlineExampleSet exampleSet = new ScenarioOutlineExampleSet(keyword, name, 
                 editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.ExampleSets.Add(exampleSet);
 
@@ -312,7 +314,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
 
-            //TODO: register step
+            var editorLine = stepSpan.StartPosition.Line;
+            currentStep = new GherkinStep((BindingType)scenarioBlock, text, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)

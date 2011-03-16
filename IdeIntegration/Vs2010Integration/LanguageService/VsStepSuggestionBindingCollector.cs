@@ -47,37 +47,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private IEnumerable<StepBinding> GetCompletionsFromProject(Project project)
         {
-            return VsxHelper.GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null)
-                .SelectMany(projectItem => GetCompletitionsFromCodeElements(projectItem.FileCodeModel.CodeElements));
+            return VsxHelper.GetClasses(project).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
         }
 
-        private IEnumerable<StepBinding> GetCompletitionsFromCodeElements(CodeElements codeElements)
+        private IEnumerable<StepBinding> GetCompletitionsFromBindingClass(CodeClass codeClass)
         {
-            foreach (CodeElement codeElement in codeElements)
-            {
-                if (codeElement.Kind == vsCMElement.vsCMElementFunction)
-                {
-                    CodeFunction codeFunction = (CodeFunction)codeElement;
+            visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
+            return codeClass.Children.OfType<CodeFunction>().SelectMany(GetSuggestionsFromCodeFunction);
+        }
 
-                    foreach (var stepBinding in GetSuggestionsFromCodeFunction(codeFunction))
-                        yield return stepBinding;
-                }
-                else if (codeElement.Kind == vsCMElement.vsCMElementClass)
-                {
-                    CodeClass codeClass = (CodeClass)codeElement;
-                    if (codeClass.Attributes.Cast<CodeAttribute>().Any(attr => "TechTalk.SpecFlow.BindingAttribute".Equals(attr.FullName)))
-                    {
-                        visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
-                        foreach (var stepBinding in GetCompletitionsFromCodeElements(codeElement.Children))
-                            yield return stepBinding;
-                    }
-                }
-                else
-                {
-                    foreach (var stepBinding in GetCompletitionsFromCodeElements(codeElement.Children))
-                        yield return stepBinding;
-                }
-            }
+        private bool IsBindingClass(CodeClass codeClass)
+        {
+            return codeClass.Attributes.Cast<CodeAttribute>().Any(attr => "TechTalk.SpecFlow.BindingAttribute".Equals(attr.FullName));
         }
 
         private IEnumerable<StepBinding> GetSuggestionsFromCodeFunction(CodeFunction codeFunction)
@@ -147,45 +128,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private CodeFunction FindCodeFunction(Project project, IBindingMethod bindingMethod)
         {
-            foreach (var projectItem in VsxHelper.GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null))
-            {
-                var function = FindCodeFunction(projectItem.FileCodeModel.CodeElements, bindingMethod);
-                if (function != null)
-                    return function;
-            }
-            return null;
-        }
-
-        private CodeFunction FindCodeFunction(CodeElements codeElements, IBindingMethod bindingMethod)
-        {
-            foreach (CodeElement codeElement in codeElements)
-            {
-                if (codeElement.Kind == vsCMElement.vsCMElementFunction)
-                {
-                    CodeFunction codeFunction = (CodeFunction)codeElement;
-                    var name = codeFunction.Name;
-                    if (name != bindingMethod.Name)
-                        continue;
-
-                    IBindingMethod foundMethod = new VsBindingMethod(codeFunction);
-                    if (!MethodEquals(bindingMethod, foundMethod))
-                        continue;
-
-                    return codeFunction;
-                }
-                else if (codeElement.Kind == vsCMElement.vsCMElementClass)
-                {
-                    CodeClass codeClass = (CodeClass)codeElement;
-                    var fullName = codeClass.FullName;
-                    if (fullName != bindingMethod.Type.FullName)
-                        continue;
-                }
-                var function = FindCodeFunction(codeElement.Children, bindingMethod);
-                if (function != null)
-                    return function;
-            }
-
-            return null;
+            return VsxHelper.GetClasses(project).Where(IsBindingClass).Where(c => c.FullName == bindingMethod.Type.FullName)
+                .SelectMany(c => c.GetFunctions()).FirstOrDefault(
+                    f => f.Name == bindingMethod.Name && MethodEquals(bindingMethod, new VsBindingMethod(f)));
         }
 
         private bool MethodEquals(IBindingMethod method1, IBindingMethod method2)

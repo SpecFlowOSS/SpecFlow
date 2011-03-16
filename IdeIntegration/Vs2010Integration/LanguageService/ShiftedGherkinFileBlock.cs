@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
         }
 
-        public IEnumerable<IGherkinStep> Steps
+        public IEnumerable<GherkinStep> Steps
         {
             get { return baseBlock.Steps; }
         }
@@ -153,7 +153,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
         }
 
-        public IEnumerable<IGherkinStep> Steps
+        public IEnumerable<GherkinStep> Steps
         {
             get { return baseBlock.Steps; }
         }
@@ -165,12 +165,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
         }
 
-        public IEnumerable<IGherkinStep> Steps
+        public IEnumerable<GherkinStep> Steps
         {
             get { return baseBlock.Steps; }
         }
 
-        public IEnumerable<IScenarouOutlineExampleSet> ExampleSets
+        public IEnumerable<IScenarioOutlineExampleSet> ExampleSets
         {
             get { return baseBlock.ExampleSets; }
         }

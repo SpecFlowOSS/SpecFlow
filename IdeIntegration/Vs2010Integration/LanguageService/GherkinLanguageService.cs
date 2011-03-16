@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -16,6 +17,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private bool isDisposed = false;
         private IGherkinFileScope lastGherkinFileScope = null;
+        private ITextSnapshot lastRegisteredSnapshot = null;
 
         public IProjectScope ProjectScope
         {
@@ -62,6 +64,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (isDisposed)
                 throw new ObjectDisposedException("GherkinLanguageService");
 
+            lastRegisteredSnapshot = change.ResultTextSnapshot;
             var task = new ParsingTask(this, change);
 
             projectScope.GherkinProcessingScheduler.EnqueueParsingRequest(task);
@@ -84,7 +87,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (languageService.isDisposed)
                     return;
 
-                var lastGherkinFileScope = languageService.GetFileScope();
+                var lastGherkinFileScope = languageService.GetFileScope(waitForResult: false);
                 var scopeChange = languageService.ProjectScope.GherkinTextBufferParser.Parse(change, lastGherkinFileScope);
 
                 languageService.RegisterScopeChange(scopeChange);
@@ -192,16 +195,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// Receives a parsed file scope for the buffer.
         /// </summary>
         /// <param name="waitForLatest">If true, the caller is blocked until the most recent scope is produced.</param>
+        /// <param name="waitForParsingSnapshot"></param>
         /// <returns>The parsed file scope.</returns>
-        public IGherkinFileScope GetFileScope(bool waitForLatest = false, ITextSnapshot waitForParsingSnapshot = null)
+        public IGherkinFileScope GetFileScope(bool waitForLatest = false, ITextSnapshot waitForParsingSnapshot = null, bool waitForResult = true)
         {
             if (isDisposed)
                 throw new ObjectDisposedException("GherkinLanguageService");
 
+            if (!waitForResult && lastGherkinFileScope == null)
+                return null;
+
             if (lastGherkinFileScope == null)
                 waitForLatest = true;
 
-            //TODO: handle waitForLatest
+            if (waitForLatest)
+            {
+                while (lastRegisteredSnapshot == null)
+                {
+                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                }
+                waitForParsingSnapshot = lastRegisteredSnapshot;
+            }
+
+            if (waitForParsingSnapshot != null)
+            {
+                while (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot != waitForParsingSnapshot)
+                {
+                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                }
+            }
+
             return lastGherkinFileScope;
         }
 

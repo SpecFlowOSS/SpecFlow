@@ -63,7 +63,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
-            var fileScope = gherkinLanguageService.GetFileScope();
+            var fileScope = gherkinLanguageService.GetFileScope(waitForResult: false);
+            if (fileScope == null)
+                return new ClassificationSpan[0];
             return fileScope.GetClassificationSpans(span);
         }
 

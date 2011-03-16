@@ -24,12 +24,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return FormatBlockFullTitle(block.Keyword, block.Title);
         }
 
-        public static string FullTitle(this IGherkinStep keywordLine)
+        public static string FullTitle(this GherkinStep keywordLine)
         {
             return keywordLine.Keyword + keywordLine.Text;
         }
 
-        public static string FullTitle(this IScenarouOutlineExampleSet exampleSet)
+        public static string FullTitle(this IScenarioOutlineExampleSet exampleSet)
         {
             return FormatBlockFullTitle(exampleSet.Keyword, exampleSet.Text);
         }
@@ -106,5 +106,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return result;
         }
 
+        public static GherkinStep GetStepAtPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
+        {
+            var scenarioInfo = gherkinFileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < lineNumber) as IStepBlock;
+            if (scenarioInfo == null)
+                return null;
+
+            var blockRelativeLine = lineNumber - scenarioInfo.KeywordLine;
+            return scenarioInfo.Steps.FirstOrDefault(s => s.BlockRelativeLine == blockRelativeLine);
+        }
     }
 }

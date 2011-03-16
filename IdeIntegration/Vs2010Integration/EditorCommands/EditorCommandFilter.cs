@@ -25,9 +25,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-//            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
-//                return;
-
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
             Debug.WriteLineIf(view != null, "No WPF editor view found");
             if (view == null)
@@ -99,7 +96,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 {
                     case VSConstants.VSStd97CmdID.GotoDefn:
                         prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
+                        if (editorCommands.CanGoToDefinition())
+                            return VSConstants.S_OK;
+                        break;
                 }
             }
             return Next.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);

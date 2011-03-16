@@ -12,8 +12,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public List<ClassificationSpan> ClassificationSpans { get; private set; }
         public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; private set; }
         public List<ErrorInfo> Errors { get; private set; }
-        public List<IGherkinStep> Steps { get; private set; }
-        public List<ScenarouOutlineExampleSet> ExampleSets { get; private set; }
+        public List<GherkinStep> Steps { get; private set; }
+        public List<ScenarioOutlineExampleSet> ExampleSets { get; private set; }
 
         public int StartLine { get; private set; }
 
@@ -59,8 +59,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ClassificationSpans = new List<ClassificationSpan>();
             OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
             Errors = new List<ErrorInfo>();
-            Steps = new List<IGherkinStep>();
-            ExampleSets = new List<ScenarouOutlineExampleSet>();
+            Steps = new List<GherkinStep>();
+            ExampleSets = new List<ScenarioOutlineExampleSet>();
 
             StartLine = startLine;
         }

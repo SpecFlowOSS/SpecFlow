@@ -1,14 +1,9 @@
 ﻿using System.Windows.Forms;
 using EnvDTE;
-using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
-using TechTalk.SpecFlow.Vs2010Integration.AutoComplete;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
-using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using System.Linq;
-using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
@@ -23,38 +18,52 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.textView = textView;
         }
 
-        public bool GoToDefinition()
+        private VsStepSuggestionProvider GetPopulatedSuggestionProvider()
         {
             var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
             if (suggestionProvider == null)
-                return false;
+                return null;
 
             if (!suggestionProvider.Populated)
-                return false;
+                return null;
 
+            return suggestionProvider;
+        }
 
+        private GherkinStep GetCurrentStep()
+        {
+            var fileScope = languageService.GetFileScope();
+            if (fileScope == null)
+                return null;
 
             SnapshotPoint caret = textView.Caret.Position.BufferPosition;
+            return fileScope.GetStepAtPosition(caret.GetContainingLine().LineNumber);
+        }
 
-            if (!GherkinStepCompletionSource.IsStepLine(caret, languageService))
+        public bool CanGoToDefinition()
+        {
+            return GetPopulatedSuggestionProvider() != null && GetCurrentStep() != null;
+        }
+
+        public bool GoToDefinition()
+        {
+            var step = GetCurrentStep();
+            if (step == null)
                 return false;
 
-            var line = caret.GetContainingLine().GetText().Trim();
-            var parts = line.Split(new[]{' '}, 2);
-            if (parts.Length != 2)
+            var suggestionProvider = GetPopulatedSuggestionProvider();
+            if (suggestionProvider == null)
                 return false;
 
-            var stepInstance = new StepInstance<Completion>(new ScenarioStep() { Text = parts[1], 
-                ScenarioBlock = parts[0] == "When" ? ScenarioBlock.When : parts[0] == "Then" ? ScenarioBlock.Then : ScenarioBlock.Given}, new Scenario(), new Feature(), VsSuggestionItemFactory.Instance);
-            var bindings = suggestionProvider.GetMatchingBindings(stepInstance).ToArray();
+            var bindings = suggestionProvider.GetMatchingBindings(step).ToArray();
             if (bindings.Length == 0)
             {
-                MessageBox.Show("not bound?");
+                MessageBox.Show("No matching step binding found for this step!");
                 return true;
             }
             if (bindings.Length > 1)
             {
-                MessageBox.Show("multiple bindings?");
+                MessageBox.Show("Multiple matching bindings found. Navigating to the first one...");
             }
 
             var method = bindings[0].StepBinding.Method;

@@ -6,10 +6,8 @@ using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
-using ScenarioBlock = TechTalk.SpecFlow.Parser.Gherkin.ScenarioBlock;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -70,14 +68,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             }
             else
             {
-                ScenarioBlock? scenarioBlock = GetCurrentScenarioBlock(triggerPoint.Value);
-                if (scenarioBlock == null)
+                var step = GetCurrentStep(triggerPoint.Value);
+                if (step == null)
                     return;
 
-                IEnumerable<Completion> completions = GetCompletionsForBindingType((BindingType) scenarioBlock.Value);
+                IEnumerable<Completion> completions = GetCompletionsForBindingType(step.BindingType);
                 ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value);
 
-                string displayName = string.Format("All {0} Steps", scenarioBlock);
+                string displayName = string.Format("All {0} Steps", step);
                 completionSets.Add(
                     new HierarchicalCompletionSet(
                         displayName,
@@ -169,42 +167,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 point += 1;
         }
 
-        private ScenarioBlock? GetCurrentScenarioBlock(SnapshotPoint triggerPoint)
+        private GherkinStep GetCurrentStep(SnapshotPoint triggerPoint)
         {
             var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
             if (fileScope == null)
                 return null;
 
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
-            var scenarioInfo = fileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < triggerLineNumber);
-            if (scenarioInfo == null || !(scenarioInfo is IScenarioBlock || scenarioInfo is IBackgroundBlock))
-                return null;
-
-            for (var lineNumer = triggerLineNumber; lineNumer > scenarioInfo.KeywordLine; lineNumer--)
-            {
-                StepKeyword? stepKeyword = GetStepKeyword(triggerPoint.Snapshot, lineNumer, fileScope.GherkinDialect);
-
-                if (stepKeyword != null)
-                {
-                    var scenarioBlock = stepKeyword.Value.ToScenarioBlock();
-                    if (scenarioBlock != null)
-                        return scenarioBlock;
-                }
-            }
-
-            return ScenarioBlock.Given;
-        }
-
-        private StepKeyword? GetStepKeyword(ITextSnapshot snapshot, int lineNumer, GherkinDialect gherkinDialect)
-        {
-            var word = GetFirstWordOfLine(snapshot, lineNumer);
-            return gherkinDialect.GetStepKeyword(word);
-        }
-
-        private static string GetFirstWordOfLine(ITextSnapshot snapshot, int lineNumer)
-        {
-            var theLine = snapshot.GetLineFromLineNumber(lineNumer);
-            return theLine.GetText().TrimStart().Split(' ')[0];
+            return fileScope.GetStepAtPosition(triggerLineNumber);
         }
 
         private IEnumerable<Completion> GetCompletionsForBindingType(BindingType bindingType)

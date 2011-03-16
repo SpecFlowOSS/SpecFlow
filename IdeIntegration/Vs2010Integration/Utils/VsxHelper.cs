@@ -269,5 +269,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                     return value;
             }
         }
+
+        public static IEnumerable<CodeClass> GetClasses(Project project)
+        {
+            return GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null).SelectMany(projectItem => GetClasses(projectItem.FileCodeModel.CodeElements));
+        }
+
+        private static IEnumerable<CodeClass> GetClasses(CodeElements codeElements)
+        {
+            foreach (CodeElement codeElement in codeElements)
+            {
+                if (codeElement.Kind == vsCMElement.vsCMElementClass)
+                {
+                    CodeClass codeClass = (CodeClass)codeElement;
+                    yield return codeClass;
+
+                    //TODO: handle nested classes
+                }
+                else if (codeElement.Kind == vsCMElement.vsCMElementNamespace)
+                {
+                    foreach (var stepBinding in GetClasses(codeElement.Children))
+                        yield return stepBinding;
+                }
+            }
+        }
+
+        public static IEnumerable<CodeFunction> GetFunctions(this CodeClass codeClass)
+        {
+            return codeClass.Children.OfType<CodeFunction>();
+        }
     }
 }
