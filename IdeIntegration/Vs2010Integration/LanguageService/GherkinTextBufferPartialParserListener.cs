@@ -43,5 +43,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     throw new PartialListeningDoneException(firstUnchangedScenario);
             }
         }
+
+        public override void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        {
+            Error("Duplicated feature title", headerSpan.StartPosition, null);
+        }
+
+        public override void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        {
+            Error("Duplicated background", headerSpan.StartPosition, null);
+        }
     }
 }

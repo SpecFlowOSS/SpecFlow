@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -212,7 +213,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             gherkinBuffer = buffer;
 
             InitializeFirstBlock(gherkinBuffer.GetLineStartPosition(gherkinBuffer.LineOffset));
-            Debug.Assert(currentFileBlockBuilder != null);
+            VisualStudioTracer.Assert(currentFileBlockBuilder != null, "no current file block builder");
         }
 
         protected virtual void InitializeFirstBlock(GherkinBufferPosition startPosition)
@@ -225,7 +226,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ColorizeSpan(commentSpan, classifications.Comment);
         }
 
-        public void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        public virtual void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             CurrentFileBlockBuilder.SetMainData(typeof(IHeaderBlock), headerSpan.StartPosition.Line, keyword, name);
 
@@ -233,7 +234,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ColorizeSpan(descriptionSpan, classifications.Description);
         }
 
-        public void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        public virtual void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             NewBlock(headerSpan.StartPosition.Line);
             CurrentFileBlockBuilder.SetMainData(typeof(IBackgroundBlock), headerSpan.StartPosition.Line, keyword, name);

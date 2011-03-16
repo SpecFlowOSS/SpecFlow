@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -60,7 +61,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static SnapshotSpan CreateSpan(this IEnumerable<IGherkinFileBlock> changedBlocks, ITextSnapshot textSnapshot)
         {
-            Debug.Assert(changedBlocks.Count() > 0);
+            VisualStudioTracer.Assert(changedBlocks.Count() > 0, "there is no changed block");
 
             int minLineNumber = changedBlocks.First().GetStartLine();
             int maxLineNumber = changedBlocks.Last().GetEndLine();

@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var textSnapshot = change.ResultTextSnapshot;
 
             IScenarioBlock firstAffectedScenario = GetFirstAffectedScenario(change, previousScope);
-            Debug.Assert(firstAffectedScenario != null);
+            VisualStudioTracer.Assert(firstAffectedScenario != null, "first affected scenario is null");
             int parseStartPosition = textSnapshot.GetLineFromLineNumber(firstAffectedScenario.GetStartLine()).Start;
 
             string fileContent = textSnapshot.GetText(parseStartPosition, textSnapshot.Length - parseStartPosition);
@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             changedBlocks.AddRange(partialResult.ScenarioBlocks);
             if (partialResult.InvalidFileEndingBlock != null)
             {
-                Debug.Assert(firstUnchangedScenario == null);
+                VisualStudioTracer.Assert(firstUnchangedScenario == null, "first affected scenario is not null");
                 // the last scenario was changed, but it became invalid
                 fileScope.InvalidFileEndingBlock = partialResult.InvalidFileEndingBlock;
                 changedBlocks.Add(fileScope.InvalidFileEndingBlock);
@@ -182,7 +182,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (firstUnchangedScenario != null)
             {
-                Debug.Assert(partialResult.InvalidFileEndingBlock == null);
+                Tracing.VisualStudioTracer.Assert(partialResult.InvalidFileEndingBlock == null, "there is an invalid file ending block");
 
                 // inserting the non-effected scenarios at the end
                 var shiftedScenarioBlocks = previousScope.ScenarioBlocks.SkipFromItemInclusive(firstUnchangedScenario)
