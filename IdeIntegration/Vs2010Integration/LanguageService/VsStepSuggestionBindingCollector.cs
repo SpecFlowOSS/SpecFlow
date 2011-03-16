@@ -116,5 +116,81 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return null;
             }
         }
+
+        public CodeFunction FindCodeFunction(VsProjectScope projectScope, IBindingMethod bindingMethod)
+        {
+            var project = projectScope.Project;
+
+            var function = FindCodeFunction(project, bindingMethod);
+            if (function != null)
+                return function;
+
+            var specFlowProject = projectScope.SpecFlowProjectConfiguration;
+            if (specFlowProject != null)
+            {
+                foreach (var assemblyName in specFlowProject.RuntimeConfiguration.AdditionalStepAssemblies)
+                {
+                    string simpleName = assemblyName.Split(new[] { ',' }, 2)[0];
+
+                    var stepProject = VsxHelper.FindProjectByAssemblyName(project.DTE, simpleName);
+                    if (stepProject != null)
+                    {
+                        function = FindCodeFunction(stepProject, bindingMethod);
+                        if (function != null)
+                            return function;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private CodeFunction FindCodeFunction(Project project, IBindingMethod bindingMethod)
+        {
+            foreach (var projectItem in VsxHelper.GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null))
+            {
+                var function = FindCodeFunction(projectItem.FileCodeModel.CodeElements, bindingMethod);
+                if (function != null)
+                    return function;
+            }
+            return null;
+        }
+
+        private CodeFunction FindCodeFunction(CodeElements codeElements, IBindingMethod bindingMethod)
+        {
+            foreach (CodeElement codeElement in codeElements)
+            {
+                if (codeElement.Kind == vsCMElement.vsCMElementFunction)
+                {
+                    CodeFunction codeFunction = (CodeFunction)codeElement;
+                    var name = codeFunction.Name;
+                    if (name != bindingMethod.Name)
+                        continue;
+
+                    IBindingMethod foundMethod = new VsBindingMethod(codeFunction);
+                    if (!MethodEquals(bindingMethod, foundMethod))
+                        continue;
+
+                    return codeFunction;
+                }
+                else if (codeElement.Kind == vsCMElement.vsCMElementClass)
+                {
+                    CodeClass codeClass = (CodeClass)codeElement;
+                    var fullName = codeClass.FullName;
+                    if (fullName != bindingMethod.Type.FullName)
+                        continue;
+                }
+                var function = FindCodeFunction(codeElement.Children, bindingMethod);
+                if (function != null)
+                    return function;
+            }
+
+            return null;
+        }
+
+        private bool MethodEquals(IBindingMethod method1, IBindingMethod method2)
+        {
+            return method1.Name == method2.Name; //TODO: complete
+        }
     }
 }

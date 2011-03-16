@@ -111,8 +111,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public void AddStepInstance(StepInstance<TNativeSuggestionItem> stepInstance)
         {
-            var matchingItems = boundStepSuggestions.GetMatchingItems(stepInstance.StepText).Where(it => stepInstance.Match(it.StepBinding, false));
+            var matchingItems = GetMatchingBindings(stepInstance);
             AddStepSuggestionToMatchingItems(stepInstance.BindingType, matchingItems, item => item.AddSuggestion(stepInstance));
+        }
+
+        public IEnumerable<BoundStepSuggestions<TNativeSuggestionItem>> GetMatchingBindings(StepInstance<TNativeSuggestionItem> stepInstance)
+        {
+            return boundStepSuggestions.GetMatchingItems(stepInstance.StepText).Where(it => stepInstance.Match(it.StepBinding, false));
         }
 
         public void AddStepInstanceTemplate(StepInstanceTemplate<TNativeSuggestionItem> stepInstanceTemplate)

@@ -170,6 +170,8 @@
     <Compile Include="AutoComplete\CompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
     <Compile Include="Bindings\BindingType.cs" />
+    <Compile Include="EditorCommands\EditorCommandFilter.cs" />
+    <Compile Include="EditorCommands\EditorCommands.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\VsBindingMethod.cs" />
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
