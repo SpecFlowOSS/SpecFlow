@@ -219,9 +219,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (waitForParsingSnapshot != null)
             {
-                while (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot != waitForParsingSnapshot)
+                int counter = 0;
+                while (counter < 10 && 
+                    (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot != waitForParsingSnapshot))
                 {
                     Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    counter++;
                 }
             }
 

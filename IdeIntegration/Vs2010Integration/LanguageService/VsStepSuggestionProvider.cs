@@ -140,25 +140,47 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
+
         private void AddSuggestionsFromFeatureFiles()
         {
             foreach (var featureFileInfo in vsProjectScope.FeatureFilesTracker.FeatureFiles.Where(ffi => ffi.ParsedFeature != null))
             {
-                foreach (var suggestion in GetStepSuggestions(featureFileInfo.ParsedFeature))
-                {
-                    AddStepSuggestion(suggestion);
-                }
+                var stepSuggestions = GetStepSuggestions(featureFileInfo.ParsedFeature).ToList();
+                fileSuggestions.Add(featureFileInfo, stepSuggestions);
+                stepSuggestions.ForEach(AddStepSuggestion);
             }
         }
 
         private void FeatureFilesTrackerOnFeatureFileRemoved(FeatureFileInfo featureFileInfo)
         {
-            //TODO
+            List<IStepSuggestion<Completion>> stepSuggestions;
+            if (fileSuggestions.TryGetValue(featureFileInfo, out stepSuggestions))
+            {
+                stepSuggestions.ForEach(RemoveStepSuggestion);
+                fileSuggestions.Remove(featureFileInfo);
+            }
         }
 
         private void FeatureFilesTrackerOnFeatureFileUpdated(FeatureFileInfo featureFileInfo)
         {
-            //TODO
+            List<IStepSuggestion<Completion>> stepSuggestions;
+            if (fileSuggestions.TryGetValue(featureFileInfo, out stepSuggestions))
+            {
+                stepSuggestions.ForEach(RemoveStepSuggestion);
+                stepSuggestions.Clear();
+            }
+            else
+            {
+                stepSuggestions = new List<IStepSuggestion<Completion>>();
+                fileSuggestions.Add(featureFileInfo, stepSuggestions);
+            }
+            
+            if (featureFileInfo.ParsedFeature != null)
+            {
+                stepSuggestions.AddRange(GetStepSuggestions(featureFileInfo.ParsedFeature));
+                stepSuggestions.ForEach(AddStepSuggestion);
+            }
         }
 
         public void Dispose()
