@@ -90,18 +90,56 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         private IEnumerable<Completion> GetKeywordCompletions()
         {
-            var fileScope = languageService.GetFileScope();
-            GherkinDialect dialect = fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
-
-            return dialect.GetKeywords().Select(k => new Completion(k, k, null, null, null));
+            GherkinDialect dialect = GetDialect(languageService);
+            return dialect.GetStepKeywords().Select(k => new Completion(k.Trim(), k.Trim(), null, null, null)).Concat(
+                dialect.GetBlockKeywords().Select(k => new Completion(k.Trim(), k.Trim() + ": ", null, null, null)));
         }
 
-        private bool IsKeywordCompletion(SnapshotPoint triggerPoint)
+        static private GherkinDialect GetDialect(GherkinLanguageService languageService)
+        {
+            var fileScope = languageService.GetFileScope();
+            return fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
+        }
+
+        static internal bool IsKeywordCompletion(SnapshotPoint triggerPoint)
         {
             var line = triggerPoint.GetContainingLine();
             SnapshotPoint start = line.Start;
             ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            ForwardWhile(ref start, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
             return start == triggerPoint;
+        }
+
+        static internal bool IsStepLine(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
+        {
+            var line = triggerPoint.GetContainingLine();
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            SnapshotPoint end = start;
+            ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            if (start >= end)
+                return false;
+
+            var firstWord = triggerPoint.Snapshot.GetText(start, end.Position - start);
+            GherkinDialect dialect = GetDialect(languageService);
+            return dialect.IsStepKeyword(firstWord);
+        }
+
+        static internal bool IsKeywordPrefix(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
+        {
+            var line = triggerPoint.GetContainingLine();
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            SnapshotPoint end = start;
+            ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            if (start >= end)
+                return true; // returns true for empty word
+            if (end < triggerPoint)
+                return false;
+
+            var firstWord = triggerPoint.Snapshot.GetText(start, end.Position - start);
+            GherkinDialect dialect = GetDialect(languageService);
+            return dialect.GetKeywords().Any(k => k.StartsWith(firstWord, StringComparison.CurrentCultureIgnoreCase));
         }
 
         private ITrackingSpan GetApplicableToForKeyword(ITextSnapshot snapshot, SnapshotPoint triggerPoint)
@@ -125,7 +163,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return snapshot.CreateTrackingSpan(new SnapshotSpan(start, line.End), SpanTrackingMode.EdgeInclusive);
         }
 
-        private void ForwardWhile(ref SnapshotPoint point, SnapshotPoint triggerPoint, Predicate<SnapshotPoint> predicate)
+        private static void ForwardWhile(ref SnapshotPoint point, SnapshotPoint triggerPoint, Predicate<SnapshotPoint> predicate)
         {
             while (point < triggerPoint && predicate(point))
                 point += 1;

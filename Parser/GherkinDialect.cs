@@ -63,12 +63,12 @@ namespace TechTalk.SpecFlow.Parser
 
         public IEnumerable<string> GetKeywords()
         {
+            return GetStepKeywords().Concat(GetBlockKeywords()).OrderBy(k => k);
+        }
+
+        public IEnumerable<string> GetBlockKeywords()
+        {
             var keywords = Enumerable.Empty<string>();
-            keywords = keywords.Concat(NativeLanguageService.keywords("given").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("when").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("then").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("and").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("but").toArray().Cast<string>());
             keywords = keywords.Concat(NativeLanguageService.keywords("feature").toArray().Cast<string>());
             keywords = keywords.Concat(NativeLanguageService.keywords("background").toArray().Cast<string>());
             keywords = keywords.Concat(NativeLanguageService.keywords("scenario").toArray().Cast<string>());
@@ -76,5 +76,18 @@ namespace TechTalk.SpecFlow.Parser
             keywords = keywords.Concat(NativeLanguageService.keywords("examples").toArray().Cast<string>());
             return keywords.Distinct().OrderBy(k => k);
         }
+
+        public IEnumerable<string> GetStepKeywords()
+        {
+            var keywords = Enumerable.Empty<string>();
+            keywords = keywords.Concat(NativeLanguageService.keywords("given").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("when").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("then").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("and").toArray().Cast<string>());
+            keywords = keywords.Concat(NativeLanguageService.keywords("but").toArray().Cast<string>());
+            return keywords.Distinct().OrderBy(k => k);
+        }
+
+
     }
 }

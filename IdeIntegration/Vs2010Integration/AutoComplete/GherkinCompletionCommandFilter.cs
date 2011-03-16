@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -7,6 +8,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
@@ -61,23 +63,25 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         /// <summary>
         /// Displays completion after typing a space after a step keyword
         /// </summary>
-        protected override bool ShouldCompletionBeDiplayed(SnapshotPoint caret)
+        protected override bool ShouldCompletionBeDiplayed(SnapshotPoint caret, char? ch)
         {
-            return true;
-//            var lineStart = caret.GetContainingLine().Start.Position;
-//            var lineBeforeCaret = caret.Snapshot.GetText(lineStart, caret.Position - lineStart);
-//
-//            if (lineBeforeCaret.Length > 0 &&
-//                char.IsWhiteSpace(lineBeforeCaret[lineBeforeCaret.Length - 1]))
-//            {
-//                string keyword = lineBeforeCaret.Substring(0, lineBeforeCaret.Length - 1).TrimStart();
-//
-//                var fileScope = languageService.GetFileScope(waitForParsingSnapshot: caret.Snapshot);
-//                if (fileScope != null && fileScope.GherkinDialect != null)
-//                    return fileScope.GherkinDialect.IsStepKeyword(keyword);
-//            }
-//
-//            return false;
+            if (ch == null)
+                return true;
+
+            if (GherkinStepCompletionSource.IsKeywordCompletion(caret))
+            {
+                return GherkinStepCompletionSource.IsKeywordPrefix(caret, languageService);
+//                var fileScope = languageService.GetFileScope();
+//                GherkinDialect dialect = fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
+
+                return true;
+            }
+            if (GherkinStepCompletionSource.IsStepLine(caret, languageService))
+            {
+                return ch == ' ' && GherkinStepCompletionSource.IsKeywordPrefix(caret - 1, languageService); 
+            }
+
+            return false;
         }
     }
 }
