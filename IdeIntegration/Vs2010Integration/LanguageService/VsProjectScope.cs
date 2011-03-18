@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0);
 
             Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
-            if (featureFilesTracker.FeatureFiles.Any(outOfDateFiles))
+            if (featureFilesTracker.Files.Any(outOfDateFiles))
             {
                 var questionResult = MessageBox.Show(
                     "SpecFlow detected that some of the feature files were generated with an earlier version of SpecFlow. Do you want to re-generate them now?",

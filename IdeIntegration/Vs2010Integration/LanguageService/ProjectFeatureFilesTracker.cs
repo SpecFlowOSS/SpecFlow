@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Threading;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Parser;
@@ -15,8 +12,7 @@ using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-
-    public class FeatureFileInfo
+    public class FeatureFileInfo : IFileInfo
     {
         public string ProjectRelativePath { get; private set; }
         public Version GeneratorVersion { get; set; }
@@ -33,101 +29,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class ProjectFeatureFilesTracker : IDisposable
+    internal class ProjectFeatureFilesTracker : ProjectFilesTracker<FeatureFileInfo>, IDisposable
     {
-        private VsProjectScope vsProjectScope;
-        private List<FeatureFileInfo> featureFiles;
-        private VsProjectFilesTracker filesTracker;
+        private readonly VsProjectFilesTracker filesTracker;
 
-        public event Action Initialized;
-        public event Action<FeatureFileInfo> FeatureFileRemoved;
-        public event Action<FeatureFileInfo> FeatureFileUpdated;
-
-        public IEnumerable<FeatureFileInfo> FeatureFiles { get { return featureFiles; } }
-
-        public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope)
+        public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
-            this.vsProjectScope = vsProjectScope;
-
-            featureFiles = GetFeatureFileProjectItems().Select(pi => new FeatureFileInfo(pi)).ToList();
-            filesTracker = new VsProjectFilesTracker(this.vsProjectScope.Project, @"\.feature$", this.vsProjectScope.DteWithEvents, this.vsProjectScope.VisualStudioTracer);
-            filesTracker.FileChanged += FilesTrackerOnFileChanged;
-            filesTracker.FileRenamed += FilesTrackerOnFileRenamed;
-            filesTracker.FileOutOfScope += FilesTrackerOnFileOutOfScope;
+            filesTracker = CreateFilesTracker(this.vsProjectScope.Project, @"\.feature$");
         }
 
-        public void Run()
+        protected override FeatureFileInfo CreateFileInfo(ProjectItem projectItem)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(Initialize), DispatcherPriority.Background);
+            return new FeatureFileInfo(projectItem);
         }
 
-        private void FilesTrackerOnFileOutOfScope(ProjectItem projectItem, string projectRelativePath)
-        {
-            FeatureFileInfo featureFileInfo = FindFeatureFileInfo(projectRelativePath);
-            if (featureFileInfo != null)
-            {
-                RemoveFileInfo(featureFileInfo);
-            }
-        }
-
-        private void FilesTrackerOnFileRenamed(ProjectItem projectItem, string oldName)
-        {
-            FeatureFileInfo featureFileInfo = FindFeatureFileInfo(oldName);
-            if (featureFileInfo != null)
-            {
-                RenameFileInfo(featureFileInfo, VsxHelper.GetProjectRelativePath(projectItem));
-            }
-            else
-            {
-                AddFileInfo(projectItem);
-            }
-        }
-
-        private void FilesTrackerOnFileChanged(ProjectItem projectItem)
-        {
-            FeatureFileInfo featureFileInfo = FindFeatureFileInfo(VsxHelper.GetProjectRelativePath(projectItem));
-            if (featureFileInfo != null)
-            {
-                ChangeFile(featureFileInfo);
-            }
-            else
-            {
-                AddFileInfo(projectItem);
-            }
-        }
-
-        private void AddFileInfo(ProjectItem projectItem)
-        {
-            var featureFileInfo = new FeatureFileInfo(projectItem);
-            featureFiles.Add(featureFileInfo);
-            Analyze(featureFileInfo);
-        }
-
-        private void ChangeFile(FeatureFileInfo featureFileInfo)
-        {
-            Analyze(featureFileInfo);
-        }
-
-        private void RemoveFileInfo(FeatureFileInfo featureFileInfo)
-        {
-            featureFiles.Remove(featureFileInfo);
-            //remove from caches
-            if (FeatureFileRemoved != null)
-                FeatureFileRemoved(featureFileInfo);
-        }
-
-        private void RenameFileInfo(FeatureFileInfo featureFileInfo, string newPath)
-        {
-            featureFileInfo.Rename(newPath);
-            // upadate caches?
-        }
-
-        private FeatureFileInfo FindFeatureFileInfo(string projectRelativePath)
-        {
-            return featureFiles.Find(ffi => string.Equals(ffi.ProjectRelativePath, projectRelativePath, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        private IEnumerable<ProjectItem> GetFeatureFileProjectItems()
+        protected override IEnumerable<ProjectItem> GetFileProjectItems()
         {
             return VsxHelper.GetAllPhysicalFileProjectItem(vsProjectScope.Project).Where(IsFeatureFileProjectItem);
         }
@@ -137,42 +53,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return ".feature".Equals(Path.GetExtension(pi.Name), StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private void Initialize()
+        protected override void Initialize()
         {
-            featureFiles.ForEach(ffi => DoAnalyze(ffi, false));
-            if (Initialized != null)
-                Initialized();
-
+            base.Initialize();
             vsProjectScope.GherkinDialectServicesChanged += OnGherkinDialectServicesChanged;
         }
 
         private void OnGherkinDialectServicesChanged(object sender, EventArgs eventArgs)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => featureFiles.ForEach(ffi => DoAnalyze(ffi, true))), DispatcherPriority.Background);
+            AnalyzeFilesBackground();
         }
 
-        private void Analyze(FeatureFileInfo featureFileInfo)
+        protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => DoAnalyze(featureFileInfo, true)), DispatcherPriority.Background);
-        }
-
-        private void DoAnalyze(FeatureFileInfo featureFileInfo, bool fireUpdatedEvent)
-        {
-            var pi = VsxHelper.FindProjectItemByProjectRelativePath(vsProjectScope.Project, featureFileInfo.ProjectRelativePath);
-            if (pi == null)
-            {
-                RemoveFileInfo(featureFileInfo); // this must be a problem, but anyway
-                return;
-            }
-
             vsProjectScope.VisualStudioTracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
-            AnalyzeCodeBehind(featureFileInfo, pi);
+            AnalyzeCodeBehind(featureFileInfo, projectItem);
 
-            var fileContent = VsxHelper.GetFileContent(pi);
+            var fileContent = VsxHelper.GetFileContent(projectItem);
             featureFileInfo.ParsedFeature = ParseGherkinFile(fileContent, featureFileInfo.ProjectRelativePath, vsProjectScope.GherkinDialectServices.DefaultLanguage);
-
-            if (fireUpdatedEvent && FeatureFileUpdated != null)
-                FeatureFileUpdated(featureFileInfo);
         }
 
         public Feature ParseGherkinFile(string fileContent, string sourceFileName, CultureInfo defaultLanguage)
@@ -216,11 +114,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             if (predicate == null)
             {
-                featureFiles.ForEach(ReGenerate);
+                foreach (var featureFileInfo in Files)
+                    ReGenerate(featureFileInfo);
                 return;
             }
 
-            foreach (var featureFileInfo in featureFiles.Where(predicate))
+            foreach (var featureFileInfo in Files.Where(predicate))
                 ReGenerate(featureFileInfo);
         }
 
@@ -238,11 +137,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             vsProjectScope.GherkinDialectServicesChanged -= OnGherkinDialectServicesChanged;
-
-            filesTracker.FileChanged -= FilesTrackerOnFileChanged;
-            filesTracker.FileRenamed -= FilesTrackerOnFileRenamed;
-            filesTracker.FileOutOfScope -= FilesTrackerOnFileOutOfScope;
-            filesTracker.Dispose();
+            DisposeFilesTracker(filesTracker);
         }
     }
 }

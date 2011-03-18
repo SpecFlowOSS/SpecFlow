@@ -88,8 +88,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Initialize()
         {
             vsProjectScope.FeatureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
-            vsProjectScope.FeatureFilesTracker.FeatureFileUpdated += FeatureFilesTrackerOnFeatureFileUpdated;
-            vsProjectScope.FeatureFilesTracker.FeatureFileRemoved += FeatureFilesTrackerOnFeatureFileRemoved;
+            vsProjectScope.FeatureFilesTracker.FileUpdated += FeatureFilesTrackerOnFeatureFileUpdated;
+            vsProjectScope.FeatureFilesTracker.FileRemoved += FeatureFilesTrackerOnFeatureFileRemoved;
         }
 
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)
@@ -144,7 +144,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void AddSuggestionsFromFeatureFiles()
         {
-            foreach (var featureFileInfo in vsProjectScope.FeatureFilesTracker.FeatureFiles.Where(ffi => ffi.ParsedFeature != null))
+            foreach (var featureFileInfo in vsProjectScope.FeatureFilesTracker.Files.Where(ffi => ffi.ParsedFeature != null))
             {
                 var stepSuggestions = GetStepSuggestions(featureFileInfo.ParsedFeature).ToList();
                 fileSuggestions.Add(featureFileInfo, stepSuggestions);
@@ -186,8 +186,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             vsProjectScope.FeatureFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
-            vsProjectScope.FeatureFilesTracker.FeatureFileUpdated -= FeatureFilesTrackerOnFeatureFileUpdated;
-            vsProjectScope.FeatureFilesTracker.FeatureFileRemoved -= FeatureFilesTrackerOnFeatureFileRemoved;
+            vsProjectScope.FeatureFilesTracker.FileUpdated -= FeatureFilesTrackerOnFeatureFileUpdated;
+            vsProjectScope.FeatureFilesTracker.FileRemoved -= FeatureFilesTrackerOnFeatureFileRemoved;
         }
     }
 }

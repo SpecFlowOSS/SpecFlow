@@ -146,12 +146,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         /// it doesn't exist. Project can be C# or VB.</returns>
         public static Project FindProjectByAssemblyName(_DTE vs, string name)
         {
-            return FindProject(vs, delegate(Project project)
-            {
-                Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
-                return prop != null && prop.Value != null &&
-                    prop.Value.ToString() == name;
-            });
+            return FindProject(vs, project => project.GetAssemblyName() == name);
+        }
+
+        public static string GetAssemblyName(this Project project)
+        {
+            Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
+            return prop != null && prop.Value != null ? prop.Value.ToString() : null;
         }
 
         /// <summary>
