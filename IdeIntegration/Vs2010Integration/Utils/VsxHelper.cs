@@ -276,6 +276,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null).SelectMany(projectItem => GetClasses(projectItem.FileCodeModel.CodeElements));
         }
 
+        public static IEnumerable<CodeClass> GetClasses(ProjectItem projectItem)
+        {
+            return GetClasses(projectItem.FileCodeModel.CodeElements);
+        }
+
         private static IEnumerable<CodeClass> GetClasses(CodeElements codeElements)
         {
             foreach (CodeElement codeElement in codeElements)

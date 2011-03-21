@@ -43,14 +43,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return new FeatureFileInfo(projectItem);
         }
 
-        protected override IEnumerable<ProjectItem> GetFileProjectItems()
+        protected override bool IsMatchingProjectItem(ProjectItem projectItem)
         {
-            return VsxHelper.GetAllPhysicalFileProjectItem(vsProjectScope.Project).Where(IsFeatureFileProjectItem);
-        }
-
-        internal static bool IsFeatureFileProjectItem(ProjectItem pi)
-        {
-            return ".feature".Equals(Path.GetExtension(pi.Name), StringComparison.InvariantCultureIgnoreCase);
+            return ".feature".Equals(Path.GetExtension(projectItem.Name), StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected override void Initialize()

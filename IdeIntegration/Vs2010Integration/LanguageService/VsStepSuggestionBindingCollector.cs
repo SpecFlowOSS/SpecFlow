@@ -19,46 +19,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             this.visualStudioTracer = visualStudioTracer;
         }
 
-        public IEnumerable<StepBinding> CollectBindingsForSpecFlowProject(VsProjectScope projectScope)
+        public IEnumerable<StepBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
-            var project = projectScope.Project;
-
-            foreach (var stepBinding in GetCompletionsFromProject(project))
-            {
-                yield return stepBinding;
-            }
-
-            var specFlowProject = projectScope.SpecFlowProjectConfiguration;
-            if (specFlowProject != null)
-            {
-                foreach (var assemblyName in specFlowProject.RuntimeConfiguration.AdditionalStepAssemblies)
-                {
-                    string simpleName = assemblyName.Split(new[] { ',' }, 2)[0];
-
-                    var stepProject = VsxHelper.FindProjectByAssemblyName(project.DTE, simpleName);
-                    if (stepProject != null)
-                        foreach (var stepBinding in GetCompletionsFromProject(stepProject))
-                        {
-                            yield return stepBinding;
-                        }
-                }
-            }
-        }
-
-        private IEnumerable<StepBinding> GetCompletionsFromProject(Project project)
-        {
-            return VsxHelper.GetClasses(project).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
+            return VsxHelper.GetClasses(projectItem).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
         }
 
         private IEnumerable<StepBinding> GetCompletitionsFromBindingClass(CodeClass codeClass)
         {
-            visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
+            //visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
             return codeClass.Children.OfType<CodeFunction>().SelectMany(GetSuggestionsFromCodeFunction);
         }
 
-        private bool IsBindingClass(CodeClass codeClass)
+        static public bool IsBindingClass(CodeClass codeClass)
         {
-            return codeClass.Attributes.Cast<CodeAttribute>().Any(attr => "TechTalk.SpecFlow.BindingAttribute".Equals(attr.FullName));
+            try
+            {
+                return codeClass.Attributes.Cast<CodeAttribute>().Any(attr => "TechTalk.SpecFlow.BindingAttribute".Equals(attr.FullName));
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         private IEnumerable<StepBinding> GetSuggestionsFromCodeFunction(CodeFunction codeFunction)
@@ -72,9 +53,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private StepBinding GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingType bindingType)
         {
-            if (codeAttribute.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", bindingType)))
-                return CreateStepBinding(codeAttribute, codeFunction, bindingType);
-            return null;
+            try
+            {
+                if (codeAttribute.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", bindingType)))
+                    return CreateStepBinding(codeAttribute, codeFunction, bindingType);
+                return null;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
         }
 
         private StepBinding CreateStepBinding(CodeAttribute2 attr, CodeFunction codeFunction, BindingType bindingType)

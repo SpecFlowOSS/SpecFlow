@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using Microsoft.VisualStudio.Language.Intellisense;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -74,7 +72,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable
     {
-        public bool Populated { get; private set; }
+        public bool Populated
+        {
+            get { return featureFilesPopulated && bindingsPopulated; }
+        }
+        private bool featureFilesPopulated = false;
+        private bool bindingsPopulated = false;
         private readonly VsProjectScope vsProjectScope;
         private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
 
@@ -82,7 +85,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector(vsProjectScope.VisualStudioTracer);
             this.vsProjectScope = vsProjectScope;
-            Populated = false;
         }
 
         public void Initialize()
@@ -90,6 +92,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.FeatureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
             vsProjectScope.FeatureFilesTracker.FileUpdated += FeatureFilesTrackerOnFeatureFileUpdated;
             vsProjectScope.FeatureFilesTracker.FileRemoved += FeatureFilesTrackerOnFeatureFileRemoved;
+
+            vsProjectScope.BindingFilesTracker.Initialized += BindingFilesTrackerOnInitialized;
+            vsProjectScope.BindingFilesTracker.FileUpdated += BindingFilesTrackerOnFileUpdated;
+            vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
 
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)
@@ -118,29 +124,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void FeatureFilesTrackerOnInitialized()
         {
-            vsProjectScope.VisualStudioTracer.Trace("Building step suggestions...", "ProjectStepSuggestionProvider");
+//            vsProjectScope.VisualStudioTracer.Trace("Processing step instances...", "ProjectStepSuggestionProvider");
+//            AddSuggestionsFromFeatureFiles();
 
-            vsProjectScope.VisualStudioTracer.Trace("Processing bindings...", "ProjectStepSuggestionProvider");
-            AddSuggestionsFromBindings();
+            featureFilesPopulated = true;
+            vsProjectScope.VisualStudioTracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
+        }
 
-            vsProjectScope.VisualStudioTracer.Trace("Processing step instances...", "ProjectStepSuggestionProvider");
-            AddSuggestionsFromFeatureFiles();
+        private void BindingFilesTrackerOnInitialized()
+        {
+//            vsProjectScope.VisualStudioTracer.Trace("Processing bindings...", "ProjectStepSuggestionProvider");
+//            AddSuggestionsFromBindings();
 
-            Populated = true;
-            vsProjectScope.VisualStudioTracer.Trace("Step suggestions ready", "ProjectStepSuggestionProvider");
-            if (vsProjectScope.VisualStudioTracer.IsEnabled("ProjectStepSuggestionProvider"))  // bypass calculating statistics if trace is not enabled
-                vsProjectScope.VisualStudioTracer.Trace("Statistics:" + boundStepSuggestions.GetStatistics(), "ProjectStepSuggestionProvider");
+            bindingsPopulated = true;
+            vsProjectScope.VisualStudioTracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
         }
 
         private void AddSuggestionsFromBindings()
         {
-            foreach (var stepBinding in stepSuggestionBindingCollector.CollectBindingsForSpecFlowProject(vsProjectScope))
+            foreach (var bindingFileInfo in vsProjectScope.BindingFilesTracker.Files)
             {
-                AddBinding(stepBinding);
+                var bindings = bindingFileInfo.StepBindings.ToList();
+                bindingSuggestions.Add(bindingFileInfo, bindings);
+                bindings.ForEach(AddBinding);
             }
         }
 
-        Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
+        private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
         private void AddSuggestionsFromFeatureFiles()
         {
@@ -180,6 +190,39 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 stepSuggestions.AddRange(GetStepSuggestions(featureFileInfo.ParsedFeature));
                 stepSuggestions.ForEach(AddStepSuggestion);
+            }
+        }
+
+        private readonly Dictionary<BindingFileInfo, List<StepBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBinding>>();
+
+        private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
+        {
+            List<StepBinding> bindings;
+            if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
+            {
+                bindings.ForEach(RemoveBinding);
+                bindingSuggestions.Remove(bindingFileInfo);
+            }
+        }
+
+        private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
+        {
+            List<StepBinding> bindings;
+            if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
+            {
+                bindings.ForEach(RemoveBinding);
+                bindings.Clear();
+            }
+            else
+            {
+                bindings = new List<StepBinding>();
+                bindingSuggestions.Add(bindingFileInfo, bindings);
+            }
+
+            if (bindingFileInfo.StepBindings.Any())
+            {
+                bindings.AddRange(bindingFileInfo.StepBindings);
+                bindings.ForEach(AddBinding);
             }
         }
 

@@ -27,6 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private GherkinDialectServices gherkinDialectServices = null;
         private VsProjectFileTracker appConfigTracker = null;
         private ProjectFeatureFilesTracker featureFilesTracker = null;
+        private BindingFilesTracker bindingFilesTracker = null;
         private VsStepSuggestionProvider stepSuggestionProvider = null;
 
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
@@ -53,6 +54,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 EnsureInitialized();
                 return featureFilesTracker;
+            }
+        }
+
+        internal BindingFilesTracker BindingFilesTracker
+        {
+            get
+            {
+                EnsureInitialized();
+                return bindingFilesTracker;
             }
         }
 
@@ -106,6 +116,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             featureFilesTracker = new ProjectFeatureFilesTracker(this);
             featureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
 
+            bindingFilesTracker = new BindingFilesTracker(this);
+//            bindingFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
+
             appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
             appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
@@ -114,6 +127,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             initialized = true;
 
             stepSuggestionProvider.Initialize();
+            bindingFilesTracker.Run();
             featureFilesTracker.Run();
         }
 
@@ -235,6 +249,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 featureFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
                 featureFilesTracker.Dispose();
+            }
+            if (bindingFilesTracker != null)
+            {
+//                bindingFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
+                bindingFilesTracker.Dispose();
             }
         }
     }

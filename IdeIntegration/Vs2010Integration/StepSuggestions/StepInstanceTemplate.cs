@@ -29,7 +29,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public bool Match(StepBinding binding, bool includeRegexCheck)
         {
-            throw new NotImplementedException();
+            if (binding.BindingType != BindingType)
+                return false;
+
+            if (suggestions.Count == 0)
+                return false;
+
+            return suggestions.Any(i => i.Match(binding, true));
         }
     }
 

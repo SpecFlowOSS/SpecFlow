@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EnvDTE;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -39,6 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class BindingFileInfo : IFileInfo
     {
         public string ProjectRelativePath { get; private set; }
+        public IEnumerable<StepBinding> StepBindings { get; set; }
 
         public BindingFileInfo(ProjectItem projectItem)
         {
@@ -53,9 +55,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal class BindingFilesTracker : ProjectFilesTracker<BindingFileInfo>, IDisposable
     {
-        private readonly Dictionary<BindingAssemblyInfo, VsProjectFilesTracker> filesTracker;
+        private Dictionary<BindingAssemblyInfo, VsProjectFilesTracker> filesTracker;
+        private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
 
         public BindingFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
+        {
+            stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector(vsProjectScope.VisualStudioTracer);
+        }
+
+        public override void Run()
         {
             var mainProject = vsProjectScope.Project;
             var bindingAssemblies = Enumerable.Empty<BindingAssemblyInfo>()
@@ -66,6 +74,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker = bindingAssemblies.ToDictionary(
                 ai => ai,
                 ai => ai.IsProject ? CreateFilesTracker(ai) : null);
+
+            base.Run();
         }
 
         private VsProjectFilesTracker CreateFilesTracker(BindingAssemblyInfo ai)
@@ -75,7 +85,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
         {
-            //TODO
+            vsProjectScope.VisualStudioTracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
+            fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem).ToArray();
         }
 
         protected override BindingFileInfo CreateFileInfo(ProjectItem projectItem)
@@ -83,24 +94,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return new BindingFileInfo(projectItem);
         }
 
-        protected override IEnumerable<ProjectItem> GetFileProjectItems()
+        protected override IEnumerable<Project> GetProjects()
         {
-            return VsxHelper.GetAllPhysicalFileProjectItem(vsProjectScope.Project).Where(IsFeatureFileProjectItem);
+            return filesTracker.Keys.Where(ai => ai.IsProject).Select(ai => ai.Project);
         }
 
-        internal static bool IsFeatureFileProjectItem(ProjectItem pi)
+        protected override bool IsMatchingProjectItem(ProjectItem projectItem)
         {
-            var extension = Path.GetExtension(pi.Name);
-            return
-                ".cs".Equals(extension, StringComparison.InvariantCultureIgnoreCase) ||
-                ".vb".Equals(extension, StringComparison.InvariantCultureIgnoreCase);
+            var extension = Path.GetExtension(projectItem.Name);
+            if (!".cs".Equals(extension, StringComparison.InvariantCultureIgnoreCase) &&
+                !".vb".Equals(extension, StringComparison.InvariantCultureIgnoreCase))
+                return false;
+
+            return VsxHelper.GetClasses(projectItem).Any(VsStepSuggestionBindingCollector.IsBindingClass);
         }
 
         public void Dispose()
         {
-            foreach (var vsProjectFilesTracker in filesTracker.Values.Where(t => t != null))
-                DisposeFilesTracker(vsProjectFilesTracker);
-            filesTracker.Clear();
+            if (filesTracker != null)
+            {
+                foreach (var vsProjectFilesTracker in filesTracker.Values.Where(t => t != null))
+                    DisposeFilesTracker(vsProjectFilesTracker);
+                filesTracker.Clear();
+            }
         }
     }
 }
