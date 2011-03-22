@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
@@ -22,6 +23,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly int changeLastLine;
         private readonly int changeLineDelta;
 
+        protected override string FeatureTitle { get { return previousScope.HeaderBlock == null ? null : previousScope.HeaderBlock.Title; } }
+        protected override IEnumerable<string> FeatureTags { get { return previousScope.HeaderBlock == null ? Enumerable.Empty<string>() : previousScope.HeaderBlock.Tags; } }
+
         public GherkinTextBufferPartialParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications, IGherkinFileScope previousScope, int changeLastLine, int changeLineDelta)
             : base(gherkinDialect, textSnapshot, classifications)
         {
@@ -37,7 +41,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (editorLine > changeLastLine)
             {
                 var firstUnchangedScenario = previousScope.ScenarioBlocks.FirstOrDefault(
-                    prevScenario => GherkinFileScopeExtensions.GetStartLine(prevScenario) + changeLineDelta == editorLine);
+                    prevScenario => prevScenario.GetStartLine() + changeLineDelta == editorLine);
 
                 if (firstUnchangedScenario != null)
                     throw new PartialListeningDoneException(firstUnchangedScenario);

@@ -278,6 +278,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static IEnumerable<CodeClass> GetClasses(ProjectItem projectItem)
         {
+            if (projectItem.FileCodeModel == null || projectItem.FileCodeModel.CodeElements == null)
+                return Enumerable.Empty<CodeClass>();
+
             return GetClasses(projectItem.FileCodeModel.CodeElements);
         }
 

@@ -34,8 +34,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public int BlockRelativeLine { get; set; }
         public BindingStatus BindingStatus { get; set; }
 
-        public GherkinStep(BindingType bindingType, string stepText, string keyword, int blockRelativeLine)
-            : base(bindingType, stepText)
+        public GherkinStep(BindingType bindingType, string stepText, StepScope stepScope, string keyword, int blockRelativeLine)
+            : base(bindingType, stepText, stepScope)
         {
             Keyword = keyword;
             BlockRelativeLine = blockRelativeLine;
@@ -69,9 +69,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal class HeaderBlock : GherkinFileBlock, IHeaderBlock
     {
-        public HeaderBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
+        public IEnumerable<string> Tags { get; private set; }
+
+        public HeaderBlock(string keyword, string title, int keywordLine, IEnumerable<string> tags, int blockRelativeStartLine, int blockRelativeEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
             : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors)
         {
+            Tags = tags;
         }
     }
 

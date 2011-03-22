@@ -5,20 +5,13 @@ using System.Text.RegularExpressions;
 using EnvDTE;
 using EnvDTE80;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
-using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class VsStepSuggestionBindingCollector
     {
-        private readonly IVisualStudioTracer visualStudioTracer;
-
-        public VsStepSuggestionBindingCollector(IVisualStudioTracer visualStudioTracer)
-        {
-            this.visualStudioTracer = visualStudioTracer;
-        }
-
         public IEnumerable<StepBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
             return VsxHelper.GetClasses(projectItem).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
@@ -26,8 +19,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private IEnumerable<StepBinding> GetCompletitionsFromBindingClass(CodeClass codeClass)
         {
-            //visualStudioTracer.Trace("Analyzing binding class: " + codeClass.FullName, "ProjectStepSuggestionProvider");
-            return codeClass.Children.OfType<CodeFunction>().SelectMany(GetSuggestionsFromCodeFunction);
+            var classScopes = codeClass.Attributes.Cast<CodeAttribute2>().Select(GetBingingScopeFromAttribute).Where(s => s != null).ToArray();
+            return codeClass.Children.OfType<CodeFunction>().SelectMany(codeFunction => GetSuggestionsFromCodeFunction(codeFunction, classScopes));
         }
 
         static public bool IsBindingClass(CodeClass codeClass)
@@ -42,21 +35,76 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private IEnumerable<StepBinding> GetSuggestionsFromCodeFunction(CodeFunction codeFunction)
+        private IEnumerable<StepBinding> GetSuggestionsFromCodeFunction(CodeFunction codeFunction, IEnumerable<BindingScope> classBindingScopes)
+        {
+            var bindingScopes = classBindingScopes.Concat(codeFunction.Attributes.Cast<CodeAttribute2>().Select(GetBingingScopeFromAttribute).Where(s => s != null)).ToArray();
+
+            if (bindingScopes.Any())
+            {
+                foreach (var bindingScope in bindingScopes)
+                {
+                    foreach (var stepBinding in GetSuggestionsFromCodeFunctionForScope(codeFunction, bindingScope))
+                    {
+                        yield return stepBinding;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var stepBinding in GetSuggestionsFromCodeFunctionForScope(codeFunction, null))
+                {
+                    yield return stepBinding;
+                }
+            }
+        }
+
+        private IEnumerable<StepBinding> GetSuggestionsFromCodeFunctionForScope(CodeFunction codeFunction, BindingScope bindingScope)
         {
             return codeFunction.Attributes.Cast<CodeAttribute2>()
-                .Select(codeAttribute => GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Given) ??
-                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.When) ??
-                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Then))
+                .Select(codeAttribute => GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Given, bindingScope) ??
+                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.When, bindingScope) ??
+                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Then, bindingScope))
                 .Where(binding => binding != null);
         }
 
-        private StepBinding GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingType bindingType)
+        private string GetStringArgumentValue(CodeAttribute2 codeAttribute, string argumentName)
+        {
+            var arg = codeAttribute.Arguments.Cast<CodeAttributeArgument>().FirstOrDefault(a => a.Name == argumentName);
+            if (arg == null)
+                return null;
+
+            return VsxHelper.ParseCodeStringValue(arg.Value, arg.Language);
+        }
+
+        private BindingScope GetBingingScopeFromAttribute(CodeAttribute2 codeAttribute)
+        {
+            try
+            {
+                if (codeAttribute.FullName.Equals("TechTalk.SpecFlow.StepScopeAttribute"))
+                {
+                    var tag = GetStringArgumentValue(codeAttribute, "Tag");
+                    string feature = GetStringArgumentValue(codeAttribute, "Feature");
+                    string scenario = GetStringArgumentValue(codeAttribute, "Scenario");
+
+                    if (tag == null && feature == null && scenario == null)
+                        return null;
+
+                    return new BindingScope(tag, feature, scenario);
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private StepBinding GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingType bindingType, BindingScope bindingScope)
         {
             try
             {
                 if (codeAttribute.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", bindingType)))
-                    return CreateStepBinding(codeAttribute, codeFunction, bindingType);
+                    return CreateStepBinding(codeAttribute, codeFunction, bindingType, bindingScope);
                 return null;
             }
             catch(Exception)
@@ -65,7 +113,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private StepBinding CreateStepBinding(CodeAttribute2 attr, CodeFunction codeFunction, BindingType bindingType)
+        private StepBinding CreateStepBinding(CodeAttribute2 attr, CodeFunction codeFunction, BindingType bindingType, BindingScope bindingScope)
         {
             try
             {
@@ -78,7 +126,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 var regexString = VsxHelper.ParseCodeStringValue(regexArg.Value, regexArg.Language);
                 var regex = new Regex("^" + regexString + "$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-                return new StepBinding(bindingMethod, bindingType, regex, null); //TODO: handle binding scope
+                return new StepBinding(bindingMethod, bindingType, regex, bindingScope);
             }
             catch(Exception)
             {

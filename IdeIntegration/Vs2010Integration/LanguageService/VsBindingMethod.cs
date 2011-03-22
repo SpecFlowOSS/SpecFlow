@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -41,6 +43,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             set { currentFileBlockBuilder = value; }
         }
+
+        protected virtual string FeatureTitle { get { return gherkinFileScope.HeaderBlock == null ? null : gherkinFileScope.HeaderBlock.Title; } }
+        protected virtual IEnumerable<string> FeatureTags { get { return gherkinFileScope.HeaderBlock == null ? Enumerable.Empty<string>() : gherkinFileScope.HeaderBlock.Tags; } }
 
         protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
         {
@@ -289,11 +294,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void FeatureTag(string name, GherkinBufferSpan tagSpan)
         {
             ColorizeSpan(tagSpan, classifications.Tag);
+            CurrentFileBlockBuilder.Tags.Add(name);
         }
 
         public void ScenarioTag(string name, GherkinBufferSpan tagSpan)
         {
             EnsureNewScenario(tagSpan.StartPosition.Line);
+            CurrentFileBlockBuilder.Tags.Add(name);
             ColorizeSpan(tagSpan, classifications.Tag);
         }
 
@@ -315,7 +322,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
 
             var editorLine = stepSpan.StartPosition.Line;
-            currentStep = new GherkinStep((BindingType)scenarioBlock, text, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
+            var stepScope = new StepScope(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray());
+
+            currentStep = new GherkinStep((BindingType)scenarioBlock, text, stepScope, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 

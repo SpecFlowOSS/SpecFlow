@@ -79,6 +79,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public interface IHeaderBlock : IGherkinFileBlock
     {
+        IEnumerable<string> Tags { get; }
     }
 
     public interface IStepBlock : IGherkinFileBlock

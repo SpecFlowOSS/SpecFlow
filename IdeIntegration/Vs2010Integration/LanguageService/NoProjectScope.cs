@@ -1,6 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -23,6 +24,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         public VsStepSuggestionProvider StepSuggestionProvider
+        {
+            get { return null; }
+        }
+
+        public IBindingMatchService BindingMatchService
         {
             get { return null; }
         }

@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable
+    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistry
     {
         private bool featureFilesPopulated = false;
         private bool bindingsPopulated = false;
@@ -94,7 +94,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return bindingsPopulated; }
         }
 
-        public VsStepSuggestionProvider(VsProjectScope vsProjectScope) : base(VsSuggestionItemFactory.Instance)
+        bool IBindingRegistry.Ready
+        {
+            get { return BindingsPopulated; }
+        }
+
+        public VsStepSuggestionProvider(VsProjectScope vsProjectScope)
+            : base(VsSuggestionItemFactory.Instance)
         {
             this.vsProjectScope = vsProjectScope;
         }
@@ -122,25 +128,45 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
 
+        private static StepScope CreateStepScope(Feature feature, Scenario scenario)
+        {
+            var tags =
+                (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
+                .Concat(scenario.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
+                .Select(t => t.Name).Distinct();
+            return new StepScope(feature.Title, scenario.Title, tags.ToArray());
+        }
+
+        private static StepScope CreateStepScope(Feature feature)
+        {
+            var tags = (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
+                .Select(t => t.Name).Distinct();
+            return new StepScope(feature.Title, null, tags.ToArray());
+        }
+
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)
         {
             if (feature.Background != null)
+            {
+                var featureScope = CreateStepScope(feature);
                 foreach (var scenarioStep in feature.Background.Steps)
-                    yield return new StepInstance<Completion>(scenarioStep, null, feature, nativeSuggestionItemFactory);
+                    yield return new StepInstance<Completion>(scenarioStep, featureScope, nativeSuggestionItemFactory);
+            }
 
             if (feature.Scenarios != null)
                 foreach (var scenario in feature.Scenarios)
                 {
                     var scenarioOutline = scenario as ScenarioOutline;
+                    var stepScope = CreateStepScope(feature, scenario);
                     foreach (var scenarioStep in scenario.Steps)
                     {
                         if (scenarioOutline == null || !StepInstanceTemplate<Completion>.IsTemplate(scenarioStep))
                         {
-                            yield return new StepInstance<Completion>(scenarioStep, scenario, feature, nativeSuggestionItemFactory);
+                            yield return new StepInstance<Completion>(scenarioStep, stepScope, nativeSuggestionItemFactory);
                         }
                         else
                         {
-                            yield return new StepInstanceTemplate<Completion>(scenarioStep, scenarioOutline, feature, nativeSuggestionItemFactory);
+                            yield return new StepInstanceTemplate<Completion>(scenarioStep, scenarioOutline, stepScope, nativeSuggestionItemFactory);
                         }
                     }
                 }

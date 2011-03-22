@@ -1,7 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
 
@@ -18,13 +21,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.textView = textView;
         }
 
-        private VsStepSuggestionProvider GetSuggestionProvider()
+        private IBindingMatchService GetBindingMatchService()
         {
-            var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
-            if (suggestionProvider == null)
+            var bindingMatchService = languageService.ProjectScope.BindingMatchService;
+            if (bindingMatchService == null)
                 return null;
 
-            return suggestionProvider;
+            return bindingMatchService;
         }
 
         private GherkinStep GetCurrentStep()
@@ -39,7 +42,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         public bool CanGoToDefinition()
         {
-            return GetSuggestionProvider() != null && GetCurrentStep() != null;
+            return GetBindingMatchService() != null && GetCurrentStep() != null;
         }
 
         public bool GoToDefinition()
@@ -48,30 +51,37 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             if (step == null)
                 return false;
 
-            var suggestionProvider = GetSuggestionProvider();
-            if (suggestionProvider == null)
+            var bindingMatchService = GetBindingMatchService();
+            if (bindingMatchService == null)
                 return false;
 
-            if (!suggestionProvider.BindingsPopulated)
+            if (!bindingMatchService.Ready)
             {
-                MessageBox.Show("Step bindings are still being analyzed. Please wait.");
+                MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
                 return true;
             }
 
-            var bindings = suggestionProvider.GetMatchingBindings(step).ToArray();
-            if (bindings.Length == 0)
+            IEnumerable<StepBinding> candidatingBindings;
+            var binding = bindingMatchService.GetBestMatchingBinding(step, out candidatingBindings);
+
+            if (binding == null)
             {
-                MessageBox.Show("No matching step binding found for this step!");
-                return true;
-            }
-            if (bindings.Length > 1)
-            {
-                MessageBox.Show("Multiple matching bindings found. Navigating to the first one...");
+                if (candidatingBindings.Any())
+                {
+                    string bindingsText = string.Join(Environment.NewLine, candidatingBindings.Select(b => b.Method.ShortDisplayText));
+                    MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
+                        + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
+                    binding = candidatingBindings.First();
+                }
+                else
+                {
+                    MessageBox.Show("No matching step binding found for this step!", "Go to binding");
+                    return true;
+                }
             }
 
-            var method = bindings[0].StepBinding.Method;
-            var codeFunction = new VsStepSuggestionBindingCollector(null).FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
-
+            var method = binding.Method;
+            var codeFunction = new VsStepSuggestionBindingCollector().FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
 
             if (codeFunction != null)
             {

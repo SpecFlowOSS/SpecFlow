@@ -9,20 +9,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
     {
         public BindingType BindingType { get; private set; }
         public string Text { get; private set; }
+        public StepScope StepScope { get; private set; }
 
-        public StepInstance(BindingType bindingType, string stepText)
+        public StepInstance(BindingType bindingType, string stepText, StepScope stepScope)
         {
             BindingType = bindingType;
             Text = stepText;
-        }
-
-        public bool Match(StepBinding binding, bool includeRegexCheck)
-        {
-            if (includeRegexCheck && binding.Regex != null && !binding.Regex.Match(Text).Success)
-                return false;
-
-            //TODO: consider scope & params
-            return BindingType == binding.BindingType;
+            StepScope = stepScope;
         }
     }
 }

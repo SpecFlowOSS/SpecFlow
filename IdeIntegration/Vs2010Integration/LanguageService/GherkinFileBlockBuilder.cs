@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public List<ErrorInfo> Errors { get; private set; }
         public List<GherkinStep> Steps { get; private set; }
         public List<ScenarioOutlineExampleSet> ExampleSets { get; private set; }
+        public List<string> Tags { get; private set; }
 
         public int StartLine { get; private set; }
 
@@ -61,6 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             Errors = new List<ErrorInfo>();
             Steps = new List<GherkinStep>();
             ExampleSets = new List<ScenarioOutlineExampleSet>();
+            Tags = new List<string>();
 
             StartLine = startLine;
         }
@@ -82,7 +84,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 VisualStudioTracer.Assert(gherkinFileEditorInfo.HeaderBlock == null, "no header block");
                 if (gherkinFileEditorInfo.HeaderBlock == null)
                     gherkinFileEditorInfo.HeaderBlock =
-                        new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                        new HeaderBlock(Keyword, Title, KeywordLine, Tags.ToArray(), BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IBackgroundBlock))
             {

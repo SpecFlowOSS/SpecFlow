@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -29,6 +30,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private ProjectFeatureFilesTracker featureFilesTracker = null;
         private BindingFilesTracker bindingFilesTracker = null;
         private VsStepSuggestionProvider stepSuggestionProvider = null;
+        private IBindingMatchService bindingMatchService = null;
 
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
         {
@@ -72,6 +74,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 EnsureInitialized();
                 return stepSuggestionProvider;
+            }
+        }
+
+        public IBindingMatchService BindingMatchService
+        {
+            get
+            {
+                EnsureInitialized();
+                return bindingMatchService;
             }
         }
 
@@ -123,6 +134,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
             stepSuggestionProvider = new VsStepSuggestionProvider(this);
+            bindingMatchService = new BindingMatchService(stepSuggestionProvider);
             initialized = true;
 
             stepSuggestionProvider.Initialize();
