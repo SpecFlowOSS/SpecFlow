@@ -26,7 +26,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Apply()
         {
-            task();
+            try
+            {
+                task();
+            }
+            catch(Exception)
+            {
+                //TODO: log error
+            }
         }
 
         public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
