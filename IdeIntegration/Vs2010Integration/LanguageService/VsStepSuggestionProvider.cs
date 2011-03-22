@@ -72,28 +72,52 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable
     {
+        private bool featureFilesPopulated = false;
+        private bool bindingsPopulated = false;
+        private readonly VsProjectScope vsProjectScope;
+
+        private readonly Dictionary<BindingFileInfo, List<StepBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBinding>>();
+        private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
+
         public bool Populated
         {
             get { return featureFilesPopulated && bindingsPopulated; }
         }
-        private bool featureFilesPopulated = false;
-        private bool bindingsPopulated = false;
-        private readonly VsProjectScope vsProjectScope;
-        private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
+
+        public bool FeatureFilesPopulated
+        {
+            get { return featureFilesPopulated; }
+        }
+
+        public bool BindingsPopulated
+        {
+            get { return bindingsPopulated; }
+        }
 
         public VsStepSuggestionProvider(VsProjectScope vsProjectScope) : base(VsSuggestionItemFactory.Instance)
         {
-            stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector(vsProjectScope.VisualStudioTracer);
             this.vsProjectScope = vsProjectScope;
+        }
+
+        public int GetPopulationPercent()
+        {
+            if (Populated)
+                return 100;
+            if (!vsProjectScope.FeatureFilesTracker.IsInitialized || !vsProjectScope.BindingFilesTracker.IsInitialized)
+                return 0;
+            var totalCount = vsProjectScope.FeatureFilesTracker.Files.Count() + vsProjectScope.BindingFilesTracker.Files.Count();
+            if (totalCount == 0)
+                return 100;
+            return ((fileSuggestions.Count + bindingSuggestions.Count)*100)/totalCount;
         }
 
         public void Initialize()
         {
-            vsProjectScope.FeatureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
+            vsProjectScope.FeatureFilesTracker.Ready += FeatureFilesTrackerOnReady;
             vsProjectScope.FeatureFilesTracker.FileUpdated += FeatureFilesTrackerOnFeatureFileUpdated;
             vsProjectScope.FeatureFilesTracker.FileRemoved += FeatureFilesTrackerOnFeatureFileRemoved;
 
-            vsProjectScope.BindingFilesTracker.Initialized += BindingFilesTrackerOnInitialized;
+            vsProjectScope.BindingFilesTracker.Ready += BindingFilesTrackerOnReady;
             vsProjectScope.BindingFilesTracker.FileUpdated += BindingFilesTrackerOnFileUpdated;
             vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
@@ -122,44 +146,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 }
         }
 
-        private void FeatureFilesTrackerOnInitialized()
+        private void FeatureFilesTrackerOnReady()
         {
-//            vsProjectScope.VisualStudioTracer.Trace("Processing step instances...", "ProjectStepSuggestionProvider");
-//            AddSuggestionsFromFeatureFiles();
-
             featureFilesPopulated = true;
             vsProjectScope.VisualStudioTracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
         }
 
-        private void BindingFilesTrackerOnInitialized()
+        private void BindingFilesTrackerOnReady()
         {
-//            vsProjectScope.VisualStudioTracer.Trace("Processing bindings...", "ProjectStepSuggestionProvider");
-//            AddSuggestionsFromBindings();
-
             bindingsPopulated = true;
             vsProjectScope.VisualStudioTracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
-        }
-
-        private void AddSuggestionsFromBindings()
-        {
-            foreach (var bindingFileInfo in vsProjectScope.BindingFilesTracker.Files)
-            {
-                var bindings = bindingFileInfo.StepBindings.ToList();
-                bindingSuggestions.Add(bindingFileInfo, bindings);
-                bindings.ForEach(AddBinding);
-            }
-        }
-
-        private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
-
-        private void AddSuggestionsFromFeatureFiles()
-        {
-            foreach (var featureFileInfo in vsProjectScope.FeatureFilesTracker.Files.Where(ffi => ffi.ParsedFeature != null))
-            {
-                var stepSuggestions = GetStepSuggestions(featureFileInfo.ParsedFeature).ToList();
-                fileSuggestions.Add(featureFileInfo, stepSuggestions);
-                stepSuggestions.ForEach(AddStepSuggestion);
-            }
         }
 
         private void FeatureFilesTrackerOnFeatureFileRemoved(FeatureFileInfo featureFileInfo)
@@ -192,8 +188,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 stepSuggestions.ForEach(AddStepSuggestion);
             }
         }
-
-        private readonly Dictionary<BindingFileInfo, List<StepBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBinding>>();
 
         private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
         {
@@ -228,9 +222,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Dispose()
         {
-            vsProjectScope.FeatureFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
+            vsProjectScope.FeatureFilesTracker.Ready -= FeatureFilesTrackerOnReady;
             vsProjectScope.FeatureFilesTracker.FileUpdated -= FeatureFilesTrackerOnFeatureFileUpdated;
             vsProjectScope.FeatureFilesTracker.FileRemoved -= FeatureFilesTrackerOnFeatureFileRemoved;
+
+            vsProjectScope.BindingFilesTracker.Ready -= BindingFilesTrackerOnReady;
+            vsProjectScope.BindingFilesTracker.FileUpdated -= BindingFilesTrackerOnFileUpdated;
+            vsProjectScope.BindingFilesTracker.FileRemoved -= BindingFilesTrackerOnFileRemoved;
         }
     }
 }

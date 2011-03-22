@@ -114,10 +114,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
 
             featureFilesTracker = new ProjectFeatureFilesTracker(this);
-            featureFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
+            featureFilesTracker.Ready += FeatureFilesTrackerOnReady;
 
             bindingFilesTracker = new BindingFilesTracker(this);
-//            bindingFilesTracker.Initialized += FeatureFilesTrackerOnInitialized;
 
             appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
@@ -131,7 +130,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             featureFilesTracker.Run();
         }
 
-        private void FeatureFilesTrackerOnInitialized()
+        private void FeatureFilesTrackerOnReady()
         {
             //compare generated file versions with the generator version
             Version generatorVersion = SpecFlowProjectConfiguration.GeneratorConfiguration.GeneratorVersion;
@@ -247,7 +246,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             if (featureFilesTracker != null)
             {
-                featureFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
+                featureFilesTracker.Ready -= FeatureFilesTrackerOnReady;
                 featureFilesTracker.Dispose();
             }
             if (bindingFilesTracker != null)

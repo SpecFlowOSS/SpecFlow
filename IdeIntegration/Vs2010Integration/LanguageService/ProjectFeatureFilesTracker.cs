@@ -15,6 +15,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class FeatureFileInfo : IFileInfo
     {
         public string ProjectRelativePath { get; private set; }
+        public bool IsAnalyzed { get; set; }
         public Version GeneratorVersion { get; set; }
         public Feature ParsedFeature { get; set; }
 
@@ -48,9 +49,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return ".feature".Equals(Path.GetExtension(projectItem.Name), StringComparison.InvariantCultureIgnoreCase);
         }
 
-        protected override void Initialize()
+        protected override void AnalyzeInitially()
         {
-            base.Initialize();
+            base.AnalyzeInitially();
             vsProjectScope.GherkinDialectServicesChanged += OnGherkinDialectServicesChanged;
         }
 

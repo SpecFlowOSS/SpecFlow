@@ -72,7 +72,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 if (step == null)
                     return;
 
-                IEnumerable<Completion> completions = GetCompletionsForBindingType(step.BindingType);
+                IEnumerable<Completion> completions;
+                IEnumerable<Completion> completionBuilders;
+                GetCompletionsForBindingType(step.BindingType, out completions, out completionBuilders);
+
                 ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value);
 
                 string displayName = string.Format("All {0} Steps", step);
@@ -82,7 +85,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                         displayName,
                         applicableTo,
                         completions,
-                        null));
+                        completionBuilders));
             }
         }
 
@@ -177,16 +180,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return fileScope.GetStepAtPosition(triggerLineNumber);
         }
 
-        private IEnumerable<Completion> GetCompletionsForBindingType(BindingType bindingType)
+        private void GetCompletionsForBindingType(BindingType bindingType, out IEnumerable<Completion> completions, out IEnumerable<Completion> completionBuilders)
         {
+            completionBuilders = null;
+
             var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
             if (suggestionProvider == null)
-                return Enumerable.Empty<Completion>();
+            {
+                completions = Enumerable.Empty<Completion>();
+                return;
+            }
 
             if (!suggestionProvider.Populated)
-                return new[] {new Completion("step suggestion list is being populated...")};
+            {
+                string percentText = string.Format("({0}% completed)", suggestionProvider.GetPopulationPercent());
+                completionBuilders = new[] {new Completion(
+                    (!suggestionProvider.BindingsPopulated ? 
+                        "step suggestion list is being populated... " : 
+                        "step suggestion list from existing feature files is being populated... ") + percentText)};
+            }
 
-            return suggestionProvider.GetNativeSuggestionItems(bindingType);
+            try
+            {
+                completions = suggestionProvider.GetNativeSuggestionItems(bindingType);
+            }
+            catch(Exception)
+            {
+                //fallback case
+                completions = Enumerable.Empty<Completion>();
+            }
         }
 
         public void Dispose()

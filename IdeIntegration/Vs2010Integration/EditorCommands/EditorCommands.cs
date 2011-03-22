@@ -18,13 +18,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.textView = textView;
         }
 
-        private VsStepSuggestionProvider GetPopulatedSuggestionProvider()
+        private VsStepSuggestionProvider GetSuggestionProvider()
         {
             var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
             if (suggestionProvider == null)
-                return null;
-
-            if (!suggestionProvider.Populated)
                 return null;
 
             return suggestionProvider;
@@ -42,7 +39,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         public bool CanGoToDefinition()
         {
-            return GetPopulatedSuggestionProvider() != null && GetCurrentStep() != null;
+            return GetSuggestionProvider() != null && GetCurrentStep() != null;
         }
 
         public bool GoToDefinition()
@@ -51,9 +48,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             if (step == null)
                 return false;
 
-            var suggestionProvider = GetPopulatedSuggestionProvider();
+            var suggestionProvider = GetSuggestionProvider();
             if (suggestionProvider == null)
                 return false;
+
+            if (!suggestionProvider.BindingsPopulated)
+            {
+                MessageBox.Show("Step bindings are still being analyzed. Please wait.");
+                return true;
+            }
 
             var bindings = suggestionProvider.GetMatchingBindings(step).ToArray();
             if (bindings.Length == 0)

@@ -9,6 +9,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     public interface IFileInfo
     {
+        bool IsAnalyzed { get; set; }
         string ProjectRelativePath { get; }
         void Rename(string newProjectRelativePath);
     }
@@ -19,10 +20,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         protected List<TFileInfo> files;
 
         public event Action Initialized;
+        public event Action Ready;
         public event Action<TFileInfo> FileRemoved;
         public event Action<TFileInfo> FileUpdated;
 
         public IEnumerable<TFileInfo> Files { get { return files; } }
+        public bool IsInitialized { get { return files != null; } }
 
         protected ProjectFilesTracker(VsProjectScope vsProjectScope)
         {
@@ -31,6 +34,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void FilesTrackerOnFileOutOfScope(ProjectItem projectItem, string projectRelativePath)
         {
+            if (!IsInitialized)
+                return;
+
             var fileInfo = FindFileInfo(projectRelativePath);
             if (fileInfo != null)
             {
@@ -40,6 +46,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void FilesTrackerOnFileRenamed(ProjectItem projectItem, string oldName)
         {
+            if (!IsInitialized)
+                return;
+
             var fileInfo = FindFileInfo(oldName);
             if (fileInfo != null)
             {
@@ -53,6 +62,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void FilesTrackerOnFileChanged(ProjectItem projectItem)
         {
+            if (!IsInitialized)
+                return;
+
             bool isInScope = IsMatchingProjectItem(projectItem);
             var fileInfo = FindFileInfo(VsxHelper.GetProjectRelativePath(projectItem));
             if (fileInfo != null)
@@ -92,19 +104,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public virtual void Run()
         {
-            files = GetFileProjectItems().Select(CreateFileInfo).ToList();
-//            AnalyzeFilesBackground();
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(Initialize), DispatcherPriority.Background);
+            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(Initialize), DispatcherPriority.Normal);
+            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(AnalyzeInitially), DispatcherPriority.Background);
         }
 
         protected virtual void Initialize()
         {
-            foreach (var fileInfo in Files.ToArray())
+            files = GetFileProjectItems().Select(CreateFileInfo).ToList();
+
+            if (Initialized != null)
+                Initialized();
+
+            vsProjectScope.VisualStudioTracer.Trace("Initialized", GetType().Name);
+        }
+
+        protected virtual void AnalyzeInitially()
+        {
+            TFileInfo fileInfo;
+            while ((fileInfo = files.FirstOrDefault(fi => !fi.IsAnalyzed)) != null)
             {
                 AnalyzeInternal(fileInfo, true);
             }
-            if (Initialized != null)
-                Initialized();
+            if (Ready != null)
+                Ready();
         }
 
         protected void AnalyzeBackground(TFileInfo fileInfo)
@@ -143,6 +165,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             catch(Exception)
             {
                 
+            }
+            finally
+            {
+                fileInfo.IsAnalyzed = true;
             }
         }
 
