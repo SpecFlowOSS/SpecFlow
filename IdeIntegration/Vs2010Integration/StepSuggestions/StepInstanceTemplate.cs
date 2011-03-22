@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
         }
 
-        public bool Match(StepBinding binding, bool includeRegexCheck)
+        public bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.BindingType != BindingType)
                 return false;
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (suggestions.Count == 0)
                 return false;
 
-            return suggestions.Any(i => i.Match(binding, true));
+            return suggestions.Any(i => i.Match(binding, true, bindingMatchService));
         }
     }
 
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public BindingType BindingType { get; private set; }
         internal string StepPrefix { get; private set; }
 
-        public bool Match(StepBinding binding, bool includeRegexCheck)
+        public bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.BindingType != BindingType)
                 return false;
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (instances.Count == 0)
                 return false;
 
-            return instances.Any(i => i.Match(binding, true));
+            return instances.Any(i => i.Match(binding, true, bindingMatchService));
         }
 
         static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");

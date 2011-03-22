@@ -99,6 +99,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return BindingsPopulated; }
         }
 
+        protected override IBindingMatchService BindingMatchService
+        {
+            get { return vsProjectScope.BindingMatchService; }
+        }
+
         public VsStepSuggestionProvider(VsProjectScope vsProjectScope)
             : base(VsSuggestionItemFactory.Instance)
         {

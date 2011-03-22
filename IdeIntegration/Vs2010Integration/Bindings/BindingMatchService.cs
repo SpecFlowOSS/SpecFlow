@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
 
@@ -12,6 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
     {
         bool Ready { get; }
         StepBinding GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepBinding> candidatingBindings);
+        BindingMatch Match(StepBinding stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
     }
 
     public class BindingMatchService : IBindingMatchService
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
             this.bindingRegistry = bindingRegistry;
         }
 
-        public BindingMatch Match(StepBinding stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = false, bool useScopeMatching = true)
+        public BindingMatch Match(StepBinding stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
             if (useParamMatching)
                 useRegexMatching = true;
@@ -44,13 +44,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
             if (useParamMatching)
             {
                 Debug.Assert(match != null);
-                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
-                var arguments = regexArgs /*+ extraArgs*/;
-                // check if the regex + extra arguments match to the binding method parameters
-                if (arguments.Count() != stepBinding.Method.Parameters.Count())
-                    return BindingMatch.NonMatching;
-
                 //TODO: proper param matching
+//                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
+//                var arguments = regexArgs /*+ extraArgs*/;
+                // check if the regex + extra arguments match to the binding method parameters
+//                if (arguments.Count() != stepBinding.Method.Parameters.Count())
+//                    return BindingMatch.NonMatching;
 
                 // Check if regex & extra arguments can be converted to the method parameters
                 //                if (bindingMatch.Arguments.Where(
