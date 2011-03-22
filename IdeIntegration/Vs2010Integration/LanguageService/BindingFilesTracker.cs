@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector();
         }
 
-        public override void Run()
+        public override void Initialize()
         {
             var mainProject = vsProjectScope.Project;
             var bindingAssemblies = Enumerable.Empty<BindingAssemblyInfo>()
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ai => ai,
                 ai => ai.IsProject ? CreateFilesTracker(ai) : null);
 
-            base.Run();
+            base.Initialize();
         }
 
         private VsProjectFilesTracker CreateFilesTracker(BindingAssemblyInfo ai)
@@ -102,12 +102,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override bool IsMatchingProjectItem(ProjectItem projectItem)
         {
-            var extension = Path.GetExtension(projectItem.Name);
-            if (!".cs".Equals(extension, StringComparison.InvariantCultureIgnoreCase) &&
-                !".vb".Equals(extension, StringComparison.InvariantCultureIgnoreCase))
-                return false;
+            try
+            {
+                var extension = Path.GetExtension(projectItem.Name);
+                if (!".cs".Equals(extension, StringComparison.InvariantCultureIgnoreCase) &&
+                    !".vb".Equals(extension, StringComparison.InvariantCultureIgnoreCase))
+                    return false;
 
-            return VsxHelper.GetClasses(projectItem).Any(VsStepSuggestionBindingCollector.IsBindingClass);
+                return VsxHelper.GetClasses(projectItem).Any(VsStepSuggestionBindingCollector.IsBindingClass);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void Dispose()

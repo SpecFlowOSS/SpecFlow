@@ -190,10 +190,8 @@
     <Compile Include="LanguageService\VsBindingMethod.cs" />
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
-    <Compile Include="SpecFlowServices.cs" />
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="ISpecFlowServices.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
     <Compile Include="LanguageService\NoProjectScope.cs" />
     <Compile Include="LanguageService\VsProjectScope.cs" />

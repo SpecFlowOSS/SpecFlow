@@ -29,6 +29,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected ProjectFilesTracker(VsProjectScope vsProjectScope)
         {
+            if (vsProjectScope.GherkinProcessingScheduler == null)
+                throw new ArgumentException("GherkinProcessingScheduler is null", "vsProjectScope");
+
             this.vsProjectScope = vsProjectScope;
         }
 
@@ -102,13 +105,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker.Dispose();
         }
 
-        public virtual void Run()
+        private void DoTaskAsynch(Action action)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(Initialize), DispatcherPriority.Normal);
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(AnalyzeInitially), DispatcherPriority.Background);
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action));
         }
 
-        protected virtual void Initialize()
+        public virtual void Initialize()
+        {
+            DoTaskAsynch(InitializeInternal);
+        }
+
+        public virtual void Run()
+        {
+            DoTaskAsynch(AnalyzeInitially);
+        }
+
+        protected virtual void InitializeInternal()
         {
             files = GetFileProjectItems().Select(CreateFileInfo).ToList();
 
@@ -131,19 +143,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected void AnalyzeBackground(TFileInfo fileInfo)
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => AnalyzeInternal(fileInfo, true)), DispatcherPriority.Background);
+            DoTaskAsynch(() => AnalyzeInternal(fileInfo, true));
         }
 
         protected void AnalyzeFilesBackground()
         {
-            Dispatcher.CurrentDispatcher.BeginInvoke(
-                new Action(() =>
-                               {
-                                   foreach (var fileInfo in Files)
-                                   {
-                                       AnalyzeInternal(fileInfo, true);
-                                   }
-                               }), DispatcherPriority.Background);
+            DoTaskAsynch(() =>
+                             {
+                                 foreach (var fileInfo in Files)
+                                 {
+                                     AnalyzeInternal(fileInfo, true);
+                                 }
+                             });
         }
 
         private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent)

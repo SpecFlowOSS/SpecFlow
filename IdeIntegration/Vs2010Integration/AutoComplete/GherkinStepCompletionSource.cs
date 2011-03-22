@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -17,14 +18,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     internal class GherkinStepCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        ISpecFlowServices SpecFlowServices = null;
+        IIntegrationOptionsProvider IntegrationOptionsProvider = null;
 
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
-            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
+            if (!IntegrationOptionsProvider.GetOptions().EnableIntelliSense)
                 return null;
 
             return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));

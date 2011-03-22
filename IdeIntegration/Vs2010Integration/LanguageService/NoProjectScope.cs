@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public NoProjectScope(GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
             GherkinTextBufferParser = new GherkinTextBufferParser(this, visualStudioTracer);
-            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
+            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, false);
             SpecFlowProjectConfiguration = new SpecFlowProjectConfiguration();
             GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage); 
             Classifications = classifications;

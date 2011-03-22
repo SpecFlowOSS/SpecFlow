@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -16,8 +17,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly Project project;
         private readonly DteWithEvents dteWithEvents;
         private readonly IVisualStudioTracer visualStudioTracer;
+        private readonly IIntegrationOptionsProvider integrationOptionsProvider;
         private readonly GherkinTextBufferParser parser;
-        private readonly GherkinScopeAnalyzer analyzer;
+        private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
         public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
 
@@ -93,16 +95,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
 
-        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
+        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer, IIntegrationOptionsProvider integrationOptionsProvider)
         {
             Classifications = classifications;
             this.project = project;
             this.dteWithEvents = dteWithEvents;
             this.visualStudioTracer = visualStudioTracer;
+            this.integrationOptionsProvider = integrationOptionsProvider;
+
+            var integrationOptions = integrationOptionsProvider.GetOptions();
 
             parser = new GherkinTextBufferParser(this, visualStudioTracer);
-            analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
-            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
+//TODO: enable when analizer is implemented
+//            if (integrationOptions.EnableAnalysis)
+//                analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
+
+            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, integrationOptions.EnableAnalysis);
         }
 
         private void EnsureInitialized()
@@ -124,22 +132,31 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             specFlowProjectConfiguration = LoadConfiguration();
             gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
 
-            featureFilesTracker = new ProjectFeatureFilesTracker(this);
-            featureFilesTracker.Ready += FeatureFilesTrackerOnReady;
-
-            bindingFilesTracker = new BindingFilesTracker(this);
-
             appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
             appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
             appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
-            stepSuggestionProvider = new VsStepSuggestionProvider(this);
-            bindingMatchService = new BindingMatchService(stepSuggestionProvider);
+            var enableAnalysis = integrationOptionsProvider.GetOptions().EnableAnalysis;
+            if (enableAnalysis)
+            {
+                featureFilesTracker = new ProjectFeatureFilesTracker(this);
+                featureFilesTracker.Ready += FeatureFilesTrackerOnReady;
+
+                bindingFilesTracker = new BindingFilesTracker(this);
+
+                stepSuggestionProvider = new VsStepSuggestionProvider(this);
+                bindingMatchService = new BindingMatchService(stepSuggestionProvider);
+            }
             initialized = true;
 
-            stepSuggestionProvider.Initialize();
-            bindingFilesTracker.Run();
-            featureFilesTracker.Run();
+            if (enableAnalysis)
+            {
+                stepSuggestionProvider.Initialize();
+                bindingFilesTracker.Initialize();
+                featureFilesTracker.Initialize();
+                bindingFilesTracker.Run();
+                featureFilesTracker.Run();
+            }
         }
 
         private void FeatureFilesTrackerOnReady()
@@ -237,9 +254,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             get
             {
-                return null;
-                //TODO: re-enable if analyzer is implemented 
-                //return analyzer;
+                return analyzer;
             }
         }
 
@@ -266,6 +281,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 //                bindingFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
                 bindingFilesTracker.Dispose();
             }
+        }
+
+        public static bool IsProjectSupported(Project project)
+        {
+            return
+                project.FullName.EndsWith(".csproj") ||
+                project.FullName.EndsWith(".vbproj");
         }
     }
 }

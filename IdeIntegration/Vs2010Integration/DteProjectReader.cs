@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     {
         public static SpecFlowProject LoadSpecFlowProjectFromDteProject(Project project)
         {
-            if (project == null || !SpecFlowServices.IsProjectSupported(project))
+            if (project == null || !VsProjectScope.IsProjectSupported(project))
                 return null;
 
             try
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
         public static SpecFlowProjectConfiguration LoadSpecFlowConfigurationFromDteProject(Project project)
         {
-            if (project == null || !SpecFlowServices.IsProjectSupported(project))
+            if (project == null || !VsProjectScope.IsProjectSupported(project))
                 return null;
 
             try

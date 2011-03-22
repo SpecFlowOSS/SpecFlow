@@ -294,13 +294,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void FeatureTag(string name, GherkinBufferSpan tagSpan)
         {
             ColorizeSpan(tagSpan, classifications.Tag);
-            CurrentFileBlockBuilder.Tags.Add(name);
+            CurrentFileBlockBuilder.Tags.Add(name.TrimStart('@'));
         }
 
         public void ScenarioTag(string name, GherkinBufferSpan tagSpan)
         {
             EnsureNewScenario(tagSpan.StartPosition.Line);
-            CurrentFileBlockBuilder.Tags.Add(name);
+            CurrentFileBlockBuilder.Tags.Add(name.TrimStart('@'));
             ColorizeSpan(tagSpan, classifications.Tag);
         }
 

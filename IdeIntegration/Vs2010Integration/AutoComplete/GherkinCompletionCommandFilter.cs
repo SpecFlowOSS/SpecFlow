@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -26,14 +27,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         ICompletionBroker CompletionBroker = null;
 
         [Import]
-        ISpecFlowServices SpecFlowServices = null;
+        IIntegrationOptionsProvider IntegrationOptionsProvider = null;
 
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            if (!SpecFlowServices.GetOptions().EnableIntelliSense)
+            if (!IntegrationOptionsProvider.GetOptions().EnableIntelliSense)
                 return;
 
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
