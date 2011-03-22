@@ -166,12 +166,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             return VsxHelper.GetClasses(project).Where(IsBindingClass).Where(c => c.FullName == bindingMethod.Type.FullName)
                 .SelectMany(c => c.GetFunctions()).FirstOrDefault(
-                    f => f.Name == bindingMethod.Name && MethodEquals(bindingMethod, new VsBindingMethod(f)));
-        }
-
-        private bool MethodEquals(IBindingMethod method1, IBindingMethod method2)
-        {
-            return method1.Name == method2.Name; //TODO: complete
+                    f => f.Name == bindingMethod.Name && BindingReflectionExtensions.MethodEquals(bindingMethod, new VsBindingMethod(f)));
         }
     }
 }

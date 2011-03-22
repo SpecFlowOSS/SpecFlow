@@ -159,6 +159,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Runtime\Table.cs">
+      <Link>Bindings\Table.cs</Link>
+    </Compile>
     <Compile Include="..\Vs2008Integration\BaseCodeGenerator.cs">
       <Link>SingleFileGenerator\BaseCodeGenerator.cs</Link>
     </Compile>

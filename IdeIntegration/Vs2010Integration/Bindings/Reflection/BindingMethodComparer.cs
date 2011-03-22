@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection
 
         public bool Equals(IBindingMethod x, IBindingMethod y)
         {
-            return x.Equals(y);
+            return x.MethodEquals(y);
         }
 
         public int GetHashCode(IBindingMethod obj)

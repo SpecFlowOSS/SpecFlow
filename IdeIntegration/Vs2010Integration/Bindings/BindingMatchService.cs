@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
 {
@@ -44,25 +45,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
             if (useParamMatching)
             {
                 Debug.Assert(match != null);
-                //TODO: proper param matching
-//                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
-//                var arguments = regexArgs /*+ extraArgs*/;
+                var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+                var arguments = regexArgs.Cast<object>().AppendIfNotNull(stepInstance.MultilineTextArgument).AppendIfNotNull(stepInstance.TableArgument).ToArray();
                 // check if the regex + extra arguments match to the binding method parameters
-//                if (arguments.Count() != stepBinding.Method.Parameters.Count())
-//                    return BindingMatch.NonMatching;
+                if (arguments.Count() != stepBinding.Method.Parameters.Count())
+                    return BindingMatch.NonMatching;
 
                 // Check if regex & extra arguments can be converted to the method parameters
-                //                if (bindingMatch.Arguments.Where(
-                //                    (arg, argIndex) => !CanConvertArg(arg, stepBinding.ParameterTypes[argIndex])).Any())
-                //                    return null;
+                if (arguments.Zip(stepBinding.Method.Parameters, (arg, parameter) => CanConvertArg(arg, parameter.Type)).Any(canConvert => !canConvert))
+                    return BindingMatch.NonMatching;
             }
 
             return new BindingMatch(stepBinding, scopeMatches);
         }
 
-        private IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance)
+        private bool CanConvertArg(object value, IBindingType typeToConvertTo)
         {
-            var matches = bindingRegistry.GetConsideredBindings(stepInstance.Text).Select(b => Match(b, stepInstance)).Where(b => b.Success);
+            Debug.Assert(value != null);
+            Debug.Assert(typeToConvertTo != null);
+
+            if (typeToConvertTo.IsAssignableTo(value.GetType()))
+                return true;
+
+            //TODO: proper param matching
+            //return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, FeatureContext.Current.BindingCulture);
+            return false;
+        }
+
+        private IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance, bool useParamMatching = true)
+        {
+            var matches = bindingRegistry.GetConsideredBindings(stepInstance.Text).Select(b => Match(b, stepInstance, useParamMatching: useParamMatching)).Where(b => b.Success);
             // we remove duplicate maches for the same method (take the highest scope matches from each)
             matches = matches.GroupBy(m => m.StepBinding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;
@@ -71,7 +83,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
         public StepBinding GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepBinding> candidatingBindings)
         {
             candidatingBindings = Enumerable.Empty<StepBinding>();
-            var matches = GetCandidatingBindings(stepInstance).ToList();
+            var matches = GetCandidatingBindings(stepInstance, useParamMatching: true).ToList();
+            if (matches.Count == 0)
+            {
+                //HACK: since out param matching does not support agrument converters yet, we rather show more results than "no match"
+                matches = GetCandidatingBindings(stepInstance, useParamMatching: false).ToList();
+            }
 
             if (matches.Count > 1)
             {
@@ -79,7 +96,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
                 int maxScopeMatches = matches.Max(m => m.ScopeMatches);
                 matches.RemoveAll(m => m.ScopeMatches < maxScopeMatches);
             }
-
             if (matches.Count == 0)
             {
                 return null;

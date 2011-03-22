@@ -10,6 +10,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
         public BindingType BindingType { get; private set; }
         public string Text { get; private set; }
         public StepScope StepScope { get; private set; }
+        public string MultilineTextArgument { get; set; }
+        public Table TableArgument { get; set; }
 
         public StepInstance(BindingType bindingType, string stepText, StepScope stepScope)
         {

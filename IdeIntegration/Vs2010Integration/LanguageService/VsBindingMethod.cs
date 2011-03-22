@@ -12,6 +12,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public string Name { get; private set; }
         public string FullName { get; private set; }
 
+        public bool IsAssignableTo(Type type)
+        {
+            if (type.FullName == FullName)
+                return true;
+
+            if (type.BaseType != null && IsAssignableTo(type.BaseType))
+                return true;
+
+            return type.GetInterfaces().Any(IsAssignableTo);
+        }
+
         public VsBindingType(CodeTypeRef type)
         {
             FullName = type.AsFullName;

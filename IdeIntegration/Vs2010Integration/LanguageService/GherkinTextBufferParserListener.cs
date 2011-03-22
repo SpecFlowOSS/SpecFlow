@@ -207,6 +207,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 CloseBlock(editorLine);
                 OnScenarioBlockCreating(editorLine);
                 CreateBlock(editorLine);
+                currentStep = null;
             }
         }
 
@@ -245,6 +246,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             NewBlock(headerSpan.StartPosition.Line);
             CurrentFileBlockBuilder.SetMainData(typeof(IBackgroundBlock), headerSpan.StartPosition.Line, keyword, name);
+            currentStep = null;
 
             RegisterKeyword(keyword, headerSpan);
             ColorizeSpan(descriptionSpan, classifications.Description);
@@ -336,7 +338,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(cellSpan, classifications.TableHeader);
             }
 
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                try
+                {
+                    currentStep.TableArgument = new Table(cells);
+                }
+                catch(Exception)
+                {
+                    //TODO: shall we mark it as error?
+                }
+            }
             //TODO: register outline example
         }
 
@@ -346,8 +358,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
             }
-
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                try
+                {
+                    currentStep.TableArgument.AddRow(cells);
+                }
+                catch (Exception)
+                {
+                    //TODO: shall we mark it as error?
+                }
+            }
             //TODO: register outline example
         }
 
@@ -355,7 +376,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             ColorizeSpan(textSpan, classifications.MultilineText);
 
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                currentStep.MultilineTextArgument = text;
+            }
+            else
+            {
+                //TODO: shall we mark it as error?
+            }
         }
 
         public void EOF(GherkinBufferPosition eofPosition)
