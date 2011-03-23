@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
@@ -69,17 +70,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             }
             else
             {
-                var step = GetCurrentStep(triggerPoint.Value);
-                if (step == null)
+                var bindingType = GetCurrentBindingType(triggerPoint.Value);
+                if (bindingType == null)
                     return;
 
                 IEnumerable<Completion> completions;
                 IEnumerable<Completion> completionBuilders;
-                GetCompletionsForBindingType(step.BindingType, out completions, out completionBuilders);
+                GetCompletionsForBindingType(bindingType.Value, out completions, out completionBuilders);
 
                 ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value);
 
-                string displayName = string.Format("All {0} Steps", step);
+                string displayName = string.Format("All {0} Steps", bindingType.Value);
                 completionSets.Add(
                     new HierarchicalCompletionSet(
                         displayName,
@@ -112,7 +113,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return start == triggerPoint;
         }
 
-        static internal bool IsStepLine(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
+        static private string GetFirstWord(SnapshotPoint triggerPoint)
         {
             var line = triggerPoint.GetContainingLine();
             SnapshotPoint start = line.Start;
@@ -120,9 +121,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             SnapshotPoint end = start;
             ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
             if (start >= end)
-                return false;
+                return null;
 
-            var firstWord = triggerPoint.Snapshot.GetText(start, end.Position - start);
+            return triggerPoint.Snapshot.GetText(start, end.Position - start);
+        }
+
+        static internal bool IsStepLine(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
+        {
+            var firstWord = GetFirstWord(triggerPoint);
+            if (firstWord == null)
+                return false;
             GherkinDialect dialect = GetDialect(languageService);
             return dialect.IsStepKeyword(firstWord);
         }
@@ -171,14 +179,44 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 point += 1;
         }
 
-        private GherkinStep GetCurrentStep(SnapshotPoint triggerPoint)
+        private BindingType? GetCurrentBindingType(SnapshotPoint triggerPoint)
         {
             var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
             if (fileScope == null)
                 return null;
 
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
-            return fileScope.GetStepAtPosition(triggerLineNumber);
+            var step = fileScope.GetStepAtPosition(triggerLineNumber);
+            if (step != null)
+                return step.BindingType;
+
+            if (!IsStepLine(triggerPoint, languageService))
+                return null;
+
+            // this is a step line that just started. we need to calculate the binding type from
+            // the keyword and the context
+            var firstWord = GetFirstWord(triggerPoint);
+            if (firstWord == null)
+                return null;
+
+            GherkinDialect dialect = GetDialect(languageService);
+            var stepKeyword = dialect.GetStepKeyword(firstWord);
+            if (stepKeyword == null)
+                return null;
+
+            if (stepKeyword == StepKeyword.Given)
+                return BindingType.Given;
+            if (stepKeyword == StepKeyword.When)
+                return BindingType.When;
+            if (stepKeyword == StepKeyword.Then)
+                return BindingType.Then;
+            
+            // now we need the context
+            var stepBlock = fileScope.GetStepBlockFromStepPosition(triggerLineNumber);
+            var lastStep = stepBlock.Steps.LastOrDefault(s => s.BlockRelativeLine + stepBlock.KeywordLine < triggerLineNumber);
+            if (lastStep == null)
+                return BindingType.Given;
+            return lastStep.BindingType;
         }
 
         private void GetCompletionsForBindingType(BindingType bindingType, out IEnumerable<Completion> completions, out IEnumerable<Completion> completionBuilders)

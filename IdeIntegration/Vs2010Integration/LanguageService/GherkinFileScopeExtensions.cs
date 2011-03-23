@@ -108,12 +108,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static GherkinStep GetStepAtPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
         {
-            var scenarioInfo = gherkinFileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < lineNumber) as IStepBlock;
+            IStepBlock scenarioInfo = GetStepBlockFromStepPosition(gherkinFileScope, lineNumber);
             if (scenarioInfo == null)
                 return null;
 
             var blockRelativeLine = lineNumber - scenarioInfo.KeywordLine;
             return scenarioInfo.Steps.FirstOrDefault(s => s.BlockRelativeLine == blockRelativeLine);
+        }
+
+        public static IStepBlock GetStepBlockFromStepPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
+        {
+            return gherkinFileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < lineNumber) as IStepBlock;
         }
     }
 }

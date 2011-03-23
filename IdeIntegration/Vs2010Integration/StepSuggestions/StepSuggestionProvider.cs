@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                 .OfType<BoundInstanceTemplate<TNativeSuggestionItem>>()
                 .Where(bt => bt.Template == stepInstanceTemplate);
 
-            foreach (var boundInstanceTemplate in boundInstanceTemplates)
+            foreach (var boundInstanceTemplate in boundInstanceTemplates.ToArray())
                 RemoveBoundStepSuggestion(boundInstanceTemplate);
         }
 

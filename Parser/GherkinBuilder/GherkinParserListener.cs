@@ -35,6 +35,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public Feature GetResult()
         {
+            if (errors.Any())
+                return null;
             return parsedResult;
         }
 

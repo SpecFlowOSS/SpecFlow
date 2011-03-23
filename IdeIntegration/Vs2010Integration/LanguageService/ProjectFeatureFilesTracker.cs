@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.VisualStudioTracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
             AnalyzeCodeBehind(featureFileInfo, projectItem);
 
-            var fileContent = VsxHelper.GetFileContent(projectItem);
+            var fileContent = VsxHelper.GetFileContent(projectItem, loadLastSaved: true);
             featureFileInfo.ParsedFeature = ParseGherkinFile(fileContent, featureFileInfo.ProjectRelativePath, vsProjectScope.GherkinDialectServices.DefaultLanguage);
         }
 

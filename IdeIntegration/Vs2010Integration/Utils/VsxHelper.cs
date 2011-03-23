@@ -204,9 +204,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
         }
 
-        static public string GetFileContent(ProjectItem projectItem)
+        static public string GetFileContent(ProjectItem projectItem, bool loadLastSaved = false)
         {
-            if (projectItem.IsOpen[Constants.vsViewKindAny])
+            if (!loadLastSaved && projectItem.IsOpen[Constants.vsViewKindAny])
             {
                 TextDocument textDoc = (TextDocument)projectItem.Document.Object("TextDocument");
                 EditPoint start = textDoc.StartPoint.CreateEditPoint();
