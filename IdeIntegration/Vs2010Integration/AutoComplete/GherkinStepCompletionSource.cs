@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 
@@ -200,7 +200,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 return null;
 
             GherkinDialect dialect = GetDialect(languageService);
-            var stepKeyword = dialect.GetStepKeyword(firstWord);
+            var stepKeyword = dialect.TryParseStepKeyword(firstWord);
             if (stepKeyword == null)
                 return null;
 

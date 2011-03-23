@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using EnvDTE;
 using EnvDTE80;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService

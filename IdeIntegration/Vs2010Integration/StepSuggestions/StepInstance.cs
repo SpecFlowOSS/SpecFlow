@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
         public StepInstance(ScenarioStep step, StepScope stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
-            : base((BindingType)step.ScenarioBlock, step.Text, stepScope)
+            : base((BindingType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepScope)
         {
             this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, BindingType.ToString().Substring(0, 1), this);
         }

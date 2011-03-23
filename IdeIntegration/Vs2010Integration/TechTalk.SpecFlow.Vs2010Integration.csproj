@@ -159,6 +159,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Runtime\GenerationTargetLanguage.cs">
+      <Link>BindingSkeletons\GenerationTargetLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Runtime\StringExtensions.cs">
+      <Link>BindingSkeletons\StringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\Runtime\Table.cs">
       <Link>Bindings\Table.cs</Link>
     </Compile>
@@ -172,6 +178,11 @@
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
+    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\IBindingSkeletonProviderFactory.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingMatchService.cs" />
     <Compile Include="Bindings\IBindingRegistry.cs" />
@@ -183,6 +194,7 @@
     <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
     <Compile Include="Bindings\Reflection\IBindingType.cs" />
     <Compile Include="Bindings\StepBinding.cs" />
+    <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Bindings\StepScope.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />

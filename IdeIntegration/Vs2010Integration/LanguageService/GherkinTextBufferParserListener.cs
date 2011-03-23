@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -327,7 +327,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
             var stepScope = new StepScope(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray());
 
-            currentStep = new GherkinStep((BindingType)scenarioBlock, text, stepScope, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            currentStep = new GherkinStep((BindingType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepScope, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 

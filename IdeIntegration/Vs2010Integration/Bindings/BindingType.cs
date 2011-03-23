@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Parser.Gherkin;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
+namespace TechTalk.SpecFlow.Bindings
 {
     public enum BindingType
     {

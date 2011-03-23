@@ -36,6 +36,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             step.Text = text;
             step.FilePosition = position;
             step.ScenarioBlock = scenarioBlock;
+            step.StepKeyword = stepKeyword;
         }
 
         public ScenarioStep GetResult()

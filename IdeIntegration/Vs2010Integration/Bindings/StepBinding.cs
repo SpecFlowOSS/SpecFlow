@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
+namespace TechTalk.SpecFlow.Bindings
 {
     public class StepBinding
     {

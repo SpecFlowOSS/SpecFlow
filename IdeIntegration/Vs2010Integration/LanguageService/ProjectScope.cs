@@ -1,7 +1,8 @@
 ﻿using System;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -16,6 +17,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; }
         VsStepSuggestionProvider StepSuggestionProvider { get; }
         IBindingMatchService BindingMatchService { get; }
+        IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider { get; }
 
         event EventHandler SpecFlowProjectConfigurationChanged;
         event EventHandler GherkinDialectServicesChanged;

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -30,14 +30,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class GherkinStep : StepInstance, IKeywordLine
     {
-        public string Keyword { get; set; }
         public int BlockRelativeLine { get; set; }
         public BindingStatus BindingStatus { get; set; }
 
-        public GherkinStep(BindingType bindingType, string stepText, StepScope stepScope, string keyword, int blockRelativeLine)
-            : base(bindingType, stepText, stepScope)
+        public GherkinStep(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string stepText, StepScope stepScope, string keyword, int blockRelativeLine)
+            : base(bindingType, stepDefinitionKeyword, keyword, stepText, stepScope)
         {
-            Keyword = keyword;
             BlockRelativeLine = blockRelativeLine;
             BindingStatus = BindingStatus.UnknownBindingStatus;
         }

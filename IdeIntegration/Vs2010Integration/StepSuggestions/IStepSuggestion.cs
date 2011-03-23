@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {

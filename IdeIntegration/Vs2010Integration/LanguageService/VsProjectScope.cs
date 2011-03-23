@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -18,6 +19,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly DteWithEvents dteWithEvents;
         private readonly IVisualStudioTracer visualStudioTracer;
         private readonly IIntegrationOptionsProvider integrationOptionsProvider;
+        private readonly IBindingSkeletonProviderFactory bindingSkeletonProviderFactory;
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
@@ -92,16 +94,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IVisualStudioTracer VisualStudioTracer { get { return visualStudioTracer; } }
         internal DteWithEvents DteWithEvents { get { return dteWithEvents; } }
 
+        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
+        {
+            get { return bindingSkeletonProviderFactory.GetProvider(GetTargetLanguage(project), GherkinDialectServices.GetDefaultDialect()); }
+        }
+
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
 
-        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer, IIntegrationOptionsProvider integrationOptionsProvider)
+        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer, IIntegrationOptionsProvider integrationOptionsProvider, IBindingSkeletonProviderFactory bindingSkeletonProviderFactory)
         {
             Classifications = classifications;
             this.project = project;
             this.dteWithEvents = dteWithEvents;
             this.visualStudioTracer = visualStudioTracer;
             this.integrationOptionsProvider = integrationOptionsProvider;
+            this.bindingSkeletonProviderFactory = bindingSkeletonProviderFactory;
 
             var integrationOptions = integrationOptionsProvider.GetOptions();
 
@@ -285,9 +293,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static bool IsProjectSupported(Project project)
         {
-            return
-                project.FullName.EndsWith(".csproj") ||
-                project.FullName.EndsWith(".vbproj");
+            return GetTargetLanguage(project) != GenerationTargetLanguage.Other;
+        }
+
+        public static GenerationTargetLanguage GetTargetLanguage(Project project)
+        {
+            if (project.FullName.EndsWith(".csproj"))
+                return GenerationTargetLanguage.CSharp;
+            if (project.FullName.EndsWith(".vbproj"))
+                return GenerationTargetLanguage.VB;
+            return GenerationTargetLanguage.Other;
         }
     }
 }

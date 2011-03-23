@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using gherkin;
 using TechTalk.SpecFlow.Parser.Gherkin;
@@ -30,10 +31,10 @@ namespace TechTalk.SpecFlow.Parser
 
         public bool IsStepKeyword(string keyword)
         {
-            return GetStepKeyword(keyword) != null;
+            return TryParseStepKeyword(keyword) != null;
         }
 
-        public StepKeyword? GetStepKeyword(string keyword)
+        public StepKeyword? TryParseStepKeyword(string keyword)
         {
             if (NativeLanguageService.keywords("and").contains(keyword))
                 return StepKeyword.And;
@@ -56,7 +57,7 @@ namespace TechTalk.SpecFlow.Parser
             // To support the keywords without leading space as well, we retry the matching with 
             // an additional space too.
             if (!keyword.EndsWith(" "))
-                return GetStepKeyword(keyword + " ");
+                return TryParseStepKeyword(keyword + " ");
 
             return null;
         }
@@ -79,15 +80,14 @@ namespace TechTalk.SpecFlow.Parser
 
         public IEnumerable<string> GetStepKeywords()
         {
-            var keywords = Enumerable.Empty<string>();
-            keywords = keywords.Concat(NativeLanguageService.keywords("given").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("when").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("then").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("and").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("but").toArray().Cast<string>());
+            var keywords = Enum.GetValues(typeof(StepKeyword)).Cast<StepKeyword>().Aggregate(Enumerable.Empty<string>(), 
+                (current, stepKeyword) => current.Concat(GetStepKeywords(stepKeyword)));
             return keywords.Distinct().OrderBy(k => k);
         }
 
-
+        public IEnumerable<string> GetStepKeywords(StepKeyword stepKeyword)
+        {
+            return NativeLanguageService.keywords(stepKeyword.ToString().ToLowerInvariant()).toArray().Cast<string>();
+        }
     }
 }

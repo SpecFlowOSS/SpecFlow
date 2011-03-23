@@ -15,6 +15,8 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
     {
         [XmlIgnore] //TODO
         public ScenarioBlock ScenarioBlock { get; set; }
+        [XmlIgnore] //TODO
+        public StepKeyword StepKeyword { get; set; }
         public string Keyword { get; set; }
         public string Text { get; set; }
         public string MultiLineTextArgument { get; set; }

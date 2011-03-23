@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
 
@@ -75,7 +75,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 }
                 else
                 {
-                    MessageBox.Show("No matching step binding found for this step!", "Go to binding");
+                    string skeleton = languageService.ProjectScope.StepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(step);
+
+                    var result = MessageBox.Show("No matching step binding found for this step! Do you want to copy the step binding skeleton to the clipboard?"
+                         + Environment.NewLine + Environment.NewLine + skeleton, "Go to binding", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                    if (result == DialogResult.Yes)
+                    {
+                        Clipboard.SetText(skeleton);
+                    }
                     return true;
                 }
             }

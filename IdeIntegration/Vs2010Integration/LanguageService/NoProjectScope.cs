@@ -1,7 +1,8 @@
 ﻿using System;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Vs2010Integration.Bindings;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -29,6 +30,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         public IBindingMatchService BindingMatchService
+        {
+            get { return null; }
+        }
+
+        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
         {
             get { return null; }
         }

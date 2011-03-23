@@ -310,7 +310,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
             var stepSpan = ProcessSimpleLanguageElement(line);
 
-            StepKeyword stepKeyword = gherkinDialect.GetStepKeyword(keyword) ?? StepKeyword.And; // if we dont find it, we suppose an "and"
+            StepKeyword stepKeyword = gherkinDialect.TryParseStepKeyword(keyword) ?? StepKeyword.And; // if we dont find it, we suppose an "and"
             ScenarioBlock scenarioBlock = CalculateScenarioBlock(stepKeyword);
 
             gherkinListener.Step(keyword, stepKeyword, scenarioBlock, text, stepSpan);

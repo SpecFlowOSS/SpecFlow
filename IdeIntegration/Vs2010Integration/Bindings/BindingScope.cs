@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.Bindings
+namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingScope
     {

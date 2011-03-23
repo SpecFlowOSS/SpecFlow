@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Reflection
+namespace TechTalk.SpecFlow.Bindings.Reflection
 {
     public interface IBindingType
     {
