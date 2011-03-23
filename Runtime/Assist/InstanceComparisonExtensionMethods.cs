@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Assist
         private static string CreateDescriptiveErrorMessage(IEnumerable<Difference> differences)
         {
             return differences.Aggregate(@"The following fields did not match:",
-                                         (sum, next) => sum + (Environment.NewLine + DescribeTheErrorForThisDifference(next)));
+                                         (sum, next) => sum + ("\r\n" + DescribeTheErrorForThisDifference(next)));
         }
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
@@ -43,19 +43,11 @@ namespace TechTalk.SpecFlow.Assist
                                  difference.Actual);
         }
 
-        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T actual)
+        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
-            var expected = table.CreateInstance<T>();
-
             return from row in table.Rows
-                   where TheValuesDoNotMatch(actual, row, expected) 
-                   select CreateDifferenceForThisRow(actual, row);
-        }
-
-        private static bool TheValuesDoNotMatch<T>(T actual, TableRow row, T expected)
-        {
-            return ThePropertyDoesNotExist(actual, row) || 
-                   (TheValuesDoNotMatchForThisProperty(row.Id(), actual, expected) && TheValuesDoNotMatchForThisRow(actual, row));
+                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                   select CreateDifferenceForThisRow(instance, row);
         }
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
@@ -69,28 +61,28 @@ namespace TechTalk.SpecFlow.Assist
                        .Any(property => property.Name == row.Id()) == false;
         }
 
-        private static bool TheValuesDoNotMatchForThisProperty<T>(string propertyName, T instance, T expectedInstance)
+        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            var expected = expectedInstance.GetPropertyValue(propertyName);
-            
-            var actual = instance.GetPropertyValue(propertyName);
-
-            if (expected == null && actual == null)
-                return false;
-
-            if ((expected == null && actual != null) || (expected != null && actual == null))
-                return true;
-
-            return actual.ToString() != expected.ToString();
-        }
-
-        private static bool TheValuesDoNotMatchForThisRow<T>(T instance, TableRow row)
-        {
-            var expected = row.Value().ToString();
+            var expected = GetTheExpectedValue(row, instance);
 
             var actual = GetTheActualValue(row, instance);
 
             return actual != expected;
+        }
+
+        private static string GetTheExpectedValue<T>(TableRow row, T instance)
+        {
+            var value = row.Value().ToString();
+
+            if (ThisIsADateTimePropertyThatMayNeedTimeAttached(row, instance))
+                value = DateTime.Parse(value).ToString();
+
+            return value;
+        }
+
+        private static bool ThisIsADateTimePropertyThatMayNeedTimeAttached<T>(TableRow row, T instance)
+        {
+            return instance.GetPropertyValue(row.Id()) != null && instance.GetPropertyValue(row.Id()).GetType() == typeof (DateTime);
         }
 
         private static string GetTheActualValue<T>(TableRow row, T instance)
@@ -99,24 +91,40 @@ namespace TechTalk.SpecFlow.Assist
 
             var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
 
+            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
+                actual = actual.ToLower();
+
+            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
+                actual = actual.ToUpper();
+
             return actual;
+        }
+
+        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
+        {
+            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
+        }
+
+        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
+        {
+            return propertyValue != null && propertyValue.GetType() == typeof(bool);
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
-                           {
-                               Property = row.Id(),
-                               DoesNotExist = true
-                           };
+                {
+                    Property = row.Id(),
+                    DoesNotExist = true
+                };
 
             return new Difference
-                       {
-                           Property = row.Id(),
-                           Expected = row.Value(),
-                           Actual = instance.GetPropertyValue(row.Id())
-                       };
+            {
+                Property = row.Id(),
+                Expected = row.Value(),
+                Actual = instance.GetPropertyValue(row.Id())
+            };
         }
 
         private class Difference
