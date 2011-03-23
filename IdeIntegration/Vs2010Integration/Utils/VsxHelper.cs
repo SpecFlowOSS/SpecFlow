@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Constants = EnvDTE.Constants;
+using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
@@ -200,8 +201,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             if (fileName == null)
                 return null;
 
-            string projectFolder = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
+            string projectFolder = GetProjectFolder(projectItem.ContainingProject);
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
+        public static string GetProjectFolder(Project project)
+        {
+            return Path.GetDirectoryName(project.FullName);
         }
 
         static public string GetFileContent(ProjectItem projectItem, bool loadLastSaved = false)
@@ -224,7 +230,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             try
             {
                 ServiceProvider serviceProvider =
-                    new ServiceProvider(project.DTE as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
+                    new ServiceProvider(project.DTE as IServiceProvider);
                 IVsSolution vsSolution = (IVsSolution)serviceProvider.GetService(typeof(SVsSolution));
 
                 if (vsSolution != null)
@@ -306,6 +312,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         public static IEnumerable<CodeFunction> GetFunctions(this CodeClass codeClass)
         {
             return codeClass.Children.OfType<CodeFunction>();
+        }
+
+        public static string GetProjectDefaultNamespace(Project project)
+        {
+            return project.Properties.Item("DefaultNamespace").Value as string;
         }
     }
 }

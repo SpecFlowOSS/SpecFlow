@@ -21,22 +21,6 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             return ".feature." + provider.FileExtension;
         }
 
-        protected override string GenerateCode(string inputFileContent)
-        {
-            CodeDomProvider provider = GetCodeProvider();
-
-            SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
-            SpecFlowGenerator generator = new SpecFlowGenerator(specFlowProject);
-
-            using (var writer = new StringWriter(new StringBuilder()))
-            {
-                generator.GenerateTestFile(
-                    specFlowProject.GetOrCreateFeatureFile(CodeFilePath), 
-                    provider, new StringReader(inputFileContent), writer);
-                return writer.ToString();
-            }
-        }
-
         protected override string GenerateError(Microsoft.VisualStudio.Shell.Interop.IVsGeneratorProgress pGenerateProgress, Exception ex)
         {
             if (ex is SpecFlowParserException)

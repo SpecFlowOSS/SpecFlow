@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\lib\MiniDi\MiniDi.cs">
+      <Link>MiniDi\MiniDi.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Configuration\ConfigDefaults.cs">
       <Link>Configuration\ConfigDefaults.cs</Link>
     </Compile>
@@ -74,10 +77,14 @@
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
+    <Compile Include="GeneratorContainerBuilder.cs" />
+    <Compile Include="IndentProcessingWriter.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowGenerator.cs" />
     <Compile Include="SpecFlowUnitTestConverter.cs" />
+    <Compile Include="TestGenerator.cs" />
+    <Compile Include="TestGeneratorFactory.cs" />
     <Compile Include="UnitTestProvider\MsTestSilverlightGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010GeneratorProvider.cs" />
@@ -90,6 +97,10 @@
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTalk.SpecFlow.Generator.Interfaces\TechTalk.SpecFlow.Generator.Interfaces.csproj">
+      <Project>{92E851DD-05CE-4EEF-AF48-345F0722B785}</Project>
+      <Name>TechTalk.SpecFlow.Generator.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>

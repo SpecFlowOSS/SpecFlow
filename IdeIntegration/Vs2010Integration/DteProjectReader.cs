@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using EnvDTE;
+using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -82,6 +85,37 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             //TODO: read generator version from the referenced assembly version
 
             return configuration;
+        }
+
+        private static XmlNode GetSpecFlowConfigNode(string configFileContent)
+        {
+            XmlDocument configDocument;
+            try
+            {
+                configDocument = new XmlDocument();
+                configDocument.LoadXml(configFileContent);
+
+                return configDocument.SelectSingleNode("/configuration/specFlow");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "Config load error");
+                return null;
+            }
+        }
+
+        public static SpecFlowConfigurationHolder LoadConfigHolderFromProject(Project project)
+        {
+            ProjectItem projectItem = VsxHelper.FindProjectItemByProjectRelativePath(project, "app.config");
+            if (projectItem == null)
+                return new SpecFlowConfigurationHolder();
+
+            string configFileContent = VsxHelper.GetFileContent(projectItem);
+            var configNode = GetSpecFlowConfigNode(configFileContent);
+            if (configNode == null)
+                return new SpecFlowConfigurationHolder();
+
+            return new SpecFlowConfigurationHolder(configNode.OuterXml);
         }
 
         private static string DumpProperties(ProjectItem projectItem)

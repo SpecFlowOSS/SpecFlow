@@ -4,11 +4,20 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using MiniDi;
 
 namespace TechTalk.SpecFlow.Configuration
 {
     partial class ConfigurationSectionHandler : ConfigurationSection
     {
+        [ConfigurationProperty("dependencies", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
+        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
+        public ContainerRegistrationCollection Dependencies
+        {
+            get { return (ContainerRegistrationCollection)this["dependencies"]; }
+            set { this["dependencies"] = value; }
+        }
+
         [ConfigurationProperty("language", IsRequired = false)]
         public LanguageConfigElement Language
         {
@@ -64,7 +73,7 @@ namespace TechTalk.SpecFlow.Configuration
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
             section.Init();
             section.Reset(null);
-            using (var reader = new XmlTextReader(new StringReader(xmlContent)))
+            using (var reader = new XmlTextReader(new StringReader(xmlContent.Trim())))
             {
                 section.DeserializeSection(reader);
             }

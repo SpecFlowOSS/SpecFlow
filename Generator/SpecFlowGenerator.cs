@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Configuration;
@@ -41,80 +40,10 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
-        private class HackedWriter : TextWriter
-        {
-            TextWriter innerWriter;
-            private bool trimSpaces = false;
-
-            public HackedWriter(TextWriter innerWriter)
-            {
-                this.innerWriter = innerWriter;
-            }
-
-            public override void Write(char[] buffer, int index, int count)
-            {
-                Write(new string(buffer, index, count));
-            }
-
-            public override void Write(char value)
-            {
-                Write(value.ToString());
-            }
-
-            public override void Write(string value)
-            {
-                if (trimSpaces)
-                {
-                    value = value.TrimStart(' ', '\t');
-                    if (value == string.Empty)
-                        return;
-                    trimSpaces = false;
-                }
-
-                innerWriter.Write(value);
-            }
-
-            public override Encoding Encoding
-            {
-                get { return innerWriter.Encoding; }
-            }
-
-            static private readonly Regex indentNextRe = new Regex(@"^[\s\/\']*#indentnext (?<ind>\d+)\s*$");
-
-            public override void WriteLine(string text)
-            {
-                var match = indentNextRe.Match(text);
-                if (match.Success)
-                {
-                    Write(new string(' ', int.Parse(match.Groups["ind"].Value)));
-                    trimSpaces = true;
-                    return;
-                }
-
-                base.WriteLine(text);
-            }
-
-            public override string ToString()
-            {
-                return innerWriter.ToString();
-            }
-
-            public override void Flush()
-            {
-                innerWriter.Flush();
-            }
-
-            protected override void Dispose(bool disposing)
-            {
-                if (disposing)
-                    innerWriter.Dispose();
-            }
-        }
-
 
         public void GenerateTestFile(SpecFlowFeatureFile featureFile, CodeDomProvider codeProvider, TextReader inputReader, TextWriter outputWriter)
         {
-            outputWriter = new HackedWriter(outputWriter);
+            outputWriter = new IndentProcessingWriter(outputWriter);
 
             CodeDomHelper codeDomHelper = new CodeDomHelper(codeProvider);
 

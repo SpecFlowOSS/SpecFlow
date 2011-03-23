@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\lib\MiniDi\MiniDi.cs">
+      <Link>MiniDi\MiniDi.cs</Link>
+    </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
