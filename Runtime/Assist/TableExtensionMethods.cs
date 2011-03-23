@@ -14,6 +14,11 @@ namespace TechTalk.SpecFlow.Assist
             return instance;
         }
 
+        public static void FillInstance<T>(this Table table, T instance)
+        {
+            LoadInstanceWithKeyValuePairs(table, instance);
+        }
+
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
             var pivotTable = new PivotTable(table);

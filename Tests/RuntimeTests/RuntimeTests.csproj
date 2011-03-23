@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\PivotTableTests.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\FillInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
     <Compile Include="AssistTests\TestInfrastructure\ComparisonTestResult.cs" />
     <Compile Include="AssistTests\ExampleEntities\NullablePerson.cs" />
