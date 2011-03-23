@@ -52,6 +52,7 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
+    <Compile Include="Assist\PivotTable.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />

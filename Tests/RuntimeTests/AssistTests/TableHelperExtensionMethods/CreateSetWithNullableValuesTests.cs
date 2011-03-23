@@ -68,6 +68,39 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_a_nullable_double_to_null_when_the_value_is_empty()
+        {
+            var table = new Table("NullableDouble");
+            table.AddRow("");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableDouble.ShouldBeNull();
+        }
+
+        [Test]
+        public void Sets_a_nullable_guid_to_null_when_the_value_is_empty()
+        {
+            var table = new Table("NullableGuid");
+            table.AddRow("");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableGuid.ShouldBeNull();
+        }
+
+        [Test]
+        public void Sets_a_nullable_char_to_null_when_the_value_is_empty()
+        {
+            var table = new Table("NullableChar");
+            table.AddRow("");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableChar.ShouldBeNull();
+        }
+
+        [Test]
         public void Can_set_a_nullable_int()
         {
             var table = CreatePersonTableHeaders();

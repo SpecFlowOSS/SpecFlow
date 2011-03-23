@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
         private static Table CreatePersonTableHeaders()
         {
-            return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
+            return new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational");
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_string_values_on_the_instance_when_type_is_string()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("John", "Galt", "", "", "", "", "");
+            table.AddRow("John", "Galt", "", "", "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_int_values_on_the_instance_when_type_is_int()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("", "", "", "3", "", "", "");
+            table.AddRow("", "", "", "3", "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -96,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         [Test]
         public void Sets_Enum_values_on_the_instance_when_type_is_int()
         {
-            var table = CreatePersonTableHeaders();
+            var table = new Table("FirstName", "LastName", "BirthDate", "NumberOfIdeas", "Salary", "IsRational", "Sex");
             table.AddRow("", "", "", "", "", "", "Male");
 
             var people = table.CreateSet<Person>();
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_datetime_on_the_instance_when_type_is_datetime()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("", "", "4/28/2009", "3", "", "", "");
+            table.AddRow("", "", "4/28/2009", "3", "", "");
 
             var people = table.CreateSet<Person>();
 
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("", "", "4/28/2009", "3", 9997.43M.ToString(), "", "");
+            table.AddRow("", "", "4/28/2009", "3", 9997.43M.ToString(), "");
 
             var people = table.CreateSet<Person>();
 
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         public void Sets_booleans_on_the_instance_when_type_is_boolean()
         {
             var table = CreatePersonTableHeaders();
-            table.AddRow("", "", "4/28/2009", "3", "", "true", "");
+            table.AddRow("", "", "4/28/2009", "3", "", "true");
 
             var people = table.CreateSet<Person>();
 
@@ -173,25 +173,4 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().NullableChar.ShouldEqual('K');
         }
     }
-
-//    public class Person
-//    {
-//        public string FirstName { get; set; }
-//        public string LastName { get; set; }
-//        public DateTime BirthDate { get; set; }
-//        public int NumberOfIdeas { get; set; }
-//        public decimal Salary { get; set; }
-//        public bool IsRational { get; set; }
-//
-//        public DateTime? NullableDateTime { get; set; }
-//        public bool? NullableBool { get; set; }
-//        public decimal? NullableDecimal { get; set; }
-//        public int? NullableInt { get; set; }
-//
-//        public double Double { get; set; }
-//        public double? NullableDouble { get; set; }
-//
-//        public Guid GuidId { get; set; }
-//        public Guid? NullableGuidId { get; set; }
-//    }
 }
