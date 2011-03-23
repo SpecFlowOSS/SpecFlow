@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Threading;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
@@ -12,6 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
         private const string TracingCategory = "Tracing";
 
         private IOutputWindowService outputWindowService;
+        private Dispatcher dispatcher;
 
         [Import]
         public IOutputWindowService OutputWindowService
@@ -55,7 +57,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
         private void ShowInitTrace()
         {
             if (!traceEnabled)
-                return; 
+                return;
+
+            dispatcher = Dispatcher.CurrentDispatcher;
 
             if (traceAll)
                 Trace("Tracing enabled for all categories", TracingCategory);
@@ -65,15 +69,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
 
         public void Trace(string message, string category)
         {
-            if (!traceEnabled)
+            if (!IsEnabled(category))
                 return;
+
+            dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var outputWindow =
+                        OutputWindowService.TryGetPane(OutputWindowDefinitions.SpecFlowOutputWindowName);
+                    if (outputWindow != null)
+                        outputWindow.WriteLine(string.Format("{0}: {1}", category, message));
+                }), DispatcherPriority.ContextIdle);
+        }
+
+        public bool IsEnabled(string category)
+        {
+            if (!traceEnabled)
+                return false;
 
             if (!traceAll && !traceCategories.Contains(category.ToLower()) && !category.Equals(TracingCategory, StringComparison.InvariantCultureIgnoreCase))
-                return;
+                return false;
 
-            var outputWindow = OutputWindowService.TryGetPane(OutputWindowDefinitions.SpecFlowOutputWindowName);
-            if (outputWindow != null)
-                outputWindow.WriteLine(string.Format("{0}: {1}", category, message));
+            return true;
+        }
+
+        [Conditional("DEBUG")]
+        static public void Assert(bool condition, string message)
+        {
+            if (!condition)
+                throw new InvalidOperationException("Assertion fauiled: " + message);
         }
     }
 

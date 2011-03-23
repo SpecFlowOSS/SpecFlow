@@ -159,6 +159,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Runtime\GenerationTargetLanguage.cs">
+      <Link>BindingSkeletons\GenerationTargetLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Runtime\StringExtensions.cs">
+      <Link>BindingSkeletons\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Runtime\Table.cs">
+      <Link>Bindings\Table.cs</Link>
+    </Compile>
     <Compile Include="..\Vs2008Integration\BaseCodeGenerator.cs">
       <Link>SingleFileGenerator\BaseCodeGenerator.cs</Link>
     </Compile>
@@ -167,14 +176,49 @@
     </Compile>
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
-    <Compile Include="AutoComplete\CompletionSource.cs" />
-    <Compile Include="SpecFlowServices.cs" />
+    <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
+    <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
+    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\IBindingSkeletonProviderFactory.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="Bindings\BindingMatch.cs" />
+    <Compile Include="Bindings\BindingMatchService.cs" />
+    <Compile Include="Bindings\IBindingRegistry.cs" />
+    <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
+    <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
+    <Compile Include="Bindings\BindingScope.cs" />
+    <Compile Include="Bindings\BindingType.cs" />
+    <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
+    <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
+    <Compile Include="Bindings\Reflection\IBindingType.cs" />
+    <Compile Include="Bindings\StepBinding.cs" />
+    <Compile Include="Bindings\StepDefinitionKeyword.cs" />
+    <Compile Include="Bindings\StepInstance.cs" />
+    <Compile Include="Bindings\StepScope.cs" />
+    <Compile Include="EditorCommands\EditorCommandFilter.cs" />
+    <Compile Include="EditorCommands\EditorCommands.cs" />
+    <Compile Include="LanguageService\BindingFilesTracker.cs" />
+    <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
+    <Compile Include="LanguageService\ProjectFilesTracker.cs" />
+    <Compile Include="LanguageService\VsBindingMethod.cs" />
+    <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
+    <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="DteProjectReader.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="ISpecFlowServices.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
     <Compile Include="LanguageService\NoProjectScope.cs" />
     <Compile Include="LanguageService\VsProjectScope.cs" />
+    <Compile Include="StepSuggestions\BoundStepSuggestions.cs" />
+    <Compile Include="StepSuggestions\INativeSuggestionItemFactory.cs" />
+    <Compile Include="StepSuggestions\IStepSuggestion.cs" />
+    <Compile Include="StepSuggestions\StepInstance.cs" />
+    <Compile Include="StepSuggestions\StepInstanceTemplate.cs" />
+    <Compile Include="StepSuggestions\StepSuggestionList.cs" />
+    <Compile Include="StepSuggestions\StepSuggestionProvider.cs" />
+    <Compile Include="Utils\RegexDictionary.cs" />
+    <Compile Include="Utils\StringLiteralHelper.cs" />
     <Compile Include="Utils\VsProjectFileTracker.cs" />
     <Compile Include="Utils\DteWithEvents.cs" />
     <Compile Include="Utils\EnumerableExtensions.cs" />
@@ -220,7 +264,7 @@
     <Compile Include="Tracing\OutputWindowDefinitions.cs" />
     <Compile Include="Tracing\OutputWindow\VsOutputWindowPaneAdapter.cs" />
     <Compile Include="Tracing\VisualStudioTracer.cs" />
-    <Compile Include="VsxHelper.cs" />
+    <Compile Include="Utils\VsxHelper.cs" />
     <Compile Include="..\Vs2008Integration\CodeGeneratorRegistrationAttribute.cs">
       <Link>SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs</Link>
     </Compile>
@@ -236,6 +280,7 @@
     <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\AutoCompleteIcons.psd" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -255,6 +300,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\autocomplete-g-b.png" />
+    <Resource Include="Resources\autocomplete-g-t.png" />
+    <Resource Include="Resources\autocomplete-g.png" />
+    <Resource Include="Resources\autocomplete-t-b.png" />
+    <Resource Include="Resources\autocomplete-t-t.png" />
+    <Resource Include="Resources\autocomplete-t.png" />
+    <Resource Include="Resources\autocomplete-w-b.png" />
+    <Resource Include="Resources\autocomplete-w-t.png" />
+    <Resource Include="Resources\autocomplete-w.png" />
+    <Resource Include="Resources\autocomplete-nb.png" />
     <Content Include="Resources\specflowpackage.ico" />
     <Content Include="Tracing\OutputWindow\readme.txt" />
   </ItemGroup>

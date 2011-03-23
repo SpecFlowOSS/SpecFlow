@@ -214,5 +214,17 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         {
             return new GherkinBufferPosition(Buffer, Line, LinePosition + characterShift);
         }
+
+        public static bool operator<(GherkinBufferPosition p1, GherkinBufferPosition p2)
+        {
+            return p1.Line < p2.Line ||
+                   (p1.Line == p2.Line && p1.LinePosition < p2.LinePosition);
+        }
+
+        public static bool operator>(GherkinBufferPosition p1, GherkinBufferPosition p2)
+        {
+            return p1.Line > p2.Line ||
+                   (p1.Line == p2.Line && p1.LinePosition > p2.LinePosition);
+        }
     }
 }

@@ -79,11 +79,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public interface IHeaderBlock : IGherkinFileBlock
     {
+        IEnumerable<string> Tags { get; }
     }
 
-    public interface IBackgroundBlock : IGherkinFileBlock
+    public interface IStepBlock : IGherkinFileBlock
     {
-        IEnumerable<IGherkinStep> Steps { get; }
+        IEnumerable<GherkinStep> Steps { get; }
+    }
+
+    public interface IBackgroundBlock : IStepBlock
+    {
     }
 
     public interface IInvalidFileBlock : IGherkinFileBlock
@@ -108,23 +113,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         int BlockRelativeLine { get; }
     }
 
-    public interface IGherkinStep : IKeywordLine
+    public interface IScenarioBlock : IStepBlock
     {
-        BindingStatus BindingStatus { get; }
     }
 
-    public interface IScenarioBlock : IGherkinFileBlock
+    public interface IScenarioOutlineExampleSet : IKeywordLine
     {
-        IEnumerable<IGherkinStep> Steps { get; }
-    }
-
-    public interface IScenarouOutlineExampleSet : IKeywordLine
-    {
-        IEnumerable<IGherkinStep> Steps { get; }
     }
 
     public interface IScenarioOutlineBlock : IScenarioBlock
     {
-        IEnumerable<IScenarouOutlineExampleSet> ExampleSets { get; }
+        IEnumerable<IScenarioOutlineExampleSet> ExampleSets { get; }
     }
 }

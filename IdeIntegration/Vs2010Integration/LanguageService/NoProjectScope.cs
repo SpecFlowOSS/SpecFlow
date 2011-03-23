@@ -1,6 +1,8 @@
 ﻿using System;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -22,10 +24,25 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return null; }
         }
 
+        public VsStepSuggestionProvider StepSuggestionProvider
+        {
+            get { return null; }
+        }
+
+        public IBindingMatchService BindingMatchService
+        {
+            get { return null; }
+        }
+
+        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
+        {
+            get { return null; }
+        }
+
         public NoProjectScope(GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
         {
             GherkinTextBufferParser = new GherkinTextBufferParser(this, visualStudioTracer);
-            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer);
+            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, false);
             SpecFlowProjectConfiguration = new SpecFlowProjectConfiguration();
             GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage); 
             Classifications = classifications;

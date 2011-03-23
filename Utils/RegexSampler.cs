@@ -73,6 +73,14 @@ namespace TechTalk.SpecFlow.Utils
                     case '+':
                         //nop: we just don't add the '+'
                         break;
+                    case '^':
+                        if (pos > 0)
+                            goto default;
+                        break;
+                    case '$':
+                        if (pos < regex.Length - 1)
+                            goto default;
+                        break;
                     default:
                         if (nesting == 0)
                         {

@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
         private readonly ScenarioStep step;
         private readonly TableBuilder tableBuilder = new TableBuilder();
 
-        public StepBuilder(string keyword, StepKeyword stepKeyword, string text, FilePosition position)
+        public StepBuilder(string keyword, StepKeyword stepKeyword, string text, FilePosition position, ScenarioBlock scenarioBlock)
         {
             switch (stepKeyword)
             {
@@ -35,6 +35,8 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
             step.Keyword = keyword;
             step.Text = text;
             step.FilePosition = position;
+            step.ScenarioBlock = scenarioBlock;
+            step.StepKeyword = stepKeyword;
         }
 
         public ScenarioStep GetResult()

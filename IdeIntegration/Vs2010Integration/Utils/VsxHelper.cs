@@ -9,13 +9,15 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
-using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using Constants = EnvDTE.Constants;
 
-namespace TechTalk.SpecFlow.Vs2010Integration
+namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
     internal static class VsxHelper
     {
+        public const string CSharpLanguage = "{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}";
+        public const string VBLanguage = "{B5E9BD33-6D3E-4B5D-925E-8A43B79820B4}";
+
         public static DTE GetDte(SVsServiceProvider serviceProvider)
         {
             return (DTE)serviceProvider.GetService(typeof(DTE));
@@ -144,12 +146,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         /// it doesn't exist. Project can be C# or VB.</returns>
         public static Project FindProjectByAssemblyName(_DTE vs, string name)
         {
-            return FindProject(vs, delegate(Project project)
-            {
-                Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
-                return prop != null && prop.Value != null &&
-                    prop.Value.ToString() == name;
-            });
+            return FindProject(vs, project => project.GetAssemblyName() == name);
+        }
+
+        public static string GetAssemblyName(this Project project)
+        {
+            Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
+            return prop != null && prop.Value != null ? prop.Value.ToString() : null;
         }
 
         /// <summary>
@@ -201,9 +204,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
         }
 
-        static public string GetFileContent(ProjectItem projectItem)
+        static public string GetFileContent(ProjectItem projectItem, bool loadLastSaved = false)
         {
-            if (projectItem.IsOpen[Constants.vsViewKindAny])
+            if (!loadLastSaved && projectItem.IsOpen[Constants.vsViewKindAny])
             {
                 TextDocument textDoc = (TextDocument)projectItem.Document.Object("TextDocument");
                 EditPoint start = textDoc.StartPoint.CreateEditPoint();
@@ -251,6 +254,58 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             // if there is a problem, let's use the project file path
             return project.UniqueName;
+        }
+
+        static public string ParseCodeStringValue(string value, string language)
+        {
+            switch (language)
+            {
+                case CSharpLanguage:
+                    if (value.StartsWith("@"))
+                        return StringLiteralHelper.StringFromVerbatimLiteral(value.Substring(2, value.Length - 3));
+                    return StringLiteralHelper.StringFromCSharpLiteral(value.Substring(1, value.Length - 2));
+                case VBLanguage:
+                    return StringLiteralHelper.StringFromVerbatimLiteral(value.Substring(1, value.Length - 2));
+                default:
+                    return value;
+            }
+        }
+
+        public static IEnumerable<CodeClass> GetClasses(Project project)
+        {
+            return GetAllProjectItem(project).Where(pi => pi.FileCodeModel != null).SelectMany(projectItem => GetClasses(projectItem.FileCodeModel.CodeElements));
+        }
+
+        public static IEnumerable<CodeClass> GetClasses(ProjectItem projectItem)
+        {
+            if (projectItem.FileCodeModel == null || projectItem.FileCodeModel.CodeElements == null)
+                return Enumerable.Empty<CodeClass>();
+
+            return GetClasses(projectItem.FileCodeModel.CodeElements);
+        }
+
+        private static IEnumerable<CodeClass> GetClasses(CodeElements codeElements)
+        {
+            foreach (CodeElement codeElement in codeElements)
+            {
+                if (codeElement.Kind == vsCMElement.vsCMElementClass)
+                {
+                    CodeClass codeClass = (CodeClass)codeElement;
+                    yield return codeClass;
+
+                    //TODO: handle nested classes
+                }
+                else if (codeElement.Kind == vsCMElement.vsCMElementNamespace)
+                {
+                    foreach (var stepBinding in GetClasses(codeElement.Children))
+                        yield return stepBinding;
+                }
+            }
+        }
+
+        public static IEnumerable<CodeFunction> GetFunctions(this CodeClass codeClass)
+        {
+            return codeClass.Children.OfType<CodeFunction>();
         }
     }
 }

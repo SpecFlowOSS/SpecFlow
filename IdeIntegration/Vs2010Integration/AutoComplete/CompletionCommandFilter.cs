@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 {
                     case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
                     case VSConstants.VSStd2KCmdID.COMPLETEWORD:
-                        handled = StartAutoCompleteSession();
+                        handled = StartAutoCompleteSession(null);
                         break;
                     case VSConstants.VSStd2KCmdID.RETURN:
                         handled = CommitAutoComplete(false);
@@ -65,8 +65,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                     {
                         case VSConstants.VSStd2KCmdID.TYPECHAR:
                             var ch = GetTypeChar(pvaIn);
-                            if (ch == ' ')
-                                StartAutoCompleteSession();
+                            if (!IsAutoCompleteSessionActive)
+                                StartAutoCompleteSession(ch);
                             else 
                                 FilterAutoComplete();
                             break;
@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             get { return currentAutoCompleteSession != null && currentAutoCompleteSession.IsStarted && !currentAutoCompleteSession.IsDismissed; }
         }
 
-        protected bool StartAutoCompleteSession()
+        protected bool StartAutoCompleteSession(char? ch)
         {
             if (IsAutoCompleteSessionActive)
                 return false;
@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             SnapshotPoint caret = TextView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
 
-            if (!ShouldCompletionBeDiplayed(caret)) 
+            if (!ShouldCompletionBeDiplayed(caret, ch)) 
                 return false;
 
             currentAutoCompleteSession = !Broker.IsCompletionActive(TextView) ? 
@@ -128,8 +128,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (!IsAutoCompleteSessionActive)
                 return;
 
+            currentAutoCompleteSession.SelectedCompletionSet.Filter();
             currentAutoCompleteSession.SelectedCompletionSet.SelectBestMatch();
             currentAutoCompleteSession.SelectedCompletionSet.Recalculate();
+
+            if (currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected)
+            {
+                string insertedText = currentAutoCompleteSession.SelectedCompletionSet.ApplicableTo.GetText(TextView.TextSnapshot);
+                string selectedText = currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
+                if (insertedText.TrimEnd().Equals(selectedText.TrimEnd(), StringComparison.CurrentCulture))
+                    currentAutoCompleteSession.Dismiss();
+            }
         }
 
         protected bool CommitAutoComplete(bool force)
@@ -159,7 +168,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         /// <summary>
         /// Returns true if completion should be showed or not 
         /// </summary>
-        protected abstract bool ShouldCompletionBeDiplayed(SnapshotPoint caret);
+        protected abstract bool ShouldCompletionBeDiplayed(SnapshotPoint caret, char? ch);
 
         #endregion
     }

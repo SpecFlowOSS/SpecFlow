@@ -15,6 +15,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         IGherkinProcessingTask Merge(IGherkinProcessingTask other);
     }
 
+    public class DelegateTask : IGherkinProcessingTask
+    {
+        private readonly Action task;
+
+        public DelegateTask(Action task)
+        {
+            this.task = task;
+        }
+
+        public void Apply()
+        {
+            try
+            {
+                task();
+            }
+            catch(Exception)
+            {
+                //TODO: log error
+            }
+        }
+
+        public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
+        {
+            return null;
+        }
+    }
+
     internal class PingTask : IGherkinProcessingTask
     {
         public static readonly IGherkinProcessingTask Instance = new PingTask();
@@ -35,10 +62,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         private readonly IVisualStudioTracer visualStudioTracer;
         private static readonly TimeSpan parsingDelay = TimeSpan.FromMilliseconds(250);
-        private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(1000);
+        private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(500);
 
         private readonly Dispatcher parsingDispatcher;
         private readonly IScheduler parsingScheduler;
+        private readonly Dispatcher analyzingDispatcher;
+        private readonly IScheduler analyzingScheduler;
         private readonly Subject<IGherkinProcessingTask> parsingSubject; 
         private readonly Subject<IGherkinProcessingTask> analyzingSubject; 
 
@@ -59,7 +88,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return result;
         }
 
-        public GherkinProcessingScheduler(IVisualStudioTracer visualStudioTracer)
+        public GherkinProcessingScheduler(IVisualStudioTracer visualStudioTracer, bool enableAnalysis)
         {
             this.visualStudioTracer = visualStudioTracer;
             
@@ -69,9 +98,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             parsingSubject.BufferWithTimeout(parsingDelay, parsingScheduler, flushFirst: true)
                 .Subscribe(ApplyTask);
 
-            analyzingSubject = new Subject<IGherkinProcessingTask>(parsingScheduler); //TODO: create separate thread?
-            analyzingSubject.BufferWithTimeout(analyzingDelay, parsingScheduler, flushFirst: false)
-                .Subscribe(ApplyTask);
+            if (enableAnalysis)
+            {
+                analyzingDispatcher = CreateBackgroundThreadWithDispatcher(ThreadPriority.BelowNormal);
+                analyzingScheduler = new DispatcherScheduler(analyzingDispatcher);
+                analyzingSubject = new Subject<IGherkinProcessingTask>(analyzingScheduler);
+                analyzingSubject.BufferWithTimeout(analyzingDelay, analyzingScheduler, flushFirst: false)
+                    .Subscribe(ApplyTask);
+            }
         }
 
         private void ApplyTask(IGherkinProcessingTask task)
@@ -112,11 +146,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             visualStudioTracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             parsingSubject.OnNext(change);
-            analyzingSubject.OnNext(PingTask.Instance);
+            if (analyzingSubject != null)
+                analyzingSubject.OnNext(PingTask.Instance);
         }
 
         public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
         {
+            if (analyzingSubject == null)
+                return;
+
             visualStudioTracer.Trace("Analyzing request queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             analyzingSubject.OnNext(task);
         }
@@ -124,6 +162,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Dispose()
         {
             parsingDispatcher.InvokeShutdown();
+            if (analyzingDispatcher != null)
+                analyzingDispatcher.InvokeShutdown();
         }
     }
 }

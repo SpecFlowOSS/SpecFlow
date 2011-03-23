@@ -5,6 +5,7 @@ using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     {
         public static SpecFlowProject LoadSpecFlowProjectFromDteProject(Project project)
         {
-            if (project == null || !SpecFlowServices.IsProjectSupported(project))
+            if (project == null || !VsProjectScope.IsProjectSupported(project))
                 return null;
 
             try
@@ -27,7 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
         public static SpecFlowProjectConfiguration LoadSpecFlowConfigurationFromDteProject(Project project)
         {
-            if (project == null || !SpecFlowServices.IsProjectSupported(project))
+            if (project == null || !VsProjectScope.IsProjectSupported(project))
                 return null;
 
             try
@@ -77,6 +78,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 GeneratorConfigurationReader.UpdateConfigFromFileContent(configuration.GeneratorConfiguration, configFileContent);
                 RuntimeConfigurationReader.UpdateConfigFromFileContent(configuration.RuntimeConfiguration, configFileContent);
             }
+
+            //TODO: read generator version from the referenced assembly version
+
             return configuration;
         }
 

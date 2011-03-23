@@ -15,6 +15,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
     [ComVisible(true)]
     public class OptionsPageGeneral : DialogPage
     {
+        [Category("Analysis Settings")]
+        [Description("Controls whether SpecFlow should collect binding information and step suggestions from the feature files.")]
+        [DisplayName(@"Enable project-wide analysis")]
+        [DefaultValue(IntegrationOptionsProvider.EnableAnalysisDefaultValue)]
+        public bool EnableAnalysis { get; set; }
+
         private bool enableSyntaxColoring = true;
         [Category("Editor Settings")]
         [Description("Controls whether the different syntax elements of the feature files should be indicated in the editor.")]
@@ -46,5 +52,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         [DisplayName(@"Enable IntelliSense")]
         [DefaultValue(IntegrationOptionsProvider.EnableIntelliSenseDefaultValue)]
         public bool EnableIntelliSense { get; set; }
+
+        public OptionsPageGeneral()
+        {
+            EnableAnalysis = IntegrationOptionsProvider.EnableAnalysisDefaultValue;
+            EnableSyntaxColoring = IntegrationOptionsProvider.EnableSyntaxColoringDefaultValue;
+            EnableOutlining = IntegrationOptionsProvider.EnableOutliningDefaultValue;
+            EnableIntelliSense = IntegrationOptionsProvider.EnableIntelliSenseDefaultValue;
+        }
     }
 }

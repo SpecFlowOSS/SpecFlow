@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -16,7 +17,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
     internal sealed class OutliningTaggerProvider : ITaggerProvider
     {
         [Import]
-        internal ISpecFlowServices SpecFlowServices = null;
+        internal IIntegrationOptionsProvider IntegrationOptionsProvider = null;
 
         [Import]
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
@@ -26,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {
-            if (!SpecFlowServices.GetOptions().EnableOutlining)
+            if (!IntegrationOptionsProvider.GetOptions().EnableOutlining)
                 return null;
 
             return (ITagger<T>)GherkinBufferServiceManager.GetOrCreate(buffer, () =>
@@ -57,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 
         public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            var fileScope = gherkinLanguageService.GetFileScope();
+            var fileScope = gherkinLanguageService.GetFileScope(waitForResult: false);
             if (fileScope == null)
                 return new ITagSpan<IOutliningRegionTag>[0];
             return fileScope.GetTags(spans);

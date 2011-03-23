@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -27,6 +31,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly ITextSnapshot textSnapshot;
 
         private GherkinFileBlockBuilder currentFileBlockBuilder;
+        private GherkinStep currentStep = null;
 
         public GherkinFileBlockBuilder CurrentFileBlockBuilder
         {
@@ -38,6 +43,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             set { currentFileBlockBuilder = value; }
         }
+
+        protected virtual string FeatureTitle { get { return gherkinFileScope.HeaderBlock == null ? null : gherkinFileScope.HeaderBlock.Title; } }
+        protected virtual IEnumerable<string> FeatureTags { get { return gherkinFileScope.HeaderBlock == null ? Enumerable.Empty<string>() : gherkinFileScope.HeaderBlock.Tags; } }
 
         protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
         {
@@ -111,7 +119,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var textSpan = new GherkinBufferSpan(
                 headerSpan.StartPosition.ShiftByCharacters(keyword.Length),
                 headerSpan.EndPosition);
-            ColorizeSpan(textSpan, classificationType);
+            if (textSpan.StartPosition < textSpan.EndPosition)
+                ColorizeSpan(textSpan, classificationType);
         }
 
         private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
@@ -198,6 +207,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 CloseBlock(editorLine);
                 OnScenarioBlockCreating(editorLine);
                 CreateBlock(editorLine);
+                currentStep = null;
             }
         }
 
@@ -211,7 +221,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             gherkinBuffer = buffer;
 
             InitializeFirstBlock(gherkinBuffer.GetLineStartPosition(gherkinBuffer.LineOffset));
-            Debug.Assert(currentFileBlockBuilder != null);
+            VisualStudioTracer.Assert(currentFileBlockBuilder != null, "no current file block builder");
         }
 
         protected virtual void InitializeFirstBlock(GherkinBufferPosition startPosition)
@@ -224,7 +234,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ColorizeSpan(commentSpan, classifications.Comment);
         }
 
-        public void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        public virtual void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             CurrentFileBlockBuilder.SetMainData(typeof(IHeaderBlock), headerSpan.StartPosition.Line, keyword, name);
 
@@ -232,10 +242,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ColorizeSpan(descriptionSpan, classifications.Description);
         }
 
-        public void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
+        public virtual void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             NewBlock(headerSpan.StartPosition.Line);
             CurrentFileBlockBuilder.SetMainData(typeof(IBackgroundBlock), headerSpan.StartPosition.Line, keyword, name);
+            currentStep = null;
 
             RegisterKeyword(keyword, headerSpan);
             ColorizeSpan(descriptionSpan, classifications.Description);
@@ -249,7 +260,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             RegisterKeyword(keyword, headerSpan);
             ColorizeSpan(descriptionSpan, classifications.Description);
 
-            ScenarouOutlineExampleSet exampleSet = new ScenarouOutlineExampleSet(keyword, name, 
+            ScenarioOutlineExampleSet exampleSet = new ScenarioOutlineExampleSet(keyword, name, 
                 editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.ExampleSets.Add(exampleSet);
 
@@ -285,11 +296,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void FeatureTag(string name, GherkinBufferSpan tagSpan)
         {
             ColorizeSpan(tagSpan, classifications.Tag);
+            CurrentFileBlockBuilder.Tags.Add(name.TrimStart('@'));
         }
 
         public void ScenarioTag(string name, GherkinBufferSpan tagSpan)
         {
             EnsureNewScenario(tagSpan.StartPosition.Line);
+            CurrentFileBlockBuilder.Tags.Add(name.TrimStart('@'));
             ColorizeSpan(tagSpan, classifications.Tag);
         }
 
@@ -310,7 +323,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
 
-            //TODO: register step
+            var editorLine = stepSpan.StartPosition.Line;
+            var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
+            var stepScope = new StepScope(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray());
+
+            currentStep = new GherkinStep((BindingType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepScope, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
@@ -320,7 +338,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(cellSpan, classifications.TableHeader);
             }
 
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                try
+                {
+                    currentStep.TableArgument = new Table(cells);
+                }
+                catch(Exception)
+                {
+                    //TODO: shall we mark it as error?
+                }
+            }
             //TODO: register outline example
         }
 
@@ -330,8 +358,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
             }
-
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                try
+                {
+                    currentStep.TableArgument.AddRow(cells);
+                }
+                catch (Exception)
+                {
+                    //TODO: shall we mark it as error?
+                }
+            }
             //TODO: register outline example
         }
 
@@ -339,7 +376,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             ColorizeSpan(textSpan, classifications.MultilineText);
 
-            //TODO: register step argument
+            if (currentStep != null)
+            {
+                currentStep.MultilineTextArgument = text;
+            }
+            else
+            {
+                //TODO: shall we mark it as error?
+            }
         }
 
         public void EOF(GherkinBufferPosition eofPosition)

@@ -4,7 +4,9 @@ using System.ComponentModel.Composition;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using Thread = System.Threading.Thread;
@@ -28,6 +30,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal IVisualStudioTracer VisualStudioTracer = null;
 
+        [Import]
+        internal IIntegrationOptionsProvider IntegrationOptionsProvider = null;
+
+        [Import]
+        internal IBindingSkeletonProviderFactory BindingSkeletonProviderFactory = null;
+
         private readonly SynchInitializedInstance<DteWithEvents> dteReference;
         private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
         private readonly SynchronizedResultCache<Project, string, IProjectScope> projectScopeCache;
@@ -50,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 () => new GherkinFileEditorClassifications(ClassificationRegistry));
 
             projectScopeCache = new SynchronizedResultCache<Project, string, IProjectScope>(
-                        project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer),
+                        project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer, IntegrationOptionsProvider, BindingSkeletonProviderFactory),
                         VsxHelper.GetProjectUniqueId);
 
             noProjectScopeReference = new SynchInitializedInstance<NoProjectScope>(() => 
@@ -59,7 +67,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IProjectScope GetProjectScope(Project project)
         {
-            if (project == null || !SpecFlowServices.IsProjectSupported(project))
+            if (project == null || !VsProjectScope.IsProjectSupported(project))
                 return noProjectScopeReference.Value;
 
             return projectScopeCache.GetOrCreate(project);

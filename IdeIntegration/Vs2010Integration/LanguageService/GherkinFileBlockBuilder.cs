@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -11,8 +12,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public List<ClassificationSpan> ClassificationSpans { get; private set; }
         public List<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; private set; }
         public List<ErrorInfo> Errors { get; private set; }
-        public List<IGherkinStep> Steps { get; private set; }
-        public List<ScenarouOutlineExampleSet> ExampleSets { get; private set; }
+        public List<GherkinStep> Steps { get; private set; }
+        public List<ScenarioOutlineExampleSet> ExampleSets { get; private set; }
+        public List<string> Tags { get; private set; }
 
         public int StartLine { get; private set; }
 
@@ -38,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             get
             {
-                Debug.Assert(IsComplete);
+                VisualStudioTracer.Assert(IsComplete, "The block builder is not complete");
                 return StartLine - KeywordLine;
             }
         }
@@ -58,34 +60,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ClassificationSpans = new List<ClassificationSpan>();
             OutliningRegions = new List<ITagSpan<IOutliningRegionTag>>();
             Errors = new List<ErrorInfo>();
-            Steps = new List<IGherkinStep>();
-            ExampleSets = new List<ScenarouOutlineExampleSet>();
+            Steps = new List<GherkinStep>();
+            ExampleSets = new List<ScenarioOutlineExampleSet>();
+            Tags = new List<string>();
 
             StartLine = startLine;
         }
 
         public void Build(GherkinFileScope gherkinFileEditorInfo, int endLine)
         {
-            Debug.Assert(IsComplete);
+            VisualStudioTracer.Assert(IsComplete, "The block builder is not complete");
             int blockRelativeEndLine = endLine - KeywordLine;
 
             if (BlockType == typeof(IInvalidFileBlock))
             {
-                Debug.Assert(gherkinFileEditorInfo.InvalidFileEndingBlock == null);
+                VisualStudioTracer.Assert(gherkinFileEditorInfo.InvalidFileEndingBlock == null, "no invalid file block");
                 if (gherkinFileEditorInfo.InvalidFileEndingBlock == null)
                     gherkinFileEditorInfo.InvalidFileEndingBlock =
                         new InvalidFileBlock(StartLine, endLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IHeaderBlock))
             {
-                Debug.Assert(gherkinFileEditorInfo.HeaderBlock == null);
+                VisualStudioTracer.Assert(gherkinFileEditorInfo.HeaderBlock == null, "no header block");
                 if (gherkinFileEditorInfo.HeaderBlock == null)
                     gherkinFileEditorInfo.HeaderBlock =
-                        new HeaderBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                        new HeaderBlock(Keyword, Title, KeywordLine, Tags.ToArray(), BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IBackgroundBlock))
             {
-                Debug.Assert(gherkinFileEditorInfo.BackgroundBlock == null);
+                VisualStudioTracer.Assert(gherkinFileEditorInfo.BackgroundBlock == null, "no background block");
                 if (gherkinFileEditorInfo.BackgroundBlock == null)
                     gherkinFileEditorInfo.BackgroundBlock =
                         new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());

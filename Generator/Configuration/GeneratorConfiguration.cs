@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
@@ -8,6 +9,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class GeneratorConfiguration
     {
+        public Version GeneratorVersion { get; set; }
+
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
         public CultureInfo ToolLanguage { get; set; }
@@ -28,6 +31,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
+
+            GeneratorVersion = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)
@@ -99,7 +104,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(other.FeatureLanguage, FeatureLanguage) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.GeneratorUnitTestProviderType, GeneratorUnitTestProviderType) && other.AllowDebugGeneratedFiles.Equals(AllowDebugGeneratedFiles) && other.AllowRowTests.Equals(AllowRowTests);
+            return Equals(other.FeatureLanguage, FeatureLanguage) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.GeneratorUnitTestProviderType, GeneratorUnitTestProviderType) && other.AllowDebugGeneratedFiles.Equals(AllowDebugGeneratedFiles) && other.AllowRowTests.Equals(AllowRowTests) && other.GeneratorVersion.Equals(GeneratorVersion);
         }
 
         public override bool Equals(object obj)

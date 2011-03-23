@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
 {
@@ -19,14 +20,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         [Import]
-        internal ISpecFlowServices SpecFlowServices = null;
+        internal IIntegrationOptionsProvider IntegrationOptionsProvider = null;
 
         [Import]
         internal IGherkinBufferServiceManager GherkinBufferServiceManager;
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {
-            if (!SpecFlowServices.GetOptions().EnableSyntaxColoring)
+            if (!IntegrationOptionsProvider.GetOptions().EnableSyntaxColoring)
                 return null;
 
             return GherkinBufferServiceManager.GetOrCreate(buffer, () => 
@@ -63,7 +64,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         /// <returns>A list of ClassificationSpans that represent spans identified to be of this classification</returns>
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
-            var fileScope = gherkinLanguageService.GetFileScope();
+            var fileScope = gherkinLanguageService.GetFileScope(waitForResult: false);
+            if (fileScope == null)
+                return new ClassificationSpan[0];
             return fileScope.GetClassificationSpans(span);
         }
 

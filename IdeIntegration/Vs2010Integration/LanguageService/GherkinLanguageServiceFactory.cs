@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -52,7 +53,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private GherkinTextBufferChange GetTextBufferChange(TextContentChangedEventArgs textContentChangedEventArgs)
         {
-            Debug.Assert(textContentChangedEventArgs.Changes.Count > 0);
+            Tracing.VisualStudioTracer.Assert(textContentChangedEventArgs.Changes.Count > 0, "There are no text changes");
 
             var startLine = int.MaxValue;
             var endLine = 0;
