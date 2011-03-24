@@ -95,6 +95,13 @@
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="InheritanceStepsBase.cs" />
+    <Compile Include="InheritanceStepsDerived.cs" />
+    <Compile Include="InheritanceTest.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InheritanceTest.feature</DependentUpon>
+    </Compile>
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />
@@ -136,6 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="InheritanceTest.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>InheritanceTest.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
