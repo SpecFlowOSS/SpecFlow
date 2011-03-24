@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>SpecFlowSetup</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix2010.targets</WixTargetsPath>
+    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix.targets</WixTargetsPath>
     <WixTasksPath>WixTasks.dll</WixTasksPath>
     <LuxTargetsPath>Lux.targets</LuxTargetsPath>
     <LuxTasksPath>LuxTasks.dll</LuxTasksPath>
@@ -34,73 +34,6 @@
     <Compile Include="VS2008.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
-      <Name>TechTalk.SpecFlow.Generator</Name>
-      <Project>{453d8014-b6cd-4e86-80a8-d59f59092334}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj">
-      <Name>TechTalk.SpecFlow.Vs2010Integration</Name>
-      <Project>{96294e6f-8875-4d12-8577-4ec83e60bd6c}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>
-      </RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Name>TechTalk.SpecFlow.Parser</Name>
-      <Project>{7ccef6d6-fc17-422e-9bed-edd752b6496f}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
-      <Name>TechTalk.SpecFlow.Reporting</Name>
-      <Project>{fc43509f-e7d3-40c4-b4c3-1e6c9d5530a4}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj">
-      <Name>TechTalk.SpecFlow.Silverlight</Name>
-      <Project>{b93f95cf-bf89-4d92-bb0f-86885b9b6dce}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
-      <Name>TechTalk.SpecFlow</Name>
-      <Project>{413ee28c-4f89-4c6f-ba1e-2cdee4cd43b4}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Tools\TechTalk.SpecFlow.Tools.csproj">
-      <Name>TechTalk.SpecFlow.Tools</Name>
-      <Project>{87be7fe6-c3de-4409-abf6-fa5b60af3de1}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\IdeIntegration\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj">
-      <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
-      <Project>{5703ca95-a08a-46ae-ae24-db6b21fd6f7e}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>
-      </RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
-      <Name>TechTalk.SpecFlow.Utils</Name>
-      <Project>{c0af4a43-0c3b-47c7-86de-79fb632b1453}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
@@ -112,6 +45,80 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common.wxi" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
+      <Name>TechTalk.SpecFlow.Generator</Name>
+      <Project>{453d8014-b6cd-4e86-80a8-d59f59092334}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IdeIntegration\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj">
+      <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
+      <Project>{5703ca95-a08a-46ae-ae24-db6b21fd6f7e}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj">
+      <Name>TechTalk.SpecFlow.Vs2010Integration</Name>
+      <Project>{96294e6f-8875-4d12-8577-4ec83e60bd6c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Name>TechTalk.SpecFlow.Parser</Name>
+      <Project>{7ccef6d6-fc17-422e-9bed-edd752b6496f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
+      <Name>TechTalk.SpecFlow.Reporting</Name>
+      <Project>{fc43509f-e7d3-40c4-b4c3-1e6c9d5530a4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj">
+      <Name>TechTalk.SpecFlow.Silverlight</Name>
+      <Project>{b93f95cf-bf89-4d92-bb0f-86885b9b6dce}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Name>TechTalk.SpecFlow</Name>
+      <Project>{413ee28c-4f89-4c6f-ba1e-2cdee4cd43b4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tools\TechTalk.SpecFlow.Tools.csproj">
+      <Name>TechTalk.SpecFlow.Tools</Name>
+      <Project>{87be7fe6-c3de-4409-abf6-fa5b60af3de1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Name>TechTalk.SpecFlow.Utils</Name>
+      <Project>{c0af4a43-0c3b-47c7-86de-79fb632b1453}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

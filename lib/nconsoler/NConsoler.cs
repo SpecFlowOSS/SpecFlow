@@ -21,7 +21,7 @@ namespace NConsoler
 		/// </summary>
 		public static void Run()
 		{
-			Type declaringType = new StackTrace().GetFrame(1).GetMethod().DeclaringType;
+			Type declaringType = new StackTrace().GetFrame(1).GetMethod().ReflectedType;
 			string[] args = new string[Environment.GetCommandLineArgs().Length - 1];
 			new List<string>(Environment.GetCommandLineArgs()).CopyTo(1, args, 0, Environment.GetCommandLineArgs().Length - 1);
 			Run(declaringType, args);

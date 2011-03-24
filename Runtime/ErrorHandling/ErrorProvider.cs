@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public string GetMethodText(MethodInfo methodInfo)
         {
-            return string.Format("{0}.{1}({2})", methodInfo.DeclaringType.Name, methodInfo.Name,
+            return string.Format("{0}.{1}({2})", methodInfo.ReflectedType.Name, methodInfo.Name,
                 string.Join(", ", methodInfo.GetParameters().Select(pi => pi.ParameterType.Name).ToArray()));
         }
 
