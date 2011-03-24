@@ -19,7 +19,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Given("base constructor initializes class protected field")]
         public void GivenBaseConstructorInitializesClassProtectedField()
         {
+		
         }
+		
         [Then("field in base class should also contain (.+)")]
         public void ThenFieldInBaseClassShouldAlsoContainX(int expected)
         {

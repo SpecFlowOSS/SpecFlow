@@ -3,7 +3,6 @@
 	as a good software design developer
 	I want to have derived class with some step definitions too
 
-
 Scenario: Make instance just of derived, not base class
 	Given I have created object of derived class
 	And base constructor initializes class protected field
