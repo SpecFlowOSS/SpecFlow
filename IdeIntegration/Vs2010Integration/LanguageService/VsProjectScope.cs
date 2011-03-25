@@ -99,6 +99,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return bindingSkeletonProviderFactory.GetProvider(GetTargetLanguage(project), GherkinDialectServices.GetDefaultDialect()); }
         }
 
+        public IIntegrationOptionsProvider IntegrationOptionsProvider
+        {
+            get { return integrationOptionsProvider; }
+        }
+
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
 

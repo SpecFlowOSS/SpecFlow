@@ -14,6 +14,7 @@ New features:
 + VS2010: Improved intellisense for steps
 + VS2010: Intellisense for keywords
 + VS2010: "go to binding"
++ VS2010: Automatic table formatting when "|" is typed
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"

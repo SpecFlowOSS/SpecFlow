@@ -53,12 +53,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         [DefaultValue(IntegrationOptionsProvider.EnableIntelliSenseDefaultValue)]
         public bool EnableIntelliSense { get; set; }
 
+        [Category("Editor Settings")]
+        [Description("Controls whether the tables should be formatted automatically when you type \"|\" character.")]
+        [DisplayName(@"Enable Table Formatting")]
+        [DefaultValue(IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue)]
+        public bool EnableTableAutoFormat { get; set; }
+
         public OptionsPageGeneral()
         {
             EnableAnalysis = IntegrationOptionsProvider.EnableAnalysisDefaultValue;
             EnableSyntaxColoring = IntegrationOptionsProvider.EnableSyntaxColoringDefaultValue;
             EnableOutlining = IntegrationOptionsProvider.EnableOutliningDefaultValue;
             EnableIntelliSense = IntegrationOptionsProvider.EnableIntelliSenseDefaultValue;
+            EnableTableAutoFormat = IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue;
         }
     }
 }

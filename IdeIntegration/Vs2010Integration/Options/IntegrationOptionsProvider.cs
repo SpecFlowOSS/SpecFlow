@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Options
 {
-    internal interface IIntegrationOptionsProvider
+    public interface IIntegrationOptionsProvider
     {
         IntegrationOptions GetOptions();
     }
@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableOutliningDefaultValue = true;
         public const bool EnableIntelliSenseDefaultValue = true;
         public const bool EnableAnalysisDefaultValue = true;
+        public const bool EnableTableAutoFormatDefaultValue = true;
 
         private static T GetGeneralOption<T>(DTE dte, string optionName, T defaultValue = default(T))
         {
@@ -38,6 +39,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
                                               EnableOutlining = GetGeneralOption<bool>(dte, "EnableOutlining", EnableOutliningDefaultValue),
                                               EnableIntelliSense = GetGeneralOption<bool>(dte, "EnableIntelliSense", EnableIntelliSenseDefaultValue),
                                               EnableAnalysis = GetGeneralOption<bool>(dte, "EnableAnalysis", EnableAnalysisDefaultValue),
+                                              EnableTableAutoFormat = GetGeneralOption<bool>(dte, "EnableTableAutoFormat", EnableTableAutoFormatDefaultValue),
                                           };
             return options;
         }

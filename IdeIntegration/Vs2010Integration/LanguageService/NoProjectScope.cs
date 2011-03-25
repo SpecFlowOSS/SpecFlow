@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -15,6 +16,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; private set; }
         public GherkinDialectServices GherkinDialectServices { get; private set; }
+        public IIntegrationOptionsProvider IntegrationOptionsProvider { get; private set; }
 
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
@@ -39,13 +41,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return null; }
         }
 
-        public NoProjectScope(GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer)
+        public NoProjectScope(GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer, IIntegrationOptionsProvider integrationOptionsProvider)
         {
             GherkinTextBufferParser = new GherkinTextBufferParser(this, visualStudioTracer);
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, false);
             SpecFlowProjectConfiguration = new SpecFlowProjectConfiguration();
             GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage); 
             Classifications = classifications;
+            IntegrationOptionsProvider = integrationOptionsProvider;
         }
 
         public void Dispose()
