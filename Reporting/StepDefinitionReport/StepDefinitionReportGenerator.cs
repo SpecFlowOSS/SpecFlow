@@ -330,12 +330,12 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         private ScenarioStep CloneTo(ScenarioStep step, string currentBlock)
         {
             ScenarioStep newStep = null;
-            if (currentBlock == "Given")
-                newStep = new Given();
-            else if (currentBlock == "When")
+            if (currentBlock == "When")
                 newStep = new When();
             else if (currentBlock == "Then")
                 newStep = new Then();
+            else // Given or empty
+                newStep = new Given();
 
             Debug.Assert(newStep != null);
 
