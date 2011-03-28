@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<CapabilityRules>
+
+    <!-- Functional rules -->
+    <Capability ID="ID_FNCTNL_MEDIAHUB" Type="Functional">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Devices.Radio" />
+            <Namespace Name="Microsoft.Devices">
+                <Class Name="MediaHistory" />
+                <Class Name="MediaHistoryItem" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_FNCTL_TOASTNOTIFICATIONS" Type="Functional">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Notification">
+                <Class Name="HttpNotificationChannel">
+                    <Method Name="BindToShellToast"/>
+                </Class>
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_FNCTL_RUNSUNDERLOCK" Type="Functional">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Shell">
+               <Class Name="PhoneApplicationService">
+                   <Method Name="set_ApplicationIdleDetectionMode"/>
+               </Class>
+            </Namespace>
+       </Assembly>
+    </Capability>
+
+    <Capability ID="ID_FNCTNL_XNA_FRAMEWORK" Type="Functional">
+        <Assembly Name="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework" />
+            <Namespace Name="Microsoft.Xna.Framework.GamerServices"/>
+        </Assembly>
+        <Assembly Name="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.Graphics"/>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_FNCTNL_SILVERLIGHT_FRAMEWORK" Type="Functional">
+        <Assembly Name="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+            <Namespace Name="System.Windows.Controls" />
+        </Assembly>
+    </Capability>
+
+    <!-- Security rules -->
+    <Capability ID="ID_CAP_LOCATION" Type="Security">
+        <Assembly Name="System.Device, Version=2.0.5.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="System.Device.Location" />
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_NETWORKING" Type="Security">
+        <Assembly Name="System.Net, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+            <Namespace Name="System.Net" />
+        </Assembly>
+
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Controls">
+                <Class Name="WebBrowser" />
+            </Namespace>
+
+            <Namespace Name="Microsoft.Phone.Tasks">
+                <Class Name="MediaPlayerLauncher">
+                    <Method Name="set_Media"/>
+                </Class>
+            </Namespace>
+        </Assembly>
+
+        <Assembly Name="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.Media">
+                <Class Name="Song">
+                    <Method Name="FromUri"/>
+                </Class>
+            </Namespace>
+        </Assembly>
+
+        <Assembly Name="System.ServiceModel, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+            <Namespace Name="System.ServiceModel" />
+        </Assembly>
+
+        <Assembly Name="System.Device, Version=2.0.5.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="System.Device.Location" />
+        </Assembly>
+
+        <Assembly Name="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+            <Namespace Name="System.Windows.Controls">
+                <Class Name="MultiScaleImage" />
+
+                <Class Name="MediaElement">
+                     <Method Name="set_Source"/>
+                     <Method Name="set_LicenseAcquirer"/>
+                </Class>
+            </Namespace>
+
+            <Namespace Name="System.Windows.Documents">
+                <Class Name="Glyphs">
+                    <Method Name="set_FontUri"/>
+                </Class>
+            </Namespace>
+
+           <Namespace Name="System.Windows.Media.Imaging">
+                <Class Name="BitmapImage">
+                    <Method Name="set_UriSource"/>
+                </Class>
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_SENSORS" Type="Security">
+        <Assembly Name="Microsoft.Devices.Sensors, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Devices.Sensors" />
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_MICROPHONE" Type="Security">
+        <Assembly Name="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.Audio">
+                <Class Name="Microphone" />
+            </Namespace>
+        </Assembly>
+
+        <Assembly Name="Microsoft.Phone.Media.Extended, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone">
+                <Class Name="Camera" />
+                <Class Name="PhotoCamera" />
+                <Class Name="VideoCamera" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_CAMERA" Type="Security">
+        <Assembly Name="Microsoft.Phone.Media.Extended, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone">
+                <Class Name="Camera" />
+                <Class Name="PhotoCamera" />
+                <Class Name="VideoCamera" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_MEDIALIB" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Devices.Radio" />
+            <Namespace Name="Microsoft.Devices">
+                <Class Name="MediaHistory" />
+                <Class Name="MediaHistoryItem" />
+            </Namespace>
+        </Assembly>
+
+        <Assembly Name="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.Media">
+                <Class Name="MediaLibrary" />
+                <Class Name="MediaPlayer" />
+            </Namespace>
+            <Namespace Name="Microsoft.Xna.Framework.Media">
+                <Class Name="MediaSource" />
+            </Namespace>
+        </Assembly>
+        
+        <Assembly Name="Microsoft.Phone.Media.Extended, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone">
+                <Class Name="Camera" />
+                <Class Name="PhotoCamera" />
+                <Class Name="VideoCamera" />
+            </Namespace>
+        </Assembly>
+
+       <Assembly Name="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
+            <Namespace Name="System.Windows.Controls">
+                <Class Name="MediaElement" />
+            </Namespace>
+       </Assembly>
+
+    </Capability>
+
+    <Capability ID="ID_CAP_WEBBROWSERCOMPONENT" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Controls">
+                <Class Name="WebBrowser" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_GAMERSERVICES" Type="Security">
+        <Assembly Name="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.GamerServices">
+                <Class Name="GamerServicesDispatcher" />
+            </Namespace>
+        </Assembly>
+
+        <Assembly Name="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+            <Namespace Name="Microsoft.Xna.Framework.GamerServices">
+                <Class Name="GamerServicesComponent" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_RINGTONE_ADD" Type="Security">
+        <Assembly Name="Microsoft.Phone.Media.Extended, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone">
+                <Class Name="RingtoneLibrary" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_PUSH_NOTIFICATION" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Notification" />
+            <Namespace Name="Microsoft.Phone.Shell">
+                <Class Name="ShellTileSchedule" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_PHONEDIALER" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Tasks">
+                <Class Name="PhoneCallTask" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_IDENTITY_USER" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Info">
+                <Class Name="UserExtendedProperties" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+   
+    <Capability ID="ID_CAP_IDENTITY_DEVICE" Type="Security">
+        <Assembly Name="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.Info">
+                <Class Name="DeviceExtendedProperties" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+    <Capability ID="ID_CAP_NETWORKING_ADMIN" Type="Security">
+        <Assembly Name="Microsoft.Phone.InteropServices, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.InteropServices">
+                <Class Name="NetworkingAdministration" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+    
+    <Capability ID="ID_CAP_INTEROPSERVICES" Type="Security">
+        <Assembly Name="Microsoft.Phone.InteropServices, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.InteropServices">
+                <Class Name="Devices" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+    
+    <Capability ID="ID_CAP_FILEVIEWER" Type="Security">
+        <Assembly Name="Microsoft.Phone.InteropServices, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e">
+            <Namespace Name="Microsoft.Phone.InteropServices">
+                <Class Name="FileViewer" />
+            </Namespace>
+        </Assembly>
+    </Capability>
+
+</CapabilityRules>

@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       targetNamespace= "http://schemas.microsoft.com/windowsphone/2009/deployment"
+           xmlns ="http://schemas.microsoft.com/windowsphone/2009/deployment">
+  
+  <xs:simpleType name="ST_String">
+    <xs:annotation>
+      <xs:documentation>
+        A pure string with restricted length
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base= "xs:string">
+      <xs:maxLength value = "256"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ST_ResourceID">
+    <xs:annotation>
+      <xs:documentation>
+        This can either be a pure string, or a resource ID in @dllname,-ID. For the latter, we will patch installation folder for the dllname.
+        Please note we will not do the patching for DB pre-provisioning.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="ST_String">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="CT_ResourcePath" >
+    <xs:annotation>
+      <xs:documentation>
+        This can either be a pure string, or a resource ID in @dllname,-ID. 
+        For the former, we will proceed according to the attributes listed below.
+        For the latter, we will patch installation folder for the dllname if the IsRelative is true
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="ST_String">
+        <xs:attribute name="IsRelative" type ="xs:boolean" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              When this true, the INSTALLDIR of this app will be patched to this path.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IsResource" type ="xs:boolean" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              If there is no prefix, res:// or file://, a prefix, res:// when IsResource is true, and file:// when it is false, will be added to the path.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="CT_FilePath" >
+    <xs:simpleContent>
+      <xs:extension base="ST_String">
+        <xs:attribute name="IsRelative" type ="xs:boolean" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              When this true, the INSTALLDIR of this app will be patched to this path.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+     </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate1">
+    <xs:sequence>
+      <xs:element name= "Number" type= "ST_ResourceID"/>
+      <xs:element name= "IconImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "Title" type= "ST_ResourceID"/>
+      <xs:element name= "Message" type= "ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate2">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath" minOccurs="0"/>
+      <xs:element name= "IconImageURI" type="CT_ResourcePath" minOccurs="0"/>
+      <xs:element name= "Title" type= "ST_ResourceID" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate3">
+    <xs:sequence>
+      <xs:element name= "Title" type="ST_ResourceID"/>
+      <xs:element name= "ImageURI" type= "CT_ResourcePath"/>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "AvatarImageURI" type= "CT_ResourcePath"/>
+      <xs:element name= "Count" type= "ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate4">
+    <xs:sequence>
+      <xs:element name= "DayNumber" type= "ST_ResourceID"/>
+      <xs:element name= "DayName" type= "ST_ResourceID"/>
+      <xs:element name= "AppointmentTitle" type= "ST_ResourceID"/>
+      <xs:element name= "AppointmentDescription" type= "ST_ResourceID"/>
+      <xs:element name= "AppointmentLocation" type= "ST_ResourceID"/>
+      <xs:element name= "ConflictIndicator" type= "ST_ResourceID"/>
+      <xs:element name= "Time" type= "ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="CT_TokenTemplate5">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "Count" type= "ST_ResourceID"/>
+      <xs:element name= "Title" type= "ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate6">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "Count" type="ST_ResourceID"/>
+      <xs:element name= "Title" type="ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate7">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "IconImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "Title" type="ST_ResourceID"/>
+      <xs:element name= "ImageURI" type="CT_ResourcePath"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate8">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type="CT_ResourcePath"/>
+      <xs:element name= "Title" type="ST_ResourceID"/>
+      <xs:element name= "Subtitle" type= "ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate9">
+    <xs:sequence>
+      <xs:element name= "BackgroundImageURI" type= "CT_ResourcePath"/>
+      <xs:element name= "Title" type="ST_ResourceID"/>
+      <xs:element name= "Subtitle" type="ST_ResourceID"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate10">
+    <xs:sequence>
+      <xs:element name= "Title" type= "ST_ResourceID"/>
+      <xs:element name="Photo01ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo02ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo03ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo04ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo05ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo06ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo07ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo08ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo09ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo10ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo11ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo12ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo13ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo14ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo15ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo16ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo17ImageURI" type="CT_ResourcePath"/>
+      <xs:element name="Photo18ImageURI" type="CT_ResourcePath"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_TokenTemplate11">
+    <xs:sequence>
+      <xs:element name= "Title" type= "ST_ResourceID"/>
+      <xs:element name= "ContactPhotoImageURI" type= "CT_ResourcePath"/>
+      <xs:element name= "Message" type= "ST_ResourceID"/>
+      <xs:element name= "MessagePhotoImageURI" type= "CT_ResourcePath"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:group name="TokenTemplates" id="TokenTemplates">
+    <xs:annotation>
+      <xs:documentation>Token templates that can be used by 1st parties</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="TemplateType1" type="CT_TokenTemplate1"/>
+      <xs:element name="TemplateType2" type="CT_TokenTemplate2"/>
+      <xs:element name="TemplateType3" type="CT_TokenTemplate3"/>
+      <xs:element name="TemplateType4" type="CT_TokenTemplate4"/>
+      <xs:element name="TemplateType5" type="CT_TokenTemplate5"/>
+      <xs:element name="TemplateType6" type="CT_TokenTemplate6"/>
+      <xs:element name="TemplateType7" type="CT_TokenTemplate7"/>
+      <xs:element name="TemplateType8" type="CT_TokenTemplate8"/>
+      <xs:element name="TemplateType9" type="CT_TokenTemplate9"/>
+      <xs:element name="TemplateType10" type="CT_TokenTemplate10"/>
+      <xs:element name="TemplateType11" type="CT_TokenTemplate11"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="OEMThirdPartyTokenTemplates" id="OEMThirdPartyTokenTemplates">
+    <xs:annotation>
+      <xs:documentation>Token templates for OEM and 1st party consumption</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="TemplateType5" type="CT_TokenTemplate5"/>
+      <xs:element name="TemplateType6" type="CT_TokenTemplate6"/>
+    </xs:choice>
+  </xs:group>
+
+</xs:schema>
