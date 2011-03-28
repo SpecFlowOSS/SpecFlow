@@ -2,7 +2,7 @@
 {
     public enum GherkinBlockKeyword
     {
-        Feauture,
+        Feature,
         Background,
         Scenario,
         ScenarioOutline,
