@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>System.ServiceModel.Web</name>
+  </assembly>
+  <members>
+    <member name="T:System.Runtime.Serialization.Json.DataContractJsonSerializer">
+      <summary>Serializes objects to the JavaScript Object Notation (JSON) and deserializes JSON data to objects. This class cannot be inherited.</summary>
+    </member>
+    <member name="M:System.Runtime.Serialization.Json.DataContractJsonSerializer.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer" /> class to serialize or deserialize an object of the specified type. </summary>
+      <param name="type">The type of the instance that is serialized or deserialized.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="M:System.Runtime.Serialization.Json.DataContractJsonSerializer.#ctor(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+      <summary>Initializes a new instance of the <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer" /> class to serialize or deserialize an object of a specified type with a collection of known types that may be present in the object graph. </summary>
+      <param name="type">The type of the instance that is serialized or deserialized.</param>
+      <param name="knownTypes">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> of <see cref="T:System.Type" /> that contains the types that may be present in the object graph.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="P:System.Runtime.Serialization.Json.DataContractJsonSerializer.KnownTypes">
+      <summary>Gets a collection of types that may be present in the object graph serialized using this instance of the <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer" />.</summary>
+      <returns>A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> that contains the expected types passed in as known types to the <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer" /> constructor.</returns>
+    </member>
+    <member name="M:System.Runtime.Serialization.Json.DataContractJsonSerializer.ReadObject(System.IO.Stream)">
+      <summary>Reads a document stream in the JSON (JavaScript Object Notation) format and returns the deserialized object.</summary>
+      <returns>The deserialized object.</returns>
+      <param name="stream">The <see cref="T:System.IO.Stream" /> to be read.</param>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">An error occurred deserializing.</exception>
+    </member>
+    <member name="M:System.Runtime.Serialization.Json.DataContractJsonSerializer.WriteObject(System.IO.Stream,System.Object)">
+      <summary>Serializes a specified object to JavaScript Object Notation (JSON) data and writes the resulting JSON to a stream.</summary>
+      <param name="stream">The <see cref="T:System.IO.Stream" /> that is written to.</param>
+      <param name="graph">The object that contains the data to write to the stream.</param>
+      <exception cref="T:System.Runtime.Serialization.InvalidDataContractException">The type being serialized does not conform to data contract rules. For example, the <see cref="T:System.Runtime.Serialization.DataContractAttribute" /> attribute has not been applied to the type.</exception>
+      <exception cref="T:System.Runtime.Serialization.SerializationException">There is a problem with the instance being written.</exception>
+    </member>
+  </members>
+</doc>

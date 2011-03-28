@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>Microsoft.Phone.Controls</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Phone.Controls.Panorama">
+      <summary>Creates a panoramic view of items that can be panned side-to-side.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.#ctor">
+      <summary>Initializes a new instance of the Panorama class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.ArrangeOverride(System.Windows.Size)">
+      <summary>Handles the arrange pass for the control.</summary>
+      <returns>Render size.</returns>
+      <param name="finalSize">Final size.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Handles the clearing of a discarded container.</summary>
+      <param name="element">Container instance.</param>
+      <param name="item">Container content.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.DefaultItem">
+      <summary>Gets or sets the default item for the Panorama.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.DefaultItemProperty">
+      <summary>Identifies the DefaultItem dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.HeaderTemplate">
+      <summary>Gets or sets the template for the Header property of PanoramaItem children.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.DataTemplate" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.HeaderTemplateProperty">
+      <summary>Identifies the HeaderTemplate dependency property.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.MeasureOverride(System.Windows.Size)">
+      <summary>Handles the measurement of the control.</summary>
+      <returns>Desired size.</returns>
+      <param name="availableSize">Available size.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.OnApplyTemplate">
+      <summary>Handles the application of a new Template.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <summary>When the items have changed, we need to adjust the selection.</summary>
+      <param name="e"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Panorama.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Handles the preparation of a new container.</summary>
+      <param name="element">Container instance.</param>
+      <param name="item">Container content.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.SelectedIndex">
+      <summary>Gets the selected index.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.SelectedIndexProperty">
+      <summary>Identifies the SelectedIndex dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.SelectedItem">
+      <summary>Gets the selected item.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.SelectedItemProperty">
+      <summary>Identifies the SelectedItem dependency property.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Panorama.SelectionChanged">
+      <summary>Event that is invoked when selection changes.
+</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.Title">
+      <summary>Gets or sets the title for the Panorama.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.TitleProperty">
+      <summary>Identifies the Title dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Panorama.TitleTemplate">
+      <summary>Gets or sets the template for the Title property.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.DataTemplate" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Panorama.TitleTemplateProperty">
+      <summary>Identifies the TitleTemplate dependency property.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PanoramaItem">
+      <summary>Represents an item in a Panorama control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PanoramaItem.#ctor">
+      <summary>Initializes a new instance of the PanoramaItem class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PanoramaItem.Header">
+      <summary>Gets or sets the header for the PanoramaItem.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PanoramaItem.HeaderProperty">
+      <summary>Identifies the Header dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PanoramaItem.HeaderTemplate">
+      <summary>Gets or sets the template for the Header property.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.DataTemplate" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PanoramaItem.HeaderTemplateProperty">
+      <summary>Identifies the HeaderTemplate dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PanoramaItem.Orientation">
+      <summary>Gets or sets the primary (scrolling) orientation for the PanoramaItem.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Controls.Orientation" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PanoramaItem.OrientationProperty">
+      <summary>Identifies the Orientation dependency property.
+</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Pivot">
+      <summary>The Pivot control provides a quick way to manage the navigation of views            within an application. The control can be used as a navigation interface            for filtering large sets or switching between views.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.#ctor">
+      <summary>Initializes a new instance of the Pivot type.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Pivot.HeaderTemplate">
+      <summary>Gets or sets the template for the Header property of PivotItem children.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.DataTemplate" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Pivot.HeaderTemplateProperty">
+      <summary>Identifies the HeaderTemplate dependency property.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Pivot.LoadedPivotItem">
+      <summary>Event for indicating that an item has fully loaded.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Pivot.LoadingPivotItem">
+      <summary>Event for offering an opportunity to dynamically load or change the content of a pivot item before it is displayed.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnApplyTemplate">
+      <summary>Overrides the on apply template method to connect template parts.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <summary>Update the header items when there are changes in the pivot items            collection.</summary>
+      <param name="e">The event arguments.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnLoadedPivotItem(Microsoft.Phone.Controls.PivotItem)">
+      <summary>Override for notifying that an item has loaded.</summary>
+      <param name="item">The pivot item instance.
+</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnLoadingPivotItem(Microsoft.Phone.Controls.PivotItem)">
+      <summary>Overrride for creating content for a given item.</summary>
+      <param name="item">The pivot item instance.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnSelectionChanged(System.Windows.Controls.SelectionChangedEventArgs)">
+      <summary>Responds to a pivot selection change by raising a SelectionChanged            event.</summary>
+      <param name="e">Provides data for SelectionChangedEventArgs.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnUnloadedPivotItem(Microsoft.Phone.Controls.PivotItemEventArgs)">
+      <summary>The unloaded event handler.</summary>
+      <param name="e">Provides data for PivotItemEventArgs.
+</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.OnUnloadingPivotItem(Microsoft.Phone.Controls.PivotItemEventArgs)">
+      <summary>The unloading event handler. </summary>
+      <param name="e">The pivot item event arguments.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the container to display the specified item.</summary>
+      <param name="element">The container element used to display the            specified item.</param>
+      <param name="item">The item to display.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Pivot.SelectedIndex">
+      <summary>Gets or sets the index of the selected (current) PivotItem.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Pivot.SelectedIndexProperty">
+      <summary>Identifies the SelectedIndex dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Pivot.SelectedItem">
+      <summary>Gets or sets the selected (current) PivotItem.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Pivot.SelectedItemProperty">
+      <summary>Identifies the SelectedItem dependency property.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Pivot.SelectionChanged">
+      <summary>This event occurs when the currently selected item changes.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Pivot.Title">
+      <summary>Gets or sets the title to be optionally set above the headers.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Pivot.TitleProperty">
+      <summary>Identifies the Title dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Pivot.TitleTemplate">
+      <summary>Gets or sets the title template used for displaying the title above            the headers area.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.DataTemplate" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Pivot.TitleTemplateProperty">
+      <summary>Identifies the TitleTemplate dependency property.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Pivot.UnloadedPivotItem">
+      <summary>Event for notifying that the pivot item has been completely unloaded from the visual pivot.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Pivot.UnloadingPivotItem">
+      <summary>Event for offering an opportunity to dynamically load, change or remove the content of a pivot item as it is removed.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Pivot.UpdateItemVisibility(System.Windows.UIElement,System.Boolean)">
+      <summary>Shows or hides an item.</summary>
+      <param name="element">The user interface element.</param>
+      <param name="toVisible">A value indicating whether to make the item            visible or not.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PivotItem">
+      <summary>PivotItem is the container for items in the Pivot control. The item            has both a set of visual states for position and a Header, effectively a            HeaderedContentControl.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PivotItem.#ctor">
+      <summary>Initializes a new instance of the PivotItem type.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PivotItem.Header">
+      <summary>Gets or sets the header for the PivotItem.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PivotItem.HeaderProperty">
+      <summary>Identifies the Header dependency property.
+</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PivotItem.OnApplyTemplate">
+      <summary>Overrides the on apply template method.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PivotItemEventArgs">
+      <summary>Event arguments for dynamically interacting with the PivotItem before             use, allowing for delay load scenarios.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PivotItemEventArgs.#ctor">
+      <summary>Initializes a new instance of the PivotItemEventArgs type.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PivotItemEventArgs.#ctor(Microsoft.Phone.Controls.PivotItem)">
+      <summary>Initializes a new instance of the PivotItemEventArgs type.</summary>
+      <param name="item">The pivot item instance.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PivotItemEventArgs.Item">
+      <summary>Gets the pivot item instance.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Controls.PivotItem" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.AnimationDirection">
+      <summary>Describes the desired direction of animation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.AnimationDirection.Center">
+      <summary>Animates to the center direction.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.AnimationDirection.Left">
+      <summary>Animates to the left direction.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.AnimationDirection.Right">
+      <summary>Animates to the right direction.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PanningBackgroundLayer">
+      <summary>This override provides specific behaviors for the background.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningBackgroundLayer.#ctor">
+      <summary>Initializes a new instance of the PanningBackgroundLayer.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningBackgroundLayer.PanRate">
+      <summary>Gets the pan rate.</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PanningLayer">
+      <summary>Implements a surface the Panorama control uses to pan content horizontally.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningLayer.#ctor">
+      <summary>Initializes a new instance of the PanningLayer class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.ContentPresenter">
+      <summary>ContentPresenter property</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Controls.ContentPresenter" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningLayer.GoTo(System.Int32,System.Windows.Duration,System.Action)">
+      <summary>Goes to an offset.</summary>
+      <param name="targetOffset">Target offset (in ItemsWidth coordinates).</param>
+      <param name="duration">Duration.</param>
+      <param name="completionAction">Action to perform at completion.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.PanningLayer.Immediately">
+      <summary>Represents a zero duration.
+</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.LeftWraparound">
+      <summary>This will be used to display the right-most item on the left side for wraparound purposes.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Shapes.Rectangle" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.LocalTransform">
+      <summary>The localTransform adjusts the zero point if it changes due to the wraparounds.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Media.TranslateTransform" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningLayer.OnApplyTemplate">
+      <summary>OnApplyTemplate override</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.PanningTransform">
+      <summary>The panningTransform is responsible for the panning.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Media.TranslateTransform" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.PanRate">
+      <summary>PanRate controls how much this pans relative to the content</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningLayer.RightWraparound">
+      <summary>This will be used to display the left-most item on the right side for wraparound purposes.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Shapes.Rectangle" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningLayer.UpdateWrappingRectangles">
+      <summary>Ensures the wrapping rectangles have been created, and updates them as needed</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningLayer.Wraparound(System.Int32)">
+      <summary>Wraps the content around in preparation for post-wrap animation.</summary>
+      <param name="direction">Direction.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PanningTitleLayer">
+      <summary>This override provides specific behaviors for the title text.
+</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningTitleLayer.#ctor">
+      <summary>Initializes a new instance of the PanningTitleLayer type.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PanningTitleLayer.PanRate">
+      <summary>Get the rate at which this will pan compared to the items</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningTitleLayer.UpdateWrappingRectangles">
+      <summary>Ensures the wrapping rectangles have been created, and updates them as needed</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanningTitleLayer.Wraparound(System.Int32)">
+      <summary>This is called when the display is looping around.</summary>
+      <param name="direction">The direction of the movement.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PanoramaPanel">
+      <summary>Implements a custom Panel for the Panorama control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanoramaPanel.#ctor">
+      <summary>Initializes a new instance of the PanoramaPanel class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanoramaPanel.ArrangeOverride(System.Windows.Size)">
+      <summary>Handles the arrange pass for the control.</summary>
+      <returns>Render size.</returns>
+      <param name="finalSize">Final size.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PanoramaPanel.MeasureOverride(System.Windows.Size)">
+      <summary>Handles the measure pass for the control.</summary>
+      <returns>Desired size.</returns>
+      <param name="availableSize">Available size.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PivotHeaderItem">
+      <summary>Represents a header item in the specialized pivot header items control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeaderItem.#ctor">
+      <summary>Initializes a new instance of the PivotHeaderItem control.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PivotHeaderItem.IsSelected">
+      <summary>Gets or sets a value indicating whether the item is selected.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.PivotHeaderItem.IsSelectedProperty">
+      <summary>Identifies the IsSelected dependency property.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeaderItem.OnApplyTemplate">
+      <summary>Overrides the on apply template method.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeaderItem.OnMouseLeftButtonUp(System.Windows.Input.MouseButtonEventArgs)">
+      <summary>Handles the button up event.</summary>
+      <param name="e">The event arguments.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.PivotHeadersControl">
+      <summary>A primitive used by the Pivot control to manage the wrapping header            experience for the control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.#ctor">
+      <summary>Initializes a new instance of the PivotHeadersControl class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Undoes the effects of the PrepareContainerForItemOverride method.</summary>
+      <param name="element">The container element.</param>
+      <param name="item">The item.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.OnApplyTemplate">
+      <summary>Overrides the on apply template method to connect template parts.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+      <summary>Handles the items changed event, re-creating the visuals for the            control.</summary>
+      <param name="e">The event arguments.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the container to display the specified item.</summary>
+      <param name="element">The container element used to display the            specified item.</param>
+      <param name="item">The item to display.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.VisualFirstIndex">
+      <summary>The current VisualFirstIndex value</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.PivotHeadersControl.VisualFirstIndexProperty">
+      <summary>Identifies the VisualFirstIndex dependency property.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1">
+      <summary>Subclasses ItemsControl to provide the typical support for using a custom container type.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.#ctor">
+      <summary>Initializes a new instance of the TemplatedItemsControl class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.ApplyItemContainerStyle(System.Windows.DependencyObject)">
+      <summary>Apply the ItemContainerStyle</summary>
+      <param name="container">The container</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.ClearContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>When overridden in a derived class, undoes the effects of the             PrepareContainerForItemOverride method.</summary>
+      <param name="element">The container element.</param>
+      <param name="item">The item.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.GetContainer(System.Object)">
+      <summary>Gets the container associated with the specified item.</summary>
+      <returns>Associated container.</returns>
+      <param name="item">Specified item.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.GetContainerForItemOverride">
+      <summary>Creates or identifies the element that is used to display the given             item.</summary>
+      <returns>Returns the element for the container.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.GetItem(`0)">
+      <summary>Gets the item associated with the specified container.</summary>
+      <returns>Associated item.</returns>
+      <param name="container">Specified container.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.IsItemItsOwnContainerOverride(System.Object)">
+      <summary>Determines if the specified item is (or is eligible to be) its own             container.</summary>
+      <returns>Returns a value indicating whether the item is its own            container.</returns>
+      <param name="item">The item instance.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.ItemContainerStyle">
+      <summary>Gets or sets the ItemContainerStyle.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Style" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.ItemContainerStyleProperty">
+      <summary>Identifies the ItemContainerStyle dependency property.
+</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Primitives.TemplatedItemsControl`1.PrepareContainerForItemOverride(System.Windows.DependencyObject,System.Object)">
+      <summary>Prepares the container to display the specified item.</summary>
+      <param name="element">The container element used to display the            specified item.</param>
+      <param name="item">The item to display.</param>
+    </member>
+  </members>
+</doc>

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" ?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       targetNamespace= "http://schemas.microsoft.com/windowsphone/2009/deployment"
+           xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment">
+  <xs:annotation>
+    <xs:documentation>
+      We have not imposed string length restrictions in the manifest and expect the tool that is generating the 
+      manifest and the ingestion pipe-line to ensure that the strings are reasonably sized
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="Deployment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="App">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="IconPath" type="CT_ResourcePath"/>
+              <xs:element name="Capabilities" type="CT_Capabilities"/>
+              <xs:element name="Tasks" type="CT_ThirdPartyAppTasks" minOccurs="1" maxOccurs="1"/>
+              <!--Add a token array here..-->
+              <xs:element name="Tokens" type="CT_ThirdPartyAppTokens"/>
+            </xs:sequence>
+            <!-- App element attributes -->
+            <xs:attribute name="Author" use="required" type="ST_String"/>
+            <xs:attribute name="Description" use="required" type="ST_String"/>
+            <xs:attribute name="Genre" use="optional" type="ST_String"/>
+            <xs:attribute name="HubType" use="optional" type="ST_HubType"/>
+            <xs:attribute name="ProductID" use="required" type="ST_Guid" />
+            <xs:attribute name="Publisher" use="required" type="ST_String"/>
+            <xs:attribute name="RuntimeType" use="required" type="ST_RuntimeType"/>
+            <xs:attribute name="Title" use="required" type= "ST_ResourceID"/>
+            <xs:attribute name="Version" use="required" type="ST_String"/>
+            <xs:attribute name="HasSettings" type="xs:boolean" use="optional" default="false"/>
+            <xs:attribute name="SingleInstanceHost" use ="optional" type="xs:boolean" default="false">
+              <xs:annotation>
+                <xs:documentation>
+                  Indicates if the application host is single instanced
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="IsBeta" use ="optional" type="xs:boolean" default="false">
+              <xs:annotation>
+                <xs:documentation>
+                    Indicates if the application is a beta version
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <!-- Deployment element attributes -->
+      <xs:attribute name="AppPlatformVersion" use="required" type="ST_AppPlatformVersion"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

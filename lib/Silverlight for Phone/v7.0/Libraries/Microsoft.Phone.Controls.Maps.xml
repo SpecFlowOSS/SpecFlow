@@ -1,0 +1,2074 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>Microsoft.Phone.Controls.Maps</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Phone.Controls.Maps.AerialMode">
+      <summary>Represents the Aerial map mode.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AerialMode.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AerialMode" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AerialMode.#ctor(System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AerialMode" /> class.</summary>
+      <param name="labels"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AerialMode.Activating(Microsoft.Phone.Controls.Maps.Core.MapMode,Microsoft.Phone.Controls.Maps.MapLayerBase,Microsoft.Phone.Controls.Maps.MapLayerBase)">
+      <summary>Notifies a mode that it is being activated by the map.</summary>
+      <param name="previousMode">The previous map mode.</param>
+      <param name="modeLayer">The map mode layer.</param>
+      <param name="modeForegroundLayer">The foreground layer.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.Content">
+      <summary>Gets the map as a UIElement.</summary>
+      <returns>Returns <see cref="T:System.Windows.UIElement" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AerialMode.GetZoomRange(System.Device.Location.GeoCoordinate)"><summary>When overridden in a derived class, retrieves the valid zoom range for the specified location.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.IsDownloading">
+      <summary>Gets a bool indicating whether map data is still downloading.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.IsIdle">
+      <summary>Gets whether the mode is idle.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AerialMode.OnCultureChanged">
+      <summary>Raises the CultureChanged event.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.ShouldDisplayFadingLabels">
+       <summary>Gets or sets whether or not to fade map labels when the map pans or zooms.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.ShouldDisplayLabels">
+       <summary>Gets or sets whether to show map labels.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.ShouldRestrictMaxZoomLevel">
+       <summary>Gets or sets whether the maximum zoom level is restricted by a coverage map.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AerialMode.UpSampleLevelDelta">
+      <summary>Gets or sets the map tile layers sample level delta.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AnimationLevel">
+      <summary>Determines when map navigation is animated.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.AnimationLevel.None">
+      <summary>The map navigates to a new view by snapping to it instead of using animation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.AnimationLevel.UserInput">
+      <summary>Map navigation is only animated in response to user input.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.AnimationLevel.Full">
+      <summary>Map navigation is always animated.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider">
+      <summary>Provides credentials in the form of an application ID.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider" /> class using the specified application ID.</summary>
+      <param name="applicationId">The application ID to use.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider.ApplicationId">
+      <summary>Gets or sets the application ID.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider.GetCredentials(System.Action{Microsoft.Phone.Controls.Maps.Credentials})">
+      <summary>Retrieves the credentials.</summary>
+      <param name="callback">The function to call when credentials are retrieved.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider.PropertyChanged">
+      <summary>Occurs when a property of this class changes.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AttributionCollection"><summary>Contains a collection of Microsoft.Maps.MapControl.Core.AttributionInfo objects.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AttributionCollection.#ctor(System.Collections.ObjectModel.ObservableCollection{Microsoft.Phone.Controls.Maps.AttributionInfo})"><summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AttributionCollection" /> class.</summary></member>
+    <member name="E:Microsoft.Phone.Controls.Maps.AttributionCollection.CollectionChanged">
+      <summary>Occurs when any item in the attribution collection changes.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AttributionCollection.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)"><summary>Raises the CollectionChanged event.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AttributionInfo"><summary>Contains map data and image attribution information.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AttributionInfo.#ctor"><summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AttributionInfo" /> class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AttributionInfo.Equals(System.Object)"><summary>Determines whether the specified object is equal to this attribution info object.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AttributionInfo.GetHashCode"><summary>Retrieves the hash code for this attribution info object.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AttributionInfo.Text"><summary>Gets or sets the text which contains the map data and image attribution.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Credentials">
+      <summary>Contains information used to authenticate requests.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Credentials.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Credentials" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Credentials.ApplicationId">
+      <summary>Gets or sets the application ID for these credentials.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Credentials.Equals(System.Object)">
+      <summary>Determines whether the credentials are equal to the specified object.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="obj">The object to compare to.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Credentials.GetHashCode">
+      <summary>Retrieves the hash code for the credentials.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Credentials.ToString">
+      <summary>Converts the credentials to a string.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.CredentialsProvider">
+      <summary>Provides credentials used to authenticate map tile requests.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.CredentialsProvider.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.CredentialsProvider" /> class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.CredentialsProvider.GetCredentials(System.Action{Microsoft.Phone.Controls.Maps.Credentials})">      
+      <summary>When overridden in a derived class, retrieves the credentials.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.LoadingErrorEventArgs">
+      <summary>Provides data for a map <see cref="E:Microsoft.Phone.Controls.Maps.Core.MapBase.LoadingError" /> event.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LoadingErrorEventArgs.LoadingException">
+      <summary>Gets the exception that caused the map loading error.</summary>
+      <returns>Returns <see cref="T:System.Exception" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.LocationCollection">
+      <summary>Contains a collection of <see cref="T:Microsoft.Phone.Controls.Maps.Location" /> items.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationCollection.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationCollection" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.LocationRect">
+      <summary>Represents a rectangle on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.#ctor(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" /> class.</summary>
+      <param name="rect">The location rectangle to use.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.#ctor(System.Device.Location.GeoCoordinate,System.Double,System.Double)"><summary>Initializes a new instance of the LocationRect class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.#ctor(System.Double,System.Double,System.Double,System.Double)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" /> class using the specified borders.</summary>
+      <param name="north">The latitude of the northern border of the rectangle.</param>
+      <param name="west">The longitude of the western border of the rectangle.</param>
+      <param name="south">The latitude of the southern border of the rectangle.</param>
+      <param name="east">The longitude of the eastern border of the rectangle.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Center">
+      <summary>Gets the location of the center of the rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.CreateLocationRect(System.Collections.Generic.IEnumerable{System.Device.Location.GeoCoordinate})"></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.CreateLocationRect(System.Device.Location.GeoCoordinate[])"></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.East">
+      <summary>Gets or sets the longitude of the eastern border of the rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.Equals(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Determines whether this location rectangle is equal to the specified location rectangle.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="value">The location rectangle to use.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.Equals(System.Object)">
+      <summary>Determines whether this location rectangle is equal to the specified object.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="obj">The object to use.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.GetHashCode">
+      <summary>Retrieves the hash code for this location rectangle.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Height">
+      <summary>Gets the height of the location rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.Intersection(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Retrieves the intersection rectangle of this location rectangle and the specified location rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+      <param name="rect">The location rectangle to use.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.Intersects(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Determines whether this location rectangle intersects with the specified location rectangle.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="rect">The location rectangle to use.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.North">
+      <summary>Gets or sets the latitude of the northern border of the rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Northeast">
+      <summary>Gets or sets the location of the northeast corner of the rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Northwest">
+      <summary>Gets the location or the northwest corner of the rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.South">
+      <summary>Gets or sets the latitude of the southern border of the rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Southeast">
+      <summary>Gets the location of the southeast corner of the rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Southwest">
+      <summary>Gets or sets the location of the southwest corner of the rectangle.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.System#IFormattable#ToString(System.String,System.IFormatProvider)">
+      <summary>Converts the location rectangle to a formatted string containing the latitude, longitude, and altitude of each corner using an explicitly defined IFormattable.ToString implementation.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+      <param name="format">The format type of the converted string (for example “c” for currency or “d” for decimal).</param>
+      <param name="provider">An <see cref="T:System.IFormatProvider" /> implementation that supplies culture-specific formatting information.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.ToString">
+      <summary>Converts the location rectangle to a formatted string containing the latitude, longitude, and altitude values of its corners.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRect.ToString(System.IFormatProvider)">
+      <summary>Converts the location rectangle to a formatted string containing the latitude, longitude, and altitude values of its corners using a given format provider.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+      <param name="provider">An <see cref="T:System.IFormatProvider" /> implementation that supplies culture-specific formatting information.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.West">
+      <summary>Gets or sets the longitude of the western border of the rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRect.Width">
+      <summary>Gets or sets the width of the rectangle.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.LocationRectTileSource">
+      <summary>Represents map tiles contained with a location rectangle that are available on  servers.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRectTileSource.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationRectTileSource" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRectTileSource.#ctor(System.String,Microsoft.Phone.Controls.Maps.LocationRect,Microsoft.Phone.Controls.Maps.Range{System.Double})">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.LocationRectTileSource" /> class with the specified tile source URI, the bounding rectangle within which tiles can be displayed, and the valid zoom range.</summary>
+      <param name="uriFormat">The URI of the tile source.</param>
+      <param name="boundingRectangle">The area on the map within which tiles can be displayed.</param>
+      <param name="zoomRange">The zoom range where tiles are visible.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRectTileSource.BoundingRectangle">
+      <summary>Gets or sets the rectangle which contains the tile source.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.LocationRectTileSource.GetUri(System.Int32,System.Int32,System.Int32)">
+      <summary>Retrieves the URI of a tile at the given point and zoom level.</summary>
+      <returns>Returns <see cref="T:System.Uri" />.</returns>
+      <param name="x">The horizontal position of the tile.</param>
+      <param name="y">The vertical position of the tile.</param>
+      <param name="zoomLevel">The zoom level of the tile.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.LocationRectTileSource.ZoomRange">
+      <summary>Gets or sets the zoom range of the tile source.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Map">
+      <summary>Represents the default map class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Map.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Map" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Map.CredentialsProvider">
+      <summary>Gets or sets the credentials provider.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsProvider" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Map.MapForeground">
+      <summary>Gets the map foreground.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.MapForeground" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Map.Mode">
+      <summary>Gets or sets the map mode.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapDragEventArgs">
+       <summary>Provides data for the MapCore.MapPan event. This class inherits from the MapInputEventArgs class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapDragEventArgs.DragDelta">
+       <summary>Gets the screen amount from the current viewport point that was touched.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapEventArgs">
+      <summary>Provides data for <see cref="T:Microsoft.Phone.Controls.Maps.Map" /> events.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapEventArgs.Handled">
+      <summary>Gets or sets whether the event is handled.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapFlickEventArgs">
+      <summary>Provides data for the flick events. This class inherits from the MapInputEventArgs class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapFlickEventArgs.Velocity">
+       <summary>Gets the screen amount from the current viewport point that was touched.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapInputEventArgs">
+       <summary>Provides data for map events.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapInputEventArgs.Handled">
+       <summary>Gets or sets whether the event is handled.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapInputEventArgs.ViewportPoint">
+       <summary>Gets the viewport point on the screen where the map event occurred.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapItemsControl">
+      <summary>Represents an the class that uses a MapLayer as an ItemsPanel. This enables data binding using an ItemsSource and an ItemTemplate. This class inherits from the ItemsControl class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapItemsControl" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.ArrangeOverride(System.Windows.Size)">
+      <summary>Arranges the elements so that they fit into the control.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+      <param name="finalSize"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.MeasureOverride(System.Windows.Size)">
+      <summary>Measures the map items control to see if it will fit into the available size.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" /> that is the size needed to fit the map items control.</returns>
+      <param name="availableSize"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate(). In simplest terms, this means the method is called just before the UI element displays in an application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.OnCreateAutomationPeer">
+      <summary>Executes the CreateAutomationPeer method.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapItemsControl.ParentMap">
+      <summary>Gets the map that owns this map items control.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapItemsControl.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Updates the elements if the projection is updated.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapLayer">
+      <summary>Represents a map layer, which positions its child <see cref="T:System.Windows.UIElement" /> objects using geographic coordinates.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapLayer" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.AddChild(System.Windows.UIElement,Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Adds a UIElement to the map layer at the specified location rectangle.</summary>
+      <param name="element">The UIElement to add.</param>
+      <param name="locationRect">The location rectangle at which to add the UIElement.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate)"><summary>Adds a UIElement to the map layer.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate,Microsoft.Phone.Controls.Maps.PositionOrigin)"><summary>Adds a UIElement to the map layer.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate,System.Windows.Point)"><summary>Adds a UIElement to the map layer.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapLayer.ParentMap">
+      <summary>Gets the parent map of the map layer.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.MapLayer.PositionOffsetProperty">
+      <summary>Defines the offset of a layer from the position calculated by the map projection, in pixels.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.MapLayer.PositionOriginProperty">
+      <summary>Specifies the position of the origin of the map.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.MapLayer.PositionProperty">
+      <summary>Specifies the map position as a location.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.MapLayer.PositionRectangleProperty">
+      <summary>Identifies a <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" /> that <see cref="T:System.Windows.UIElement" /> objects are fit into (also known as “arranging”).</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayer.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Updates the map layer elements if the map projection is updated.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapLayerBase">
+      <summary>Represents the base map layer.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayerBase.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapLayerBase" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayerBase.AddChild(System.Windows.UIElement,Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>When overridden in a derived class, adds a UIElement to the map layer at the specified location rectangle.</summary>
+      <param name="element">The UIElement to add.</param>
+      <param name="locationRect">The location rectangle at which to add the UIElement.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayerBase.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate)"><summary>When overridden in a derived class, adds a UIElement to the map layer.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayerBase.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate,Microsoft.Phone.Controls.Maps.PositionOrigin)"><summary>When overridden in a derived class, adds a UIElement to the map layer.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapLayerBase.AddChild(System.Windows.UIElement,System.Device.Location.GeoCoordinate,System.Windows.Point)"><summary>When overridden in a derived class, adds a UIElement to the map layer.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapPolygon">
+      <summary>Represents a polygon on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapPolygon.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapPolygon" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapPolygon.FillRule">
+      <summary>Gets or sets the fill rule for the polygon.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.FillRule" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapPolygon.ProjectedPoints">
+      <summary>Gets or sets the vertices of the polygon.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PointCollection" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapPolygon.SetEmbeddedShape(System.Windows.Shapes.Shape)">
+      <summary>Sets the new embedded shape object.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapPolyline">
+      <summary>Represents a polyline on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapPolyline.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapPolyline" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapPolyline.FillRule">
+      <summary>Gets or sets the fill rule for the polyline.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.FillRule" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapPolyline.ProjectedPoints">
+      <summary>Gets or sets the points that define the polyline.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PointCollection" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapPolyline.SetEmbeddedShape(System.Windows.Shapes.Shape)">
+      <summary>Sets the new embedded shape object.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapTileLayer">
+      <summary>Represents a layer of image tiles on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapTileLayer.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.MapTileLayer" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapTileLayer.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+</member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapTileLayer.ParentMap">
+      <summary>Gets the parent map of the map tile layer.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.MapTileLayer.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the map projection is updated.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapTileLayer.TileHeight">
+      <summary>Gets or sets the height, in pixels, of a tile in the map tile layer.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapTileLayer.TileSources">
+      <summary>Gets or sets a collection of tile sources associated with the map tile layer.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.TileSourceCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapTileLayer.TileWidth">
+      <summary>Gets or sets the width, in pixels, of a tile in the map tile layer.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapTileLayer.UpSampleLevelDelta">
+      <summary>Gets or sets the sample level delta.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.MapTileLayer.UpSampleLevelDeltaProperty">
+      <summary>Specifies the sample level delta.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.MapZoomEventArgs"><summary>Provides data for zoom events.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.MapZoomEventArgs.ZoomDelta"><summary>Gets the direction and extent of the zoom movement. This property returns, as a multiplier, the amount the touch manipulation has resized the map.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.PositionOrigin">
+      <summary>Represents the anchor point of the Position property on a UIElement.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.#ctor(System.Double,System.Double)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.PositionOrigin" /> class.</summary>
+      <param name="horizontalOrigin">The position of the origin along the x-axis.</param>
+      <param name="verticalOrigin">The position of the origin along the y-axis.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.BottomCenter">
+      <summary>Specifies the bottom center of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.BottomLeft">
+      <summary>Specifies the bottom left of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.BottomRight">
+      <summary>Specifies the bottom right of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.Center">
+      <summary>Specifies the center of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.CenterLeft">
+      <summary>Specifies the center left of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.CenterRight">
+      <summary>Specifies the center right of the position.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.Equals(Microsoft.Phone.Controls.Maps.PositionOrigin)">
+      <summary>Determines whether the specified position origin is equal to this position origin.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="origin">The position origin to compare to.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.Equals(System.Object)">
+      <summary>Determines whether the specified object is equal to this position origin.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="obj">The object to compare to.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.GetHashCode">
+      <summary>Retrieves the hash code for this position origin.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.op_Equality(Microsoft.Phone.Controls.Maps.PositionOrigin,Microsoft.Phone.Controls.Maps.PositionOrigin)">
+      <summary>Determines whether two position origin objects are equal.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="origin1">The first position origin to compare.</param>
+      <param name="origin2">The second position origin to compare.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.PositionOrigin.op_Inequality(Microsoft.Phone.Controls.Maps.PositionOrigin,Microsoft.Phone.Controls.Maps.PositionOrigin)">
+      <summary>Determines whether two position origins are not equal.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="origin1">The first position origin to compare.</param>
+      <param name="origin2">The second position origin to compare.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.TopCenter">
+      <summary>Specifies the top center of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.TopLeft">
+      <summary>Specifies the top left of the position.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.PositionOrigin.TopRight">
+      <summary>Specifies the top right of the position.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.PositionOrigin.X">
+      <summary>Gets or sets the x-axis position of the position origin.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.PositionOrigin.Y">
+      <summary>Gets or sets the y-axis position of the position origin.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.ProjectionChangedEventArgs">
+      <summary>Provides data for the ProjectionChanged event.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.ProjectionChangedEventArgs.UpdateLevel">
+      <summary>Gets the new projection update level.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.ProjectionUpdateLevel" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel"><summary>Contains projection update levels based on the difference between LocationToViewportPoint and ViewportPointToLocation.</summary></member>
+    <member name="F:Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel.None">
+      <summary />
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel.Linear">
+      <summary />
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel.Full">
+      <summary />
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Pushpin">
+      <summary>Represents a pushpin on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Pushpin.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Pushpin" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Pushpin.Location">
+      <summary>Gets or sets the location of the pushpin on the map.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Pushpin.LocationDependencyProperty">
+      <summary>Specifies the location of the pushpin on the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Pushpin.PositionOrigin">
+      <summary>Gets or sets the position origin of the pushpin, which defines the position on the pushpin to anchor to the map.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.PositionOrigin" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Pushpin.PositionOriginDependencyProperty">
+      <summary>Specifies the position origin of the pushpin, which defines the position on the pushpin to anchor to the map.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.QuadKey"><summary>Represents a Bing Maps quad key.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.#ctor(System.Int32,System.Int32,System.Int32)"><summary>Initializes a new instance of the Quadkey structure.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.#ctor(System.String)"><summary>Initializes a new instance of the Quadkey structure.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.Equals(System.Object)"><summary>Determines whether this quadkey is equal to the specified object.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.GetHashCode"><summary>Retrieves the hash code for this quad key.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.QuadKey.Key"><summary>Gets the quadkey string of the tile.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.op_Equality(Microsoft.Phone.Controls.Maps.QuadKey,Microsoft.Phone.Controls.Maps.QuadKey)"><summary>Determines whether two tiles are equal.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.QuadKey.op_Inequality(Microsoft.Phone.Controls.Maps.QuadKey,Microsoft.Phone.Controls.Maps.QuadKey)"><summary>Determines whether two tiles are not equal.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.QuadKey.X"><summary>Gets the x-axis position of the tile.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.QuadKey.Y"><summary>Gets the y-axis position of the tile.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.QuadKey.ZoomLevel"><summary>Gets or sets the zoom level of the tile.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Range`1">
+      <summary>Defines a generic range class for a given minimum and maximum value.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Range`1.#ctor(`0,`0)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" /> class.</summary>
+      <param name="fromValue">The minimum value of the range.</param>
+      <param name="toValue">The maximum value of the range.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Range`1.From">
+      <summary>Gets the minimum value of the range.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Range`1.To">
+      <summary>Gets the maximum value of the range.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.RoadMode">
+      <summary>Represents the Road map mode.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.RoadMode.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.RoadMode" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.RoadMode.Activating(Microsoft.Phone.Controls.Maps.Core.MapMode,Microsoft.Phone.Controls.Maps.MapLayerBase,Microsoft.Phone.Controls.Maps.MapLayerBase)">
+      <summary>Notifies a mode that it is being activated by the map.</summary>
+      <param name="previousMode"></param>
+      <param name="modeLayer"></param>
+      <param name="modeForegroundLayer"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.Content">
+      <summary>Gets the map mode as a UIElement.</summary>
+      <returns>Returns <see cref="T:System.Windows.UIElement" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.RoadMode.GetZoomRange(System.Device.Location.GeoCoordinate)"><summary>Retrieves the valid zoom range for the specified location in the Road map mode.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.IsDownloading">
+      <summary>Gets a bool indicating whether map data is downloading.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.IsIdle">
+      <summary>Gets whether the mode is idle.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.ModeBackground">
+      <summary>Gets the background style.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.ModeBackground" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.RoadMode.OnCultureChanged">
+      <summary>Raises the CultureChanged event.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.ShouldRestrictMaxZoomLevel">
+      <summary>Gets or sets whether the maximum zoom level is restricted by a coverage map.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.RoadMode.UpSampleLevelDelta">
+      <summary>Gets or sets the sample level delta.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.TileSource">
+      <summary>Retrieves the URI for a tile based on its zoom level and tile position.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.TileSource" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.TileSource" /> class.</summary>
+      <param name="uriFormat">The format used to create the URI.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.GetSubdomain(Microsoft.Phone.Controls.Maps.QuadKey)"><summary>Retrieves the sub-domain for the tile identified by the specified quad key.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.GetUri(System.Int32,System.Int32,System.Int32)">
+      <summary>Retrieves the URI for the tile specified by the given x, y coordinates and zoom level.</summary>
+      <returns>Returns a <see cref="T:System.Uri" /> for the tile.</returns>
+      <param name="x">The horizontal position of the tile.</param>
+      <param name="y">The vertical position of the tile.</param>
+      <param name="zoomLevel">The zoom level of the tile.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.OnPropertyChanged(System.String)">
+      <summary>Raises the PropertyChanged event.</summary>
+      <param name="propertyName">The name of the changed property.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.TileSource.PropertyChanged">
+      <summary>Occurs when a property of the tile changes.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.TileSource.QuadKeyUriFragment">
+      <summary>Specifies the piece of the URI that is the quad key.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.TileSource.SetSubdomains(System.String[][])">
+      <summary>Sets a matrix that represents sub-domains.</summary>
+      <param name="subdomains">A string matrix that specifies the sub-domains.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.TileSource.SubdomainUriFragment">
+      <summary>Specifies the piece of the URI that is the sub-domain.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.TileSource.UriFormat">
+      <summary>Gets or sets the format used to create the URI.</summary>
+      <returns>Returns a <see cref="T:System.String" />.The following markers may be present in the string.{quadkey}  The string in the UriFormat that will be replaced with a quad key.{UriScheme}  The string in the UriFormat that will be replaced with a URI scheme.{subdomain}  The string in the UriFormat that will be replaced with the sub domain.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.TileSource.UriSchemeUriFragment">
+      <summary>Specifies the pieces of the URI that is the URI scheme.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer">
+      <summary>Represents the base automation peer class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer.#ctor(System.Windows.FrameworkElement,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer" /> class.</summary>
+      <param name="element">The element for which to create the automation peer.</param>
+      <param name="className">The name of the class.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Retrieves the type of the control.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationControlType" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer.GetClassNameCore">
+      <summary>Retrieves the name of the class.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.BaseAutomationPeer.GetNameCore">
+      <summary>Retrieves the name of the element.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer">
+      <summary>Contains methods used to automate the testing of a <see cref="T:Microsoft.Phone.Controls.Maps.Map" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.#ctor(Microsoft.Phone.Controls.Maps.Map)">
+       <summary>Initializes a new instance of the MapAutomationPeer class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.DoubleTap(System.Windows.Point)">
+       <summary>Simulates a double tap on the phone screen.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.Drag(System.Windows.Point,System.Windows.Point)">
+       <summary>Simulates a pan drag on the phone screen.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.Flick(System.Windows.Point,System.Windows.Point)">
+       <summary>Simulates a touch on the phone screen.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.Scale(System.Windows.Point,System.Double)">
+       <summary>Simulates a pinch stretch on the phone screen.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapAutomationPeer.Zoom(System.Windows.Point,System.Double)">
+       <summary>Simulates a zoom on the phone screen.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer"><summary>Contains methods used to automate the testing of a Map.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.#ctor(Microsoft.Phone.Controls.Maps.Core.MapBase)"><summary>Initializes a new instance of the MapBaseAutomationPeer class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.#ctor(Microsoft.Phone.Controls.Maps.Core.MapBase,System.String)"><summary>Initializes a new instance of the MapBaseAutomationPeer class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)"><summary>Retrieves the value pattern that is supported.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.IsReadOnly"></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.Map"></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.SetValue(System.String)"></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AutomationPeers.MapBaseAutomationPeer.Value"><summary>Gets a string with map properties embedded in it.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer">
+      <summary>Contains methods used to automate the testing of a map tile layer.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer.#ctor(System.Windows.FrameworkElement)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer" /> class.</summary>
+      <param name="element">The element.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="patternInterface"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer.IsReadOnly">
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer.SetValue(System.String)">
+      <param name="value"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.AutomationPeers.MapTileLayerAutomationPeer.Value">
+      <summary>Gets a string with map tile layer properties embedded in it.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException">
+      <summary>The exception that is thrown when a configuration has not loaded.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException" /> class.</summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.ConfigurationNotLoadedException" /> class.</summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The error type that is the cause of the current exception or null.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.CopyrightManager">
+      <summary>Manages the copyright string.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.CopyrightManager.GetInstance">
+      <summary>Returns an instance of the copyright manager.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.CopyrightManager" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException">
+      <summary>The exception that is thrown when the specified credentials are invalid.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException" /> class.</summary>
+      <param name="message">The error message.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsInvalidException" /> class.</summary>
+      <param name="message">The error message.</param>
+      <param name="innerException">The inner exception.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.FlatMapMode">
+      <summary>Represents a flattened map projection of the Earth. This class must be inherited.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.#ctor(System.Windows.Size)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.FlatMapMode" /> class.</summary>
+      <param name="logicalAreaSizeInScreenSpaceAtLevel1">The size of the available screen space at the most zoomed out level.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.Center">
+      <summary>Gets or sets the location of the center of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.ConstrainView(System.Device.Location.GeoCoordinate,System.Double@,System.Double@,System.Double@)"><summary>When overridden in a derived class, limits the values to valid margins.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationRectToLogicalRect(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Converts a <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" /> object to a <see cref="T:System.Windows.Rect" />.</summary>
+      <returns>Returns <see cref="T:System.Windows.Rect" />.</returns>
+      <param name="boundingRectangle">The rectangle to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationToLogicalPoint(System.Collections.Generic.IEnumerable{System.Device.Location.GeoCoordinate})"><summary>Converts a collection of locations to a collection of points on the map.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationToLogicalPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a point on the screen.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationToViewportPoint(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Converts a location rectangle to a viewport point.</summary>
+      <returns>Returns <see cref="T:System.Windows.Rect" />.</returns>
+      <param name="boundingRectangle">The location rectangle to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationToViewportPoint(System.Collections.Generic.IEnumerable{System.Device.Location.GeoCoordinate})"><summary>Converts a collection of locations to viewport points.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LocationToViewportPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LogicalPointToLocation(System.Windows.Point)">
+      <summary>When overridden in a derived class, converts a logical point to a location.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="logicalPoint">The logical point to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.LogicalPointToViewportPoint(System.Windows.Point)">
+      <summary>Converts a point on the screen to a point in the map view.</summary>
+      <returns>Returns <see cref="T:System.Windows.Point" />.</returns>
+      <param name="logicalPoint">The point on the screen to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.OnMapDrag(Microsoft.Phone.Controls.Maps.MapDragEventArgs)"><summary>Executes when the map is dragged by the user.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.OnMapFlick(Microsoft.Phone.Controls.Maps.MapFlickEventArgs)"><summary>Executes when the map is flicked by the user.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.OnMapZoom(Microsoft.Phone.Controls.Maps.MapZoomEventArgs)"><summary>Executes when the map is zoomed by the user.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.SetView(Microsoft.Phone.Controls.Maps.LocationRect,System.Boolean)">
+      <summary>Sets the map view to the specified location rectangle.</summary>
+      <param name="boundingRectangle">The bounding rectangle to use to set the map view.</param>
+      <param name="animate">A bool indicating whether to animate map navigation.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double,System.Double,System.Boolean)"><summary>Sets the map view.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.TargetCenter">
+      <summary>Gets the location of the center of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.TargetZoomLevel">
+      <summary>Gets the zoom level of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.TryLocationToViewportPoint(System.Device.Location.GeoCoordinate,System.Windows.Point@)"><summary>Converts the location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.TryViewportPointToLocation(System.Windows.Point,System.Device.Location.GeoCoordinate@)"><summary>Converts the location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.ViewportPointToLocation(System.Windows.Point)">
+      <summary>Converts a viewport point to a location.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="viewportPoint">The viewport point to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.ViewportPointToLogicalPoint(System.Windows.Point)">
+      <summary>Converts a viewport point to a point on the screen.</summary>
+      <returns>Returns <see cref="T:System.Windows.Point" />.</returns>
+      <param name="viewportPoint">The viewport point to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.ViewportSizeChanged(System.Windows.Size)">
+      <summary>Executes when the size of the viewport changes.</summary>
+      <param name="viewportSize">The new viewport size.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.FlatMapMode.ZoomLevel">
+      <summary>Gets or sets the zoom level of the map view.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.IProjectable">
+      <summary>Defines the base interface for all <see cref="T:System.Windows.UIElement" /> objects that use a projection to render themselves on a map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.IProjectable.ParentMap">
+      <summary>Gets the parent map of this projectable.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.IProjectable.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the projection is changed and the conversion methods (ViewportPointToLocation and LocationToViewPortPoint) return different results.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapBase">
+      <summary>Represents the abstract base map class. This class must be inherited.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.AnimationLevel">
+      <summary>When overridden in a derived class, gets or sets the animation level of map navigation.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.AnimationLevel" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.AnimationLevelProperty"><summary>Identifies the AnimationLevel dependency property.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.BoundingRectangle">
+      <summary>When overridden in a derived class, gets the bounding rectangle that defines the boundaries of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Center">
+      <summary>When overridden in a derived class, gets the center location of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.CenterProperty">
+      <summary>Specifies the location of the center of the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Children">
+      <summary>Gets the child elements of the map.</summary>
+      <returns>Returns <see cref="T:System.Windows.Controls.UIElementCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.CopyrightVisibility">
+      <summary>Gets or sets the visibility of the copyright on the map.</summary>
+      <returns>Returns <see cref="T:System.Windows.Visibility" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.CopyrightVisibilityProperty">
+      <summary>Specifies whether the copyright is visible.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.CredentialsProvider">
+      <summary>Gets or sets the type of credentials that are being provided.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsProvider" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.CredentialsProviderProperty">
+      <summary>Specifies the type of credentials that are being provided.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Culture">
+      <summary>Gets or sets the culture used by the map.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.CultureProperty">
+      <summary>Specifies the map culture to use.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Heading">
+      <summary>When overridden in a derived class, gets or sets the directional heading of the map.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.HeadingProperty">
+      <summary>Specifies the directional heading, in degrees, of the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.IsDownloading">
+      <summary>When overridden in a derived class, gets a bool indicating whether map data is downloading.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.IsIdle">
+      <summary>Gets whether the map is idle.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.LoadingError">
+      <summary>When overridden in a derived class, occurs when there is an error loading the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.LocationToViewportPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.LogoVisibility">
+      <summary>Gets or sets the visibility of the logo on the map.</summary>
+      <returns>Returns <see cref="T:System.Windows.Visibility" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.LogoVisibilityProperty">
+      <summary>Specifies whether the logo is visible.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.MapPan">
+       <summary>When overridden in a derived class, occurs when the screen is touched and dragged to pan the map. This event occurs every frame.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.MapResolved">
+       <summary>When overridden in a derived class, occurs when the map tiles are fully downloaded, regardless of whether the user is still interacting with the map.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.MapZoom">
+       <summary>When overridden in a derived class, occurs when the map is touched to zoom the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Mode">
+      <summary>When overridden in a derived class, gets or sets the map mode.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.ModeChanged">
+      <summary>When overridden in a derived class, occurs when the map mode changes.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.ModeProperty"><summary>Identifies the Mode dependency property.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnAnimationLevelChanged(System.Windows.DependencyPropertyChangedEventArgs)"><summary>Executes when the animation level has changed.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnCenterChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, executes when the location of the center of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnCreateAutomationPeer">
+      <summary>Creates an automation peer for the map object.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnCredentialsProviderChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, raises an event when the CredentialsProvider property changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnCultureChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, raises an event when the Culture property changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnHeadingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, executes when the directional heading of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnModeChanged(System.Windows.DependencyPropertyChangedEventArgs)"><summary>Executes when the map mode has changed.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnOverlayVisibilityChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, raises an event when the OverlayVisibility property changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnPitchChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, executes when the pitch of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.OnZoomLevelChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>When overridden in a derived class, executes when the zoom level of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.Pitch">
+      <summary>When overridden in a derived class, gets or sets the pitch of the map.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.PitchProperty">
+      <summary>Specifies the pitch of the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>When overridden in a derived class, executes when the projection update level changes.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.RootLayer">
+      <summary>Gets the base map layer.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.MapLayer" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.ScaleVisibility">
+      <summary>Gets or sets the visibility of the scale bar.</summary>
+      <returns>Returns <see cref="T:System.Windows.Visibility" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.ScaleVisibilityProperty">
+      <summary>Specifies whether the scale bar is visible.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.SetMode(Microsoft.Phone.Controls.Maps.Core.MapMode,System.Boolean)">
+      <summary>When overridden in a derived class, sets the map mode.</summary>
+      <param name="newMode"></param>
+      <param name="transferSettings"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.SetView(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>When overridden in a derived class, sets the map view to the specified location rectangle.</summary>
+      <param name="boundingRectangle"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.SetView(System.Device.Location.GeoCoordinate,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetBoundingRectangle">
+      <summary>When overridden in a derived class, gets the bounding rectangle that defines the view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetCenter">
+      <summary>When overridden in a derived class, gets the center location of the view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetHeading">
+      <summary>When overridden in a derived class, gets the heading of the view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetPitch">
+      <summary>When overridden in a derived class, gets the pitch of the view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetViewChanged">
+      <summary>When overridden in a derived class, occurs when the view towards which the map is animating changes.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.TargetZoomLevel">
+      <summary>When overridden in a derived class, gets the zoom level of the view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.TryLocationToViewportPoint(System.Device.Location.GeoCoordinate,System.Windows.Point@)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.TryViewportPointToLocation(System.Windows.Point,System.Device.Location.GeoCoordinate@)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.ViewChangeEnd">
+      <summary>When overridden in a derived class, occurs when the view is done changing.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.ViewChangeOnFrame">
+      <summary>When overridden in a derived class, occurs when the map view is changing.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapBase.ViewChangeStart">
+      <summary>When overridden in a derived class, occurs when the map view starts changing.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapBase.ViewportPointToLocation(System.Windows.Point)">
+      <summary>When overridden in a derived class, converts a viewport point to a location.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="viewportPoint"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.ViewportSize">
+      <summary>When overridden in a derived class, gets the size of the viewport.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.ZoomBarVisibility">
+       <summary>Gets or sets whether the map zoom level bar displays.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.ZoomBarVisibilityProperty">
+       <summary>Identifies the ZoomBarVisibility dependency property.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapBase.ZoomLevel">
+      <summary>When overridden in a derived class, gets or sets the zoom level of the map.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MapBase.ZoomLevelProperty">
+      <summary>Specifies the zoom level of the map.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapConfiguration">
+      <summary>Contains asynchronous configuration settings. The configuration settings are loaded when an event handler is added to AsynchronousConfigurationLoaded.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.GetSection(System.String,System.String,System.String,Microsoft.Phone.Controls.Maps.Core.MapConfigurationCallback)">
+      <summary>Loads the configuration. If configuration is already loaded, this method calls the callback function without trying to load the configuration.</summary>
+      <param name="version">The version string of the configuration.</param>
+      <param name="sectionName">The name of the configuration section to load.</param>
+      <param name="culture">The culture of the configuration.</param>
+      <param name="callback">The callback function to call after the configuration is loaded.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.GetSection(System.String,System.String,System.String,Microsoft.Phone.Controls.Maps.Core.MapConfigurationCallback,System.Object)">
+      <summary>Loads the configuration. If configuration is already loaded, this method calls the callback function without trying to load the configuration.</summary>
+      <param name="version">The version string of the configuration.</param>
+      <param name="sectionName">The name of the configuration section.</param>
+      <param name="culture">The culture of the configuration.</param>
+      <param name="callback">The callback function to call after the configuration is loaded.</param>
+      <param name="userState">An object that stores user defined information. This object is returned in the callback function.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.Load(System.Uri)">
+      <summary>Loads the configuration from the configuration service.</summary>
+      <param name="address">The URI that contains the configuration.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.Load(System.Xml.XmlReader)">
+      <summary>Loads the configuration using the xml provided.</summary>
+      <param name="config">The configuration xml to use.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.Loaded">
+      <summary>Occurs when the configuration is loaded.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.SetServiceUri(System.Uri)">
+      <summary>Sets the URI of the configuration service.</summary>
+      <param name="address">The URI of the configuration service.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapConfigurationCallback">
+      <summary>Represents the callback function to call when the map configuration has loaded.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapConfigurationLoadedEventArgs">
+      <summary>Provides data for the <see cref="E:Microsoft.Phone.Controls.Maps.Core.MapConfiguration.Loaded" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfigurationLoadedEventArgs.#ctor(System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapConfigurationLoadedEventArgs" /> class.</summary>
+      <param name="error">The error that occurred when the configuration was loaded.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapConfigurationLoadedEventArgs.Error">
+      <summary>Gets the error that occurred when the configuration was loaded.</summary>
+      <returns>Returns <see cref="T:System.Exception" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapConfigurationSection">
+      <summary>Represents a section of the map configuration.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapConfigurationSection.Contains(System.String)">
+      <summary>Returns a bool indicating if the configuration setting identified by the specified key is in the map configuration.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="key">The key to use.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapConfigurationSection.Item(System.String)">
+      <summary>Gets the configuration setting identified by the specified key.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+      <param name="key">The configuration setting key.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapCore">
+      <summary>Represents the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapCore" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.ArrangeOverride(System.Windows.Size)">
+      <summary>Arranges the elements to fit the given <see cref="T:System.Windows.Size" />.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+      <param name="finalSize"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.BoundingRectangle">
+      <summary>Gets the rectangle that defines the boundaries of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.IsDownloading">
+      <summary>Gets a bool indicating whether map data is downloading.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.IsIdle">
+      <summary>Gets whether the map is idle.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.LoadingError">
+      <summary>Occurs when there is an error loading the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.LoadingException">
+      <summary>Gets the exception that occurred when loading the map.</summary>
+      <returns>Returns <see cref="T:System.Exception" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.LocationToViewportPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.MapPan">
+       <summary>Occurs when the screen is touched and dragged to pan the map. This event occurs every frame.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.MapResolved">
+       <summary>Occurs when the map tiles are fully downloaded, regardless of whether the user is still interacting with the map.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.MapZoom">
+       <summary>Occurs when the map is touched to zoom the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.MeasureOverride(System.Windows.Size)">
+      <summary>Measures the map elements so that they fit within the map <see cref="T:System.Windows.Size" />.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+      <param name="availableSize"></param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.ModeChanged">
+      <summary>Occurs when the map mode changes.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnAnimationLevelChanged(System.Windows.DependencyPropertyChangedEventArgs)"><summary>Executes when the animation level has changed.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnCenterChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Executes when the location of the center of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnCredentialsProviderChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Raises an event when the CredentialsProvider property changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnCultureChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Raises an event when the Culture property changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnFirstFrame">
+      <summary>When overridden in a derived class, executes during the first frame.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnHeadingChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Executes when the directional heading of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnModeChanged(System.Windows.DependencyPropertyChangedEventArgs)"><summary>Executes when the map mode has changed.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnPitchChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Executes when the pitch of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.OnZoomLevelChanged(System.Windows.DependencyPropertyChangedEventArgs)">
+      <summary>Executes when the zoom level of the map changes.</summary>
+      <param name="eventArgs"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the projection is updated.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.SetMode(Microsoft.Phone.Controls.Maps.Core.MapMode,System.Boolean)">
+      <summary>Sets the map mode.</summary>
+      <param name="newMode"></param>
+      <param name="transferSettings"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.SetView(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Sets the map view using the specified location rectangle.</summary>
+      <param name="boundingRectangle"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.SetView(System.Device.Location.GeoCoordinate,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double,System.Double)"><summary>Sets the map view.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetBoundingRectangle">
+      <summary>Gets the bounding rectangle that defines the boundaries of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetCenter">
+      <summary>Gets the center location of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetHeading">
+      <summary>Gets the heading of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetPitch">
+      <summary>Gets the pitch of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetViewChanged">
+      <summary>Occurs when the view towards which the map is animating changes.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.TargetZoomLevel">
+      <summary>Gets the zoom level of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.TryLocationToViewportPoint(System.Device.Location.GeoCoordinate,System.Windows.Point@)"><summary>Converts a location to a viewpoint point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.TryViewportPointToLocation(System.Windows.Point,System.Device.Location.GeoCoordinate@)"><summary>Converts a location to a viewpoint point.</summary></member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.ViewChangeEnd">
+      <summary>Occurs when the view is done changing.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.ViewChangeOnFrame">
+      <summary>Occurs when the view is done changing.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapCore.ViewChangeStart">
+      <summary>Occurs when the view starts changing.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapCore.ViewportPointToLocation(System.Windows.Point)">
+      <summary>Converts the specified viewport point to a location.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="viewportPoint"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapCore.ViewportSize">
+      <summary>Gets the size of the viewport.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapMode">
+      <summary>Defines the base class for a map mode. This class must be inherited.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.Activated(Microsoft.Phone.Controls.Maps.MapLayerBase,Microsoft.Phone.Controls.Maps.MapLayerBase)">
+      <summary>When overridden in a derived class, executes when the map mode is activated.</summary>
+      <param name="modeLayer"></param>
+      <param name="modeForegroundLayer"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.Activating(Microsoft.Phone.Controls.Maps.Core.MapMode,Microsoft.Phone.Controls.Maps.MapLayerBase,Microsoft.Phone.Controls.Maps.MapLayerBase)">
+      <summary>When overridden in a derived class, executes when the map mode is activating.</summary>
+      <param name="previousMode"></param>
+      <param name="modeLayer"></param>
+      <param name="modeForegroundLayer"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.AnimationLevel">
+      <summary>Gets or sets the animation level.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.AnimationLevel" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Attributions">
+      <summary>When overridden in a derived class, gets a collection of attributions.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.AttributionCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.BoundingRectangle">
+      <summary>When overridden in a derived class, gets the rectangle that defines the boundaries of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Center">
+      <summary>When overridden in a derived class, gets or sets the center of the map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Content">
+      <summary>When overridden in a derived class, gets the UIElement that represents the map mode.</summary>
+      <returns>Returns <see cref="T:System.Windows.UIElement" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.CredentialsProvider">
+      <summary>When overridden in a derived class, gets or sets the type of credentials provided.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.CredentialsProvider" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Culture">
+      <summary>Gets or sets the culture of the map mode.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.Deactivating">
+      <summary>When overridden in a derived class, executes when the map mode is deactivating.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.ForegroundContent">
+      <summary>When overridden in a derived class, gets the map foreground content as a UIElement.</summary>
+      <returns>Returns <see cref="T:System.Windows.UIElement" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Heading">
+      <summary>When overridden in a derived class, gets or sets the heading of the map view.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.HeadingRange">
+      <summary>When overridden in a derived class, gets the range of valid heading values.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.IsDownloading">
+      <summary>Gets or sets whether the map mode is downloading.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.IsIdle">
+      <summary>Gets whether the mode is idle.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.LocationToViewportPoint(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>When overridden in a derived class, converts a location rectangle to a viewport point.</summary>
+      <returns>Returns <see cref="T:System.Windows.Rect" />.</returns>
+      <param name="boundingRectangle"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.LocationToViewportPoint(System.Collections.Generic.IEnumerable{System.Device.Location.GeoCoordinate})"><summary>Converts a location collection to viewpoint points.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.LocationToViewportPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a viewpoint point.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.ModeBackground">
+      <summary>When overridden in a derived class, gets the mode of the background.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.ModeBackground" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnCultureChanged">
+      <summary>When overridden in a derived class, executes when the culture property changes.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnMapDrag(Microsoft.Phone.Controls.Maps.MapDragEventArgs)">
+      <summary>When overridden in a derived class, executes when the map is dragged by the user.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnMapFlick(Microsoft.Phone.Controls.Maps.MapFlickEventArgs)">
+      <summary>When overridden in a derived class, executes when the map is flicked by the user.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnMapZoom(Microsoft.Phone.Controls.Maps.MapZoomEventArgs)">
+      <summary>When overridden in a derived class, executes when the map is zoomed by the user.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnProjectionChanged(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the projection has changed.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.OnTargetViewChanged"><summary>Executes when the target view has changed.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Pitch">
+      <summary>When overridden in a derived class, gets or sets the pitch of the map view.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.PitchRange">
+      <summary>When overridden in a derived class, gets the range of valid pitch values.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapMode.ProjectionChanged">
+      <summary>Occurs when the map projection changes.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.Scale">
+      <summary>When overridden in a derived class, gets or sets the scale of the map.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.SetView(Microsoft.Phone.Controls.Maps.LocationRect,System.Boolean)">
+      <summary>When overridden in a derived class, sets the map view to the specified location rectangle.</summary>
+      <param name="boundingRectangle"></param>
+      <param name="animate"></param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double,System.Double,System.Boolean)"><summary>Sets the map view.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetBoundingRectangle">
+      <summary>When overridden in a derived class, gets the location rectangle that defines the boundaries of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetCenter">
+      <summary>When overridden in a derived class, gets the center location of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetHeading">
+      <summary>When overridden in a derived class, gets the heading of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetPitch">
+      <summary>When overridden in a derived class, gets the pitch of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetScale">
+      <summary>When overridden in a derived class, gets the target scale towards which the map is navigating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetViewChanged">
+      <summary>When overridden in derived class, occurs when the map view towards which the map is animating changes.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.TargetZoomLevel">
+      <summary>When overridden in a derived class, gets the zoom level of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.TryLocationToViewportPoint(System.Device.Location.GeoCoordinate,System.Windows.Point@)"><summary>Converts a location to a viewpoint point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.TryViewportPointToLocation(System.Windows.Point,System.Device.Location.GeoCoordinate@)"><summary>Converts a location to a viewpoint point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.ViewportPointToLocation(System.Windows.Point)">
+      <summary>When overridden in a derived class, converts a viewport point to a location in this map mode.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="viewportPoint"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.ViewportSize">
+      <summary>Gets or sets the size of the viewport.</summary>
+      <returns>Returns <see cref="T:System.Windows.Size" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapMode.ViewportSizeChanged(System.Windows.Size)">
+      <summary>When overridden in a derived class, executes when the size of the viewport changes.</summary>
+      <param name="viewportSize"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.ZoomLevel">
+      <summary>When overridden in a derived class, gets or sets the zoom level.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapMode.ZoomRange">
+      <summary>When overridden in a derived class, gets the range of valid zoom levels.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MapShapeBase">
+      <summary>Represents the base class for a shape on the map. This class must be inherited.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.#ctor"><summary>Initializes a new instance of the MapShapeBase class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.ArrangeOverride(System.Windows.Size)">
+      <summary>Arranges the shape to fit on the map.</summary>
+      <returns>Returns the actual <see cref="T:System.Windows.Size" /> used.</returns>
+      <param name="finalSize">The final size of the shape to fit.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.EmbeddedShape"><summary>Gets the shape.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.Fill">
+      <summary>Gets or sets the fill of the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.Brush" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.Locations">
+      <summary>Gets or sets the locations that define the vertices of the shape.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationCollection" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.MeasureOverride(System.Windows.Size)">
+      <summary>Measures the shape to fit the available size.</summary>
+      <returns>Returns the actual <see cref="T:System.Windows.Size" /> needed by the shape and its children.</returns>
+      <param name="availableSize">The available size of the shape.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+</member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.OnCreateAutomationPeer">
+      <summary>Raises the CreateAutomationPeer event.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.ParentMap">
+      <summary>Gets the parent map of the shape.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapBase" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.ProjectedPoints">
+      <summary>When overridden in a derived class, gets or sets the projected points of the shape. Use this property to arrange the points of derived classes.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PointCollection" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.ProjectionUpdated(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the projection is updated.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.SetEmbeddedShape(System.Windows.Shapes.Shape)">
+      <summary>Sets the new embedded shape object.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.Stroke">
+      <summary>Gets or sets the stroke color of the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.Brush" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeDashArray">
+      <summary>Gets or sets the StrokeDashArray value of the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.DoubleCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeDashCap">
+      <summary>Gets or sets the StrokeDashCap value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PenLineCap" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeDashOffset">
+      <summary>Gets or sets the StrokeDashOffset value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeEndLineCap">
+      <summary>Gets or sets the StrokeEndLineCap value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PenLineCap" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeLineJoin">
+      <summary>Gets or sets the StrokeLineJoin value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PenLineJoin" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeMiterLimit">
+      <summary>Gets or sets the StrokeMiterLimit value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeStartLineCap">
+      <summary>Gets or sets the StrokeStartLineCap value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.PenLineCap" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MapShapeBase.StrokeThickness">
+      <summary>Gets or sets the StrokeThickness value for the shape.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MatrixHelper">
+       <summary>Contains helper methods for the System.Windows.Media.Matrix class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MatrixHelper.Rotate(System.Windows.Media.Matrix@,System.Double)">
+       <summary>Rotates the given matrix to the specified angle.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MatrixHelper.RotateAt(System.Windows.Media.Matrix@,System.Double,System.Windows.Point)">
+       <summary>Rotates the given matrix to the specified angle around the specified center.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MatrixHelper.Translate(System.Windows.Media.Matrix@,System.Double,System.Double)">
+       <summary>Translates the given matrix based on the given X and Y values.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MercatorMode">
+      <summary>Represents a Mercator map mode.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.MercatorMode" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.Attributions">
+      <summary>Gets the map mode attributions.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Core.AttributionCollection" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.BoundingRectangle">
+      <summary>Gets the location rectangle that defines the current map view.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.ConstrainView(System.Device.Location.GeoCoordinate,System.Double@,System.Double@,System.Double@)"><summary>Modifies the given parameters to valid values.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.GetZoomRange(System.Device.Location.GeoCoordinate)"><summary>When overridden in a derived class, gets the zoom range of the specified location in this mode.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.Heading">
+      <summary>Gets the directional heading of the map view.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.HeadingRange">
+      <summary>Gets the heading range supported for the Mercator map mode.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.LocationRectToLogicalRect(Microsoft.Phone.Controls.Maps.LocationRect)">
+      <summary>Converts a location rectangle to a rectangle in logical space.</summary>
+      <returns>Returns <see cref="T:System.Windows.Rect" />.</returns>
+      <param name="boundingRectangle">The location rectangle to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.LocationToLogicalPoint(System.Collections.Generic.IEnumerable{System.Device.Location.GeoCoordinate})"><summary>Converts a location collection to logical points.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.LocationToLogicalPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a logical point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.LogicalPointToLocation(System.Windows.Point)">
+      <summary>Converts a logical point to a location in the Mercator map mode.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="logicalPoint">The logical point to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorMode.OnProjectionChanged(Microsoft.Phone.Controls.Maps.ProjectionUpdateLevel)"><summary>Executes when the projection has changed.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.Pitch">
+      <summary>Gets the pitch of the current map view.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.PitchRange">
+      <summary>Gets the valid range of the pitch.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.Scale">
+      <summary>Gets or sets the scale of the map.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.TargetBoundingRectangle">
+      <summary>Gets the rectangle that defines the boundaries of the map view towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.TargetScale">
+      <summary>Gets the scale of the map towards which the map is animating.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.MercatorMode.ZoomRange">
+      <summary>Gets the range of the valid zoom levels.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.MercatorUtility">
+      <summary>Contains helper methods for Mercator projection calculations.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.DegreesToRadians(System.Double)">
+      <summary>Converts degrees to radians.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+      <param name="deg">The degrees to convert.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.EarthCircumferenceInMeters">
+      <summary>Gets the circumference of the Earth, in meters.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.EarthRadiusInMeters">
+      <summary>Gets the radius of the Earth, in meters.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.LocationToLogicalPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a logical point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.LogicalPointToLocation(System.Windows.Point)">
+      <summary>Converts a <see cref="T:System.Windows.Point" /> to a <see cref="T:Microsoft.Phone.Controls.Maps.Location" /> in a Mercator projection.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="logicalPoint">The logical point to convert.</param>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.MercatorLatitudeLimit">
+      <summary>Gets the maximum allowed latitude in a Mercator projection.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.NormalizeLatitude(System.Double)">
+      <summary>Modifies a given latitude to an equivalent latitude within the valid latitude range (-85.051128 to 85.051128).</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.NormalizeLocation(System.Device.Location.GeoCoordinate)">
+      <summary>Modifies the latitude and longitude values of a given location to be within valid latitude (-85.051128 to 85.051128) and longitude (-180 to 180) ranges.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.NormalizeLogicalPoint(System.Windows.Point,System.Windows.Point)">
+      <summary>Modifies the logical point to be within the range (-0.5 to 0.5) of the center logical point.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.NormalizeLongitude(System.Double)">
+      <summary>Modifies a given longitude to an equivalent longitude within the valid longitude range (-180 to 180).</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.ScaleToZoom(System.Windows.Size,System.Double,System.Device.Location.GeoCoordinate)"><summary>Calculates the zoom level of the specified location.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.MercatorUtility.ZoomToScale(System.Windows.Size,System.Double,System.Device.Location.GeoCoordinate)"><summary>Calculates the scale based on the specified location and zoom level.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.ModeBackground">
+      <summary>Contains background styles that allow the foreground controls to choose appropriate foreground styles.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.ModeBackground.Light">
+      <summary>The background is more typically light (white).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Core.ModeBackground.Dark">
+      <summary>The background is more typically dark (black).</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.NullMode">
+      <summary>Represents the null map mode.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.NullMode" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.LocationToViewportPoint(System.Device.Location.GeoCoordinate)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.SetView(Microsoft.Phone.Controls.Maps.LocationRect,System.Boolean)">
+      <summary>Sets the map view to the specified location rectangle.</summary>
+      <param name="boundingRectangle">The location rectangle that defines the boundaries of the map view.</param>
+      <param name="animate">A bool indicating whether to animate map navigation.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.SetView(System.Device.Location.GeoCoordinate,System.Double,System.Double,System.Double,System.Boolean)"><summary>Sets the map view.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.TryLocationToViewportPoint(System.Device.Location.GeoCoordinate,System.Windows.Point@)"><summary>Converts a location to a viewport point.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.TryViewportPointToLocation(System.Windows.Point,System.Device.Location.GeoCoordinate@)"><summary>Converts a viewport point to a location.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.NullMode.ViewportPointToLocation(System.Windows.Point)">
+      <summary>Converts the specified viewport point to a location.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</returns>
+      <param name="viewportPoint">The viewport point to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.TileSourceCollection">
+      <summary>Contains a collection of <see cref="T:Microsoft.Phone.Controls.Maps.Core.TileSource" /> objects.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.TileSourceCollection.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.TileSourceCollection" /> class.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Core.TileSourceCollection.ItemPropertyChanged"><summary>Occurs when a property of one of the collection item has changed.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.TileSourcePropertyChangedEventArgs"><summary>Provides data for the TileSourcePropertyChanged event.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.TileSourcePropertyChangedEventArgs.#ctor(Microsoft.Phone.Controls.Maps.TileSource,System.String)"><summary>Initializes a new instance of the TileSourcePropertyChangedEventArgs class.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.TileSourcePropertyChangedEventArgs.PropertyName"><summary>Gets the name of the changed property.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Core.TileSourcePropertyChangedEventArgs.TileSource"><summary>Gets the name of the tile source.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException">
+      <summary>Represents the exception that is thrown when the URI scheme used to host the map control is not supported.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException" /> class.</summary>
+      <param name="message">The error message.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Core.UriSchemeNotSupportedException" /> class.</summary>
+      <param name="message">The error message.</param>
+      <param name="innerException">The inner exception that caused the error.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.ApplicationIdCredentialsProviderConverter">
+      <summary>Contains methods that parse a string into an <see cref="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.ApplicationIdCredentialsProviderConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.ApplicationIdCredentialsProviderConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.ApplicationIdCredentialsProviderConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The context of the conversion.</param>
+      <param name="sourceType">The type of the object to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.ApplicationIdCredentialsProviderConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the specified object to an <see cref="T:Microsoft.Phone.Controls.Maps.ApplicationIdCredentialsProvider" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The context to use in the conversion.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.LocationCollectionConverter">
+      <summary>Contains methods that parse a string containing locations into a <see cref="T:Microsoft.Phone.Controls.Maps.LocationCollection" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationCollectionConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.LocationCollectionConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationCollectionConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.LocationCollection" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="sourceType">The object type from which to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationCollectionConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the given object to a <see cref="T:Microsoft.Phone.Controls.Maps.LocationCollection" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.LocationConverter">
+      <summary>Contains methods that parse a string into a <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.LocationConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether or not the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="sourceType">The object type from which to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts a given object to a <see cref="T:Microsoft.Phone.Controls.Maps.Location" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.LocationRectConverter">
+      <summary>Contains methods that parse a string into a <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationRectConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.LocationRectConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationRectConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="sourceType">The object type from which to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.LocationRectConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the given object to a <see cref="T:Microsoft.Phone.Controls.Maps.LocationRect" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.MapModeConverter">
+      <summary>Contains methods that parse a string into a <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.MapModeConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.MapModeConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.MapModeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="sourceType">The object type from which to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.MapModeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the given object to a <see cref="T:Microsoft.Phone.Controls.Maps.Core.MapMode" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.PositionOriginConverter">
+      <summary>Contains methods that parse a string into a <see cref="T:Microsoft.Phone.Controls.Maps.PositionOrigin" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.PositionOriginConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.PositionOriginConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.PositionOriginConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether the specified object can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.PositionOrigin" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The context to use in the conversion.</param>
+      <param name="sourceType">The type of the object to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.PositionOriginConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts the specified object to a <see cref="T:Microsoft.Phone.Controls.Maps.PositionOrigin" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The context to use in the conversion.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Design.RangeConverter">
+      <summary>Contains methods that parse a string into a <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.RangeConverter.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Design.RangeConverter" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.RangeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+      <summary>Determines whether or not the given type can be converted to a <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="sourceType">The object type from which to convert.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Design.RangeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+      <summary>Converts a given object to a <see cref="T:Microsoft.Phone.Controls.Maps.Range`1" />.</summary>
+      <returns>Returns <see cref="T:System.Object" />.</returns>
+      <param name="context">The format context provider of the type.</param>
+      <param name="culture">The culture to use in the conversion.</param>
+      <param name="value">The object to convert.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.Copyright">
+      <summary>Represents the copyright control on the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Copyright.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Copyright" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.Copyright.Attributions">
+      <summary>Gets the copyright attributions.</summary>
+      <returns>Returns <see cref="T:System.Collections.ObjectModel.ObservableCollection`1" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Copyright.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Copyright.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit">
+      <summary>Represents the units of distance used by the scale bar.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit.Default">
+      <summary>The scale bar uses the default unit of distance of the current country or region.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit.MilesFeet">
+      <summary>The scale bar uses miles for long distances and feet for short distances.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit.MilesYards">
+      <summary>The scale bar uses miles for long distances and yards for short distances.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit.KilometersMeters">
+      <summary>The scale bar uses kilometers for long distances and meters for shorter distances.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage">
+      <summary>Represents a Silverlight control that shows an error message.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.SetConfigurationError(System.Globalization.CultureInfo)"><summary>Displays a configuration loading error.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.SetCredentialsError(System.Globalization.CultureInfo)"><summary>Displays an error if credentials are invalid.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.LoadingErrorMessage.SetUriSchemeError(System.Globalization.CultureInfo)"><summary>Displays an error for a bad URL.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.Logo">
+      <summary>Represents the  logo.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Logo.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Logo" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Logo.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Logo.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.MapCommandBase"><summary>Represents the command contract between the map control and the buttons on it.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapCommandBase.#ctor"><summary>Initializes a new instance of the MapCommandBase class.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapCommandBase.Execute(Microsoft.Phone.Controls.Maps.Core.MapBase)"><summary>When overridden in a derived class, executes when a button on the map is invoked.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.MapCommandEventArgs"><summary>Provides data for the map button command events.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapCommandEventArgs.#ctor(Microsoft.Phone.Controls.Maps.Overlays.MapCommandBase)"><summary>Initializes a new instance of the MapCommandEventArgs class.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapCommandEventArgs.Command"><summary>Gets the command associated with the event.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.MapForeground">
+      <summary>Represents the control that displays the scale bar, the logo, the copyright, and map navigation bar on the map.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.Copyright">
+      <summary>Gets the current copyright control.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Copyright" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.Culture">
+      <summary>Gets or sets the culture of the map foreground controls.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.CultureProperty">
+      <summary>Specifies the culture to use.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.Logo">
+      <summary>Gets the current logo control.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Logo" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.OnCultureChanged(System.Globalization.CultureInfo,System.Globalization.CultureInfo)"><summary>Executes when the culture has changed.</summary></member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.Scale">
+      <summary>Gets the current scale bar control.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Scale" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.MapForeground.ZoomBar">
+      <summary>Gets the zoom bar overlay object on the map.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.Overlay">
+      <summary>Represents the abstract base class for a control on top of the map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Overlay.#ctor">
+      <summary>Initializes a new instance of the Overlay class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Overlay.FireTemplateApplied">
+      <summary>Raises the TemplateApplied event.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Overlays.Overlay.TemplateApplied">
+      <summary>Occurs when the template is applied to the overlay after OnApplyTemplate executes.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.Scale">
+      <summary>Represents the scale bar control on a map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.Scale" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.Scale.Culture">
+      <summary>Gets or sets the culture of the scale bar, which determines the language and default units used by the scale bar.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.Scale.CultureProperty">
+      <summary>Specifies the culture of the scale bar.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.Scale.DistanceUnit">
+      <summary>Gets or sets the distance unit used by the scale bar.</summary>
+      <returns>Returns <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.DistanceUnit" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.Scale.DistanceUnitProperty">
+      <summary>Specifies the unit of distance used by the scale bar.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.Scale.MetersPerPixel">
+      <summary>Gets or sets the meters per pixel to display on the scale bar.</summary>
+      <returns>Returns <see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.OnCultureChanged">
+      <summary>Raises the CultureChanged event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.OnPerPixelChanged">
+      <summary>Raises the MetersPerPixelChanged  event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.Scale.OnUnitChanged">
+      <summary>Raises the DistanceUnitChanged event.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.ShadowText">
+      <summary>Represents a shadowed text label that can be added to a map.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.Maps.Overlays.ShadowText" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.ForegroundBottom">
+      <summary>Gets or sets the color of the shadow behind the text.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.Brush" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.ForegroundBottomProperty">
+      <summary>Specifies the shadow color to use behind the text.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.ForegroundTop">
+      <summary>Gets or sets the color of the text.</summary>
+      <returns>Returns <see cref="T:System.Windows.Media.Brush" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.ForegroundTopProperty">
+      <summary>Specifies the text color.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.OnCreateAutomationPeer">
+      <summary>Creates an automation peer.</summary>
+      <returns>Returns <see cref="T:System.Windows.Automation.Peers.AutomationPeer" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.SetForegroundColors(System.Windows.Media.Brush,System.Windows.Media.Brush)">
+      <summary>Sets the color of the text and its shadow.</summary>
+      <param name="top">The color of the text.</param>
+      <param name="bottom">The color of the shadow behind the text.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.SetForegroundColorsForDarkBackground">
+      <summary>Sets colors that display best on a dark background.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.SetForegroundColorsForLightBackground">
+      <summary>Sets colors that display best on a light background.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.Text">
+      <summary>Gets or sets the text of the shadow text control on the map.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.Maps.Overlays.ShadowText.TextProperty">
+      <summary>Specifies the text to use.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar">
+      <summary>Represents the zoom control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.#ctor">
+      <summary>Initializes a new instance of the ZoomBar class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.Finalize"></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.OnApplyTemplate">
+      <summary>Executes whenever application code or internal processes (such as a rebuilding layout pass) call System.Windows.Controls.Control.ApplyTemplate().</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.OnCreateAutomationPeer"><summary>Executes when the automation peer is created.</summary></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.OnZoomMap(Microsoft.Phone.Controls.Maps.Overlays.ZoomMapCommand)">
+      <summary>Raises the ZoomMap event.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.Maps.Overlays.ZoomBar.ZoomMap">
+      <summary>Occurs when the map zooms in or out.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Overlays.ZoomMapCommand">
+      <summary>Represents the command that adjusts the position of the slider on the ZoomBar.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomMapCommand.#ctor(System.Boolean)">
+      <summary>Initializes a new instance of the ZoomMapCommand.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Overlays.ZoomMapCommand.Execute(Microsoft.Phone.Controls.Maps.Core.MapBase)">
+      <summary>Executes a zoom in or zoom out command on the specified map.</summary>
+    </member>
+    <member name="N:Microsoft.Phone.Controls.Maps.Platform"><summary>The Microsoft.Phone.Controls.Maps.Platform namespace contains types that allow users to easily cast a Bing Maps SOAP Services Location class to a GeoCoordinate class and a Bing Maps SOAP Services Rectangle class to a LocationRect class.</summary></member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Platform.Location">
+      <summary>Represents a geographical location determined by latitude and longitude coordinates. This class contains the same members as the System.Device.Location.GeoCoordinate class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.#ctor">
+      <summary>Initializes a new instance of the Location class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Platform.Location.Altitude">
+      <summary>Gets or sets the altitude of the location.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Platform.Location.Latitude">
+      <summary>Gets or sets the latitude of the location.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Platform.Location.Longitude">      
+      <summary>Gets or sets the longitude of the location.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.op_Implicit(Microsoft.Phone.Controls.Maps.Platform.Location)~System.Device.Location.GeoCoordinate">
+      <summary>Converts a Location to a GeoCoordinate.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.op_Implicit(System.Device.Location.GeoCoordinate)~Microsoft.Phone.Controls.Maps.Platform.Location">
+      <summary>Converts a GeoCoordinate to a Location.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.System#IFormattable#ToString(System.String,System.IFormatProvider)"></member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.ToString">
+      <summary>Converts the Location to a string.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Location.ToString(System.IFormatProvider)">
+      <summary>Converts the Location to a string based on the specified format provider.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Platform.Rectangle">
+      <summary>Represents a location rectangle defined by northeast and southwest corners.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Rectangle.#ctor">
+      <summary>Initializes a new instance of the Rectangle class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Platform.Rectangle.Northeast">
+      <summary>Gets or sets the northeast corner of the rectangle.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Rectangle.op_Implicit(Microsoft.Phone.Controls.Maps.LocationRect)~Microsoft.Phone.Controls.Maps.Platform.Rectangle">
+      <summary>Converts a LocationRect to a Rectangle.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.Rectangle.op_Implicit(Microsoft.Phone.Controls.Maps.Platform.Rectangle)~Microsoft.Phone.Controls.Maps.LocationRect">
+      <summary>Converts a Rectangle to a LocationRect.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.Maps.Platform.Rectangle.Southwest">
+      <summary>Gets or sets the southwest corner of the rectangle.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.Maps.Platform.ShapeBase">
+      <summary>Represents the base shape class. This class is used for serialization.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.Maps.Platform.ShapeBase.#ctor">
+      <summary>Initializes a new instance of the ShapeBase class.</summary>
+    </member>
+  </members>
+</doc>

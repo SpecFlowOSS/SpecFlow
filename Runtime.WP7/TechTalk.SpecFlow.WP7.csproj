@@ -229,15 +229,19 @@
   <ItemGroup>
     <Folder Include="Utils\" />
   </ItemGroup>
-
   <PropertyGroup>
-    <SLWP7>..\lib\Silverlight for Phone</SLWP7>
-    <SL4>..\lib\Silverlight</SL4>
-    <UseCodebase>true</UseCodebase>
-  </PropertyGroup>
-  <Import Project="$(SL4)\MsBuild\Microsoft.Silverlight.CSharp.targets" />
-  <Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
-  <!--Import Project="$(SLWP7)\MsBuild\Microsoft.Silverlight.CSharp.targets" /-->
+    <WindowsPhoneBuildResources>..\lib\Silverlight for Phone\v7.0</WindowsPhoneBuildResources>
+    <SilverlightBuildResources>..\lib\Silverlight\v4.0</SilverlightBuildResources>
+
+    <TargetFrameworkDirectory>$(WindowsPhoneBuildResources)\Reference Assemblies</TargetFrameworkDirectory>
+    <TargetFrameworkSDKDirectory>$(WindowsPhoneBuildResources)\Libraries</TargetFrameworkSDKDirectory>
+    <_FullFrameworkReferenceAssemblyPaths>$(SilverlightBuildResources)\Reference Assemblies</_FullFrameworkReferenceAssemblyPaths>
+    <UseCustomWindowsPhoneSDKFolder>true</UseCustomWindowsPhoneSDKFolder>
+    <SilverlightRuntimeVersion>4.0</SilverlightRuntimeVersion>
+</PropertyGroup>
+  <Import Project="$(WindowsPhoneBuildResources)\MSBuild\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets"/>
+  <Import Project="$(WindowsPhoneBuildResources)\MSBuild\Microsoft.Silverlight.CSharp.targets"/>
+  <Import Project="$(WindowsPhoneBuildResources)\MSBuild\Microsoft.Silverlight.Common.OverridesForBuild.targets"/>
   <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
