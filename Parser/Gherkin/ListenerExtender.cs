@@ -296,6 +296,8 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             FlushDelayedCalls();
             inExamplesHeader = false;
 
+            ResetTable();
+
             GherkinBufferSpan descriptionSpan;
             var headerSpan = ProcessComplexLanguageElement(line, description, out descriptionSpan);
 
@@ -317,6 +319,11 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         }
 
         private void ResetStepArguments()
+        {
+            ResetTable();
+        }
+
+        private void ResetTable()
         {
             inTable = false;
         }

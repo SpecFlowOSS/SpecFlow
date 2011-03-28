@@ -29,6 +29,7 @@ Fixed issues:
 + Refactored CreateSet<T> and CompareToSet<T> extension methods to use the same logic as CreateInstance<T> and CompareToInstance<T>.
 + Step Intellisense doesn't show in Feature Background (Issue 23)
 + Xunit Theory Attribute/InlineAttribute using incorrect namespace. (Issue 40, by Kerry Jones)
++ Scenario Outline - Multiple Scenarios table header row VS formatting issue (Issue 16)
 
 1.5.0 - 2010/12/17
 
