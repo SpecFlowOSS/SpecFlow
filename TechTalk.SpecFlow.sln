@@ -74,6 +74,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBinPackage", "Insta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilsTests", "Tests\UtilsTests\UtilsTests.csproj", "{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{605573AA-9C90-442B-B54B-1243A36A3E18}"
+	ProjectSection(SolutionItems) = preProject
+		IdeIntegration\NuGetIntegration\app.config.transform = IdeIntegration\NuGetIntegration\app.config.transform
+		IdeIntegration\NuGetIntegration\nuget_readme.txt = IdeIntegration\NuGetIntegration\nuget_readme.txt
+		IdeIntegration\NuGetIntegration\SpecFlow.nuspec = IdeIntegration\NuGetIntegration\SpecFlow.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -404,5 +411,6 @@ Global
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{199D2315-F5BD-463C-B16A-BE31A845792B} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{96294E6F-8875-4D12-8577-4EC83E60BD6C} = {55E45533-9AAA-41AB-B44F-7530799C9337}
+		{605573AA-9C90-442B-B54B-1243A36A3E18} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 	EndGlobalSection
 EndGlobal
