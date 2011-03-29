@@ -19,6 +19,9 @@
       <ComponentRef Id="Comp_VS2008Registry" />
     </ComponentGroup>
 
+    <!-- Run devenv /InstallVSTemplates if VS2008 is installed. Unfortunately this will also run if you dont install SpecFlow to VS2008 -->
+    <CustomActionRef Id="VS90InstallVSTemplates" />
+
     <!-- VS2008 core integration components -->
     <DirectoryRef Id="INSTALLLOCATION">
       <Component Id="Comp_Vs2008Integration_Core" Guid="D020892E-85DD-43AD-92B4-58B07E36D0E4">

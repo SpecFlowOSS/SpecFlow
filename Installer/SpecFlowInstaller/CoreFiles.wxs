@@ -6,6 +6,7 @@
   <Fragment>
     <ComponentGroup Id="CompGroup_CoreFiles">
       <ComponentRef Id="Comp_CoreFiles" />
+      <ComponentRef Id="Comp_CoreGherkinFileAssociation" />
     </ComponentGroup>
 
     <DirectoryRef Id="INSTALLLOCATION">
@@ -19,12 +20,14 @@
         <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.Runtime.dll" />
         <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
         <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
-        <File Name="gherkin.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
-        <!-- Gherkin file associations -->
-        <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="gherkin.ico">
-          <Extension Id="feature" ContentType='application/text'>
-            <!--<Verb Id="open" TargetProperty="VS90DEVENV" Command="Open" Argument='/edit "%1"' />-->
-          </Extension>
+      </Component>
+
+      <!-- Gherkin file associations -->
+      <Component Id="Comp_CoreGherkinFileAssociation" Guid="8BDE968A-8638-47F9-823E-EC637153881B">
+        <Condition>!Feature_VS2010 = 3</Condition>
+        <File Name="featurefile.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
+        <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="featurefile.ico">
+          <Extension Id="feature" ContentType='application/text' />
         </ProgId>
       </Component>
     </DirectoryRef>

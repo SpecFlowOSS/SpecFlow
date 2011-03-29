@@ -74,9 +74,6 @@
 
     </Feature>
 
-    <!-- Custom actions -->
-    <CustomActionRef Id="VS90InstallVSTemplates" />
-
     <!-- icons -->
     <Icon Id="specflowsetup.ico" SourceFile="$(var.SetupResourcesDir)\specflowsetup.ico"/>
     <Property Id="ARPPRODUCTICON" Value="specflowsetup.ico" />
