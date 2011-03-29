@@ -13,7 +13,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow</RootNamespace>
-    <AssemblyName>TechTalk.SpecFlow.Silverlight</AssemblyName>
+    <AssemblyName>TechTalk.SpecFlow.Silverlight3</AssemblyName>
     <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -52,163 +52,163 @@
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\Attributes.cs">
+    <Compile Include="..\..\Runtime\Attributes.cs">
       <Link>Attributes.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\BindingMatch.cs">
+    <Compile Include="..\..\Runtime\Bindings\BindingMatch.cs">
       <Link>Bindings\BindingMatch.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\BindingRegistry.cs">
+    <Compile Include="..\..\Runtime\Bindings\BindingRegistry.cs">
       <Link>Bindings\BindingRegistry.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\BindingScope.cs">
+    <Compile Include="..\..\Runtime\Bindings\BindingScope.cs">
       <Link>Bindings\BindingScope.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\BindingType.cs">
+    <Compile Include="..\..\Runtime\Bindings\BindingType.cs">
       <Link>Bindings\BindingType.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\EventBinding.cs">
+    <Compile Include="..\..\Runtime\Bindings\EventBinding.cs">
       <Link>Bindings\EventBinding.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepArgs.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepArgs.cs">
       <Link>Bindings\StepArgs.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepArgumentTypeConverter.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepArgumentTypeConverter.cs">
       <Link>Bindings\StepArgumentTypeConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepBinding.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepBinding.cs">
       <Link>Bindings\StepBinding.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepContext.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepContext.cs">
       <Link>Bindings\StepContext.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepDefinitionKeyword.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepDefinitionKeyword.cs">
       <Link>Bindings\StepDefinitionKeyword.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepMethodBinding.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepMethodBinding.cs">
       <Link>Bindings\StepMethodBinding.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Bindings\StepTransformationBinding.cs">
+    <Compile Include="..\..\Runtime\Bindings\StepTransformationBinding.cs">
       <Link>Bindings\StepTransformationBinding.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Configuration\ConfigurationServices.cs">
+    <Compile Include="..\..\Runtime\Configuration\ConfigurationServices.cs">
       <Link>Configuration\ConfigurationServices.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
+    <Compile Include="..\..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
       <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Configuration\RuntimeConfiguration.cs">
+    <Compile Include="..\..\Runtime\Configuration\RuntimeConfiguration.cs">
       <Link>Configuration\RuntimeConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\CultureInfoScope.cs">
+    <Compile Include="..\..\Runtime\CultureInfoScope.cs">
       <Link>CultureInfoScope.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ErrorHandling\BindingException.cs">
+    <Compile Include="..\..\Runtime\ErrorHandling\BindingException.cs">
       <Link>ErrorHandling\BindingException.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ErrorHandling\ErrorProvider.cs">
+    <Compile Include="..\..\Runtime\ErrorHandling\ErrorProvider.cs">
       <Link>ErrorHandling\ErrorProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ErrorHandling\MissingStepDefinitionException.cs">
+    <Compile Include="..\..\Runtime\ErrorHandling\MissingStepDefinitionException.cs">
       <Link>ErrorHandling\MissingStepDefinitionException.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ErrorHandling\PendingStepException.cs">
+    <Compile Include="..\..\Runtime\ErrorHandling\PendingStepException.cs">
       <Link>ErrorHandling\PendingStepException.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ErrorHandling\SpecFlowException.cs">
+    <Compile Include="..\..\Runtime\ErrorHandling\SpecFlowException.cs">
       <Link>ErrorHandling\SpecFlowException.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\FeatureContext.cs">
+    <Compile Include="..\..\Runtime\FeatureContext.cs">
       <Link>FeatureContext.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\FeatureInfo.cs">
+    <Compile Include="..\..\Runtime\FeatureInfo.cs">
       <Link>FeatureInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\GenerationTargetLanguage.cs">
+    <Compile Include="..\..\Runtime\GenerationTargetLanguage.cs">
       <Link>GenerationTargetLanguage.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ITestRunner.cs">
+    <Compile Include="..\..\Runtime\ITestRunner.cs">
       <Link>ITestRunner.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ObjectContainer.cs">
+    <Compile Include="..\..\Runtime\ObjectContainer.cs">
       <Link>ObjectContainer.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ScenarioBlock.cs">
+    <Compile Include="..\..\Runtime\ScenarioBlock.cs">
       <Link>ScenarioBlock.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ScenarioContext.cs">
+    <Compile Include="..\..\Runtime\ScenarioContext.cs">
       <Link>ScenarioContext.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\ScenarioInfo.cs">
+    <Compile Include="..\..\Runtime\ScenarioInfo.cs">
       <Link>ScenarioInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\SpecFlowContext.cs">
+    <Compile Include="..\..\Runtime\SpecFlowContext.cs">
       <Link>SpecFlowContext.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Steps.cs">
+    <Compile Include="..\..\Runtime\Steps.cs">
       <Link>Steps.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\StringExtensions.cs">
+    <Compile Include="..\..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Table.cs">
+    <Compile Include="..\..\Runtime\Table.cs">
       <Link>Table.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\TestRunner.cs">
+    <Compile Include="..\..\Runtime\TestRunner.cs">
       <Link>TestRunner.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
+    <Compile Include="..\..\Runtime\Tracing\DefaultListener.cs">
       <Link>Tracing\DefaultListener.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\IStepDefinitionSkeletonProvider.cs">
+    <Compile Include="..\..\Runtime\Tracing\IStepDefinitionSkeletonProvider.cs">
       <Link>Tracing\IStepDefinitionSkeletonProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\ITraceListener.cs">
+    <Compile Include="..\..\Runtime\Tracing\ITraceListener.cs">
       <Link>Tracing\ITraceListener.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\LanguageHelper.cs">
+    <Compile Include="..\..\Runtime\Tracing\LanguageHelper.cs">
       <Link>Tracing\LanguageHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\NullListener.cs">
+    <Compile Include="..\..\Runtime\Tracing\NullListener.cs">
       <Link>Tracing\NullListener.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderBase.cs">
+    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderBase.cs">
       <Link>Tracing\StepDefinitionSkeletonProviderBase.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderCS.cs">
+    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderCS.cs">
       <Link>Tracing\StepDefinitionSkeletonProviderCS.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\StepDefinitionSkeletonProviderVB.cs">
+    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderVB.cs">
       <Link>Tracing\StepDefinitionSkeletonProviderVB.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\StepFormatter.cs">
+    <Compile Include="..\..\Runtime\Tracing\StepFormatter.cs">
       <Link>Tracing\StepFormatter.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Tracing\TestTracer.cs">
+    <Compile Include="..\..\Runtime\Tracing\TestTracer.cs">
       <Link>Tracing\TestTracer.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\IUnitTestRuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\IUnitTestRuntimeProvider.cs">
       <Link>UnitTestProvider\IUnitTestRuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\MbUnitRuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\MbUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\MbUnitRuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\MsTest2010RuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\MsTest2010RuntimeProvider.cs">
       <Link>UnitTestProvider\MsTest2010RuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\MsTestRuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\MsTestRuntimeProvider.cs">
       <Link>UnitTestProvider\MsTestRuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\NUnitRuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\NUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\NUnitRuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\UnitTestRuntimeProviderHelper.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\UnitTestRuntimeProviderHelper.cs">
       <Link>UnitTestProvider\UnitTestRuntimeProviderHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
+    <Compile Include="..\..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
       <Link>UnitTestProvider\XUnitRuntimeProvider.cs</Link>
     </Compile>
-    <Compile Include="..\VersionInfo.cs">
+    <Compile Include="..\..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Compatibility\ConfigurationErrorsException.cs" />
@@ -222,7 +222,7 @@
     <Compile Include="UnitTestProvider\MsTestSilverlightRuntimeProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Languages.xml">
+    <EmbeddedResource Include="..\..\Languages.xml">
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
