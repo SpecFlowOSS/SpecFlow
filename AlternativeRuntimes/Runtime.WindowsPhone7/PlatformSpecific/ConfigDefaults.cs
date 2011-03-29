@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Configuration
         internal const string FeatureLanguage = "en-US";
         internal const string ToolLanguage = "";
 
-        internal const string UnitTestProviderName = "MSTestSilverlight";
+        internal const string UnitTestProviderName = "MSTest.WindowsPhone7";
 
         internal const bool DetectAmbiguousMatches = true;
         internal const bool StopAtFirstError = false;

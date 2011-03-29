@@ -50,11 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\Compatibility\ExceptionHelper.cs">
-      <Link>Compatibility\ExceptionHelper.cs</Link>
+    <Compile Include="..\Runtime\PlatformCompatibility\ExceptionHelper.cs">
+      <Link>PlatformCompatibility\ExceptionHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Compatibility\MonoHelper.cs">
-      <Link>Compatibility\MonoHelper.cs</Link>
+    <Compile Include="..\Runtime\PlatformCompatibility\MonoHelper.cs">
+      <Link>PlatformCompatibility\MonoHelper.cs</Link>
     </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>

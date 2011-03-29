@@ -167,12 +167,14 @@ namespace TechTalk.SpecFlow.Configuration
                     RuntimeUnitTestProviderType = typeof(MsTest2010RuntimeProvider);
                     break;
 #elif !WINDOWS_PHONE
-                case "mstestsilverlight":
+                case "mstest.silverlight":
+                case "mstest.silverlight3":
+                case "mstest.silverlight4":
                     RuntimeUnitTestProviderType = typeof (MsTestSilverlightRuntimeProvider);
                     break;
-#else 
-                case "mstestwp7":
-                    RuntimeUnitTestProviderType = typeof (MsTestWP7RuntimeProvider);
+#else
+                case "mstest.windowsphone7":
+                    RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
                     break;
 #endif
                 default:

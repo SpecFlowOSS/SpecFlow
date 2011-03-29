@@ -89,6 +89,9 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                     GeneratorUnitTestProviderType = typeof(MsTest2010GeneratorProvider);
                     break;
                 case "mstest.silverlight":
+                case "mstest.silverlight3":
+                case "mstest.silverlight4":
+                case "mstest.windowsphone7":
                     GeneratorUnitTestProviderType = typeof(MsTestSilverlightGeneratorProvider);
                     break;
                 default:
