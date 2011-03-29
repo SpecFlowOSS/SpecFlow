@@ -52,6 +52,24 @@
     <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Runtime\Assist\InstanceComparisonExtensionMethods.cs">
+      <Link>Assist\InstanceComparisonExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Assist\PivotTable.cs">
+      <Link>Assist\PivotTable.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Assist\PropertyExtensionMethods.cs">
+      <Link>Assist\PropertyExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Assist\RowExtensionMethods.cs">
+      <Link>Assist\RowExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Assist\SetComparisonExtensionMethods.cs">
+      <Link>Assist\SetComparisonExtensionMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Assist\TableExtensionMethods.cs">
+      <Link>Assist\TableExtensionMethods.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime\Attributes.cs">
       <Link>Attributes.cs</Link>
     </Compile>
@@ -226,9 +244,7 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
