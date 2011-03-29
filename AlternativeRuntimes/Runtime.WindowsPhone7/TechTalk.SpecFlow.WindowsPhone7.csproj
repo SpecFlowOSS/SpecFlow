@@ -41,8 +41,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExpressionCompilerWP7">
-      <HintPath>..\lib\ExpressionCompilerWP7\ExpressionCompilerWP7.dll</HintPath>
+    <Reference Include="ExpressionCompilerWP7, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\ExpressionCompilerWP7\ExpressionCompilerWP7.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="system" />
