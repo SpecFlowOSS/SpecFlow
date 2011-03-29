@@ -236,7 +236,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
         public void location(string uri, int offset)
         {
-            //TODO
+            //nop
         }
 
         public void feature(string keyword, string name, string description, int line)
@@ -375,7 +375,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         {
             FlushDelayedCalls();
 
-            //TODO
             var editorLine = GetEditorLine(line);
             var errorPosition = GetLineStartPositionIgnoreWhitespace(editorLine);
 

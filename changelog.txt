@@ -5,7 +5,7 @@ New features:
 + Support for tagging (including @ignore) scenario outline examples. 
   NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to 
   switch off row test generaiton (<generator allowRowTests="false" />)
-+ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.3
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.5
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
 + VS2010: Support for specifying color for the step text
