@@ -31,6 +31,7 @@ Fixed issues:
 + Xunit Theory Attribute/InlineAttribute using incorrect namespace. (Issue 40, by Kerry Jones)
 + Scenario Outline - Multiple Scenarios table header row VS formatting issue (Issue 16)
 + SpecFlow step definition report generator throws unhandled exception when a scenario starts with "And" (Issue 45) 
++ VS2010: SpecFlow writes out feature and code-behind files with inconsistent line endings (Issue 28)
 
 1.5.0 - 2010/12/17
 
