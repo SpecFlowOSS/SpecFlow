@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Tracing
         {
             string argText = arguments == null ? "" : string.Join(", ", 
                                                           arguments.Select(a => GetParamString(a)).ToArray());
-            return string.Format("{0}.{1}({2})", methodInfo.DeclaringType.Name, methodInfo.Name, argText);
+            return string.Format("{0}.{1}({2})", methodInfo.ReflectedType.Name, methodInfo.Name, argText);
         }
 
         private string GetParamString(object arg)

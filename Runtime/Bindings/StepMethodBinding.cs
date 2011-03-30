@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Bindings
             }
             else
             {
-                Type bindingType = method.DeclaringType;
+                Type bindingType = method.ReflectedType;
                 Expression<Func<object>> getInstanceExpression =
                     () => ScenarioContext.Current.GetBindingInstance(bindingType);
 
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Bindings
             }
             else
             {
-                Type bindingType = method.DeclaringType;
+                Type bindingType = method.ReflectedType;
                 Expression<Func<object>> getInstanceExpression =
                     () => ScenarioContext.Current.GetBindingInstance(bindingType);
 

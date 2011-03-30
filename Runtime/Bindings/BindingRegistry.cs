@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.Bindings
             CheckStepBindingMethod(method);
 
             var scopeAttrs = 
-                Attribute.GetCustomAttributes(method.DeclaringType, typeof(StepScopeAttribute)).Concat(
+                Attribute.GetCustomAttributes(method.ReflectedType, typeof(StepScopeAttribute)).Concat(
                 Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute)));
 
             if (scopeAttrs.Any())
