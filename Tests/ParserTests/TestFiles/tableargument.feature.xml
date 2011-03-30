@@ -13,6 +13,8 @@
       <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
           <Keyword>Given </Keyword>
           <Text>there is a table argument</Text>
           <TableArg>
@@ -73,6 +75,8 @@
           <FilePosition line="4" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
           <Keyword>When </Keyword>
           <Text>there is a table argument</Text>
           <TableArg>
@@ -133,6 +137,8 @@
           <FilePosition line="8" column="3" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
           <Keyword>Then </Keyword>
           <Text>there is a table argument</Text>
           <TableArg>

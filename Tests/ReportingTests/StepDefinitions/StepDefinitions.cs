@@ -23,14 +23,14 @@ namespace ReportingTests.StepDefinitions
         [Given(@"there are NUnit test execution results for the ReportingTest.SampleProject project")]
         public void GivenThereIsAnNUuitTestExecutionResultsForMyProject()
         {
-            Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitXmlResultPath), "NUnit xml test result is missing");
-            Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitTextResultPath), "NUnit txt test result is missing");
+            Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitXmlResultPath), "NUnit xml test result is missing! Expected file: " + sampleProjectInfo.NUnitXmlResultPath);
+            Assert.IsTrue(File.Exists(sampleProjectInfo.NUnitTextResultPath), "NUnit txt test result is missing! Expected file: " + sampleProjectInfo.NUnitTextResultPath);
         }
 
         [Given(@"there are MsTest test execution results for the ReportingTest.SampleProject project")]
         public void GivenThereIsAnMsTestTestExecutionResultsForMyProject()
         {
-            Assert.IsTrue(File.Exists(sampleProjectInfo.MsTestResultPath), "MsTest test result is missing");
+            Assert.IsTrue(File.Exists(sampleProjectInfo.MsTestResultPath), "MsTest test result is missing! Exxpected file: " + sampleProjectInfo.MsTestResultPath);
         }
 
         [Given(@"there is an XSLT template containing")]

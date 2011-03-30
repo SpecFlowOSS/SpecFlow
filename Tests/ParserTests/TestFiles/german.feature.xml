@@ -15,21 +15,29 @@ die Summe zweier Zahlen gesagt bekommen</Description>
       <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
           <Keyword>Gegeben sei </Keyword>
           <Text>ich habe &lt;Eingabe_1&gt; in den Taschenrechner eingegeben</Text>
           <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
           <Keyword>Und </Keyword>
           <Text>ich habe &lt;Eingabe_2&gt; in den Taschenrechner eingegeben</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
           <Keyword>Wenn </Keyword>
           <Text>ich &lt;Knopf&gt; drücke</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
           <Keyword>Dann </Keyword>
           <Text>sollte das Ergebniss auf dem Bildschirm &lt;Ausgabe&gt; sein</Text>
           <FilePosition line="11" column="5" />

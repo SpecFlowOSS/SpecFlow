@@ -69,12 +69,8 @@ namespace TechTalk.SpecFlow.Parser
 
         public IEnumerable<string> GetBlockKeywords()
         {
-            var keywords = Enumerable.Empty<string>();
-            keywords = keywords.Concat(NativeLanguageService.keywords("feature").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("background").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("scenario").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("scenario_outline").toArray().Cast<string>());
-            keywords = keywords.Concat(NativeLanguageService.keywords("examples").toArray().Cast<string>());
+            var keywords = Enum.GetValues(typeof(GherkinBlockKeyword)).Cast<GherkinBlockKeyword>().Aggregate(Enumerable.Empty<string>(),
+                (current, stepKeyword) => current.Concat(GetBlockKeywords(stepKeyword)));
             return keywords.Distinct().OrderBy(k => k);
         }
 
@@ -88,6 +84,15 @@ namespace TechTalk.SpecFlow.Parser
         public IEnumerable<string> GetStepKeywords(StepKeyword stepKeyword)
         {
             return NativeLanguageService.keywords(stepKeyword.ToString().ToLowerInvariant()).toArray().Cast<string>();
+        }
+
+        public IEnumerable<string> GetBlockKeywords(GherkinBlockKeyword blockKeyword)
+        {
+            string key = blockKeyword.ToString().ToLowerInvariant();
+            if (blockKeyword == GherkinBlockKeyword.ScenarioOutline)
+                key = "scenario_outline";
+
+            return NativeLanguageService.keywords(key).toArray().Cast<string>();
         }
     }
 }

@@ -431,26 +431,24 @@
   </Language>
   <Language code="ro" cultureInfo="ro" defaultSpecificCulture="ro-RO" englishName="Romanian">
     <Feature>Functionalitate</Feature>
-    <Background>Conditii</Background>
-    <Scenario>Scenariu</Scenario>
-    <ScenarioOutline>Scenariul de sablon</ScenarioOutline>
-    <Examples>Exemplele</Examples>
-    <Given>Daca</Given>
-    <When>Cand</When>
-    <Then>Atunci</Then>
-    <And>Si</And>
-    <But>Dar</But>
-  </Language>
-  <Language code="ro-RO" cultureInfo="ro-RO" englishName="Romanian (Romania)">
     <Feature>Funcționalitate</Feature>
-    <Background>Condiţii</Background>
+    <Feature>Funcţionalitate</Feature>
+    <Background>Context</Background>
     <Scenario>Scenariu</Scenario>
-    <ScenarioOutline>Scenariul de şablon</ScenarioOutline>
-    <Examples>Exemplele</Examples>
-    <Given>Dacă</Given>
+    <ScenarioOutline>Structura scenariu</ScenarioOutline>
+    <ScenarioOutline>Structură scenariu</ScenarioOutline>
+    <Examples>Exemple</Examples>
+    <Given>Date fiind</Given>
+    <Given>Dat fiind</Given>
+    <Given>Dati fiind</Given>
+    <Given>Dați fiind</Given>
+    <Given>Daţi fiind</Given>
+    <When>Cand</When>
     <When>Când</When>
     <Then>Atunci</Then>
+    <And>Si</And>
     <And>Și</And>
+    <And>Şi</And>
     <But>Dar</But>
   </Language>
   <Language code="ru" cultureInfo="ru" defaultSpecificCulture="ru-RU" englishName="Russian">

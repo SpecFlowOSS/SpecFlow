@@ -61,8 +61,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         project => new VsProjectScope(project, dteReference.Value, classificationsReference.Value, VisualStudioTracer, IntegrationOptionsProvider, BindingSkeletonProviderFactory),
                         VsxHelper.GetProjectUniqueId);
 
-            noProjectScopeReference = new SynchInitializedInstance<NoProjectScope>(() => 
-                new NoProjectScope(classificationsReference.Value, VisualStudioTracer));
+            noProjectScopeReference = new SynchInitializedInstance<NoProjectScope>(() =>
+                new NoProjectScope(classificationsReference.Value, VisualStudioTracer, IntegrationOptionsProvider));
         }
 
         public IProjectScope GetProjectScope(Project project)

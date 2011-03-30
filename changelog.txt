@@ -5,7 +5,7 @@ New features:
 + Support for tagging (including @ignore) scenario outline examples. 
   NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to 
   switch off row test generaiton (<generator allowRowTests="false" />)
-+ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.3
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.5
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
 + VS2010: Support for specifying color for the step text
@@ -14,6 +14,7 @@ New features:
 + VS2010: Improved intellisense for steps
 + VS2010: Intellisense for keywords
 + VS2010: "go to binding"
++ VS2010: Automatic table formatting when "|" is typed
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
@@ -27,6 +28,10 @@ Fixed issues:
 + Refactored VS2010 intagration to better maintanability
 + Refactored CreateSet<T> and CompareToSet<T> extension methods to use the same logic as CreateInstance<T> and CompareToInstance<T>.
 + Step Intellisense doesn't show in Feature Background (Issue 23)
++ Xunit Theory Attribute/InlineAttribute using incorrect namespace. (Issue 40, by Kerry Jones)
++ Scenario Outline - Multiple Scenarios table header row VS formatting issue (Issue 16)
++ SpecFlow step definition report generator throws unhandled exception when a scenario starts with "And" (Issue 45) 
++ VS2010: SpecFlow writes out feature and code-behind files with inconsistent line endings (Issue 28)
 
 1.5.0 - 2010/12/17
 

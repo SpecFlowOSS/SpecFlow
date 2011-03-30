@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -51,10 +52,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             editorCommands = new EditorCommands(languageService, textView);
         }
 
-//        private char GetTypeChar(IntPtr pvaIn)
-//        {
-//            return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
-//        }
+        private char GetTypeChar(IntPtr pvaIn)
+        {
+            return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
+        }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
@@ -77,6 +78,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
             if (ErrorHandler.Succeeded(hresult))
             {
+                if (pguidCmdGroup == VSConstants.VSStd2K)
+                {
+                    switch ((VSConstants.VSStd2KCmdID)nCmdID)
+                    {
+                        case VSConstants.VSStd2KCmdID.TYPECHAR:
+                            var ch = GetTypeChar(pvaIn);
+                            if (ch == '|')
+                                editorCommands.FormatTable();
+                            break;
+                    }
+                }
                 if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
                 {
                     switch ((VSConstants.VSStd97CmdID)nCmdID)
