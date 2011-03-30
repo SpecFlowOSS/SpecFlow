@@ -6,6 +6,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using Should;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
 {

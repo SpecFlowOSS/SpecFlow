@@ -49,19 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestGeneratorErrorsTests.cs" />
     <Compile Include="GeneratorContainerBuilderTests.cs" />
     <Compile Include="TestGeneratorFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestGeneratorTests.cs" />
+    <Compile Include="TestGeneratorBasicsTests.cs" />
+    <Compile Include="TestGeneratorTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TechTalk.SpecFlow.Generator.Interfaces\TechTalk.SpecFlow.Generator.Interfaces.csproj">
-      <Project>{92E851DD-05CE-4EEF-AF48-345F0722B785}</Project>
-      <Name>TechTalk.SpecFlow.Generator.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

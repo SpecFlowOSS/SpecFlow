@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
-            ObjectContainer.StepDefinitionSkeletonProvider(GenerationTargetLanguage.CSharp);
+            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
 
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
-            ObjectContainer.StepDefinitionSkeletonProvider(GenerationTargetLanguage.CSharp);
+            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
 
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var converter = MockRepository.Stub<IStepArgumentTypeConverter>();
             ObjectContainer.StepArgumentTypeConverter = converter;
-            ObjectContainer.StepDefinitionSkeletonProvider(GenerationTargetLanguage.CSharp);
+            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
 
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);

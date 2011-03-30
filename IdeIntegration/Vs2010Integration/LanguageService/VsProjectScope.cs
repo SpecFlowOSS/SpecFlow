@@ -298,16 +298,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static bool IsProjectSupported(Project project)
         {
-            return GetTargetLanguage(project) != GenerationTargetLanguage.Other;
+            return GetTargetLanguage(project) != ProgrammingLanguage.Other;
         }
 
-        public static GenerationTargetLanguage GetTargetLanguage(Project project)
+        public static ProgrammingLanguage GetTargetLanguage(Project project)
         {
             if (project.FullName.EndsWith(".csproj"))
-                return GenerationTargetLanguage.CSharp;
+                return ProgrammingLanguage.CSharp;
             if (project.FullName.EndsWith(".vbproj"))
-                return GenerationTargetLanguage.VB;
-            return GenerationTargetLanguage.Other;
+                return ProgrammingLanguage.VB;
+            return ProgrammingLanguage.Other;
         }
     }
 }

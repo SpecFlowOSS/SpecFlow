@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using Should;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
 {
@@ -35,7 +36,7 @@ namespace GeneratorTests
 
         private class DummyGenerator : ITestGenerator
         {
-            public void GenerateTestFile(FeatureFileInput featureFileInput, TextWriter outputWriter, GenerationSettings settings)
+            public TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings)
             {
                 throw new NotImplementedException();
             }

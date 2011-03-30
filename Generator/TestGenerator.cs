@@ -1,15 +1,14 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
@@ -18,7 +17,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public class TestGenerator : ITestGenerator
+    public class TestGenerator : ErrorHandlingTestGenerator
     {
         private readonly GeneratorConfiguration generatorConfiguration;
 
@@ -45,14 +44,15 @@ namespace TechTalk.SpecFlow.Generator
             return new CodeDomHelper(codeDomProvider);
         }
 
-        public void GenerateTestFile(FeatureFileInput featureFileInput, TextWriter outputWriter, GenerationSettings settings)
+        protected override TestGeneratorResult GenerateTestFileWithExceptions(FeatureFileInput featureFileInput, GenerationSettings settings)
         {
-            outputWriter = new IndentProcessingWriter(outputWriter);
+            StringWriter outputStringWriter = new StringWriter();
+            var outputWriter = new IndentProcessingWriter(outputStringWriter);
 
             var codeProvider = CreateCodeDomProvider(settings);
             CodeDomHelper codeDomHelper = CreateCodeDomHelper(codeProvider, settings);
 
-            var codeNamespace = GenerateTestFileCode(featureFileInput, codeProvider, codeDomHelper, settings);
+            var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper, settings);
             var options = new CodeGeneratorOptions
             {
                 BracingStyle = "C"
@@ -62,9 +62,11 @@ namespace TechTalk.SpecFlow.Generator
             codeProvider.GenerateCodeFromNamespace(codeNamespace, outputWriter, options);
             AddSpecFlowFooter(codeProvider, outputWriter, codeDomHelper);
             outputWriter.Flush();
+
+            return new TestGeneratorResult(outputStringWriter.ToString(), false);
         }
 
-        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomProvider codeProvider, CodeDomHelper codeDomHelper, GenerationSettings settings)
+        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper, GenerationSettings settings)
         {
             string targetNamespace = GetTargetNamespace(featureFileInput, settings);
 
@@ -91,7 +93,7 @@ namespace TechTalk.SpecFlow.Generator
             string targetNamespace = settings.ProjectDefaultNamespace;
 
             string namespaceExtension = string.Join(".",
-                        (Path.GetDirectoryName(featureFileInput.ProjectRelative) ?? "")
+                        (Path.GetDirectoryName(featureFileInput.ProjectRelativePath) ?? "")
                             .TrimStart('\\', '/', '.')
                             .Split('\\', '/')
                             .Select(f => f.ToIdentifier()).ToArray());

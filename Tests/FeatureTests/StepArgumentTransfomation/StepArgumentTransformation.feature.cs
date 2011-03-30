@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.FeatureTests.StepArgumentTransfomation
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Step Argument Transformations", "In order to reduce the amount of code and repetitive tasks in my steps\r\nAs a prog" +
-                    "rammer\r\nI want to define reusable transformations for my step arguments", GenerationTargetLanguage.CSharp, ((string[])(null)));
+                    "rammer\r\nI want to define reusable transformations for my step arguments", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

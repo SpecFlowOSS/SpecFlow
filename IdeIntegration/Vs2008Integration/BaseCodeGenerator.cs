@@ -63,14 +63,20 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             try
             {
                 BeforeCodeGenerated();
-                bytes = Encoding.UTF8.GetBytes(GenerateCode(bstrInputFileContents));
-                AfterCodeGenerated(false);
+                var generatedCode = GenerateCode(bstrInputFileContents);
+                if (generatedCode == null)
+                {
+                    bytes = GetBytesForError(pGenerateProgress, null);
+                }
+                else
+                {
+                    bytes = Encoding.UTF8.GetBytes(generatedCode);
+                    AfterCodeGenerated(false);
+                }
             }
             catch(Exception ex)
             {
-                string message = GenerateError(pGenerateProgress, ex);
-                AfterCodeGenerated(true);
-                bytes = Encoding.UTF8.GetBytes(GetGeneratedCodeForFailure(message));
+                bytes = GetBytesForError(pGenerateProgress, ex);
             }
 
             int outputLength = bytes.Length;
@@ -81,6 +87,15 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             RefreshMsTestWindow();
 
             return VSConstants.S_OK;
+        }
+
+        private byte[] GetBytesForError(IVsGeneratorProgress pGenerateProgress, Exception ex)
+        {
+            byte[] bytes;
+            string message = GenerateError(pGenerateProgress, ex);
+            AfterCodeGenerated(true);
+            bytes = Encoding.UTF8.GetBytes(GetGeneratedCodeForFailure(message));
+            return bytes;
         }
 
         protected virtual string GetGeneratedCodeForFailure(string errorMessage)

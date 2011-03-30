@@ -40,7 +40,7 @@ Attribute usage:
 
 Future ideas:
 * scope for previous steps ([StepContext(Step = ""my previous step for doing something"")])
-* use regex in scopes ([StepContext(Scenario = ""(my )?scenario title"")])", GenerationTargetLanguage.CSharp, ((string[])(null)));
+* use regex in scopes ([StepContext(Scenario = ""(my )?scenario title"")])", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

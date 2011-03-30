@@ -31,7 +31,7 @@ namespace ParserTests
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Handling errors of Gherkin files", "In order to find out easily what is wrong with a Gherkin file\r\nAs a SpecFlow user" +
-                    "\r\nI want to get error messages for all possible errors", GenerationTargetLanguage.CSharp, ((string[])(null)));
+                    "\r\nI want to get error messages for all possible errors", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

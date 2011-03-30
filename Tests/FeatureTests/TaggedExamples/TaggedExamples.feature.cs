@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.FeatureTests.TaggedExamples
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Tagging Scenario Outline Examples", "As a developer\r\nI would like to be able to tag examples of the scenario outline\r\n" +
-                    "So that I can write bindings that behave differently for the variants", GenerationTargetLanguage.CSharp, ((string[])(null)));
+                    "So that I can write bindings that behave differently for the variants", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         

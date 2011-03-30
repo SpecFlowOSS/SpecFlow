@@ -205,11 +205,11 @@ namespace TechTalk.SpecFlow
         #region StepDefinitionSkeletonProviderCS
         private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderCS = null;
         private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderVB = null;
-        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider(GenerationTargetLanguage targetLanguage)
+        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider(ProgrammingLanguage targetLanguage)
         {
             switch (targetLanguage)
             {
-                case GenerationTargetLanguage.VB:
+                case ProgrammingLanguage.VB:
                     return GetOrCreate(ref _stepDefinitionSkeletonProviderVB, typeof(StepDefinitionSkeletonProviderVB));
                 default:
                     return GetOrCreate(ref _stepDefinitionSkeletonProviderCS, typeof(StepDefinitionSkeletonProviderCS));

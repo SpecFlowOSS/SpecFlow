@@ -1,61 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using Should;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
 {
     [TestFixture]
-    public class TestGeneratorTests
+    public class TestGeneratorBasicsTests : TestGeneratorTestsBase
     {
-        private GenerationSettings net35CSSettings;
-        private GenerationSettings net35VBSettings;
-
-        [SetUp]
-        public void Setup()
-        {
-            net35CSSettings = new GenerationSettings(
-                GenerationTargetLanguage.CSharp, "3.0",
-                GenerationTargetPlatform.MsNet, "3.5",
-                "DefaultNamespace");
-            net35VBSettings = new GenerationSettings(
-                GenerationTargetLanguage.VB, "8.0",
-                GenerationTargetPlatform.MsNet, "3.5",
-                "DefaultNamespace");
-        }
-
-        private FeatureFileInput CreateSimpleFeatureFileInput()
-        {
-            return new FeatureFileInput(
-                @"C:\Temp\Dummy.feature",
-                @"Dummy.feature",
-                null,
-                new StringReader(@"
-Feature: Addition
-
-@mytag
-Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
-")
-                );
-        }
-
         private string GenerateTestFromSimpleFeature(GenerationSettings settings)
         {
             TestGenerator testGenerator = new TestGenerator(new GeneratorConfiguration());
 
-            StringWriter outputWriter = new StringWriter();
-            testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(), outputWriter, settings);
-
-            return outputWriter.ToString();
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), settings);
+            result.Success.ShouldBeTrue();
+            return result.GeneratedTestCode;
         }
 
         [Test]

@@ -77,8 +77,19 @@
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
+    <Compile Include="ErrorHandlingTestGenerator.cs" />
     <Compile Include="GeneratorContainerBuilder.cs" />
     <Compile Include="IndentProcessingWriter.cs" />
+    <Compile Include="Interfaces\FeatureFileInput.cs" />
+    <Compile Include="Interfaces\GenerationSettings.cs" />
+    <Compile Include="GenerationTargetLanguage.cs" />
+    <Compile Include="GenerationTargetPlatform.cs" />
+    <Compile Include="Interfaces\ITestGenerator.cs" />
+    <Compile Include="Interfaces\ITestGeneratorFactory.cs" />
+    <Compile Include="Interfaces\SpecFlowConfigurationHolder.cs" />
+    <Compile Include="Interfaces\TestGenerationError.cs" />
+    <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
+    <Compile Include="Interfaces\TestGeneratorResult.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowGenerator.cs" />
@@ -97,10 +108,6 @@
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TechTalk.SpecFlow.Generator.Interfaces\TechTalk.SpecFlow.Generator.Interfaces.csproj">
-      <Project>{92E851DD-05CE-4EEF-AF48-345F0722B785}</Project>
-      <Name>TechTalk.SpecFlow.Generator.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>

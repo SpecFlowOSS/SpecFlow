@@ -74,8 +74,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBinPackage", "Insta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilsTests", "Tests\UtilsTests\UtilsTests.csproj", "{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Generator.Interfaces", "TechTalk.SpecFlow.Generator.Interfaces\TechTalk.SpecFlow.Generator.Interfaces.csproj", "{92E851DD-05CE-4EEF-AF48-345F0722B785}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTests", "GeneratorTests\GeneratorTests.csproj", "{97C30FCC-3093-4430-93DC-D671C656C404}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{605573AA-9C90-442B-B54B-1243A36A3E18}"
@@ -396,21 +394,6 @@ Global
 		{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Debug|Any CPU
 		{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80}.VS2010IntegrationTest|x86.ActiveCfg = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.Release|x86.ActiveCfg = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Release|Any CPU
-		{92E851DD-05CE-4EEF-AF48-345F0722B785}.VS2010IntegrationTest|x86.ActiveCfg = Release|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

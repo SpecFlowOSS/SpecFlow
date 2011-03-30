@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator
 {

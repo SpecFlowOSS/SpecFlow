@@ -251,7 +251,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs" />
     <Compile Include="SpecFlowPackage.cs" />
     <Compile Include="Tracing\IVisualStudioTracer.cs" />
     <Compile Include="Tracing\OutputWindow\IOutputWindowDefinitionMetadata.cs" />
@@ -321,10 +320,6 @@
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator.Interfaces\TechTalk.SpecFlow.Generator.Interfaces.csproj">
-      <Project>{92E851DD-05CE-4EEF-AF48-345F0722B785}</Project>
-      <Name>TechTalk.SpecFlow.Generator.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
