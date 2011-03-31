@@ -26,6 +26,10 @@ namespace TechTalk.SpecFlow.Bindings
             ReturnType = method.ReturnType;
         }
 
+#if WINDOWS_PHONE
+				//Windows Phone runtime does not allow getting private fields value by reflection
+				public Type bindingType;
+#endif
         public Delegate BindingAction { get; protected set; }
         public MethodInfo MethodInfo { get; private set; }
         public Type[] ParameterTypes { get; private set; }
@@ -58,8 +62,13 @@ namespace TechTalk.SpecFlow.Bindings
             }
             else
             {
-                Type bindingType = method.DeclaringType;
-                Expression<Func<object>> getInstanceExpression =
+#if WINDOWS_PHONE
+                bindingType = method.ReflectedType;
+#else
+								Type bindingType = method.ReflectedType;
+#endif
+
+								Expression<Func<object>> getInstanceExpression =
                     () => ScenarioContext.Current.GetBindingInstance(bindingType);
 
                 lambda = Expression.Lambda(
@@ -71,8 +80,11 @@ namespace TechTalk.SpecFlow.Bindings
                     parameters.ToArray());
             }
 
-
+#if WINDOWS_PHONE
+						return ExpressionCompiler.ExpressionCompiler.Compile(lambda);
+#else
             return lambda.Compile();
+#endif
         }
 
         private Delegate CreateFuncDelegate(MethodInfo method)
@@ -94,8 +106,13 @@ namespace TechTalk.SpecFlow.Bindings
             }
             else
             {
-                Type bindingType = method.DeclaringType;
-                Expression<Func<object>> getInstanceExpression =
+#if WINDOWS_PHONE
+								bindingType = method.ReflectedType;
+#else
+								Type bindingType = method.ReflectedType;
+#endif
+
+								Expression<Func<object>> getInstanceExpression =
                     () => ScenarioContext.Current.GetBindingInstance(bindingType);
 
                 lambda = Expression.Lambda(
@@ -108,8 +125,12 @@ namespace TechTalk.SpecFlow.Bindings
             }
 
 
+#if WINDOWS_PHONE
+						return ExpressionCompiler.ExpressionCompiler.Compile(lambda);
+#else
             return lambda.Compile();
-        }
+#endif
+				}
 
         public object InvokeAction(object[] arguments, ITestTracer testTracer)
         {

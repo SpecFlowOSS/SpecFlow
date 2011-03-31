@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+<FileList Redist="Microsoft-Windows-CLRCoreComp.Windows.Phone.7.0" Name="Windows Phone 7.0">
+  <File AssemblyName="Microsoft.Devices.Sensors" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Phone" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Phone.Interop" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Phone.Reactive" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Phone.Controls" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Phone.Controls.Maps" Version="7.0.0.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="mscorlib" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Core" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Device" Version="2.0.5.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Net" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Observable" Version="2.0.5.0" PublicKeyToken="24eec0d8c86cda1e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Runtime.Serialization" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.ServiceModel" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.ServiceModel.Web" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Windows" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Xml" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Xml.Linq" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="System.Xml.Serialization" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+
+  <File AssemblyName="Microsoft.Xna.Framework" Version="4.0.0.0" PublicKeyToken="842cf8be1de50553" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Xna.Framework.Game" Version="4.0.0.0" PublicKeyToken="842cf8be1de50553" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Xna.Framework.GamerServices" Version="4.0.0.0" PublicKeyToken="842cf8be1de50553" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Xna.Framework.Graphics" Version="4.0.0.0" PublicKeyToken="842cf8be1de50553" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+  <File AssemblyName="Microsoft.Xna.Framework.Input.Touch" Version="4.0.0.0" PublicKeyToken="842cf8be1de50553" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" />
+</FileList>

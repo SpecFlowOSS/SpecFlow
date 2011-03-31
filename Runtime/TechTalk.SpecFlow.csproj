@@ -64,11 +64,11 @@
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
-    <Compile Include="Compatibility\CultureInfoHelper.cs" />
-    <Compile Include="Compatibility\EnumHelper.cs" />
-    <Compile Include="Compatibility\ExceptionHelper.cs" />
-    <Compile Include="Compatibility\MonoHelper.cs" />
-    <Compile Include="Configuration\ConfigDefaults.cs" />
+    <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
+    <Compile Include="PlatformCompatibility\EnumHelper.cs" />
+    <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />
+    <Compile Include="PlatformCompatibility\MonoHelper.cs" />
+    <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="Configuration\ConfigurationServices.cs" />
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
@@ -82,7 +82,7 @@
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingRegistry.cs" />
     <Compile Include="Bindings\BindingType.cs" />
-    <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
+    <Compile Include="PlatformSpecific\ConfigurationSectionHandler.cs" />
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />

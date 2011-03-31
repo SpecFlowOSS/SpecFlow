@@ -52,10 +52,10 @@
     <Compile Include="..\lib\MiniDi\MiniDi.cs">
       <Link>MiniDi\MiniDi.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Configuration\ConfigDefaults.cs">
+    <Compile Include="..\Runtime\PlatformSpecific\ConfigDefaults.cs">
       <Link>Configuration\ConfigDefaults.cs</Link>
     </Compile>
-    <Compile Include="..\Runtime\Configuration\ConfigurationSectionHandler.cs">
+    <Compile Include="..\Runtime\PlatformSpecific\ConfigurationSectionHandler.cs">
       <Link>Configuration\ConfigurationSectionHandler.cs</Link>
     </Compile>
     <Compile Include="..\Runtime\Configuration\ConfigurationServices.cs">
@@ -115,7 +115,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Compatibility\" />
+    <Folder Include="PlatformCompatibility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

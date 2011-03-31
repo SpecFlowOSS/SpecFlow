@@ -1,0 +1,708 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>System.Windows.Browser</name>
+  </assembly>
+  <members>
+    <member name="T:System.Windows.Browser.BrowserInformation">
+      <summary>Provides general information about the browser, such as name, version, and operating system.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.BrowserVersion">
+      <summary>Gets the version of the browser technology that the current browser is based on.</summary>
+      <returns>The version of the underlying browser technology.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.CookiesEnabled">
+      <summary>Gets a value that indicates whether the browser supports cookies.</summary>
+      <returns>true if the browser supports cookies; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.Name">
+      <summary>Gets the name of the browser technology that the current browser is based on.</summary>
+      <returns>The name of the underlying browser technology.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.Platform">
+      <summary>Gets the name of the browser's operating system.</summary>
+      <returns>The name of the operating system the browser is running on.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.ProductName">
+      <summary>Gets the product name of the browser.</summary>
+      <returns>The product name of the browser.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.ProductVersion">
+      <summary>Gets the product version number of the browser.</summary>
+      <returns>The product version number of the browser.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.BrowserInformation.UserAgent">
+      <summary>Gets the browser's user agent string.</summary>
+      <returns>The user agent string that identifies the browser.</returns>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlDocument">
+      <summary>Represents the HTML document in the browser.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.Body">
+      <summary>Gets a reference to the BODY element of the HTML document.</summary>
+      <returns>The HTML document's BODY element.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.Cookies">
+      <summary>Gets or sets the browser's cookie string.</summary>
+      <returns>The cookie string that is stored by the browser. If the browser does not have a cookie string, the property returns an empty string.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlDocument.CreateElement(System.String)">
+      <summary>Creates a browser element.</summary>
+      <returns>A reference to a browser element. </returns>
+      <param name="tagName">The tag name of the browser element to create.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="tagName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="tagName" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred. </exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.DocumentElement">
+      <summary>Gets a reference to the browser's DOCUMENT element. </summary>
+      <returns>The browser's DOCUMENT element.</returns>
+    </member>
+    <member name="E:System.Windows.Browser.HtmlDocument.DocumentReady">
+      <summary>Occurs when the browser page has completely loaded.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.DocumentUri">
+      <summary>Gets a Uniform Resource Identifier (URI) object that represents the HTML document on which the Silverlight plug-in is hosted.</summary>
+      <returns>The URI of the current HTML document.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlDocument.GetElementById(System.String)">
+      <summary>Gets a single browser element.</summary>
+      <returns>A reference to a browser element.</returns>
+      <param name="id">A string identifier for a named browser element.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="id" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="id" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlDocument.GetElementsByTagName(System.String)">
+      <summary>Gets a collection of browser elements.</summary>
+      <returns>A collection of references to HTML elements that correspond to the requested tag name.</returns>
+      <param name="tagName">A browser element's tag name.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="tagName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="tagName" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.IsReady">
+      <summary>Gets or sets a value that indicates whether the browser has completely loaded the HTML page.</summary>
+      <returns>true if the browser has completely loaded the HTML page that contains the Silverlight plug-in, the page has been fully parsed, and all Document Object Model (DOM) objects are available for programming; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlDocument.QueryString">
+      <summary>Gets a navigable, read-only collection of name/value pairs that represent the query string parameters on the current page's URL.</summary>
+      <returns>The query string parameters on the current page's URL.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlDocument.Submit">
+      <summary>Posts user data from the FORM element in the browser's Document Object Model (DOM) to the server.</summary>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlDocument.Submit(System.String)">
+      <summary>Posts user data from the specified FORM element to the server.</summary>
+      <param name="formId">The value of the <paramref name="id" /> attribute for an HTML FORM element.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="formId" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="formId" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlElement">
+      <summary>Represents an HTML element in the Document Object Model (DOM) of a Web page.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.AppendChild(System.Windows.Browser.HtmlElement)">
+      <summary>Adds an element to the end of the child collection for the current HTML element.</summary>
+      <param name="element">The element to be added.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="element" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.AppendChild(System.Windows.Browser.HtmlElement,System.Windows.Browser.HtmlElement)">
+      <summary>Adds an element at a specified location in the child element collection for the current HTML element.</summary>
+      <param name="element">The element to be added.</param>
+      <param name="referenceElement">The location to insert the element. The element is added before <paramref name="referenceElement" />.</param>
+      <exception cref="T:System.InvalidOperationException">
+        <paramref name="referenceElement" /> is not in the child element collection of the current HTML element.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="element" /> is null.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlElement.Children">
+      <summary>Gets a read-only collection of HTML elements that are immediate descendants of the current HTML element.</summary>
+      <returns>A collection of HTML elements. If the current HTML element has no children, the returned collection is empty.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlElement.CssClass">
+      <summary>Gets or sets the cascading style sheet (CSS) class string for the current HTML element.</summary>
+      <returns>A CSS class string if the element is associated with a CSS class; otherwise, an empty string.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.Focus">
+      <summary>Sets the browser focus to the current HTML element.</summary>
+      <exception cref="T:System.InvalidOperationException">All errors.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.GetAttribute(System.String)">
+      <summary>Gets the value of the specified attribute on the current HTML element.</summary>
+      <returns>An attribute on the current HTML element.</returns>
+      <param name="name">The name of an attribute.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.GetStyleAttribute(System.String)">
+      <summary>Retrieves the specified style attribute for the current HTML element.</summary>
+      <returns>The style attribute for the current HTML element.</returns>
+      <param name="name">The name of the style attribute to retrieve.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlElement.Id">
+      <summary>Gets the identifier of the current HTML element.</summary>
+      <returns>An HTML element ID string if the current element has an identifier; otherwise, an empty string.</returns>
+      <exception cref="T:System.ArgumentException">The property is set to an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">The property is set to null.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlElement.Parent">
+      <summary>Gets a reference to the parent of the current HTML element.</summary>
+      <returns>An HTML element reference if the element has a parent; otherwise, null.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.RemoveAttribute(System.String)">
+      <summary>Removes an attribute from the current HTML element.</summary>
+      <param name="name">The name of the attribute to remove.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.RemoveChild(System.Windows.Browser.HtmlElement)">
+      <summary>Removes the specified element from the child element collection of the current HTML element.</summary>
+      <param name="element">The element to remove.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="element" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">All other errors.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.RemoveStyleAttribute(System.String)">
+      <summary>Removes a style attribute on the current HTML element.</summary>
+      <param name="name">The style attribute to be removed.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.SetAttribute(System.String,System.String)">
+      <summary>Sets the value of an attribute on the current HTML element.</summary>
+      <param name="name">The attribute whose value will be set.</param>
+      <param name="value">The attribute's new value.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlElement.SetStyleAttribute(System.String,System.String)">
+      <summary>Sets the value of a style attribute on the current HTML element.</summary>
+      <param name="name">The style attribute whose value will be set.</param>
+      <param name="value">The style attribute's new value.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlElement.TagName">
+      <summary>Gets the HTML tag name of the current HTML element.</summary>
+      <returns>An HTML element tag name, such as div or span.</returns>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlEventArgs">
+      <summary>Provides event details to event handlers.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.AltKey">
+      <summary>Gets the state of the ALT key when the event was raised.</summary>
+      <returns>true if the ALT key was pressed when the event was raised; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.CharacterCode">
+      <summary>Gets the integer Unicode value of a key that was pressed.</summary>
+      <returns>An integer Unicode value of the key that was pressed if the <see cref="P:System.Windows.Browser.HtmlEventArgs.EventType" /> property value is "keypress"; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.ClientX">
+      <summary>Gets the x-coordinate mouse position in pixels relative to the client area of the window.</summary>
+      <returns>The x-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.ClientY">
+      <summary>Gets the y-coordinate mouse position in pixels relative to the client area of the window.</summary>
+      <returns>The y-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.CtrlKey">
+      <summary>Gets the state of the CTRL key when the event was raised.</summary>
+      <returns>true if the CTRL key was pressed when the event was raised; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.EventObject">
+      <summary>Gets the underlying HTML event object.</summary>
+      <returns>An HTML event object.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.EventType">
+      <summary>Gets the name of the event raised by the browser.</summary>
+      <returns>An event name.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.KeyCode">
+      <summary>Gets the integer Unicode value of a key that is associated with a keyboard event other than "keypress".</summary>
+      <returns>The integer Unicode value of a key involved in a keyboard event, if the event is not "keypress"; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.MouseButton">
+      <summary>Gets the mouse buttons that were clicked at the time the event was raised.</summary>
+      <returns>One of the enumeration values that indicates which mouse button was clicked.  </returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.OffsetX">
+      <summary>Gets the x-coordinate mouse position in pixels relative to the HTML object that raised the event.</summary>
+      <returns>The x-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.OffsetY">
+      <summary>Gets the y-coordinate mouse position in pixels relative to the HTML object that raised the event.</summary>
+      <returns>The y-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlEventArgs.PreventDefault">
+      <summary>Specifies that the associated Document Object Model (DOM) element should not perform the default action for the current event.</summary>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.ScreenX">
+      <summary>Gets the x-coordinate mouse position in pixels relative to the user's screen.</summary>
+      <returns>The x-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.ScreenY">
+      <summary>Gets the y-coordinate mouse position in pixels relative to the user's screen.</summary>
+      <returns>The y-coordinate mouse position in pixels if the Document Object Model (DOM) event includes position information; otherwise, 0 (zero).</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.ShiftKey">
+      <summary>Gets the state of the SHIFT key when the event was raised.</summary>
+      <returns>true if the SHIFT key was pressed when the event was raised; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlEventArgs.Source">
+      <summary>Gets a reference to the Document Object Model (DOM) element or object that raised the event.</summary>
+      <returns>A reference to the DOM element or object that raised the event.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlEventArgs.StopPropagation">
+      <summary>Specifies that the event should not bubble up the Document Object Model (DOM) hierarchy.</summary>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlObject">
+      <summary>Provides methods for browser elements that are explicitly supplied by the HTML features exposed by Silverlight.  </summary>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Browser.HtmlObject" /> class.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.AttachEvent(System.String,System.EventHandler)">
+      <summary>Attaches the specified .NET Framework event handler (<see cref="T:System.EventHandler" />) to the specified event on the current Document Object Model (DOM) object. </summary>
+      <returns>true if the event was successfully attached; otherwise, false.</returns>
+      <param name="eventName">A named event on the DOM object.</param>
+      <param name="handler">The method that handles the event.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="eventName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="eventName" /> is null.-or-<paramref name="handler" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.AttachEvent(System.String,System.EventHandler{System.Windows.Browser.HtmlEventArgs})">
+      <summary>Attaches the specified .NET Framework event handler (<see cref="T:System.EventHandler`1" />) to the specified event on the current Document Object Model (DOM) object.</summary>
+      <returns>true if the event was successfully attached; otherwise, false.</returns>
+      <param name="eventName">A named event on the DOM object.</param>
+      <param name="handler">The method that handles the event.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="eventName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="eventName" /> is null.-or-<paramref name="handler" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.ConvertTo(System.Type,System.Boolean)">
+      <summary>Converts the current object to a specified type. This method is not supported. </summary>
+      <returns>None.</returns>
+      <param name="targetType">The conversion type.</param>
+      <param name="allowSerialization">true to allow JavaScript Object Notation (JSON) serialization; otherwise, false.</param>
+      <exception cref="T:System.ArgumentException">In all cases.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.DetachEvent(System.String,System.EventHandler)">
+      <summary>Detaches the specified.NET Framework event handler (<see cref="T:System.EventHandler" />) from the specified event on the current Document Object Model (DOM) object.</summary>
+      <param name="eventName">A named event on the DOM object.</param>
+      <param name="handler">The method that handles the event.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="eventName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="eventName" /> is null.-or-<paramref name="handler" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlObject.DetachEvent(System.String,System.EventHandler{System.Windows.Browser.HtmlEventArgs})">
+      <summary>Detaches the specified .NET Framework event handler (<see cref="T:System.EventHandler`1" />) from the specified event on the current Document Object Model (DOM) object.</summary>
+      <param name="eventName">A named event on the DOM object.</param>
+      <param name="handler">The method that handles the event.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="eventName" /> is an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="eventName" /> is null.-or-<paramref name="handler" /> is null.</exception>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlPage">
+      <summary>Permits access to, and manipulation of, the browser's Document Object Model (DOM).</summary>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.BrowserInformation">
+      <summary>Gets general information about the browser, such as name, version, and operating system.</summary>
+      <returns>An object that represents general information about the hosting browser.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.Document">
+      <summary>Gets the browser's document object.</summary>
+      <returns>A reference to the browser's document object.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.IsEnabled">
+      <summary>Gets a value that indicates whether the rest of the public surface area of the HTML Bridge feature is enabled.</summary>
+      <returns>true if the HTML Bridge feature is enabled; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.IsPopupWindowAllowed">
+      <summary>Indicates whether pop-up windows are allowed.</summary>
+      <returns>true if pop-up windows are allowed; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.Plugin">
+      <summary>Gets a reference to the Silverlight plug-in that is defined within an &lt;object&gt; or &lt;embed&gt; tag on the host HTML page.</summary>
+      <returns>The Silverlight plug-in in the Document Object Model (DOM). </returns>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlPage.PopupWindow(System.Uri,System.String,System.Windows.Browser.HtmlPopupWindowOptions)">
+      <summary>Opens a pop-up window.</summary>
+      <returns>A handle to the new window; or null (see the Remarks section).</returns>
+      <param name="navigateToUri">Specifies the Uniform Resource Identifier (URI) for the pop-up window.</param>
+      <param name="target">Specifies the window that will be opened. (For more information, see the Remarks section.)</param>
+      <param name="options">Specifies an <see cref="T:System.Windows.Browser.HtmlPopupWindowOptions" /> object that controls the pop-up window. (For more information, see the Remarks section.)</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="navigateToUri" /> specifies a protocol other than http or https, such as file://, or a random URI moniker.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="navigateToUri" /> is set to null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlPage.RegisterCreateableType(System.String,System.Type)">
+      <summary>Registers a managed type as available for creation from JavaScript code, through the Content.services.createObject and Content.services.createManagedObject helper methods.</summary>
+      <param name="scriptAlias">The name used to register the managed type.</param>
+      <param name="type">A managed type.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="scriptAlias" /> or <paramref name="type" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="type" /> is not public.-or-<paramref name="type" /> does not have a public, parameterless constructor.-or-<paramref name="type" /> is a string, primitive or value type, managed delegate, or empty string.-or-<paramref name="type" /> contains an embedded null character (\0).-or-An attempt is made to reregister <paramref name="type." /></exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlPage.RegisterScriptableObject(System.String,System.Object)">
+      <summary>Registers a managed object for scriptable access by JavaScript code.</summary>
+      <param name="scriptKey">The name used to register the managed object.</param>
+      <param name="instance">A managed object.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="scriptKey" /> or <paramref name="instance" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">An attempt is made to register a non-public type.-or-<paramref name="scriptKey" /> contains an embedded null character (\0).-or-<paramref name="instance" /> has no scriptable entry points.-or-A property, method, or event that is marked as scriptable uses one of the following reserved names: addEventListener, removeEventListener, constructor, or createManagedObject.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlPage.UnregisterCreateableType(System.String)">
+      <summary>Explicitly unregisters a managed type that was previously registered by using the <see cref="M:System.Windows.Browser.HtmlPage.RegisterCreateableType(System.String,System.Type)" /> method.</summary>
+      <param name="scriptAlias">The name of a registered managed type.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="scriptAlias" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="scriptAlias" /> is an empty string.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPage.Window">
+      <summary>Gets the browser's window object.</summary>
+      <returns>A reference to the browser's window object.</returns>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlPopupWindowOptions">
+      <summary>Provides options to control pop-up windows.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlPopupWindowOptions.#ctor">
+      <summary>Creates a new instance of the <see cref="T:System.Windows.Browser.HtmlPopupWindowOptions" /> class.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Directories">
+      <summary>Gets or sets a value that determines whether the Internet Explorer links toolbar or Firefox personal/bookmarks toolbar is shown in the pop-up window.</summary>
+      <returns>true if Internet Explorer links toolbar or Firefox personal/bookmarks toolbar is shown in the pop-up window; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Height">
+      <summary>Gets or sets the height of a pop-up window.</summary>
+      <returns>Height of the pop-up window, in pixels.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The height is set to a value that is less than zero.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Left">
+      <summary>Gets or sets the position of the left edge of a pop-up window.</summary>
+      <returns>Horizontal distance from the left edge of the browser's document space to the left edge of the pop-up window.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The position is set to a value that is less than zero.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Location">
+      <summary>Gets or sets the URL of a pop-up window.</summary>
+      <returns>The URL of the pop-up window.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Menubar">
+      <summary>Gets or sets a value that indicates whether the menu bar is visible in a pop-up window.</summary>
+      <returns>true if the menu bar is visible in the pop-up window; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Resizeable">
+      <summary>Gets or sets a value that indicates whether a pop-up window can be resized.</summary>
+      <returns>true if the pop-up window can be resized; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Scrollbars">
+      <summary>Gets or sets a value that indicates whether scroll bars are visible in a pop-up window.</summary>
+      <returns>true if scroll bars may appear in the pop-up window; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Status">
+      <summary>Gets or sets a value that indicates whether the status bar is visible in a pop-up window.</summary>
+      <returns>true if the status bar is visible in the pop-up window; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Toolbar">
+      <summary>Gets or sets a value that indicates whether the toolbar is visible in a pop-up window.</summary>
+      <returns>true if the toolbar is visible in the pop-up window; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Top">
+      <summary>Gets or sets the position of the top edge of a pop-up window.</summary>
+      <returns>Vertical distance from the top edge of the browser's document space to the top edge of the pop-up window.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The position is set to a value that is less than zero.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlPopupWindowOptions.Width">
+      <summary>Gets or sets the width of a pop-up window.</summary>
+      <returns>Width of the pop-up window, in pixels.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">The width is set to a value that is less than zero.</exception>
+    </member>
+    <member name="T:System.Windows.Browser.HtmlWindow">
+      <summary>Provides the managed representation of the JavaScript window object.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Alert(System.String)">
+      <summary>Displays a dialog box that contains an application-defined message.</summary>
+      <param name="alertText">The text to display.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Confirm(System.String)">
+      <summary>Displays a confirmation dialog box that contains an optional message as well as OK and Cancel buttons.</summary>
+      <returns>true if the user clicked the OK button; otherwise, false.</returns>
+      <param name="confirmText">The text to display.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.CreateInstance(System.String,System.Object[])">
+      <summary>Creates an instance of the specified JavaScript type.</summary>
+      <returns>A JavaScript type.</returns>
+      <param name="typeName">An HTML tag name.</param>
+      <param name="args">Creation parameters.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="typeName" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="typeName" /> is an empty string or cannot be resolved.-or-There is a type mismatch between one of the supplied creation parameters and the target parameter(s).</exception>
+    </member>
+    <member name="P:System.Windows.Browser.HtmlWindow.CurrentBookmark">
+      <summary>Gets or sets a string that represents the hash value of the current page's URL.</summary>
+      <returns>The hash value of the current page's URL. If the URL has no hash value, this property returns an empty string.</returns>
+      <exception cref="T:System.ArgumentNullException">The return value is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Eval(System.String)">
+      <summary>Evaluates a string that contains arbitrary JavaScript code.</summary>
+      <returns>The results of the JavaScript engine's evaluation of the string in the <paramref name="code" /> parameter.</returns>
+      <param name="code">JavaScript code.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="code" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="code" /> is an empty string.</exception>
+      <exception cref="T:System.InvalidOperationException">An unexpected error occurred.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Navigate(System.Uri)">
+      <summary>Opens the specified page in the current browser.</summary>
+      <param name="navigateToUri">The URL of the page to open.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="navigateToUri" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Navigate(System.Uri,System.String)">
+      <summary>Opens the specified page in the specified browser instance.</summary>
+      <returns>A reference to the underlying window object that represents a new browser instance. </returns>
+      <param name="navigateToUri">The URL of the page to open.</param>
+      <param name="target">The name of the window or tab that <paramref name="navigateToUri" /> should be opened in.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="navigateToUri" /> or <paramref name="target" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Navigate(System.Uri,System.String,System.String)">
+      <summary>Opens the specified page in the specified browser instance, with the indicated user interface features.</summary>
+      <returns>A reference to the underlying window object that represents the new browser.</returns>
+      <param name="navigateToUri">The URL of the page to open.</param>
+      <param name="target">The name of the window or tab that <paramref name="navigateToUri" /> should be opened in.</param>
+      <param name="targetFeatures">A comma-delimited list of browser-specific features.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="navigateToUri" />, <paramref name="target" />, or <paramref name="targetFeatures" /> is null.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.NavigateToBookmark(System.String)">
+      <summary>Changes the URL of the current page to a location that is specified by a named bookmark.</summary>
+      <param name="bookmark">The name of a bookmark.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HtmlWindow.Prompt(System.String)">
+      <summary>Displays a dialog box that prompts the user with a message and an input field.</summary>
+      <returns>The user's input.</returns>
+      <param name="promptText">Message to display in the dialog box.</param>
+    </member>
+    <member name="T:System.Windows.Browser.HttpUtility">
+      <summary>Provides methods for encoding and decoding HTML and URL strings.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.HttpUtility.HtmlDecode(System.String)">
+      <summary>Converts a string that has been HTML-encoded (for HTTP transmission) into a decoded string.</summary>
+      <returns>A decoded string.</returns>
+      <param name="html">An HTML-encoded string to decode.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HttpUtility.HtmlEncode(System.String)">
+      <summary>Converts a text string into an HTML-encoded string.</summary>
+      <returns>An HTML-encoded string.</returns>
+      <param name="html">The text to HTML-encode.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HttpUtility.UrlDecode(System.String)">
+      <summary>Converts a string that has been encoded for transmission in a URL into a decoded string.</summary>
+      <returns>A decoded string.</returns>
+      <param name="url">A URL-encoded string to decode.</param>
+    </member>
+    <member name="M:System.Windows.Browser.HttpUtility.UrlEncode(System.String)">
+      <summary>Converts a text string into a URL-encoded string.</summary>
+      <returns>A URL-encoded string.</returns>
+      <param name="url">The text to URL-encode.</param>
+    </member>
+    <member name="T:System.Windows.Browser.MouseButtons">
+      <summary>Specifies constants that indicate which mouse button was clicked.</summary>
+    </member>
+    <member name="F:System.Windows.Browser.MouseButtons.None">
+      <summary>No mouse button was clicked.</summary>
+    </member>
+    <member name="F:System.Windows.Browser.MouseButtons.Left">
+      <summary>The left mouse button was clicked.</summary>
+    </member>
+    <member name="F:System.Windows.Browser.MouseButtons.Right">
+      <summary>The right mouse button was clicked.</summary>
+    </member>
+    <member name="F:System.Windows.Browser.MouseButtons.Middle">
+      <summary>The wheel button was clicked.</summary>
+    </member>
+    <member name="T:System.Windows.Browser.ScriptableMemberAttribute">
+      <summary>Indicates that a specific property, method, or event is accessible to JavaScript callers.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptableMemberAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Browser.ScriptableMemberAttribute" /> class.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptableMemberAttribute.EnableCreateableTypes">
+      <summary>Controls the generation of Silverlight plug-in helper methods that can be used to create wrappers around managed objects.</summary>
+      <returns>true if the HTML bridge feature should automatically generate helper methods in the scope of the registered scriptable type; otherwise, false. The default is true.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptableMemberAttribute.ScriptAlias">
+      <summary>Gets or sets the name of a property, method, or event that is exposed to JavaScript code. By default, the script alias is the same as the name of the managed property, method, or event.</summary>
+      <returns>The name of a property, method, or event.</returns>
+      <exception cref="T:System.ArgumentException">The alias is set to an empty string.</exception>
+      <exception cref="T:System.ArgumentNullException">The alias is set to null.</exception>
+    </member>
+    <member name="T:System.Windows.Browser.ScriptableTypeAttribute">
+      <summary>Indicates that all public properties, methods, and events on a managed type are available to JavaScript code when they are registered by using the <see cref="M:System.Windows.Browser.HtmlPage.RegisterCreateableType(System.String,System.Type)" /> method.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptableTypeAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Windows.Browser.ScriptableTypeAttribute" /> class.</summary>
+    </member>
+    <member name="T:System.Windows.Browser.ScriptEventHandler">
+      <summary>Gets a reference to the JavaScript object that raised the event.</summary>
+      <param name="sender">A reference to the JavaScript object that raised the event.</param>
+      <param name="args">A reference to the complex type that is passed as an event argument.</param>
+    </member>
+    <member name="T:System.Windows.Browser.ScriptObject">
+      <summary>Defines the core behavior for the <see cref="T:System.Windows.Browser.HtmlObject" /> class, and provides a base class for browser Document Object Model (DOM) access types. </summary>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.CheckAccess">
+      <summary>Determines whether the current thread is the browser's UI thread.</summary>
+      <returns>true if the current thread is the browser's UI thread; false if it is a background thread.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.ConvertTo``1">
+      <summary>Converts the current scriptable object to a specified type. </summary>
+      <returns>An object of type <paramref name="T" />.</returns>
+      <typeparam name="T">The type to convert the current scriptable object to.</typeparam>
+      <exception cref="T:System.ArgumentException">The conversion failed or is not supported.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.ConvertTo(System.Type,System.Boolean)">
+      <summary>Converts the current scriptable object to a specified type, with serialization support. </summary>
+      <returns>An object of type <paramref name="targetType" />.</returns>
+      <param name="targetType">The type to convert the current scriptable object to.</param>
+      <param name="allowSerialization">A flag which enables the current scriptable object to be serialized.</param>
+      <exception cref="T:System.ArgumentException">The conversion failed or is not supported.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptObject.Dispatcher">
+      <summary>Gets an instance of the dispatcher. </summary>
+      <returns>The dispatcher associated with the user interface (UI) thread.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.Finalize">
+      <summary>Frees resources and performs other cleanup operations before the scriptable object is reclaimed by garbage collection.</summary>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.GetProperty(System.Int32)">
+      <summary>Gets the value of a property that is identified by ordinal number on the current scriptable object.</summary>
+      <returns>A null reference (Nothing in Visual Basic) if the property does not exist or if the underlying <see cref="T:System.Windows.Browser.ScriptObject" /> is a managed type.</returns>
+      <param name="index">The ordinal number of the property.</param>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.GetProperty(System.String)">
+      <summary>Gets the value of a property that is identified by name on the current scriptable object.</summary>
+      <returns>A null reference (Nothing in Visual Basic) if the property does not exist or if the underlying <see cref="T:System.Windows.Browser.ScriptObject" /> is a managed type.</returns>
+      <param name="name">The name of the property.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.-or-<paramref name="name" /> contains an embedded null character (\0).</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.Initialize(System.IntPtr,System.IntPtr,System.Boolean,System.Boolean)">
+      <summary>Initializes a scriptable object.</summary>
+      <param name="handle">The handle to the object to initialize.</param>
+      <param name="identity">The identity of the object.</param>
+      <param name="addReference">true to specify that the HTML Bridge should assign a reference count to this object; otherwise, false.</param>
+      <param name="releaseReferenceOnDispose">true to release the reference on dispose; otherwise, false.</param>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.Invoke(System.String,System.Object[])">
+      <summary>Invokes a method on the current scriptable object, and optionally passes in one or more method parameters.</summary>
+      <returns>An object that represents the return value from the underlying JavaScript method.</returns>
+      <param name="name">The method to invoke.</param>
+      <param name="args">Parameters to be passed to the method.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.-or-<paramref name="name" /> contains an embedded null character (\0).-or-The method does not exist or is not scriptable.</exception>
+      <exception cref="T:System.InvalidOperationException">The underlying method invocation results in an error. The .NET Framework attempts to return the error text that is associated with the error.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.InvokeSelf(System.Object[])">
+      <summary>Invokes the current <see cref="T:System.Windows.Browser.ScriptObject" /> and assumes that it represents a JavaScript method.</summary>
+      <returns>An object that represents the return value from the underlying JavaScript method.</returns>
+      <param name="args">Parameters to be passed to the underlying JavaScript method.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.-or-<paramref name="name" /> contains an embedded null character (\0).-or-The method does not exist or is not scriptable.</exception>
+      <exception cref="T:System.InvalidOperationException">The current <see cref="T:System.Windows.Browser.ScriptObject" /> is not a method.-or-The underlying method invocation results in an error.</exception>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptObject.ManagedObject">
+      <summary>Gets the underlying managed object reference of the <see cref="T:System.Windows.Browser.ScriptObject" />.</summary>
+      <returns>A managed object reference if the current <see cref="T:System.Windows.Browser.ScriptObject" /> wraps a managed type; otherwise, null.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.SetProperty(System.Int32,System.Object)">
+      <summary>Sets the value of a property that is identified by ordinal number on the current scriptable object.</summary>
+      <param name="index">The ordinal number of the property.</param>
+      <param name="value">The value to set the property to.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="index" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="index" /> identifies an empty string.</exception>
+      <exception cref="T:System.InvalidOperationException">A type mismatch exists between the supplied type and the target property.-or-The property is not settable.-or-All other failures.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.SetProperty(System.String,System.Object)">
+      <summary>Sets a property that is identified by name on the current scriptable object.</summary>
+      <param name="name">The name of the property.</param>
+      <param name="value">The value to set the property to.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="name" /> is an empty string.-or-<paramref name="name" /> contains an embedded null character (\0).</exception>
+      <exception cref="T:System.InvalidOperationException">A type mismatch exists between the supplied type and the target property.-or-The property is not settable.-or-All other failures.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObject.System#Dynamic#IDynamicMetaObjectProvider#GetMetaObject(System.Linq.Expressions.Expression)">
+      <summary>Returns the <see cref="T:System.Dynamic.DynamicMetaObject" /> responsible for binding operations performed on this object.</summary>
+      <returns>The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.</returns>
+      <param name="parameter">The expression tree representation of the runtime value.</param>
+    </member>
+    <member name="T:System.Windows.Browser.ScriptObjectCollection">
+      <summary>Provides a thread-safe wrapper for obtaining and iterating Document Object Model (DOM) collections.</summary>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptObjectCollection.Count">
+      <summary>Gets the number of items in the collection.</summary>
+      <returns>A count of items in the collection.</returns>
+    </member>
+    <member name="P:System.Windows.Browser.ScriptObjectCollection.Item(System.Int32)">
+      <summary>Gets an item from the collection at the specified index.</summary>
+      <returns>A reference to an HTML element.</returns>
+      <param name="index">The zero-based index of the item to be retrieved.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is invalid.</exception>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObjectCollection.System#Collections#Generic#IEnumerable{T}#GetEnumerator">
+      <summary>For a description of this member, see <see cref="T:System.Collections.Generic.IEnumerable`1" />.</summary>
+      <returns>An enumerator that iterates over a collection of a specified type.</returns>
+    </member>
+    <member name="M:System.Windows.Browser.ScriptObjectCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>For a description of this member, see <see cref="M:System.Collections.IEnumerable.GetEnumerator" />.</summary>
+      <returns>An enumerator that iterates through a collection.</returns>
+    </member>
+  </members>
+</doc>
