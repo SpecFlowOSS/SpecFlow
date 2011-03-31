@@ -31,7 +31,8 @@ namespace TechTalk.SpecFlow.Generator
 
         private static void RegisterDefaults(ObjectContainer container)
         {
-            container.RegisterTypeAs<TestGenerator,ITestGenerator>();
+            container.RegisterTypeAs<TestGenerator, ITestGenerator>();
+            container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
         }
     }
 }

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
     <Compile Include="GeneratorContainerBuilderTests.cs" />
     <Compile Include="TestGeneratorFactoryTests.cs" />
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,9 +13,10 @@ namespace TechTalk.SpecFlow.Generator
             return GeneratorVersion;
         }
 
-        public ITestGenerator CreateGenerator(SpecFlowConfigurationHolder configurationHolder)
+        public ITestGenerator CreateGenerator(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings)
         {
             var container = GeneratorContainerBuilder.CreateContainer(configurationHolder);
+            container.RegisterInstanceAs(projectSettings);
             return container.Resolve<ITestGenerator>();
         }
     }

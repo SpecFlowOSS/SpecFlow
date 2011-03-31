@@ -6,19 +6,35 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     [Serializable]
     public class FeatureFileInput
     {
-        public string FullPath { get; private set; }
+        /// <summary>
+        /// The project relative path of the feature file. Must be sepecified.
+        /// </summary>
         public string ProjectRelativePath { get; private set; }
-        public string CustomNamespace { get; private set; }
-        public TextReader ContentReader { get; private set; }
+        /// <summary>
+        /// The content of the feature file. Optional. If not specified, the content is read from <see cref="ProjectRelativePath"/>.
+        /// </summary>
+        public string FeatureFileContent { get; set; }
+        /// <summary>
+        /// A custom namespace for the generated test class. Optional.
+        /// </summary>
+        public string CustomNamespace { get; set; }
 
-        public FeatureFileInput(string fullPath, string projectRelativePath, string customNamespace, TextReader contentReader)
+        /// <summary>
+        /// The project relative path of the generated test class file. Optional, used for up-to-date checking. 
+        /// </summary>
+        public string GeneratedTestProjectRelativePath { get; set; }
+        /// <summary>
+        /// The content of the existing test class file. Optional, used for up-to-date checking. 
+        /// </summary>
+        public string GeneratedTestFileContent { get; set; }
+
+        public FeatureFileInput(string projectRelativePath)
         {
-            if (contentReader == null) throw new ArgumentNullException("contentReader");
+            if (projectRelativePath == null) throw new ArgumentNullException("projectRelativePath");
+            if (string.IsNullOrEmpty(Path.GetFileName(projectRelativePath))) 
+                throw new ArgumentException("The feature file path must denote a file and not a directory", "projectRelativePath");
 
-            FullPath = fullPath;
             ProjectRelativePath = projectRelativePath;
-            CustomNamespace = customNamespace;
-            ContentReader = contentReader;
         }
     }
 }

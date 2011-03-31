@@ -19,16 +19,24 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestGenerator : ErrorHandlingTestGenerator
     {
-        private readonly GeneratorConfiguration generatorConfiguration;
+        protected readonly GeneratorConfiguration generatorConfiguration;
+        protected readonly ProjectSettings projectSettings;
+        protected readonly ITestHeaderWriter testHeaderWriter;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration)
+        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter)
         {
+            if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
+            if (projectSettings == null) throw new ArgumentNullException("projectSettings");
+            if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
+
             this.generatorConfiguration = generatorConfiguration;
+            this.testHeaderWriter = testHeaderWriter;
+            this.projectSettings = projectSettings;
         }
 
-        protected virtual CodeDomProvider CreateCodeDomProvider(GenerationSettings settings)
+        protected virtual CodeDomProvider CreateCodeDomProvider(ProjectPlatformSettings settings)
         {
-            switch (settings.TargetLanguage)
+            switch (settings.Language)
             {
                 case GenerationTargetLanguage.CSharp:
                     return new CSharpCodeProvider();
@@ -46,13 +54,16 @@ namespace TechTalk.SpecFlow.Generator
 
         protected override TestGeneratorResult GenerateTestFileWithExceptions(FeatureFileInput featureFileInput, GenerationSettings settings)
         {
+            if (featureFileInput == null) throw new ArgumentNullException("featureFileInput");
+            if (settings == null) throw new ArgumentNullException("settings");
+
             StringWriter outputStringWriter = new StringWriter();
             var outputWriter = new IndentProcessingWriter(outputStringWriter);
 
-            var codeProvider = CreateCodeDomProvider(settings);
+            var codeProvider = CreateCodeDomProvider(projectSettings.ProjectPlatformSettings);
             CodeDomHelper codeDomHelper = CreateCodeDomHelper(codeProvider, settings);
 
-            var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper, settings);
+            var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper);
             var options = new CodeGeneratorOptions
             {
                 BracingStyle = "C"
@@ -66,12 +77,16 @@ namespace TechTalk.SpecFlow.Generator
             return new TestGeneratorResult(outputStringWriter.ToString(), false);
         }
 
-        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper, GenerationSettings settings)
+        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper)
         {
-            string targetNamespace = GetTargetNamespace(featureFileInput, settings);
+            string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
             SpecFlowLangParser parser = new SpecFlowLangParser(generatorConfiguration.FeatureLanguage);
-            Feature feature = parser.Parse(featureFileInput.ContentReader, featureFileInput.FullPath);
+            Feature feature;
+            using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
+            {
+                feature = parser.Parse(contentReader, featureFileInput.GetFullPath(projectSettings));
+            }
 
             IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(generatorConfiguration.GeneratorUnitTestProviderType);
             codeDomHelper.InjectIfRequired(generatorProvider);
@@ -82,21 +97,19 @@ namespace TechTalk.SpecFlow.Generator
             return codeNamespace;
         }
 
-        private string GetTargetNamespace(FeatureFileInput featureFileInput, GenerationSettings settings)
+        private string GetTargetNamespace(FeatureFileInput featureFileInput)
         {
             if (!string.IsNullOrEmpty(featureFileInput.CustomNamespace))
                 return featureFileInput.CustomNamespace;
 
-            if (string.IsNullOrEmpty(settings.ProjectDefaultNamespace))
+            if (projectSettings == null || string.IsNullOrEmpty(projectSettings.DefaultNamespace))
                 return null;
 
-            string targetNamespace = settings.ProjectDefaultNamespace;
+            string targetNamespace = projectSettings.DefaultNamespace;
 
-            string namespaceExtension = string.Join(".",
-                        (Path.GetDirectoryName(featureFileInput.ProjectRelativePath) ?? "")
-                            .TrimStart('\\', '/', '.')
-                            .Split('\\', '/')
-                            .Select(f => f.ToIdentifier()).ToArray());
+            var directoryName = Path.GetDirectoryName(featureFileInput.ProjectRelativePath);
+            string namespaceExtension = string.IsNullOrEmpty(directoryName) ? null :
+                string.Join(".", directoryName.TrimStart('\\', '/', '.').Split('\\', '/').Select(f => f.ToIdentifier()).ToArray());
             if (!string.IsNullOrEmpty(namespaceExtension))
                 targetNamespace += "." + namespaceExtension;
             return targetNamespace;
@@ -105,6 +118,20 @@ namespace TechTalk.SpecFlow.Generator
 
 
         #region Header & Footer
+        protected override Version DetectGeneratedTestVersionWithExceptions(FeatureFileInput featureFileInput)
+        {
+            var generatedTestFileContent = featureFileInput.GeneratedTestFileContent;
+            if (generatedTestFileContent == null)
+            {
+                var generatedTestPath = featureFileInput.GetGeneratedTestFullPath(projectSettings);
+                if (generatedTestPath == null)
+                    return null;
+                generatedTestFileContent = File.ReadAllText(generatedTestPath);
+            }
+
+            return testHeaderWriter.DetectGeneratedTestVersion(generatedTestFileContent);
+        }
+
         private void AddSpecFlowHeader(CodeDomProvider codeProvider, TextWriter outputWriter, CodeDomHelper codeDomHelper)
         {
             const string specFlowHeaderTemplate = @"------------------------------------------------------------------------------

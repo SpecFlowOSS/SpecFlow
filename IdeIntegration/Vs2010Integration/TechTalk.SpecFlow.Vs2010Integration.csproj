@@ -159,6 +159,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Runtime\ProgrammingLanguage.cs">
       <Link>BindingSkeletons\ProgrammingLanguage.cs</Link>
     </Compile>
@@ -210,6 +213,7 @@
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
     <Compile Include="LanguageService\NoProjectScope.cs" />
     <Compile Include="LanguageService\VsProjectScope.cs" />
+    <Compile Include="Generator\VsGeneratorServices.cs" />
     <Compile Include="StepSuggestions\BoundStepSuggestions.cs" />
     <Compile Include="StepSuggestions\INativeSuggestionItemFactory.cs" />
     <Compile Include="StepSuggestions\IStepSuggestion.cs" />
@@ -324,6 +328,10 @@
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
+      <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
+      <Name>TechTalk.SpecFlow.IdeIntegration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

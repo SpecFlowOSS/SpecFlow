@@ -1,37 +1,45 @@
 ﻿using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
 {
     public abstract class TestGeneratorTestsBase
     {
-        protected GenerationSettings net35CSSettings;
-        protected GenerationSettings net35VBSettings;
+        protected ProjectPlatformSettings net35CSSettings;
+        protected ProjectPlatformSettings net35VBSettings;
+        protected ProjectSettings net35CSProjectSettings;
+        protected ProjectSettings net35VBProjectSettings;
+        protected GenerationSettings defaultSettings;
+        protected Mock<ITestHeaderWriter> TestHeaderWriterStub;
 
         [SetUp]
         public virtual void Setup()
         {
-            net35CSSettings = new GenerationSettings
+            net35CSSettings = new ProjectPlatformSettings
                                   {
-                                      TargetLanguage = GenerationTargetLanguage.CSharp,
-                                      TargetLanguageVersion = new Version("3.0"),
-                                      TargetPlatform = GenerationTargetPlatform.DotNet,
-                                      TargetPlatformVersion = new Version("3.5"),
-                                      ProjectDefaultNamespace = "DefaultNamespace",
-                                      CheckUpToDate = false
+                                      Language = GenerationTargetLanguage.CSharp,
+                                      LanguageVersion = new Version("3.0"),
+                                      Platform = GenerationTargetPlatform.DotNet,
+                                      PlatformVersion = new Version("3.5"),
                                   };
-            net35VBSettings = new GenerationSettings
+            net35VBSettings = new ProjectPlatformSettings
                                   {
-                                      TargetLanguage = GenerationTargetLanguage.VB,
-                                      TargetLanguageVersion = new Version("9.0"),
-                                      TargetPlatform = GenerationTargetPlatform.DotNet,
-                                      TargetPlatformVersion = new Version("3.5"),
-                                      ProjectDefaultNamespace = "DefaultNamespace",
-                                      CheckUpToDate = false
+                                      Language = GenerationTargetLanguage.VB,
+                                      LanguageVersion = new Version("9.0"),
+                                      Platform = GenerationTargetPlatform.DotNet,
+                                      PlatformVersion = new Version("3.5"),
                                   };
+
+            net35CSProjectSettings = new ProjectSettings(Path.GetTempPath(), "DefaultNamespace", net35CSSettings);
+            net35VBProjectSettings = new ProjectSettings(Path.GetTempPath(), "DefaultNamespace", net35VBSettings);
+            defaultSettings = new GenerationSettings();
+
+            TestHeaderWriterStub = new Mock<ITestHeaderWriter>();
         }
 
         protected FeatureFileInput CreateSimpleValidFeatureFileInput()
@@ -50,12 +58,7 @@ Scenario: Add two numbers
 
         protected FeatureFileInput CreateSimpleFeatureFileInput(string featureFileContent)
         {
-            return new FeatureFileInput(
-                @"C:\Temp\Dummy.feature",
-                @"Dummy.feature",
-                null,
-                new StringReader(featureFileContent)
-                );
+            return new FeatureFileInput(@"Dummy.feature") {FeatureFileContent = featureFileContent};
         }
 
         protected FeatureFileInput CreateSimpleInvalidFeatureFileInput()
@@ -66,6 +69,16 @@ Scenario: Add two numbers
 	Given I have entered 50 into the calculator
     AndXXX the keyword is misspelled
 ");
+        }
+
+        protected TestGenerator CreateTestGenerator()
+        {
+            return CreateTestGenerator(net35CSProjectSettings);
+        }
+
+        protected TestGenerator CreateTestGenerator(ProjectSettings projectSettings)
+        {
+            return new TestGenerator(new GeneratorConfiguration(), projectSettings, TestHeaderWriterStub.Object);
         }
     }
 }

@@ -4,8 +4,10 @@ using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -24,6 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
         public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+        public IGeneratorServices GeneratorServices { get; private set; }
 
         private bool initialized = false;
         
@@ -124,6 +127,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 //                analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
 
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, integrationOptions.EnableAnalysis);
+
+            GeneratorServices = new VsGeneratorServices(project);
         }
 
         private void EnsureInitialized()
@@ -247,6 +252,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             this.visualStudioTracer.Trace("SpecFlow configuration changed", "VsProjectScope");
             if (SpecFlowProjectConfigurationChanged != null)
                 SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
+
+            GeneratorServices.InvalidateConfiguration();
 
             ConfirmReGenerateFilesOnConfigChange();
         }

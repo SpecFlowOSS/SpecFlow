@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
-    public interface ITestGenerator
+    public interface ITestGenerator : IDisposable
     {
         TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings);
+        Version DetectGeneratedTestVersion(FeatureFileInput featureFileInput);
     }
 }

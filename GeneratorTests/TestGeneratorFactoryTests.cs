@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using Should;
@@ -12,13 +8,14 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 namespace GeneratorTests
 {
     [TestFixture]
-    public class TestGeneratorFactoryTests
+    public class TestGeneratorFactoryTests : TestGeneratorTestsBase
     {
         private TestGeneratorFactory factory;
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
             factory = new TestGeneratorFactory();
         }
 
@@ -31,7 +28,7 @@ namespace GeneratorTests
         [Test]
         public void Should_be_able_to_create_generator_with_default_config()
         {
-            factory.CreateGenerator(new SpecFlowConfigurationHolder()).ShouldNotBeNull();
+            factory.CreateGenerator(new SpecFlowConfigurationHolder(), net35CSProjectSettings).ShouldNotBeNull();
         }
 
         private class DummyGenerator : ITestGenerator
@@ -39,6 +36,16 @@ namespace GeneratorTests
             public TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings)
             {
                 throw new NotImplementedException();
+            }
+
+            public Version DetectGeneratedTestVersion(FeatureFileInput featureFileInput)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Dispose()
+            {
+                //nop;
             }
         }
 
@@ -51,8 +58,8 @@ namespace GeneratorTests
                     <register type=""{0}"" as=""{1}""/>
                   </dependencies>
                 </specFlow>",
-                typeof(DummyGenerator).AssemblyQualifiedName,
-                typeof(ITestGenerator).AssemblyQualifiedName)));
+                                                                                                  typeof(DummyGenerator).AssemblyQualifiedName,
+                                                                                                  typeof(ITestGenerator).AssemblyQualifiedName)), net35CSProjectSettings);
 
             generator.ShouldBeType(typeof(DummyGenerator));
         }

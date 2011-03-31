@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     public interface ITestGeneratorFactory
     {
         Version GetGeneratorVersion();
-        ITestGenerator CreateGenerator(SpecFlowConfigurationHolder configurationHolder);
+        ITestGenerator CreateGenerator(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Parser;
@@ -9,6 +10,9 @@ namespace TechTalk.SpecFlow.Generator
     {
         public TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings)
         {
+            if (featureFileInput == null) throw new ArgumentNullException("featureFileInput");
+            if (settings == null) throw new ArgumentNullException("settings");
+
             try
             {
                 return GenerateTestFileWithExceptions(featureFileInput, settings);
@@ -27,6 +31,27 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
+        public Version DetectGeneratedTestVersion(FeatureFileInput featureFileInput)
+        {
+            if (featureFileInput == null) throw new ArgumentNullException("featureFileInput");
+
+            try
+            {
+                return DetectGeneratedTestVersionWithExceptions(featureFileInput);
+            }
+            catch(Exception exception)
+            {
+                Debug.WriteLine(exception, "ErrorHandlingTestGenerator.DetectGeneratedTestVersion");
+                return null;
+            }
+        }
+
         protected abstract TestGeneratorResult GenerateTestFileWithExceptions(FeatureFileInput featureFileInput, GenerationSettings settings);
+        protected abstract Version DetectGeneratedTestVersionWithExceptions(FeatureFileInput featureFileInput);
+
+        public virtual void Dispose()
+        {
+            //nop;
+        }
     }
 }

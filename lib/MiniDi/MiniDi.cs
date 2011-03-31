@@ -27,15 +27,7 @@ namespace MiniDi
     [Serializable]
     public class ObjectContainerException : Exception
     {
-        public ObjectContainerException()
-        {
-        }
-
-        public ObjectContainerException(string message) : base(message)
-        {
-        }
-
-        public ObjectContainerException(string message, Exception inner) : base(message, inner)
+        public ObjectContainerException(string message, IEnumerable<Type> resolutionPath) : base(GetMessage(message, resolutionPath))
         {
         }
 
@@ -43,6 +35,14 @@ namespace MiniDi
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
+        }
+
+        static private string GetMessage(string message, IEnumerable<Type> resolutionPath)
+        {
+            if (resolutionPath == null || !resolutionPath.Any())
+                return message;
+
+            return string.Format("{0} (resolution path: {1})", message, string.Join("->", resolutionPath.Select(t => t.FullName).ToArray()));
         }
     }
 
@@ -131,7 +131,7 @@ namespace MiniDi
         private void AssertNotResolved(Type interfaceType)
         {
             if (resolvedObjects.ContainsKey(interfaceType))
-                throw new ObjectContainerException("An object have been resolved for this interface already.");
+                throw new ObjectContainerException("An object have been resolved for this interface already.", null);
         }
 
         private void ClearRegistrations(Type interfaceType)
@@ -183,10 +183,15 @@ namespace MiniDi
 
         private object Resolve(Type typeToResolve)
         {
+            return Resolve(typeToResolve, Enumerable.Empty<Type>());
+        }
+
+        private object Resolve(Type typeToResolve, IEnumerable<Type> resolutionPath)
+        {
             object resolvedObject;
             if (!resolvedObjects.TryGetValue(typeToResolve, out resolvedObject))
             {
-                resolvedObject = CreateObjectFor(typeToResolve);
+                resolvedObject = CreateObjectFor(typeToResolve, resolutionPath);
                 resolvedObjects.Add(typeToResolve, resolvedObject);
             }
             Debug.Assert(typeToResolve.IsInstanceOfType(resolvedObject));
@@ -246,8 +251,11 @@ namespace MiniDi
             return null;
         }
 
-        private object CreateObjectFor(Type typeToResolve)
+        private object CreateObjectFor(Type typeToResolve, IEnumerable<Type> resolutionPath)
         {
+            if (typeToResolve.IsPrimitive || typeToResolve == typeof(string))
+                throw new ObjectContainerException("Primitive types cannot be resolved: " + typeToResolve.FullName, resolutionPath);
+
             var registrationResult = GetRegistrationResult(typeToResolve);
 
             if (registrationResult != null && registrationResult.IsInstanceRegistration)
@@ -264,16 +272,16 @@ namespace MiniDi
             if (obj == null)
             {
                 if (registeredType.IsInterface)
-                    throw new ObjectContainerException("Interface cannot be resolved: " + typeToResolve.FullName);
+                    throw new ObjectContainerException("Interface cannot be resolved: " + typeToResolve.FullName, resolutionPath);
 
-                obj = CreateObject(registeredType);
+                obj = CreateObject(registeredType, resolutionPath);
                 objectPool.Add(registeredType, obj);
             }
 
             return obj;
         }
 
-        private object CreateObject(Type type)
+        private object CreateObject(Type type, IEnumerable<Type> resolutionPath)
         {
             var ctors = type.GetConstructors();
 
@@ -281,24 +289,24 @@ namespace MiniDi
             if (ctors.Length == 1)
             {
                 ConstructorInfo ctor = ctors[0];
-                var args = ResolveArguments(ctor.GetParameters());
+                var args = ResolveArguments(ctor.GetParameters(), resolutionPath.Concat(new[] { type }));
                 obj = ctor.Invoke(args);
             }
             else if (ctors.Length == 0)
             {
-                throw new ObjectContainerException("Class must have a public constructor! " + type.FullName);
+                throw new ObjectContainerException("Class must have a public constructor! " + type.FullName, resolutionPath);
             }
             else
             {
-                throw new ObjectContainerException("Multiple public constructors are not supported! " + type.FullName);
+                throw new ObjectContainerException("Multiple public constructors are not supported! " + type.FullName, resolutionPath);
             }
 
             return obj;
         }
 
-        private object[] ResolveArguments(IEnumerable<ParameterInfo> parameters)
+        private object[] ResolveArguments(IEnumerable<ParameterInfo> parameters, IEnumerable<Type> resolutionPath)
         {
-            return parameters.Select(p => Resolve(p.ParameterType)).ToArray();
+            return parameters.Select(p => Resolve(p.ParameterType, resolutionPath)).ToArray();
         }
 
         #endregion

@@ -78,6 +78,7 @@
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
     <Compile Include="ErrorHandlingTestGenerator.cs" />
+    <Compile Include="FeatureFileInputExtensions.cs" />
     <Compile Include="GeneratorContainerBuilder.cs" />
     <Compile Include="IndentProcessingWriter.cs" />
     <Compile Include="Interfaces\FeatureFileInput.cs" />
@@ -86,10 +87,14 @@
     <Compile Include="GenerationTargetPlatform.cs" />
     <Compile Include="Interfaces\ITestGenerator.cs" />
     <Compile Include="Interfaces\ITestGeneratorFactory.cs" />
+    <Compile Include="Interfaces\ProjectPlatformSettings.cs" />
+    <Compile Include="Interfaces\ProjectSettings.cs" />
     <Compile Include="Interfaces\SpecFlowConfigurationHolder.cs" />
     <Compile Include="Interfaces\TestGenerationError.cs" />
     <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
     <Compile Include="Interfaces\TestGeneratorResult.cs" />
+    <Compile Include="ITestHeaderWriter.cs" />
+    <Compile Include="TestHeaderWriter.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowGenerator.cs" />

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -94,7 +95,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (codeBehindItem != null)
             {
                 string codeBehind = VsxHelper.GetFileContent(codeBehindItem);
-                featureFileInfo.GeneratorVersion = SpecFlowGenerator.GetGeneratedFileSpecFlowVersion(new StringReader(codeBehind));
+                using (var testGenerator = vsProjectScope.GeneratorServices.CreateTestGenerator())
+                {
+                    featureFileInfo.GeneratorVersion = testGenerator.DetectGeneratedTestVersion(
+                        new FeatureFileInput(featureFileInfo.ProjectRelativePath)
+                            {
+                                GeneratedTestFileContent = codeBehind
+                            });
+                }
             }
         }
 
