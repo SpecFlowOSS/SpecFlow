@@ -28,7 +28,11 @@ namespace TechTalk.SpecFlow.UnitTestProvider
                 Expression.Call(method, parameters.Cast<Expression>().ToArray()),
                 parameters.ToArray());
 
+#if WINDOWS_PHONE
+						return ExpressionCompiler.ExpressionCompiler.Compile(lambda) as Action<string, object[]>;
+#else
             return lambda.Compile();
+#endif
         }
 
     }

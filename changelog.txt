@@ -1,5 +1,8 @@
 ﻿Next - ???
 
+Breaking changes:
++ The Silverlight runtime assembly has been renamed to TechTalk.SpecFlow.Silverlight3.dll.
+
 New features:
 + Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
 + Support for tagging (including @ignore) scenario outline examples. 
@@ -15,6 +18,7 @@ New features:
 + VS2010: Intellisense for keywords
 + VS2010: "go to binding"
 + VS2010: Automatic table formatting when "|" is typed
++ Windows Phone 7 support, see https://github.com/techtalk/SpecFlow/wiki/Windows-Phone-7-Support (by Max Paulousky)
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"

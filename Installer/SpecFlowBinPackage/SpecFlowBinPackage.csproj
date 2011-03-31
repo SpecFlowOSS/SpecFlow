@@ -81,7 +81,8 @@
       <BinPackageFiles Include="$(TargetDir)\*.exe" />
       <BinPackageFiles Include="$(TargetDir)\*.txt" />
       <BinPackageFiles Include="$(TargetDir)\MsBuild\*.*" />
-      <BinPackageFiles Include="$(SolutionDir)\Runtime.Silverlight\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight.dll" />
+      <BinPackageFiles Include="$(SolutionDir)\AlternativeRuntimes\Runtime.Silverlight3\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight3.dll" />
+      <BinPackageFiles Include="$(SolutionDir)\AlternativeRuntimes\Runtime.WindowsPhone7\bin\$(Configuration)\TechTalk.SpecFlow.WindowsPhone7.dll" />
     </ItemGroup>
     <Zip Files="@(BinPackageFiles)" Flatten="true" ZipFileName="$(TargetDir)\SpecFlowBinPackage.zip" />
   </Target>

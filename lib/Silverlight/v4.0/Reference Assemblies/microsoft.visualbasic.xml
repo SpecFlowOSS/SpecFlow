@@ -1,0 +1,2119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.VisualBasic</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.VisualBasic.CallType">
+      <summary>Indicates the type of procedure being invoked when calling the CallByName function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CallType.Method">
+      <summary>A method is being invoked.  This member is equivalent to the Visual Basic constant vbMethod.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CallType.Get">
+      <summary>A property value is being retrieved.  This member is equivalent to the Visual Basic constant vbGet.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CallType.Let">
+      <summary>An Object property value is being determined. This member is equivalent to the Visual Basic constant vbLet.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CallType.Set">
+      <summary>A property value is being determined.  This member is equivalent to the Visual Basic constant vbSet.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Collection">
+      <summary>A Visual Basic Collection is an ordered set of items that can be referred to as a unit.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.#ctor">
+      <summary>Creates and returns a new Visual Basic <see cref="T:Microsoft.VisualBasic.Collection" /> object.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.Add(System.Object,System.String,System.Object,System.Object)">
+      <summary>Adds an element to a Collection object.</summary>
+      <param name="Item">Required. An object of any type that specifies the element to add to the collection.</param>
+      <param name="Key">Optional. A unique String expression that specifies a key string that can be used instead of a positional index to access this new element in the collection.</param>
+      <param name="Before">Optional. An expression that specifies a relative position in the collection. The element to be added is placed in the collection before the element identified by the <paramref name="Before" /> argument. If <paramref name="Before" /> is a numeric expression, it must be a number from 1 through the value of the collection's <see cref="P:Microsoft.VisualBasic.Collection.Count" /> property. If <paramref name="Before" /> is a String expression, it must correspond to the key string specified when the element being referred to was added to the collection. You cannot specify both <paramref name="Before" /> and <paramref name="After" />.</param>
+      <param name="After">Optional. An expression that specifies a relative position in the collection. The element to be added is placed in the collection after the element identified by the <paramref name="After" /> argument. If <paramref name="After" /> is a numeric expression, it must be a number from 1 through the value of the collection's Count property. If <paramref name="After" /> is a String expression, it must correspond to the key string specified when the element referred to was added to the collection. You cannot specify both <paramref name="Before" /> and <paramref name="After" />.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.Clear">
+      <summary>Deletes all elements of a Visual Basic Collection object.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.Contains(System.String)">
+      <summary>Returns a Boolean value indicating whether a Visual Basic Collection object contains an element with a specific key.</summary>
+      <returns>Returns a Boolean value indicating whether a Visual Basic Collection object contains an element with a specific key.</returns>
+      <param name="Key">Required. A String expression that specifies the key for which to search the elements of the collection.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.Count">
+      <summary>Returns an Integer containing the number of elements in a collection. Read-only.</summary>
+      <returns>Returns an Integer containing the number of elements in a collection. Read-only.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.GetEnumerator">
+      <summary>Returns a reference to an enumerator object, which is used to iterate over a <see cref="T:Microsoft.VisualBasic.Collection" /> object.</summary>
+      <returns>Returns a reference to an enumerator object, which is used to iterate over a <see cref="T:Microsoft.VisualBasic.Collection" /> object.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+      <summary>Copies the elements of the <see cref="T:Microsoft.VisualBasic.Collection" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index. Implements the <see cref="T:System.Collections.ICollection" /> interface.</summary>
+      <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:Microsoft.VisualBasic.Collection" /> object. The <see cref="T:System.Array" /> must have zero-based indexing. </param>
+      <param name="index">The zero-based index in <paramref name="array" /> at which copying begins. </param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null. </exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is less than zero. </exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="array" /> is multidimensional.-or- The number of elements in the source <see cref="T:Microsoft.VisualBasic.Collection" /> object is greater than the available space from <paramref name="index" /> to the end of the destination <paramref name="array" />.</exception>
+      <exception cref="T:System.InvalidCastException">The type of the source <see cref="T:Microsoft.VisualBasic.Collection" /> object cannot be cast automatically to the type of the destination <paramref name="array" />. </exception>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#ICollection#Count">
+      <summary>Gets the number of items in this collection. Implements the <see cref="T:System.Collections.ICollection" /> interface.</summary>
+      <returns>The number of items in this collection.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>Returns an enumerator that iterates through the collection. Implements the <see cref="T:System.Collections.ICollection" /> interface.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#ICollection#IsSynchronized">
+      <summary>Gets a value indicating whether access to the <see cref="T:Microsoft.VisualBasic.Collection" /> object is synchronized (thread safe). Implements the <see cref="T:System.Collections.ICollection" /> interface.</summary>
+      <returns>Returns True if access to the <see cref="T:Microsoft.VisualBasic.Collection" /> object is synchronized (thread safe); otherwise, False.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#ICollection#SyncRoot">
+      <summary>Gets an object that can be used to synchronize access to the <see cref="T:Microsoft.VisualBasic.Collection" /> object. Implements the <see cref="T:System.Collections.ICollection" /> interface.</summary>
+      <returns>An object that can be used to synchronize access to the <see cref="T:Microsoft.VisualBasic.Collection" /> object.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#Add(System.Object)">
+      <summary>Adds an item to the <see cref="T:Microsoft.VisualBasic.Collection" /> object. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <returns>The position into which the new element was inserted.</returns>
+      <param name="value">The <see cref="T:System.Object" /> to add to the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </param>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only.-or- The <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size. </exception>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#Clear">
+      <summary>Removes all items from the <see cref="T:Microsoft.VisualBasic.Collection" /> object. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IList" /> is read-only. </exception>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#Contains(System.Object)">
+      <summary>Determines whether the <see cref="T:Microsoft.VisualBasic.Collection" /> object contains a specific value. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <returns>Returns True if the <see cref="T:System.Object" /> is found in the <see cref="T:Microsoft.VisualBasic.Collection" /> object; otherwise, False.</returns>
+      <param name="value">The <see cref="T:System.Object" /> to locate in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#IndexOf(System.Object)">
+      <summary>Determines the index of a specific item in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <returns>The index of <paramref name="value" /> if found in the collection; otherwise, -1.</returns>
+      <param name="value">The <see cref="T:System.Object" /> to locate in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#Insert(System.Int32,System.Object)">
+      <summary>Inserts an item to the <see cref="T:Microsoft.VisualBasic.Collection" /> object at the specified index. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <param name="index">The zero-based index at which <paramref name="value" /> should be inserted. </param>
+      <param name="value">The <see cref="T:System.Object" /> to insert into the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only.-or- The <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size. </exception>
+      <exception cref="T:System.NullReferenceException">
+        <paramref name="value" /> is null reference in the <see cref="T:Microsoft.VisualBasic.Collection" /> object.</exception>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#IList#IsFixedSize">
+      <summary>Gets a value indicating whether the <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <returns>Returns True if the <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size; otherwise, False.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#IList#IsReadOnly">
+      <summary>Gets a value indicating whether the <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <returns>Returns True if the <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only; otherwise, False.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.System#Collections#IList#Item(System.Int32)">
+      <summary>Gets or sets the element at the specified index. Implements the <see cref="T:System.Collections.IList" /> interface</summary>
+      <returns>The element at the specified index.</returns>
+      <param name="index">The zero-based index of the element to get or set. </param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </exception>
+      <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only. </exception>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#Remove(System.Object)">
+      <summary>Removes the first occurrence of a specific object from the <see cref="T:Microsoft.VisualBasic.Collection" /> object. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <param name="value">The <see cref="T:System.Object" /> to remove from the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </param>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only.-or- The <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size. </exception>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.System#Collections#IList#RemoveAt(System.Int32)">
+      <summary>Removes the <see cref="T:Microsoft.VisualBasic.Collection" /> object item at the specified index. Implements the <see cref="T:System.Collections.IList" /> interface.</summary>
+      <param name="index">The zero-based index of the item to remove. </param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:Microsoft.VisualBasic.Collection" /> object. </exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:Microsoft.VisualBasic.Collection" /> object is read-only.-or- The <see cref="T:Microsoft.VisualBasic.Collection" /> object has a fixed size. </exception>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.Item(System.Int32)">
+      <summary>Returns a specific element of a Collection object either by position or by key. Read-only.</summary>
+      <returns>Returns a specific element of a Collection object either by position or by key. Read-only.</returns>
+      <param name="Index">(A) A numeric expression that specifies the position of an element of the collection. <paramref name="Index" /> must be a number from 1 through the value of the collection's <see cref="P:Microsoft.VisualBasic.Collection.Count" /> property. Or (B) An Object expression that specifies the position or key string of an element of the collection.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.Item(System.Object)">
+      <summary>Returns a specific element of a Collection object either by position or by key. Read-only.</summary>
+      <returns>Returns a specific element of a Collection object either by position or by key. Read-only.</returns>
+      <param name="Index">(A) A numeric expression that specifies the position of an element of the collection. <paramref name="Index" /> must be a number from 1 through the value of the collection's <see cref="P:Microsoft.VisualBasic.Collection.Count" /> property. Or (B) An Object expression that specifies the position or key string of an element of the collection.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Collection.Item(System.String)">
+      <summary>Returns a specific element of a Collection object either by position or by key. Read-only.</summary>
+      <returns>Returns a specific element of a Collection object either by position or by key. Read-only.</returns>
+      <param name="Key">A unique String expression that specifies a key string that can be used, instead of a positional index, to access an element of the collection. <paramref name="Key" /> must correspond to the <paramref name="Key" /> argument specified when the element was added to the collection.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.Remove(System.Int32)">
+      <summary>Removes an element from a Collection object.</summary>
+      <param name="Index">A numeric expression that specifies the position of an element of the collection. <paramref name="Index" /> must be a number from 1 through the value of the collection's <see cref="P:Microsoft.VisualBasic.Collection.Count" /> property.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Collection.Remove(System.String)">
+      <summary>Removes an element from a Collection object.</summary>
+      <param name="Key">A unique String expression that specifies a key string that can be used, instead of a positional index, to access an element of the collection. <paramref name="Key" /> must correspond to the <paramref name="Key" /> argument specified when the element was added to the collection.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompareMethod">
+      <summary>Indicates how to compare strings when calling comparison functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CompareMethod.Binary">
+      <summary>Performs a binary comparison. This member is equivalent to the Visual Basic constant vbBinaryCompare.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CompareMethod.Text">
+      <summary>Performs a textual comparison. This member is equivalent to the Visual Basic constant vbTextCompare.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Constants">
+      <summary>The Constants module contains miscellaneous constants. These constants can be used anywhere in your code.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbArray">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbBack">
+      <summary>Represents a backspace character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbBinaryCompare">
+      <summary>Indicates how to compare strings when calling comparison functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbBoolean">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbByte">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbCr">
+      <summary>Represents a carriage-return character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbCrLf">
+      <summary>Represents a carriage-return character combined with a linefeed character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbCurrency">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbDate">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbDecimal">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbDouble">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbEmpty">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFalse">
+      <summary>Indicates a Boolean value or whether the default should be used when calling number-formatting functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFirstFourDays">
+      <summary>Indicates the first week of the year to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFirstFullWeek">
+      <summary>Indicates the first week of the year to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFirstJan1">
+      <summary>Indicates the first week of the year to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFormFeed">
+      <summary>Represents a form-feed character for print functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbFriday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbGeneralDate">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbGet">
+      <summary>Indicates the type of procedure being invoked.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbInteger">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbLet">
+      <summary>Indicates the type of procedure being invoked.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbLf">
+      <summary>Represents a linefeed character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbLong">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbLongDate">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbLongTime">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbMethod">
+      <summary>Indicates the type of procedure being invoked.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbMonday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbNewLine">
+      <summary>Represents a newline character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbNull">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbNullChar">
+      <summary>Represents a null character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbNullString">
+      <summary>Represents a zero-length string for print and display functions, and for calling external procedures.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbObject">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbObjectError">
+      <summary>Represents the object error number. User-defined error numbers should be greater than this value.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbSaturday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbSet">
+      <summary>Indicates the type of procedure being invoked.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbShortDate">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbShortTime">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbSingle">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbString">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbSunday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbTab">
+      <summary>Represents a tab character for print and display functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbTextCompare">
+      <summary>Indicates how to compare strings when calling comparison functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbThursday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbTrue">
+      <summary>Indicates a Boolean value or whether the default should be used when calling number-formatting functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbTuesday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbUseDefault">
+      <summary>Indicates a Boolean value or whether the default should be used when calling number-formatting functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbUserDefinedType">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbUseSystem">
+      <summary>Indicates the first week of the year to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbUseSystemDayOfWeek">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbVariant">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbVerticalTab">
+      <summary>Represents a carriage-return character for print functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.Constants.vbWednesday">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.ControlChars">
+      <summary>The ControlChars module contains constants used as control characters. These constants can be used anywhere in your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.ControlChars.#ctor">
+      <summary>Initializes a new instance of the T:Microsoft.VisualBasic.ControlChars class. </summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.Back">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.Cr">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.CrLf">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.FormFeed">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.Lf">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.NewLine">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.NullChar">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.Quote">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.Tab">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.ControlChars.VerticalTab">
+      <summary>When you call print and display functions, you can use the following constants in your code in place of the actual values.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Conversion">
+      <summary>The Conversion module contains the procedures used to perform various conversion operations.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.CTypeDynamic``1(System.Object)">
+      <summary>Converts an object to the specified generic type.</summary>
+      <returns>An object statically typed as the requested generic type.</returns>
+      <param name="Expression">The object to convert.</param>
+      <typeparam name="TargetType">The type to which to convert the object.</typeparam>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.CTypeDynamic(System.Object,System.Type)">
+      <summary>Converts an object to the specified type.</summary>
+      <returns>An object whose type at run time is the requested target type.</returns>
+      <param name="Expression">The object to convert.</param>
+      <param name="TargetType">The type to which to convert the object.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.ErrorToString">
+      <summary>Returns the error message that corresponds to a given error number.</summary>
+      <returns>Returns the error message that corresponds to a given error number.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.ErrorToString(System.Int32)">
+      <summary>Returns the error message that corresponds to a given error number.</summary>
+      <returns>Returns the error message that corresponds to a given error number.</returns>
+      <param name="ErrorNumber">Optional. Any valid error number.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Decimal)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Double)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Int16)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Int32)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Int64)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Object)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Fix(System.Single)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.Byte)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.Int16)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.Int32)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.Int64)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.Object)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.SByte)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.UInt16)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.UInt32)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Hex(System.UInt64)">
+      <summary>Returns a string representing the hexadecimal value of a number.</summary>
+      <returns>Returns a string representing the hexadecimal value of a number.</returns>
+      <param name="Number">Required. Any valid numeric expression or String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Decimal)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Double)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Int16)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Int32)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Int64)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Object)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Int(System.Single)">
+      <summary>Return the integer portion of a number.</summary>
+      <returns>Return the integer portion of a number.</returns>
+      <param name="Number">Required. A number of type Double or any valid numeric expression. If <paramref name="Number" /> contains Nothing, Nothing is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Str(System.Object)">
+      <summary>Returns a String representation of a number.</summary>
+      <returns>Returns a String representation of a number.</returns>
+      <param name="Number">Required. An Object containing any valid numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Val(System.Char)">
+      <summary>Returns the numbers contained in a string as a numeric value of appropriate type.</summary>
+      <returns>Returns the numbers contained in a string as a numeric value of appropriate type.</returns>
+      <param name="Expression">Required. Any valid String expression, Object variable, or Char value. If <paramref name="Expression" /> is of type Object, its value must be convertible to String or an <see cref="T:System.ArgumentException" /> error occurs.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Val(System.Object)">
+      <summary>Returns the numbers contained in a string as a numeric value of appropriate type.</summary>
+      <returns>Returns the numbers contained in a string as a numeric value of appropriate type.</returns>
+      <param name="Expression">Required. Any valid String expression, Object variable, or Char value. If <paramref name="Expression" /> is of type Object, its value must be convertible to String or an <see cref="T:System.ArgumentException" /> error occurs.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Conversion.Val(System.String)">
+      <summary>Returns the numbers contained in a string as a numeric value of appropriate type.</summary>
+      <returns>Returns the numbers contained in a string as a numeric value of appropriate type.</returns>
+      <param name="InputStr">Required. Any valid String expression, Object variable, or Char value. If <paramref name="Expression" /> is of type Object, its value must be convertible to String or an <see cref="T:System.ArgumentException" /> error occurs.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.DateAndTime">
+      <summary>The DateAndTime module contains the procedures and properties used in date and time operations. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateAdd(Microsoft.VisualBasic.DateInterval,System.Double,System.DateTime)">
+      <summary>Returns a Date value containing a date and time value to which a specified time interval has been added.</summary>
+      <returns>Returns a Date value containing a date and time value to which a specified time interval has been added.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the time interval you want to add.</param>
+      <param name="Number">Required. Double. Floating-point expression representing the number of intervals you want to add. <paramref name="Number" /> can be positive (to get date/time values in the future) or negative (to get date/time values in the past). It can contain a fractional part when <paramref name="Interval" /> specifies hours, minutes, or seconds. For other values of <paramref name="Interval" />, any fractional part of <paramref name="Number" /> is ignored.</param>
+      <param name="DateValue">Required. Date. An expression representing the date and time to which the interval is to be added. <paramref name="DateValue" /> itself is not changed in the calling program.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateAdd(System.String,System.Double,System.Object)">
+      <summary>Returns a Date value containing a date and time value to which a specified time interval has been added.</summary>
+      <returns>Returns a Date value containing a date and time value to which a specified time interval has been added.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the time interval you want to add.</param>
+      <param name="Number">Required. Double. Floating-point expression representing the number of intervals you want to add. <paramref name="Number" /> can be positive (to get date/time values in the future) or negative (to get date/time values in the past). It can contain a fractional part when <paramref name="Interval" /> specifies hours, minutes, or seconds. For other values of <paramref name="Interval" />, any fractional part of <paramref name="Number" /> is ignored.</param>
+      <param name="DateValue">Required. Date. An expression representing the date and time to which the interval is to be added. <paramref name="DateValue" /> itself is not changed in the calling program.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateDiff(Microsoft.VisualBasic.DateInterval,System.DateTime,System.DateTime,Microsoft.VisualBasic.FirstDayOfWeek,Microsoft.VisualBasic.FirstWeekOfYear)">
+      <summary>Returns a Long value specifying the number of time intervals between two Date values.</summary>
+      <returns>Returns a Long value specifying the number of time intervals between two Date values.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the time interval you want to use as the unit of difference between <paramref name="Date1" /> and <paramref name="Date2" />.</param>
+      <param name="Date1">Required. Date. The first date/time value you want to use in the calculation. </param>
+      <param name="Date2">Required. Date. The second date/time value you want to use in the calculation.</param>
+      <param name="DayOfWeek">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.Sunday is used.</param>
+      <param name="WeekOfYear">Optional. A value chosen from the FirstWeekOfYear enumeration that specifies the first week of the year. If not specified, FirstWeekOfYear.Jan1 is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateDiff(System.String,System.Object,System.Object,Microsoft.VisualBasic.FirstDayOfWeek,Microsoft.VisualBasic.FirstWeekOfYear)">
+      <summary>Returns a Long value specifying the number of time intervals between two Date values.</summary>
+      <returns>Returns a Long value specifying the number of time intervals between two Date values.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the time interval you want to use as the unit of difference between <paramref name="Date1" /> and <paramref name="Date2" />.</param>
+      <param name="Date1">Required. Date. The first date/time value you want to use in the calculation. </param>
+      <param name="Date2">Required. Date. The second date/time value you want to use in the calculation.</param>
+      <param name="DayOfWeek">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.Sunday is used.</param>
+      <param name="WeekOfYear">Optional. A value chosen from the FirstWeekOfYear enumeration that specifies the first week of the year. If not specified, FirstWeekOfYear.Jan1 is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DatePart(Microsoft.VisualBasic.DateInterval,System.DateTime,Microsoft.VisualBasic.FirstDayOfWeek,Microsoft.VisualBasic.FirstWeekOfYear)">
+      <summary>Returns an Integer value containing the specified component of a given Date value.</summary>
+      <returns>Returns an Integer value containing the specified component of a given Date value.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the part of the date/time value you want to return.</param>
+      <param name="DateValue">Required. Date value that you want to evaluate.</param>
+      <param name="FirstDayOfWeekValue">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.Sunday is used.</param>
+      <param name="FirstWeekOfYearValue">Optional. A value chosen from the FirstWeekOfYear enumeration that specifies the first week of the year. If not specified, FirstWeekOfYear.Jan1 is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DatePart(System.String,System.Object,Microsoft.VisualBasic.FirstDayOfWeek,Microsoft.VisualBasic.FirstWeekOfYear)">
+      <summary>Returns an Integer value containing the specified component of a given Date value.</summary>
+      <returns>Returns an Integer value containing the specified component of a given Date value.</returns>
+      <param name="Interval">Required. DateInterval enumeration value or String expression representing the part of the date/time value you want to return.</param>
+      <param name="DateValue">Required. Date value that you want to evaluate.</param>
+      <param name="DayOfWeek">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.Sunday is used.</param>
+      <param name="WeekOfYear">Optional. A value chosen from the FirstWeekOfYear enumeration that specifies the first week of the year. If not specified, FirstWeekOfYear.Jan1 is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateSerial(System.Int32,System.Int32,System.Int32)">
+      <summary>Returns a Date value representing a specified year, month, and day, with the time information set to midnight (00:00:00).</summary>
+      <returns>Returns a Date value representing a specified year, month, and day, with the time information set to midnight (00:00:00).</returns>
+      <param name="Year">Required. Integer expression from 1 through 9999. However, values below this range are also accepted. If <paramref name="Year" /> is 0 through 99, it is interpreted as being between 1930 and 2029, as explained in the "Remarks" section below. If <paramref name="Year" /> is less than 1, it is subtracted from the current year.</param>
+      <param name="Month">Required. Integer expression from 1 through 12. However, values outside this range are also accepted. The value of <paramref name="Month" /> is offset by 1 and applied to January of the calculated year. In other words, (<paramref name="Month" /> - 1) is added to January. The year is recalculated if necessary. The following results illustrate this effect:If <paramref name="Month" /> is 1, the result is January of the calculated year.If <paramref name="Month" /> is 0, the result is December of the previous year.If <paramref name="Month" /> is -1, the result is November of the previous year.If <paramref name="Month" /> is 13, the result is January of the following year.</param>
+      <param name="Day">Required. Integer expression from 1 through 31. However, values outside this range are also accepted. The value of <paramref name="Day" /> is offset by 1 and applied to the first day of the calculated month. In other words, (<paramref name="Day" /> - 1) is added to the first of the month. The month and year are recalculated if necessary. The following results illustrate this effect:If <paramref name="Day" /> is 1, the result is the first day of the calculated month.If <paramref name="Day" /> is 0, the result is the last day of the previous month.If <paramref name="Day" /> is -1, the result is the penultimate day of the previous month.If <paramref name="Day" /> is past the end of the current month, the result is the appropriate day of the following month. For example, if <paramref name="Month" /> is 4 and <paramref name="Day" /> is 31, the result is May 1.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.DateString">
+      <summary>Returns or sets a String value representing the current date according to your system.</summary>
+      <returns>Gets a String value representing the current date according to your system.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.DateValue(System.String)">
+      <summary>Returns a Date value containing the date information represented by a string, with the time information set to midnight (00:00:00).</summary>
+      <returns>Returns a Date value containing the date information represented by a string, with the time information set to midnight (00:00:00).</returns>
+      <param name="StringDate">Required. String expression representing a date/time value from 00:00:00 on January 1 of the year 1 through 23:59:59 on December 31, 9999.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Day(System.DateTime)">
+      <summary>Returns an Integer value from 1 through 31 representing the day of the month.</summary>
+      <returns>Returns an Integer value from 1 through 31 representing the day of the month.</returns>
+      <param name="DateValue">Required. Date value from which you want to extract the day.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Hour(System.DateTime)">
+      <summary>Returns an Integer value from 0 through 23 representing the hour of the day.</summary>
+      <returns>Returns an Integer value from 0 through 23 representing the hour of the day.</returns>
+      <param name="TimeValue">Required. Date value from which you want to extract the hour.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Minute(System.DateTime)">
+      <summary>Returns an Integer value from 0 through 59 representing the minute of the hour.</summary>
+      <returns>Returns an Integer value from 0 through 59 representing the minute of the hour.</returns>
+      <param name="TimeValue">Required. Date value from which you want to extract the minute.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Month(System.DateTime)">
+      <summary>Returns an Integer value from 1 through 12 representing the month of the year.</summary>
+      <returns>Returns an Integer value from 1 through 12 representing the month of the year.</returns>
+      <param name="DateValue">Required. Date value from which you want to extract the month.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.MonthName(System.Int32,System.Boolean)">
+      <summary>Returns a String value containing the name of the specified month.</summary>
+      <returns>Returns a String value containing the name of the specified month.</returns>
+      <param name="Month">Required. Integer. The numeric designation of the month, from 1 through 13; 1 indicates January and 12 indicates December. You can use the value 13 with a 13-month calendar. If your system is using a 12-month calendar and <paramref name="Month" /> is 13, MonthName returns an empty string.</param>
+      <param name="Abbreviate">Optional. Boolean value that indicates if the month name is to be abbreviated. If omitted, the default is False, which means the month name is not abbreviated.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.Now">
+      <summary>Returns a Date value containing the current date and time according to your system.</summary>
+      <returns>Returns a Date value containing the current date and time according to your system.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Second(System.DateTime)">
+      <summary>Returns an Integer value from 0 through 59 representing the second of the minute.</summary>
+      <returns>Returns an Integer value from 0 through 59 representing the second of the minute.</returns>
+      <param name="TimeValue">Required. Date value from which you want to extract the second.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.TimeOfDay">
+      <summary>Returns or sets a Date value containing the current time of day according to your system.</summary>
+      <returns>Gets a Date value containing the current time of day according to your system.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.Timer">
+      <summary>Returns a Double value representing the number of seconds elapsed since midnight.</summary>
+      <returns>Returns a Double value representing the number of seconds elapsed since midnight.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.TimeSerial(System.Int32,System.Int32,System.Int32)">
+      <summary>Returns a Date value representing a specified hour, minute, and second, with the date information set relative to January 1 of the year 1.</summary>
+      <returns>Returns a Date value representing a specified hour, minute, and second, with the date information set relative to January 1 of the year 1.</returns>
+      <param name="Hour">Required. Integer expression from 0 through 23. However, values outside this range are also accepted.</param>
+      <param name="Minute">Required. Integer expression from 0 through 59. However, values outside this range are also accepted. The value of <paramref name="Minute" /> is added to the calculated hour, so a negative value specifies minutes before that hour.</param>
+      <param name="Second">Required. Integer expression from 0 through 59. However, values outside this range are also accepted. The value of <paramref name="Second" /> is added to the calculated minute, so a negative value specifies seconds before that minute.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.TimeString">
+      <summary>Returns or sets a String value representing the current time of day according to your system.</summary>
+      <returns>Gets a String value representing the current time of day according to your system.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.TimeValue(System.String)">
+      <summary>Returns a Date value containing the time information represented by a string, with the date information set to January 1 of the year 1.</summary>
+      <returns>Returns a Date value containing the time information represented by a string, with the date information set to January 1 of the year 1.</returns>
+      <param name="StringTime">Required. String expression representing a date/time value from 00:00:00 on January 1 of the year 1 through 23:59:59 on December 31, 9999.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.DateAndTime.Today">
+      <summary>Returns or sets a Date value containing the current date according to your system.</summary>
+      <returns>Gets a Date value containing the current date according to your system.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Weekday(System.DateTime,Microsoft.VisualBasic.FirstDayOfWeek)">
+      <summary>Returns an Integer value containing a number representing the day of the week.</summary>
+      <returns>Returns an Integer value containing a number representing the day of the week.</returns>
+      <param name="DateValue">Required. Date value for which you want to determine the day of the week.</param>
+      <param name="DayOfWeek">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.Sunday is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.WeekdayName(System.Int32,System.Boolean,Microsoft.VisualBasic.FirstDayOfWeek)">
+      <summary>Returns a String value containing the name of the specified weekday.</summary>
+      <returns>Returns a String value containing the name of the specified weekday.</returns>
+      <param name="Weekday">Required. Integer. The numeric designation for the weekday, from 1 through 7; 1 indicates the first day of the week and 7 indicates the last day of the week. The identities of the first and last days depend on the setting of <paramref name="FirstDayOfWeekValue" />.</param>
+      <param name="Abbreviate">Optional. Boolean value that indicates if the weekday name is to be abbreviated. If omitted, the default is False, which means the weekday name is not abbreviated.</param>
+      <param name="FirstDayOfWeekValue">Optional. A value chosen from the FirstDayOfWeek enumeration that specifies the first day of the week. If not specified, FirstDayOfWeek.System is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.DateAndTime.Year(System.DateTime)">
+      <summary>Returns an Integer value from 1 through 9999 representing the year.</summary>
+      <returns>Returns an Integer value from 1 through 9999 representing the year.</returns>
+      <param name="DateValue">Required. Date value from which you want to extract the year.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.DateFormat">
+      <summary>Indicates how to display dates when calling the FormatDateTime function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateFormat.GeneralDate">
+      <summary>For real numbers, displays a date and time. If the number has no fractional part, displays only a date. If the number has no integer part, displays time only. Date and time display is determined by your computer's regional settings. This member is equivalent to the Visual Basic constant vbGeneralDate.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateFormat.LongDate">
+      <summary>Displays a date using the long-date format specified in your computer's regional settings. This member is equivalent to the Visual Basic constant vbLongDate.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateFormat.ShortDate">
+      <summary>Displays a date using the short-date format specified in your computer's regional settings. This member is equivalent to the Visual Basic constant vbShortDate.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateFormat.LongTime">
+      <summary>Displays a time using the long-time format specified in your computer's regional settings. This member is equivalent to the Visual Basic constant vbLongTime.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateFormat.ShortTime">
+      <summary>Displays a time using the short-time format specified in your computer's regional settings. This member is equivalent to the Visual Basic constant vbShortTime.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.DateInterval">
+      <summary>Indicates how to determine and format date intervals when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Year">
+      <summary>Year</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Quarter">
+      <summary>Quarter of year (1 through 4)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Month">
+      <summary>Month (1 through 12)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.DayOfYear">
+      <summary>Day of year (1 through 366)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Day">
+      <summary>Day of month (1 through 31)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.WeekOfYear">
+      <summary>Week of year (1 through 53)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Weekday">
+      <summary>Day of week (1 through 7)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Hour">
+      <summary>Hour (1 through 24)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Minute">
+      <summary>Minute (1 through 60)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.DateInterval.Second">
+      <summary>Second (1 through 60)</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.ErrObject">
+      <summary>The ErrObject module contains properties and procedures used to identify and handle run-time errors using the Err object. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.ErrObject.Clear">
+      <summary>Clears all property settings of the Err object.</summary>
+    </member>
+    <member name="P:Microsoft.VisualBasic.ErrObject.Description">
+      <summary>Returns or sets a String expression containing a descriptive string associated with an error. Read/write.</summary>
+      <returns>Returns or sets a String expression containing a descriptive string associated with an error. Read/write.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.ErrObject.Erl">
+      <summary>Returns an integer indicating the line number of the last executed statement. Read-only.</summary>
+      <returns>Returns an integer indicating the line number of the last executed statement. Read-only.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.ErrObject.GetException">
+      <summary>Returns the exception representing the error that occurred.</summary>
+      <returns>Returns the exception representing the error that occurred.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.ErrObject.Number">
+      <summary>Returns or sets a numeric value specifying an error. Read/write.</summary>
+      <returns>Returns or sets a numeric value specifying an error. Read/write.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.ErrObject.Raise(System.Int32,System.Object)">
+      <summary>Generates a run-time error; can be used instead of the Error statement.</summary>
+      <param name="Number">Required. Long integer that identifies the nature of the error. Visual Basic errors are in the range 0–65535; the range 0–512 is reserved for system errors; the range 513–65535 is available for user-defined errors. When setting the Number property to your own error code in a class module, you add your error code number to the vbObjectError constant. For example, to generate the error number 513, assign vbObjectError + 513 to the Number property.</param>
+      <param name="Description">Optional. String expression describing the error. If unspecified, the value in the Number property is examined. If it can be mapped to a Visual Basic run-time error code, the string that would be returned by the Error function is used as the Description property. If there is no Visual Basic error corresponding to the Number property, the "Application-defined or object-defined error" message is used.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.FirstDayOfWeek">
+      <summary>Indicates the first day of the week to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.System">
+      <summary>The first day of the week as specified in your system settings This member is equivalent to the Visual Basic constant vbUseSystemDayOfWeek.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Sunday">
+      <summary>Sunday (default) This member is equivalent to the Visual Basic constant vbSunday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Monday">
+      <summary>Monday This member is equivalent to the Visual Basic constant vbMonday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Tuesday">
+      <summary>Tuesday This member is equivalent to the Visual Basic constant vbTuesday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Wednesday">
+      <summary>Wednesday This member is equivalent to the Visual Basic constant vbWednesday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Thursday">
+      <summary>Thursday This member is equivalent to the Visual Basic constant vbThursday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Friday">
+      <summary>Friday This member is equivalent to the Visual Basic constant vbFriday.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstDayOfWeek.Saturday">
+      <summary>Saturday This member is equivalent to the Visual Basic constant vbSaturday.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.FirstWeekOfYear">
+      <summary>Indicates the first week of the year to use when calling date-related functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstWeekOfYear.System">
+      <summary>The day of the week specified in your system settings as the first day of the week This member is equivalent to the Visual Basic constant vbUseSystem.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstWeekOfYear.Jan1">
+      <summary>The week in which January 1 occurs (default) This member is equivalent to the Visual Basic constant vbFirstJan1.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstWeekOfYear.FirstFourDays">
+      <summary>The first week that has at least four days in the new year This member is equivalent to the Visual Basic constant vbFirstFourDays.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.FirstWeekOfYear.FirstFullWeek">
+      <summary>The first full week of the year This member is equivalent to the Visual Basic constant vbFirstFullWeek.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Globals">
+      <summary>The Globals module contains script engine functions. </summary>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Globals.ScriptEngine">
+      <summary>Returns a String representing the runtime currently in use.</summary>
+      <returns>Returns a String representing the runtime currently in use.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Globals.ScriptEngineBuildVersion">
+      <summary>Returns an Integer containing the build version number of the runtime currently in use.</summary>
+      <returns>Returns an Integer containing the build version number of the runtime currently in use.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Globals.ScriptEngineMajorVersion">
+      <summary>Returns an Integer containing the major version number of the runtime currently in use.</summary>
+      <returns>Returns an Integer containing the major version number of the runtime currently in use.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.Globals.ScriptEngineMinorVersion">
+      <summary>Returns an Integer containing the minor version number of the runtime currently in use.</summary>
+      <returns>Returns an Integer containing the minor version number of the runtime currently in use.</returns>
+    </member>
+    <member name="T:Microsoft.VisualBasic.HideModuleNameAttribute">
+      <summary>The HideModuleNameAttribute attribute, when applied to a module, allows the module members to be accessed using only the qualification needed for the module.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.HideModuleNameAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.HideModuleNameAttribute" /> attribute. </summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Information">
+      <summary>The Information module contains the procedures used to return, test for, or verify information. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.Erl">
+      <summary>Returns an integer indicating the line number of the last executed statement. Read-only.</summary>
+      <returns>Returns an integer indicating the line number of the last executed statement. Read-only.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.Err">
+      <summary>Contains information about run-time errors.</summary>
+      <returns>Contains information about run-time errors.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsArray(System.Object)">
+      <summary>Returns a Boolean value indicating whether a variable points to an array.</summary>
+      <returns>Returns a Boolean value indicating whether a variable points to an array.</returns>
+      <param name="VarName">Required. Object variable.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsDate(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression represents a valid Date value.</summary>
+      <returns>Returns a Boolean value indicating whether an expression represents a valid Date value.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsDBNull(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression evaluates to the <see cref="T:System.DBNull" /> class.</summary>
+      <returns>Returns a Boolean value indicating whether an expression evaluates to the <see cref="T:System.DBNull" /> class.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsError(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression is an exception type.</summary>
+      <returns>Returns a Boolean value indicating whether an expression is an exception type.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsNothing(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression has no object assigned to it.</summary>
+      <returns>Returns a Boolean value indicating whether an expression has no object assigned to it.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.IsReference(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression evaluates to a reference type.</summary>
+      <returns>Returns a Boolean value indicating whether an expression evaluates to a reference type.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.LBound(System.Array,System.Int32)">
+      <summary>Returns the lowest available subscript for the indicated dimension of an array.</summary>
+      <returns>Integer. The lowest value the subscript for the specified dimension can contain. LBound always returns 0 as long as <paramref name="Array" /> has been initialized, even if it has no elements, for example if it is a zero-length string. If <paramref name="Array" /> is Nothing, LBound throws an <see cref="T:System.ArgumentNullException" />.</returns>
+      <param name="Array">Required. Array of any data type. The array in which you want to find the lowest possible subscript of a dimension.</param>
+      <param name="Rank">Optional. Integer. The dimension for which the lowest possible subscript is to be returned. Use 1 for the first dimension, 2 for the second, and so on. If <paramref name="Rank" /> is omitted, 1 is assumed.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.UBound(System.Array,System.Int32)">
+      <summary>Returns the highest available subscript for the indicated dimension of an array.</summary>
+      <returns>Integer. The highest value the subscript for the specified dimension can contain. If <paramref name="Array" /> has only one element, UBound returns 0. If <paramref name="Array" /> has no elements, for example if it is a zero-length string, UBound returns -1. </returns>
+      <param name="Array">Required. Array of any data type. The array in which you want to find the highest possible subscript of a dimension.</param>
+      <param name="Rank">Optional. Integer. The dimension for which the highest possible subscript is to be returned. Use 1 for the first dimension, 2 for the second, and so on. If <paramref name="Rank" /> is omitted, 1 is assumed.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Information.VarType(System.Object)">
+      <summary>Returns an Integer value containing the data type classification of a variable.</summary>
+      <returns>Returns an Integer value containing the data type classification of a variable.</returns>
+      <param name="VarName">Required. Object variable. If Option Strict is Off, you can pass a variable of any data type except a structure.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Interaction">
+      <summary>The Interaction module contains procedures used to interact with objects, applications, and systems. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Interaction.Choose(System.Double,System.Object[])">
+      <summary>Selects and returns a value from a list of arguments.</summary>
+      <returns>Selects and returns a value from a list of arguments.</returns>
+      <param name="Index">Required. Double. Numeric expression that results in a value between 1 and the number of elements passed in the <paramref name="Choice" /> argument.</param>
+      <param name="Choice">Required. Object parameter array. You can supply either a single variable or an expression that evaluates to the Object data type, to a list of Object variables or expressions separated by commas, or to a single-dimensional array of Object elements.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Interaction.IIf(System.Boolean,System.Object,System.Object)">
+      <summary>Returns one of two objects, depending on the evaluation of an expression.</summary>
+      <returns>Returns one of two objects, depending on the evaluation of an expression.</returns>
+      <param name="Expression">Required. Boolean. The expression you want to evaluate.</param>
+      <param name="TruePart">Required. Object. Returned if <paramref name="Expression" /> evaluates to True.</param>
+      <param name="FalsePart">Required. Object. Returned if <paramref name="Expression" /> evaluates to False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Interaction.Partition(System.Int64,System.Int64,System.Int64,System.Int64)">
+      <summary>Returns a string representing the calculated range that contains a number.</summary>
+      <returns>Returns a string representing the calculated range that contains a number.</returns>
+      <param name="Number">Required. Long. Whole number that you want to locate within one of the calculated ranges.</param>
+      <param name="Start">Required. Long. Whole number that indicates the start of the set of calculated ranges. <paramref name="Start" /> cannot be less than 0.</param>
+      <param name="Stop">Required. Long. Whole number that indicates the end of the set of calculated ranges. <paramref name="Stop" /> cannot be less than or equal to <paramref name="Start" />.</param>
+      <param name="Interval">Required. Long. Whole number that indicates the size of each range calculated between <paramref name="Start" /> and <paramref name="Stop" />. <paramref name="Interval" /> cannot be less than 1.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Interaction.Switch(System.Object[])">
+      <summary>Evaluates a list of expressions and returns an Object value corresponding to the first expression in the list that is True.</summary>
+      <returns>Evaluates a list of expressions and returns an Object value corresponding to the first expression in the list that is True.</returns>
+      <param name="VarExpr">Required. Object parameter array. Must have an even number of elements. You can supply a list of Object variables or expressions separated by commas, or a single-dimensional array of Object elements.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.MyGroupCollectionAttribute">
+      <summary>Specifies that the class will be modified based on the type identified by the <see cref="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.MyGroupName" /> property.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.MyGroupCollectionAttribute.#ctor(System.String,System.String,System.String,System.String)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.VisualBasic.MyGroupCollectionAttribute" /> attribute.</summary>
+      <param name="typeToCollect">String. Initializes the <see cref="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.MyGroupName" /> property. The compiler generates accessor properties for classes that derive from this type.</param>
+      <param name="createInstanceMethodName">String. Initializes the <see cref="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.CreateMethod" /> property. Specifies the method in the class that creates the type's instances.</param>
+      <param name="disposeInstanceMethodName">String. Initializes the <see cref="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.DisposeMethod" /> property. Specifies the method in the class that disposes of the type's instances.</param>
+      <param name="defaultInstanceAlias">String. Initializes the <see cref="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.DefaultInstanceAlias" /> property. Specifies the name of the property that returns the default instance of the class.</param>
+    </member>
+    <member name="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.CreateMethod">
+      <summary>Gets the name of the method in the class that creates the type's instances.</summary>
+      <returns>The method in the class that creates the type's instances.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.DefaultInstanceAlias">
+      <summary>Gets the name of the property that returns the default instance of the class.</summary>
+      <returns>The name of the property that returns the default instance of the class.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.DisposeMethod">
+      <summary>Gets the name of the method in the class that disposes of the type's instances.</summary>
+      <returns>The method in the class that disposes of the type's instances.</returns>
+    </member>
+    <member name="P:Microsoft.VisualBasic.MyGroupCollectionAttribute.MyGroupName">
+      <summary>Gets the name of the type for which the compiler generates accessor properties</summary>
+      <returns>The name of the type for which the compiler generates accessor properties.</returns>
+    </member>
+    <member name="T:Microsoft.VisualBasic.Strings">
+      <summary>The Strings module contains procedures used to perform string operations. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.AscW(System.Char)">
+      <summary>Returns an Integer value representing the character code corresponding to a character.</summary>
+      <returns>Returns an Integer value representing the character code corresponding to a character.</returns>
+      <param name="String">Required. Any valid Char or String expression. If <paramref name="String" /> is a String expression, only the first character of the string is used for input. If <paramref name="String" /> is Nothing or contains no characters, an <see cref="T:System.ArgumentException" /> error occurs.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.AscW(System.String)">
+      <summary>Returns an Integer value representing the character code corresponding to a character.</summary>
+      <returns>Returns an Integer value representing the character code corresponding to a character.</returns>
+      <param name="String">Required. Any valid Char or String expression. If <paramref name="String" /> is a String expression, only the first character of the string is used for input. If <paramref name="String" /> is Nothing or contains no characters, an <see cref="T:System.ArgumentException" /> error occurs.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.ChrW(System.Int32)">
+      <summary>Returns the character associated with the specified character code.</summary>
+      <returns>Returns the character associated with the specified character code.</returns>
+      <param name="CharCode">Required. An Integer expression representing the code point, or character code, for the character. If <paramref name="CharCode" /> is outside the valid range, an <see cref="T:System.ArgumentException" /> error occurs. The valid range for ChrW is -32768 through 65535.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Filter(System.Object[],System.String,System.Boolean,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns a zero-based array containing a subset of a String array based on specified filter criteria.</summary>
+      <returns>Returns a zero-based array containing a subset of a String array based on specified filter criteria.</returns>
+      <param name="Source">Required. One-dimensional array of strings to be searched.</param>
+      <param name="Match">Required. String to search for.</param>
+      <param name="Include">Optional. Boolean value indicating whether to return substrings that include or exclude <paramref name="Match" />. If <paramref name="Include" /> is True, the Filter function returns the subset of the array that contains <paramref name="Match" /> as a substring. If <paramref name="Include" /> is False, the Filter function returns the subset of the array that does not contain <paramref name="Match" /> as a substring.</param>
+      <param name="Compare">Optional. Numeric value indicating the kind of string comparison to use. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Filter(System.String[],System.String,System.Boolean,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns a zero-based array containing a subset of a String array based on specified filter criteria.</summary>
+      <returns>Returns a zero-based array containing a subset of a String array based on specified filter criteria.</returns>
+      <param name="Source">Required. One-dimensional array of strings to be searched.</param>
+      <param name="Match">Required. String to search for.</param>
+      <param name="Include">Optional. Boolean value indicating whether to return substrings that include or exclude <paramref name="Match" />. If <paramref name="Include" /> is True, the Filter function returns the subset of the array that contains <paramref name="Match" /> as a substring. If <paramref name="Include" /> is False, the Filter function returns the subset of the array that does not contain <paramref name="Match" /> as a substring.</param>
+      <param name="Compare">Optional. Numeric value indicating the kind of string comparison to use. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Format(System.Object,System.String)">
+      <summary>Returns a string formatted according to instructions contained in a format String expression.</summary>
+      <returns>Returns a string formatted according to instructions contained in a format String expression.</returns>
+      <param name="Expression">Required. Any valid expression.</param>
+      <param name="Style">Optional. A valid named or user-defined format String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.FormatCurrency(System.Object,System.Int32,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState)">
+      <summary>Returns an expression formatted as a currency value using the currency symbol defined in the system control panel.</summary>
+      <returns>Returns an expression formatted as a currency value using the currency symbol defined in the system control panel.</returns>
+      <param name="Expression">Required. Expression to be formatted.</param>
+      <param name="NumDigitsAfterDecimal">Optional. Numeric value indicating how many places are displayed to the right of the decimal. Default value is –1, which indicates that the computer's regional settings are used.</param>
+      <param name="IncludeLeadingDigit">Optional. TriState enumeration that indicates whether or not a leading zero is displayed for fractional values. See "Settings" for values.</param>
+      <param name="UseParensForNegativeNumbers">Optional. TriState enumeration that indicates whether or not to place negative values within parentheses. See "Settings" for values.</param>
+      <param name="GroupDigits">Optional. TriState enumeration that indicates whether or not numbers are grouped using the group delimiter specified in the computer's regional settings. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.FormatDateTime(System.DateTime,Microsoft.VisualBasic.DateFormat)">
+      <summary>Returns a string expression representing a date/time value.</summary>
+      <returns>Returns a string expression representing a date/time value.</returns>
+      <param name="Expression">Required. Date expression to be formatted.</param>
+      <param name="NamedFormat">Optional. Numeric value that indicates the date/time format used. If omitted, DateFormat.GeneralDate is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.FormatNumber(System.Object,System.Int32,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState)">
+      <summary>Returns an expression formatted as a number.</summary>
+      <returns>Returns an expression formatted as a number.</returns>
+      <param name="Expression">Required. Expression to be formatted.</param>
+      <param name="NumDigitsAfterDecimal">Optional. Numeric value indicating how many places are displayed to the right of the decimal. The default value is –1, which indicates that the computer's regional settings are used.</param>
+      <param name="IncludeLeadingDigit">Optional. TriState constant that indicates whether a leading 0 is displayed for fractional values. See "Settings" for values.</param>
+      <param name="UseParensForNegativeNumbers">Optional. TriState constant that indicates whether to place negative values within parentheses. See "Settings" for values.</param>
+      <param name="GroupDigits">Optional. TriState constant that indicates whether or not numbers are grouped using the group delimiter specified in the locale settings. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.FormatPercent(System.Object,System.Int32,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState,Microsoft.VisualBasic.TriState)">
+      <summary>Returns an expression formatted as a percentage (that is, multiplied by 100) with a trailing % character.</summary>
+      <returns>Returns an expression formatted as a percentage (that is, multiplied by 100) with a trailing % character.</returns>
+      <param name="Expression">Required. Expression to be formatted.</param>
+      <param name="NumDigitsAfterDecimal">Optional. Numeric value indicating how many places to the right of the decimal are displayed. Default value is –1, which indicates that the locale settings are used.</param>
+      <param name="IncludeLeadingDigit">Optional. TriState constant that indicates whether or not a leading zero displays for fractional values. See "Settings" for values.</param>
+      <param name="UseParensForNegativeNumbers">Optional. TriState constant that indicates whether or not to place negative values within parentheses. See "Settings" for values.</param>
+      <param name="GroupDigits">Optional. TriState constant that indicates whether or not numbers are grouped using the group delimiter specified in the locale settings. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.GetChar(System.String,System.Int32)">
+      <summary>Returns a Char value representing the character from the specified index in the supplied string.</summary>
+      <returns>Returns a Char value representing the character from the specified index in the supplied string.</returns>
+      <param name="str">Required. Any valid String expression.</param>
+      <param name="Index">Required. Integer expression. The (1-based) index of the character in <paramref name="str" /> to be returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.InStr(System.Int32,System.String,System.String,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns an integer specifying the start position of the first occurrence of one string within another.</summary>
+      <returns>If <paramref name="String1" /> is zero length or Nothing, InStr returns 0. If <paramref name="String2" /> is zero length or Nothing, InStr returns <paramref name="start" />. If <paramref name="String2" /> is not found, InStr returns 0. If <paramref name="String2" /> is found within <paramref name="String1" />, InStr returns position where match begins. If <paramref name="Start" /> &gt; <paramref name="String2" />, InStr returns 0. </returns>
+      <param name="Start">Optional. Numeric expression that sets the starting position for each search. If omitted, search begins at the first character position. The start index is 1-based.</param>
+      <param name="String1">Required. String expression being searched.</param>
+      <param name="String2">Required. String expression sought.</param>
+      <param name="Compare">Optional. Specifies the type of string comparison. If <paramref name="Compare" /> is omitted, the Option Compare setting determines the type of comparison. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.InStr(System.String,System.String,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns an integer specifying the start position of the first occurrence of one string within another.</summary>
+      <returns>If <paramref name="String1" /> is zero length or Nothing, InStr returns 0. If <paramref name="String2" /> is zero length or Nothing, InStr returns <paramref name="start" />. If <paramref name="String2" /> is not found, InStr returns 0. If <paramref name="String2" /> is found within <paramref name="String1" />, InStr returns position where match begins. If <paramref name="Start" /> &gt; <paramref name="String2" />, InStr returns 0. </returns>
+      <param name="String1">Required. String expression being searched.</param>
+      <param name="String2">Required. String expression sought.</param>
+      <param name="Compare">Optional. Specifies the type of string comparison. If <paramref name="Compare" /> is omitted, the Option Compare setting determines the type of comparison. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.InStrRev(System.String,System.String,System.Int32,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns the position of the first occurrence of one string within another, starting from the right side of the string.</summary>
+      <returns>If <paramref name="StringCheck" /> is zero-length, InStrRev returns 0. If <paramref name="StringMatch" /> is zero-length, InStrRev returns <paramref name="Start" />. If <paramref name="StringMatch" /> is not found, InStrRev returns 0. If <paramref name="StringMatch" /> is found within <paramref name="StringCheck" />, InStrRev returns position at which the first match is found, starting with the right side of the string. If <paramref name="Start" /> is greater than length of <paramref name="StringMatch" />, InStrRev returns 0. </returns>
+      <param name="StringCheck">Required. String expression being searched.</param>
+      <param name="StringMatch">Required. String expression being searched for.</param>
+      <param name="Start">Optional. Numeric expression setting the one-based starting position for each search, starting from the left side of the string. If <paramref name="Start" /> is omitted then –1 is used, meaning the search begins at the last character position. Search then proceeds from right to left.</param>
+      <param name="Compare">Optional. Numeric value indicating the kind of comparison to use when evaluating substrings. If omitted, a binary comparison is performed. See Settings for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Join(System.Object[],System.String)">
+      <summary>Returns a string created by joining a number of substrings contained in an array.</summary>
+      <returns>Returns a string created by joining a number of substrings contained in an array.</returns>
+      <param name="SourceArray">Required. One-dimensional array containing substrings to be joined.</param>
+      <param name="Delimiter">Optional. Any string, used to separate the substrings in the returned string. If omitted, the space character (" ") is used. If <paramref name="Delimiter" /> is a zero-length string ("") or Nothing, all items in the list are concatenated with no delimiters.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Join(System.String[],System.String)">
+      <summary>Returns a string created by joining a number of substrings contained in an array.</summary>
+      <returns>Returns a string created by joining a number of substrings contained in an array.</returns>
+      <param name="SourceArray">Required. One-dimensional array containing substrings to be joined.</param>
+      <param name="Delimiter">Optional. Any string, used to separate the substrings in the returned string. If omitted, the space character (" ") is used. If <paramref name="Delimiter" /> is a zero-length string ("") or Nothing, all items in the list are concatenated with no delimiters.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.LCase(System.Char)">
+      <summary>Returns a string or character converted to lowercase.</summary>
+      <returns>Returns a string or character converted to lowercase.</returns>
+      <param name="Value">Required. Any valid String or Char expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.LCase(System.String)">
+      <summary>Returns a string or character converted to lowercase.</summary>
+      <returns>Returns a string or character converted to lowercase.</returns>
+      <param name="Value">Required. Any valid String or Char expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Left(System.String,System.Int32)">
+      <summary>Returns a string containing a specified number of characters from the left side of a string.</summary>
+      <returns>Returns a string containing a specified number of characters from the left side of a string.</returns>
+      <param name="str">Required. String expression from which the leftmost characters are returned.</param>
+      <param name="Length">Required. Integer expression. Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in <paramref name="str" />, the entire string is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Len(System.String)">
+      <summary>Returns an integer containing either the number of characters in a string or the nominal number of bytes required to store a variable.</summary>
+      <returns>Returns an integer containing either the number of characters in a string or the nominal number of bytes required to store a variable.</returns>
+      <param name="Expression">Any valid String expression or variable name. If <paramref name="Expression" /> is of type Object, the Len function returns the size as it will be written to the file by the FilePut function.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.LSet(System.String,System.Int32)">
+      <summary>Returns a left-aligned string containing the specified string adjusted to the specified length.</summary>
+      <returns>Returns a left-aligned string containing the specified string adjusted to the specified length.</returns>
+      <param name="Source">Required. String expression. Name of string variable.</param>
+      <param name="Length">Required. Integer expression. Length of returned string.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.LTrim(System.String)">
+      <summary>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</summary>
+      <returns>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</returns>
+      <param name="str">Required. Any valid String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Mid(System.String,System.Int32)">
+      <summary>Returns a string containing a specified number of characters from a string.</summary>
+      <returns>Returns a string containing a specified number of characters from a string.</returns>
+      <param name="str">Required. String expression from which characters are returned.</param>
+      <param name="Start">Required. Integer expression. Starting position of the characters to return. If <paramref name="Start" /> is greater than the number of characters in <paramref name="str" />, the Mid function returns a zero-length string (""). <paramref name="Start" /> is one based.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Mid(System.String,System.Int32,System.Int32)">
+      <summary>Returns a string containing a specified number of characters from a string.</summary>
+      <returns>Returns a string containing a specified number of characters from a string.</returns>
+      <param name="str">Required. String expression from which characters are returned.</param>
+      <param name="Start">Required. Integer expression. Starting position of the characters to return. If <paramref name="Start" /> is greater than the number of characters in <paramref name="str" />, the Mid function returns a zero-length string (""). <paramref name="Start" /> is one based.</param>
+      <param name="Length">Optional. Integer expression. Number of characters to return. If omitted or if there are fewer than <paramref name="Length" /> characters in the text (including the character at position <paramref name="Start" />), all characters from the start position to the end of the string are returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Replace(System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns a string in which a specified substring has been replaced with another substring a specified number of times.</summary>
+      <returns>If <paramref name="Find" /> is zero-length or Nothing, Replace returns copy of <paramref name="Expression" />. If <paramref name="Replace" /> is zero-length, Replace returns copy of <paramref name="Expression" /> with no occurrences of <paramref name="Find" />. If <paramref name="Expression" /> is zero-length or Nothing, or <paramref name="Start" /> is greater than length of <paramref name="Expression" />, Replace returns Nothing. If <paramref name="Count" /> is 0, Replace returns copy of <paramref name="Expression" />. </returns>
+      <param name="Expression">Required. String expression containing substring to replace.</param>
+      <param name="Find">Required. Substring being searched for.</param>
+      <param name="Replacement">Required. Replacement substring.</param>
+      <param name="Start">Optional. Position within <paramref name="Expression" /> where substring search is to begin. If omitted, 1 is assumed.</param>
+      <param name="Count">Optional. Number of substring substitutions to perform. If omitted, the default value is –1, which means "make all possible substitutions."</param>
+      <param name="Compare">Optional. Numeric value indicating the kind of comparison to use when evaluating substrings. See Settings for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Right(System.String,System.Int32)">
+      <summary>Returns a string containing a specified number of characters from the right side of a string.</summary>
+      <returns>Returns a string containing a specified number of characters from the right side of a string.</returns>
+      <param name="str">Required. String expression from which the rightmost characters are returned.</param>
+      <param name="Length">Required. Integer. Numeric expression indicating how many characters to return. If 0, a zero-length string ("") is returned. If greater than or equal to the number of characters in <paramref name="str" />, the entire string is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.RSet(System.String,System.Int32)">
+      <summary>Returns a right-aligned string containing the specified string adjusted to the specified length. </summary>
+      <returns>Returns a right-aligned string containing the specified string adjusted to the specified length. </returns>
+      <param name="Source">Required. String expression. Name of string variable.</param>
+      <param name="Length">Required. Integer expression. Length of returned string.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.RTrim(System.String)">
+      <summary>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</summary>
+      <returns>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</returns>
+      <param name="str">Required. Any valid String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Space(System.Int32)">
+      <summary>Returns a string consisting of the specified number of spaces.</summary>
+      <returns>Returns a string consisting of the specified number of spaces.</returns>
+      <param name="Number">Required. Integer expression. The number of spaces you want in the string.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Split(System.String,System.String,System.Int32,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns a zero-based, one-dimensional array containing a specified number of substrings.</summary>
+      <returns>String array. If <paramref name="Expression" /> is a zero-length string (""), Split returns a single-element array containing a zero-length string. If <paramref name="Delimiter" /> is a zero-length string, or if it does not appear anywhere in <paramref name="Expression" />, Split returns a single-element array containing the entire <paramref name="Expression" /> string.</returns>
+      <param name="Expression">Required. String expression containing substrings and delimiters.</param>
+      <param name="Delimiter">Optional. Any single character used to identify substring limits. If <paramref name="Delimiter" /> is omitted, the space character (" ") is assumed to be the delimiter.</param>
+      <param name="Limit">Optional. Maximum number of substrings into which the input string should be split. The default, –1, indicates that the input string should be split at every occurrence of the <paramref name="Delimiter" /> string.</param>
+      <param name="Compare">Optional. Numeric value indicating the comparison to use when evaluating substrings. See "Settings" for values.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.StrComp(System.String,System.String,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Returns -1, 0, or 1, based on the result of a string comparison. </summary>
+      <returns>If <paramref name="String1" /> sorts ahead of <paramref name="String2" />, StrComp returns -1. If <paramref name="String1" /> is equal to <paramref name="String2" />, StrComp returns  0. If <paramref name="String1" /> sorts after <paramref name="String2" />, StrComp returns  1. </returns>
+      <param name="String1">Required. Any valid String expression.</param>
+      <param name="String2">Required. Any valid String expression.</param>
+      <param name="Compare">Optional. Specifies the type of string comparison. If <paramref name="Compare" /> is omitted, the Option Compare setting determines the type of comparison.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.StrDup(System.Int32,System.Char)">
+      <summary>Returns a string or object consisting of the specified character repeated the specified number of times.</summary>
+      <returns>Returns a string or object consisting of the specified character repeated the specified number of times.</returns>
+      <param name="Number">Required. Integer expression. The length to the string to be returned.</param>
+      <param name="Character">Required. Any valid Char, String, or Object expression. Only the first character of the expression will be used. If Character is of type Object, it must contain either a Char or a String value. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.StrDup(System.Int32,System.Object)">
+      <summary>Returns a string or object consisting of the specified character repeated the specified number of times.</summary>
+      <returns>Returns a string or object consisting of the specified character repeated the specified number of times.</returns>
+      <param name="Number">Required. Integer expression. The length to the string to be returned.</param>
+      <param name="Character">Required. Any valid Char, String, or Object expression. Only the first character of the expression will be used. If Character is of type Object, it must contain either a Char or a String value. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.StrDup(System.Int32,System.String)">
+      <summary>Returns a string or object consisting of the specified character repeated the specified number of times.</summary>
+      <returns>Returns a string or object consisting of the specified character repeated the specified number of times.</returns>
+      <param name="Number">Required. Integer expression. The length to the string to be returned.</param>
+      <param name="Character">Required. Any valid Char, String, or Object expression. Only the first character of the expression will be used. If Character is of type Object, it must contain either a Char or a String value. </param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.StrReverse(System.String)">
+      <summary>Returns a string in which the character order of a specified string is reversed.</summary>
+      <returns>Returns a string in which the character order of a specified string is reversed.</returns>
+      <param name="Expression">Required. String expression whose characters are to be reversed. If <paramref name="Expression" /> is a zero-length string (""), a zero-length string is returned.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.Trim(System.String)">
+      <summary>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</summary>
+      <returns>Returns a string containing a copy of a specified string with no leading spaces (LTrim), no trailing spaces (RTrim), or no leading or trailing spaces (Trim).</returns>
+      <param name="str">Required. Any valid String expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.UCase(System.Char)">
+      <summary>Returns a string or character containing the specified string converted to uppercase.</summary>
+      <returns>Returns a string or character containing the specified string converted to uppercase.</returns>
+      <param name="Value">Required. Any valid String or Char expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.Strings.UCase(System.String)">
+      <summary>Returns a string or character containing the specified string converted to uppercase.</summary>
+      <returns>Returns a string or character containing the specified string converted to uppercase.</returns>
+      <param name="Value">Required. Any valid String or Char expression.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.TriState">
+      <summary>Indicates a Boolean value or whether the default should be used when calling number-formatting functions.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.TriState.False">
+      <summary>False. The numeric value of this member is 0.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.TriState.True">
+      <summary>True. The numeric value of this member is -1.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.TriState.UseDefault">
+      <summary>Default setting. The numeric value of this member is -2.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.VariantType">
+      <summary>Indicates the type of a variant object, returned by the VarType function.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Empty">
+      <summary>Null reference. This member is equivalent to the Visual Basic constant vbEmpty.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Null">
+      <summary>Null object. This member is equivalent to the Visual Basic constant vbNull.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Short">
+      <summary>Short. (-32,768 through 32,767.)</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Integer">
+      <summary>Integer. (-2,147,483,648 through 2,147,483,647.) This member is equivalent to the Visual Basic constant vbInteger.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Single">
+      <summary>Single. (-3.402823E+38 through -1.401298E-45 for negative values; 1.401298E-45 through 3.402823E+38 for positive values.) This member is equivalent to the Visual Basic constant vbSingle.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Double">
+      <summary>Double. (-1.79769313486231E+308 through -4.94065645841247E-324 for negative values; 4.94065645841247E-324 through 1.79769313486231E+308 for positive values.) This member is equivalent to the Visual Basic constant vbDouble.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Currency">
+      <summary>Currency. This member is equivalent to the Visual Basic constant vbCurrency.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Date">
+      <summary>Date. (0:00:00 on January 1, 0001 through 11:59:59 PM on December 31, 9999.) This member is equivalent to the Visual Basic constant vbDate.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.String">
+      <summary>String. (0 to approximately 2 billion Unicode characters.) This member is equivalent to the Visual Basic constant vbString.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Object">
+      <summary>Any type can be stored in a variable of type Object. This member is equivalent to the Visual Basic constant vbObject.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Error">
+      <summary>
+        <see cref="T:System.Exception" />
+      </summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Boolean">
+      <summary>Boolean. (True or False.) This member is equivalent to the Visual Basic constant vbBoolean.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Variant">
+      <summary>Variant. This member is equivalent to the Visual Basic constant vbVariant.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.DataObject">
+      <summary>DataObject.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Decimal">
+      <summary>Decimal. (0 through +/-79,228,162,514,264,337,593,543,950,335 with no decimal point; 0 through +/-7.9228162514264337593543950335 with 28 places to the right of the decimal; smallest non-zero number is +/-0.0000000000000000000000000001.) This member is equivalent to the Visual Basic constant vbDecimal.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Byte">
+      <summary>Byte. (0 through 255.) This member is equivalent to the Visual Basic constant vbByte.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Char">
+      <summary>Char. (0 through 65535.) This member is equivalent to the Visual Basic constant vbChar.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Long">
+      <summary>Long. (-9,223,372,036,854,775,808 through 9,223,372,036,854,775,807.) This member is equivalent to the Visual Basic constant vbLong.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.UserDefinedType">
+      <summary>User-defined type. Each member of the structure has a range determined by its data type and independent of the ranges of the other members. This member is equivalent to the Visual Basic constant vbUserDefinedType.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.VariantType.Array">
+      <summary>Array. This member is equivalent to the Visual Basic constant vbArray.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.VBMath">
+      <summary>The VbMath module contains procedures used to perform mathematical operations. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.VBMath.Randomize">
+      <summary>Initializes the random-number generator.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.VBMath.Randomize(System.Double)">
+      <summary>Initializes the random-number generator.</summary>
+      <param name="Number">Optional. An Object or any valid numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.VBMath.Rnd">
+      <summary>Returns a random number of type Single.</summary>
+      <returns>If number is less than zero, Rnd generates the same number every time, using <paramref name="Number" /> as the seed. If number is greater than zero, Rnd generates the next random number in the sequence. If number is equal to zero, Rnd generates the most recently generated number. If number is not supplied, Rnd generates the next random number in the sequence.</returns>
+    </member>
+    <member name="M:Microsoft.VisualBasic.VBMath.Rnd(System.Single)">
+      <summary>Returns a random number of type Single.</summary>
+      <returns>If number is less than zero, Rnd generates the same number every time, using <paramref name="Number" /> as the seed. If number is greater than zero, Rnd generates the next random number in the sequence. If number is equal to zero, Rnd generates the most recently generated number. If number is not supplied, Rnd generates the next random number in the sequence.</returns>
+      <param name="Number">Optional. A Single value or any valid Single expression.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.Conversions">
+      <summary>Provides methods that perform various type conversions.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ChangeType(System.Object,System.Type)">
+      <summary>Converts an object to the specified type.</summary>
+      <returns>An object of the specified target type.</returns>
+      <param name="Expression">The object to convert.</param>
+      <param name="TargetType">The type to which to convert the object.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.FallbackUserDefinedConversion(System.Object,System.Type)">
+      <summary>Converts an object to the specified type.</summary>
+      <returns>An object of the specified target type.</returns>
+      <param name="Expression">The object to convert.</param>
+      <param name="TargetType">The type to which to convert the object.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.FromCharAndCount(System.Char,System.Int32)">
+      <summary>Converts a <see cref="T:System.Char" /> value to a string, given a byte count.</summary>
+      <returns>The string representation of the specified value.</returns>
+      <param name="Value">The Char value to convert.</param>
+      <param name="Count">The byte count of the Char value.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.FromCharArray(System.Char[])">
+      <summary>Converts a <see cref="T:System.Char" /> array to a string.</summary>
+      <returns>The string representation of the specified array.</returns>
+      <param name="Value">The Char array to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.FromCharArraySubset(System.Char[],System.Int32,System.Int32)">
+      <summary>Converts a subset of a <see cref="T:System.Char" /> array to a string.</summary>
+      <returns>The string representation of the specified array from the start position to the specified length.</returns>
+      <param name="Value">The Char array to convert.</param>
+      <param name="StartIndex">Zero-based index of the start position.</param>
+      <param name="Length">Length of the subset in bytes.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToBoolean(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Boolean" /> value.</summary>
+      <returns>A Boolean value. Returns False if the object is null; otherwise, True.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToBoolean(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Boolean" /> value.</summary>
+      <returns>A Boolean value. Returns False if the string is null; otherwise, True.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToByte(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Byte" /> value.</summary>
+      <returns>The Byte value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToByte(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Byte" /> value.</summary>
+      <returns>The Byte value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToChar(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Char" /> value.</summary>
+      <returns>The Char value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToChar(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Char" /> value.</summary>
+      <returns>The Char value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToCharArrayRankOne(System.Object)">
+      <summary>Converts an object to a one-dimensional <see cref="T:System.Char" /> array.</summary>
+      <returns>A one-dimensional Char array.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToCharArrayRankOne(System.String)">
+      <summary>Converts a string to a one-dimensional <see cref="T:System.Char" /> array.</summary>
+      <returns>A one-dimensional Char array.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDate(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.DateTime" /> value.</summary>
+      <returns>The DateTime value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDate(System.String)">
+      <summary>Converts a string to a <see cref="T:System.DateTime" /> value.</summary>
+      <returns>The DateTime value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDecimal(System.Boolean)">
+      <summary>Converts a <see cref="T:System.Boolean" /> value to a <see cref="T:System.Decimal" /> value.</summary>
+      <returns>The Decimal value of the Boolean value.</returns>
+      <param name="Value">A Boolean value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDecimal(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Decimal" /> value.</summary>
+      <returns>The Decimal value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDecimal(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Decimal" /> value.</summary>
+      <returns>The Decimal value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDouble(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Double" /> value.</summary>
+      <returns>The Double value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToDouble(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Double" /> value.</summary>
+      <returns>The Double value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToGenericParameter``1(System.Object)">
+      <summary>Converts an object to a generic type <paramref name="T" />.</summary>
+      <returns>A structure or object of generic type <paramref name="T" />.</returns>
+      <param name="Value">The object to convert.</param>
+      <typeparam name="T">The type to convert <paramref name="Value" /> to.</typeparam>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToInteger(System.Object)">
+      <summary>Converts an object to an integer value.</summary>
+      <returns>The int value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToInteger(System.String)">
+      <summary>Converts a string to an integer value.</summary>
+      <returns>The int value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToLong(System.Object)">
+      <summary>Converts an object to a Long value.</summary>
+      <returns>The Long value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToLong(System.String)">
+      <summary>Converts a string to a Long value.</summary>
+      <returns>The Long value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToSByte(System.Object)">
+      <summary>Converts an object to an <see cref="T:System.SByte" /> value.</summary>
+      <returns>The SByte value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToSByte(System.String)">
+      <summary>Converts a string to an <see cref="T:System.SByte" /> value.</summary>
+      <returns>The SByte value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToShort(System.Object)">
+      <summary>Converts an object to a Short value.</summary>
+      <returns>The Short value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToShort(System.String)">
+      <summary>Converts a string to a Short value.</summary>
+      <returns>The Short value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToSingle(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.Single" /> value.</summary>
+      <returns>The Single value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToSingle(System.String)">
+      <summary>Converts a <see cref="T:System.String" /> to a <see cref="T:System.Single" /> value.</summary>
+      <returns>The Single value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Boolean)">
+      <summary>Converts a <see cref="T:System.Boolean" /> value to a <see cref="T:System.String" />.</summary>
+      <returns>The String representation of the Boolean value.</returns>
+      <param name="Value">The Boolean value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Byte)">
+      <summary>Converts a <see cref="T:System.Byte" /> value to a <see cref="T:System.String" />.</summary>
+      <returns>The String representation of the Byte value.</returns>
+      <param name="Value">The Byte value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Char)">
+      <summary>Converts a <see cref="T:System.Char" /> value to a <see cref="T:System.String" />.</summary>
+      <returns>The String representation of the Char value.</returns>
+      <param name="Value">The Char value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.DateTime)">
+      <summary>Converts a <see cref="T:System.DateTime" /> value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the DateTime value.</returns>
+      <param name="Value">The DateTime value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Decimal)">
+      <summary>Converts a <see cref="T:System.Decimal" /> value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Decimal value.</returns>
+      <param name="Value">The Decimal value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Decimal,System.Globalization.NumberFormatInfo)">
+      <summary>Converts a <see cref="T:System.Decimal" /> value to a <see cref="T:System.String" /> value, using the specified number format.</summary>
+      <returns>The String representation of the Decimal value.</returns>
+      <param name="Value">The decimal value to convert.</param>
+      <param name="NumberFormat">The number format to use, according to <see cref="T:System.Globalization.NumberFormatInfo" />.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Double)">
+      <summary>Converts a <see cref="T:System.Double" /> value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Double value.</returns>
+      <param name="Value">The Double value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Double,System.Globalization.NumberFormatInfo)">
+      <summary>Converts a <see cref="T:System.Double" /> value to a <see cref="T:System.String" /> value, using the specified number format.</summary>
+      <returns>The String representation of the Double value.</returns>
+      <param name="Value">The Double value to convert.</param>
+      <param name="NumberFormat">The number format to use, according to <see cref="T:System.Globalization.NumberFormatInfo" />.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Int16)">
+      <summary>Converts a Short value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Short value.</returns>
+      <param name="Value">The Short value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Int32)">
+      <summary>Converts an integer value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the int value.</returns>
+      <param name="Value">The int value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Int64)">
+      <summary>Converts a Long value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Long value.</returns>
+      <param name="Value">The Long value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Object)">
+      <summary>Converts an object to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Single)">
+      <summary>Converts a <see cref="T:System.Single" /> value (a single-precision floating point number) to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Single value.</returns>
+      <param name="Value">The Single value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.Single,System.Globalization.NumberFormatInfo)">
+      <summary>Converts a <see cref="T:System.Single" /> value to a <see cref="T:System.String" /> value, using the specified number format.</summary>
+      <returns>The String representation of the Single value.</returns>
+      <param name="Value">The Single value to convert.</param>
+      <param name="NumberFormat">The number format to use, according to <see cref="T:System.Globalization.NumberFormatInfo" />.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.UInt32)">
+      <summary>Converts a uint value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Uint value.</returns>
+      <param name="Value">The Uint value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToString(System.UInt64)">
+      <summary>Converts a Ulong value to a <see cref="T:System.String" /> value.</summary>
+      <returns>The String representation of the Ulong value.</returns>
+      <param name="Value">The Ulong value to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToUInteger(System.Object)">
+      <summary>Converts an object to a Uint value.</summary>
+      <returns>The Uint value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToUInteger(System.String)">
+      <summary>Converts a string to a Uint value.</summary>
+      <returns>The Uint value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToULong(System.Object)">
+      <summary>Converts an object to a Ulong value.</summary>
+      <returns>The Ulong value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToULong(System.String)">
+      <summary>Converts a string to a Ulong value.</summary>
+      <returns>The Ulong value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToUShort(System.Object)">
+      <summary>Converts an object to a Ushort value.</summary>
+      <returns>The Ushort value of the object.</returns>
+      <param name="Value">The object to convert.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Conversions.ToUShort(System.String)">
+      <summary>Converts a string to a Ushort value.</summary>
+      <returns>The Ushort value of the string.</returns>
+      <param name="Value">The string to convert.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute">
+      <summary>When applied to a class, the compiler implicitly calls a component-initializing method from the default synthetic constructor.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute" /> attribute.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization">
+      <summary>The Visual Basic compiler uses this class during static local initialization; it is not meant to be called directly from your code. An exception of this type is thrown if a static local variable fails to initialize.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization" /> class.</summary>
+      <param name="message">A string representing the message to be sent.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.IncompleteInitialization" /> class.</summary>
+      <param name="message">A string representing the message to be sent.</param>
+      <param name="innerException">An <see cref="T:System.Exception" /> object.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.InternalErrorException">
+      <summary>The exception thrown for internal Visual Basic compiler errors. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.InternalErrorException.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.InternalErrorException" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.InternalErrorException.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.InternalErrorException" /> class, specifying an error message. </summary>
+      <param name="message">The message that describes the error.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.InternalErrorException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.InternalErrorException" /> class, specifying an error message and an inner exception.</summary>
+      <param name="message">The message that describes the error.</param>
+      <param name="innerException">The exception that is the cause of the current internal exception.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.LikeOperator">
+      <summary>This class provides helpers that the Visual Basic compiler uses to do the work for the Like operator. It is not meant to be called directly from your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.LikeOperator.LikeObject(System.Object,System.Object,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Performs binary or text string comparison given two objects. This helper method is not meant to be called directly from your code.</summary>
+      <returns>A Boolean value indicating whether the strings match. Returns True if the strings match; otherwise False.</returns>
+      <param name="Source">The string to compare.</param>
+      <param name="Pattern">The string against which <paramref name="Source" /> is being compared.</param>
+      <param name="CompareOption">A <see cref="T:Microsoft.VisualBasic.CompareMethod" /> enumeration specifying whether or not to use text comparison. If <see cref="F:Microsoft.VisualBasic.CompareMethod.Text" />, this method uses text comparison; if <see cref="F:Microsoft.VisualBasic.CompareMethod.Binary" />, this method uses binary comparison.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.LikeOperator.LikeString(System.String,System.String,Microsoft.VisualBasic.CompareMethod)">
+      <summary>Performs binary or text string comparison given two strings. This helper method is not meant to be called directly from your code.</summary>
+      <returns>A Boolean value indicating whether the strings match. Returns True if the strings match; otherwise False.</returns>
+      <param name="Source">The string to compare.</param>
+      <param name="Pattern">The string against which <paramref name="Source" /> is being compared.</param>
+      <param name="CompareOption">A <see cref="T:Microsoft.VisualBasic.CompareMethod" /> enumeration specifying whether or not to use text comparison. If <see cref="F:Microsoft.VisualBasic.CompareMethod.Text" />, this method uses text comparison; if <see cref="F:Microsoft.VisualBasic.CompareMethod.Binary" />, this method uses binary comparison.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.NewLateBinding">
+      <summary>This class provides helpers that the Visual Basic compiler uses for late binding calls; it is not meant to be called directly from your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackCall(System.Object,System.String,System.Object[],System.String[],System.Boolean)">
+      <summary>Executes a late-bound method or function call. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="IgnoreReturn">A Boolean value indicating whether or not the return value can be ignored.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackGet(System.Object,System.String,System.Object[],System.String[])">
+      <summary>Executes a late-bound property get or field access call. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackIndexSet(System.Object,System.Object[],System.String[])">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackIndexSetComplex(System.Object,System.Object[],System.String[],System.Boolean,System.Boolean)">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="OptimisticSet">A Boolean value used to determine whether the set operation will work. Set to True when you believe that an intermediate value has been set in the property or field; otherwise False.</param>
+      <param name="RValueBase">A Boolean value that specifies when the base reference of the late reference is an RValue. Set to True when the base reference of the late reference is an RValue; this allows you to generate a run-time exception for late assignments to fields of RValues of value types. Otherwise, set to False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackInvokeDefault1(System.Object,System.Object[],System.String[],System.Boolean)">
+      <summary>Executes a late-bound get of the default property or field, or call to the default method or function. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method. If <paramref name="Instance" /> is of type <see cref="T:System.Dynamic.IDynamicMetaObjectProvider" />, then bind using the Dynamic Language Runtime; otherwise perform standard late-binding.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="ReportErrors">A Boolean value used to specify whether to throw exceptions when an error is encountered. Set to True to throw exceptions. Set to False to return Nothing when an error is encountered.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackInvokeDefault2(System.Object,System.Object[],System.String[],System.Boolean)">
+      <summary>Executes a late-bound get of the default property or field, or call to the default method or function. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="ReportErrors">A Boolean value used to specify whether to throw exceptions when an error is encountered. Set to True to throw exceptions. Set to False to return Nothing when an error is encountered.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackSet(System.Object,System.String,System.Object[])">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.FallbackSetComplex(System.Object,System.String,System.Object[],System.Boolean,System.Boolean)">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="OptimisticSet">A Boolean value used to determine whether the set operation will work. Set to True when you believe that an intermediate value has been set in the property or field; otherwise False.</param>
+      <param name="RValueBase">A Boolean value that specifies when the base reference of the late reference is an RValue. Set to True when the base reference of the late reference is an RValue; this allows you to generate a run-time exception for late assignments to fields of RValues of value types. Otherwise, set to False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateCall(System.Object,System.Type,System.String,System.Object[],System.String[],System.Type[],System.Boolean[],System.Boolean)">
+      <summary>Executes a late-bound method or function call. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Type">The type of the call object.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="TypeArguments">An array of argument types; used only for generic calls to pass argument types.</param>
+      <param name="CopyBack">An array of Boolean values that the late binder uses to communicate back to the call site which arguments match ByRef parameters. Each True value indicates that the arguments matched and should be copied out after the call to LateCall is complete.</param>
+      <param name="IgnoreReturn">A Boolean value indicating whether or not the return value can be ignored.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateCallInvokeDefault(System.Object,System.Object[],System.String[],System.Boolean)">
+      <summary>Executes a late-bound call to the default method or function. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method. </param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="ReportErrors">A Boolean value used to specify whether to throw exceptions when an error is encountered. Set to True to throw exceptions. Set to False to return Nothing when an error is encountered.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateCanEvaluate(System.Object,System.Type,System.String,System.Object[],System.Boolean,System.Boolean)">
+      <summary>Indicates whether a call requires late-bound evaluation. This helper method is not meant to be called directly from your code.</summary>
+      <returns>A Boolean value that indicates whether the expression requires late-bound evaluation.</returns>
+      <param name="instance">An instance of the call object exposing the property or method.</param>
+      <param name="type">The type of the call object.</param>
+      <param name="memberName">The name of the property or method on the call object.</param>
+      <param name="arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="allowFunctionEvaluation">A Boolean value that specifies whether to allow function evaluation.</param>
+      <param name="allowPropertyEvaluation">A Boolean value that specifies whether to allow property evaluation.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateGet(System.Object,System.Type,System.String,System.Object[],System.String[],System.Type[],System.Boolean[])">
+      <summary>Executes a late-bound property get or field access call. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Type">The type of the call object.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="TypeArguments">An array of argument types; used only for generic calls to pass argument types.</param>
+      <param name="CopyBack">An array of Boolean values that the late binder uses to communicate back to the call site which arguments match ByRef parameters. Each True value indicates that the arguments matched and should be copied out after the call to LateCall is complete.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateGetInvokeDefault(System.Object,System.Object[],System.String[],System.Boolean)">
+      <summary>Executes a late-bound get of the default property or field. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method. </param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="ReportErrors">A Boolean value used to specify whether to throw exceptions when an error is encountered. Set to True to throw exceptions. Set to False to return Nothing when an error is encountered.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateIndexGet(System.Object,System.Object[],System.String[])">
+      <summary>Executes a late-bound property get or field access call. This helper method is not meant to be called directly from your code.</summary>
+      <returns>An instance of the call object.</returns>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateIndexSet(System.Object,System.Object[],System.String[])">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateIndexSetComplex(System.Object,System.Object[],System.String[],System.Boolean,System.Boolean)">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="OptimisticSet">A Boolean value used to determine whether the set operation will work. Set to True when you believe that an intermediate value has been set in the property or field; otherwise False.</param>
+      <param name="RValueBase">A Boolean value that specifies when the base reference of the late reference is an RValue. Set to True when the base reference of the late reference is an RValue; this allows you to generate a run-time exception for late assignments to fields of RValues of value types. Otherwise, set to False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateSet(System.Object,System.Type,System.String,System.Object[],System.String[],System.Type[])">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Type">The type of the call object.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="TypeArguments">An array of argument types; used only for generic calls to pass argument types.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateSet(System.Object,System.Type,System.String,System.Object[],System.String[],System.Type[],System.Boolean,System.Boolean,Microsoft.VisualBasic.CallType)">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Type">The type of the call object.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="TypeArguments">An array of argument types; used only for generic calls to pass argument types.</param>
+      <param name="OptimisticSet">A Boolean value used to determine whether the set operation will work. Set to True when you believe that an intermediate value has been set in the property or field; otherwise False.</param>
+      <param name="RValueBase">A Boolean value that specifies when the base reference of the late reference is an RValue. Set to True when the base reference of the late reference is an RValue; this allows you to generate a run-time exception for late assignments to fields of RValues of value types. Otherwise, set to False.</param>
+      <param name="CallType">An enumeration member of type <see cref="T:Microsoft.VisualBasic.CallType" /> representing the type of procedure being called. The value of CallType can be Method, Get, or Set. Only Set is used.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.NewLateBinding.LateSetComplex(System.Object,System.Type,System.String,System.Object[],System.String[],System.Type[],System.Boolean,System.Boolean)">
+      <summary>Executes a late-bound property set or field write call. This helper method is not meant to be called directly from your code.</summary>
+      <param name="Instance">An instance of the call object exposing the property or method.</param>
+      <param name="Type">The type of the call object.</param>
+      <param name="MemberName">The name of the property or method on the call object.</param>
+      <param name="Arguments">An array containing the arguments to be passed to the property or method being called.</param>
+      <param name="ArgumentNames">An array of argument names.</param>
+      <param name="TypeArguments">An array of argument types; used only for generic calls to pass argument types.</param>
+      <param name="OptimisticSet">A Boolean value used to determine whether the set operation will work. Set to True when you believe that an intermediate value has been set in the property or field; otherwise False.</param>
+      <param name="RValueBase">A Boolean value that specifies when the base reference of the late reference is an RValue. Set to True when the base reference of the late reference is an RValue; this allows you to generate a run-time exception for late assignments to fields of RValues of value types. Otherwise, set to False.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl">
+      <summary>The Visual Basic compiler uses this class for object flow control; it is not meant to be called directly from your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.CheckForSyncLockOnValueType(System.Object)">
+      <summary>Checks for a synchronization lock on the specified type.</summary>
+      <param name="Expression">The data type for which to check for synchronization lock.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl">
+      <summary>Provides services to the Visual Basic compiler for compiling For...Next loops.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl.ForLoopInitObj(System.Object,System.Object,System.Object,System.Object,System.Object@,System.Object@)">
+      <summary>Initializes a For...Next loop.</summary>
+      <returns>False if the loop has terminated; otherwise, True.</returns>
+      <param name="Counter">The loop counter variable.</param>
+      <param name="Start">The initial value of the loop counter.</param>
+      <param name="Limit">The value of the To option.</param>
+      <param name="StepValue">The value of the Step option.</param>
+      <param name="LoopForResult">An object that contains verified values for loop values.</param>
+      <param name="CounterResult">The counter value for the next loop iteration.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl.ForNextCheckDec(System.Decimal,System.Decimal,System.Decimal)">
+      <summary>Checks for valid values for the loop counter, Step, and To values.</summary>
+      <returns>True if <paramref name="StepValue" /> is greater than zero and <paramref name="count" /> is less than or equal to <paramref name="limit" /> or <paramref name="StepValue" /> is less than or equal to zero and <paramref name="count" /> is greater than or equal to <paramref name="limit" />; otherwise, False.</returns>
+      <param name="count">Required. A Decimal value that represents the initial value passed for the loop counter variable.</param>
+      <param name="limit">Required. A Decimal value that represents the value passed by using the To keyword.</param>
+      <param name="StepValue">Required. A Decimal value that represents the value passed by using the Step keyword.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl.ForNextCheckObj(System.Object,System.Object,System.Object@)">
+      <summary>Increments a For...Next loop.</summary>
+      <returns>False if the loop has terminated; otherwise, True.</returns>
+      <param name="Counter">The loop counter variable.</param>
+      <param name="LoopObj">An object that contains verified values for loop values.</param>
+      <param name="CounterResult">The counter value for the next loop iteration.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl.ForNextCheckR4(System.Single,System.Single,System.Single)">
+      <summary>Checks for valid values for the loop counter, Step, and To values.</summary>
+      <returns>True if <paramref name="StepValue" /> is greater than zero and <paramref name="count" /> is less than or equal to <paramref name="limit" />, or if <paramref name="StepValue" /> is less than or equal to zero and <paramref name="count" /> is greater than or equal to <paramref name="limit" />; otherwise, False.</returns>
+      <param name="count">Required. A Single value that represents the initial value passed for the loop counter variable.</param>
+      <param name="limit">Required. A Single value that represents the value passed by using the To keyword.</param>
+      <param name="StepValue">Required. A Single value that represents the value passed by using the Step keyword.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ObjectFlowControl.ForLoopControl.ForNextCheckR8(System.Double,System.Double,System.Double)">
+      <summary>Checks for valid values for the loop counter, Step, and To values.</summary>
+      <returns>True if <paramref name="StepValue" /> is greater than zero and <paramref name="count" /> is less than or equal to <paramref name="limit" />, or if <paramref name="StepValue" /> is less than or equal to zero and <paramref name="count" /> is greater than or equal to <paramref name="limit" />; otherwise, False.</returns>
+      <param name="count">Required. A Double value that represents the initial value passed for the loop counter variable.</param>
+      <param name="limit">Required. A Double value that represents the value passed by using the To keyword.</param>
+      <param name="StepValue">Required. A Double value that represents the value passed by using the Step keyword.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.Operators">
+      <summary>Provides late-bound math operators, such as <see cref="M:Microsoft.VisualBasic.CompilerServices.Operators.AddObject(System.Object,System.Object)" /> and <see cref="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObject(System.Object,System.Object,System.Boolean)" />, which the Visual Basic compiler uses internally. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.AddObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic addition (+) operator.</summary>
+      <returns>The sum of <paramref name="Left" /> and <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.AndObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic And operator.</summary>
+      <returns>For Boolean operations, True if both <paramref name="Left" /> and <paramref name="Right" /> evaluate to True; otherwise, False. For bitwise operations, 1 if both <paramref name="Left" /> and <paramref name="Right" /> evaluate to 1; otherwise, 0.</returns>
+      <param name="Left">Required. Any Boolean or numeric expression.</param>
+      <param name="Right">Required. Any Boolean or numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObject(System.Object,System.Object,System.Boolean)">
+      <summary>Represents Visual Basic comparison operators.</summary>
+      <returns>Value Condition -1 <paramref name="Left" /> is less than <paramref name="Right" />.0 <paramref name="Left" /> and <paramref name="Right" /> are equal.1 <paramref name="Left" /> is greater than <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic equal (=) operator.</summary>
+      <returns>True if <paramref name="Left" /> and <paramref name="Right" /> are equal; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectGreater(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic greater-than (&gt;) operator.</summary>
+      <returns>True if <paramref name="Left" /> is greater than <paramref name="Right" />; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectGreaterEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic greater-than or equal-to (&gt;=) operator.</summary>
+      <returns>True if <paramref name="Left" /> is greater than or equal to <paramref name="Right" />; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectLess(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic less-than (&lt;) operator.</summary>
+      <returns>True if <paramref name="Left" /> is less than <paramref name="Right" />; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectLessEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic less-than or equal-to (&lt;=) operator.</summary>
+      <returns>True if <paramref name="Left" /> is less than or equal to <paramref name="Right" />; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareObjectNotEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the Visual Basic not-equal (&lt;&gt;) operator.</summary>
+      <returns>True if <paramref name="Left" /> is not equal to <paramref name="Right" />; otherwise, False.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.CompareString(System.String,System.String,System.Boolean)">
+      <summary>Performs binary or text string comparison when given two strings.</summary>
+      <returns>Value Condition -1 <paramref name="Left" /> is less than <paramref name="Right" />. 0<paramref name="Left" /> is equal to <paramref name="Right" />. 1 <paramref name="Left" /> is greater than <paramref name="Right" />. </returns>
+      <param name="Left">Required. Any String expression.</param>
+      <param name="Right">Required. Any String expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConcatenateObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic concatenation (&amp;) operator.</summary>
+      <returns>A string representing the concatenation of <paramref name="Left" /> and <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic equals (=) operator.</summary>
+      <returns>The result of the overloaded equals operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectGreater(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic greater-than (&gt;) operator.</summary>
+      <returns>The result of the overloaded greater-than operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectGreaterEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic greater-than or equal-to (&gt;=) operator.</summary>
+      <returns>The result of the overloaded greater-than or equal-to operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectLess(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic less-than (&lt;) operator.</summary>
+      <returns>The result of the overloaded less-than operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectLessEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic less-than or equal-to (&lt;=) operator.</summary>
+      <returns>The result of the overloaded less-than or equal-to operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ConditionalCompareObjectNotEqual(System.Object,System.Object,System.Boolean)">
+      <summary>Represents the overloaded Visual Basic not-equal (&lt;&gt;) operator.</summary>
+      <returns>The result of the overloaded not-equal operator. False if operator overloading is not supported.</returns>
+      <param name="Left">Required. Any expression.</param>
+      <param name="Right">Required. Any expression.</param>
+      <param name="TextCompare">Required. True to perform a case-insensitive string comparison; otherwise, False.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.DivideObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic division (/) operator.</summary>
+      <returns>The full quotient of <paramref name="Left" /> divided by <paramref name="Right" />, including any remainder.</returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ExponentObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic exponent (^) operator.</summary>
+      <returns>The result of <paramref name="Left" /> raised to the power of <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.FallbackInvokeUserDefinedOperator(System.Object,System.Object[])">
+      <summary>Executes a late-bound evaluation of a user-defined operator. This helper method is not meant to be called directly from your code.</summary>
+      <returns>The result returned from the user-defined operator.</returns>
+      <param name="vbOp">The user-defined operator.</param>
+      <param name="Arguments">Argument values to pass to the user-defined operator.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.IntDivideObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic integer division (\) operator.</summary>
+      <returns>The integer quotient of <paramref name="Left" /> divided by <paramref name="Right" />, which discards any remainder and retains only the integer portion.</returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.LeftShiftObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic arithmetic left shift (&lt;&lt;) operator.</summary>
+      <returns>An integral numeric value. The result of shifting the bit pattern. The data type is the same as that of <paramref name="Operand" />.</returns>
+      <param name="Operand">Required. Integral numeric expression. The bit pattern to be shifted. The data type must be an integral type (SByte, Byte, Short, UShort, Integer, UInteger, Long, or ULong).</param>
+      <param name="Amount">Required. Numeric expression. The number of bits to shift the bit pattern. The data type must be Integer or widen to Integer.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.ModObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic Mod operator.</summary>
+      <returns>The remainder after <paramref name="Left" /> is divided by <paramref name="Right" />. </returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.MultiplyObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic multiply (*) operator.</summary>
+      <returns>The product of <paramref name="Left" /> and <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any numeric expression.</param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.NegateObject(System.Object)">
+      <summary>Represents the Visual Basic unary minus (–) operator.</summary>
+      <returns>The negative value of <paramref name="Operand" />.</returns>
+      <param name="Operand">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.NotObject(System.Object)">
+      <summary>Represents the Visual Basic Not operator.</summary>
+      <returns>For Boolean operations, False if <paramref name="Operand" /> is True; otherwise, True. For bitwise operations, 1 if <paramref name="Operand" /> is 0; otherwise, 0.</returns>
+      <param name="Operand">Required. Any Boolean or numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.OrObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic Or operator.</summary>
+      <returns>For Boolean operations, False if both <paramref name="Left" /> and <paramref name="Right" /> evaluate to False; otherwise, True. For bitwise operations, 0 if both <paramref name="Left" /> and <paramref name="Right" /> evaluate to 0; otherwise, 1.</returns>
+      <param name="Left">Required. Any Boolean or numeric expression.</param>
+      <param name="Right">Required. Any Boolean or numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.PlusObject(System.Object)">
+      <summary>Represents the Visual Basic unary plus (+) operator.</summary>
+      <returns>The value of <paramref name="Operand" />. (The sign of the <paramref name="Operand" /> is unchanged.)</returns>
+      <param name="Operand">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.RightShiftObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic arithmetic right shift (&gt;&gt;) operator.</summary>
+      <returns>An integral numeric value. The result of shifting the bit pattern. The data type is the same as that of <paramref name="Operand" />.</returns>
+      <param name="Operand">Required. Integral numeric expression. The bit pattern to be shifted. The data type must be an integral type (SByte, Byte, Short, UShort, Integer, UInteger, Long, or ULong).</param>
+      <param name="Amount">Required. Numeric expression. The number of bits to shift the bit pattern. The data type must be Integer or widen to Integer.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.SubtractObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic subtraction (–) operator.</summary>
+      <returns>The difference between <paramref name="Left" /> and <paramref name="Right" />.</returns>
+      <param name="Left">Required. Any numeric expression. </param>
+      <param name="Right">Required. Any numeric expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Operators.XorObject(System.Object,System.Object)">
+      <summary>Represents the Visual Basic Xor operator.</summary>
+      <returns>A Boolean or numeric value. For a Boolean comparison, the return value is the logical exclusion (exclusive logical disjunction) of two Boolean values. For bitwise (numeric) operations, the return value is a numeric value that represents the bitwise exclusion (exclusive bitwise disjunction) of two numeric bit patterns. </returns>
+      <param name="Left">Required. Any Boolean or numeric expression.</param>
+      <param name="Right">Required. Any Boolean or numeric expression.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute">
+      <summary>Specifies that the current Option Compare setting should be passed as the default value for an argument. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.OptionTextAttribute">
+      <summary>The Visual Basic compiler emits this helper class to indicate (for Visual Basic debugging) which comparison option, binary or text, is being used</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.OptionTextAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.OptionTextAttribute" /> class. This is a helper method.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.ProjectData">
+      <summary>Provides helpers for the Visual Basic Err object. </summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ProjectData.ClearProjectError">
+      <summary>Performs the work for the Clear method of the Err object. A helper method.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ProjectData.CreateProjectError(System.Int32)">
+      <summary>Performs the work for the Raise method of the Err object. A helper method.</summary>
+      <returns>An <see cref="T:System.Exception" /> object.</returns>
+      <param name="hr">An integer value that identifies the nature of the error. Visual Basic errors are in the range 0–65535; the range 0–512 is reserved for system errors; the range 513–65535 is available for user-defined errors.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ProjectData.SetProjectError(System.Exception)">
+      <summary>The Visual Basic compiler uses this helper method to capture exceptions in the Err object.</summary>
+      <param name="ex">The <see cref="T:System.Exception" /> object to be caught.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.ProjectData.SetProjectError(System.Exception,System.Int32)">
+      <summary>The Visual Basic compiler uses this helper method to capture exceptions in the Err object.</summary>
+      <param name="ex">The <see cref="T:System.Exception" /> object to be caught.</param>
+      <param name="lErl">The line number of the exception.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute">
+      <summary>This class provides attributes that are applied to the standard module construct when it is emitted to Intermediate Language (IL). It is not intended to be called directly from your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag">
+      <summary>The Visual Basic compiler uses this class internally when initializing static local members; it is not meant to be called directly from your code.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag" /> class.</summary>
+    </member>
+    <member name="F:Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag.State">
+      <summary>Returns the state of the static local member's initialization flag (initialized or not).</summary>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.Utils">
+      <summary>Contains utilities that the Visual Basic compiler uses.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Utils.CopyArray(System.Array,System.Array)">
+      <summary>Used by the Visual Basic compiler as a helper for Redim.</summary>
+      <returns>The copied array.</returns>
+      <param name="arySrc">The array to be copied.</param>
+      <param name="aryDest">The destination array.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Utils.GetResourceString(System.String,System.String[])">
+      <summary>Retrieves and formats a localized resource string or error message.</summary>
+      <returns>A formatted resource string or error message.</returns>
+      <param name="ResourceKey">The identifier of the string or error message to retrieve.</param>
+      <param name="Args">An array of parameters to replace placeholders in the string or error message.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Utils.MethodToString(System.Reflection.MethodBase)">
+      <summary>Returns a Visual Basic method signature.</summary>
+      <returns>The Visual Basic method signature for the supplied <see cref="T:System.Reflection.MethodBase" /> object.</returns>
+      <param name="Method">A <see cref="T:System.Reflection.MethodBase" /> object to return a Visual Basic method signature for.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Utils.ThrowException(System.Int32)">
+      <summary>Throws a localized Visual Basic exception.</summary>
+      <param name="hr">The Visual Basic error identifier.</param>
+    </member>
+    <member name="T:Microsoft.VisualBasic.CompilerServices.Versioned">
+      <summary>The <see cref="T:Microsoft.VisualBasic.CompilerServices.Versioned" /> module contains procedures used to interact with objects, applications, and systems.</summary>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Versioned.CallByName(System.Object,System.String,Microsoft.VisualBasic.CallType,System.Object[])">
+      <summary>Executes a method on an object, or sets or returns a property on an object.</summary>
+      <returns>Executes a method on an object, or sets or returns a property on an object.</returns>
+      <param name="Instance">Required. Object. A pointer to the object exposing the property or method.</param>
+      <param name="MethodName">Required. String. A string expression containing the name of the property or method on the object.</param>
+      <param name="UseCallType">Required. An enumeration member of type <see cref="T:Microsoft.VisualBasic.CallType" /> enumeration representing the type of procedure being called. The value of CallType can be Method, Get, or Set.</param>
+      <param name="Arguments">Optional. ParamArray. A parameter array containing the arguments to be passed to the property or method being called.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Versioned.IsNumeric(System.Object)">
+      <summary>Returns a Boolean value indicating whether an expression can be evaluated as a number.</summary>
+      <returns>Returns a Boolean value indicating whether an expression can be evaluated as a number.</returns>
+      <param name="Expression">Required. Object expression.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Versioned.SystemTypeName(System.String)">
+      <summary>Returns a string value containing the system data type name of a variable.</summary>
+      <returns>Returns a string value containing the system data type name of a variable.</returns>
+      <param name="VbName">Required. A string variable containing a Visual Basic type name.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Versioned.TypeName(System.Object)">
+      <summary>Returns a string value containing data type information about a variable.</summary>
+      <returns>Returns a string value containing data type information about a variable.</returns>
+      <param name="Expression">Required. Object variable. If Option Strict is Off, you can pass a variable of any data type except a structure.</param>
+    </member>
+    <member name="M:Microsoft.VisualBasic.CompilerServices.Versioned.VbTypeName(System.String)">
+      <summary>Returns a string value containing the Visual Basic data type name of a variable.</summary>
+      <returns>Returns a string value containing the Visual Basic data type name of a variable.</returns>
+      <param name="SystemName">Required. String variable containing a type name used by the common language runtime.</param>
+    </member>
+  </members>
+</doc>

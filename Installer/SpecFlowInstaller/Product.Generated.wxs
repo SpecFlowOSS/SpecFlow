@@ -2,12 +2,11 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Fragment>
     <ComponentGroup Id="Product.Generated">
+      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight3.Binaries" />
+      <ComponentGroupRef Id="TechTalk.SpecFlow.WindowsPhone7.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Generator.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Parser.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Reporting.Binaries" />
-      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Binaries" />
-      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Content" />
-      <ComponentGroupRef Id="TechTalk.SpecFlow.Silverlight.Satellites" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Tools.Binaries" />
       <ComponentGroupRef Id="TechTalk.SpecFlow.Utils.Binaries" />
