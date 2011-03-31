@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<!--
+Use of this source code is subject to the terms of the Microsoft
+premium shared source license agreement under which you licensed
+this source code. If you did not accept the terms of the license
+agreement, you are not authorized to use this source code.
+For the terms of the license, please see the license agreement
+signed by you and Microsoft.
+THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+       targetNamespace= "http://schemas.microsoft.com/windowsphone/2009/deployment"
+           xmlns ="http://schemas.microsoft.com/windowsphone/2009/deployment">
+  <xs:simpleType name="ST_RuntimeType">
+    <xs:annotation>
+      <xs:documentation>
+        Silverlight and XNA apps are managed.
+        This setting is used to set the runtime type of a Task but we haven't currently made provision for
+        an app to have tasks of different run-time types.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Native"/>
+      <xs:enumeration value="Silverlight"/>
+      <xs:enumeration value="XNA"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="CT_Capability">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a list of capabilites that the platform supports
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Name" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value= "ID_CAP_CAMERA"/>
+          <xs:enumeration value= "ID_CAP_FILEVIEWER"/>
+          <xs:enumeration value= "ID_CAP_GAMERSERVICES"/>
+          <xs:enumeration value= "ID_CAP_IDENTITY_DEVICE"/>
+          <xs:enumeration value= "ID_CAP_IDENTITY_USER"/>
+          <xs:enumeration value= "ID_CAP_INTEROPSERVICES"/>
+          <xs:enumeration value= "ID_CAP_LOCATION"/>
+          <xs:enumeration value= "ID_CAP_MEDIALIB"/>
+          <xs:enumeration value= "ID_CAP_MICROPHONE"/>
+          <xs:enumeration value= "ID_CAP_NETWORKING"/>
+          <xs:enumeration value= "ID_CAP_NETWORKING_ADMIN"/>
+          <xs:enumeration value= "ID_CAP_PHONEDIALER"/>
+          <xs:enumeration value= "ID_CAP_PUSH_NOTIFICATION"/>
+          <xs:enumeration value= "ID_CAP_RINGTONE_ADD"/>
+          <xs:enumeration value= "ID_CAP_SENSORS"/>
+          <xs:enumeration value= "ID_CAP_WEBBROWSERCOMPONENT"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="CT_Capabilities">
+    <xs:sequence>
+      <xs:element name="Capability" type="CT_Capability" minOccurs= "0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CT_Task">
+    <xs:annotation>
+      <xs:documentation>
+        Represents an entry point container
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Name" type="xs:ID" use="required"/>
+    <!-- Populate Task tables parameters field with this -->
+    <xs:attribute name="NavigationPage" type="ST_String" use="optional"/>
+    <xs:attribute name="ActivationPolicy" type="ST_ActivationPolicy" use="optional" default="Resume"/>    
+  </xs:complexType>
+  
+  <xs:complexType name="CT_ThirdPartyAppTask">
+    <xs:annotation>
+      <xs:documentation>
+        Represents an entry point container
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Name" type="xs:ID" use="required"/>
+    <!-- Populate Task tables parameters field with this -->
+    <xs:attribute name="NavigationPage" type="ST_String" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="CT_Tasks">
+    <xs:annotation>
+      <xs:documentation>
+        Represents an 'App' in execution manager terminology.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:sequence>
+        <xs:element name="DefaultTask" type="CT_Task" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="ExtendedTask" type="CT_Task" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="CT_ThirdPartyAppTasks">
+    <xs:annotation>
+      <xs:documentation>
+        For 3rd party app, we only allow Default task
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:sequence>
+        <xs:element name="DefaultTask" type="CT_ThirdPartyAppTask" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="CT_Token">
+    <xs:annotation>
+      <xs:documentation>
+        Represents a token to be displayed on the Quick Launch screen
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <!--Token template restrictions are enforced by ingestion-->
+      <xs:group ref ="TokenTemplates"/>
+    </xs:sequence>
+    <xs:attribute name= "TokenID" use = "required">
+      <xs:simpleType>
+        <xs:restriction base= "xs:string">
+          <xs:maxLength value = "64"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="TaskName" use="required">
+      <xs:simpleType>
+        <xs:restriction base= "xs:string">
+          <xs:maxLength value = "64"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="TaskParameters" type="ST_String" use="optional" />
+    <!-- The remaining attributes are only used for provisioning in-ROM applications -->
+    <xs:attribute name="UsePlatformTheme" type="xs:boolean" use ="optional" default="false">
+      <xs:annotation>
+        <xs:documentation>
+          Used only by in-ROM applications. Indicates if the token should be drawn using the color theme
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="DisplayPosition" type="xs:unsignedShort" use ="optional" default="0">
+      <xs:annotation>
+        <xs:documentation>
+          Used only by in-ROM applications. Represents the position of the application in the shell's QuickLaunch screen
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Pinned" type="xs:boolean" use ="optional" default="false">
+      <xs:annotation>
+        <xs:documentation>
+          Used only by in-ROM applications. Indicates if the token should be shown on shell's QuickLaunch screen
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="CT_ThirdPartyAppToken">
+    <xs:annotation>
+      <xs:documentation>
+        Represents a token to be displayed on the Quick Launch screen, for use by OEMs and 3rd parties
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <!--Token template restrictions are enforced by ingestion-->
+      <xs:group ref="OEMThirdPartyTokenTemplates"/>
+    </xs:sequence>
+    <xs:attribute name= "TokenID" use = "required">
+      <xs:simpleType>
+        <xs:restriction base= "xs:string">
+          <xs:maxLength value = "64"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="TaskName" use="required">
+      <xs:simpleType>
+        <xs:restriction base= "xs:string">
+          <xs:maxLength value = "64"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <xs:complexType name="CT_PushToken">
+    <xs:sequence>
+      <!--Token template restrictions are enforced by ingestion-->
+      <xs:group ref ="TokenTemplates"/>
+    </xs:sequence>
+    <xs:attribute name= "TokenID" use = "required" >
+      <xs:simpleType>
+        <xs:restriction base= "xs:string">
+          <xs:maxLength value = "64"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:complexType name="CT_Tokens">
+    <xs:annotation>
+      <xs:documentation>
+        The collection of tokens of the application
+        3rd party applications cannot have SecondaryTokens. This is not enforced in the schema and secondary tokens in manifest
+        are ignored during parsing
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PrimaryToken" type="CT_Token" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="SecondaryToken" type="CT_Token" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="CT_ThirdPartyAppTokens">
+    <xs:annotation>
+      <xs:documentation>
+        The collection of tokens of the application
+        3rd party applications cannot have SecondaryTokens. This is not enforced in the schema and secondary tokens in manifest
+        are ignored during parsing
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PrimaryToken" type="CT_ThirdPartyAppToken" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="ST_Guid">
+    <xs:annotation>
+      <xs:documentation>
+        A 128 bit GUID.
+      </xs:documentation>
+    </xs:annotation>
+
+    <xs:restriction base="xs:token">
+      <xs:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ST_HubType">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a list of hub type. We are using different bit to represent the different hub type.
+        So we can use a integer to contain the combinaion of the bit, which allow us to support multiple
+        hub type for one app. The supported hub types are listed here.
+        0 -- not a hub app. This is also the default value if the attribute is absent;
+        1 -- MusicVideoHub, an application is a music + video hub app and is approved for integration with the Media hub;
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedInt">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ST_ActivationPolicy">
+    <xs:annotation>
+      <xs:documentation>
+        The activation policy of a task
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Resume"/>
+      <xs:enumeration value="ResumeSameParams"/>
+      <xs:enumeration value="Replace"/>
+      <xs:enumeration value="ReplaceSameParams"/>
+      <xs:enumeration value="Multisession"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ST_AppPlatformVersion">
+    <xs:annotation>
+      <xs:documentation>
+        The version of app platform.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="7.0"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

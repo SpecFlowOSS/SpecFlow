@@ -1,11 +1,14 @@
 ﻿Next - ???
 
+Breaking changes:
++ The Silverlight runtime assembly has been renamed to TechTalk.SpecFlow.Silverlight3.dll.
+
 New features:
 + Added a Set<T>(Func<T>) extension method. The Func<T> method will be invoked whenever ScenarioContext.Current.Get<T> is called.
 + Support for tagging (including @ignore) scenario outline examples. 
   NUnit and MbUnit: to filter for categories generated for the examples in the unit test runner, you need to 
   switch off row test generaiton (<generator allowRowTests="false" />)
-+ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.3
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.5
 + Support for converting table and multi-line text arguments with [StepArgumentTransformation] (by Chris Roff, roffster)
   See examples in Tests/FeatureTests/StepArgumentTransfomation
 + VS2010: Support for specifying color for the step text
@@ -15,11 +18,12 @@ New features:
 + VS2010: Intellisense for keywords
 + VS2010: "go to binding"
 + VS2010: Automatic table formatting when "|" is typed
++ Windows Phone 7 support, see https://github.com/techtalk/SpecFlow/wiki/Windows-Phone-7-Support (by Max Paulousky)
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
 + Binding is reported as invalid if there is a matching step definition with different scope
-+ Support for datetime comparisons that ignore 12:00:00 AM (issue from Google Group)
++ Support for datetime comparisons that ignore 12:00:00 AM (issue 52)
 + Fix NUnit execution report to properly select features when .features is solely comprised Scenario Outlines. 
   (by Jon Archer)
 + Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
@@ -31,6 +35,8 @@ Fixed issues:
 + Xunit Theory Attribute/InlineAttribute using incorrect namespace. (Issue 40, by Kerry Jones)
 + Scenario Outline - Multiple Scenarios table header row VS formatting issue (Issue 16)
 + SpecFlow step definition report generator throws unhandled exception when a scenario starts with "And" (Issue 45) 
++ VS2010: SpecFlow writes out feature and code-behind files with inconsistent line endings (Issue 28)
++ Step definitions can be implemented in abstract base classes (but the abstract base class must not have the [Binding] attribute). SpecFlow no longer tries to instantiate the abstract base class. (Issue 47)
 
 1.5.0 - 2010/12/17
 

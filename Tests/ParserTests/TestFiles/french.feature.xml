@@ -15,31 +15,43 @@ Je souhaite pouvoir faire une addition</Description>
       <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
           <Keyword>Soit </Keyword>
           <Text>une calculatrice</Text>
           <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
           <Keyword>Et </Keyword>
           <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
           <Keyword>Et </Keyword>
           <Text>que je tape sur la touche "+"</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
           <Keyword>Et </Keyword>
           <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
           <FilePosition line="11" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
           <Keyword>Lorsque </Keyword>
           <Text>je tape sur la touche "="</Text>
           <FilePosition line="12" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
           <Keyword>Alors </Keyword>
           <Text>le résultat affiché doit être &lt;somme&gt;</Text>
           <FilePosition line="13" column="5" />

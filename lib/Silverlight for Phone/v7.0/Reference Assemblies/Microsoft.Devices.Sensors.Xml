@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>Microsoft.Devices.Sensors</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Devices.Sensors.Accelerometer">
+      <summary>Provides Windows Phone applications access to the device’s accelerometer sensor.</summary>
+    </member>
+    <member name="M:Microsoft.Devices.Sensors.Accelerometer.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Devices.Sensors.Accelerometer" /> object.</summary>
+    </member>
+    <member name="M:Microsoft.Devices.Sensors.Accelerometer.Dispose">
+      <summary>Releases the managed and unmanaged resources used by the <see cref="T:Microsoft.Devices.Sensors.Accelerometer" />.</summary>
+    </member>
+    <member name="E:Microsoft.Devices.Sensors.Accelerometer.ReadingChanged">
+      <summary>Occurs when new data arrives from the accelerometer.</summary>
+    </member>
+    <member name="M:Microsoft.Devices.Sensors.Accelerometer.Start">
+      <summary>Starts data acquisition from the accelerometer.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.Accelerometer.State">
+      <summary>Gets the current state of the accelerometer. The value is a member of the <see cref="T:Microsoft.Devices.Sensors.SensorState" /> enumeration.</summary>
+      <returns>Type 
+<see cref="T:Microsoft.Devices.Sensors.SensorState" />.</returns>
+    </member>
+    <member name="M:Microsoft.Devices.Sensors.Accelerometer.Stop">
+      <summary>Stops data acquisition from the accelerometer.</summary>
+    </member>
+    <member name="T:Microsoft.Devices.Sensors.AccelerometerFailedException">
+      <summary>The exception that may be thrown during a call to <see cref="M:Microsoft.Devices.Sensors.Accelerometer.Start" /> or <see cref="M:Microsoft.Devices.Sensors.Accelerometer.Stop" />. The Message field describes the reason for the exception and the <see cref="P:Microsoft.Devices.Sensors.AccelerometerFailedException.ErrorId" /> field contains the error code from the underlying native code implementation of the accelerometer framework.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.AccelerometerFailedException.ErrorId">
+      <summary>The error code from the underlying native code implementation of the accelerometer framework.</summary>
+      <returns>Tpe 
+<see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:Microsoft.Devices.Sensors.AccelerometerReadingEventArgs">
+      <summary>Provides data for <see cref="E:Microsoft.Devices.Sensors.Accelerometer.ReadingChanged" /> events.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.AccelerometerReadingEventArgs.Timestamp">
+      <summary>A timestamp indicating the time at which the accelerometer reading was taken.</summary>
+      <returns>Type: 
+<see cref="T:System.DateTimeOffset" />.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.AccelerometerReadingEventArgs.X">
+      <summary>The acceleration in the X direction.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.AccelerometerReadingEventArgs.Y">
+      <summary>The acceleration in the Y direction.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Sensors.AccelerometerReadingEventArgs.Z">
+      <summary>The acceleration in the Z direction.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="T:Microsoft.Devices.Sensors.SensorState">
+      <summary>An enumeration of values for expressing the current state of the accelerometer. The state of a sensor can be obtained using its <see cref="P:Microsoft.Devices.Sensors.Accelerometer.State" /> property.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.NotSupported">
+      <summary>The sensor hardware is unavailable.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.Ready">
+      <summary>The sensor is available and resolving data.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.Initializing">
+      <summary>The sensor is available and initializing.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.NoData">
+      <summary>The sensor is unable to obtain data.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.NoPermissions">
+      <summary>The caller does not have permission to access the sensor’s data.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Sensors.SensorState.Disabled">
+      <summary>The sensor is disabled.</summary>
+    </member>
+  </members>
+</doc>

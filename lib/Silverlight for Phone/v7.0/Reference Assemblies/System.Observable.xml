@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>System.Observable</name>
+  </assembly>
+  <members>
+    <member name="T:System.IObservable`1">
+      <summary>  Provides an observable object mechanism to support push-style iteration over an observable sequence for publish/ subscribe event processing.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.IObservable`1.Subscribe(System.IObserver{`0})">
+      <summary>  Subscribes <paramref name=" observer" /> to this observable sequence. </summary>
+      <returns>Returns 
+<see cref="T:System.IDisposable" />
+.</returns>
+      <param name="observer"></param>
+    </member>
+    <member name="T:System.IObserver`1">
+      <summary>Provides a mechanism to support push-style iteration over an observable sequence for publish/ subscribe event processing.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.IObserver`1.OnCompleted">
+      <summary>Notifies the observer of the end of the observable sequence.  No further values or notifications will be made available for this sequence.</summary>
+    </member>
+    <member name="M:System.IObserver`1.OnError(System.Exception)">
+      <summary>Notifies the observer that an exception has occurred in processing the observable sequence.
+</summary>
+      <param name="exception"></param>
+    </member>
+    <member name="M:System.IObserver`1.OnNext(`0)">
+      <summary>Notifies the observer of a new value in the observable sequence.</summary>
+      <param name="value"></param>
+    </member>
+  </members>
+</doc>

@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>SpecFlowSetup</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix2010.targets</WixTargetsPath>
+    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix.targets</WixTargetsPath>
     <WixTasksPath>WixTasks.dll</WixTasksPath>
     <LuxTargetsPath>Lux.targets</LuxTargetsPath>
     <LuxTasksPath>LuxTasks.dll</LuxTasksPath>
@@ -34,6 +34,20 @@
     <Compile Include="VS2008.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AlternativeRuntimes\Runtime.Silverlight3\TechTalk.SpecFlow.Silverlight3.csproj">
+      <Name>TechTalk.SpecFlow.Silverlight3</Name>
+      <Project>{b93f95cf-bf89-4d92-bb0f-86885b9b6dce}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AlternativeRuntimes\Runtime.WindowsPhone7\TechTalk.SpecFlow.WindowsPhone7.csproj">
+      <Name>TechTalk.SpecFlow.WindowsPhone7</Name>
+      <Project>{e00271e7-f422-42b9-89d0-e29c96c90ce2}</Project>
+      <Private>True</Private>
+      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Name>TechTalk.SpecFlow.Generator</Name>
       <Project>{453d8014-b6cd-4e86-80a8-d59f59092334}</Project>
@@ -61,13 +75,6 @@
       <Project>{fc43509f-e7d3-40c4-b4c3-1e6c9d5530a4}</Project>
       <Private>True</Private>
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Runtime.Silverlight\TechTalk.SpecFlow.Silverlight.csproj">
-      <Name>TechTalk.SpecFlow.Silverlight</Name>
-      <Project>{b93f95cf-bf89-4d92-bb0f-86885b9b6dce}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
     <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">

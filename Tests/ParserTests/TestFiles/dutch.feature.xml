@@ -15,21 +15,29 @@ de som van twee getallen te weten komen</Description>
       <FilePosition line="7" column="3" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
           <Keyword>Gegeven </Keyword>
           <Text>ik heb &lt;ingave_1&gt; op de rekenmaschine ingegeven</Text>
           <FilePosition line="8" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
           <Keyword>En </Keyword>
           <Text>ik heb &lt;ingave_2&gt; op de rekenmaschine ingegeven</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
           <Keyword>Als </Keyword>
           <Text>ik op &lt;knop&gt; druk</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
           <Keyword>Dan </Keyword>
           <Text>moet het resultaat op het beeldscherm &lt;resultaat&gt; zijn</Text>
           <FilePosition line="11" column="5" />

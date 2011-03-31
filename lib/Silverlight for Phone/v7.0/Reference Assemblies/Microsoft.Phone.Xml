@@ -1,0 +1,2048 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>Microsoft.Phone</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Devices.DeviceType">
+      <summary>Defines the device type values used by the <see cref="P:Microsoft.Devices.Environment.DeviceType" /> property.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.DeviceType.Device">
+      <summary>The device type is an actual device.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.DeviceType.Emulator">
+      <summary>The device type is a device emulator.
+</summary>
+    </member>
+    <member name="T:Microsoft.Devices.Environment">
+      <summary>Gives applications access to information about the environment in which they are running.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.Environment.DeviceType">
+      <summary>Gets the type of device on which the application is running. Use this property to determine if your application is running on an actual device or on the device emulator.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Devices.DeviceType" />.</returns>
+    </member>
+    <member name="T:Microsoft.Devices.MediaHistory">
+      <summary>The MediaHistory class contains information about newly-acquired, recently-played or currently-playing media items.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.MediaHistory.Instance">
+      <summary>Returns a singleton that represents the MediaHistory class.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistory.NowPlaying">
+      <summary>Gets the most recent <see cref="T:Microsoft.Devices.MediaHistoryItem" /> in the media history, or sets the supplied <see cref="T:Microsoft.Devices.MediaHistoryItem" /> into the Now Playing section of the Music + Videos hub. </summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Devices.MediaHistoryItem" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Devices.MediaHistory.WriteAcquiredItem(Microsoft.Devices.MediaHistoryItem)">
+      <summary>Adds a <see cref="T:Microsoft.Devices.MediaHistoryItem" /> that an application recently acquired for the user.</summary>
+      <param name="item">The <see cref="T:Microsoft.Devices.MediaHistoryItem" /> that represents the newly-acquired content.</param>
+    </member>
+    <member name="M:Microsoft.Devices.MediaHistory.WriteRecentPlay(Microsoft.Devices.MediaHistoryItem)">
+      <summary>Adds a <see cref="T:Microsoft.Devices.MediaHistoryItem" /> that an application has recently played for the user.</summary>
+      <param name="item">The <see cref="T:Microsoft.Devices.MediaHistoryItem" /> that represents the recently-played content.</param>
+    </member>
+    <member name="T:Microsoft.Devices.MediaHistoryItem">
+      <summary>Contains information about the media item that will show up in the user media history.</summary>
+    </member>
+    <member name="M:Microsoft.Devices.MediaHistoryItem.#ctor">
+      <summary>Creates a default MediaHistoryItem with no properties set.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistoryItem.ImageStream">
+      <summary>Gets or sets a stream which contains the image that is displayed with this MediaHistoryItem in the media history area.</summary>
+      <returns>Returns 
+<see cref="T:System.IO.Stream" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistoryItem.MaxImageSize">
+      <summary>Represents the maximum size of <see cref="P:Microsoft.Devices.MediaHistoryItem.ImageStream" />.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistoryItem.PlayerContext">
+      <summary>A set of key/value pairs. </summary>
+      <returns>Returns 
+<see cref="T:System.Collections.Generic.IDictionary`2" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistoryItem.Source">
+      <summary>Do not use this method. It is unsupported.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.MediaHistoryItem.Title">
+      <summary>Gets or sets the title of the MediaHistoryItem.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Devices.VibrateController">
+      <summary>Allows Windows Phone applications to start and stop vibration on the device. Obtain an instance of this class using the Default method.</summary>
+    </member>
+    <member name="P:Microsoft.Devices.VibrateController.Default">
+      <summary>The static method used to obtain an instance of the <see cref="T:Microsoft.Devices.VibrateController" /> object.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Devices.VibrateController" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Devices.VibrateController.Start(System.TimeSpan)">
+      <summary>Starts vibration on the device.</summary>
+      <param name="duration">A TimeSpan object specifying the amount of time for which the phone vibrates.
+</param>
+    </member>
+    <member name="M:Microsoft.Devices.VibrateController.Stop">
+      <summary>Stops vibration on the device.</summary>
+    </member>
+    <member name="T:Microsoft.Devices.Radio.FMRadio">
+      <summary>This class acts as a singleton controller for the device radio. </summary>
+    </member>
+    <member name="P:Microsoft.Devices.Radio.FMRadio.CurrentRegion">
+      <summary>Sets the frequency region information for the <see cref="T:Microsoft.Devices.Radio.FMRadio" /> class.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Devices.Radio.RadioRegion" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Radio.FMRadio.Frequency">
+      <summary>Tunes the <see cref="T:Microsoft.Devices.Radio.FMRadio" /> to a new frequency.</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Radio.FMRadio.Instance">
+      <summary>Returns a singleton that represents the <see cref="T:Microsoft.Devices.Radio.FMRadio" /> class.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Devices.Radio.FMRadio" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Radio.FMRadio.PowerMode">
+      <summary>Sets the <see cref="T:Microsoft.Devices.Radio.RadioPowerMode" /> of the device. Setting this property turns the device radio on or off.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Devices.Radio.RadioPowerMode" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Devices.Radio.FMRadio.SignalStrength">
+      <summary>Retrieves the received signal strength indicator (RSSI) value for the currently-tuned frequency.</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Devices.Radio.RadioDisabledException">
+      <summary>This exception is thrown when the radio is not enabled due to policy on the device. </summary>
+    </member>
+    <member name="M:Microsoft.Devices.Radio.RadioDisabledException.#ctor">
+      <summary>This constructor is unsupported.
+</summary>
+    </member>
+    <member name="T:Microsoft.Devices.Radio.RadioPowerMode">
+      <summary>An enumeration that contains the possible power modes of the radio.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Radio.RadioPowerMode.Off">
+      <summary>The radio is off and not playing.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Radio.RadioPowerMode.On">
+      <summary>The radio is on and playing.
+</summary>
+    </member>
+    <member name="T:Microsoft.Devices.Radio.RadioRegion">
+      <summary>An enumeration that describes the set of radio frequency bands available for <see cref="T:Microsoft.Devices.Radio.FMRadio" /> tuning.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Radio.RadioRegion.UnitedStates">
+      <summary>The radio frequency band of the United States.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Radio.RadioRegion.Japan">
+      <summary>The radio frequency band of Japan.</summary>
+    </member>
+    <member name="F:Microsoft.Devices.Radio.RadioRegion.Europe">
+      <summary>The radio frequency band of regions other than Japan and the United States.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.PictureDecoder">
+      <summary>An application will use this type to decode a JPEG file into a WriteableBitmap.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.PictureDecoder.DecodeJpeg(System.IO.Stream)">
+      <summary>This method decodes a JPEG into a WriteableBitmap object.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />
+.</returns>
+      <param name="source">The image data stream.</param>
+    </member>
+    <member name="M:Microsoft.Phone.PictureDecoder.DecodeJpeg(System.IO.Stream,System.Int32,System.Int32)">
+      <summary>This method decodes a JPEG into a WriteableBitmap object. Also, this method has parameters for setting the maximum height and width of the output.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />
+. </returns>
+      <param name="source">The image data stream.</param>
+      <param name="maxPixelWidth">The maximum width of the output.</param>
+      <param name="maxPixelHeight">The maximum height of the output.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.NavigatingEventArgs">
+      <summary>Provides data for the WebBrowser control <see cref="E:Microsoft.Phone.Controls.WebBrowser.Navigating" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.NavigatingEventArgs.#ctor">
+      <summary>Initializes a new instance of the NavigatingEventArgs class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.NavigatingEventArgs.Uri">
+      <summary>The URI being navigated to.</summary>
+      <returns>Type: 
+<see cref="T:System.Uri" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.NotifyEventArgs">
+      <summary>Provides data for the WebBrowser control <see cref="E:Microsoft.Phone.Controls.WebBrowser.ScriptNotify" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.NotifyEventArgs.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Controls.NotifyEventArgs" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.NotifyEventArgs.Value">
+      <summary>Gets argument data passed from JavaScript.</summary>
+      <returns>Type 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.ObscuredEventArgs">
+      <summary>The <see cref="T:Microsoft.Phone.Controls.ObscuredEventArgs" /> class handles obscurity changes.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.ObscuredEventArgs.#ctor(System.Boolean)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Controls.ObscuredEventArgs" /> class.</summary>
+      <param name="isLocked"></param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.ObscuredEventArgs.IsLocked">
+      <summary>This property returns the phone lock state.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. A value of true equals locked and a value of false is unlocked. If you have set the <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> property <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.ApplicationIdleDetectionMode" /> to none, your application will run underneath the lock screen. If the IsLocked property is set to true, for better performance turn of all UI functionality as it cannot be viewed.   </returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.OrientationChangedEventArgs">
+      <summary>Provides data to the OrientationChanged event of the Page and Frame classes.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.OrientationChangedEventArgs.#ctor(Microsoft.Phone.Controls.PageOrientation)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Controls.OrientationChangedEventArgs" /> class.</summary>
+      <param name="orientation">A member of the <see cref="T:Microsoft.Phone.Controls.PageOrientation" /> enumeration indicating the device orientation associated with the event.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.OrientationChangedEventArgs.Orientation">
+      <summary>A member of the <see cref="T:Microsoft.Phone.Controls.PageOrientation" /> enumeration indicating the device orientation associated with this event.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Controls.PageOrientation" />. The page orientation associated with the event.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PageOrientation">
+      <summary>An enumeration defining the possible orientations of a page.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.None">
+      <summary>No orientation is specified.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.Portrait">
+      <summary>Portrait orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.Landscape">
+      <summary>Landscape orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.PortraitUp">
+      <summary>Portrait orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.PortraitDown">
+      <summary>Portrait orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.LandscapeLeft">
+      <summary>Landscape orientation with the top of the page rotated to the left.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PageOrientation.LandscapeRight">
+      <summary>Landscape orientation with the top of the page rotated to the right.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PhoneApplicationFrame">
+      <summary>The class for the PhoneApplicationFrame control. </summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationFrame.#ctor">
+      <summary>Initializes a new instance of the PhoneApplicationFrame class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationFrame.ArrangeOverride(System.Windows.Size)">
+      <summary>When overridden in a derived class, positions child elements and determines a size for a FrameworkElement derived class.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Size" />
+. The actual size used.</returns>
+      <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationFrame.Finalize">
+      <summary>Allows an Object to attempt to free resources and perform other cleanup operations before the Object is reclaimed by garbage collection. Finalize is protected and, therefore, is accessible only through this class or a derived class. </summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationFrame.MeasureOverride(System.Windows.Size)">
+      <summary>When overridden in a derived class, measures the size in layout required for child elements and determines a size for the FrameworkElement-derived class.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Size" />
+.The size that this element determines it needs during layout, based on its calculations of child element sizes.</returns>
+      <param name="availableSize">The available size that this element can give to child elements. Infinity can be specified as a value to indicate that the element will size to whatever content is available.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationFrame.Obscured">
+      <summary>This event is raised when the shell chrome is covering the frame.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationFrame.OnApplyTemplate">
+      <summary>This method applies a template to the PhoneApplicationFrame.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PhoneApplicationFrame.Orientation">
+      <summary>This property indicates the current orientation of the frame that is decided by the hosted page.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Controls.PageOrientation" />
+.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationFrame.OrientationChanged">
+      <summary>Raised when the Orientation property has changed.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PhoneApplicationFrame.OrientationProperty">
+      <summary>The dependency property for <see cref="P:Microsoft.Phone.Controls.PhoneApplicationFrame.Orientation" />.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationFrame.Unobscured">
+      <summary>This event is raised when the shell chrome is no longer covering the frame.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.PhoneApplicationPage">
+      <summary>The class for the PhoneApplicationPage control.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationPage.#ctor">
+      <summary>Initializes a new instance of the of the PhoneApplicationPage class. </summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PhoneApplicationPage.ApplicationBar">
+      <summary>Gets or sets the application bar UI.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Shell.ApplicationBar" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PhoneApplicationPage.ApplicationBarProperty">
+      <summary>The dependency property for <see cref="P:Microsoft.Phone.Controls.PhoneApplicationPage.ApplicationBar" />.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationPage.BackKeyPress">
+      <summary>This event is raised when the hardware back key button is pressed.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationPage.BeginLayoutChanged">
+      <summary>This event is raised when the layout orientation should change.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationPage.Finalize">
+      <summary>Allows an Object to attempt to free resources and perform other cleanup operations before the Object is reclaimed by garbage collection. Finalize is protected and, therefore, is accessible only through this class or a derived class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationPage.OnBackKeyPress(System.ComponentModel.CancelEventArgs)">
+      <summary>This method is called when the hardware back key is pressed.</summary>
+      <param name="e">Set e.Cancel to true to indicate that the request was handled by the application.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.PhoneApplicationPage.OnOrientationChanged(Microsoft.Phone.Controls.OrientationChangedEventArgs)">
+      <summary>This method is called after the Orientation property has been changed.</summary>
+      <param name="e">The event arguments.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PhoneApplicationPage.Orientation">
+      <summary>Gets the current orientation.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Controls.PageOrientation" />
+.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.PhoneApplicationPage.OrientationChanged">
+      <summary>This event is raised when the Orientation property has changed.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PhoneApplicationPage.OrientationProperty">
+      <summary>The dependency property for <see cref="P:Microsoft.Phone.Controls.PhoneApplicationPage.Orientation" />.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PhoneApplicationPage.State">
+      <summary>This property allows you to save transient state data on your page.</summary>
+      <returns>Returns 
+<see cref="T:System.Collections.Generic.IDictionary`2" />.
+Represents a generic collection of key/value pairs.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.PhoneApplicationPage.SupportedOrientations">
+      <summary>Gets or sets the supported phone orientations.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Controls.SupportedPageOrientation" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.PhoneApplicationPage.SupportedOrientationsProperty">
+      <summary>The dependency property for <see cref="P:Microsoft.Phone.Controls.PhoneApplicationPage.SupportedOrientations" />.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.SupportedPageOrientation">
+      <summary>An enumeration defining the orientations that may be supported by an application.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.SupportedPageOrientation.Portrait">
+      <summary>Portrait orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.SupportedPageOrientation.Landscape">
+      <summary>Landscape orientation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.SupportedPageOrientation.PortraitOrLandscape">
+      <summary>Landscape or portrait orientation.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Controls.WebBrowser">
+      <summary>Allows HTML rendering and navigation functionality to be embedded in an application. </summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.#ctor">
+      <summary>Initializes a new instance of the WebBrowser class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.WebBrowser.Base">
+      <summary>Sets the base directory within isolated storage that is used to resolve relative references within the WebBrowser control.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.WebBrowser.BaseProperty">
+      <summary>Sets the base directory within isolated storage that is used to resolve relative references within the WebBrowser control. This property is accessible through Microsoft Expression Blend® for Windows® Phone.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.InvokeScript(System.String)">
+      <summary>Executes a scripting function defined in the currently loaded document.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.Value returned by the scripting function.</returns>
+      <param name="scriptName">The scripting function to execute.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.InvokeScript(System.String,System.String[])">
+      <summary>Executes a scripting function defined in the currently loaded document, and passes the function an array of string parameters.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.Value returned by the scripting function.</returns>
+      <param name="scriptName">The scripting function to execute.</param>
+      <param name="args">An array of strings to pass to the function as parameters.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.WebBrowser.IsScriptEnabled">
+      <summary>Enables or disables scripting after creating the WebBrowser control. Applies to the next document that is navigated to, not the current document. Set to true to enable scripting, or false to disable scripting.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.WebBrowser.IsScriptEnabledProperty">
+      <summary>Enables or disables scripting after creating the WebBrowser control. Applies to the next document that is navigated to, not the current document. Set to true to enable scripting, or false to disable scripting. This property is accessible through Microsoft Expression Blend® for Windows® Phone.
+</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.WebBrowser.LoadCompleted">
+      <summary>Event that fires after the WebBrowser control has loaded content.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.Navigate(System.Uri)">
+      <summary>Initiates a navigate request to the provided URI.</summary>
+      <param name="uri">The URI to navigate to.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.Navigate(System.Uri,System.Byte[],System.String)">
+      <summary>Initiates a navigate request to the provided URI. Allows customizable options for including posted form data and HTTP headers.</summary>
+      <param name="uri">The URI to navigate to.</param>
+      <param name="postData">The posted form data.</param>
+      <param name="additionalHeaders">The additional HTTP headers.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.WebBrowser.Navigated">
+      <summary>Event that fires after the WebBrowser control successfully navigates.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.NavigateToString(System.String)">
+      <summary>Injects an HTML string into the web browser control for rendering.</summary>
+      <param name="html">The HTML to display in the browser</param>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.WebBrowser.Navigating">
+      <summary>Event that fires when the browser control is navigating.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.OnApplyTemplate">
+      <summary>Do not use this method. It is unsupported.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Controls.WebBrowser.SaveToString">
+      <summary>Returns a string containing the HTML content of the web page.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Controls.WebBrowser.ScriptNotify">
+      <summary>Event that fires when Javascript calls windows.external.Notify(&lt;data&gt;)</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Controls.WebBrowser.Source">
+      <summary>Sets the URI location of the WebBrowser control.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Controls.WebBrowser.SourceProperty">
+      <summary>Sets the URI location of the WebBrowser control. This property is accessible through Microsoft Expression Blend® for Windows® Phone.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Info.DeviceExtendedProperties">
+      <summary>Allows an application to obtain information about the device on which it is running.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Info.DeviceExtendedProperties.GetValue(System.String)">
+      <summary>Retrieves an object representing the specified device property.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />.</returns>
+      <param name="propertyName">The name of the device property to be retrieved.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue(System.String,System.Object@)">
+      <summary>Retrieves an object representing the specified device property.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />.</returns>
+      <param name="propertyName">The name of the device property to be retrieved.</param>
+      <param name="propertyValue">The output parameter object in which the value of the device property is stored.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Info.UserExtendedProperties">
+      <summary>Allows an application to obtain an anonymous identifier for the user of the device.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Info.UserExtendedProperties.GetValue(System.String)">
+      <summary>Retrieves an object representing the specified user property. In the current release the only supported property is “ANID”.</summary>
+      <returns>Returns 
+<see cref="T:System.Object" />
+.</returns>
+      <param name="propertyName">The name of the user property to be retrieved.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Info.UserExtendedProperties.TryGetValue(System.String,System.Object@)">
+      <summary>Retrieves an object representing the specified user property. In the current release the only supported property is “ANID”.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+.</returns>
+      <param name="propertyName">The name of the user property to be retrieved.</param>
+      <param name="propertyValue">The output parameter object in which the value of the device property is stored.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Marketplace.LicenseInformation">
+      <summary>The LicenseInformation class enables an application to determine if it is running under a trial license.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Marketplace.LicenseInformation.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Marketplace.LicenseInformation" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Marketplace.LicenseInformation.IsTrial">
+      <summary>The IsTrial method is called to determine if an application is running under a trial license.</summary>
+      <returns>
+        <see cref="T:System.Boolean" />
+. Returns True if the application is running under a trial license. Otherwise, returns False.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Net.NetworkInformation.NetworkInterface">
+      <summary>Provides configuration information for a network interface.
+</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Net.NetworkInformation.NetworkInterface.GetInternetInterface">
+      <summary>Gets the NetworkInterface object.
+</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Net.NetworkInformation.NetworkInterface" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType">
+      <summary>Gets the type of the network servicing Internet requests.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType">
+      <summary>An enumeration of network types.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None">
+      <summary>There is no network available for accessing the internet.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.AsymmetricDsl">
+      <summary>The network interface uses an Asymmetric Digital Subscriber Line (ADSL).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Atm">
+      <summary>The network interface uses asynchronous transfer mode (ATM) for data transmission.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.BasicIsdn">
+      <summary>The network interface uses a basic rate interface Integrated Services Digital Network (ISDN) connection. ISDN is a set of standards for data transmission over telephone lines.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Ethernet">
+      <summary>The network interface uses an Ethernet connection. Ethernet is defined in IEEE standard 802.3.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Ethernet3Megabit">
+      <summary>The network interface uses an Ethernet 3 megabit/second connection. This version of Ethernet is defined in IETF RFC 895.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.FastEthernetFx">
+      <summary>The network interface uses a Fast Ethernet connection over optical fiber and provides a data rate of 100 megabits per second. This type of connection is also known as 100Base-FX.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.FastEthernetT">
+      <summary>The network interface uses a Fast Ethernet connection over twisted pair and provides a data rate of 100 megabits per second. This type of connection is also known as 100Base-T.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Fddi">
+      <summary>The network interface uses a Fiber Distributed Data Interface (FDDI) connection. FDDI is a set of standards for data transmission on fiber optic lines in a local area network.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.GenericModem">
+      <summary>The network interface uses a modem.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.GigabitEthernet">
+      <summary>The network interface uses a gigabit Ethernet connection and provides a data rate of 1,000 megabits per second (1 gigabit per second).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.HighPerformanceSerialBus">
+      <summary>The network interface uses a High Performance Serial Bus.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.IPOverAtm">
+      <summary>The network interface uses the Internet Protocol (IP) in combination with asynchronous transfer mode (ATM) for data transmission.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Isdn">
+      <summary>The network interface uses a connection configured for ISDN and the X.25 protocol. X.25 allows computers on public networks to communicate using an intermediary computer.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Loopback">
+      <summary>The network interface is a loopback adapter. Such interfaces are often used for testing; no traffic is sent over the wire.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MultiRateSymmetricDsl">
+      <summary>The network interface uses a Multirate Digital Subscriber Line.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Ppp">
+      <summary>The network interface uses a Point-To-Point protocol (PPP) connection. PPP is a protocol for data transmission using a serial device.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.PrimaryIsdn">
+      <summary>The network interface uses a primary rate interface Integrated Services Digital Network (ISDN) connection. ISDN is a set of standards for data transmission over telephone lines.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.RateAdaptDsl">
+      <summary>The network interface uses a Rate Adaptive Digital Subscriber Line (RADSL).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Slip">
+      <summary>The network interface uses a Serial Line Internet Protocol (SLIP) connection. SLIP is defined in IETF RFC 1055.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.SymmetricDsl">
+      <summary>The network interface uses a Symmetric Digital Subscriber Line (SDSL).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.TokenRing">
+      <summary>The network interface uses a Token-Ring connection. Token-Ring is defined in IEEE standard 802.5.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Tunnel">
+      <summary>The network interface uses a tunnel connection.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Unknown">
+      <summary>The interface type is not known.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.VeryHighSpeedDsl">
+      <summary>The network interface uses a Very High Data Rate Digital Subscriber Line (VDSL).</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.Wireless80211">
+      <summary>The network interface uses a wireless LAN connection (IEEE 802.11 standard).
+</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandGsm">
+      <summary>The network interface uses a GSM cellular network.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.MobileBroadbandCdma">
+      <summary>The network interface uses a CDMA cellular network.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.ChannelErrorType">
+      <summary>An enumeration that contains asynchronous errors sent from the Push Client to the application. These error values can occur regardless of if the application is running in the foreground or not.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelErrorType.ChannelOpenFailed">
+      <summary>This error is returned when the Push Client and the Push Notification Service are unable to establish a connection. For more information on how to set up a notification channel, see How to: Set Up a Notification Channel for Windows Phone. </summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelErrorType.PayloadFormatError">
+      <summary>This error is returned when the XML payload format or the HTTP header of the push notification is syntactically invalid. When this error is returned, the HTTP channel is disconnected and the channel must be reopened. Additionally, if your tile is bound to this notification channel, the tile will revert to your application's default tile. </summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelErrorType.MessageBadContent">
+      <summary>This error is returned when the image reference is pointing to an HTTP image, even though the notification channel is not currently bound to a list of URIs. If your tile is bound to this notification channel, the tile will revert to your application's default tile.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelErrorType.NotificationRateTooHigh">
+      <summary>This error is returned when the Push Client is unable to receive messages because the web service is sending too many messages at too quick a rate to a certain device.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelErrorType.PowerLevelChanged">
+      <summary>This error is returned when the Push Client's power policy changes due to a change in battery level. For more information, see Power Management and Push Notifications for Windows Phone. If your tile is bound to this notification channel, the tile will revert to your application's default tile.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.ChannelPowerLevel">
+      <summary>The additional data associated with the <see cref="F:Microsoft.Phone.Notification.ChannelErrorType.PowerLevelChanged" /> message.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelPowerLevel.NormalPowerLevel">
+      <summary>The battery capacity is not low. All push notification types will be sent to the device.
+</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelPowerLevel.LowPowerLevel">
+      <summary>The battery capacity is low. Only raw notifications will be sent to the device.
+</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Notification.ChannelPowerLevel.CriticalLowPowerLevel">
+      <summary>The battery capacity is critically low. No push notifications of any type will be sent to the device.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.HttpNotification">
+      <summary>Contains the raw notification data that has been passed to the application from the Microsoft Push Notification Service.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotification.#ctor">
+      <summary>Creates an instance of the HttpNotification class.
+</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotification.Body">
+      <summary>The contents of the raw notification data.</summary>
+      <returns>Returns 
+<see cref="T:System.IO.Stream" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotification.Channel">
+      <summary>The INotificationChannel object that the raw notification is associated with.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Notification.INotificationChannel" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotification.Headers">
+      <summary>The HTTP headers associated with the raw notification.</summary>
+      <returns>Returns 
+<see cref="T:System.Net.WebHeaderCollection" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.HttpNotificationChannel">
+      <summary>Creates a notification channel between the Microsoft Push Notification Service and the Push Client and creates a new subscription for raw notifications.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.#ctor(System.String)">
+      <summary>Creates a notification channel. The application will identify the notification channel using the <paramref name="channelName" /> value.</summary>
+      <param name="channelName">The name the application uses to identify the notification channel instance.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.#ctor(System.String,System.String)">
+      <summary>Creates a notification channel. Use this constructor with an authenticated web service. The application will identify the notification channel using the <paramref name="channelName" /> value. The <paramref name="serviceName" /> value identifies the Subject Name of the authenticated web service's certificate. </summary>
+      <param name="channelName">The name the application uses to identify the notification channel instance.</param>
+      <param name="serviceName">The name that the web service uses to associate itself with the Push Notification Service.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.BindToShellTile">
+      <summary>The method the application uses to bind its default tile with a notification subscription. The tile can only contain local references for resources.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.BindToShellTile(System.Collections.ObjectModel.Collection{System.Uri})">
+      <summary>Binds the tile passed as the input parameter with a notification subscription. The tile can contain either a local or remote resource reference.</summary>
+      <param name="baseUri"></param>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+      <exception cref="ArgumentException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.BindToShellToast">
+      <summary>The method the application uses to bind a toast notification subscription to the <see cref="T:Microsoft.Phone.Notification.HttpNotificationChannel" /> class instance.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotificationChannel.ChannelName">
+      <summary>The name of the notification channel.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotificationChannel.ChannelUri">
+      <summary>The current active notification channel URI.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Notification.HttpNotificationChannel.ChannelUriUpdated">
+      <summary>Returns the URI associated with the notification channel.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.Close">
+      <summary>Closes a notification channel and disassociates all of the subscriptions associated with this instance of the <see cref="T:Microsoft.Phone.Notification.HttpNotificationChannel" /> class.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.Dispose">
+      <summary>Disposes the class.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Notification.HttpNotificationChannel.ErrorOccurred">
+      <summary>This event is raised when something unexpected happens when using the <see cref="T:Microsoft.Phone.Notification.HttpNotificationChannel" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.Finalize">
+      <summary>Frees resources and performs cleanup operations before the class instance is reclaimed by garbage collection.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.Find(System.String)">
+      <summary>Used to find a previously created notification channel.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Notification.HttpNotificationChannel" />
+.</returns>
+      <param name="channelName"></param>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="E:Microsoft.Phone.Notification.HttpNotificationChannel.HttpNotificationReceived">
+      <summary>The event that is raised when the application receives a raw notification.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotificationChannel.IsShellTileBound">
+      <summary>Returns true if the notification channel is currently bound to a tile notification subscription and false if not.
+</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotificationChannel.IsShellToastBound">
+      <summary>Returns true if the notification channel is currently bound to a toast notification subscription.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.Open">
+      <summary>Opens a notification channel with the Microsoft Push Notification Service.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+      <exception cref="ArgumentException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="E:Microsoft.Phone.Notification.HttpNotificationChannel.ShellToastNotificationReceived">
+      <summary>The event that is raised when the application receives a toast notification.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.UnbindToShellTile">
+      <summary>Unbinds the active tile notification subscription from the notification channel.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="M:Microsoft.Phone.Notification.HttpNotificationChannel.UnbindToShellToast">
+      <summary>Unbinds the active toast notification subscription from the notification channel.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.HttpNotificationEventArgs">
+      <summary>Contains the event data when a notification channel receives a push notification from the Microsoft Push Notification Service.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.HttpNotificationEventArgs.Notification">
+      <summary>Contains the notification data sent by the web service. </summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Notification.HttpNotification" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.NotificationChannelErrorEventArgs">
+      <summary>The argument returned with the <see cref="E:Microsoft.Phone.Notification.HttpNotificationChannel.ErrorOccurred" /> event.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationChannelErrorEventArgs.ErrorAdditionalData">
+      <summary>Additional information that is associated with the error type.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationChannelErrorEventArgs.ErrorCode">
+      <summary>Returns an HRESULT that corresponds with the error.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationChannelErrorEventArgs.ErrorType">
+      <summary>Contains an enumeration that corresponds with the error. For more information see <see cref="T:Microsoft.Phone.Notification.ChannelErrorType" />.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Notification.ChannelErrorType" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationChannelErrorEventArgs.Message">
+      <summary>The plain text message of the error.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.NotificationChannelUriEventArgs">
+      <summary>Contains the event data when a notification channel receives the channel’s URI.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationChannelUriEventArgs.ChannelUri">
+      <summary>Contains the URI associated with the notification channel.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Notification.NotificationEventArgs">
+      <summary>Contains the event data for when a notification channel receives a tile or toast notification.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Notification.NotificationEventArgs.Collection">
+      <summary>A Dictionary type that contains the toast or tile data sent in the notification. This data is always presented as the name-value pair (&lt;string&gt;, &lt;string&gt;).</summary>
+      <returns>Returns 
+<see cref="T:System.Collections.Generic.IDictionary`2" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ActivatedEventArgs">
+      <summary>Provides data for <see cref="E:Microsoft.Phone.Shell.PhoneApplicationService.Activated" /> events.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ActivatedEventArgs.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ActivatedEventArgs" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ApplicationBar">
+      <summary>Allows developers to create and display an application bar with between 1 and 4 buttons and a set of text menu items in Windows Phone applications.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBar.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBar" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.BackgroundColor">
+      <summary>Gets or sets the background color for the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Windows.Media.Color" />. The background color of the application bar.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.Buttons">
+      <summary>The list of buttons that are displayed on the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Collections.IList" />. 
+The list of application bar buttons.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.ForegroundColor">
+      <summary>Gets or sets the foreground color of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Windows.Media.Color" />
+.The foreground color of the application bar.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.IsMenuEnabled">
+      <summary>Gets or sets whether the user can open the menu.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />. true if the menu is enabled.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.IsVisible">
+      <summary>Gets or sets the visibility of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />. true if the application bar is visible.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.MenuItems">
+      <summary>The list of items shown in the application bar’s menu when it is opened.</summary>
+      <returns>Type: 
+<see cref="T:System.Collections.IList" />. The list of menu items.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBar.Opacity">
+      <summary>Gets or sets opacity of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />
+. The opacity of the application bar. This value can be between 0 and 1 where 0 is completely transparent and 1 is completely opaque. The default value is 1.0.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.ApplicationBar.StateChanged">
+      <summary>Occurs when the user opens or closes the menu.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ApplicationBarIconButton">
+      <summary>An application bar button with an icon.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBarIconButton.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBarIconButton" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBarIconButton.#ctor(System.Uri)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBarIconButton" /> class with the specified icon.</summary>
+      <param name="iconUri">The URI of the icon to use for the button.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.ApplicationBarIconButton.Click">
+      <summary>Occurs when the user taps on a button in the application bar.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarIconButton.IconUri">
+      <summary>The URI of the icon to use for the button.</summary>
+      <returns>Type: 
+<see cref="T:System.Uri" />. The URI of the icon to use for the button.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarIconButton.IsEnabled">
+      <summary>Gets or sets the enabled status of the button.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarIconButton.Text">
+      <summary>Gets or sets the text string that is displayed as a label for the button. The label is displayed when the user taps the ellipses symbol on the application bar. </summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ApplicationBarMenuItem">
+      <summary>An item that can be added to the menu of an <see cref="T:Microsoft.Phone.Shell.ApplicationBar" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBarMenuItem.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBarMenuItem" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBarMenuItem.#ctor(System.String)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBarMenuItem" /> class that displays the specified string.</summary>
+      <param name="text">The string to display on the menu item.</param>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.ApplicationBarMenuItem.Click">
+      <summary>Occurs when the user taps on the menu item.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarMenuItem.IsEnabled">
+      <summary>Gets or sets the enabled status of the menu item.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarMenuItem.Text">
+      <summary>The string to display on the menu item.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs">
+      <summary>Provides data for <see cref="E:Microsoft.Phone.Shell.ApplicationBar.StateChanged" /> events which occur when the user opens or closes the menu.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs.#ctor(System.Boolean)">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs" /> class.</summary>
+      <param name="isMenuVisible">Whether or not the application bar menu is visible. This property is set when the user opens or closes the menu. It cannot be set by the application to show the menu programmatically.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs.IsMenuVisible">
+      <summary>Whether or not the application bar menu is visible.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />
+.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ClosingEventArgs">
+      <summary>Provides data for the <see cref="E:Microsoft.Phone.Shell.PhoneApplicationService.Closing" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ClosingEventArgs.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.ClosingEventArgs" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.DeactivatedEventArgs">
+      <summary>Provides data for the <see cref="E:Microsoft.Phone.Shell.PhoneApplicationService.Deactivated" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.DeactivatedEventArgs.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.DeactivatedEventArgs" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.IApplicationBar">
+      <summary>The interface from which <see cref="T:Microsoft.Phone.Shell.ApplicationBar" /> derives.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.BackgroundColor">
+      <summary>Gets or sets the background color for the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Windows.Media.Color" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.Buttons">
+      <summary>The list that is used to populate the buttons on the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Collections.IList" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.ForegroundColor">
+      <summary>Gets or sets the foreground color of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Windows.Media.Color" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.IsMenuEnabled">
+      <summary>Gets or sets whether the user can open the menu.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.IsVisible">
+      <summary>Gets or sets the visibility of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.MenuItems">
+      <summary>The list of items shown in the application bar’s menu when it is opened.</summary>
+      <returns>Type: 
+<see cref="T:System.Collections.IList" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBar.Opacity">
+      <summary>Gets or sets the opacity of the application bar.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.IApplicationBar.StateChanged">
+      <summary>Occurs when the user opens or closes the menu.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.IApplicationBarIconButton">
+      <summary>The interface from which <see cref="T:Microsoft.Phone.Shell.ApplicationBarIconButton" /> inherits.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBarIconButton.IconUri">
+      <summary>The URI of the icon to use for the button.</summary>
+      <returns>Type: 
+<see cref="T:System.Uri" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.IApplicationBarMenuItem">
+      <summary>The interface from which <see cref="T:Microsoft.Phone.Shell.ApplicationBarMenuItem" /> inherits.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.IApplicationBarMenuItem.Click">
+      <summary>Occurs when the user taps on the menu item.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBarMenuItem.IsEnabled">
+      <summary>Gets or sets the enabled status of the menu item.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.IApplicationBarMenuItem.Text">
+      <summary>The string to display on the menu item.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.IdleDetectionMode">
+      <summary>Defines the status for idle detection of users and applications. Used with the <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.UserIdleDetectionMode" /> and <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.ApplicationIdleDetectionMode" /> properties.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.IdleDetectionMode.Enabled">
+      <summary>When <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.UserIdleDetectionMode" /> is set to enabled, the operating system will consider an application to be idle when no touch events are detected.  When <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.ApplicationIdleDetectionMode" /> is set to enabled, the operating system will pause the active application when the lock screen is engaged.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.IdleDetectionMode.Disabled">
+      <summary>When <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.UserIdleDetectionMode" /> is set to disabled, the operating system will not consider an application to be idle when no touch events are detected.  When <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.ApplicationIdleDetectionMode" /> is set to disabled, the active application will continue to run when the lock screen is engaged.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.LaunchingEventArgs">
+      <summary>Provides data for <see cref="E:Microsoft.Phone.Shell.PhoneApplicationService.Launching" /> events.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.LaunchingEventArgs.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.LaunchingEventArgs" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.PhoneApplicationService">
+      <summary>The <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> class provides access to various aspects of the application’s lifetime. This includes management of the application’s idle behavior and management of the application’s state when it becomes active or inactive.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.PhoneApplicationService.#ctor">
+      <summary>Instantiates a new instance of the <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> class. </summary>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.PhoneApplicationService.Activated">
+      <summary>Occurs when the application is being made active after previously being tombstoned. </summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.PhoneApplicationService.ApplicationIdleDetectionMode">
+      <summary>Gets or sets whether application idle detection is enabled.</summary>
+      <returns>Type:  
+<see cref="T:Microsoft.Phone.Shell.IdleDetectionMode" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.PhoneApplicationService.Closing">
+      <summary>Occurs when the application is exiting. </summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.PhoneApplicationService.Current">
+      <summary>Gets the <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> object associated with the current application.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" />.</returns>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.PhoneApplicationService.Deactivated">
+      <summary>Occurs when the application is being deactivated and tombstoned. </summary>
+    </member>
+    <member name="E:Microsoft.Phone.Shell.PhoneApplicationService.Launching">
+      <summary>Occurs when the application is being launched.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.PhoneApplicationService.StartService(System.Windows.ApplicationServiceContext)">
+      <summary>This method is used by the underlying implementation of the <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> and should not be used by applications.</summary>
+      <param name="context">This parameter is not used.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.PhoneApplicationService.StartupMode">
+      <summary>Gets the mode in which the application was started.</summary>
+      <returns>Type:
+<see cref="T:Microsoft.Phone.Shell.StartupMode" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.PhoneApplicationService.State">
+      <summary>Gets the dictionary used for passing an application’s state between invocations.</summary>
+      <returns>Type: 
+<see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.PhoneApplicationService.StopService">
+      <summary>This method is used by the underlying implementation of the <see cref="T:Microsoft.Phone.Shell.PhoneApplicationService" /> and should not be used by applications.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.PhoneApplicationService.UserIdleDetectionMode">
+      <summary>Gets or sets whether user idle detection is enabled. </summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Shell.IdleDetectionMode" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.ShellTileSchedule">
+      <summary>Creates an object which allows an application to schedule updates of its tile's background image.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ShellTileSchedule.#ctor">
+      <summary>Creates an instance of the ShellTileSchedule class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ShellTileSchedule.Interval">
+      <summary>Sets the interval of how often the background image of the tile is updated.</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Shell.UpdateInterval" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ShellTileSchedule.MaxUpdateCount">
+      <summary>Defines the number of times the schedule will run before the schedule becomes invalid.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ShellTileSchedule.Recurrence">
+      <summary>Defines whether the schedule will be executed one time or multiple times. The recurrence values are defined in <see cref="T:Microsoft.Phone.Shell.UpdateRecurrence" />.
+</summary>
+      <returns>Returns 
+<see cref="T:Microsoft.Phone.Shell.UpdateRecurrence" />
+.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ShellTileSchedule.RemoteImageUri">
+      <summary>The fully qualified URI of the background image.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ShellTileSchedule.Start">
+      <summary>Starts the schedule.</summary>
+      <exception cref="ArgumentException">Details about this exception can be found in the exception string.</exception>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.ShellTileSchedule.StartTime">
+      <summary>Defines the start time of the schedule.</summary>
+      <returns>Returns 
+<see cref="T:System.DateTime" />
+.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.ShellTileSchedule.Stop">
+      <summary>Stops the schedule.</summary>
+      <exception cref="InvalidOperationException">Details about this exception can be found in the exception string.</exception>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.StartupMode">
+      <summary>Lists the modes in which an application can be started. Used by the <see cref="P:Microsoft.Phone.Shell.PhoneApplicationService.StartupMode" /> property.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.StartupMode.Activate">
+      <summary>The application was launched by the user from the Start experience.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.StartupMode.Launch">
+      <summary>The application was launched by the user returning to the application by pressing the Back button.
+</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.SystemTray">
+      <summary>Provides the ability to discover and modify the visibility of the system tray.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.SystemTray.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Shell.SystemTray" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.SystemTray.GetIsVisible(System.Windows.DependencyObject)">
+      <summary>Gets the value of the <see cref="P:Microsoft.Phone.Shell.ApplicationBar.IsVisible" /> attached property for a given UIElement.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+      <param name="element">The element on which to get the <see cref="P:Microsoft.Phone.Shell.ApplicationBar.IsVisible" /> attached property.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Shell.SystemTray.IsVisible">
+      <summary>Gets or sets the visibility of the system tray.</summary>
+      <returns>Type: 
+<see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.SystemTray.IsVisibleProperty">
+      <summary>The dependency property for <see cref="P:Microsoft.Phone.Shell.SystemTray.IsVisible" />.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Shell.SystemTray.SetIsVisible(System.Windows.DependencyObject,System.Boolean)">
+      <summary>Sets the value of the <see cref="P:Microsoft.Phone.Shell.ApplicationBar.IsVisible" /> attached property for a given UIElement</summary>
+      <param name="element">The element on which to set the <see cref="P:Microsoft.Phone.Shell.ApplicationBar.IsVisible" /> attached property.</param>
+      <param name="isVisible">The property value to set.</param>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.UpdateInterval">
+      <summary>Defines which interval will be used with the schedule if <see cref="UpdateRecurrence" /> has been set to Interval.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateInterval.EveryHour">
+      <summary>The schedule will be run every hour.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateInterval.EveryDay">
+      <summary>The schedule will be run every day.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateInterval.EveryWeek">
+      <summary>The schedule will be run every week.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateInterval.EveryMonth">
+      <summary>The schedule will be run every month.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Shell.UpdateRecurrence">
+      <summary>Defines whether the schedule will be executed one time or multiple times. </summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateRecurrence.Onetime">
+      <summary>Specifies that the schedule will be executed one time. 
+</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Shell.UpdateRecurrence.Interval">
+      <summary>Specifies that the schedule will be executed more than one time. </summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.CameraCaptureTask">
+      <summary>Allows an application to launch the Camera application. Use this to allow users to take a photo from your application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.CameraCaptureTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.CameraCaptureTask" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.CameraCaptureTask.Show">
+      <summary>Shows the camera application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.ChooserBase`1">
+      <summary>The base class from which all choosers are derived. This class exposes a common function for showing the choosers and an event for handling the chooser result.</summary>
+      <typeparam name="TTaskEventArgs">The generic parameter for the EventArgs object for each type of chooser.</typeparam>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.ChooserBase`1.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.ChooserBase`1" /> class.</summary>
+    </member>
+    <member name="E:Microsoft.Phone.Tasks.ChooserBase`1.Completed">
+      <summary>Occurs when a chooser task is completed.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.ChooserBase`1.FireCompleted(System.Object,`0,System.Delegate)">
+      <summary>Raises the <see cref="E:Microsoft.Phone.Tasks.ChooserBase`1.Completed" /> event.</summary>
+      <param name="sender">The source of the event.</param>
+      <param name="e">The EventArgs associated with the event.</param>
+      <param name="fireThisHandlerOnly">The delegate to be called when the event is raised.</param>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.ChooserBase`1.Show">
+      <summary>Launches and displays the chooser.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.ChooserBase`1.TaskEventArgs">
+      <summary>The EventArgs for the <see cref="E:Microsoft.Phone.Tasks.ChooserBase`1.Completed" /> event.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.EmailAddressChooserTask">
+      <summary>Allows an application to launch the Contacts application. Use this to obtain the email address of a contact selected by the user.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailAddressChooserTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.EmailAddressChooserTask" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailAddressChooserTask.Show">
+      <summary>Shows the email address chooser application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.EmailComposeTask">
+      <summary>Allows an application to launch the email application with a new message displayed. Use this to allow users to send email from your application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailComposeTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.EmailComposeTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.EmailComposeTask.Body">
+      <summary>The body of the new email message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The body of the new email message.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.EmailComposeTask.Cc">
+      <summary>The recipients on the cc line of the new email message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The recipients cc line of the new email message.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailComposeTask.Show">
+      <summary>Shows the email application with a new message displayed.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.EmailComposeTask.Subject">
+      <summary>The subject of the new email message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The subject of the new email message.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.EmailComposeTask.To">
+      <summary>The recipients on the To line of the new email message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The recipients on the To line of the new email message.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.EmailResult">
+      <summary>Represents an email address returned from a call to the Show method of a <see cref="T:Microsoft.Phone.Tasks.EmailAddressChooserTask" /> object.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailResult.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.EmailResult" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.EmailResult.#ctor(Microsoft.Phone.Tasks.TaskResult)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.EmailResult" /> class with the specified <see cref="T:Microsoft.Phone.Tasks.TaskResult" />.</summary>
+      <param name="taskResult">The <see cref="T:Microsoft.Phone.Tasks.TaskResult" /> associated with the new <see cref="T:Microsoft.Phone.Tasks.EmailResult" />.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.EmailResult.Email">
+      <summary>Gets the email address contained in the result.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The email address contained in the result.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MarketplaceContentType">
+      <summary>Defines the list of content types that can be shown by the Windows Phone Marketplace client application. This enumeration is used by <see cref="T:Microsoft.Phone.Tasks.MarketplaceDetailTask" />, <see cref="T:Microsoft.Phone.Tasks.MarketplaceHubTask" />, and <see cref="T:Microsoft.Phone.Tasks.MarketplaceSearchTask" />.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MarketplaceContentType.Applications">
+      <summary>Application content.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MarketplaceContentType.Music">
+      <summary>Music content.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MarketplaceDetailTask">
+      <summary>Allows an application to launch the Windows Phone Marketplace client application and display the details page for the specified product.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceDetailTask.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.MarketplaceDetailTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MarketplaceDetailTask.ContentIdentifier">
+      <summary>Gets or sets the unique identifier for the product to be displayed.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MarketplaceDetailTask.ContentType">
+      <summary>Gets or sets the type of content displayed in the Windows Phone Marketplace client application.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Tasks.MarketplaceContentType" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceDetailTask.Show">
+      <summary>Shows the Windows Phone Marketplace client application and displays the details page for the specified product.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MarketplaceHubTask">
+      <summary>Allows an application to launch the Windows Phone Marketplace client application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceHubTask.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.MarketplaceHubTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MarketplaceHubTask.ContentType">
+      <summary>Gets or sets the type of content displayed in the Windows Phone Marketplace client application.
+</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Tasks.MarketplaceContentType" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceHubTask.Show">
+      <summary>Shows the Windows Phone Marketplace client application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MarketplaceReviewTask">
+      <summary>Allows an application to launch the Windows Phone Marketplace client application and display the review page for the specified product.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceReviewTask.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.MarketplaceReviewTask" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceReviewTask.Show">
+      <summary>Shows the Windows Phone Marketplace client application and displays the review page for the specified product.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MarketplaceSearchTask">
+      <summary>Allows an application to launch the Windows Phone Marketplace client application and display the search results from the specified search terms.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceSearchTask.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.MarketplaceSearchTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MarketplaceSearchTask.ContentType">
+      <summary>Gets or sets the type of content displayed in the Windows Phone Marketplace client application.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Tasks.MarketplaceContentType" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MarketplaceSearchTask.SearchTerms">
+      <summary>Gets or sets the search terms.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MarketplaceSearchTask.Show">
+      <summary>Shows the Windows Phone Marketplace client application and displays the search results from the specified search terms.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MediaLocationType">
+      <summary>Lists the data stores in which a media file may be stored. Used by <see cref="T:Microsoft.Phone.Tasks.MediaPlayerLauncher" />.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaLocationType.None">
+      <summary>The media item is in neither data store. The Show method will throw a FileNotFoundException if this value is used.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaLocationType.Install">
+      <summary>The media file is in the application’s installation directory.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaLocationType.Data">
+      <summary>The media file is in isolated storage.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MediaPlaybackControls">
+      <summary>An enumeration defining the bitwise flags that are used with the Controls property of the <see cref="T:Microsoft.Phone.Tasks.MediaPlayerLauncher" /> object to specify which controls should be displayed by the media player application.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.None">
+      <summary>No controls.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.Pause">
+      <summary>The pause control.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.Stop">
+      <summary>The stop control.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.FastForward">
+      <summary>The fast forward control.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.Rewind">
+      <summary>The rewind control.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.Skip">
+      <summary>The skip control.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.MediaPlaybackControls.All">
+      <summary>All controls. The equivalent of using OR to combine all of the other members of the enumeration.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.MediaPlayerLauncher">
+      <summary>Allows an application to launch the media player.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MediaPlayerLauncher.#ctor">
+      <summary>Initializes a new instance of the media player application.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MediaPlayerLauncher.Controls">
+      <summary>Gets or sets the flags that determine which controls are displayed in the media player application.</summary>
+      <returns>Type 
+<see cref="T:Microsoft.Phone.Tasks.MediaPlaybackControls" />. The bitwise combination of <see cref="T:Microsoft.Phone.Tasks.MediaPlaybackControls" /> members that determine which controls are displayed in the media player application.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MediaPlayerLauncher.Location">
+      <summary>Sets the location of the media file to be played. The <see cref="T:Microsoft.Phone.Tasks.MediaLocationType" /> enumeration is used to specify either isolated storage or the application’s installation folder.</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Tasks.MediaLocationType" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.MediaPlayerLauncher.Media">
+      <summary>Gets or sets the media played with the media player application.</summary>
+      <returns>Type: 
+<see cref="T:System.Uri" />. The URI of a media file.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.MediaPlayerLauncher.Show">
+      <summary>Shows the media player application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.PhoneCallTask">
+      <summary>Allows an application to launch the Phone application. Use this to allow users to make a phone call from your application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneCallTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhoneCallTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhoneCallTask.DisplayName">
+      <summary>Gets or sets the name that is displayed when the Phone application is launched.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The name that is displayed when the Phone application is launched.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhoneCallTask.PhoneNumber">
+      <summary>Gets or sets the phone number that is dialed when the Phone application is launched.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The phone number that is dialed when the Phone application is launched.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneCallTask.Show">
+      <summary>Shows the Phone application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.PhoneNumberChooserTask">
+      <summary>Allows an application to launch the Contacts application. Use this to obtain the phone number of a contact selected by the user.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneNumberChooserTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhoneNumberChooserTask" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneNumberChooserTask.Show">
+      <summary>Shows the Contacts application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.PhoneNumberResult">
+      <summary>Represents a phone number returned from a call to the Show method of a <see cref="T:Microsoft.Phone.Tasks.PhoneNumberChooserTask" /> object.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneNumberResult.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhoneNumberResult" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhoneNumberResult.#ctor(Microsoft.Phone.Tasks.TaskResult)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhoneNumberResult" /> class with the specified <see cref="T:Microsoft.Phone.Tasks.TaskResult" />.</summary>
+      <param name="taskResult">The <see cref="T:Microsoft.Phone.Tasks.TaskResult" /> associated with the new <see cref="T:Microsoft.Phone.Tasks.PhoneNumberResult" />.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhoneNumberResult.PhoneNumber">
+      <summary>The phone number contained in the result.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The phone number contained in the result.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.PhotoChooserTask">
+      <summary>Allows an application to launch the Photo Chooser application. Use this to allow users to select a photo.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhotoChooserTask.#ctor">
+      <summary>Initializes a new instance of the Photo Chooser application.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhotoChooserTask.PixelHeight">
+      <summary>Gets or sets the maximum height and the height component of the aspect ratio for a cropping region set by the user during the photo choosing process.</summary>
+      <returns>Type: 
+<see cref="T:System.Int32" />. The height at which the image will be cropped.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhotoChooserTask.PixelWidth">
+      <summary>Gets or sets the maximum height and the height component of the aspect ratio for a cropping region set by the user during the photo choosing process.</summary>
+      <returns>Type: 
+<see cref="T:System.Int32" />. The width at which the image will be cropped.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhotoChooserTask.Show">
+      <summary>Shows the Photo Chooser application.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhotoChooserTask.ShowCamera">
+      <summary>Gets or sets whether the user is presented with a button for launching the camera during the photo choosing process.</summary>
+      <returns>Type <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.PhotoResult">
+      <summary>Represents a photo returned from a call to the Show method of a <see cref="T:Microsoft.Phone.Tasks.PhotoChooserTask" /> object or a <see cref="T:Microsoft.Phone.Tasks.CameraCaptureTask" /> object.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhotoResult.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhotoResult" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.PhotoResult.#ctor(Microsoft.Phone.Tasks.TaskResult)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.PhotoResult" /> class with the specified <see cref="T:Microsoft.Phone.Tasks.TaskResult" />.</summary>
+      <param name="taskResult">The <see cref="T:Microsoft.Phone.Tasks.TaskResult" /> associated with the new <see cref="T:Microsoft.Phone.Tasks.PhotoResult" />.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhotoResult.ChosenPhoto">
+      <summary>Gets the stream containing the data for the photo.</summary>
+      <returns>Type: 
+<see cref="T:System.IO.Stream" />. The data for the photo.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.PhotoResult.OriginalFileName">
+      <summary>Gets the file name of the photo.</summary>
+      <returns>Type 
+<see cref="T:System.String" />. The file name of the photo.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.SaveEmailAddressTask">
+      <summary>Allows an application to launch the contacts application. Use this to allow users to save an email address from your application to a new or existing contact.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SaveEmailAddressTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.SaveEmailAddressTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.SaveEmailAddressTask.Email">
+      <summary>Gets or sets the email address that can be saved to a contact.</summary>
+      <returns>Type 
+<see cref="T:System.String" />. The email address that can be saved to a contact.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SaveEmailAddressTask.Show">
+      <summary>Shows the contacts application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.SavePhoneNumberTask">
+      <summary>Allows an application to launch the contacts application. Use this to allow users to save a phone number from your application to a new or existing contact.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SavePhoneNumberTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.SavePhoneNumberTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.SavePhoneNumberTask.PhoneNumber">
+      <summary>Gets or sets the phone number that can be saved to a contact.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The phone number that can be saved to a contact.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SavePhoneNumberTask.Show">
+      <summary>Shows the contacts application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.SearchTask">
+      <summary>Allows an application to launch the Web Search application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SearchTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.SearchTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.SearchTask.SearchQuery">
+      <summary>Gets or sets the search query that the Web Search application will use when it is launched.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The search query that the Web Search application will use when it is launched.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SearchTask.Show">
+      <summary>Shows the Web Search application.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.SmsComposeTask">
+      <summary>Launches the Messaging application with a new SMS message displayed.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SmsComposeTask.#ctor">
+      <summary>Creates a new instance of the <see cref="T:Microsoft.Phone.Tasks.SmsComposeTask" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.SmsComposeTask.Body">
+      <summary>Gets or sets the body text of the new SMS message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.SmsComposeTask.Show">
+      <summary>Shows the Messaging application.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.SmsComposeTask.To">
+      <summary>Gets or sets the recipient list for the new SMS message.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.TaskEventArgs">
+      <summary>The EventArgs used by the <see cref="E:Microsoft.Phone.Tasks.ChooserBase`1.Completed" /> event for all Choosers.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.TaskEventArgs.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.TaskEventArgs" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.TaskEventArgs.#ctor(Microsoft.Phone.Tasks.TaskResult)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.TaskEventArgs" /> class with the specified <see cref="T:Microsoft.Phone.Tasks.TaskResult" />.</summary>
+      <param name="taskResult">The <see cref="T:Microsoft.Phone.Tasks.TaskResult" /> associated with the new <see cref="T:Microsoft.Phone.Tasks.TaskEventArgs" />.</param>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.TaskEventArgs.Error">
+      <summary>The exception associated with the <see cref="T:Microsoft.Phone.Tasks.TaskEventArgs" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Exception" />.</returns>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.TaskEventArgs.TaskResult">
+      <summary>The <see cref="T:Microsoft.Phone.Tasks.TaskResult" /> associated with the <see cref="T:Microsoft.Phone.Tasks.TaskEventArgs" />. This indicates whether the task was completed successfully, if the user cancelled the task, or if no result information is available.
+</summary>
+      <returns>Type: 
+<see cref="T:Microsoft.Phone.Tasks.TaskResult" />.</returns>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.TaskResult">
+      <summary>Describes the success status of a chooser operation. </summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.TaskResult.None">
+      <summary>No success status was returned from the chooser operation.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.TaskResult.OK">
+      <summary>The chooser operation was successful.</summary>
+    </member>
+    <member name="F:Microsoft.Phone.Tasks.TaskResult.Cancel">
+      <summary>The chooser operation was cancelled by the user.</summary>
+    </member>
+    <member name="T:Microsoft.Phone.Tasks.WebBrowserTask">
+      <summary>Allows an application to launch the Web browser application.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.WebBrowserTask.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Phone.Tasks.WebBrowserTask" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Phone.Tasks.WebBrowserTask.Show">
+      <summary>Shows the Web browser application.</summary>
+    </member>
+    <member name="P:Microsoft.Phone.Tasks.WebBrowserTask.URL">
+      <summary>Gets or sets the URL to which the Web browser application will navigate when it is launched.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The URL to which the Web browser application will navigate when it is launched.</returns>
+    </member>
+    <member name="T:System.Diagnostics.Stopwatch">
+      <summary>Provides a set of methods and properties that you can use to accurately measure elapsed time.</summary>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.#ctor">
+      <summary>Creates a new instance of the <see cref="T:System.Diagnostics.Stopwatch" /> class.</summary>
+    </member>
+    <member name="P:System.Diagnostics.Stopwatch.Elapsed">
+      <summary>Gets the total elapsed time measured by the current instance.</summary>
+      <returns>Returns 
+<see cref="T:System.TimeSpan" />.
+</returns>
+    </member>
+    <member name="P:System.Diagnostics.Stopwatch.ElapsedMilliseconds">
+      <summary>Gets the total elapsed time measured by the current instance, in milliseconds.</summary>
+      <returns>Returns 
+<see cref="T:System.Int64" />.
+</returns>
+    </member>
+    <member name="P:System.Diagnostics.Stopwatch.ElapsedTicks">
+      <summary>Gets the total elapsed time measured by the current instance, in timer ticks.</summary>
+      <returns>Returns 
+<see cref="T:System.Int64" />.
+</returns>
+    </member>
+    <member name="F:System.Diagnostics.Stopwatch.Frequency">
+      <summary>Gets the frequency of the timer as the number of ticks per second. This field is read-only.</summary>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.GetElapsedDateTimeTicks">
+      <summary>Gets the number of ticks that represent the date and time of this instance.</summary>
+      <returns>Returns 
+<see cref="T:System.Int64" />.
+</returns>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.GetRawElapsedTicks">
+      <summary>Gets the total elapsed time measured by the current instance, in timer ticks.</summary>
+      <returns>Returns 
+<see cref="T:System.Int64" />.
+</returns>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.GetTimestamp">
+      <summary>Gets the current number of ticks in the timer mechanism.</summary>
+      <returns>Returns 
+<see cref="T:System.Int64" />.
+</returns>
+    </member>
+    <member name="F:System.Diagnostics.Stopwatch.IsHighResolution">
+      <summary>Indicates whether the timer is based on a high-resolution performance counter. This field is read-only.</summary>
+    </member>
+    <member name="P:System.Diagnostics.Stopwatch.IsRunning">
+      <summary>Gets a value indicating whether the Stopwatch timer is running.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />.true if the Stopwatch instance is currently running and measuring elapsed time for an interval; otherwise, false. </returns>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.Reset">
+      <summary>Stops time interval measurement and resets the elapsed time to zero.</summary>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.Start">
+      <summary>Starts, or resumes, measuring elapsed time for an interval.</summary>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.StartNew">
+      <summary>Initializes a new Stopwatch instance, sets the elapsed time property to zero, and starts measuring elapsed time.</summary>
+      <returns>Returns 
+<see cref="T:System.Diagnostics.Stopwatch" />.
+</returns>
+    </member>
+    <member name="M:System.Diagnostics.Stopwatch.Stop">
+      <summary>Stops measuring elapsed time for an interval.</summary>
+    </member>
+    <member name="T:System.Windows.Automation.Peers.FrameAutomationPeer">
+      <summary>Exposes Frame types to UI automation.</summary>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.FrameAutomationPeer.#ctor(System.Windows.Controls.Frame)">
+      <summary>Initializes a new instance of the FrameAutomationPeer class.</summary>
+      <param name="owner">The Frame to associate with this FrameAutomationPeer.</param>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.FrameAutomationPeer.GetAutomationControlTypeCore">
+      <summary>Gets the control type for the element that is associated with the UI automation peer.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Automation.Peers.AutomationControlType" />
+.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.FrameAutomationPeer.GetClassNameCore">
+      <summary>Gets the name of the Frame that is associated with this FrameAutomationPeer. This method is called by GetClassName.
+</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+. The control type.</returns>
+    </member>
+    <member name="M:System.Windows.Automation.Peers.FrameAutomationPeer.GetNameCore">
+      <summary>Gets the text label of the Frame that is associated with this FrameAutomationPeer. Called by GetName.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+. The text label of the element that is associated with this automation peer, if not null a reference; otherwise, the name of the owning frame, or the name of the frame class.</returns>
+    </member>
+    <member name="T:System.Windows.Controls.Frame">
+      <summary>Represents a control that supports navigation to and from Silverlight pages.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.CacheSize">
+      <summary>Gets or sets the number of pages that can be cached for the frame.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />
+. The number of pages that can be cached for the frame. The default value is 10.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.CacheSizeProperty">
+      <summary>Identifies the CacheSize dependency property.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.CanGoBack">
+      <summary>Gets a value that indicates whether there is at least one entry in the back navigation history.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if there is at least one entry in the back navigation history; otherwise, false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.CanGoBackProperty">
+      <summary>Identifies the CanGoBack dependency property.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.CanGoForward">
+      <summary>Gets a value that indicates whether there is at least one entry in the forward navigation history.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if there is at least one entry in the forward navigation history; otherwise, false.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.CanGoForwardProperty">
+      <summary>Identifies the CanGoForward dependency property.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.CurrentSource">
+      <summary>Gets the uniform resource identifier (URI) of the content that is currently displayed.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A value that represents the URI of content that is currently displayed.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.CurrentSourceProperty">
+      <summary>Identifies the CurrentSource dependency property.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Frame.FragmentNavigation">
+      <summary>Occurs when navigation to a content fragment begins.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.GoBack">
+      <summary>Navigates to the most recent entry in the back navigation history, or throws an exception if no entry exists in back navigation.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.GoForward">
+      <summary>Navigates to the most recent entry in the forward navigation history, or throws an exception if no entry exists in forward navigation.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.JournalOwnership">
+      <summary>Gets or sets whether a frame is responsible for managing its own navigation history, or whether it integrates with the Web browser journal.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Navigation.JournalOwnership" />
+. A value that specifies whether frame manages its own journal. The default value is Automatic.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.JournalOwnershipProperty">
+      <summary>Identifies the JournalOwnership dependency property.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.Navigate(System.Uri)">
+      <summary>Navigates to the content specified by the uniform resource identifier (URI).</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if the navigation started successfully; otherwise, false.</returns>
+      <param name="source"></param>
+    </member>
+    <member name="E:System.Windows.Controls.Frame.Navigated">
+      <summary>Occurs when the content that is being navigated to has been found and is available.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Frame.Navigating">
+      <summary>Occurs when a new navigation is requested.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Frame.NavigationFailed">
+      <summary>Occurs when an error is encountered while navigating to the requested content.</summary>
+    </member>
+    <member name="E:System.Windows.Controls.Frame.NavigationStopped">
+      <summary>Occurs when a navigation is terminated by either calling the StopLoading method, or when a new navigation is requested while the current navigation is in progress.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.OnApplyTemplate">
+      <summary>Builds the visual tree for the Frame when a new template is applied. (Overrides FrameworkElement OnApplyTemplate().)</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.OnCreateAutomationPeer">
+      <summary>Returns a FrameAutomationPeer for use by the Silverlight automation infrastructure. (Overrides UIElement OnCreateAutomationPeer().)</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Automation.Peers.AutomationPeer" />
+. A FrameAutomationPeer for the Frame object.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.Source">
+      <summary>Gets or sets the uniform resource identifier (URI) of the current content or the content that is being navigated to.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A value that represents the URI of the current content or the content that is being navigated to.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.SourceProperty">
+      <summary>Identifies the Source dependency property.</summary>
+    </member>
+    <member name="M:System.Windows.Controls.Frame.StopLoading">
+      <summary>Stops asynchronous navigations that have not yet been processed.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Frame.UriMapper">
+      <summary>Gets or sets the object to manage converting a uniform resource identifier (URI) to another URI for this frame.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Navigation.UriMapperBase" />
+. The object to convert URIs for this frame.</returns>
+    </member>
+    <member name="F:System.Windows.Controls.Frame.UriMapperProperty">
+      <summary>Identifies the UriMapper dependency property.</summary>
+    </member>
+    <member name="T:System.Windows.Controls.Page">
+      <summary>Encapsulates content that can be navigated to by a Frame.</summary>
+    </member>
+    <member name="P:System.Windows.Controls.Page.NavigationCacheMode">
+      <summary>Gets or sets a value that indicates whether this page is cached and whether it is cached indefinitely.
+</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Navigation.NavigationCacheMode" />
+. The value that specifies the caching behavior for this page.
+</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Page.NavigationContext">
+      <summary>Gets an object that contains information about the navigation request.</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Navigation.NavigationContext" />
+. An object that contains information about the navigation request.</returns>
+    </member>
+    <member name="P:System.Windows.Controls.Page.NavigationService">
+      <summary>Gets the service that the host used to navigate to this page.
+</summary>
+      <returns>Returns 
+<see cref="T:System.Windows.Navigation.NavigationService" />
+. The service the host used to navigate to this page.</returns>
+    </member>
+    <member name="M:System.Windows.Controls.Page.OnFragmentNavigation(System.Windows.Navigation.FragmentNavigationEventArgs)">
+      <summary>Called when navigating to a fragment on a page.</summary>
+      <param name="e">An object that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.Page.OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs)">
+      <summary>Called when a page is no longer the active page in a frame.</summary>
+      <param name="e">An object that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.Page.OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs)">
+      <summary>Called when a page becomes the active page in a frame.</summary>
+      <param name="e">An object that contains the event data.</param>
+    </member>
+    <member name="M:System.Windows.Controls.Page.OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs)">
+      <summary>Called just before a page is no longer the active page in a frame.</summary>
+      <param name="e">An object that contains the event data.</param>
+    </member>
+    <member name="P:System.Windows.Controls.Page.Title">
+      <summary>Gets or sets the name for the page.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+. The name for the page.</returns>
+    </member>
+    <member name="T:System.Windows.Media.Imaging.Extensions">
+      <summary>Applications will use this class to either encode a WriteableBitmap object into a JPEG stream, or decode a JPEG stream into a WriteableBitmap object.</summary>
+    </member>
+    <member name="M:System.Windows.Media.Imaging.Extensions.LoadJpeg(System.Windows.Media.Imaging.WriteableBitmap,System.IO.Stream)">
+      <summary>This method will allow you to decode a JPEG stream into a WriteableBitmap object.</summary>
+      <param name="bitmap">The WriteableBitmap object.</param>
+      <param name="sourceStream">The image data stream.</param>
+    </member>
+    <member name="M:System.Windows.Media.Imaging.Extensions.SaveJpeg(System.Windows.Media.Imaging.WriteableBitmap,System.IO.Stream,System.Int32,System.Int32,System.Int32,System.Int32)">
+      <summary>This method will allow you to encode a WriteableBitmap object into a JPEG stream. It also supplies parameters for setting the target width and height of the JPEG file. </summary>
+      <param name="bitmap">The WriteableBitmap object.</param>
+      <param name="targetStream">The image data stream.</param>
+      <param name="targetWidth">The target width of the file.</param>
+      <param name="targetHeight">The target height of the file.</param>
+      <param name="orientation">This parameter is not currently used by this method. Use a value of 0 as a placeholder.
+
+</param>
+      <param name="quality">This parameter represents the quality of the JPEG photo with a range between 0 and 100 with 100 being the best photo quality. It is recommended that you do not fall lower than a value of 70 because JPEG picture quality will diminish significantly. </param>
+    </member>
+    <member name="T:System.Windows.Navigation.FragmentNavigationEventArgs">
+      <summary>Provides data for the OnFragmentNavigation method and FragmentNavigation event.</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.FragmentNavigationEventArgs.Fragment">
+      <summary>Gets the uniform resource identifier (URI) fragment.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />
+. The URI fragment.
+</returns>
+    </member>
+    <member name="T:System.Windows.Navigation.FragmentNavigationEventHandler">
+      <summary>Represents the method that will handle the FragmentNavigation event. 
+
+</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.JournalOwnership">
+      <summary>Used to specify the type of journal that should be used by the Frame.</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.JournalOwnership.Automatic">
+      <summary>Indicates that the Frame should first determine its position in the visual tree. If it is at top level then this option is equivalent to <see cref="F:System.Windows.Navigation.JournalOwnership.UsesParentJournal" />. If it is not at top level then this option is equivalent to   <see cref="F:System.Windows.Navigation.JournalOwnership.OwnsJournal" />.</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.JournalOwnership.OwnsJournal">
+      <summary>Indicates that the Frame should keep its own journal and not integrate with the browser. This option can be set on any Frame.</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.JournalOwnership.UsesParentJournal">
+      <summary>Indicates that the Frame should integrate with the browser journal. If the Frame is not a top-level Frame then this is not valid option and an exception will be thrown.</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationCacheMode">
+      <summary>Specifies how the page is cached when used within a frame.</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.NavigationCacheMode.Disabled">
+      <summary>The page is never cached and a new instance of the page is created on each visit.</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.NavigationCacheMode.Required">
+      <summary>The page is cached and the cached instance is reused for every visit regardless of the cache size for the frame.
+</summary>
+    </member>
+    <member name="F:System.Windows.Navigation.NavigationCacheMode.Enabled">
+      <summary>The page is cached, but the cached instance is discarded when the size of the cache for the frame is exceeded.</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationContext">
+      <summary>Represents the state of a navigation operation.
+</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationContext.QueryString">
+      <summary>Gets a collection of query string values.</summary>
+      <returns>Returns 
+<see cref="T:System.Collections.Generic.IDictionary`2" />
+. A collection that contains the query string values.</returns>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationFailedEventArgs">
+      <summary>Provides data for the NavigationFailed event of the NavigationService class and the NavigationFailed event of the Frame class.</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationFailedEventArgs.Exception">
+      <summary>Gets the error from the failed navigation.</summary>
+      <returns>Returns 
+<see cref="T:System.Exception" />
+. A value that represents the error.</returns>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationFailedEventArgs.Handled">
+      <summary>Gets or sets a value that indicates whether the failure event has been handled.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if the event has been handled; otherwise, false. </returns>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationFailedEventArgs.Uri">
+      <summary>Gets the uniform resource identifier (URI) for the content that could not be navigated to.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A value that represents the URI.</returns>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationFailedEventHandler">
+      <summary>Represents the method that will handle the NavigationFailed event.
+</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationService">
+      <summary>Provides methods, properties, and events to support navigation within a Silverlight application.</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationService.CanGoBack">
+      <summary>Gets a value that indicates whether there is at least one entry in the back navigation history.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if there is at least one entry in the back navigation history; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationService.CanGoForward">
+      <summary>Gets a value that indicates whether there is at least one entry in the forward navigation history.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if there is at least one entry in the forward navigation history; otherwise, false.</returns>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationService.CurrentSource">
+      <summary>Gets the uniform resource identifier (URI) of the content that is currently displayed.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A value that represents the URI of content that is currently displayed.</returns>
+    </member>
+    <member name="E:System.Windows.Navigation.NavigationService.FragmentNavigation">
+      <summary>Occurs when navigation to a content fragment begins.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.NavigationService.GoBack">
+      <summary>Navigates to the most recent entry in the back navigation history, or throws an exception if no entry exists in back navigation.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.NavigationService.GoForward">
+      <summary>Navigates to the most recent entry in the forward navigation history, or throws an exception if no entry exists in forward navigation.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.NavigationService.Navigate(System.Uri)">
+      <summary>Navigates to the content specified by the uniform resource identifier (URI).</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. True if the navigation started successfully; otherwise, false.</returns>
+      <param name="source">The URI of the content to navigate to.</param>
+    </member>
+    <member name="E:System.Windows.Navigation.NavigationService.Navigated">
+      <summary>Occurs when the content that is being navigated to has been found and is available.</summary>
+    </member>
+    <member name="E:System.Windows.Navigation.NavigationService.Navigating">
+      <summary>Occurs when a new navigation is requested.</summary>
+    </member>
+    <member name="E:System.Windows.Navigation.NavigationService.NavigationFailed">
+      <summary>Occurs when an error is encountered while navigating to the requested content.</summary>
+    </member>
+    <member name="E:System.Windows.Navigation.NavigationService.NavigationStopped">
+      <summary>Occurs when the StopLoading method is called, or when a new navigation is requested while the current navigation is in progress.</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.NavigationService.Source">
+      <summary>Gets or sets the uniform resource identifier (URI) of the current content or the content that is being navigated to.
+</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A value that represents the URI of the current content or the content that is being navigated to.
+</returns>
+    </member>
+    <member name="M:System.Windows.Navigation.NavigationService.StopLoading">
+      <summary>Stops asynchronous navigations that have not yet been processed.</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.NavigationStoppedEventHandler">
+      <summary>Represents the method that will handle the NavigationStopped event.
+</summary>
+    </member>
+    <member name="T:System.Windows.Navigation.UriMapper">
+      <summary>Converts a uniform resource identifier (URI) into a new URI based on the rules of a matching object specified in a collection of mapping objects.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapper.#ctor">
+      <summary>Initializes a new instance of the UriMapper class.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapper.MapUri(System.Uri)">
+      <summary>Converts a specified uniform resource identifier (URI) into a new URI based on the rules of a matching object in the UriMappings collection.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A URI to use for handling the request instead of the value of the uri parameter. If no object in the UriMappings collection matches uri, the original value for uri is returned.</returns>
+      <param name="uri">Original URI value to be converted to a new URI.</param>
+    </member>
+    <member name="P:System.Windows.Navigation.UriMapper.UriMappings">
+      <summary>Gets a collection of objects that are used to convert a uniform resource identifier (URI) into a new URI.</summary>
+      <returns>Returns 
+<see cref="T:System.Collections.ObjectModel.Collection`1" />
+. A collection of objects that are used to convert URI values.
+</returns>
+    </member>
+    <member name="T:System.Windows.Navigation.UriMapperBase">
+      <summary>Represents the base class for classes that convert a requested uniform resource identifier (URI) into a new URI based on mapping rules.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapperBase.#ctor">
+      <summary>Initializes a new instance of the UriMapperBase class.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapperBase.MapUri(System.Uri)">
+      <summary>When overridden in a derived class, converts a requested uniform resource identifier (URI) to a new URI.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. A URI to use for the request instead of the value in the uri parameter. 
+</returns>
+      <param name="uri">The original URI value to be mapped to a new URI.</param>
+    </member>
+    <member name="T:System.Windows.Navigation.UriMapping">
+      <summary>Defines the pattern for converting a requested uniform resource identifier (URI) into a new URI.</summary>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapping.#ctor">
+      <summary>Initializes a new instance of the UriMapping class.</summary>
+    </member>
+    <member name="P:System.Windows.Navigation.UriMapping.MappedUri">
+      <summary>Gets or sets the uniform resource identifier (URI) that is navigated to instead of the originally requested URI.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. The URI that the requested URI is converted to.</returns>
+    </member>
+    <member name="M:System.Windows.Navigation.UriMapping.MapUri(System.Uri)">
+      <summary>Converts the specified uniform resource identifier (URI) to a new URI, if the specified URI matches the defined template for converting.
+</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. The URI that has been converted, or a null reference  if the URI cannot be converted.</returns>
+      <param name="uri">The URI to convert.</param>
+    </member>
+    <member name="P:System.Windows.Navigation.UriMapping.Uri">
+      <summary>Gets or sets the pattern to match when determining if the requested uniform resource identifier (URI) is converted to a mapped URI.</summary>
+      <returns>Returns 
+<see cref="T:System.Uri" />
+. The URI that will be converted.</returns>
+    </member>
+  </members>
+</doc>

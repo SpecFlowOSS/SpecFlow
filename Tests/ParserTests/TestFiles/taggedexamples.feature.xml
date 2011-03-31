@@ -13,6 +13,8 @@
       <FilePosition line="3" column="1" />
       <Steps>
         <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
           <Keyword>Given </Keyword>
           <Text>some &lt;templated&gt; precondition</Text>
           <FilePosition line="5" column="1" />

@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+-->
+<doc>
+  <assembly>
+    <name>System.Device</name>
+  </assembly>
+  <members>
+    <member name="T:System.Device.Location.CivicAddress">
+      <summary>Represents a location expressed as a civic address.</summary>
+    </member>
+    <member name="M:System.Device.Location.CivicAddress.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.CivicAddress" /> where the value of each field is an empty string.</summary>
+    </member>
+    <member name="M:System.Device.Location.CivicAddress.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.CivicAddress" /> with the provided address data.</summary>
+      <param name="addressLine1">The first line of the civic address, generally used for street name and number.</param>
+      <param name="addressLine2">The second line of the civic address.</param>
+      <param name="building">The building name of the civic address.</param>
+      <param name="city">The city of the civic address.</param>
+      <param name="countryRegion">The country or region of the civic address.</param>
+      <param name="floorLevel">The floor level of the civic address.</param>
+      <param name="postalCode">The postal code of the civic address.</param>
+      <param name="stateProvince">The state or provice of the civic address.</param>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.AddressLine1">
+      <summary>The first line of the civic address, generally used for street name and number.
+</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. </returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.AddressLine2">
+      <summary>The second line of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The second line of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.Building">
+      <summary>The building name of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The building name of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.City">
+      <summary>The city of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The city of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.CountryRegion">
+      <summary>The country or region of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The country or region of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.FloorLevel">
+      <summary>The floor level of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The floor level of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.IsUnknown">
+      <summary>Gets a value indicating whether the <see cref="T:System.Device.Location.CivicAddress" /> object contains any address data.</summary>
+      <returns>Type:  
+<see cref="T:System.Boolean" />. True if any of the fields of the <see cref="T:System.Device.Location.CivicAddress" /> object are not null or empty.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.PostalCode">
+      <summary>The postal code of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The postal code of the civic address.</returns>
+    </member>
+    <member name="P:System.Device.Location.CivicAddress.StateProvince">
+      <summary>The state or province of the civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.String" />. The state or province of the civic address.</returns>
+    </member>
+    <member name="F:System.Device.Location.CivicAddress.Unknown">
+      <summary>Represents a <see cref="T:System.Device.Location.CivicAddress" /> that contains no data.</summary>
+    </member>
+    <member name="T:System.Device.Location.CivicAddressResolver">
+      <summary>Attempts to obtain the civic address for a provided geographical coordinate.</summary>
+    </member>
+    <member name="M:System.Device.Location.CivicAddressResolver.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.CivicAddressResolver" /> class.</summary>
+    </member>
+    <member name="M:System.Device.Location.CivicAddressResolver.ResolveAddress(System.Device.Location.GeoCoordinate)">
+      <summary>Attempts to synchronously obtain a civic address from the provided geographic coordinate. This method is not implemented in the current release.</summary>
+      <returns>Returns 
+<see cref="T:System.Device.Location.CivicAddress" />. The civic address associated with the provided geographic coordinate.</returns>
+      <param name="coordinate">The geographic coordinate from which a civic address is resolved.</param>
+    </member>
+    <member name="M:System.Device.Location.CivicAddressResolver.ResolveAddressAsync(System.Device.Location.GeoCoordinate)">
+      <summary>Attempts to asynchronously obtain a civic address from the provided geographic coordinate. This method is not implemented in the current release.</summary>
+      <param name="coordinate">The geographic coordinate from which a civic address is resolved.</param>
+    </member>
+    <member name="E:System.Device.Location.CivicAddressResolver.ResolveAddressCompleted">
+      <summary>Occurs when an asynchronous request for civic address resolution is completed.</summary>
+    </member>
+    <member name="T:System.Device.Location.GeoCoordinate">
+      <summary>Represents a location expressed as a geographic coordinate.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoCoordinate" /> class where the value of each fields is not a number.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.#ctor(System.Double,System.Double)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoCoordinate" /> class with the provided latitude and longitude.</summary>
+      <param name="latitude">The latitude of the geographic coordinate.</param>
+      <param name="longitude">The longitude of the geographic coordinate.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.#ctor(System.Double,System.Double,System.Double)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoCoordinate" /> class with the provided latitude, longitude, and altitude.</summary>
+      <param name="latitude">The latitude of the geographic coordinate.</param>
+      <param name="longitude">The longitude of the geographic coordinate.</param>
+      <param name="altitude">The altiltude of the geographic coordinate.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoCoordinate" /> class with the provided latitude, longitude, altitude, accuracy, speed, and course.</summary>
+      <param name="latitude">The latitude of the geographic coordinate.</param>
+      <param name="longitude">The longitude of the geographic coordinate.</param>
+      <param name="altitude">The altitude of the geographic coordinate.</param>
+      <param name="horizontalAccuracy">The horizontal accuracy of the geographic coordinate.</param>
+      <param name="verticalAccuracy">The vertical accuracy of the geographic coordinate.</param>
+      <param name="speed">The speed of the geographic coordinate.</param>
+      <param name="course">The course of the geographic coordinate.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.Altitude">
+      <summary>A double representing the altitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The altitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.Course">
+      <summary>A double representing the course of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The course of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.Equals(System.Device.Location.GeoCoordinate)">
+      <summary>Determines whether the specified <see cref="T:System.Device.Location.GeoCoordinate" /> has the same latitude and longitude values as this one.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />. true if the latitude and longitude properties of both objects have the same value.</returns>
+      <param name="other">The <see cref="T:System.Device.Location.GeoCoordinate" /> object to compare with the current instance.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.Equals(System.Object)">
+      <summary>Determines whether the specified object is a <see cref="T:System.Device.Location.GeoCoordinate" /> that has the same latitude and longitude values as this one.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />. true if the latitude and longitude properties of both objects have the same value.</returns>
+      <param name="obj">The object to compare with the current instance.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.GetDistanceTo(System.Device.Location.GeoCoordinate)">
+      <summary>Returns the calculated distance, in meters, from the current <see cref="T:System.Device.Location.GeoCoordinate" /> to the provided <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Returns 
+<see cref="T:System.Double" />. The distance between the two geographic coordinates.</returns>
+      <param name="other">The <see cref="T:System.Device.Location.GeoCoordinate" /> used to calculate the distance from the current <see cref="T:System.Device.Location.GeoCoordinate" />.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.GetHashCode">
+      <summary>Returns a hash code for this instance.</summary>
+      <returns>Returns 
+<see cref="T:System.Int32" />. A hash code for the current <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.HorizontalAccuracy">
+      <summary>A double representing the horizontal accuracy of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The horizontal accuracy of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.IsUnknown">
+      <summary>Gets a value indicating whether the <see cref="T:System.Device.Location.GeoCoordinate" /> contains any geographic coordinate data.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />. true if both the latitude and longitude of the current instance are not a number.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.Latitude">
+      <summary>A double representing the latitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The latitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.Longitude">
+      <summary>A double representing the longitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The longitude of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.op_Equality(System.Device.Location.GeoCoordinate,System.Device.Location.GeoCoordinate)">
+      <summary>Determines if two <see cref="T:System.Device.Location.GeoCoordinate" /> objects are equal.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />. true if the latitude and longitude values of both <see cref="T:System.Device.Location.GeoCoordinate" /> objects are equal.</returns>
+      <param name="left">The first <see cref="T:System.Device.Location.GeoCoordinate" /> to test for equality.</param>
+      <param name="right">The second <see cref="T:System.Device.Location.GeoCoordinate" /> to test for equality.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.op_Inequality(System.Device.Location.GeoCoordinate,System.Device.Location.GeoCoordinate)">
+      <summary>Determines if two <see cref="T:System.Device.Location.GeoCoordinate" /> objects are not equal.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />. true if the latitude and longitude values of both <see cref="T:System.Device.Location.GeoCoordinate" /> objects are not equal.</returns>
+      <param name="left">The first <see cref="T:System.Device.Location.GeoCoordinate" /> to test for inequality.</param>
+      <param name="right">The second <see cref="T:System.Device.Location.GeoCoordinate" /> to test for inequality.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.Speed">
+      <summary>A double representing the speed of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The speed of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinate.ToString">
+      <summary>Returns a string representation of the current <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Returns 
+<see cref="T:System.String" />.
+.</returns>
+    </member>
+    <member name="F:System.Device.Location.GeoCoordinate.Unknown">
+      <summary>Represents a <see cref="T:System.Device.Location.GeoCoordinate" /> that contains no data.</summary>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinate.VerticalAccuracy">
+      <summary>A double representing the vertical accuracy of the <see cref="T:System.Device.Location.GeoCoordinate" />.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The vertical accuracy of the <see cref="T:System.Device.Location.GeoCoordinate" />.</returns>
+    </member>
+    <member name="T:System.Device.Location.GeoCoordinateWatcher">
+      <summary>A provider class exposing the Windows Phone location service.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.#ctor">
+      <summary>Instantiates a new instance of the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> class with the <see cref="P:System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy" /> value of <see cref="F:System.Device.Location.GeoPositionAccuracy.Low" />.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.#ctor(System.Device.Location.GeoPositionAccuracy)">
+      <summary>Instantiates a new instance of the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> class with the provided <see cref="P:System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy" /> value.</summary>
+      <param name="desiredAccuracy">A member of the <see cref="T:System.Device.Location.GeoPositionAccuracy" /> enumeration specifying the <see cref="P:System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy" /> value for the <see cref="T:System.Device.Location.GeoCoordinateWatcher" />.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy">
+      <summary>The desired accuracy for data returned from the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPositionAccuracy" />. The desired accuracy for location data.</returns>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Dispose">
+      <summary>Releases managed and unmanaged resources used by the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> and stops the acquisition of data from the location service.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Dispose(System.Boolean)">
+      <summary>Releases unmanaged and optionally releases the managed resources used by the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> and stops the acquisition of data from the location service.</summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only managed resources.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Finalize">
+      <summary>Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> is reclaimed by garbage collection.</summary>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinateWatcher.MovementThreshold">
+      <summary>The minimum distance that must be travelled between successive <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> events.</summary>
+      <returns>Type: 
+<see cref="T:System.Double" />. The distance, in meters, that must be travelled between successive <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> events.</returns>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.OnPositionChanged(System.Device.Location.GeoPositionChangedEventArgs{System.Device.Location.GeoCoordinate})">
+      <summary>Raises the <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> event.</summary>
+      <param name="e">A <see cref="T:System.Device.Location.GeoPositionChangedEventArgs`1" /> containing the event data.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.OnPositionStatusChanged(System.Device.Location.GeoPositionStatusChangedEventArgs)">
+      <summary>Raises the <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> event.</summary>
+      <param name="e">A <see cref="T:System.Device.Location.GeoPositionStatusChangedEventArgs" /> object containing the event data.</param>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.OnPropertyChanged(System.String)">
+      <summary>Raises the PropertyChanged event for the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> class.</summary>
+      <param name="propertyName"></param>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinateWatcher.Permission">
+      <summary>The application’s level of access to the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPositionPermission" />. The application’s access to the location service.</returns>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinateWatcher.Position">
+      <summary>The most recent position obtained from the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPosition`1" />. The most recent position obtained from the location service.</returns>
+    </member>
+    <member name="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged">
+      <summary>Occurs when the location service detects a change in position.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Start">
+      <summary>Starts the acquisition of data from the location service.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Start(System.Boolean)">
+      <summary>Starts the acquisition of data from the location service.</summary>
+      <param name="suppressPermissionPrompt">This parameter is not used.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoCoordinateWatcher.Status">
+      <summary>The status of the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPositionStatus" /> The status of the location service..</returns>
+    </member>
+    <member name="E:System.Device.Location.GeoCoordinateWatcher.StatusChanged">
+      <summary>Occurs when the status of the location service changes.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.Stop">
+      <summary>Stops the acquisition of data from the location service.</summary>
+    </member>
+    <member name="E:System.Device.Location.GeoCoordinateWatcher.System#ComponentModel#INotifyPropertyChanged#PropertyChanged">
+      <summary>Occurs when a <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> property changes.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoCoordinateWatcher.TryStart(System.Boolean,System.TimeSpan)">
+      <summary>Attempts to start the acquisition of data from the location service. If the provided timeout interval is exceeded before the location service responds, the request for location is stopped and the method returns false.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />
+. true if the location service responds within the timeout window. Otherwise, false.</returns>
+      <param name="suppressPermissionPrompt">This parameter is not used.</param>
+      <param name="timeout">A TimeSpan object specifying the amount of time to wait for location data acquisition to begin.</param>
+    </member>
+    <member name="T:System.Device.Location.GeoPosition`1">
+      <summary>Represents a geographic position consisting of a location and a time stamp.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Device.Location.GeoPosition`1.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoPosition`1" /> class with no data.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoPosition`1.#ctor(System.DateTimeOffset,`0)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoPosition`1" /> class with the provided time stamp and location.</summary>
+      <param name="timestamp">A DateTimeOffset object specifying the point in time associated with the <see cref="T:System.Device.Location.GeoPosition`1" /> object.</param>
+      <param name="position"></param>
+    </member>
+    <member name="P:System.Device.Location.GeoPosition`1.Location">
+      <summary>Gets or sets the location of the <see cref="T:System.Device.Location.GeoPosition`1" /> object.</summary>
+    </member>
+    <member name="P:System.Device.Location.GeoPosition`1.Timestamp">
+      <summary>Gets or sets the time stamp of the <see cref="T:System.Device.Location.GeoPosition`1" /> object.</summary>
+      <returns>Type: 
+<see cref="T:System.DateTimeOffset" />. The point in time associated with the <see cref="T:System.Device.Location.GeoPosition`1" /> object.
+</returns>
+    </member>
+    <member name="T:System.Device.Location.GeoPositionAccuracy">
+      <summary>Defines the levels of accuracy that can be configured for the location service by using the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> constructor.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionAccuracy.Default">
+      <summary />
+    </member>
+    <member name="F:System.Device.Location.GeoPositionAccuracy.High">
+      <summary>High accuracy.</summary>
+    </member>
+    <member name="T:System.Device.Location.GeoPositionChangedEventArgs`1">
+      <summary>Provides data for <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> events.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Device.Location.GeoPositionChangedEventArgs`1.#ctor(System.Device.Location.GeoPosition{`0})">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoPositionChangedEventArgs`1" /> class.</summary>
+      <param name="position">A <see cref="T:System.Device.Location.GeoPosition`1" /> object containing the location and time stamp data for the event.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoPositionChangedEventArgs`1.Position">
+      <summary>A <see cref="T:System.Device.Location.GeoPosition`1" /> object containing the location and time stamp data for the <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> event.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPosition`1" />.</returns>
+    </member>
+    <member name="T:System.Device.Location.GeoPositionPermission">
+      <summary>Defines the level of access an application has to the location service. Used by the <see cref="P:System.Device.Location.GeoCoordinateWatcher.Permission" /> property.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionPermission.Unknown">
+      <summary>Access to the location service is unknown.
+</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionPermission.Granted">
+      <summary>Access to the location service is granted.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionPermission.Denied">
+      <summary>Access to the location service is denied.</summary>
+    </member>
+    <member name="T:System.Device.Location.GeoPositionStatus">
+      <summary>Defines the status values for the location service. Used by the <see cref="P:System.Device.Location.GeoCoordinateWatcher.Status" /> property.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionStatus.Disabled">
+      <summary>The location service is disabled or unsupported.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionStatus.Ready">
+      <summary>The location service is enabled and ready.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionStatus.Initializing">
+      <summary>The location service is attempting to acquire data.</summary>
+    </member>
+    <member name="F:System.Device.Location.GeoPositionStatus.NoData">
+      <summary>The location sensors are accessible but the service is unable to resolve location data.</summary>
+    </member>
+    <member name="T:System.Device.Location.GeoPositionStatusChangedEventArgs">
+      <summary>Provides data for <see cref="E:System.Device.Location.GeoCoordinateWatcher.StatusChanged" /> events.</summary>
+    </member>
+    <member name="M:System.Device.Location.GeoPositionStatusChangedEventArgs.#ctor(System.Device.Location.GeoPositionStatus)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.GeoPositionStatusChangedEventArgs" /> class.</summary>
+      <param name="status">A member of the GeoPositionStatus enumeration describing the current status of the location service.</param>
+    </member>
+    <member name="P:System.Device.Location.GeoPositionStatusChangedEventArgs.Status">
+      <summary>The GeoPositionStatus value reflecting the updated status of the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPositionStatus" />.</returns>
+    </member>
+    <member name="T:System.Device.Location.ICivicAddressResolver">
+      <summary>Defines the interface for resolving civic addresses. Implemented by <see cref="T:System.Device.Location.CivicAddressResolver" />.</summary>
+    </member>
+    <member name="M:System.Device.Location.ICivicAddressResolver.ResolveAddress(System.Device.Location.GeoCoordinate)">
+      <summary>Attempts to synchronously obtain a civic address from the provided geographic coordinate.</summary>
+      <returns>Returns 
+<see cref="T:System.Device.Location.CivicAddress" />. The civic address associated with the provided geographic coordinate.</returns>
+      <param name="coordinate">The geographic coordinate from which a civic address is resolved.</param>
+    </member>
+    <member name="M:System.Device.Location.ICivicAddressResolver.ResolveAddressAsync(System.Device.Location.GeoCoordinate)">
+      <summary>Attempts to asynchronously obtain a civic address from the provided geographic coordinate.</summary>
+      <param name="coordinate">Attempts to asynchronously obtain a civic address from the provided geographic coordinate.
+</param>
+    </member>
+    <member name="E:System.Device.Location.ICivicAddressResolver.ResolveAddressCompleted">
+      <summary>Occurs when the <see cref="M:System.Device.Location.ICivicAddressResolver.ResolveAddressAsync(System.Device.Location.GeoCoordinate)" /> request is completed.</summary>
+    </member>
+    <member name="T:System.Device.Location.IGeoPositionWatcher`1">
+      <summary>Defines the interface for resolving geographic positions. Implemented by the <see cref="T:System.Device.Location.GeoCoordinateWatcher" /> class.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="P:System.Device.Location.IGeoPositionWatcher`1.Position">
+      <summary>The most recent position obtained from the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPosition`1" />.</returns>
+    </member>
+    <member name="E:System.Device.Location.IGeoPositionWatcher`1.PositionChanged">
+      <summary>Occurs when the location service detects a change in position.</summary>
+    </member>
+    <member name="M:System.Device.Location.IGeoPositionWatcher`1.Start">
+      <summary>Starts the acquisition of data from the location service.</summary>
+    </member>
+    <member name="M:System.Device.Location.IGeoPositionWatcher`1.Start(System.Boolean)">
+      <summary>Starts the acquisition of data from the location service.</summary>
+      <param name="suppressPermissionPrompt">This parameter is not used.</param>
+    </member>
+    <member name="P:System.Device.Location.IGeoPositionWatcher`1.Status">
+      <summary>The status of the location service.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.GeoPositionStatus" />.</returns>
+    </member>
+    <member name="E:System.Device.Location.IGeoPositionWatcher`1.StatusChanged">
+      <summary>Occurs when the status of the location service changes.</summary>
+    </member>
+    <member name="M:System.Device.Location.IGeoPositionWatcher`1.Stop">
+      <summary>Stops the acquisition of data from the location service.</summary>
+    </member>
+    <member name="M:System.Device.Location.IGeoPositionWatcher`1.TryStart(System.Boolean,System.TimeSpan)">
+      <summary>Attempts to start the acquisition of data from the location service.</summary>
+      <returns>Returns 
+<see cref="T:System.Boolean" />.</returns>
+      <param name="suppressPermissionPrompt">This parameter is not used.</param>
+      <param name="timeout">A TimeSpan object specifying the amount of time to wait for location data acquisition to begin.</param>
+    </member>
+    <member name="T:System.Device.Location.ResolveAddressCompletedEventArgs">
+      <summary>Provides data for <see cref="E:System.Device.Location.CivicAddressResolver.ResolveAddressCompleted" /> events.</summary>
+    </member>
+    <member name="M:System.Device.Location.ResolveAddressCompletedEventArgs.#ctor(System.Device.Location.CivicAddress,System.Exception,System.Boolean,System.Object)">
+      <summary>Initializes a new instance of the <see cref="T:System.Device.Location.ResolveAddressCompletedEventArgs" /> class.</summary>
+      <param name="address">A <see cref="T:System.Device.Location.CivicAddress" /> object containing the resolved address.</param>
+      <param name="error">This parameter is not used.</param>
+      <param name="cancelled">This parameter is not used.</param>
+      <param name="userState">This parameter is not used.</param>
+    </member>
+    <member name="P:System.Device.Location.ResolveAddressCompletedEventArgs.Address">
+      <summary>The resolved civic address.</summary>
+      <returns>Type: 
+<see cref="T:System.Device.Location.CivicAddress" />
+. The resolved civic address.</returns>
+    </member>
+  </members>
+</doc>

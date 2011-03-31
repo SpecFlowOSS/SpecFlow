@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<FileList Redist="Microsoft-Windows-CLRCoreComp.Silverlight.4.0" Name="Silverlight 4">
+  <File AssemblyName="Microsoft.VisualBasic" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="mscorlib" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Core" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Net" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Runtime.Serialization" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.ServiceModel" Version="2.0.5.0" PublicKeyToken="31bf3856ad364e35" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.ServiceModel.Web" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Windows.Browser" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Windows" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+  <File AssemblyName="System.Xml" Version="2.0.5.0" PublicKeyToken="7cec85d7bea7798e" Culture="neutral" ProcessorArchitecture="MSIL" InGac="false" /> 
+</FileList>

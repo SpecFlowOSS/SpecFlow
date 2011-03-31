@@ -1,0 +1,68 @@
+﻿<!--
+***********************************************************************************************
+Microsoft.Silverlight.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- 
+    ================================================================
+                        GetFrameworkPaths
+                        
+    Override GetFrameworkPaths in Microsoft.Common.targets so that 
+    references resolve to the silverlight assemblies rather than the 
+    desktop CLR assemblies
+    ================================================================
+     -->
+    <Target
+        Name="GetFrameworkPaths"
+        DependsOnTargets="$(GetFrameworkPathsDependsOn)"
+     >
+
+        <GetSilverlightFrameworkPath 
+            RegistryBase="$(FrameworkRegistryBaseWithVersion)"
+            RuntimePathRegistryKey="$(RuntimePathRegistryKey)"
+            RuntimeVersionRegistryKey="$(RuntimeVersionRegistryKey)"
+        >
+            <Output TaskParameter="SilverlightPath" PropertyName="TargetFrameworkDirectory" Condition="'$(TargetFrameworkDirectory)' == ''"/>
+            <Output TaskParameter="SilverlightSDKPaths" ItemName="_TargetFrameworkSDKDirectoryItem" Condition="'$(TargetFrameworkSDKDirectory)' == ''"/>
+            <Output TaskParameter="SilverlightRuntimeVersion" PropertyName="SilverlightRuntimeVersion" Condition="'$(SilverlightRuntimeVersion)' == ''"/>
+        </GetSilverlightFrameworkPath>
+
+        <!-- Reset some items from the above task. Will remove when we merge with SL build system -->
+        <!-- this property group have been conditioned in order to be able to build WP7 apps on build server without the SDK installed. -->
+        <PropertyGroup Condition="'$(UseCustomWindowsPhoneSDKFolder)' != 'true'">
+            <_FullFrameworkReferenceAssemblyPaths>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetPathToStandardLibraries($(TargetFrameworkIdentifier), $(TargetFrameworkVersion), ''))</_FullFrameworkReferenceAssemblyPaths>
+            <TargetFrameworkDirectory>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetPathToStandardLibraries($(TargetFrameworkIdentifier), $(TargetFrameworkVersion), $(TargetFrameworkProfile)))</TargetFrameworkDirectory>
+        </PropertyGroup>
+      
+        <PropertyGroup>
+            <FrameworkPathOverride>$(TargetFrameworkDirectory)</FrameworkPathOverride>
+            <TargetFrameworkSDKDirectory Condition="'$(TargetFrameworkSDKDirectory)' == ''">@(_TargetFrameworkSDKDirectoryItem)</TargetFrameworkSDKDirectory>
+            <SdkPath>$(TargetFrameworkSDKDirectory)</SdkPath>
+        </PropertyGroup>
+        
+        <ItemGroup>
+            <_TargetFrameworkDirectoryItem Include="$(TargetFrameworkDirectory)"/>
+        </ItemGroup>
+	    <ItemGroup>
+            <_TargetFrameworkSDKDirectoryItem Include="$(TargetFrameworkSDKDirectory)" Condition="'@(_TargetFrameworkSDKDirectoryItem)' == ''"/>
+        </ItemGroup>
+        
+        <!-- Create the assembly search paths property. This defines where\how references are resolved -->
+        <CreateProperty Value="{CandidateAssemblyFiles};$(ReferencePath);{HintPathFromItem};{TargetFrameworkDirectory};$(TargetFrameworkSDKDirectory);{RawFileName};$(OutDir)">
+            <Output TaskParameter="Value" PropertyName="AssemblySearchPaths"/>
+        </CreateProperty>
+
+        <ValidateSilverlightFrameworkPaths
+            TargetFrameworkDirectory = "$(TargetFrameworkDirectory)"
+        />
+        
+    </Target>
+</Project>
