@@ -63,9 +63,9 @@ namespace TechTalk.SpecFlow.Bindings
             else
             {
 #if WINDOWS_PHONE
-                bindingType = method.DeclaringType;
+                bindingType = method.ReflectedType;
 #else
-								Type bindingType = method.DeclaringType;
+								Type bindingType = method.ReflectedType;
 #endif
 
 								Expression<Func<object>> getInstanceExpression =
@@ -107,9 +107,9 @@ namespace TechTalk.SpecFlow.Bindings
             else
             {
 #if WINDOWS_PHONE
-								bindingType = method.DeclaringType;
+								bindingType = method.ReflectedType;
 #else
-								Type bindingType = method.DeclaringType;
+								Type bindingType = method.ReflectedType;
 #endif
 
 								Expression<Func<object>> getInstanceExpression =

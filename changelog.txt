@@ -36,6 +36,7 @@ Fixed issues:
 + Scenario Outline - Multiple Scenarios table header row VS formatting issue (Issue 16)
 + SpecFlow step definition report generator throws unhandled exception when a scenario starts with "And" (Issue 45) 
 + VS2010: SpecFlow writes out feature and code-behind files with inconsistent line endings (Issue 28)
++ Step definitions can be implemented in abstract base classes (but the abstract base class must not have the [Binding] attribute). SpecFlow no longer tries to instantiate the abstract base class. (Issue 47)
 
 1.5.0 - 2010/12/17
 
