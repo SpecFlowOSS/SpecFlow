@@ -19,6 +19,7 @@ New features:
 + VS2010: "go to binding"
 + VS2010: Automatic table formatting when "|" is typed
 + Windows Phone 7 support, see https://github.com/techtalk/SpecFlow/wiki/Windows-Phone-7-Support (by Max Paulousky)
++ Silverlight runtime can be configured from query string (by Matt Ellis)
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
