@@ -9,11 +9,4 @@ namespace TechTalk.SpecFlow
         VB = ProgrammingLanguage.VB,
         Other = ProgrammingLanguage.Other
     }
-
-    public enum ProgrammingLanguage
-    {
-        Other,
-        CSharp,
-        VB
-    }
 }

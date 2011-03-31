@@ -159,8 +159,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Runtime\GenerationTargetLanguage.cs">
-      <Link>BindingSkeletons\GenerationTargetLanguage.cs</Link>
+    <Compile Include="..\..\Runtime\ProgrammingLanguage.cs">
+      <Link>BindingSkeletons\ProgrammingLanguage.cs</Link>
     </Compile>
     <Compile Include="..\..\Runtime\StringExtensions.cs">
       <Link>BindingSkeletons\StringExtensions.cs</Link>

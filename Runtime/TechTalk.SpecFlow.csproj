@@ -73,7 +73,8 @@
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="DictionaryHelpers.cs" />
-    <Compile Include="GenerationTargetLanguage.cs" />
+    <Compile Include="GenerationTargetLanguage_obs.cs" />
+    <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
     <Compile Include="Bindings\StepArgumentTypeConverter.cs" />
