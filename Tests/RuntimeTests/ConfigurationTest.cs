@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void CanLoadConfigFromConfigFile()
         {
-            var runtimeConfig = RuntimeConfiguration.LoadFromConfigFile();
+            var runtimeConfig = RuntimeConfiguration.GetConfig();
             Assert.IsNotNull(runtimeConfig);
         }
 
