@@ -1,6 +1,7 @@
 ﻿using System;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
@@ -11,15 +12,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
     internal class VsGeneratorServices : GeneratorServices
     {
         private readonly Project project;
+        private readonly ISpecFlowConfigurationReader configurationReader;
 
         public VsGeneratorServices(Project project) : base(true, false)
         {
             this.project = project;
+            this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
         }
 
         protected override SpecFlowConfigurationHolder GetConfigurationHolder()
         {
-            return DteProjectReader.LoadConfigHolderFromProject(project);
+            return configurationReader.ReadConfiguration(new VsProjectReference(project));
         }
 
         protected override ProjectSettings GetProjectSettings()

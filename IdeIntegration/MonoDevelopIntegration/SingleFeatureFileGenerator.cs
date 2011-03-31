@@ -11,6 +11,7 @@ using MonoDevelop.Projects;
 
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 
 namespace MonoDevelop.TechTalk.SpecFlow

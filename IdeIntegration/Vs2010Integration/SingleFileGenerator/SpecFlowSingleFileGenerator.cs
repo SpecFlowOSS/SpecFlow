@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;

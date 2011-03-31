@@ -7,6 +7,10 @@ using System.Text;
 using Microsoft.Build.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
@@ -14,30 +18,35 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
     {
         private readonly GeneratorTaskBase task;
 
-        public MsBuildBatchGenerator(TextWriter traceWriter, bool verboseOutput, GeneratorTaskBase task) : base(traceWriter, verboseOutput)
+        public MsBuildBatchGenerator(ITraceListener traceListener, ITestGeneratorFactory testGeneratorFactory, GeneratorTaskBase task) : base(traceListener, testGeneratorFactory)
         {
             this.task = task;
         }
 
         private GeneratorTaskBase.OutputFile outputFile = null;
 
-        protected override StreamWriter GetWriter(string codeFileFullPath)
+        protected override FeatureFileInput CreateFeatureFileInput(SpecFlowFeatureFile featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
         {
-            outputFile = task.PrepareOutputFile(codeFileFullPath);
+            var featureFileInput = base.CreateFeatureFileInput(featureFile, generator, specFlowProject);
 
-            return base.GetWriter(outputFile.FilePathForWriting);
+            outputFile = task.PrepareOutputFile(generator.GetTestFullPath(featureFileInput));
+            featureFileInput.GeneratedTestProjectRelativePath =
+                FileSystemHelper.GetRelativePath(outputFile.FilePathForWriting, specFlowProject.ProjectSettings.ProjectFolder);
+            return featureFileInput;
         }
 
-        protected override void GenerateFile(SpecFlowGenerator generator, SpecFlowFeatureFile featureFile, string codeFileFullPath)
+        protected override TestGeneratorResult GenerateTestFile(ITestGenerator generator, FeatureFileInput featureFileInput, GenerationSettings generationSettings)
         {
             try
             {
-                base.GenerateFile(generator, featureFile, codeFileFullPath);
+                var result = base.GenerateTestFile(generator, featureFileInput, generationSettings);
                 outputFile.Done(task.Errors);
+                return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 task.RecordException(ex);
+                return new TestGeneratorResult(new TestGenerationError(ex));
             }
             finally
             {
@@ -58,8 +67,8 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ProjectPath);
 
-            BatchGenerator batchGenerator = new MsBuildBatchGenerator(
-                GetMessageWriter(MessageImportance.High), VerboseOutput, this);
+            ITraceListener traceListener = VerboseOutput ? (ITraceListener)new TextWriterTraceListener(GetMessageWriter(MessageImportance.High)) : new NullListener();
+            BatchGenerator batchGenerator = new MsBuildBatchGenerator(traceListener, new TestGeneratorFactory(), this);
             batchGenerator.ProcessProject(specFlowProject, ForceGeneration);
         }
     }

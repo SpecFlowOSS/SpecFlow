@@ -242,7 +242,6 @@
     <Compile Include="LanguageService\ProjectScope.cs" />
     <Compile Include="LanguageService\ProjectScopeFactory.cs" />
     <Compile Include="LanguageService\ShiftedGherkinFileBlock.cs" />
-    <Compile Include="Utils\FileSystemHelper.cs" />
     <Compile Include="Utils\ObservableExtensions.cs" />
     <Compile Include="Utils\SynchronizationHelper.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">

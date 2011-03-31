@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.BuildEngine;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.Reporting
 {

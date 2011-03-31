@@ -3,10 +3,12 @@ using System.IO;
 using NConsoler;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Reporting.MsTestExecutionReport;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport;
-using MsBuildProjectReader = TechTalk.SpecFlow.Generator.Configuration.MsBuildProjectReader;
+using TechTalk.SpecFlow.Tracing;
+using MsBuildProjectReader = TechTalk.SpecFlow.Generator.Project.MsBuildProjectReader;
 
 namespace TechTalk.SpecFlow.Tools
 {
@@ -25,7 +27,8 @@ namespace TechTalk.SpecFlow.Tools
             [Optional(false, "verbose", "v")] bool verboseOutput)
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
-            var batchGenerator = new BatchGenerator(Console.Out, verboseOutput);
+            ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
+            var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
             batchGenerator.ProcessProject(specFlowProject, forceGeneration);
         }
 

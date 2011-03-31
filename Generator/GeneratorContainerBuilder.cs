@@ -2,6 +2,7 @@
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.Generator
 {
@@ -9,22 +10,19 @@ namespace TechTalk.SpecFlow.Generator
     {
         public static IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder)
         {
-            ConfigurationSectionHandler specFlowConfigSection = null;
-            if (configurationHolder != null && configurationHolder.HasConfiguration)
-                specFlowConfigSection = ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
-
-            GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
-            if (specFlowConfigSection != null)
-                generatorConfiguration.UpdateFromConfigFile(specFlowConfigSection);
+            var configLoader = new RuntimeSpecFlowProjectConfigurationLoader();
+            var specFlowConfiguration = configLoader.LoadConfiguration(configurationHolder, new AppDomainProjectReference());
 
             var container = new ObjectContainer();
 
-            container.RegisterInstanceAs(generatorConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration.GeneratorConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration.RuntimeConfiguration);
 
             RegisterDefaults(container);
 
-            if (specFlowConfigSection != null && specFlowConfigSection.Dependencies != null)
-                container.RegisterFromConfiguration(specFlowConfigSection.Dependencies);
+            if (specFlowConfiguration.GeneratorConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.GeneratorConfiguration.CustomDependencies);
 
             return container;
         }

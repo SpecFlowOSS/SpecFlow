@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.Utils
+namespace TechTalk.SpecFlow.Utils
 {
-    internal static class FileSystemHelper
+    public static class FileSystemHelper
     {
         public static string GetRelativePath(string path, string basePath)
         {

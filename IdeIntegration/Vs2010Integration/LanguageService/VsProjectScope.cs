@@ -244,7 +244,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
-            return DteProjectReader.LoadSpecFlowConfigurationFromDteProject(project) ?? new SpecFlowProjectConfiguration();
+            ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
+            ISpecFlowProjectConfigurationLoader configurationLoader = new VsSpecFlowProjectConfigurationLoader(); //TODO: load through DI
+
+            IProjectReference projectReference = new VsProjectReference(project);
+
+            return configurationLoader.LoadConfiguration(configurationReader.ReadConfiguration(projectReference), projectReference);
         }
 
         private void OnSpecFlowProjectConfigurationChanged()

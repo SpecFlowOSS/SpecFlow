@@ -4,94 +4,67 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Generator
 {
     public class BatchGenerator
     {
-        private readonly TextWriter traceWriter;
-        private readonly bool verboseOutput;
+        private readonly ITraceListener traceListener;
+        private readonly ITestGeneratorFactory testGeneratorFactory;
 
-        public BatchGenerator(TextWriter traceWriter, bool verboseOutput)
+        public BatchGenerator(ITraceListener traceListener, ITestGeneratorFactory testGeneratorFactory)
         {
-            this.traceWriter = traceWriter;
-            this.verboseOutput = verboseOutput;
+            this.traceListener = traceListener;
+            this.testGeneratorFactory = testGeneratorFactory;
+        }
+
+        protected virtual ITestGenerator CreateGenerator(SpecFlowProject specFlowProject)
+        {
+            return testGeneratorFactory.CreateGenerator(specFlowProject.ConfigurationHolder, specFlowProject.ProjectSettings);
         }
 
         public void ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
         {
-            if (verboseOutput)
-                traceWriter.WriteLine("Processing project: " + specFlowProject);
+            traceListener.WriteToolOutput("Processing project: " + specFlowProject);
+            GenerationSettings generationSettings = new GenerationSettings()
+                                                        {
+                                                            CheckUpToDate = !forceGenerate,
+                                                            WriteResultToFile = true
+                                                        };
 
-            SpecFlowGenerator generator = new SpecFlowGenerator(specFlowProject);
-
-            foreach (var featureFile in specFlowProject.FeatureFiles)
+            using (var generator = CreateGenerator(specFlowProject))
             {
-                string featureFileFullPath = featureFile.GetFullPath(specFlowProject);
 
-                string codeFileFullPath = featureFileFullPath + ".cs";
-
-                bool needsProcessing = true;
-
-                if (!forceGenerate && IsUpToDate(generator, featureFileFullPath, codeFileFullPath))
+                foreach (var featureFile in specFlowProject.FeatureFiles)
                 {
-                    needsProcessing = false;
-                }
+                    string featureFileFullPath = featureFile.GetFullPath(specFlowProject);
+                    traceListener.WriteToolOutput("Processing file: {0}", featureFileFullPath);
 
-                if (verboseOutput || needsProcessing)
-                {
-                    traceWriter.WriteLine("Processing file: {0}", featureFileFullPath);
-                    if (!needsProcessing)
-                        traceWriter.WriteLine("  up-to-date");
-                }
-
-                if (needsProcessing)
-                {
-                    GenerateFile(generator, featureFile, codeFileFullPath);
+                    var featureFileInput = CreateFeatureFileInput(featureFile, generator, specFlowProject);
+                    var generationResult = GenerateTestFile(generator, featureFileInput, generationSettings);
+                    if (!generationResult.Success)
+                    {
+                        traceListener.WriteToolOutput("  generation failed");
+                    }
+                    else if (generationResult.IsUpToDate)
+                    {
+                        traceListener.WriteToolOutput("  up-to-date");
+                    }
                 }
             }
         }
 
-        protected virtual void GenerateFile(SpecFlowGenerator generator, SpecFlowFeatureFile featureFile, string codeFileFullPath)
+        protected virtual FeatureFileInput CreateFeatureFileInput(SpecFlowFeatureFile featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
         {
-            using (var writer = GetWriter(codeFileFullPath))
-            {
-                generator.GenerateCSharpTestFile(featureFile, writer);
-            }
+            return featureFile.ToFeatureFileInput();
         }
 
-        protected virtual StreamWriter GetWriter(string codeFileFullPath)
+        protected virtual TestGeneratorResult GenerateTestFile(ITestGenerator generator, FeatureFileInput featureFileInput, GenerationSettings generationSettings)
         {
-            return new StreamWriter(codeFileFullPath, false, Encoding.UTF8);
-        }
-
-        private static bool IsUpToDate(SpecFlowGenerator generator, string featureFileFullPath, string codeFileFullPath)
-        {
-            // check existance of the target file
-            if (!File.Exists(codeFileFullPath))
-                return false;
-
-            // check modification time of the target file
-            try
-            {
-                var featureFileModificationTime = File.GetLastWriteTime(featureFileFullPath);
-                var codeFileModificationTime = File.GetLastWriteTime(codeFileFullPath);
-
-                if (featureFileModificationTime > codeFileModificationTime)
-                    return false;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                return false;
-            }
-
-            // check tools version
-            var codeFileVersion = generator.GetGeneratedFileSpecFlowVersion(codeFileFullPath);
-            if (codeFileVersion == null || codeFileVersion != generator.GetCurrentSpecFlowVersion())
-                return false;
-
-            return true;
+            return generator.GenerateTestFile(featureFileInput, generationSettings);
         }
     }
 }

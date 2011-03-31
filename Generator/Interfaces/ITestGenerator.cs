@@ -7,5 +7,6 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     {
         TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings);
         Version DetectGeneratedTestVersion(FeatureFileInput featureFileInput);
+        string GetTestFullPath(FeatureFileInput featureFileInput);
     }
 }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using MiniDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
@@ -9,6 +10,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class GeneratorConfiguration
     {
+        public ContainerRegistrationCollection CustomDependencies { get; set; }
+
         public Version GeneratorVersion { get; set; }
 
         //language settings
@@ -61,6 +64,9 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
             }
+
+            if (configSection.Dependencies != null)
+                CustomDependencies = configSection.Dependencies;
         }
 
         private static Type GetTypeConfig(string typeName)

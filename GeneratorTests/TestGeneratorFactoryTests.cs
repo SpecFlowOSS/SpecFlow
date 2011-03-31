@@ -43,6 +43,11 @@ namespace GeneratorTests
                 throw new NotImplementedException();
             }
 
+            public string GetTestFullPath(FeatureFileInput featureFileInput)
+            {
+                throw new NotImplementedException();
+            }
+
             public void Dispose()
             {
                 //nop;

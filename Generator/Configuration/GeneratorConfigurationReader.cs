@@ -3,9 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
+    [Obsolete]
     public static class GeneratorConfigurationReader
     {
         public static void UpdateConfigFromFile(GeneratorConfiguration generatorConfiguration, string configFile)

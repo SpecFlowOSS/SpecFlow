@@ -1,9 +1,11 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Microsoft.CSharp;
 using Microsoft.VisualBasic;
 using TechTalk.SpecFlow.Configuration;
@@ -17,7 +19,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public class TestGenerator : ErrorHandlingTestGenerator
+    public class TestGenerator : ErrorHandlingTestGenerator, ITestGenerator
     {
         protected readonly GeneratorConfiguration generatorConfiguration;
         protected readonly ProjectSettings projectSettings;
@@ -57,6 +59,9 @@ namespace TechTalk.SpecFlow.Generator
             if (featureFileInput == null) throw new ArgumentNullException("featureFileInput");
             if (settings == null) throw new ArgumentNullException("settings");
 
+            if (settings.CheckUpToDate && IsUpToDate(featureFileInput))
+                return new TestGeneratorResult(null, true);
+
             StringWriter outputStringWriter = new StringWriter();
             var outputWriter = new IndentProcessingWriter(outputStringWriter);
 
@@ -74,7 +79,47 @@ namespace TechTalk.SpecFlow.Generator
             AddSpecFlowFooter(codeProvider, outputWriter, codeDomHelper);
             outputWriter.Flush();
 
-            return new TestGeneratorResult(outputStringWriter.ToString(), false);
+            var generatedTestCode = outputStringWriter.ToString();
+
+            if (settings.WriteResultToFile)
+            {
+                File.WriteAllText(GetTestFullPath(featureFileInput), generatedTestCode, Encoding.UTF8);
+            }
+
+            return new TestGeneratorResult(generatedTestCode, false);
+        }
+
+        private bool IsUpToDate(FeatureFileInput featureFileInput)
+        {
+            string codeFileFullPath = GetTestFullPath(featureFileInput);
+            if (codeFileFullPath == null)
+                return false;
+
+            // check existance of the target file
+            if (!File.Exists(codeFileFullPath))
+                return false;
+
+            // check modification time of the target file
+            try
+            {
+                var featureFileModificationTime = File.GetLastWriteTime(featureFileInput.GetFullPath(projectSettings));
+                var codeFileModificationTime = File.GetLastWriteTime(codeFileFullPath);
+
+                if (featureFileModificationTime > codeFileModificationTime)
+                    return false;
+
+                // check tools version
+                var codeFileVersion = DetectGeneratedTestVersionWithExceptions(featureFileInput);
+                if (codeFileVersion == null || codeFileVersion != generatorConfiguration.GeneratorVersion)
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+
+            return true;
         }
 
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper)
@@ -115,7 +160,14 @@ namespace TechTalk.SpecFlow.Generator
             return targetNamespace;
         }
 
+        public string GetTestFullPath(FeatureFileInput featureFileInput)
+        {
+            var path = featureFileInput.GetGeneratedTestFullPath(projectSettings);
+            if (path != null)
+                return path;
 
+            return featureFileInput.GetFullPath(projectSettings) + GenerationTargetLanguage.GetExtension(projectSettings.ProjectPlatformSettings.Language);
+        }
 
         #region Header & Footer
         protected override Version DetectGeneratedTestVersionWithExceptions(FeatureFileInput featureFileInput)
@@ -123,7 +175,7 @@ namespace TechTalk.SpecFlow.Generator
             var generatedTestFileContent = featureFileInput.GeneratedTestFileContent;
             if (generatedTestFileContent == null)
             {
-                var generatedTestPath = featureFileInput.GetGeneratedTestFullPath(projectSettings);
+                var generatedTestPath = GetTestFullPath(featureFileInput);
                 if (generatedTestPath == null)
                     return null;
                 generatedTestFileContent = File.ReadAllText(generatedTestPath);

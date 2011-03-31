@@ -67,16 +67,34 @@
     <Compile Include="..\Runtime\StringExtensions.cs">
       <Link>StringExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
+      <Link>Tracing\DefaultListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Tracing\ITraceListener.cs">
+      <Link>Tracing\ITraceListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime\Tracing\NullListener.cs">
+      <Link>Tracing\NullListener.cs</Link>
+    </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BatchGenerator.cs" />
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
-    <Compile Include="Configuration\MsBuildProjectReader.cs" />
+    <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
+    <Compile Include="Project\AppDomainProjectReference.cs" />
+    <Compile Include="Project\FileProjectReference.cs" />
+    <Compile Include="Configuration\IProjectReference.cs" />
+    <Compile Include="Project\ISpecFlowProjectReader.cs" />
+    <Compile Include="Project\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
-    <Compile Include="Configuration\SpecFlowProject.cs" />
+    <Compile Include="Configuration\RuntimeSpecFlowProjectConfigurationLoader.cs" />
+    <Compile Include="Project\SpecFlowFeatureFile.cs" />
+    <Compile Include="Project\SpecFlowProject.cs" />
+    <Compile Include="Configuration\SpecFlowProjectConfiguration.cs" />
+    <Compile Include="Configuration\SpecFlowProjectConfigurationLoader.cs" />
     <Compile Include="ErrorHandlingTestGenerator.cs" />
     <Compile Include="FeatureFileInputExtensions.cs" />
     <Compile Include="GeneratorContainerBuilder.cs" />
@@ -93,8 +111,10 @@
     <Compile Include="Interfaces\TestGenerationError.cs" />
     <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
     <Compile Include="Interfaces\TestGeneratorResult.cs" />
+    <Compile Include="Configuration\ISpecFlowProjectConfigurationLoader.cs" />
     <Compile Include="ITestHeaderWriter.cs" />
     <Compile Include="TestHeaderWriter.cs" />
+    <Compile Include="Tracing\TextWriterTraceListener.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowGenerator.cs" />

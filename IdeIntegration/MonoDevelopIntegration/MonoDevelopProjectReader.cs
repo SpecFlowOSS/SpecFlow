@@ -6,6 +6,7 @@ using System.Linq;
 using MonoDevelop.Projects;
 
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace MonoDevelop.TechTalk.SpecFlow
 {

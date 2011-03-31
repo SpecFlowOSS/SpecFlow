@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public abstract class ErrorHandlingTestGenerator : ITestGenerator
+    public abstract class ErrorHandlingTestGenerator
     {
         public TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings)
         {

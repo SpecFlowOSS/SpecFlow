@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.Utils;
 using Constants = EnvDTE.Constants;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 

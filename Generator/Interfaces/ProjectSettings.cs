@@ -9,6 +9,9 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         public string DefaultNamespace { get; set; }
         public ProjectPlatformSettings ProjectPlatformSettings { get; set; }
 
+        public string ProjectName { get; set; }
+        public string AssemblyName { get; set; }
+
         public ProjectSettings(string projectFolder, string defaultNamespace, ProjectPlatformSettings projectPlatformSettings)
         {
             if (projectFolder == null) throw new ArgumentNullException("projectFolder");

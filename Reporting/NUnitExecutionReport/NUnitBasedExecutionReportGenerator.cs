@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Serialization;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
 {
