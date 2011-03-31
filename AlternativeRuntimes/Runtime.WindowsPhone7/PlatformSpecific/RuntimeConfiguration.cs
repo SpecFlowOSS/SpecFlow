@@ -71,64 +71,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static RuntimeConfiguration GetConfig()
         {
-            var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
-            if (section == null)
-                return new RuntimeConfiguration();
-
-            return LoadFromConfigFile(section);
-        }
-
-        public static RuntimeConfiguration LoadFromConfigFile(ConfigurationSectionHandler configSection)
-        {
-            if (configSection == null) throw new ArgumentNullException("configSection");
-
-            var config = new RuntimeConfiguration();
-            if (configSection.Language != null)
-            {
-                config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                    CultureInfo.GetCultureInfo(configSection.Language.Feature) :
-                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
-            }
-
-            if (configSection.BindingCulture.ElementInformation.IsPresent)
-            {
-                config.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
-            }
-
-            if (configSection.UnitTestProvider != null)
-            {
-                config.SetUnitTestDefaultsByName(configSection.UnitTestProvider.Name);
-
-                if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
-                    config.RuntimeUnitTestProviderType = GetTypeConfig(configSection.UnitTestProvider.RuntimeProvider);
-
-                //TODO: config.CheckUnitTestConfig();
-            }
-
-            if (configSection.Runtime != null)
-            {
-                config.DetectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
-                config.StopAtFirstError = configSection.Runtime.StopAtFirstError;
-                config.MissingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
-            }
-
-            if (configSection.Trace != null)
-            {
-                if (!string.IsNullOrEmpty(configSection.Trace.Listener))
-                    config.TraceListenerType = GetTypeConfig(configSection.Trace.Listener);
-
-                config.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
-                config.TraceTimings = configSection.Trace.TraceTimings;
-                config.MinTracedDuration = configSection.Trace.MinTracedDuration;
-            }
-
-            foreach (var element in configSection.StepAssemblies)
-            {
-                Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
-                config._additionalStepAssemblies.Add(stepAssembly);
-            }
-
-            return config;
+            return new RuntimeConfiguration();
         }
 
         private static Type GetTypeConfig(string typeName)
@@ -149,26 +92,9 @@ namespace TechTalk.SpecFlow.Configuration
         {
             switch (name.ToLower())
             {
-                case "nunit":
-                    RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
-                    break;
-                case "mbunit":
-                    RuntimeUnitTestProviderType = typeof(MbUnitRuntimeProvider);
-                    break;
-                case "xunit":
-                    RuntimeUnitTestProviderType = typeof(XUnitRuntimeProvider);
-                    break;
-                case "mstest":
-                    RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);
-                    break;
-                case "mstest.2010":
-                    RuntimeUnitTestProviderType = typeof(MsTest2010RuntimeProvider);
-                    break;
-#if WINDOWS_PHONE
                 case "mstest.windowsphone7":
                     RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
                     break;
-#endif
                 default:
                     RuntimeUnitTestProviderType = null;
                     break;

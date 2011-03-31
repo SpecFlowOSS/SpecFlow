@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>SpecFlowSetup</OutputName>
     <OutputType>Package</OutputType>
-    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix.targets</WixTargetsPath>
+    <WixTargetsPath>..\..\lib\WiX\MsBuild\Wix2010.targets</WixTargetsPath>
     <WixTasksPath>WixTasks.dll</WixTasksPath>
     <LuxTargetsPath>Lux.targets</LuxTargetsPath>
     <LuxTasksPath>LuxTasks.dll</LuxTasksPath>
