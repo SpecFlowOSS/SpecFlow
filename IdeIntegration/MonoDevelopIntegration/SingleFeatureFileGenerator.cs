@@ -11,6 +11,7 @@ using MonoDevelop.Projects;
 
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 
@@ -49,7 +50,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 			using (var writer = new StringWriter(new StringBuilder()))
 			using (var reader = new StringReader(File.ReadAllText(featureFile.FilePath)))
 			{
-				SpecFlowFeatureFile specFlowFeatureFile = specFlowProject.GetOrCreateFeatureFile(featureFile.FilePath);
+                FeatureFileInput specFlowFeatureFile = specFlowProject.GetOrCreateFeatureFile(featureFile.FilePath);
 				specFlowGenerator.GenerateTestFile(specFlowFeatureFile, codeProvider, reader, writer);
 				File.WriteAllText(outputFile, writer.ToString());
 			}

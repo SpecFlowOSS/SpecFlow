@@ -33,14 +33,14 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);
             parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
 
-            var basePath = Path.Combine(specFlowProject.ProjectFolder, reportParameters.BinFolder);
+            var basePath = Path.Combine(specFlowProject.ProjectSettings.ProjectFolder, reportParameters.BinFolder);
             bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
         }
 
         public ReportElements.StepDefinitionReport GenerateReport()
         {
             report = new ReportElements.StepDefinitionReport();
-            report.ProjectName = specFlowProject.ProjectName;
+            report.ProjectName = specFlowProject.ProjectSettings.ProjectName;
             report.GeneratedAt = DateTime.Now.ToString("g", CultureInfo.InvariantCulture);
             report.ShowBindingsWithoutInsance = ReportParameters.ShowBindingsWithoutInsance;
 
@@ -215,7 +215,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.GeneratorConfiguration, ReportParameters.XsltFile);
+                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.Configuration.GeneratorConfiguration, ReportParameters.XsltFile);
             }
         }
 

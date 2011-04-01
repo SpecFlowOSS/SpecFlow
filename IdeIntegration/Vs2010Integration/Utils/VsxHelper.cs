@@ -319,5 +319,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         {
             return project.Properties.Item("DefaultNamespace").Value as string;
         }
+
+        public static string GetProjectAssemblyName(Project project)
+        {
+            return project.Properties.Item("AssemblyName").Value as string;
+        }
     }
 }

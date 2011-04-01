@@ -35,10 +35,10 @@ namespace TechTalk.SpecFlow.Generator.Project
             string projectFolder = Path.GetDirectoryName(projectFilePath);
 
             SpecFlowProject specFlowProject = new SpecFlowProject();
-            specFlowProject.ProjectFolder = projectFolder;
-            specFlowProject.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-            specFlowProject.AssemblyName = project.GetEvaluatedProperty("AssemblyName");
-            specFlowProject.DefaultNamespace = project.GetEvaluatedProperty("RootNamespace");
+            specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
+            specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
+            specFlowProject.ProjectSettings.AssemblyName = project.GetEvaluatedProperty("AssemblyName");
+            specFlowProject.ProjectSettings.DefaultNamespace = project.GetEvaluatedProperty("RootNamespace");
 
             var items = project.GetEvaluatedItemsByName("None").Cast<BuildItem>()
                 .Concat(project.GetEvaluatedItemsByName("Content").Cast<BuildItem>());
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 var extension = Path.GetExtension(item.FinalItemSpec);
                 if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var featureFile = new SpecFlowFeatureFile(item.FinalItemSpec);
+                    var featureFile = new FeatureFileInput(item.FinalItemSpec);
                     var ns = item.GetEvaluatedMetadata("CustomToolNamespace");
                     if (!String.IsNullOrEmpty(ns))
                         featureFile.CustomNamespace = ns;
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                     var configFilePath = Path.Combine(projectFolder, item.FinalItemSpec);
                     var configFileContent = File.ReadAllText(configFilePath);
                     var configurationHolder = new SpecFlowConfigurationHolder(configFileContent);
-                    specFlowProject.ConfigurationHolder = configurationHolder;
+                    specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
                     specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder, projectReference);
                 }
             }

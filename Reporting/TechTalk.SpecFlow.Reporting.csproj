@@ -61,7 +61,6 @@
     </Compile>
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
-    <Compile Include="MsBuildProjectReader.cs" />
     <Compile Include="MsTestExecutionReport\MsTestExecutionReportGenerator.cs" />
     <Compile Include="MsTestExecutionReport\MsTestExecutedParameters.cs" />
     <Compile Include="NUnitExecutionReport\NUnitBasedExecutionReportGenerator.cs" />

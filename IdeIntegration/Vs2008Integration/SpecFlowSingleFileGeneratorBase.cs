@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.VisualStudio;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 
@@ -86,10 +87,10 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             string projectFolder = Path.GetDirectoryName(project.FullName);
 
             SpecFlowProject specFlowProject = new SpecFlowProject();
-            specFlowProject.ProjectFolder = projectFolder;
-            specFlowProject.ProjectName = Path.GetFileNameWithoutExtension(project.FullName);
-            specFlowProject.AssemblyName = project.Properties.Item("AssemblyName").Value as string;
-            specFlowProject.DefaultNamespace = project.Properties.Item("DefaultNamespace").Value as string;
+            specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
+            specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(project.FullName);
+            specFlowProject.ProjectSettings.AssemblyName = project.Properties.Item("AssemblyName").Value as string;
+            specFlowProject.ProjectSettings.DefaultNamespace = project.Properties.Item("DefaultNamespace").Value as string;
 
             foreach (ProjectItem projectItem in GetAllProjectItem(project).Where(IsPhysicalFile))
             {
@@ -98,7 +99,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                 var extension = Path.GetExtension(fileName);
                 if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var featureFile = new SpecFlowFeatureFile(fileName);
+                    var featureFile = new FeatureFileInput(fileName);
                     var ns = projectItem.Properties.Item("CustomToolNamespace").Value as string;
                     if (!String.IsNullOrEmpty(ns))
                         featureFile.CustomNamespace = ns;
@@ -107,7 +108,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
 
                 if (Path.GetFileName(fileName).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    GeneratorConfigurationReader.UpdateConfigFromFileContent(specFlowProject.GeneratorConfiguration, GetFileContent(projectItem));
+                    GeneratorConfigurationReader.UpdateConfigFromFileContent(specFlowProject.Configuration.GeneratorConfiguration, GetFileContent(projectItem));
                 }
 
             }

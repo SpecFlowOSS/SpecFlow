@@ -48,7 +48,7 @@ namespace GeneratorTests
         [Test]
         public void Should_report_error_when_unsupported_project_language()
         {
-            ProjectSettings invalidLangSettings = new ProjectSettings(Path.GetTempPath(), "DN", new ProjectPlatformSettings { Language = "InvalidLang" });
+            ProjectSettings invalidLangSettings = new ProjectSettings { ProjectFolder = Path.GetTempPath(), ProjectPlatformSettings = new ProjectPlatformSettings { Language = "InvalidLang" } };
             var testGenerator = CreateTestGenerator(invalidLangSettings); 
 
             var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), defaultSettings);

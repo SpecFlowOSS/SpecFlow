@@ -6,27 +6,18 @@ namespace TechTalk.SpecFlow.IdeIntegration
 {
     public interface IGeneratorServices
     {
-        void InvalidateConfiguration();
         void InvalidateSettings();
         ITestGenerator CreateTestGenerator();
     }
 
     public abstract class GeneratorServices : IGeneratorServices
     {
-        private readonly bool enableConfigurationCache = true;
         private readonly bool enableSettingsCache = true;
-        private SpecFlowConfigurationHolder configurationHolder = null;
         private ProjectSettings projectSettings = null;
 
-        protected GeneratorServices(bool enableConfigurationCache, bool enableSettingsCache)
+        protected GeneratorServices(bool enableSettingsCache)
         {
-            this.enableConfigurationCache = enableConfigurationCache;
             this.enableSettingsCache = enableSettingsCache;
-        }
-
-        public void InvalidateConfiguration()
-        {
-            configurationHolder = null;
         }
 
         public void InvalidateSettings()
@@ -34,21 +25,7 @@ namespace TechTalk.SpecFlow.IdeIntegration
             projectSettings = null;
         }
 
-        protected abstract SpecFlowConfigurationHolder GetConfigurationHolder();
         protected abstract ProjectSettings GetProjectSettings();
-
-        private SpecFlowConfigurationHolder GetConfigurationHolderCached()
-        {
-            if (!enableConfigurationCache)
-                return GetConfigurationHolder();
-
-            var result = configurationHolder;
-
-            if (result == null)
-                configurationHolder = result = GetConfigurationHolder();
-
-            return result;
-        }
 
         private ProjectSettings GetProjectSettingsCached()
         {
@@ -73,7 +50,7 @@ namespace TechTalk.SpecFlow.IdeIntegration
         {
             var testGeneratorFactory = GetTestGeneratorFactory();
 
-            return testGeneratorFactory.CreateGenerator(GetConfigurationHolderCached(), GetProjectSettingsCached());
+            return testGeneratorFactory.CreateGenerator(GetProjectSettingsCached());
         }
     }
 }

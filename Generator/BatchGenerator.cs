@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator
 
         protected virtual ITestGenerator CreateGenerator(SpecFlowProject specFlowProject)
         {
-            return testGeneratorFactory.CreateGenerator(specFlowProject.ConfigurationHolder, specFlowProject.ProjectSettings);
+            return testGeneratorFactory.CreateGenerator(specFlowProject.ProjectSettings);
         }
 
         public void ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Generator
 
                 foreach (var featureFile in specFlowProject.FeatureFiles)
                 {
-                    string featureFileFullPath = featureFile.GetFullPath(specFlowProject);
+                    string featureFileFullPath = featureFile.GetFullPath(specFlowProject.ProjectSettings);
                     traceListener.WriteToolOutput("Processing file: {0}", featureFileFullPath);
 
                     var featureFileInput = CreateFeatureFileInput(featureFile, generator, specFlowProject);
@@ -57,9 +57,9 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
-        protected virtual FeatureFileInput CreateFeatureFileInput(SpecFlowFeatureFile featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
+        protected virtual FeatureFileInput CreateFeatureFileInput(FeatureFileInput featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
         {
-            return featureFile.ToFeatureFileInput();
+            return featureFile;
         }
 
         protected virtual TestGeneratorResult GenerateTestFile(ITestGenerator generator, FeatureFileInput featureFileInput, GenerationSettings generationSettings)

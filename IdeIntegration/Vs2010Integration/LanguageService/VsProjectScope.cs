@@ -258,7 +258,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (SpecFlowProjectConfigurationChanged != null)
                 SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
 
-            GeneratorServices.InvalidateConfiguration();
+            GeneratorServices.InvalidateSettings();
 
             ConfirmReGenerateFilesOnConfigChange();
         }

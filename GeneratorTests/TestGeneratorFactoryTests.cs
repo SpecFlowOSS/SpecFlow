@@ -28,7 +28,7 @@ namespace GeneratorTests
         [Test]
         public void Should_be_able_to_create_generator_with_default_config()
         {
-            factory.CreateGenerator(new SpecFlowConfigurationHolder(), net35CSProjectSettings).ShouldNotBeNull();
+            factory.CreateGenerator(net35CSProjectSettings).ShouldNotBeNull();
         }
 
         private class DummyGenerator : ITestGenerator
@@ -57,15 +57,18 @@ namespace GeneratorTests
         [Test]
         public void Should_create_custom_generator_when_configured_so()
         {
-            var generator = factory.CreateGenerator(new SpecFlowConfigurationHolder(string.Format(@"
+            var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"
                 <specFlow>
                   <dependencies>
                     <register type=""{0}"" as=""{1}""/>
                   </dependencies>
                 </specFlow>",
-                                                                                                  typeof(DummyGenerator).AssemblyQualifiedName,
-                                                                                                  typeof(ITestGenerator).AssemblyQualifiedName)), net35CSProjectSettings);
+                typeof(DummyGenerator).AssemblyQualifiedName,
+                typeof(ITestGenerator).AssemblyQualifiedName));
 
+            var projectSettings = net35CSProjectSettings;
+            projectSettings.ConfigurationHolder = configurationHolder;
+            var generator = factory.CreateGenerator(projectSettings);
             generator.ShouldBeType(typeof(DummyGenerator));
         }
     }

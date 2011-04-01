@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
@@ -14,8 +15,8 @@ namespace TechTalk.SpecFlow.Reporting
     {
         public static List<Feature> GetParsedFeatures(SpecFlowProject specFlowProject)
         {
-            return GetParsedFeatures(specFlowProject.FeatureFiles.Select(ff => ff.GetFullPath(specFlowProject)), 
-                specFlowProject.GeneratorConfiguration.FeatureLanguage);
+            return GetParsedFeatures(specFlowProject.FeatureFiles.Select(ff => ff.GetFullPath(specFlowProject.ProjectSettings)),
+                specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
         }
 
         public static List<Feature> GetParsedFeatures(IEnumerable<string> featureFiles, CultureInfo featureLanguage)

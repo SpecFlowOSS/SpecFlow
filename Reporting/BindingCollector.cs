@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.Reporting
                                       Assembly.GetExecutingAssembly().GetName().FullName,
                                       typeof(BindingCollector).FullName);
 
-            bindings.AddRange(bindingCollector.CollectBindings(specFlowProject.AssemblyName));
+            bindings.AddRange(bindingCollector.CollectBindings(specFlowProject.ProjectSettings.AssemblyName));
 
             AppDomain.Unload(appDomain);
             return bindings;

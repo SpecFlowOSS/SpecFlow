@@ -68,7 +68,7 @@ namespace GeneratorTests
             {
                 tempFile.SetContent(CreateSimpleValidFeatureFileInput().FeatureFileContent);
 
-                ProjectSettings projectSettings = new ProjectSettings(tempFile.FolderName, "DefaultNamespace", net35CSSettings);
+                ProjectSettings projectSettings = new ProjectSettings { ProjectFolder = tempFile.FolderName, ProjectPlatformSettings = net35CSSettings };
                 var testGenerator = CreateTestGenerator(projectSettings);
 
                 var result = testGenerator.GenerateTestFile(
@@ -103,7 +103,7 @@ namespace GeneratorTests
             {
                 tempFile.SetContent("any");
 
-                ProjectSettings projectSettings = new ProjectSettings(tempFile.FolderName, "DefaultNamespace", net35CSSettings);
+                ProjectSettings projectSettings = new ProjectSettings { ProjectFolder = tempFile.FolderName, ProjectPlatformSettings = net35CSSettings };
                 var testGenerator = CreateTestGenerator(projectSettings);
                 FeatureFileInput featureFileInput = CreateSimpleValidFeatureFileInput();
                 featureFileInput.GeneratedTestProjectRelativePath = tempFile.FileName;

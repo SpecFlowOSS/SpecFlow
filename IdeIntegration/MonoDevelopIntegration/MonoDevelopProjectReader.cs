@@ -6,6 +6,7 @@ using System.Linq;
 using MonoDevelop.Projects;
 
 using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace MonoDevelop.TechTalk.SpecFlow
@@ -15,8 +16,8 @@ namespace MonoDevelop.TechTalk.SpecFlow
 		public static SpecFlowProject CreateSpecFlowProjectFrom(Project project)
 		{
 			var specFlowProject = new SpecFlowProject();
-			specFlowProject.ProjectFolder = project.BaseDirectory;
-			specFlowProject.ProjectName = project.Name;
+			specFlowProject.ProjectSettings.ProjectFolder = project.BaseDirectory;
+            specFlowProject.ProjectSettings.ProjectName = project.Name;
 			
 			string defaultNamespace = "Namespace";
 			if (project is DotNetProject)
@@ -25,8 +26,8 @@ namespace MonoDevelop.TechTalk.SpecFlow
 			}
 			
 			// No way to get AssemblyName right now, therefore we'll just use DefaultNamespace
-			specFlowProject.AssemblyName = defaultNamespace;
-			specFlowProject.DefaultNamespace = defaultNamespace;
+            specFlowProject.ProjectSettings.AssemblyName = defaultNamespace;
+			specFlowProject.ProjectSettings.DefaultNamespace = defaultNamespace;
 			
 			// TODO: Find out if we really need to add all the feature files everytime we generate
 			foreach (ProjectFile projectFile in project.Files.Where(IsFeatureOrAppConfigFile))
@@ -36,7 +37,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 				if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
 				{
 					string fileName = projectFile.FilePath.ToRelative(project.BaseDirectory);
-					var featureFile = new SpecFlowFeatureFile(fileName);
+                    var featureFile = new FeatureFileInput(fileName);
 					var customToolNamespace = projectFile.CustomToolNamespace;
 					
 					if (!String.IsNullOrEmpty(customToolNamespace))
@@ -48,7 +49,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 				if (extension.Equals(".config", StringComparison.InvariantCultureIgnoreCase))
 				{
 					string configContent = File.ReadAllText(projectFile.FilePath);
-					GeneratorConfigurationReader.UpdateConfigFromFileContent(specFlowProject.GeneratorConfiguration, configContent);
+                    GeneratorConfigurationReader.UpdateConfigFromFileContent(specFlowProject.Configuration.GeneratorConfiguration, configContent);
 				}
 			}
 			

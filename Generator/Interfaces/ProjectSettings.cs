@@ -12,14 +12,12 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         public string ProjectName { get; set; }
         public string AssemblyName { get; set; }
 
-        public ProjectSettings(string projectFolder, string defaultNamespace, ProjectPlatformSettings projectPlatformSettings)
-        {
-            if (projectFolder == null) throw new ArgumentNullException("projectFolder");
-            if (defaultNamespace == null) throw new ArgumentNullException("defaultNamespace");
+        public SpecFlowConfigurationHolder ConfigurationHolder { get; set; }
 
-            ProjectFolder = projectFolder;
-            DefaultNamespace = defaultNamespace;
-            ProjectPlatformSettings = projectPlatformSettings ?? new ProjectPlatformSettings();
+        public ProjectSettings()
+        {
+            ProjectPlatformSettings = new ProjectPlatformSettings();
+            ConfigurationHolder = new SpecFlowConfigurationHolder();
         }
     }
 }

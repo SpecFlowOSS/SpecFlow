@@ -3,39 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
     public class SpecFlowProject
     {
         public ProjectSettings ProjectSettings { get; set; }
-        public SpecFlowConfigurationHolder ConfigurationHolder { get; set; }
         public SpecFlowProjectConfiguration Configuration { get; set; }
-        public List<SpecFlowFeatureFile> FeatureFiles { get; private set; }
-
-        public string ProjectName { get; set; }
-        public string AssemblyName { get; set; }
-        public string ProjectFolder { get; set; }
-        public string DefaultNamespace { get; set; }
-        public GeneratorConfiguration GeneratorConfiguration
-        {
-            get { return Configuration.GeneratorConfiguration; }
-        }
+        public List<FeatureFileInput> FeatureFiles { get; private set; }
 
         public SpecFlowProject()
         {
-            FeatureFiles = new List<SpecFlowFeatureFile>();
+            ProjectSettings = new ProjectSettings();
+            FeatureFiles = new List<FeatureFileInput>();
             Configuration = new SpecFlowProjectConfiguration();
         }
 
-        public SpecFlowFeatureFile GetOrCreateFeatureFile(string featureFileName)
+        public FeatureFileInput GetOrCreateFeatureFile(string featureFilePath)
         {
-            featureFileName = Path.GetFullPath(Path.Combine(ProjectFolder, featureFileName));
-            var result = FeatureFiles.Find(ff => ff.GetFullPath(this).Equals(featureFileName, StringComparison.InvariantCultureIgnoreCase));
-            if (result == null)
-            {
-                result = new SpecFlowFeatureFile(featureFileName); //TODO: make it project relative
-            }
+            featureFilePath = Path.GetFullPath(Path.Combine(ProjectSettings.ProjectFolder, featureFilePath));
+            var result = FeatureFiles.Find(ff => ff.GetFullPath(ProjectSettings).Equals(featureFilePath, StringComparison.InvariantCultureIgnoreCase)) ??
+                         new FeatureFileInput(FileSystemHelper.GetRelativePath(featureFilePath, ProjectSettings.ProjectFolder));
             return result;
         }
     }

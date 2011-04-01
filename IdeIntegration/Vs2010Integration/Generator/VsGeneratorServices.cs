@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -14,15 +15,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
         private readonly Project project;
         private readonly ISpecFlowConfigurationReader configurationReader;
 
-        public VsGeneratorServices(Project project) : base(true, false)
+        public VsGeneratorServices(Project project) : base(false)
         {
             this.project = project;
             this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
-        }
-
-        protected override SpecFlowConfigurationHolder GetConfigurationHolder()
-        {
-            return configurationReader.ReadConfiguration(new VsProjectReference(project));
         }
 
         protected override ProjectSettings GetProjectSettings()
@@ -53,7 +49,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
                     throw new NotSupportedException("target language not supported");
             }
 
-            return new ProjectSettings(VsxHelper.GetProjectFolder(project), VsxHelper.GetProjectDefaultNamespace(project), projectPlatformSettings);
+            var configurationHolder = configurationReader.ReadConfiguration(new VsProjectReference(project));
+            return new ProjectSettings()
+                       {
+                           ProjectName = Path.GetFileNameWithoutExtension(project.FullName),
+                           AssemblyName = VsxHelper.GetProjectAssemblyName(project),
+                           ProjectFolder = VsxHelper.GetProjectFolder(project),
+                           DefaultNamespace = VsxHelper.GetProjectDefaultNamespace(project),
+                           ProjectPlatformSettings = projectPlatformSettings,
+                           ConfigurationHolder = configurationHolder
+                       };
         }
     }
 }

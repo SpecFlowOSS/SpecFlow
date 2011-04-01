@@ -35,8 +35,8 @@ namespace GeneratorTests
                                       PlatformVersion = new Version("3.5"),
                                   };
 
-            net35CSProjectSettings = new ProjectSettings(Path.GetTempPath(), "DefaultNamespace", net35CSSettings);
-            net35VBProjectSettings = new ProjectSettings(Path.GetTempPath(), "DefaultNamespace", net35VBSettings);
+            net35CSProjectSettings = new ProjectSettings { ProjectFolder = Path.GetTempPath(), ProjectPlatformSettings = net35CSSettings };
+            net35VBProjectSettings = new ProjectSettings { ProjectFolder = Path.GetTempPath(), ProjectPlatformSettings = net35VBSettings };
             defaultSettings = new GenerationSettings();
 
             TestHeaderWriterStub = new Mock<ITestHeaderWriter>();

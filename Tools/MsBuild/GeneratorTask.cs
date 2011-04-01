@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
         private GeneratorTaskBase.OutputFile outputFile = null;
 
-        protected override FeatureFileInput CreateFeatureFileInput(SpecFlowFeatureFile featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
+        protected override FeatureFileInput CreateFeatureFileInput(FeatureFileInput featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)
         {
             var featureFileInput = base.CreateFeatureFileInput(featureFile, generator, specFlowProject);
 
