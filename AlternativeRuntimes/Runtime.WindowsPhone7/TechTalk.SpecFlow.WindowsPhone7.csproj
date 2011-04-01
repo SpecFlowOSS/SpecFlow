@@ -41,9 +41,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExpressionCompilerWP7, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\ExpressionCompilerWP7\ExpressionCompilerWP7.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -52,8 +49,15 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**" />
-    <Compile Include="..\Runtime.Silverlight3\PlatformCompatibility\**" />
+    <Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**">
+      <Link>SharedRuntime\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight3\PlatformCompatibility\**">
+      <Link>SharedSilverlightRuntime\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\lib\ExpressionCompilerWP7\src\*.cs">
+      <Link>ExpressionCompiler\%(Filename)%(Extension)</Link>
+    </Compile>
     <Compile Include="..\..\VersionInfo.cs">
       <Link>VersionInfo.cs</Link>
     </Compile>
@@ -66,6 +70,9 @@
     <EmbeddedResource Include="..\..\Languages.xml">
       <Link>Languages.xml</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SharedSilverlightRuntime\" />
   </ItemGroup>
   <PropertyGroup>
     <WindowsPhoneBuildResources>..\..\lib\Silverlight for Phone\v7.0</WindowsPhoneBuildResources>
