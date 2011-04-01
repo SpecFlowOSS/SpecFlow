@@ -88,6 +88,9 @@ namespace TechTalk.SpecFlow.Generator
                 else
                     GenerateTest(testType, testSetup, scenario, feature);
             }
+            
+            //before return the generated code, call generate provider's method in case the provider want to customerize the generated code            
+            testGeneratorProvider.FinalizeTestClass(codeNamespace);
             return codeNamespace;
         }
 
@@ -337,7 +340,7 @@ namespace TechTalk.SpecFlow.Generator
                     {
                         string variantName = useFirstColumnAsName ? exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifierPart() :
                                                                                                                                           string.Format("Variant{0}", rowIndex);
-                        GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], exampleSet.Tags, variantName);
+                        GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSetTitle, exampleSet.Table.Body[rowIndex], exampleSet.Tags, variantName, exampleSet);
                     }
                     exampleSetIndex++;
                 }
@@ -373,7 +376,7 @@ namespace TechTalk.SpecFlow.Generator
             return testMethod;
         }
 
-        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, Tags exampleSetTags, string variantName)
+        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, Tags exampleSetTags, string variantName, ExampleSet exampleSet)
         {
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenarioOutline, exampleSetTags);
             testMethod.Name = string.IsNullOrEmpty(exampleSetTitle)
@@ -394,6 +397,14 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeThisReferenceExpression(),
                     testMethodName,
                     argumentExpressions.ToArray()));
+
+            List<KeyValuePair<string, string>> arguments = new List<KeyValuePair<string, string>>();
+            for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
+            {
+                arguments.Add(new KeyValuePair<string,string>(exampleSet.Table.Header.Cells[rowIndex].Value, row.Cells[rowIndex].Value));
+            }
+             
+            testGeneratorProvider.SetTestVariant(testMethod, scenarioOutline.Title, exampleSetTitle, arguments);
         }
 
         private void GenerateTest(CodeTypeDeclaration testType, CodeMemberMethod testSetup, Scenario scenario, Feature feature)
