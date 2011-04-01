@@ -61,6 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParsingErrors.feature</DependentUpon>
     </Compile>
+    <Compile Include="SimpleTestGeneratorProviderTest.cs" />
     <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="SuccessfulMbUnitGenerationTest.cs" />
     <Compile Include="SuccessfulXUnitGenerationTest.cs" />

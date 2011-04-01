@@ -143,6 +143,7 @@ namespace TechTalk.SpecFlow.Generator
             ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, project.GeneratorConfiguration.AllowDebugGeneratedFiles, project.GeneratorConfiguration.AllowRowTests);
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
+
             return codeNamespace;
         }
 
