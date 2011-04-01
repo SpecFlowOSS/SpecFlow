@@ -20,6 +20,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
+    [Obsolete("Use ITestGeneratorFactory / ITestGenerator instead")]
     public class SpecFlowGenerator
     {
         private readonly SpecFlowProject project;
