@@ -337,13 +337,19 @@ namespace TechTalk.SpecFlow.Generator
                 foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
                 {
                     bool useFirstColumnAsName = CanUseFirstColumnAsName(exampleSet.Table);
+                    string exampleSetIdentifier = string.IsNullOrEmpty(exampleSet.Title)
+                        ? scenarioOutline.Examples.ExampleSets.Count(es => string.IsNullOrEmpty(es.Title)) > 1
+                            ? string.Format("ExampleSet {0}", exampleSetIndex).ToIdentifier()
+                            : null
+                        : exampleSet.Title.ToIdentifier();
 
                     for (int rowIndex = 0; rowIndex < exampleSet.Table.Body.Length; rowIndex++)
                     {
-                        string variantNameIdentifier = useFirstColumnAsName ? 
-                            exampleSet.Table.Body[rowIndex].Cells[0].Value.ToIdentifierPart() :
-                            string.Format("Variant{0}", rowIndex);
-                        GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSet.Title ?? "", exampleSet.Table.Body[rowIndex], exampleSet.Tags, variantNameIdentifier);
+                        string variantName = useFirstColumnAsName ? 
+                            exampleSet.Table.Body[rowIndex].Cells[0].Value :
+                            string.Format("Variant {0}", rowIndex);
+
+                        GenerateScenarioOutlineTestVariant(testType, scenarioOutline, testMethodName, paramToIdentifier, exampleSet.Title ?? "", exampleSetIdentifier, exampleSet.Table.Body[rowIndex], exampleSet.Tags, variantName);
                     }
                     exampleSetIndex++;
                 }
@@ -379,14 +385,16 @@ namespace TechTalk.SpecFlow.Generator
             return testMethod;
         }
 
-        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, List<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, Row row, Tags exampleSetTags, string variantName)
+        private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, 
+            IEnumerable<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, string exampleSetIdentifier,
+            Row row, Tags exampleSetTags, string variantName)
         {
-            var exampleSetTitleIdentifier = exampleSetTitle.ToIdentifier();
+            var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
 
             CodeMemberMethod testMethod = GetTestMethodDeclaration(testType, scenarioOutline, exampleSetTags);
-            testMethod.Name = string.IsNullOrEmpty(exampleSetTitleIdentifier)
-                ? string.Format("{0}_{1}", testMethod.Name, variantName)
-                : string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetTitleIdentifier, variantName);
+            testMethod.Name = string.IsNullOrEmpty(exampleSetIdentifier)
+                ? string.Format("{0}_{1}", testMethod.Name, variantNameIdentifier)
+                : string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetIdentifier, variantNameIdentifier);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();

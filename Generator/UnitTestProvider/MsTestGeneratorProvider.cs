@@ -155,7 +155,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (!string.IsNullOrEmpty(variantName))
             {
-                SetProperty(memberMethod.CustomAttributes,"VariantName", exampleSetName);
+                SetProperty(memberMethod.CustomAttributes,"VariantName", variantName);
             }
 
             foreach (var pair in arguments)
