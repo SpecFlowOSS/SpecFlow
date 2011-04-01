@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Microsoft.Build.BuildEngine;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -58,12 +60,29 @@ namespace TechTalk.SpecFlow.Generator.Project
                 {
                     var configFilePath = Path.Combine(projectFolder, item.FinalItemSpec);
                     var configFileContent = File.ReadAllText(configFilePath);
-                    var configurationHolder = new SpecFlowConfigurationHolder(configFileContent);
+                    var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
                     specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
                     specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder, projectReference);
                 }
             }
             return specFlowProject;
+        }
+
+        private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
+        {
+            XmlDocument configDocument;
+            try
+            {
+                configDocument = new XmlDocument();
+                configDocument.LoadXml(configFileContent);
+
+                return new SpecFlowConfigurationHolder(configDocument.SelectSingleNode("/configuration/specFlow"));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "Config load error");
+                return new SpecFlowConfigurationHolder();
+            }
         }
     }
 }

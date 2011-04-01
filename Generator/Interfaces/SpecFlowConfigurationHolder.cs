@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
 
         public SpecFlowConfigurationHolder(XmlNode configXmlNode)
         {
-            this.xmlString = configXmlNode.OuterXml;
+            this.xmlString = configXmlNode == null ? null : configXmlNode.OuterXml;
         }
     }
 }

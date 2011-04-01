@@ -45,14 +45,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 return new SpecFlowConfigurationHolder();
 
             string configFileContent = VsxHelper.GetFileContent(projectItem);
-            var configNode = GetSpecFlowConfigNode(configFileContent);
-            if (configNode == null)
-                return new SpecFlowConfigurationHolder();
-
-            return new SpecFlowConfigurationHolder(configNode.OuterXml);
+            return GetConfigurationHolderFromFileContent(configFileContent);
         }
 
-        private static XmlNode GetSpecFlowConfigNode(string configFileContent)
+        private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
         {
             XmlDocument configDocument;
             try
@@ -60,12 +56,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                 configDocument = new XmlDocument();
                 configDocument.LoadXml(configFileContent);
 
-                return configDocument.SelectSingleNode("/configuration/specFlow");
+                return new SpecFlowConfigurationHolder(configDocument.SelectSingleNode("/configuration/specFlow"));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex, "Config load error");
-                return null;
+                return new SpecFlowConfigurationHolder();
             }
         }
     }
