@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return;
         }
 
-        public void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
             return;

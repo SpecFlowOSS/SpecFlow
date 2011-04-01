@@ -84,12 +84,12 @@ namespace ParserTests
 
             }
 
-            public override void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleName, IEnumerable<KeyValuePair<string, string>> arguments)
+            public override void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
             {
-                base.SetTestVariant(memberMethod, title, exampleName, arguments);
+                base.SetTestVariant(memberMethod, title, exampleSetName, variantName, arguments);
 
                 // change memberMethodName
-                memberMethod.Name = GetMethodName(title, exampleName, arguments);
+                memberMethod.Name = GetMethodName(title, exampleSetName, arguments);
                 newTitles.Add(memberMethod.Name);
             }
 

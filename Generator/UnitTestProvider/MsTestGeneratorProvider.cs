@@ -146,16 +146,21 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return;
         }
 
-        public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
-            if (!string.IsNullOrEmpty(exampleName))
+            if (!string.IsNullOrEmpty(exampleSetName))
             {
-                SetProperty(memberMethod.CustomAttributes,"Example Name", exampleName);
+                SetProperty(memberMethod.CustomAttributes,"ExampleSetName", exampleSetName);
+            }
+
+            if (!string.IsNullOrEmpty(variantName))
+            {
+                SetProperty(memberMethod.CustomAttributes,"VariantName", exampleSetName);
             }
 
             foreach (var pair in arguments)
             {
-                SetProperty(memberMethod.CustomAttributes, "Column:" + pair.Key, pair.Value);
+                SetProperty(memberMethod.CustomAttributes, "Parameter:" + pair.Key, pair.Value);
             }
         }
     }

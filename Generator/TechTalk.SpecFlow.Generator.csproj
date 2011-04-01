@@ -74,6 +74,7 @@
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProject.cs" />
+    <Compile Include="TestGeneratorException.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowGenerator.cs" />
