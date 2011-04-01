@@ -8,6 +8,11 @@ namespace TechTalk.SpecFlow.Utils
 {
     public static class FileSystemHelper
     {
+        public static void CopyFileToFolder(string filePath, string folderName)
+        {
+            File.Copy(filePath, Path.Combine(folderName, Path.GetFileName(filePath)));
+        }
+
         public static string GetRelativePath(string path, string basePath)
         {
             path = Path.GetFullPath(path);

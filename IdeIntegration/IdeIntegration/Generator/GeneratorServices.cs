@@ -1,8 +1,6 @@
-﻿using System;
-using TechTalk.SpecFlow.Generator;
-using TechTalk.SpecFlow.Generator.Interfaces;
+﻿using TechTalk.SpecFlow.Generator.Interfaces;
 
-namespace TechTalk.SpecFlow.IdeIntegration
+namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
     public interface IGeneratorServices
     {
@@ -12,15 +10,17 @@ namespace TechTalk.SpecFlow.IdeIntegration
 
     public abstract class GeneratorServices : IGeneratorServices
     {
+        private readonly ITestGeneratorFactory testGeneratorFactory;
         private readonly bool enableSettingsCache = true;
         private ProjectSettings projectSettings = null;
 
-        protected GeneratorServices(bool enableSettingsCache)
+        protected GeneratorServices(ITestGeneratorFactory testGeneratorFactory, bool enableSettingsCache)
         {
+            this.testGeneratorFactory = testGeneratorFactory;
             this.enableSettingsCache = enableSettingsCache;
         }
 
-        public void InvalidateSettings()
+        public virtual void InvalidateSettings()
         {
             projectSettings = null;
         }
@@ -40,17 +40,16 @@ namespace TechTalk.SpecFlow.IdeIntegration
             return result;
         }
         
-        private ITestGeneratorFactory GetTestGeneratorFactory()
+        protected virtual ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
             //TODO: create it in new AppDomain if neccessary
-            return new TestGeneratorFactory();
+            return testGeneratorFactory; 
         }
 
         public ITestGenerator CreateTestGenerator()
         {
-            var testGeneratorFactory = GetTestGeneratorFactory();
-
-            return testGeneratorFactory.CreateGenerator(GetProjectSettingsCached());
+            var testGeneratorFactoryForCreate = GetTestGeneratorFactoryForCreate();
+            return testGeneratorFactoryForCreate.CreateGenerator(GetProjectSettingsCached());
         }
     }
 }

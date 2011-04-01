@@ -91,6 +91,7 @@
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\RuntimeSpecFlowProjectConfigurationLoader.cs" />
+    <Compile Include="RemotableGeneratorClass.cs" />
     <Compile Include="TestGeneratorException.cs" />
     <Compile Include="Project\SpecFlowProject.cs" />
     <Compile Include="Configuration\SpecFlowProjectConfiguration.cs" />

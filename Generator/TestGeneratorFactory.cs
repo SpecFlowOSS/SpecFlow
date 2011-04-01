@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public class TestGeneratorFactory : ITestGeneratorFactory
+    public class TestGeneratorFactory : RemotableGeneratorClass, ITestGeneratorFactory
     {
         static public readonly Version GeneratorVersion = new Version("1.5.0.0");
 

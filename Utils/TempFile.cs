@@ -70,4 +70,37 @@ namespace TechTalk.SpecFlow.Utils
             }
         }
     }
+
+    public class TempFolder : IDisposable
+    {
+        private readonly string tempFolder;
+
+        public TempFolder()
+        {
+            tempFolder = Path.GetTempFileName();
+            // delete old tmp-File
+            File.Delete(tempFolder);
+
+            // create a temp folder
+            Directory.CreateDirectory(tempFolder);
+        }
+
+        public string FolderName
+        {
+            get { return tempFolder; }
+        }
+
+        void IDisposable.Dispose()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
+                    Directory.Delete(tempFolder, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "TempFolder.Dispose");
+            }
+        }
+    }
 }

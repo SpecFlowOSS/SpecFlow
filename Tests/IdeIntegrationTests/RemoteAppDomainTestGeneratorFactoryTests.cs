@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using NUnit.Framework;
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.IdeIntegration;
+using Should;
+using TechTalk.SpecFlow.IdeIntegration.Generator;
+using TechTalk.SpecFlow.Utils;
+
+namespace IdeIntegrationTests
+{
+    [TestFixture]
+    public class RemoteAppDomainTestGeneratorFactoryTests
+    {
+        private string currentGeneratorFolder;
+
+        [SetUp]
+        public void Setup()
+        {
+            currentGeneratorFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        [Test]
+        public void Should_be_able_to_initialize()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                remoteFactory.Initialize();
+                remoteFactory.IsRunning.ShouldBeTrue();
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_return_generator_version()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var version = remoteFactory.GetGeneratorVersion();
+
+                version.ShouldNotBeNull();
+                version.ShouldEqual(TestGeneratorFactory.GeneratorVersion);
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_create_generator_with_default_config()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator = remoteFactory.CreateGenerator(new ProjectSettings());
+
+                generator.ShouldNotBeNull();
+            }
+        }
+
+        [Serializable]
+        private class DummyGenerator : MarshalByRefObject, ITestGenerator
+        {
+            public TestGeneratorResult GenerateTestFile(FeatureFileInput featureFileInput, GenerationSettings settings)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Version DetectGeneratedTestVersion(FeatureFileInput featureFileInput)
+            {
+                throw new NotImplementedException();
+            }
+
+            public string GetTestFullPath(FeatureFileInput featureFileInput)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Dispose()
+            {
+                //nop;
+            }
+
+            public override string ToString()
+            {
+                return "DummyGenerator";
+            }
+        }
+
+        [Test]
+        public void Should_create_custom_generator_when_configured_so()
+        {
+            var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"
+                <specFlow>
+                  <dependencies>
+                    <register type=""{0}"" as=""{1}""/>
+                  </dependencies>
+                </specFlow>",
+                typeof(DummyGenerator).AssemblyQualifiedName,
+                typeof(ITestGenerator).AssemblyQualifiedName));
+
+            var projectSettings = new ProjectSettings();
+            projectSettings.ConfigurationHolder = configurationHolder;
+
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator = remoteFactory.CreateGenerator(projectSettings);
+                generator.ToString().ShouldEqual("DummyGenerator"); // since the type is wrapped, we can only check it this way
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_load_generator_from_another_folder()
+        {
+            using(var tempFolder = new TempFolder())
+            {
+                var generatorAssemblyFile = typeof(TestGeneratorFactory).Assembly.Location;
+                var utilsAssemblyFile = typeof(FileSystemHelper).Assembly.Location;
+                FileSystemHelper.CopyFileToFolder(generatorAssemblyFile, tempFolder.FolderName);
+                FileSystemHelper.CopyFileToFolder(utilsAssemblyFile, tempFolder.FolderName);
+
+                using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(tempFolder.FolderName))
+                {
+                    var generator = remoteFactory.CreateGenerator(new ProjectSettings());
+                    generator.ShouldNotBeNull();
+                }
+            }
+        }
+
+        [Test]
+        public void Should_cleanup_ater_dispose()
+        {
+            RemoteAppDomainTestGeneratorFactory remoteFactory;
+            using (remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                remoteFactory.Initialize();
+            }
+
+            remoteFactory.IsRunning.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_start_running_delayed()
+        {
+            RemoteAppDomainTestGeneratorFactory remoteFactory;
+            using (remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                remoteFactory.IsRunning.ShouldBeFalse();
+            }
+        }
+
+        [Test]
+        public void Should_cleanup_after_generator_disposed()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator = remoteFactory.CreateGenerator(new ProjectSettings());
+                generator.Dispose();
+
+                remoteFactory.IsRunning.ShouldBeFalse();
+            }
+        }
+
+        [Test]
+        public void Should_not_cleanup_when_one_generator_is_still_used()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator1 = remoteFactory.CreateGenerator(new ProjectSettings());
+                var generator2 = remoteFactory.CreateGenerator(new ProjectSettings());
+                generator1.Dispose();
+
+                remoteFactory.IsRunning.ShouldBeTrue();
+            }
+        }
+
+        [Test]
+        public void Should_cleanup_when_all_generators_are_disposed()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator1 = remoteFactory.CreateGenerator(new ProjectSettings());
+                var generator2 = remoteFactory.CreateGenerator(new ProjectSettings());
+                generator1.Dispose();
+                generator2.Dispose();
+
+                remoteFactory.IsRunning.ShouldBeFalse();
+            }
+        }
+    }
+}
