@@ -92,6 +92,7 @@
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\RuntimeSpecFlowProjectConfigurationLoader.cs" />
     <Compile Include="Project\SpecFlowFeatureFile.cs" />
+    <Compile Include="TestGeneratorException.cs" />
     <Compile Include="Project\SpecFlowProject.cs" />
     <Compile Include="Configuration\SpecFlowProjectConfiguration.cs" />
     <Compile Include="Configuration\SpecFlowProjectConfigurationLoader.cs" />

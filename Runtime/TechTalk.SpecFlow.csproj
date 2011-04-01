@@ -84,7 +84,7 @@
     <Compile Include="Bindings\BindingRegistry.cs" />
     <Compile Include="Bindings\BindingType.cs" />
     <Compile Include="PlatformSpecific\ConfigurationSectionHandler.cs" />
-    <Compile Include="Configuration\RuntimeConfiguration.cs" />
+    <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />
     <Compile Include="ErrorHandling\SpecFlowException.cs" />

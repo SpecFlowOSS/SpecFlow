@@ -69,8 +69,7 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-#if !SILVERLIGHT
-        public static RuntimeConfiguration LoadFromConfigFile()
+        public static RuntimeConfiguration GetConfig()
         {
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
             if (section == null)
@@ -145,12 +144,11 @@ namespace TechTalk.SpecFlow.Configuration
                         typeName, ex.Message), ex);
             }
         }
-#endif
+
         private void SetUnitTestDefaultsByName(string name)
         {
             switch (name.ToLower())
             {
-#if !SILVERLIGHT
                 case "nunit":
                     RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
                     break;
@@ -166,13 +164,7 @@ namespace TechTalk.SpecFlow.Configuration
                 case "mstest.2010":
                     RuntimeUnitTestProviderType = typeof(MsTest2010RuntimeProvider);
                     break;
-#elif !WINDOWS_PHONE
-                case "mstest.silverlight":
-                case "mstest.silverlight3":
-                case "mstest.silverlight4":
-                    RuntimeUnitTestProviderType = typeof (MsTestSilverlightRuntimeProvider);
-                    break;
-#else
+#if WINDOWS_PHONE
                 case "mstest.windowsphone7":
                     RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
                     break;
@@ -182,12 +174,5 @@ namespace TechTalk.SpecFlow.Configuration
                     break;
             }
         }
-
-#if SILVERLIGHT
-        internal static RuntimeConfiguration CreateForSilverlight()
-        {
-            return new RuntimeConfiguration();
-        }
-#endif
     }
 }

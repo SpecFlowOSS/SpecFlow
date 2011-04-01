@@ -127,5 +127,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(IGNORE_ATTR)));
         }
+
+
+        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
+        {
+            // by default, doing nothing to the final generated code
+            return;
+        }
+
+        public void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            // doing nothing since we support RowTest
+            return;
+        }
     }
 }

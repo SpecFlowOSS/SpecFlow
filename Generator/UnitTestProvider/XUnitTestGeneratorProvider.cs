@@ -234,5 +234,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
             SetProperty(customAttributes, "Description", description);
         }
+
+
+        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
+        {
+            // by default, doing nothing to the final generated code
+            return;
+        }
+
+        public void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            // doing nothing since we support RowTest
+            return;
+        }
     }
 }

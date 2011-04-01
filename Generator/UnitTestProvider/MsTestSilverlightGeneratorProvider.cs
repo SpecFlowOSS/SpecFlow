@@ -149,5 +149,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                             new CodePrimitiveExpression(category))));
             }
         }
+
+        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
+        {
+            // by default, doing nothing to the final generated code
+            return;
+        }
+
+        public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            // by default, doing nothing to the arguments
+            return;
+        }
     }
 }

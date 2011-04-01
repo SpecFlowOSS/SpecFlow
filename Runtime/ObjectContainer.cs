@@ -32,17 +32,10 @@ namespace TechTalk.SpecFlow
             }
         }
 
-#if SILVERLIGHT
         private static RuntimeConfiguration GetConfiguration()
         {
-            return RuntimeConfiguration.CreateForSilverlight();
+            return RuntimeConfiguration.GetConfig();
         }
-#else
-        private static RuntimeConfiguration GetConfiguration()
-        {
-            return RuntimeConfiguration.LoadFromConfigFile();
-        }
-#endif
         #endregion
 
         #region TestRunner

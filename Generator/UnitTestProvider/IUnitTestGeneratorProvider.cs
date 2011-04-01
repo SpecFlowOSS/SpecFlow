@@ -14,11 +14,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTest(CodeMemberMethod memberMethod, string title);
         void SetRowTest(CodeMemberMethod memberMethod, string title);
         void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored);
+        void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments);
         void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories);
         void SetTestSetup(CodeMemberMethod memberMethod);
         void SetTestFixtureSetup(CodeMemberMethod memberMethod);
         void SetTestFixtureTearDown(CodeMemberMethod memberMethod);
         void SetTestTearDown(CodeMemberMethod memberMethod);
         void SetIgnore(CodeTypeMember codeTypeMember);
+        void FinalizeTestClass(CodeNamespace codeNameSpace);
     }
 }

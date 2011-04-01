@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CSharp;
 using TechTalk.SpecFlow.Configuration;
@@ -73,6 +74,7 @@ namespace TechTalk.SpecFlow.Generator
             ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, project.GeneratorConfiguration.AllowDebugGeneratedFiles, project.GeneratorConfiguration.AllowRowTests);
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
+
             return codeNamespace;
         }
 

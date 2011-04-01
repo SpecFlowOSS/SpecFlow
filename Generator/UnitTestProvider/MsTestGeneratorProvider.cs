@@ -138,5 +138,30 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(IGNORE_ATTR)));
         }
+
+
+        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
+        {
+            // by default, doing nothing to the final generated code
+            return;
+        }
+
+        public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        {
+            if (!string.IsNullOrEmpty(exampleSetName))
+            {
+                SetProperty(memberMethod.CustomAttributes,"ExampleSetName", exampleSetName);
+            }
+
+            if (!string.IsNullOrEmpty(variantName))
+            {
+                SetProperty(memberMethod.CustomAttributes,"VariantName", variantName);
+            }
+
+            foreach (var pair in arguments)
+            {
+                SetProperty(memberMethod.CustomAttributes, "Parameter:" + pair.Key, pair.Value);
+            }
+        }
     }
 }

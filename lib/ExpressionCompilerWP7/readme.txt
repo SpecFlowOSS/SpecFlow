@@ -1,0 +1,1 @@
+see more at: http://www.minddriven.de/index.php/technology/dot-net/windows-phone/wp7-compiling-expressions
