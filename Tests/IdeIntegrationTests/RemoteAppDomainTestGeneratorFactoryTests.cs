@@ -187,5 +187,65 @@ namespace IdeIntegrationTests
                 remoteFactory.IsRunning.ShouldBeFalse();
             }
         }
+
+
+        [Test]
+        public void Should_be_able_generate_from_a_simple_valid_feature()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator = remoteFactory.CreateGenerator(new ProjectSettings()
+                                                                  {
+                                                                      ProjectFolder = Path.GetTempPath()
+                                                                  });
+
+                FeatureFileInput featureFileInput = new FeatureFileInput("Test.feature")
+                                                        {
+                                                            FeatureFileContent = @"
+Feature: Addition
+
+@mytag
+Scenario: Add two numbers
+	Given I have entered 50 into the calculator
+	And I have entered 70 into the calculator
+	When I press add
+	Then the result should be 120 on the screen
+"
+                                                        };
+                var result = generator.GenerateTestFile(featureFileInput, new GenerationSettings());
+
+                result.ShouldNotBeNull();
+                result.Success.ShouldBeTrue();
+                result.GeneratedTestCode.ShouldNotBeNull();
+            }
+        }
+
+        [Test]
+        public void Should_be_able_generate_from_a_simple_invalid_feature()
+        {
+            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            {
+                var generator = remoteFactory.CreateGenerator(new ProjectSettings()
+                                                                  {
+                                                                      ProjectFolder = Path.GetTempPath()
+                                                                  });
+
+                FeatureFileInput featureFileInput = new FeatureFileInput("Test.feature")
+                                                        {
+                                                            FeatureFileContent = @"
+Feature: Addition
+Scenario: Add two numbers
+	Given I have entered 50 into the calculator
+    AndXXX the keyword is misspelled
+"
+                                                        };
+                var result = generator.GenerateTestFile(featureFileInput, new GenerationSettings());
+
+                result.ShouldNotBeNull();
+                result.Success.ShouldBeFalse();
+                result.Errors.ShouldNotBeNull();
+                result.Errors.ShouldNotBeEmpty();
+            }
+        }
     }
 }

@@ -6,14 +6,16 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
     public class TestGenerationError
     {
         /// <summary>
-        /// Zero-based indexing!
+        /// The (zero-based) line number of the error.
         /// </summary>
         public int Line { get; private set; }
         /// <summary>
-        /// Zero-based indexing!
+        /// The (zero-based) position of the error within the <see cref="Line"/>.
         /// </summary>
         public int LinePosition { get; private set; }
-
+        /// <summary>
+        /// The error message.
+        /// </summary>
         public string Message { get; private set; }
 
         public TestGenerationError(int line, int linePosition, string message)

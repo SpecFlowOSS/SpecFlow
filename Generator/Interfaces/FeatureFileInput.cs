@@ -3,6 +3,9 @@ using System.IO;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
+    /// <summary>
+    /// Represents the information related to a feature file as an input of the generation
+    /// </summary>
     [Serializable]
     public class FeatureFileInput
     {

@@ -4,10 +4,20 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.Interfaces
 {
+    [Serializable]
     public class TestGeneratorResult
     {
+        /// <summary>
+        /// The errors, if any.
+        /// </summary>
         public IEnumerable<TestGenerationError> Errors { get; private set; }
+        /// <summary>
+        /// The generated file was up-to-date.
+        /// </summary>
         public bool IsUpToDate { get; private set; }
+        /// <summary>
+        /// The generated test code.
+        /// </summary>
         public string GeneratedTestCode { get; private set; }
 
         public bool Success { get { return Errors == null || !Errors.Any(); } }
