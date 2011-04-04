@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
 	ProjectSection(SolutionItems) = preProject
 		changelog.txt = changelog.txt
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		Languages.xml = Languages.xml
 		LICENSE.txt = LICENSE.txt
 		VersionInfo.cs = VersionInfo.cs

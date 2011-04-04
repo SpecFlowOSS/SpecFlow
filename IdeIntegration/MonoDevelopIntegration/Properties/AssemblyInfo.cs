@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MonoDevelop.TechTalk.SpecFlow")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("TechTalk")]
 [assembly: AssemblyProduct("MonoDevelop.TechTalk.SpecFlow")]
 [assembly: AssemblyCopyright("Copyright © TechTalk, SineSignal, LLC 2010")]
 [assembly: AssemblyTrademark("")]
