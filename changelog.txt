@@ -23,6 +23,7 @@ New features:
 + Silverlight runtime can be configured from query string (by Matt Ellis)
 + Generate test parameters from scenario outline parameters and example set name for MsTest (by Qingsong Yao)
 + Isolated test generator interface (can be used later for using the generator of the project instead of the generator of the IDE integration)
++ Official NuGet integration (by Daniel Sack)
 
 Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
