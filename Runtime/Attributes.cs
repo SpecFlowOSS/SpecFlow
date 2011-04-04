@@ -141,18 +141,6 @@ namespace TechTalk.SpecFlow
         }
     }
 
-    [Obsolete("this attribute has been renamed to [StepArgumentTransformation]")]
-    public class StepTransformationAttribute : StepArgumentTransformationAttribute
-    {
-        public StepTransformationAttribute(string regex) : base(regex)
-        {
-        }
-
-        public StepTransformationAttribute()
-        {
-        }
-    }
-
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
     public class StepScopeAttribute : Attribute
     {

@@ -11,8 +11,6 @@ namespace TechTalk.SpecFlow
         public string Title { get; private set; }
         public string Description { get; private set; }
         public CultureInfo Language { get; private set; }
-        [Obsolete("Use Language property that is now ensured to be a specific culture.", true)]
-        public CultureInfo CultureInfo { get { throw new NotSupportedException(); } }
 
         public FeatureInfo(CultureInfo language, string title, string description, params string[] tags)
             : this(language, title, description, ProgrammingLanguage.CSharp, tags)
