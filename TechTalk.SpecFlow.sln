@@ -82,7 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlternativeRuntimes", "Alte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{605573AA-9C90-442B-B54B-1243A36A3E18}"
 	ProjectSection(SolutionItems) = preProject
-		IdeIntegration\NuGetIntegration\app.config.transform = IdeIntegration\NuGetIntegration\app.config.transform
+		IdeIntegration\NuGetIntegration\App.config.transform = IdeIntegration\NuGetIntegration\App.config.transform
 		IdeIntegration\NuGetIntegration\nuget_readme.txt = IdeIntegration\NuGetIntegration\nuget_readme.txt
 		IdeIntegration\NuGetIntegration\SpecFlow.nuspec = IdeIntegration\NuGetIntegration\SpecFlow.nuspec
 	EndProjectSection
