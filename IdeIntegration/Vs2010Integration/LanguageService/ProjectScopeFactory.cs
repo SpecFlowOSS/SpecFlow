@@ -5,6 +5,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.BindingSkeletons;
+using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;

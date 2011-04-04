@@ -248,7 +248,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Options\IntegrationOptionsProvider.cs" />
-    <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

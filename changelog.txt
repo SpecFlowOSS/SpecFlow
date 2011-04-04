@@ -18,6 +18,7 @@ New features:
 + VS2010: Intellisense for keywords
 + VS2010: "go to binding"
 + VS2010: Automatic table formatting when "|" is typed
++ VS2010: Tracing can be configured from tools / options. The environment variable SPECFLOW_TRACE is not used anymore.
 + Windows Phone 7 support, see https://github.com/techtalk/SpecFlow/wiki/Windows-Phone-7-Support (by Max Paulousky)
 + Silverlight runtime can be configured from query string (by Matt Ellis)
 + Generate test parameters from scenario outline parameters and example set name for MsTest (by Qingsong Yao)

@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Vs2010Integration.Options
+﻿namespace TechTalk.SpecFlow.IdeIntegration.Options
 {
     public class IntegrationOptions
     {
@@ -7,5 +7,7 @@
         public bool EnableIntelliSense { get; set; }
         public bool EnableAnalysis { get; set; }
         public bool EnableTableAutoFormat { get; set; }
+        public bool EnableTracing { get; set; }
+        public string TracingCategories { get; set; }
     }
 }

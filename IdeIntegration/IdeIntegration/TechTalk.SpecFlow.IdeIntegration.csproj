@@ -48,6 +48,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Generator\GeneratorServices.cs" />
+    <Compile Include="Options\IIntegrationOptionsProvider.cs" />
+    <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Generator\RemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Generator\RemoteGeneratorServices.cs" />
@@ -58,6 +60,7 @@
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
     public class OptionsPageGeneral : DialogPage
     {
         [Category("Analysis Settings")]
-        [Description("Controls whether SpecFlow should collect binding information and step suggestions from the feature files.")]
+        [Description("Controls whether SpecFlow should collect binding information and step suggestions from the feature files. (restart required)")]
         [DisplayName(@"Enable project-wide analysis")]
         [DefaultValue(IntegrationOptionsProvider.EnableAnalysisDefaultValue)]
         public bool EnableAnalysis { get; set; }
@@ -59,6 +59,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         [DefaultValue(IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue)]
         public bool EnableTableAutoFormat { get; set; }
 
+        [Category("Tracing")]
+        [Description("Controls whether diagnostic trace messages should be emitted to the output window.")]
+        [DisplayName(@"Enable Tracing")]
+        [DefaultValue(IntegrationOptionsProvider.EnableTracingDefaultValue)]
+        public bool EnableTracing { get; set; }
+
+        [Category("Tracing")]
+        [Description("Specifies the enabled the tracing categories in a comma-seperated list. Use \"all\" to trace all categories.")]
+        [DisplayName(@"Tracing Categories")]
+        [DefaultValue(IntegrationOptionsProvider.TracingCategoriesDefaultValue)]
+        public string TracingCategories { get; set; }
+
         public OptionsPageGeneral()
         {
             EnableAnalysis = IntegrationOptionsProvider.EnableAnalysisDefaultValue;
@@ -66,6 +78,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
             EnableOutlining = IntegrationOptionsProvider.EnableOutliningDefaultValue;
             EnableIntelliSense = IntegrationOptionsProvider.EnableIntelliSenseDefaultValue;
             EnableTableAutoFormat = IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue;
+            EnableTracing = IntegrationOptionsProvider.EnableTracingDefaultValue;
+            TracingCategories = IntegrationOptionsProvider.TracingCategoriesDefaultValue;
         }
     }
 }
