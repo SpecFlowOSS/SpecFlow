@@ -187,7 +187,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return;
 
             // we reset the last numbers as we don't want to force generating the files for every build
-            generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0);
+            generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0); 
+                //TODO: consider removing this after the generator versioning has been well established
 
             Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
             if (featureFilesTracker.Files.Any(outOfDateFiles))
@@ -249,7 +250,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
             ISpecFlowProjectConfigurationLoader configurationLoader = new VsSpecFlowProjectConfigurationLoader(); //TODO: load through DI
 
-            IProjectReference projectReference = new VsProjectReference(project);
+            IProjectReference projectReference = new VsProjectScopeReference(this);
 
             return configurationLoader.LoadConfiguration(configurationReader.ReadConfiguration(projectReference), projectReference);
         }

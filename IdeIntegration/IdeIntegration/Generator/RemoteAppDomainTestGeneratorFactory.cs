@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -9,7 +10,29 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         private readonly string generatorFolder;
         private AppDomain appDomain = null;
         private ITestGeneratorFactory remoteTestGeneratorFactory = null;
-        private int generatorCounter = 0;
+        private UsageCounter usageCounter;
+
+        private class UsageCounter
+        {
+            private int counter = 0;
+            private readonly Action cleanup;
+
+            public UsageCounter(Action cleanup)
+            {
+                this.cleanup = cleanup;
+            }
+
+            public void Increase()
+            {
+                counter++;
+            }
+
+            public void Decrease()
+            {
+                if (--counter <= 0)
+                    cleanup();
+            }
+        }
 
         public bool IsRunning
         {
@@ -29,21 +52,33 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         public void Initialize()
         {
-            AppDomainSetup appDomainSetup = new AppDomainSetup();
-            appDomainSetup.ApplicationBase = generatorFolder;
+            AppDomainSetup appDomainSetup = new AppDomainSetup { ApplicationBase = generatorFolder };
             appDomain = AppDomain.CreateDomain("AppDomainForTestGeneration", null, appDomainSetup);
 
             var remoteGeneratorAssemblyName = typeof(ITestGeneratorFactory).Assembly.GetName().Name;
-            remoteTestGeneratorFactory = appDomain.CreateInstanceAndUnwrap(remoteGeneratorAssemblyName, typeof(TestGeneratorFactory).FullName) as ITestGeneratorFactory;
+            var testGeneratorFactoryTypeFullName = typeof(TestGeneratorFactory).FullName;
+            Debug.Assert(testGeneratorFactoryTypeFullName != null);
+
+            remoteTestGeneratorFactory = appDomain.CreateInstanceAndUnwrap(remoteGeneratorAssemblyName, testGeneratorFactoryTypeFullName) as ITestGeneratorFactory;
 
             if (remoteTestGeneratorFactory == null)
                 throw new InvalidOperationException("Could not load test generator factory.");
+
+            usageCounter = new UsageCounter(Cleanup);
         }
 
         public Version GetGeneratorVersion()
         {
             EnsureInitialized();
-            return remoteTestGeneratorFactory.GetGeneratorVersion();
+            try
+            {
+                usageCounter.Increase();
+                return remoteTestGeneratorFactory.GetGeneratorVersion();
+            }
+            finally
+            {
+                usageCounter.Decrease();
+            }
         }
 
         private class DisposeNotificationTestGenerator : ITestGenerator
@@ -89,16 +124,11 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         public ITestGenerator CreateGenerator(ProjectSettings projectSettings)
         {
             EnsureInitialized();
-            generatorCounter++;
+            usageCounter.Increase();
             var remoteGenerator = remoteTestGeneratorFactory.CreateGenerator(projectSettings);
 
             var disposeNotificationGenerator = new DisposeNotificationTestGenerator(remoteGenerator);
-            disposeNotificationGenerator.Disposed +=
-                () =>
-                    {
-                        if (--generatorCounter == 0)
-                            Cleanup();
-                    };
+            disposeNotificationGenerator.Disposed += () => usageCounter.Decrease();
             return disposeNotificationGenerator;
         }
 

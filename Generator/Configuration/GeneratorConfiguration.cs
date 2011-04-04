@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
 
-            GeneratorVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            GeneratorVersion = TestGeneratorFactory.GeneratorVersion;
         }
 
         internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)

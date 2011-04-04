@@ -7,11 +7,11 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
     public class GeneratorInfo
     {
-        public Version GeneratorVersion { get; set; }
+        public Version GeneratorAssemblyVersion { get; set; }
         public string GeneratorFolder { get; set; }
     }
 
-    public abstract class RemoteGeneratorServices : GeneratorServices, IDisposable
+    public abstract class RemoteGeneratorServices : GeneratorServices
     {
         private RemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory;
 
@@ -21,6 +21,11 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         protected abstract GeneratorInfo GetGeneratorInfo();
 
+        protected Version GetCurrentGeneratorAssemblyVersion()
+        {
+            return typeof(TestGeneratorFactory).Assembly.GetName().Version;
+        }
+
         protected override ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
             // if we already have a generator factory -> use it!
@@ -28,13 +33,13 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
                 return remoteAppDomainTestGeneratorFactory;
 
             GeneratorInfo generatorInfo = GetGeneratorInfo();
-            if (generatorInfo == null || generatorInfo.GeneratorVersion == null || generatorInfo.GeneratorFolder == null)
+            if (generatorInfo == null || generatorInfo.GeneratorAssemblyVersion == null || generatorInfo.GeneratorFolder == null)
             {
                 // we don't know about the generator -> call the "current" directly
                 return base.GetTestGeneratorFactoryForCreate();
             }
 
-            if (generatorInfo.GeneratorVersion == TestGeneratorFactory.GeneratorVersion)
+            if (generatorInfo.GeneratorAssemblyVersion == GetCurrentGeneratorAssemblyVersion())
             {
                 // uses the "current" generator -> call it directly
                 return base.GetTestGeneratorFactoryForCreate();
@@ -62,7 +67,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             base.InvalidateSettings();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Cleanup();
         }

@@ -1,11 +1,13 @@
-﻿using TechTalk.SpecFlow.Generator.Interfaces;
+﻿using System;
+using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
-    public interface IGeneratorServices
+    public interface IGeneratorServices : IDisposable
     {
         void InvalidateSettings();
         ITestGenerator CreateTestGenerator();
+        Version GetGeneratorVersion();
     }
 
     public abstract class GeneratorServices : IGeneratorServices
@@ -50,6 +52,17 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         {
             var testGeneratorFactoryForCreate = GetTestGeneratorFactoryForCreate();
             return testGeneratorFactoryForCreate.CreateGenerator(GetProjectSettingsCached());
+        }
+
+        public virtual Version GetGeneratorVersion()
+        {
+            var testGeneratorFactoryForCreate = GetTestGeneratorFactoryForCreate();
+            return testGeneratorFactoryForCreate.GetGeneratorVersion();
+        }
+
+        public virtual void Dispose()
+        {
+            //nop
         }
     }
 }
