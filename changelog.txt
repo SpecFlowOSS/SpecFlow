@@ -1,4 +1,4 @@
-﻿Next - ???
+﻿1.6.0 - 2011/04/04
 
 Breaking changes:
 + The Silverlight runtime assembly has been renamed to TechTalk.SpecFlow.Silverlight3.dll.
