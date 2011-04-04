@@ -10,14 +10,6 @@ namespace TechTalk.SpecFlow.Configuration
 {
     partial class ConfigurationSectionHandler : ConfigurationSection
     {
-        [ConfigurationProperty("dependencies", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
-        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
-        public ContainerRegistrationCollection Dependencies
-        {
-            get { return (ContainerRegistrationCollection)this["dependencies"]; }
-            set { this["dependencies"] = value; }
-        }
-
         [ConfigurationProperty("language", IsRequired = false)]
         public LanguageConfigElement Language
         {
@@ -176,6 +168,14 @@ namespace TechTalk.SpecFlow.Configuration
 
     public class GeneratorConfigElement : ConfigurationElement
     {
+        [ConfigurationProperty("dependencies", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
+        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
+        public ContainerRegistrationCollection Dependencies
+        {
+            get { return (ContainerRegistrationCollection)this["dependencies"]; }
+            set { this["dependencies"] = value; }
+        }
+
         [ConfigurationProperty("allowDebugGeneratedFiles", DefaultValue = ConfigDefaults.AllowDebugGeneratedFiles, IsRequired = false)]
         public bool AllowDebugGeneratedFiles
         {

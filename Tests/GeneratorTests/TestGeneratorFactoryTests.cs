@@ -59,9 +59,11 @@ namespace GeneratorTests
         {
             var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"
                 <specFlow>
+                  <generator>  
                   <dependencies>
                     <register type=""{0}"" as=""{1}""/>
                   </dependencies>
+                  </generator>
                 </specFlow>",
                 typeof(DummyGenerator).AssemblyQualifiedName,
                 typeof(ITestGenerator).AssemblyQualifiedName));

@@ -65,8 +65,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 AllowRowTests = configSection.Generator.AllowRowTests;
             }
 
-            if (configSection.Dependencies != null)
-                CustomDependencies = configSection.Dependencies;
+            if (configSection.Generator != null && configSection.Generator.Dependencies != null)
+                CustomDependencies = configSection.Generator.Dependencies;
         }
 
         private static Type GetTypeConfig(string typeName)
