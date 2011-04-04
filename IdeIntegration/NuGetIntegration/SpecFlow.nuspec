@@ -3,51 +3,39 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>SpecFlow</id>
     <version>1.5.0</version>
-	<title>SpecFlow</title>
+    <title>SpecFlow</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
     <description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</description>
     <summary>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</summary>
     <language>en-US</language>
-	<projectUrl>http://www.specflow.org</projectUrl>
-	<iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
-	<licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
-	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
+    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow bdd gherkin cucumber</tags>
   </metadata>
   <!-- http://nuget.codeplex.com/wikipage?title=File%20Element%20Specification -->
   <files>
-	
-	<!-- common reference files -->
-	<file src="..\..\Runtime\bin\Release\TechTalk.SpecFlow.dll" target="lib\NET35" />
-	<!--
-	<file src="..\..\Runtime\bin\Release\TechTalk.SpecFlow.dll" target="lib\NET40" />
-	-->
-	
-	<!-- silverlight -->
-	<file src="..\..\Runtime.Silverlight\Bin\Release\TechTalk.SpecFlow.Silverlight.dll" target="lib\SL3" />
-	<!--
-	<file src="..\..\Runtime.Silverlight\Bin\Release\TechTalk.SpecFlow.Silverlight.dll" target="lib\SL4" />
-	-->
-	
-	<!-- Tools -->
-	<file src="..\..\Tools\bin\Release\*.dll" target="Tools" />
-	<file src="..\..\Tools\bin\Release\*.exe" target="Tools" />
-	<file src="..\..\Tools\bin\Release\MsBuild\*" target="Tools" />
-	
-	<!-- config -->
-	<file src="app.config.transform" target="content" />
-	
-	<!-- version information -->
-	<file src="..\..\LICENSE.txt" target="" />
-	<file src="..\..\changelog.txt" target="" />
-	
-	<!--
-	TechTalk.SpecFlow.dll
-	<file src="bin\release\**" target="lib\NET35" />
-	<file src="bin\release\**" target="lib\NET40" />
-	<file src="bin\release\**" target="lib\SL3" />
-	<file src="bin\release\**" target="lib\SL4" />
-	-->
+
+    <!-- common reference files -->
+    <file src="..\..\Runtime\bin\Release\TechTalk.SpecFlow.dll" target="lib\net35" />
+
+    <!-- alternative runtimes -->
+    <file src="..\..\AlternativeRuntimes\Runtime.Silverlight3\Bin\Release\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl3" />
+    <file src="..\..\AlternativeRuntimes\Runtime.Silverlight3\Bin\Release\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl4-wp" />
+
+    <!-- Tools -->
+    <file src="..\..\Tools\bin\Release\*.dll" target="tools" />
+    <file src="..\..\Tools\bin\Release\*.exe" target="tools" />
+    <file src="..\..\Tools\bin\Release\MsBuild\*" target="tools" />
+
+    <!-- config -->
+    <file src="App.config.transform" target="content" />
+
+    <!-- version information -->
+    <file src="..\..\LICENSE.txt" target="" />
+    <file src="..\..\changelog.txt" target="" />
 
   </files>
 </package>
