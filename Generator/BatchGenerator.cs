@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.Generator
 
         public void ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
         {
-            traceListener.WriteToolOutput("Processing project: " + specFlowProject);
+            traceListener.WriteToolOutput("Processing project: " + specFlowProject.ProjectSettings.ProjectName);
             GenerationSettings generationSettings = GetGenerationSettings(forceGenerate);
 
             using (var generator = CreateGenerator(specFlowProject))
@@ -36,18 +36,19 @@ namespace TechTalk.SpecFlow.Generator
 
                 foreach (var featureFile in specFlowProject.FeatureFiles)
                 {
-                    string featureFileFullPath = featureFile.GetFullPath(specFlowProject.ProjectSettings);
-                    traceListener.WriteToolOutput("Processing file: {0}", featureFileFullPath);
-
                     var featureFileInput = CreateFeatureFileInput(featureFile, generator, specFlowProject);
                     var generationResult = GenerateTestFile(generator, featureFileInput, generationSettings);
                     if (!generationResult.Success)
                     {
-                        traceListener.WriteToolOutput("  generation failed");
+                        traceListener.WriteToolOutput("{0} -> test generation failed", featureFile.ProjectRelativePath);
                     }
                     else if (generationResult.IsUpToDate)
                     {
-                        traceListener.WriteToolOutput("  up-to-date");
+                        traceListener.WriteToolOutput("{0} -> test up-to-date", featureFile.ProjectRelativePath);
+                    }
+                    else
+                    {
+                        traceListener.WriteToolOutput("{0} -> test updated", featureFile.ProjectRelativePath);
                     }
                 }
             }
