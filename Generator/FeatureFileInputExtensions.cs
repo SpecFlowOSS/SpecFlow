@@ -44,5 +44,28 @@ namespace TechTalk.SpecFlow.Generator
 
             return Path.GetFullPath(Path.Combine(projectSettings.ProjectFolder, featureFileInput.GeneratedTestProjectRelativePath));
         }
+
+        public static string GetGeneratedTestContent(this FeatureFileInput featureFileInput, string generatedTestFullPath)
+        {
+            var generatedTestFileContent = featureFileInput.GeneratedTestFileContent;
+            if (generatedTestFileContent != null)
+                return generatedTestFileContent;
+
+            if (generatedTestFullPath == null)
+                return null;
+
+            try
+            {
+                if (!File.Exists(generatedTestFullPath))
+                    return null;
+
+                return File.ReadAllText(generatedTestFullPath);
+            }
+            catch(Exception exception)
+            {
+                Debug.WriteLine(exception, "FeatureFileInputExtensions.GetGeneratedTestContent");
+                return null;
+            }
+        }
     }
 }

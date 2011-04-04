@@ -14,6 +14,11 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         /// </summary>
         public bool CheckUpToDate { get; set; }
         /// <summary>
+        /// Specifies the way how the up-to-date checking should be performed.
+        /// </summary>
+        public UpToDateCheckingMethod UpToDateCheckingMethod { get; set; }
+        
+        /// <summary>
         /// Specifies whether the generation result should be written out to a file. Optional, 
         /// disabled by default.
         /// </summary>
@@ -22,7 +27,15 @@ namespace TechTalk.SpecFlow.Generator.Interfaces
         public GenerationSettings()
         {
             CheckUpToDate = false;
+            UpToDateCheckingMethod = UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion;
+
             WriteResultToFile = false;
         }
+    }
+
+    public enum UpToDateCheckingMethod
+    {
+        ModificationTimeAndGeneratorVersion,
+        FileContent
     }
 }

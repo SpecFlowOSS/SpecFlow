@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
@@ -125,6 +126,73 @@ namespace GeneratorTests
             var result = testGenerator.DetectGeneratedTestVersion(featureFileInput);
 
             result.ShouldBeNull();
+        }
+
+        [Test]
+        public void Should_detect_up_to_date_test_file_based_on_preliminary_up_to_date_check()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDatePreliminary(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns(true);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), new GenerationSettings
+                                                                                                 {
+                                                                                                     CheckUpToDate = true
+                                                                                                 });
+            result.IsUpToDate.ShouldBeTrue();
+        }
+
+        [Test]
+        public void Should_detect_outdated_test_file_based_on_preliminary_up_to_date_check()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDatePreliminary(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns(false);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), new GenerationSettings
+                                                                                                 {
+                                                                                                     CheckUpToDate = true
+                                                                                                 });
+            result.IsUpToDate.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_detect_up_to_date_test_file_based_on_context_based_up_to_date_check()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDatePreliminary(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns((bool?)null);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDate(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns(true);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), new GenerationSettings
+            {
+                CheckUpToDate = true
+            });
+            result.IsUpToDate.ShouldBeTrue();
+            result.GeneratedTestCode.ShouldBeNull();
+        }
+
+        [Test]
+        public void Should_detect_outdated_test_file_based_on_context_based_up_to_date_check()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDatePreliminary(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns((bool?)null);
+
+            TestUpToDateCheckerStub.Setup(tu2d => tu2d.IsUpToDate(It.IsAny<FeatureFileInput>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<UpToDateCheckingMethod>()))
+                .Returns(false);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), new GenerationSettings
+            {
+                CheckUpToDate = true
+            });
+            result.IsUpToDate.ShouldBeFalse();
         }
     }
 }

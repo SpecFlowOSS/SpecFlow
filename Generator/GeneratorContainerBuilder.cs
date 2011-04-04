@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             container.RegisterTypeAs<TestGenerator, ITestGenerator>();
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
+            container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
         }
     }
 }

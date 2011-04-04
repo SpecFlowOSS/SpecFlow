@@ -29,11 +29,7 @@ namespace TechTalk.SpecFlow.Generator
         public void ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
         {
             traceListener.WriteToolOutput("Processing project: " + specFlowProject);
-            GenerationSettings generationSettings = new GenerationSettings()
-                                                        {
-                                                            CheckUpToDate = !forceGenerate,
-                                                            WriteResultToFile = true
-                                                        };
+            GenerationSettings generationSettings = GetGenerationSettings(forceGenerate);
 
             using (var generator = CreateGenerator(specFlowProject))
             {
@@ -55,6 +51,15 @@ namespace TechTalk.SpecFlow.Generator
                     }
                 }
             }
+        }
+
+        protected virtual GenerationSettings GetGenerationSettings(bool forceGenerate)
+        {
+            return new GenerationSettings()
+                       {
+                           CheckUpToDate = !forceGenerate,
+                           WriteResultToFile = true
+                       };
         }
 
         protected virtual FeatureFileInput CreateFeatureFileInput(FeatureFileInput featureFile, ITestGenerator generator, SpecFlowProject specFlowProject)

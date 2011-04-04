@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Tools.MsBuild
 {
@@ -30,6 +31,11 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             {
                 // nop;
             }
+
+            public virtual void Skip()
+            {
+                // nop;
+            }
         }
 
         public abstract class TempOutputFile : OutputFile
@@ -51,6 +57,11 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             {
                 SafeDeleteFile(TempFilePath);
             }
+
+            public override void Skip()
+            {
+                SafeDeleteFile(TempFilePath);
+            }
         }
 
         public class VerifyDifferenceOutputFile : TempOutputFile
@@ -61,7 +72,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
             public override void Done(CompilerErrorCollection result)
             {
-                if (!FileCompare(TempFilePath, FilePath))
+                if (!FileSystemHelper.FileCompare(TempFilePath, FilePath))
                 {
                     string message = String.Format("Error during file generation. The target file '{0}' is read-only, but different from the transformation result. This problem can be a sign of an inconsistent source code package. Compile and check-in the current version of the file from the development environment or remove the read-only flag from the generation result. To compile a solution that contains messaging project on a build server, you can also exclude the messaging project from the build-server solution or set the <OverwriteReadOnlyFiles> msbuild project parameter to 'true' in the messaging project file.", 
                         Path.GetFullPath(FilePath));
@@ -80,7 +91,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
 
             public override void Done(CompilerErrorCollection result)
             {
-                if (!FileCompare(TempFilePath, FilePath))
+                if (!FileSystemHelper.FileCompare(TempFilePath, FilePath))
                 {
                     ReplaceFile(TempFilePath, FilePath);
                 }
@@ -104,51 +115,6 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
                 return new UpdateIfChangedOutputFile(outputFilePath);
 
             return new OutputFile(outputFilePath);
-        }
-
-        // This method accepts two strings the represent two files to 
-        // compare. A return value of true indicates that the contents of the files
-        // are the same. A return value of any other value indicates that the 
-        // files are not the same.
-        private static bool FileCompare(string filePath1, string filePath2)
-        {
-            int file1byte;
-            int file2byte;
-
-            // Determine if the same file was referenced two times.
-            if (string.Equals(filePath1, filePath2, StringComparison.CurrentCultureIgnoreCase))
-            {
-                // Return true to indicate that the files are the same.
-                return true;
-            }
-
-            // Open the two files.
-            using (FileStream fs1 = new FileStream(filePath1, FileMode.Open, FileAccess.Read))
-            using (FileStream fs2 = new FileStream(filePath2, FileMode.Open, FileAccess.Read))
-            {
-                // Check the file sizes. If they are not the same, the files 
-                // are not the same.
-                if (fs1.Length != fs2.Length)
-                {
-                    // Return false to indicate files are different
-                    return false;
-                }
-
-                // Read and compare a byte from each file until either a
-                // non-matching set of bytes is found or until the end of
-                // file1 is reached.
-                do
-                {
-                    // Read one byte from each file.
-                    file1byte = fs1.ReadByte();
-                    file2byte = fs2.ReadByte();
-                } while ((file1byte == file2byte) && (file1byte != -1));
-            }
-
-            // Return the success of the comparison. "file1byte" is 
-            // equal to "file2byte" at this point only if the files are 
-            // the same.
-            return ((file1byte - file2byte) == 0);
         }
 
         private static bool IsReadOnly(string path)

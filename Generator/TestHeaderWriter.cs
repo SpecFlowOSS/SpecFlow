@@ -10,6 +10,9 @@ namespace TechTalk.SpecFlow.Generator
 
         public Version DetectGeneratedTestVersion(string generatedTestContent)
         {
+            if (generatedTestContent == null)
+                return null;
+
             var match = generatorVersionRe.Match(generatedTestContent);
 
             if (!match.Success)

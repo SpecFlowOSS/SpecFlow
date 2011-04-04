@@ -16,6 +16,7 @@ namespace GeneratorTests
         protected ProjectSettings net35VBProjectSettings;
         protected GenerationSettings defaultSettings;
         protected Mock<ITestHeaderWriter> TestHeaderWriterStub;
+        protected Mock<ITestUpToDateChecker> TestUpToDateCheckerStub;
 
         [SetUp]
         public virtual void Setup()
@@ -40,6 +41,7 @@ namespace GeneratorTests
             defaultSettings = new GenerationSettings();
 
             TestHeaderWriterStub = new Mock<ITestHeaderWriter>();
+            TestUpToDateCheckerStub = new Mock<ITestUpToDateChecker>();
         }
 
         protected FeatureFileInput CreateSimpleValidFeatureFileInput()
@@ -78,7 +80,7 @@ Scenario: Add two numbers
 
         protected TestGenerator CreateTestGenerator(ProjectSettings projectSettings)
         {
-            return new TestGenerator(new GeneratorConfiguration(), projectSettings, TestHeaderWriterStub.Object);
+            return new TestGenerator(new GeneratorConfiguration(), projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object);
         }
     }
 }

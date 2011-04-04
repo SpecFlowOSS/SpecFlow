@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -24,14 +23,17 @@ namespace TechTalk.SpecFlow.Generator
         protected readonly GeneratorConfiguration generatorConfiguration;
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
+        protected readonly ITestUpToDateChecker testUpToDateChecker;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter)
+        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker)
         {
             if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");
             if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
+            if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
 
             this.generatorConfiguration = generatorConfiguration;
+            this.testUpToDateChecker = testUpToDateChecker;
             this.testHeaderWriter = testHeaderWriter;
             this.projectSettings = projectSettings;
         }
@@ -59,67 +61,52 @@ namespace TechTalk.SpecFlow.Generator
             if (featureFileInput == null) throw new ArgumentNullException("featureFileInput");
             if (settings == null) throw new ArgumentNullException("settings");
 
-            if (settings.CheckUpToDate && IsUpToDate(featureFileInput))
-                return new TestGeneratorResult(null, true);
-
-            StringWriter outputStringWriter = new StringWriter();
-            var outputWriter = new IndentProcessingWriter(outputStringWriter);
-
-            var codeProvider = CreateCodeDomProvider(projectSettings.ProjectPlatformSettings);
-            CodeDomHelper codeDomHelper = CreateCodeDomHelper(codeProvider, settings);
-
-            var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper);
-            var options = new CodeGeneratorOptions
+            var generatedTestFullPath = GetTestFullPath(featureFileInput);
+            bool? preliminaryUpToDateCheckResult = null;
+            if (settings.CheckUpToDate)
             {
-                BracingStyle = "C"
-            };
+                preliminaryUpToDateCheckResult = testUpToDateChecker.IsUpToDatePreliminary(featureFileInput, generatedTestFullPath, settings.UpToDateCheckingMethod);
+                if (preliminaryUpToDateCheckResult == true)
+                    return new TestGeneratorResult(null, true);
+            }
 
-            AddSpecFlowHeader(codeProvider, outputWriter, codeDomHelper);
-            codeProvider.GenerateCodeFromNamespace(codeNamespace, outputWriter, options);
-            AddSpecFlowFooter(codeProvider, outputWriter, codeDomHelper);
-            outputWriter.Flush();
+            string generatedTestCode = GetGeneratedTestCode(featureFileInput, settings);
 
-            var generatedTestCode = outputStringWriter.ToString();
+            if (settings.CheckUpToDate && preliminaryUpToDateCheckResult != false)
+            {
+                var isUpToDate = testUpToDateChecker.IsUpToDate(featureFileInput, generatedTestFullPath, generatedTestCode, settings.UpToDateCheckingMethod);
+                if (isUpToDate)
+                    return new TestGeneratorResult(null, true);
+            }
 
             if (settings.WriteResultToFile)
             {
-                File.WriteAllText(GetTestFullPath(featureFileInput), generatedTestCode, Encoding.UTF8);
+                File.WriteAllText(generatedTestFullPath, generatedTestCode, Encoding.UTF8);
             }
 
             return new TestGeneratorResult(generatedTestCode, false);
         }
 
-        private bool IsUpToDate(FeatureFileInput featureFileInput)
+        private string GetGeneratedTestCode(FeatureFileInput featureFileInput, GenerationSettings settings)
         {
-            string codeFileFullPath = GetTestFullPath(featureFileInput);
-            if (codeFileFullPath == null)
-                return false;
-
-            // check existance of the target file
-            if (!File.Exists(codeFileFullPath))
-                return false;
-
-            // check modification time of the target file
-            try
+            using (var outputWriter = new IndentProcessingWriter(new StringWriter()))
             {
-                var featureFileModificationTime = File.GetLastWriteTime(featureFileInput.GetFullPath(projectSettings));
-                var codeFileModificationTime = File.GetLastWriteTime(codeFileFullPath);
+                var codeProvider = CreateCodeDomProvider(projectSettings.ProjectPlatformSettings);
+                CodeDomHelper codeDomHelper = CreateCodeDomHelper(codeProvider, settings);
 
-                if (featureFileModificationTime > codeFileModificationTime)
-                    return false;
+                var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper);
+                var options = new CodeGeneratorOptions
+                                  {
+                                      BracingStyle = "C"
+                                  };
 
-                // check tools version
-                var codeFileVersion = DetectGeneratedTestVersionWithExceptions(featureFileInput);
-                if (codeFileVersion == null || codeFileVersion != generatorConfiguration.GeneratorVersion)
-                    return false;
+                AddSpecFlowHeader(codeProvider, outputWriter, codeDomHelper);
+                codeProvider.GenerateCodeFromNamespace(codeNamespace, outputWriter, options);
+                AddSpecFlowFooter(codeProvider, outputWriter, codeDomHelper);
+
+                outputWriter.Flush();
+                return outputWriter.ToString();
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                return false;
-            }
-
-            return true;
         }
 
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper)
@@ -172,16 +159,8 @@ namespace TechTalk.SpecFlow.Generator
         #region Header & Footer
         protected override Version DetectGeneratedTestVersionWithExceptions(FeatureFileInput featureFileInput)
         {
-            var generatedTestFileContent = featureFileInput.GeneratedTestFileContent;
-            if (generatedTestFileContent == null)
-            {
-                var generatedTestPath = GetTestFullPath(featureFileInput);
-                if (generatedTestPath == null)
-                    return null;
-                generatedTestFileContent = File.ReadAllText(generatedTestPath);
-            }
-
-            return testHeaderWriter.DetectGeneratedTestVersion(generatedTestFileContent);
+            var generatedTestFullPath = GetTestFullPath(featureFileInput);
+            return testHeaderWriter.DetectGeneratedTestVersion(featureFileInput.GetGeneratedTestContent(generatedTestFullPath));
         }
 
         private void AddSpecFlowHeader(CodeDomProvider codeProvider, TextWriter outputWriter, CodeDomHelper codeDomHelper)
