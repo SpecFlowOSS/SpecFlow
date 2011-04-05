@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -72,18 +72,28 @@
   </Target>
   -->
   <PropertyGroup>
-    <MSBuildCommunityTasksPath>$(SolutionDir)\lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+    <MSBuildCommunityTasksPath>$(SolutionDir)lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+    <PackageDir>$(TargetDir)\package</PackageDir>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
   <Target Name="AfterBuild">
     <ItemGroup>
-      <BinPackageFiles Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />
-      <BinPackageFiles Include="$(TargetDir)\*.exe" />
-      <BinPackageFiles Include="$(TargetDir)\*.txt" />
-      <BinPackageFiles Include="$(TargetDir)\MsBuild\*.*" />
-      <BinPackageFiles Include="$(SolutionDir)\AlternativeRuntimes\Runtime.Silverlight3\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight3.dll" />
-      <BinPackageFiles Include="$(SolutionDir)\AlternativeRuntimes\Runtime.WindowsPhone7\bin\$(Configuration)\TechTalk.SpecFlow.WindowsPhone7.dll" />
+      <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\TechTalk.SpecFlow.dll;$(TargetDir)\to_be_removed.dll" />
+      <SpecFlowTools Include="$(TargetDir)\*.exe" />
+      <SpecFlowTools Include="$(TargetDir)\MsBuild\*.*" />
+      <SpecFlowLicense Include="$(TargetDir)\*.txt" />
+      <SpecFlowRuntime Include="$(TargetDir)\TechTalk.SpecFlow.dll" />
+      <SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.Silverlight3\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight3.dll" />
+      <SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.WindowsPhone7\bin\$(Configuration)\TechTalk.SpecFlow.WindowsPhone7.dll" />
     </ItemGroup>
-    <Zip Files="@(BinPackageFiles)" Flatten="true" ZipFileName="$(TargetDir)\SpecFlowBinPackage.zip" />
+    <RemoveDir Directories="$(PackageDir)" ContinueOnError="false" />
+    <MakeDir Directories="$(PackageDir)" ContinueOnError="false" />
+    <Copy SourceFiles="@(SpecFlowRuntime)" DestinationFolder="$(PackageDir)\lib" />
+    <Copy SourceFiles="@(SpecFlowTools)" DestinationFolder="$(PackageDir)\tools" />
+    <Copy SourceFiles="@(SpecFlowLicense)" DestinationFolder="$(PackageDir)" />
+    <ItemGroup>
+      <BinPackageFiles Include="$(PackageDir)\**\*.*" />
+    </ItemGroup>
+    <Zip Files="@(BinPackageFiles)" Flatten="false" WorkingDirectory="$(PackageDir)" ZipFileName="$(TargetDir)\SpecFlowBinPackage.zip" />
   </Target>
 </Project>

@@ -81,18 +81,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.WindowsPh
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlternativeRuntimes", "AlternativeRuntimes", "{01A98306-2E7F-42E5-A180-C31C4DC82C57}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{605573AA-9C90-442B-B54B-1243A36A3E18}"
-	ProjectSection(SolutionItems) = preProject
-		IdeIntegration\NuGetIntegration\App.config.transform = IdeIntegration\NuGetIntegration\App.config.transform
-		IdeIntegration\NuGetIntegration\nuget_readme.txt = IdeIntegration\NuGetIntegration\nuget_readme.txt
-		IdeIntegration\NuGetIntegration\SpecFlow.nuspec = IdeIntegration\NuGetIntegration\SpecFlow.nuspec
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.IdeIntegration", "IdeIntegration\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj", "{44D52C1B-0ABC-44B6-8EB8-0F754E264226}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeIntegrationTests", "Tests\IdeIntegrationTests\IdeIntegrationTests.csproj", "{69505BAC-12B9-4443-BB3B-A94E51EA5922}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTests", "Tests\GeneratorTests\GeneratorTests.csproj", "{97C30FCC-3093-4430-93DC-D671C656C404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetIntegration", "IdeIntegration\NuGetIntegration\NuGetIntegration.csproj", "{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{27B6695E-7049-4C1B-8820-812722128D9E} = {27B6695E-7049-4C1B-8820-812722128D9E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -462,9 +460,24 @@ Global
 		{97C30FCC-3093-4430-93DC-D671C656C404}.Release|x86.ActiveCfg = Release|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
-		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Release|Any CPU
+		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Debug|Any CPU
 		{97C30FCC-3093-4430-93DC-D671C656C404}.VS2010IntegrationTest|x86.ActiveCfg = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -488,7 +501,7 @@ Global
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{199D2315-F5BD-463C-B16A-BE31A845792B} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{96294E6F-8875-4D12-8577-4EC83E60BD6C} = {55E45533-9AAA-41AB-B44F-7530799C9337}
-		{605573AA-9C90-442B-B54B-1243A36A3E18} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{44D52C1B-0ABC-44B6-8EB8-0F754E264226} = {55E45533-9AAA-41AB-B44F-7530799C9337}
+		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 	EndGlobalSection
 EndGlobal
