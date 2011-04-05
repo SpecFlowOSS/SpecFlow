@@ -44,6 +44,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)lib\NuGet\NuGet.exe" pack "$(ProjectDir)specflow.nuspec" -o "$(TargetDir)"</PostBuildEvent>
