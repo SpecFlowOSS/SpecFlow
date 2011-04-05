@@ -2,7 +2,8 @@
 
 namespace TechTalk.SpecFlow
 {
-    [Obsolete("Use ProgrammingLanguage enum")]
+    //obsolete attribute removed to avoid warnings in the generated code (Issue 58)
+    //[Obsolete("Use ProgrammingLanguage enum")]
     public enum GenerationTargetLanguage
     {
         CSharp = ProgrammingLanguage.CSharp,
