@@ -1,4 +1,10 @@
-﻿1.6.0 - 2011/04/04
+﻿Next - ???
+
+Fixed issues:
++ Windows Phone 7 runtime (TechTalk.SpecFlow.WindowsPhone7.dll) is not included in the NuGet package (Issue 61)
++ Warnings in the generated test classes (Issue 58)
+
+1.6.0 - 2011/04/04
 
 Breaking changes:
 + The Silverlight runtime assembly has been renamed to TechTalk.SpecFlow.Silverlight3.dll.
