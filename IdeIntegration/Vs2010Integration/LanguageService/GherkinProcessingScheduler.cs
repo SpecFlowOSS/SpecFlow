@@ -18,10 +18,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class DelegateTask : IGherkinProcessingTask
     {
         private readonly Action task;
+        private readonly IVisualStudioTracer visualStudioTracer;
 
-        public DelegateTask(Action task)
+        public DelegateTask(Action task, IVisualStudioTracer visualStudioTracer)
         {
             this.task = task;
+            this.visualStudioTracer = visualStudioTracer;
         }
 
         public void Apply()
@@ -30,9 +32,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 task();
             }
-            catch(Exception)
+            catch(Exception exception)
             {
-                //TODO: log error
+                visualStudioTracer.Trace("Exception: " + exception, "DelegateTask");
             }
         }
 

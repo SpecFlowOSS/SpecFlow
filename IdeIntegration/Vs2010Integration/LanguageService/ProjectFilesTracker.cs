@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void DoTaskAsynch(Action action)
         {
-            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action));
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.VisualStudioTracer));
         }
 
         public virtual void Initialize()
@@ -173,9 +173,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (fireUpdatedEvent && FileUpdated != null)
                     FileUpdated(fileInfo);
             }
-            catch(Exception)
+            catch(Exception exception)
             {
-                
+                vsProjectScope.VisualStudioTracer.Trace("Exception: " + exception.ToString(), GetType().Name);
             }
             finally
             {
@@ -189,8 +189,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 return GetProjects().Select(project => VsxHelper.FindProjectItemByProjectRelativePath(project, fileInfo.ProjectRelativePath)).FirstOrDefault(pi => pi != null);
             }
-            catch(Exception)
+            catch(Exception exception)
             {
+                vsProjectScope.VisualStudioTracer.Trace("Exception: " + exception.ToString(), GetType().Name);
                 return null;
             }
         }

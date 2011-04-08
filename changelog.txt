@@ -3,6 +3,7 @@
 Fixed issues:
 + Windows Phone 7 runtime (TechTalk.SpecFlow.WindowsPhone7.dll) is not included in the NuGet package (Issue 61)
 + Warnings in the generated test classes (Issue 58)
++ Improved tracing for VS2010 integration
 
 1.6.0 - 2011/04/04
 
