@@ -2,7 +2,7 @@
 {
     public class IntValueRetriever
     {
-        public int GetValue(string value)
+        public virtual int GetValue(string value)
         {
             int returnValue;
             int.TryParse(value, out returnValue);

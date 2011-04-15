@@ -64,6 +64,7 @@
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Assist\ValueRetrievers\IntValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\StepContext.cs" />

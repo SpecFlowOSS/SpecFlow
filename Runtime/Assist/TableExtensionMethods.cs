@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row["Value"])},
                            {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row["Value"])},
-                           {typeof (int?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (int?)null : row.GetInt32("Value")},
+                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(new IntValueRetriever()).GetValue(row["Value"])},
                            {typeof (decimal), (TableRow row) => row.GetDecimal("Value")},
                            {typeof (decimal?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (decimal?)null : row.GetDecimal("Value")},
                            {typeof (bool), (TableRow row) => row.GetBoolean("Value")},

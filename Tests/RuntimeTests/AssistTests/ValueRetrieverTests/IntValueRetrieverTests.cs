@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
+    [TestFixture]
     public class IntValueRetrieverTests
     {
         [Test]
