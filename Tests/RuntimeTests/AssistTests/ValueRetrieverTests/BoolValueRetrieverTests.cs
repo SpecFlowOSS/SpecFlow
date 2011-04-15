@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
