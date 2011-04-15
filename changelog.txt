@@ -1,4 +1,4 @@
-﻿Next - ???
+﻿1.6.1 - 2011/04/15
 
 Fixed issues:
 + Windows Phone 7 runtime (TechTalk.SpecFlow.WindowsPhone7.dll) is not included in the NuGet package (Issue 61)

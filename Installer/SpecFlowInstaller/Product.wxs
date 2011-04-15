@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ProductShortName = "SpecFlow" ?>
-<?define ProductVersion = "1.6.0" ?>
-<?define ProductVersionText = "1.6.0" ?>
+<?define ProductVersion = "1.6.1" ?>
+<?define ProductVersionText = "1.6.1" ?>
 <?define ProductUrl = "http://www.specflow.org" ?>
 <?define Manufacturer = "TechTalk" ?>
 <?define UpgradeCode = "A72428B6-8ADB-4EDF-BC23-4BE4E19F01A0" ?>
