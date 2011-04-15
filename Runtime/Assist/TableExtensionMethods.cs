@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Assist
             return new Dictionary<Type, Func<TableRow, object>>
                        {
                            {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row["Value"])},
-                           {typeof (int), (TableRow row) => row.GetInt32("Value")},
+                           {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row["Value"])},
                            {typeof (int?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (int?)null : row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row) => row.GetDecimal("Value")},
                            {typeof (decimal?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (decimal?)null : row.GetDecimal("Value")},
