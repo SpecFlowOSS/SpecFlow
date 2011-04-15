@@ -63,8 +63,10 @@
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
+    <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\DecimalValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\IntValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableBoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableDecimalValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
