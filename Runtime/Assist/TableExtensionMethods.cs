@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -58,7 +59,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             return new Dictionary<Type, Func<TableRow, string, object>>
                        {
-                           {typeof (string), (TableRow row, string id) => row.GetString("Value")},
+                           {typeof (string), (TableRow row, string id) => new StringValueRetriever().GetValue(row["Value"])},
                            {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
                            {typeof (int?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (int?)null : row.GetInt32("Value")},
                            {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},

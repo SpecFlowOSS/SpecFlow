@@ -77,6 +77,7 @@
     <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
