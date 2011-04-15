@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         internal IIntegrationOptionsProvider IntegrationOptionsProvider = null;
 
         [Import]
-        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager = null;
 
         public IClassifier GetClassifier(ITextBuffer buffer)
         {

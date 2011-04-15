@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         internal IVisualStudioTracer VisualStudioTracer = null;
 
         [Import]
-        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager = null;
 
         public GherkinLanguageService GetLanguageService(ITextBuffer textBuffer)
         {

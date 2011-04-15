@@ -73,10 +73,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (GherkinStepCompletionSource.IsKeywordCompletion(caret))
             {
                 return GherkinStepCompletionSource.IsKeywordPrefix(caret, languageService);
-//                var fileScope = languageService.GetFileScope();
-//                GherkinDialect dialect = fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
-
-                return true;
             }
             if (GherkinStepCompletionSource.IsStepLine(caret, languageService))
             {
