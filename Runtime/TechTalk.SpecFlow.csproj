@@ -57,6 +57,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\PivotTable.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
