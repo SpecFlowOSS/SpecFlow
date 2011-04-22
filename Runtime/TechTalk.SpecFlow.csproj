@@ -60,6 +60,7 @@
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\PivotTable.cs" />
+    <Compile Include="Assist\ProjectionExtensionMethods.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
