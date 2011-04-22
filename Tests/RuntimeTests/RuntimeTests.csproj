@@ -81,6 +81,7 @@
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableDoubleValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\DoubleValueRetreiverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\DateTimeValueRetrieverTests.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableBoolValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableDateTimeValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableDecimalValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableGuidValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
