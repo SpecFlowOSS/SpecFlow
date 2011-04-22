@@ -58,6 +58,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
+    <Compile Include="Assist\TEHelpers.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\PivotTable.cs" />
     <Compile Include="Assist\ProjectionExtensionMethods.cs" />
