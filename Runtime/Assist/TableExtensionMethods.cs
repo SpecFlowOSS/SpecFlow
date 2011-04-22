@@ -9,9 +9,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            return HasDefaultConstructor<T>()
-                       ? CreateInstanceWithActivator<T>(table)
-                       : CreateInstanceWithParameterizedConstructor<T>(table);
+            return ThisTypeHasADefaultConstructor<T>()
+                       ? CreateTheInstanceWithTheDefaultConstructor<T>(table)
+                       : CreateTheInstanceWithTheValuesFromTheTable<T>(table);
         }
 
         public static void FillInstance<T>(this Table table, T instance)
@@ -34,14 +34,14 @@ namespace TechTalk.SpecFlow.Assist
             return list;
         }
 
-        private static T CreateInstanceWithActivator<T>(Table table)
+        private static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
             LoadInstanceWithKeyValuePairs(table, instance);
             return instance;
         }
 
-        private static T CreateInstanceWithParameterizedConstructor<T>(Table table)
+        private static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
@@ -63,9 +63,11 @@ namespace TechTalk.SpecFlow.Assist
             return (T)constructor.Invoke(parameterValues);
         }
 
-        private static bool HasDefaultConstructor<T>()
+        private static bool ThisTypeHasADefaultConstructor<T>()
         {
-            return typeof(T).GetConstructors().Where(c => c.GetParameters().Length == 0).Count() > 0;
+            return typeof(T).GetConstructors()
+                .Where(c => c.GetParameters().Length == 0)
+                .Count() > 0;
         }
 
         private static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
