@@ -9,18 +9,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            T instance;
-
-            if (HasDefaultConstructor<T>())
-            {
-                instance = CreateInstanceWithActivator<T>(table);
-            }
-            else
-            {
-                instance = CreateInstanceWithParameterizedConstructor<T>(table);
-            }
-
-            return instance;
+            return HasDefaultConstructor<T>()
+                       ? CreateInstanceWithActivator<T>(table)
+                       : CreateInstanceWithParameterizedConstructor<T>(table);
         }
 
         public static void FillInstance<T>(this Table table, T instance)
