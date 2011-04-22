@@ -19,6 +19,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void Can_set_bool_with_to_generic_type()
+        {
+            var scenarioContext = CreateScenarioContext();
+
+            scenarioContext.Set(true);
+            Assert.IsTrue((bool) scenarioContext[typeof (bool).ToString()]);
+
+            scenarioContext.Set(false);
+            Assert.IsFalse((bool) scenarioContext[typeof (bool).ToString()]);
+        }
+
+        [Test]
         public void Can_set_object_with_a_generic_factory_method()
         {
             var scenarioContext = CreateScenarioContext();
@@ -75,6 +87,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var actual = scenarioContext.Get<IScenarioTestInterface>();
 
             Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Can_get_bool_with_generic_type()
+        {
+            var scenarioContext = CreateScenarioContext();
+
+            scenarioContext[typeof (bool).ToString()] = true;
+            Assert.IsTrue(scenarioContext.Get<bool>());
+
+            scenarioContext[typeof (bool).ToString()] = false;
+            Assert.IsFalse(scenarioContext.Get<bool>());
         }
 
         [Test]
