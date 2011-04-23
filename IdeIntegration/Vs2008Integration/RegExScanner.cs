@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.Package;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
@@ -16,20 +17,14 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         public RegularExpressionScanner(CultureInfo defaultLanguage)
         {
             var dialectServices = new GherkinDialectServices(defaultLanguage);
-            gherkinDialect = dialectServices.GetDefaultDialect();
-            patternTable =
-                gherkinDialect.GetKeywords().Select(
-                    keyword =>
-                    keyword.Trim() == "*"
-                        ? new RegularExpressionTableEntry("\\*", TokenColor.Keyword)
-                        : new RegularExpressionTableEntry(keyword, TokenColor.Keyword)).ToArray();
+            GherkinDialect gherkinDialect = dialectServices.GetDefaultDialect();
+            patternTable = gherkinDialect.GetKeywords().ToList().ConvertAll(x => new Regex(Regex.Escape(x))).ToArray();
         }
 
         private string sourceString;
         private int currentPos;
 
-        private readonly RegularExpressionTableEntry[] patternTable;
-        private readonly GherkinDialect gherkinDialect;
+        private readonly Regex[] patternTable;
 
         /// <summary>
         /// This method is used to compare initial string with regular expression patterns from 
@@ -40,33 +35,13 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         /// <param name="color">Color of matched block</param>
         private void MatchRegEx(string source, ref int charsMatched, ref TokenColor color)
         {
-            foreach (RegularExpressionTableEntry tableEntry in patternTable)
+            foreach (Regex expr in patternTable)
             {
-                bool badPattern = false;
-                Regex expr = null;
-
-                try
-                {
-                    // Create Regex instance using pattern from current element of associations table
-                    expr = new Regex("^" + tableEntry.Pattern);
-                }
-                catch (ArgumentException)
-                {
-                    badPattern = true;
-                }
-
-                if (badPattern)
-                {
-                    continue;
-                }
-
-                // Searching the source string for an occurrence of the regular expression pattern
-                // specified in the current element of correspondence table
                 Match m = expr.Match(source);
                 if (m.Success && m.Length != 0)
                 {
                     charsMatched = m.Length;
-                    color = tableEntry.Color;
+                    color = TokenColor.Keyword;
                     return;
                 }
             }
@@ -125,22 +100,6 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         {
             sourceString = source;
             currentPos = offset;
-        }
-
-        /// <summary>
-        /// Store information about patterns and colors of parsed text 
-        /// </summary>
-        private class RegularExpressionTableEntry
-        {
-            public readonly string Pattern;
-
-            public readonly TokenColor Color;
-
-            public RegularExpressionTableEntry(string pattern, TokenColor color)
-            {
-                Pattern = pattern;
-                Color = color;
-            }
         }
     }
 }
