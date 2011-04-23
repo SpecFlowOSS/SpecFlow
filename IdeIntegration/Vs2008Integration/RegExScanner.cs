@@ -1,18 +1,9 @@
-//***************************************************************************
-//
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
 using System;
-using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using Microsoft.VisualStudio.Package;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
@@ -22,44 +13,23 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     /// </summary>
     internal class RegularExpressionScanner : IScanner
     {
-        public RegularExpressionScanner()
+        public RegularExpressionScanner(CultureInfo defaultLanguage)
         {
-            Trace.WriteLine("Create pattern table");
-            patternTable = new[]
-                               {
-                                   //new RegularExpressionTableEntry("[A-Z]?", TokenColor.Comment),
-                                   new RegularExpressionTableEntry("Scenario[ ]*:[ ]*", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("Feature[ ]*:[ ]*", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("When", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("Given", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("And", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("Then", TokenColor.Keyword),
-                                   new RegularExpressionTableEntry("@[a-z]*", TokenColor.Comment),
-                                   new RegularExpressionTableEntry("[0-9]?", TokenColor.Number),
-                                   //new RegularExpressionTableEntry("."     , TokenColor.Text)
-                               };
+            var dialectServices = new GherkinDialectServices(defaultLanguage);
+            gherkinDialect = dialectServices.GetDefaultDialect();
+            patternTable =
+                gherkinDialect.GetKeywords().Select(
+                    keyword =>
+                    keyword.Trim() == "*"
+                        ? new RegularExpressionTableEntry("\\*", TokenColor.Keyword)
+                        : new RegularExpressionTableEntry(keyword, TokenColor.Keyword)).ToArray();
         }
 
-        #region Private fields
-        /// <summary>
-        /// Store line of text to parse
-        /// </summary>
         private string sourceString;
-        /// <summary>
-        /// Store position where next token starts in line
-        /// </summary>
         private int currentPos;
 
-        #endregion
-
-        #region Private static members
-
-        /// <summary>
-        /// This array contains correspondence table between regular expression patterns
-        /// and color scheme of parsed text.
-        /// Priority of elements decreases from first element to last element.
-        /// </summary>
         private readonly RegularExpressionTableEntry[] patternTable;
+        private readonly GherkinDialect gherkinDialect;
 
         /// <summary>
         /// This method is used to compare initial string with regular expression patterns from 
@@ -78,7 +48,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
                 try
                 {
                     // Create Regex instance using pattern from current element of associations table
-                    expr = new Regex("^" + tableEntry.pattern);
+                    expr = new Regex("^" + tableEntry.Pattern);
                 }
                 catch (ArgumentException)
                 {
@@ -96,7 +66,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
                 if (m.Success && m.Length != 0)
                 {
                     charsMatched = m.Length;
-                    color = tableEntry.color;
+                    color = tableEntry.Color;
                     return;
                 }
             }
@@ -105,10 +75,6 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             charsMatched = 1;
             color = TokenColor.Text;
         }
-
-        #endregion
-
-        #region IScanner Members
 
         /// <summary>
         /// This method is used to parse next language token from the current line and return information about it.
@@ -127,7 +93,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
 
             TokenColor color = TokenColor.Text;
             int charsMatched = 0;
-            
+
             // Compare input string with patterns from correspondence table
             MatchRegEx(sourceString, ref charsMatched, ref color);
 
@@ -142,7 +108,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
 
             // Move current position
             currentPos += charsMatched;
-            
+
             // Set an unprocessed part of string as a source
             sourceString = sourceString.Substring(charsMatched);
 
@@ -161,26 +127,20 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             currentPos = offset;
         }
 
-        #endregion
-
-        #region Nested types
-
         /// <summary>
         /// Store information about patterns and colors of parsed text 
         /// </summary>
         private class RegularExpressionTableEntry
         {
-            public string pattern;
+            public readonly string Pattern;
 
-            public TokenColor color;
+            public readonly TokenColor Color;
 
             public RegularExpressionTableEntry(string pattern, TokenColor color)
             {
-                this.pattern = pattern;
-                this.color = color;
+                Pattern = pattern;
+                Color = color;
             }
         }
-
-        #endregion
     }
 }

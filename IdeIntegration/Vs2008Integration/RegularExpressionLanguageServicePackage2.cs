@@ -1,30 +1,11 @@
-﻿//***************************************************************************
-//
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
 using EnvDTE;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.Generator.Project;
-using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.VsIntegration.Common;
-using VSOLE = Microsoft.VisualStudio.OLE.Interop;
-
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
@@ -38,13 +19,13 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     /// IVsPackage interface and uses the registration attributes defined in the framework to 
     /// register itself and its components with the shell.
     /// </summary>
-    
+
     // A Visual Studio component can be registered under different registry roots; for instance
     // when you debug your package you want to register it in the experimental hive. This
     // attribute specifies the registry root to use if no one is provided to regpkg.exe with
     // the /root switch.
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0Exp")]
-    
+
     // This attribute tells the registration utility (regpkg.exe) that this class needs
     // to be registered as package.
     [PackageRegistration(UseManagedResourcesOnly = true)]
@@ -72,7 +53,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     public sealed class RegularExpressionLanguageServicePackage2 : Package, IDisposable
     {
         private RegularExpressionLanguageService2 _langService2;
-        
+
         /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
@@ -82,23 +63,9 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         /// </summary>
         public RegularExpressionLanguageServicePackage2()
         {
-
-            var specFlowProjectConfiguration = LoadConfiguration();
-            
-            //var gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
-        protected override void OnLoadOptions(string key, System.IO.Stream stream)
-        {
-            base.OnLoadOptions(key, stream);
-        }
-
-        private SpecFlowProjectConfiguration LoadConfiguration()
-        {
-
-            return null;
-        }
         /////////////////////////////////////////////////////////////////////////////
         // Overridden Package Implementation
         #region Package Members
@@ -114,15 +81,11 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             base.Initialize();
 
             // Create instance of RegularExpressionLanguageService2 type
-            _langService2 = new RegularExpressionLanguageService2();
+            _langService2 = new RegularExpressionLanguageService2((DTE)this.GetService(typeof(SDTE)));
             _langService2.SetSite(this);
 
             // Add our language service object to VSPackage services container
-            IServiceContainer sc = (IServiceContainer)this;
-            sc.AddService(typeof(RegularExpressionLanguageService2), _langService2, true);
-
-            DTE dte = (DTE)this.GetService(typeof(SDTE));
-            
+            ((IServiceContainer)this).AddService(typeof(RegularExpressionLanguageService2), _langService2, true);
         }
 
         /// <summary>
@@ -151,10 +114,10 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             }
         }
 
-        #endregion       
-    
+        #endregion
+
         #region IDisposable Members
-        
+
         /// <summary>
         /// Implements IDisposable.
         /// </summary>

@@ -1,18 +1,10 @@
-//***************************************************************************
-//
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
 using System;
 using System.Runtime.InteropServices;
+using EnvDTE;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
+using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.VsIntegration.Common;
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
@@ -20,16 +12,20 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     /// This class implements language service that supplies syntax highlighting based on regular expression
     /// association table.
     /// </summary>
-    
+
     // This attribute indicates that this managed type is visible to COM
     [ComVisible(true)]
-    //[Guid("C674518A-3127-4f00-9C4D-BE0EAAB8C761")]
     [Guid("0A485828-6D97-11E0-AFAC-304A4824019B")]
     class RegularExpressionLanguageService2 : LanguageService
     {
         private RegularExpressionScanner scanner;
-
         private LanguagePreferences preferences;
+        private readonly DTE dte;
+
+        public RegularExpressionLanguageService2(DTE dte)
+        {
+            this.dte = dte;
+        }
 
         /// <summary>
         /// This method parses the source code based on the specified ParseRequest object.
@@ -59,6 +55,18 @@ namespace TechTalk.SpecFlow.Vs2008Integration
             return VSPackage.RegExFormatFilter;
         }
 
+        private Project CurrentProject
+        {
+            get
+            {
+                if (dte != null)
+                {
+                    return ((Project)((object[])dte.ActiveSolutionProjects)[0]);
+                }
+                throw new InvalidOperationException("Unable to detect current project.");
+            }
+        }
+
         /// <summary>
         /// Create and return instantiation of a parser represented by RegularExpressionScanner object.
         /// </summary>
@@ -66,11 +74,8 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         /// <returns>Returns a RegularExpressionScanner object</returns>
         public override IScanner GetScanner(IVsTextLines buffer)
         {
-            if (scanner == null)
-            {
-                // Create new RegularExpressionScanner instance
-                scanner = new RegularExpressionScanner();
-            }
+            SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
+            scanner = new RegularExpressionScanner(specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
 
             return scanner;
         }
