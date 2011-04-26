@@ -205,6 +205,7 @@
     <Compile Include="Bindings\StepScope.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
     <Compile Include="EditorCommands\EditorCommands.cs" />
+    <Compile Include="Generator\VsRemoteGeneratorServices.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFilesTracker.cs" />

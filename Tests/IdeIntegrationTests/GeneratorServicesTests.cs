@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration;
 using Should;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace IdeIntegrationTests
 {
@@ -16,7 +17,7 @@ namespace IdeIntegrationTests
     {
         private readonly Func<ProjectSettings> getProjectSettings;
 
-        public GeneratorServicesMock(ITestGeneratorFactory testGeneratorFactory, bool enableSettingsCache, Func<ProjectSettings> getProjectSettings) : base(testGeneratorFactory, enableSettingsCache)
+        public GeneratorServicesMock(ITestGeneratorFactory testGeneratorFactory, bool enableSettingsCache, Func<ProjectSettings> getProjectSettings) : base(testGeneratorFactory, new Mock<IIdeTracer>().Object, enableSettingsCache)
         {
             this.getProjectSettings = getProjectSettings;
         }

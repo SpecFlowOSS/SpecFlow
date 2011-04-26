@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration;
 using Should;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Utils;
 
 namespace IdeIntegrationTests
@@ -18,17 +20,29 @@ namespace IdeIntegrationTests
     public class RemoteAppDomainTestGeneratorFactoryTests
     {
         private string currentGeneratorFolder;
+        private Mock<IIdeTracer> tracerStub;
 
         [SetUp]
         public void Setup()
         {
             currentGeneratorFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            tracerStub = new Mock<IIdeTracer>();
+        }
+
+        private RemoteAppDomainTestGeneratorFactory CreateRemoteAppDomainTestGeneratorFactory()
+        {
+            return CreateRemoteAppDomainTestGeneratorFactory(currentGeneratorFolder);
+        }
+
+        private RemoteAppDomainTestGeneratorFactory CreateRemoteAppDomainTestGeneratorFactory(string generatorFolder)
+        {
+            return new RemoteAppDomainTestGeneratorFactory(tracerStub.Object, generatorFolder);
         }
 
         [Test]
         public void Should_be_able_to_initialize()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 remoteFactory.Initialize();
                 remoteFactory.IsRunning.ShouldBeTrue();
@@ -38,7 +52,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_be_able_to_return_generator_version()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var version = remoteFactory.GetGeneratorVersion();
 
@@ -50,7 +64,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_be_able_to_create_generator_with_default_config()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(new ProjectSettings());
 
@@ -104,7 +118,7 @@ namespace IdeIntegrationTests
             var projectSettings = new ProjectSettings();
             projectSettings.ConfigurationHolder = configurationHolder;
 
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(projectSettings);
                 generator.ToString().ShouldEqual("DummyGenerator"); // since the type is wrapped, we can only check it this way
@@ -121,7 +135,7 @@ namespace IdeIntegrationTests
                 FileSystemHelper.CopyFileToFolder(generatorAssemblyFile, tempFolder.FolderName);
                 FileSystemHelper.CopyFileToFolder(utilsAssemblyFile, tempFolder.FolderName);
 
-                using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(tempFolder.FolderName))
+                using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory(tempFolder.FolderName))
                 {
                     var generator = remoteFactory.CreateGenerator(new ProjectSettings());
                     generator.ShouldNotBeNull();
@@ -133,7 +147,7 @@ namespace IdeIntegrationTests
         public void Should_cleanup_ater_dispose()
         {
             RemoteAppDomainTestGeneratorFactory remoteFactory;
-            using (remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 remoteFactory.Initialize();
             }
@@ -145,7 +159,7 @@ namespace IdeIntegrationTests
         public void Should_start_running_delayed()
         {
             RemoteAppDomainTestGeneratorFactory remoteFactory;
-            using (remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 remoteFactory.IsRunning.ShouldBeFalse();
             }
@@ -154,7 +168,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_cleanup_after_generator_disposed()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(new ProjectSettings());
                 generator.Dispose();
@@ -166,7 +180,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_not_cleanup_when_one_generator_is_still_used()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator1 = remoteFactory.CreateGenerator(new ProjectSettings());
                 var generator2 = remoteFactory.CreateGenerator(new ProjectSettings());
@@ -179,7 +193,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_cleanup_when_all_generators_are_disposed()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator1 = remoteFactory.CreateGenerator(new ProjectSettings());
                 var generator2 = remoteFactory.CreateGenerator(new ProjectSettings());
@@ -194,7 +208,7 @@ namespace IdeIntegrationTests
         [Test]
         public void Should_be_able_generate_from_a_simple_valid_feature()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(new ProjectSettings()
                                                                   {
@@ -225,7 +239,7 @@ Scenario: Add two numbers
         [Test]
         public void Should_be_able_generate_from_a_simple_invalid_feature()
         {
-            using (var remoteFactory = new RemoteAppDomainTestGeneratorFactory(currentGeneratorFolder))
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(new ProjectSettings()
                                                                   {

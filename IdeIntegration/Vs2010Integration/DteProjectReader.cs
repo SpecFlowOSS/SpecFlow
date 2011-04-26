@@ -50,21 +50,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         protected override Version GetGeneratorVersion(IProjectReference projectReference)
         {
             var vsProjectScopeReference = VsProjectScopeReference.AssertVsProjectScopeReference(projectReference);
-
-            //HACK: temporary solution: we use the SpecFlow runtime version as generator version, to avoid unwanted popups reporting outdated tests
-            try
-            {
-                VSProject vsProject = (VSProject) vsProjectScopeReference.Project.Object;
-                var specFlowRef =
-                    vsProject.References.Cast<Reference>().FirstOrDefault(r => r.Name == "TechTalk.SpecFlow");
-                if (specFlowRef != null)
-                    return new Version(specFlowRef.Version);
-            }
-            catch(Exception exception)
-            {
-                Debug.WriteLine(exception, "VsSpecFlowProjectConfigurationLoader.GetGeneratorVersion");
-            }
-
             return vsProjectScopeReference.VsProjectScope.GeneratorServices.GetGeneratorVersion();
         }
     }
