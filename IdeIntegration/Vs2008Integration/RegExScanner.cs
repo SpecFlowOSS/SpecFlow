@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.VisualStudio.Package;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser;
-using System.Linq;
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
