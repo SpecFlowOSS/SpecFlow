@@ -43,18 +43,18 @@ namespace TechTalk.SpecFlow
             this[typeof(T).ToString()] = func;
         }
 
-        public T Get<T>() where T : class
+        public T Get<T>()
         {
             var id = typeof(T).ToString();
             return Get<T>(id);
         }
 
-        public T Get<T>(string id) where T : class
+        public T Get<T>(string id)
         {
             var value = this[id];
             if (TheValueIsAFactoryMethod<T>(value))
                 value = CallTheFactoryMethodToGetTheValue<T>(value);
-            return value as T;
+            return (T)value;
         }
 
         private static object CallTheFactoryMethodToGetTheValue<T>(object value)
