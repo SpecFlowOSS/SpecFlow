@@ -3,15 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using EnvDTE;
-using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.IdeIntegration.Generator;
-using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
-using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
-using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using EnvDTE;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -35,9 +36,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
             {
                 GeneratorInfo generatorInfo = null;
 
-                //TODO: load generator path from configuration
+                generatorInfo = DetectFromConfig();
 
-                generatorInfo = DetectDirectGeneratorReference();
+                if (generatorInfo == null)
+                    generatorInfo = DetectDirectGeneratorReference();
 
                 if (generatorInfo == null)
                     generatorInfo = DetectFromRuntimeReference();
@@ -45,6 +47,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
                 return generatorInfo;
             }
             catch (Exception exception)
+            {
+                tracer.Trace(exception.ToString(), "VsRemoteGeneratorServices");
+                return null;
+            }
+        }
+
+        private GeneratorInfo DetectFromConfig()
+        {
+            try
+            {
+                var config = new RuntimeSpecFlowProjectConfigurationLoader()
+                    .LoadConfiguration(GetProjectSettings().ConfigurationHolder, new VsProjectReference(project));
+                if (config == null || string.IsNullOrWhiteSpace(config.GeneratorConfiguration.GeneratorPath))
+                    return null;
+
+                var generatorFolder = Path.GetFullPath(
+                    Path.Combine(VsxHelper.GetProjectFolder(project), config.GeneratorConfiguration.GeneratorPath));
+    
+                tracer.Trace("Generator is configured to be at " + generatorFolder, "VsRemoteGeneratorServices");
+                return DetectFromFolder(generatorFolder);
+            }
+            catch(Exception exception)
             {
                 tracer.Trace(exception.ToString(), "VsRemoteGeneratorServices");
                 return null;
@@ -66,28 +90,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
 
             tracer.Trace("Runtime found at " + runtimeFolder, "VsRemoteGeneratorServices");
 
+            return probingPaths.Select(probingPath => Path.GetFullPath(Path.Combine(runtimeFolder, probingPath)))
+                .Select(DetectFromFolder)
+                .FirstOrDefault(generatorInfo => generatorInfo != null);
+        }
+
+        private GeneratorInfo DetectFromFolder(string generatorFolder)
+        {
             const string generatorAssemblyFileName = generatorAssemblyName + ".dll";
-            foreach (var probingPath in probingPaths)
+
+            var generatorPath = Path.Combine(generatorFolder, generatorAssemblyFileName);
+            if (!File.Exists(generatorPath))
+                return null;
+
+            tracer.Trace("Generator found at " + generatorPath, "VsRemoteGeneratorServices");
+            var fileVersion = FileVersionInfo.GetVersionInfo(generatorPath);
+            if (fileVersion.FileVersion == null)
             {
-                var generatorPath = Path.GetFullPath(Path.Combine(runtimeFolder, probingPath, generatorAssemblyFileName));
-                if (File.Exists(generatorPath))
-                {
-                    tracer.Trace("Generator found at " + generatorPath, "VsRemoteGeneratorServices");
-                    var fileVersion = FileVersionInfo.GetVersionInfo(generatorPath);
-                    if (fileVersion.FileVersion == null)
-                    {
-                        tracer.Trace("Could not detect generator version", "VsRemoteGeneratorServices");
-                        return null;
-                    }
-                    return new GeneratorInfo
-                               {
-                                   GeneratorAssemblyVersion = new Version(fileVersion.FileVersion),
-                                   GeneratorFolder = Path.GetDirectoryName(generatorPath)
-                               };
-                }
+                tracer.Trace("Could not detect generator version", "VsRemoteGeneratorServices");
+                return null;
             }
 
-            return null;
+            return new GeneratorInfo
+                       {
+                           GeneratorAssemblyVersion = new Version(fileVersion.FileVersion),
+                           GeneratorFolder = Path.GetDirectoryName(generatorPath)
+                       };
         }
 
         private GeneratorInfo DetectDirectGeneratorReference()

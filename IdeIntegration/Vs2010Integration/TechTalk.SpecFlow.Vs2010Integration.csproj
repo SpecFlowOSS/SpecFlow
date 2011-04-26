@@ -53,6 +53,9 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\lib\VS2010SDK\EnvDTE80.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\VS2010SDK\v4.0\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\VS2010SDK\v4.0\Microsoft.VisualStudio.CoreUtility.dll</HintPath>
