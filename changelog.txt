@@ -3,6 +3,9 @@
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.6
 
+Fixed issues:
++ Trailing zeroes on decimals are now ignored when using table comparison methods.
+
 1.6.1 - 2011/04/15
 
 Fixed issues:
