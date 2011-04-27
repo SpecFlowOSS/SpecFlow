@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -97,6 +98,21 @@ namespace TechTalk.SpecFlow.Assist
             if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
                 actual = actual.ToUpper();
 
+            if (ThisIsADecimalValue(propertyValue))
+                actual = RemoveTrailingZeroesOnDecimal(actual);
+
+            return actual;
+        }
+
+        private static bool ThisIsADecimalValue(object propertyValue)
+        {
+            return propertyValue != null && (propertyValue.GetType() == typeof (decimal) || propertyValue.GetType() == typeof (decimal?));
+        }
+
+        private static string RemoveTrailingZeroesOnDecimal(string actual)
+        {
+            var replaced = Regex.Replace(actual,@"(?<=\.\d+?)0+(?=\D|$)",String.Empty);
+            actual = decimal.Parse(replaced).ToString();
             return actual;
         }
 
