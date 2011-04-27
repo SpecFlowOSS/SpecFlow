@@ -98,12 +98,21 @@ namespace TechTalk.SpecFlow.Assist
             if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
                 actual = actual.ToUpper();
 
-            if (propertyValue != null && (propertyValue.GetType() == typeof(decimal) || propertyValue.GetType() == typeof(decimal?)))
-            {
-                var replaced = Regex.Replace(actual,@"(?<=\.\d+?)0+(?=\D|$)",String.Empty);
-                actual = decimal.Parse(replaced).ToString();
-            }
+            if (ThisIsADecimalValue(propertyValue))
+                actual = RemoveTrailingZeroesOnDecimal(actual);
 
+            return actual;
+        }
+
+        private static bool ThisIsADecimalValue(object propertyValue)
+        {
+            return propertyValue != null && (propertyValue.GetType() == typeof (decimal) || propertyValue.GetType() == typeof (decimal?));
+        }
+
+        private static string RemoveTrailingZeroesOnDecimal(string actual)
+        {
+            var replaced = Regex.Replace(actual,@"(?<=\.\d+?)0+(?=\D|$)",String.Empty);
+            actual = decimal.Parse(replaced).ToString();
             return actual;
         }
 
