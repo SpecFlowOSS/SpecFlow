@@ -9,8 +9,15 @@ namespace TechTalk.SpecFlow
 {
     public class Table
     {
+        internal const string ERROR_NO_CELLS_TO_ADD = "No cells to add";
+        internal const string ERROR_NO_HEADER_TO_ADD = "No headers to add";
+        internal const string ERROR_COLUMN_NAME_NOT_FOUND = "Could not find a column named '{0}' in the table.";
+        internal const string ERROR_CELLS_NOT_MATCHING_HEADERS = "The number of cells ({0}) you are trying to add doesn't match the number of columns ({1})";
+
         private readonly string[] header;
         private readonly TableRows rows = new TableRows();
+
+
 
         public IEnumerable<string> Header
         {
@@ -29,9 +36,11 @@ namespace TechTalk.SpecFlow
 
         public Table(params string[] header)
         {
-            if (header == null || header.Length == 0)
-                throw new ArgumentException("invalid header count", "header");
 
+            if (header == null || header.Length == 0)
+            {
+                throw new ArgumentException(ERROR_NO_HEADER_TO_ADD, "header");
+            }
             for (int colIndex = 0; colIndex < header.Length; colIndex++)
                 header[colIndex] = header[colIndex] ?? string.Empty;
             this.header = header;
@@ -41,15 +50,31 @@ namespace TechTalk.SpecFlow
         {
             int index = Array.IndexOf(header, column);
             if (index < 0)
-                throw new Exception("could not find column");
+            {
+                var mess = string.Format(
+                            ERROR_COLUMN_NAME_NOT_FOUND + "\nThe table looks like this:\n{1}",
+                            column,
+                            this);
+                throw new IndexOutOfRangeException(mess);
+            }
             return index;
         }
 
         public void AddRow(params string[] cells)
         {
-            if (cells == null || cells.Length != header.Length)
-                throw new Exception("invalid cell count");
+            if (cells == null)
+                throw new Exception(ERROR_NO_CELLS_TO_ADD);
 
+            if (cells.Length != header.Length)
+            {
+                var mess =
+                    string.Format(
+                        ERROR_CELLS_NOT_MATCHING_HEADERS + ".\nThe table looks like this\n{2}",
+                        cells.Count(),
+                        header.Length,
+                        this);
+                throw new ArgumentException(mess);
+            }
             var row = new TableRow(this, cells);
             rows.Add(row);
         }
