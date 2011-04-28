@@ -9,10 +9,10 @@ namespace TechTalk.SpecFlow
 {
     public class Table
     {
-        public const string ERROR_NO_CELLS_TO_ADD = "No cells to add";
-        public const string ERROR_NO_HEADER_TO_ADD = "No headers to add";
-        public const string ERROR_COLUMN_NAME_NOT_FOUND = "Could not find a column named '{0}' in the table.";
-        public const string ERROR_CELLS_NOT_MATCHING_HEADERS = "The number of cells ({0}) you are trying to add doesn't match the number of columns ({1})";
+        internal const string ERROR_NO_CELLS_TO_ADD = "No cells to add";
+        internal const string ERROR_NO_HEADER_TO_ADD = "No headers to add";
+        internal const string ERROR_COLUMN_NAME_NOT_FOUND = "Could not find a column named '{0}' in the table.";
+        internal const string ERROR_CELLS_NOT_MATCHING_HEADERS = "The number of cells ({0}) you are trying to add doesn't match the number of columns ({1})";
 
         private readonly string[] header;
         private readonly TableRows rows = new TableRows();
