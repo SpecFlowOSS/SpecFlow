@@ -94,6 +94,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />

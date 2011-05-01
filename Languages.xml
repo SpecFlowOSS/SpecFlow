@@ -452,12 +452,14 @@
     <But>Dar</But>
   </Language>
   <Language code="ru" cultureInfo="ru" defaultSpecificCulture="ru-RU" englishName="Russian">
+    <Feature>Функция</Feature>
     <Feature>Функционал</Feature>
-    <Feature>Фича</Feature>
+    <Feature>Свойство</Feature>
     <Background>Предыстория</Background>
+    <Background>Контекст</Background>
     <Scenario>Сценарий</Scenario>
     <ScenarioOutline>Структура сценария</ScenarioOutline>
-    <Examples>Значения</Examples>
+    <Examples>Примеры</Examples>
     <Given>Допустим</Given>
     <Given>Дано</Given>
     <Given>Пусть</Given>

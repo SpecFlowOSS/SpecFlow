@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         internal IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
         [Import]
-        internal IGherkinBufferServiceManager GherkinBufferServiceManager;
+        internal IGherkinBufferServiceManager GherkinBufferServiceManager = null;
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
         {

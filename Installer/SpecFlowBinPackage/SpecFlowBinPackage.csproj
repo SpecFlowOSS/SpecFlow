@@ -74,6 +74,7 @@
   <PropertyGroup>
     <MSBuildCommunityTasksPath>$(SolutionDir)lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
     <PackageDir>$(TargetDir)\package</PackageDir>
+    <PdbDir>$(TargetDir)\pdb</PdbDir>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
   <Target Name="AfterBuild">
@@ -85,12 +86,14 @@
       <SpecFlowRuntime Include="$(TargetDir)\TechTalk.SpecFlow.dll" />
       <SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.Silverlight3\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight3.dll" />
       <SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.WindowsPhone7\bin\$(Configuration)\TechTalk.SpecFlow.WindowsPhone7.dll" />
+      <Pdbs Include="$(TargetDir)\*.pdb" Exclude="$(TargetDir)\to_be_removed.pdb"/>
     </ItemGroup>
     <RemoveDir Directories="$(PackageDir)" ContinueOnError="false" />
     <MakeDir Directories="$(PackageDir)" ContinueOnError="false" />
     <Copy SourceFiles="@(SpecFlowRuntime)" DestinationFolder="$(PackageDir)\lib" />
     <Copy SourceFiles="@(SpecFlowTools)" DestinationFolder="$(PackageDir)\tools" />
     <Copy SourceFiles="@(SpecFlowLicense)" DestinationFolder="$(PackageDir)" />
+    <Copy SourceFiles="@(Pdbs)" DestinationFolder="$(PdbDir)" />
     <ItemGroup>
       <BinPackageFiles Include="$(PackageDir)\**\*.*" />
     </ItemGroup>
