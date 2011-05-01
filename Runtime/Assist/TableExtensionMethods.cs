@@ -72,9 +72,9 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Double?), (TableRow row) => new NullableDoubleValueRetriever(new DoubleValueRetriever()).GetValue(row["Value"])},
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row["Value"])},
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(new GuidValueRetriever()).GetValue(row["Value"])},
-                           {typeof (Enum), (TableRow row) => row.GetEnum<T>("Value")},
                            {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row["Value"])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(new CharValueRetriever()).GetValue(row["Value"])}
+                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(new CharValueRetriever()).GetValue(row["Value"])},
+                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row["Value"], typeof(T).GetProperties().First(x=>x.Name == row["Field"]).PropertyType )}
                        };
         }
     }
