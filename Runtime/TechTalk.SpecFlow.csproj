@@ -65,6 +65,7 @@
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableCharValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableDoubleValueRetriever.cs" />
