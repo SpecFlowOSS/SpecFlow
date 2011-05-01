@@ -138,17 +138,14 @@ namespace TechTalk.SpecFlow.Assist
 
     public static class TableHelpers
     {
-        private const string FieldId = "Field";
-        private const string ValueId = "Value";
-
         public static string Id(this TableRow row)
         {
-            return row[FieldId];
+            return row[0];
         }
 
         public static object Value(this TableRow row)
         {
-            return row[ValueId];
+            return row[1];
         }
     }
 
