@@ -64,7 +64,9 @@
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableCharValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableDoubleValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\DoubleValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\DateTimeValueRetriever.cs" />

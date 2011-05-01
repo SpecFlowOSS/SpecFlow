@@ -70,11 +70,11 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(new DateTimeValueRetriever()).GetValue(row["Value"])},
                            {typeof (Double), (TableRow row) => new DoubleValueRetriever().GetValue(row["Value"])},
                            {typeof (Double?), (TableRow row) => new NullableDoubleValueRetriever(new DoubleValueRetriever()).GetValue(row["Value"])},
-                           {typeof (Guid), (TableRow row) => row.GetGuid("Value")},
-                           {typeof (Guid?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (Guid?)null : row.GetGuid("Value")},
+                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row["Value"])},
+                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(new GuidValueRetriever()).GetValue(row["Value"])},
                            {typeof (Enum), (TableRow row) => row.GetEnum<T>("Value")},
-                           {typeof (char), (TableRow row) => row.GetChar("Value")},
-                           {typeof (char?), (TableRow row) => string.IsNullOrEmpty(row["Value"]) ? (char?)null : row.GetChar("Value")}
+                           {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row["Value"])},
+                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(new CharValueRetriever()).GetValue(row["Value"])}
                        };
         }
     }

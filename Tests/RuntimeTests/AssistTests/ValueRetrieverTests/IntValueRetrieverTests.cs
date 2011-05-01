@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
-        public void Returns_a_null_when_passed_an_invalid_int()
+        public void Returns_a_zero_when_passed_an_invalid_int()
         {
             var retriever = new IntValueRetriever();
             retriever.GetValue("x").ShouldEqual(0);
