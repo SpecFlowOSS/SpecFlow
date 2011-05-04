@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="Generator\GeneratorServices.cs" />
     <Compile Include="Generator\IGeneratorServices.cs" />
+    <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Options\IIntegrationOptionsProvider.cs" />
     <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

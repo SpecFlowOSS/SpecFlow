@@ -7,14 +7,15 @@ using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
-    public class RemoteAppDomainTestGeneratorFactory : ITestGeneratorFactory, IDisposable
+    public class RemoteAppDomainTestGeneratorFactory : IRemoteAppDomainTestGeneratorFactory
     {
         private readonly IIdeTracer tracer;
-        private readonly string generatorFolder;
+
+        private string generatorFolder;
         private AppDomain appDomain = null;
         private ITestGeneratorFactory remoteTestGeneratorFactory = null;
         private UsageCounter usageCounter;
-        private string remoteGeneratorAssemblyName;
+        private readonly string remoteGeneratorAssemblyName;
 
         private class UsageCounter
         {
@@ -43,21 +44,32 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             get { return appDomain != null; }
         }
 
-        public RemoteAppDomainTestGeneratorFactory(IIdeTracer tracer, string generatorFolder)
+        public RemoteAppDomainTestGeneratorFactory(IIdeTracer tracer)
         {
             this.tracer = tracer;
-            this.generatorFolder = generatorFolder;
             this.remoteGeneratorAssemblyName = typeof(ITestGeneratorFactory).Assembly.GetName().Name;
         }
 
-        private void EnsureInitialized()
+        public void Setup(string newGeneratorFolder)
+        {
+            if (generatorFolder == newGeneratorFolder)
+                return;
+
+            Cleanup();
+            generatorFolder = newGeneratorFolder;
+        }
+
+        public void EnsureInitialized()
         {
             if (!IsRunning)
                 Initialize();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
+            if (generatorFolder == null)
+                throw new InvalidOperationException("The RemoteAppDomainTestGeneratorFactory has to be configured with the Setup() method before initialization.");
+
             AppDomainSetup appDomainSetup = new AppDomainSetup { ApplicationBase = generatorFolder };
             appDomain = AppDomain.CreateDomain("AppDomainForTestGeneration", null, appDomainSetup);
 
@@ -156,7 +168,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             Cleanup();
         }
 
-        private void Cleanup()
+        public void Cleanup()
         {
             if (!IsRunning)
                 return;

@@ -14,10 +14,11 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
     public abstract class RemoteGeneratorServices : GeneratorServices
     {
-        private RemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory;
+        private readonly IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory;
 
-        protected RemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, IIdeTracer tracer, bool enableSettingsCache) : base(testGeneratorFactory, tracer, enableSettingsCache)
+        protected RemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory, IIdeTracer tracer, bool enableSettingsCache) : base(testGeneratorFactory, tracer, enableSettingsCache)
         {
+            this.remoteAppDomainTestGeneratorFactory = remoteAppDomainTestGeneratorFactory;
         }
 
         protected abstract GeneratorInfo GetGeneratorInfo();
@@ -29,10 +30,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         protected override ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
-            // if we already have a generator factory -> use it!
-            if (remoteAppDomainTestGeneratorFactory != null)
-                return remoteAppDomainTestGeneratorFactory;
-
             GeneratorInfo generatorInfo = GetGeneratorInfo();
             if (generatorInfo == null || generatorInfo.GeneratorAssemblyVersion == null || generatorInfo.GeneratorFolder == null)
             {
@@ -58,8 +55,8 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             try
             {
                 tracer.Trace(string.Format("Creating remote wrapper for the project's generator ({0} at {1})", generatorInfo.GeneratorAssemblyVersion, generatorInfo.GeneratorFolder), "RemoteGeneratorServices");
-                remoteAppDomainTestGeneratorFactory = new RemoteAppDomainTestGeneratorFactory(tracer, generatorInfo.GeneratorFolder);
-                remoteAppDomainTestGeneratorFactory.Initialize();
+                remoteAppDomainTestGeneratorFactory.Setup(generatorInfo.GeneratorFolder);
+                remoteAppDomainTestGeneratorFactory.EnsureInitialized();
                 return remoteAppDomainTestGeneratorFactory;
             }
             catch(Exception exception)
@@ -85,11 +82,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         private void Cleanup()
         {
-            if (remoteAppDomainTestGeneratorFactory != null)
-            {
-                remoteAppDomainTestGeneratorFactory.Dispose();
-                remoteAppDomainTestGeneratorFactory = null;
-            }
+            remoteAppDomainTestGeneratorFactory.Cleanup();
         }
     }
 }

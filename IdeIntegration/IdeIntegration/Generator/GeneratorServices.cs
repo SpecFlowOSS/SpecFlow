@@ -40,7 +40,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         
         protected virtual ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
-            //TODO: create it in new AppDomain if neccessary
             return testGeneratorFactory; 
         }
 

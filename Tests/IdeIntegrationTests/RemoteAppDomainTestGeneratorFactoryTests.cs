@@ -36,7 +36,9 @@ namespace IdeIntegrationTests
 
         private RemoteAppDomainTestGeneratorFactory CreateRemoteAppDomainTestGeneratorFactory(string generatorFolder)
         {
-            return new RemoteAppDomainTestGeneratorFactory(tracerStub.Object, generatorFolder);
+            var factory = new RemoteAppDomainTestGeneratorFactory(tracerStub.Object);
+            factory.Setup(generatorFolder);
+            return factory;
         }
 
         [Test]
@@ -44,7 +46,7 @@ namespace IdeIntegrationTests
         {
             using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
-                remoteFactory.Initialize();
+                remoteFactory.EnsureInitialized();
                 remoteFactory.IsRunning.ShouldBeTrue();
             }
         }
@@ -149,7 +151,7 @@ namespace IdeIntegrationTests
             RemoteAppDomainTestGeneratorFactory remoteFactory;
             using (remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
-                remoteFactory.Initialize();
+                remoteFactory.EnsureInitialized();
             }
 
             remoteFactory.IsRunning.ShouldBeFalse();

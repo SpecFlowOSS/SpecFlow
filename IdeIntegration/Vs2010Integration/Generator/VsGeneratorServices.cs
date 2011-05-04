@@ -4,6 +4,7 @@ using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -12,18 +13,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
 {
     internal class VsGeneratorServices : VsRemoteGeneratorServices
     {
-//        protected readonly Project project;
         private readonly ISpecFlowConfigurationReader configurationReader;
 
-//        public VsGeneratorServices(Project project, IVisualStudioTracer visualStudioTracer) : base(
-//            new TestGeneratorFactory(), //TODO: load through DI
-//            false)
-//        {
-//            this.project = project;
-//            this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
-//        }
         public VsGeneratorServices(Project project, IVisualStudioTracer visualStudioTracer) : base(
             new TestGeneratorFactory(), //TODO: load through DI
+            new RemoteAppDomainTestGeneratorFactory(visualStudioTracer), //TODO: load through DI
             false, project, visualStudioTracer)
         {
             this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI

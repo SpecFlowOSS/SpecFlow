@@ -15,8 +15,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
     {
         protected readonly Project project;
 
-        protected VsRemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, bool enableSettingsCache, Project project, IVisualStudioTracer visualStudioTracer)
-            : base(testGeneratorFactory, visualStudioTracer, enableSettingsCache)
+        protected VsRemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory, bool enableSettingsCache, Project project, IVisualStudioTracer visualStudioTracer)
+            : base(testGeneratorFactory, remoteAppDomainTestGeneratorFactory, visualStudioTracer, enableSettingsCache)
         {
             this.project = project;
         }
