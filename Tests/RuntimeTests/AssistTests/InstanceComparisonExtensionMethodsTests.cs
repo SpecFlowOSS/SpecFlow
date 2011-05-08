@@ -199,6 +199,19 @@ IDoNotExist: Property does not exist");
         }
 
         [Test]
+        public void Will_match_decimals_regardless_of_trailing_zeroes()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("DecimalProperty", "4.23");
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
+                                                                                 {
+                                                                                     DecimalProperty = 4.23000000M
+                                                                                 });
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+        }
+
+        [Test]
         public void Throws_exception_when_the_result_is_null()
         {
             var table = new Table("Field", "Value");

@@ -66,6 +66,7 @@
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Assist\ValueComparers\BooleanValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DateTimeValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\DecimalValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DefaultValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
