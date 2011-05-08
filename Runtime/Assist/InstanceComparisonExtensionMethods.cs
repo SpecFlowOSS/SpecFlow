@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -63,68 +64,43 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            var expected = GetTheExpectedValue(row, instance);
-
-            var actual = GetTheActualValue(row, instance);
-
-            return actual != expected;
-        }
-
-        private static string GetTheExpectedValue<T>(TableRow row, T instance)
-        {
-            var value = row.Value().ToString();
-
-            if (ThisIsADateTimePropertyThatMayNeedTimeAttached(row, instance))
-                value = DateTime.Parse(value).ToString();
-
-            return value;
-        }
-
-        private static bool ThisIsADateTimePropertyThatMayNeedTimeAttached<T>(TableRow row, T instance)
-        {
-            return instance.GetPropertyValue(row.Id()) != null && instance.GetPropertyValue(row.Id()).GetType() == typeof (DateTime);
-        }
-
-        private static string GetTheActualValue<T>(TableRow row, T instance)
-        {
+            var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
+            var valueComparers = new IValueComparer[]
+                                     {
+                                         new DateTimeValueComparer(),
+                                         new BooleanValueComparer(),
+                                         new GuidValueComparer(),
+                                         new DecimalValueComparer(),
+                                         new DefaultValueComparer()
+                                     };
 
-            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
-                actual = actual.ToLower();
-
-            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
-                actual = actual.ToUpper();
-
-            return actual;
+            return valueComparers
+                .FirstOrDefault(x => x.CanCompare(propertyValue))
+                .TheseValuesAreTheSame(expected, propertyValue) == false;
         }
 
-        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
+        private static string GetTheExpectedValue(TableRow row)
         {
-            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
-        }
-
-        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(bool);
+            return row.Value().ToString();
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
-                {
-                    Property = row.Id(),
-                    DoesNotExist = true
-                };
+                           {
+                               Property = row.Id(),
+                               DoesNotExist = true
+                           };
 
             return new Difference
-            {
-                Property = row.Id(),
-                Expected = row.Value(),
-                Actual = instance.GetPropertyValue(row.Id())
-            };
+                       {
+                           Property = row.Id(),
+                           Expected = row.Value(),
+                           Actual = instance.GetPropertyValue(row.Id())
+                       };
         }
 
         private class Difference
@@ -138,17 +114,14 @@ namespace TechTalk.SpecFlow.Assist
 
     public static class TableHelpers
     {
-        private const string FieldId = "Field";
-        private const string ValueId = "Value";
-
         public static string Id(this TableRow row)
         {
-            return row[FieldId];
+            return row[0];
         }
 
         public static object Value(this TableRow row)
         {
-            return row[ValueId];
+            return row[1];
         }
     }
 
