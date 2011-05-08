@@ -68,26 +68,6 @@ namespace TechTalk.SpecFlow.Assist
             var valueComparer = new ValueComparer();
             var propertyValue = instance.GetPropertyValue(row.Id());
             return valueComparer.CompareValue(expected, propertyValue);
-
-            var actual = GetTheActualValue(row, instance);
-            return actual != expected;
-        }
-
-        private class ValueComparer
-        {
-            public bool CompareValue(string expectedValue, object actualValue)
-            {
-
-                var actual = actualValue == null ? string.Empty : actualValue.ToString();
-
-                if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(actualValue))
-                    actual = actual.ToLower();
-
-                if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(actualValue))
-                    actual = actual.ToUpper();
-
-                return expectedValue != actual;
-            }
         }
 
         private static string GetTheExpectedValue<T>(TableRow row, T instance)
@@ -103,31 +83,6 @@ namespace TechTalk.SpecFlow.Assist
         private static bool ThisIsADateTimePropertyThatMayNeedTimeAttached<T>(TableRow row, T instance)
         {
             return instance.GetPropertyValue(row.Id()) != null && instance.GetPropertyValue(row.Id()).GetType() == typeof (DateTime);
-        }
-
-        private static string GetTheActualValue<T>(TableRow row, T instance)
-        {
-            var propertyValue = instance.GetPropertyValue(row.Id());
-
-            var actual = propertyValue == null ? string.Empty : propertyValue.ToString();
-
-            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(propertyValue))
-                actual = actual.ToLower();
-
-            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(propertyValue))
-                actual = actual.ToUpper();
-
-            return actual;
-        }
-
-        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
-        }
-
-        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(bool);
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
