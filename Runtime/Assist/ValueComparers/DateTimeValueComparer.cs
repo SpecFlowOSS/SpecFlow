@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             return actualValue != null && actualValue.GetType() == typeof (DateTime);
         }
 
-        public bool CompareValue(string expectedValue, object actualValue)
+        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
             DateTime expected;
             if (DateTime.TryParse(expectedValue, out expected) == false)

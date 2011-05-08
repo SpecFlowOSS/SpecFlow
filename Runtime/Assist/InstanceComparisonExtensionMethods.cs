@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Assist
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
-                .CompareValue(expected, propertyValue) == false;
+                .TheseValuesAreTheSame(expected, propertyValue) == false;
         }
 
         private static string GetTheExpectedValue(TableRow row)

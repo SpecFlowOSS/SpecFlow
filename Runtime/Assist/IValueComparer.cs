@@ -3,6 +3,6 @@
     internal interface IValueComparer
     {
         bool CanCompare(object actualValue);
-        bool CompareValue(string expectedValue, object actualValue);
+        bool TheseValuesAreTheSame(string expectedValue, object actualValue);
     }
 }
