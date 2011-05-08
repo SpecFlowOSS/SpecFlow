@@ -11,23 +11,9 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-
             var actual = actualValue == null ? String.Empty : actualValue.ToString();
 
-            if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(actualValue))
-                actual = actual.ToUpper();
-
             return expectedValue == actual;
-        }
-
-        private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(Guid);
-        }
-
-        private static bool ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(object propertyValue)
-        {
-            return propertyValue != null && propertyValue.GetType() == typeof(bool);
         }
     }
 }
