@@ -63,11 +63,14 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            var expected = GetTheExpectedValue(row, instance);   
-
-            var valueComparer = new ValueComparer();
+            var expected = GetTheExpectedValue(row, instance);
             var propertyValue = instance.GetPropertyValue(row.Id());
-            return valueComparer.CompareValue(expected, propertyValue);
+
+            var valueComparers = new IValueComparer[] {new DefaultValueComparer()};
+
+            return valueComparers
+                .FirstOrDefault(x => x.CanCompare(propertyValue))
+                .CompareValue(expected, propertyValue);
         }
 
         private static string GetTheExpectedValue<T>(TableRow row, T instance)

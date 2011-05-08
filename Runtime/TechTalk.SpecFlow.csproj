@@ -58,12 +58,13 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
+    <Compile Include="Assist\IValueComparer.cs" />
     <Compile Include="Assist\PivotTable.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
-    <Compile Include="Assist\ValueComparer.cs" />
+    <Compile Include="Assist\DefaultValueComparer.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />

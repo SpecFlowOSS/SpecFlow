@@ -2,8 +2,13 @@
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal class ValueComparer
+    internal class DefaultValueComparer : IValueComparer
     {
+        public bool CanCompare(object actualValue)
+        {
+            return true;
+        }
+
         public bool CompareValue(string expectedValue, object actualValue)
         {
 
