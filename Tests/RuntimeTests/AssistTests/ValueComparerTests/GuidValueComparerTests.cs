@@ -91,5 +91,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                                                 new Guid("{43ba4a14-C65c-4D47-9a83-6d36e03f3576}"))
                 .ShouldBeTrue();
         }
+
+        [Test]
+        public void Matches_based_on_the_first_eight_digits_when_the_rest_are_zeroes()
+        {
+            var valueComparer = new GuidValueComparer();
+            valueComparer.TheseValuesAreTheSame("B6F8CA06",
+                                                new Guid("B6F8CA06-0000-0000-0000-000000000000"))
+                .ShouldBeTrue();
+
+            valueComparer.TheseValuesAreTheSame("35E9525C",
+                                                new Guid("35E9525C-0000-0000-0000-000000000000"))
+                .ShouldBeTrue();
+        }
     }
 }
