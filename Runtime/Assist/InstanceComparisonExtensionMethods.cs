@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -63,46 +64,36 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
-            var expected = GetTheExpectedValue(row, instance);
+            var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = new IValueComparer[] {new DefaultValueComparer()};
+            var valueComparers = new IValueComparer[] {new DateTimeValueComparer(), new DefaultValueComparer()};
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
-                .CompareValue(expected, propertyValue);
+                .CompareValue(expected, propertyValue) == false;
         }
 
-        private static string GetTheExpectedValue<T>(TableRow row, T instance)
+        private static string GetTheExpectedValue(TableRow row)
         {
-            var value = row.Value().ToString();
-
-            if (ThisIsADateTimePropertyThatMayNeedTimeAttached(row, instance))
-                value = DateTime.Parse(value).ToString();
-
-            return value;
-        }
-
-        private static bool ThisIsADateTimePropertyThatMayNeedTimeAttached<T>(TableRow row, T instance)
-        {
-            return instance.GetPropertyValue(row.Id()) != null && instance.GetPropertyValue(row.Id()).GetType() == typeof (DateTime);
+            return row.Value().ToString();
         }
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
-                {
-                    Property = row.Id(),
-                    DoesNotExist = true
-                };
+                           {
+                               Property = row.Id(),
+                               DoesNotExist = true
+                           };
 
             return new Difference
-            {
-                Property = row.Id(),
-                Expected = row.Value(),
-                Actual = instance.GetPropertyValue(row.Id())
-            };
+                       {
+                           Property = row.Id(),
+                           Expected = row.Value(),
+                           Actual = instance.GetPropertyValue(row.Id())
+                       };
         }
 
         private class Difference

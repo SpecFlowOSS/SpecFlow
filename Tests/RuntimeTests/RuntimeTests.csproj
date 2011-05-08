@@ -80,6 +80,7 @@
     <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DateTimeValueComparerTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />

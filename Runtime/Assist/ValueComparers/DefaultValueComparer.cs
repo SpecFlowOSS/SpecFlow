@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow.Assist
+namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
     internal class DefaultValueComparer : IValueComparer
     {
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Assist
             if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(actualValue))
                 actual = actual.ToUpper();
 
-            return expectedValue != actual;
+            return expectedValue == actual;
         }
 
         private static bool ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(object propertyValue)
