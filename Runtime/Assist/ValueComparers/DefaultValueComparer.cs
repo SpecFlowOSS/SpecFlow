@@ -14,9 +14,6 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
             var actual = actualValue == null ? String.Empty : actualValue.ToString();
 
-            if (ThisIsABooleanThatNeedsToBeLoweredToMatchAssistConventions(actualValue))
-                actual = actual.ToLower();
-
             if (ThisIsAGuidThatNeedsToBeUppedToMatchToStringGuidValue(actualValue))
                 actual = actual.ToUpper();
 

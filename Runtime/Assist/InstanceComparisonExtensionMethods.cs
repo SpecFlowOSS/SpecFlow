@@ -67,7 +67,12 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = new IValueComparer[] {new DateTimeValueComparer(), new DefaultValueComparer()};
+            var valueComparers = new IValueComparer[]
+                                     {
+                                         new DateTimeValueComparer(),
+                                         new BooleanValueComparer(),
+                                         new DefaultValueComparer()
+                                     };
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
