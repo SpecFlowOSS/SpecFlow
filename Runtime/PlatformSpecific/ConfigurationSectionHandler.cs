@@ -189,6 +189,13 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (bool)this["allowRowTests"]; }
             set { this["allowRowTests"] = value; }
         }
+
+        [ConfigurationProperty("path", DefaultValue = ConfigDefaults.GeneratorPath, IsRequired = false)]
+        public string GeneratorPath
+        {
+            get { return (string)this["path"]; }
+            set { this["path"] = value; }
+        }
     }
 
     public class TraceConfigElement : ConfigurationElement

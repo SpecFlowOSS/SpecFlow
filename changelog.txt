@@ -2,6 +2,14 @@
 
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.6
++ Using SpecFlow generator from the project's lib folder instead of SpecFlow installed for IDE integration.
+  The VS2010 integration can be installed independently from projects using a different version. The VS2010
+  integration checks the generator in the following paths:
+  1. generator path configured in app.config (<generator path="..\lib\SpecFlow"/>)
+  2. generator assembly (TechTalk.SpecFlow.Generator.dll) referenced from the SpecFlow project
+  3. generator in the same folder as the runtime (TechTalk.SpecFlow.dll)
+  4. generator obtained through NuGet ("..\tools" or "..\..\tools", relative to the runtime)
+  If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
 
 1.6.1 - 2011/04/15
 

@@ -52,6 +52,7 @@
     <Compile Include="GeneratorServicesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteAppDomainTestGeneratorFactoryTests.cs" />
+    <Compile Include="RemoteGeneratorServicesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
