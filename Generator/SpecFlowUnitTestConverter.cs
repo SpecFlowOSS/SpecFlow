@@ -130,14 +130,14 @@ namespace TechTalk.SpecFlow.Generator
 
             testGeneratorProvider.SetTestFixtureSetup(setupMethod);
 
-            //testRunner = TestRunner.GetTestRunner();
+            //testRunner = TestRunner.GetTestRunner(typeof(testType);
             var testRunnerField = GetTestRunnerExpression();
             setupMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(TESTRUNNERMANAGER_TYPE),
-                        "GetTestRunner")));
+                        "GetTestRunner", new[] { new CodeTypeOfExpression(testType.Name) })));
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             setupMethod.Statements.Add(
