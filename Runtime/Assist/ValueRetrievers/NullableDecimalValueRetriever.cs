@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDecimalValueRetriever
+    internal class NullableDecimalValueRetriever
     {
         private readonly DecimalValueRetriever decimalValueRetriever;
 

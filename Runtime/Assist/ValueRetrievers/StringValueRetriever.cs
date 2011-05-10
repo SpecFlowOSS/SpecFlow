@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class StringValueRetriever
+    internal class StringValueRetriever
     {
         public string GetValue(string value)
         {

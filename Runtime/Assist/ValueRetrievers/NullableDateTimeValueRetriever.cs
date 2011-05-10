@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDateTimeValueRetriever
+    internal class NullableDateTimeValueRetriever
     {
         private readonly DateTimeValueRetriever dateTimeValueRetriever;
 

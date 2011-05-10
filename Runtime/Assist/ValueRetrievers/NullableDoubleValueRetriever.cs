@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableDoubleValueRetriever
+    internal class NullableDoubleValueRetriever
     {
         private readonly DoubleValueRetriever DoubleValueRetriever;
 
