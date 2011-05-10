@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
-    public class GeneratorInfo
-    {
-        public Version GeneratorAssemblyVersion { get; set; }
-        public string GeneratorFolder { get; set; }
-    }
-
     public abstract class RemoteGeneratorServices : GeneratorServices
     {
         private readonly IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory;
@@ -30,7 +25,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         protected override ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
-            GeneratorInfo generatorInfo = GetGeneratorInfo();
+            var generatorInfo = GetGeneratorInfo();
             if (generatorInfo == null || generatorInfo.GeneratorAssemblyVersion == null || generatorInfo.GeneratorFolder == null)
             {
                 // we don't know about the generator -> call the "current" directly
@@ -45,9 +40,9 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
                 return base.GetTestGeneratorFactoryForCreate();
             }
 
-            if (generatorInfo.GeneratorAssemblyVersion == GetCurrentGeneratorAssemblyVersion())
+            if (generatorInfo.GeneratorAssemblyVersion == GetCurrentGeneratorAssemblyVersion() && !generatorInfo.UsesPlugins)
             {
-                // uses the "current" generator -> call it directly
+                // uses the "current" generator (and no plugins) -> call it directly
                 tracer.Trace("The generator of the project is the same as the generator bound to the IDE: using it from the IDE", "RemoteGeneratorServices");
                 return base.GetTestGeneratorFactoryForCreate();
             }

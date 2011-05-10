@@ -83,18 +83,18 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BatchGenerator.cs" />
+    <Compile Include="Configuration\GeneratorInfo.cs" />
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
+    <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
+    <Compile Include="Configuration\SpecFlowProjectConfigurationLoaderWithoutPlugins.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
-    <Compile Include="Project\AppDomainProjectReference.cs" />
-    <Compile Include="Project\FileProjectReference.cs" />
-    <Compile Include="Configuration\IProjectReference.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
-    <Compile Include="Configuration\RuntimeSpecFlowProjectConfigurationLoader.cs" />
+    <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />
     <Compile Include="RemotableGeneratorClass.cs" />
     <Compile Include="TestGeneratorException.cs" />
     <Compile Include="Project\SpecFlowProject.cs" />

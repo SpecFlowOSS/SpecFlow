@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public interface ISpecFlowProjectConfigurationLoader
     {
-        SpecFlowProjectConfiguration LoadConfiguration(SpecFlowConfigurationHolder configurationHolder, IProjectReference projectReference);
+        SpecFlowProjectConfiguration LoadConfiguration(SpecFlowConfigurationHolder configurationHolder);
     }
 }

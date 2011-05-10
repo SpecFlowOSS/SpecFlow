@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public interface ISpecFlowConfigurationReader
     {
-        SpecFlowConfigurationHolder ReadConfiguration(IProjectReference projectReference);
+        SpecFlowConfigurationHolder ReadConfiguration();
     }
 }

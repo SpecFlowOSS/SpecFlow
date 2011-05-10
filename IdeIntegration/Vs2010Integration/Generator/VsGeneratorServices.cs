@@ -11,16 +11,25 @@ using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Generator
 {
-    internal class VsGeneratorServices : VsRemoteGeneratorServices
+    internal class VsGeneratorServices : RemoteGeneratorServices
     {
+        protected readonly Project project;
         private readonly ISpecFlowConfigurationReader configurationReader;
+        private readonly IGeneratorInfoProvider generatorInfoProvider;
 
         public VsGeneratorServices(Project project, IVisualStudioTracer visualStudioTracer) : base(
             new TestGeneratorFactory(), //TODO: load through DI
             new RemoteAppDomainTestGeneratorFactory(visualStudioTracer), //TODO: load through DI
-            false, project, visualStudioTracer)
+            visualStudioTracer, false)
         {
-            this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
+            this.project = project;
+            this.configurationReader = new VsSpecFlowConfigurationReader(project, tracer); //TODO: load through DI
+            this.generatorInfoProvider = new VsGeneratorInfoProvider(project, tracer, configurationReader); //TODO: load through DI
+        }
+
+        protected override GeneratorInfo GetGeneratorInfo()
+        {
+            return generatorInfoProvider.GetGeneratorInfo();
         }
 
         protected override ProjectSettings GetProjectSettings()
@@ -53,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
                     throw new NotSupportedException("target language not supported");
             }
 
-            var configurationHolder = configurationReader.ReadConfiguration(new VsProjectReference(project));
+            var configurationHolder = configurationReader.ReadConfiguration();
             return new ProjectSettings
                        {
                            ProjectName = Path.GetFileNameWithoutExtension(project.FullName),
