@@ -81,6 +81,7 @@
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
     <Compile Include="AssistTests\ValueComparerTests\BooleanValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DoubleValueComparerTests.cs" />
     <Compile Include="AssistTests\ValueComparerTests\DateTimeValueComparerTests.cs" />
     <Compile Include="AssistTests\ValueComparerTests\DecimalValueComparerTests.cs" />
     <Compile Include="AssistTests\ValueComparerTests\GuidValueComparerTests.cs" />
