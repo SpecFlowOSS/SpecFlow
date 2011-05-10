@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                             IntProperty = 1,
                             StringProperty = "a"
                         };
-            testCollection = new SetComparisonTestObject[]
+            testCollection = new[]
                 {
                     testInstance,
                     new SetComparisonTestObject
@@ -49,7 +49,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
             table.AddRow(DateTime.Today.ToString(), testGuid2.ToString(), 2.ToString(), "b");
 
-            Assert.IsTrue(table.ToProjection<SetComparisonTestObject>().SequenceEqual(testCollection.ToProjection()));
+            var setProjection = testCollection.ToProjection();
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            Assert.IsTrue(tableProjection.SequenceEqual(setProjection));
         }
 
         [Test]
@@ -59,7 +61,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow(DateTime.Today.ToString(), testGuid2.ToString(), 2.ToString(), "b");
             table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
 
-            Assert.IsFalse(table.ToProjection<SetComparisonTestObject>().SequenceEqual(testCollection.ToProjection()));
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            var setProjection = testCollection.ToProjection();
+            Assert.IsFalse(tableProjection.SequenceEqual(setProjection));
         }
 
         [Test]
@@ -69,7 +73,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
             table.AddRow(DateTime.Today.ToString(), testGuid2.ToString(), 2.ToString(), "b");
 
-            Assert.AreEqual(table.RowCount, table.ToProjection<SetComparisonTestObject>().Intersect(testCollection.ToProjection()).Count());
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            var setProjection = testCollection.ToProjection();
+            Assert.AreEqual(table.RowCount, tableProjection.Intersect(setProjection).Count());
         }
 
         [Test]
@@ -82,7 +88,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var query = from x in testCollection
                         select new { x.IntProperty, x.StringProperty };
 
-            Assert.AreEqual(table.RowCount, table.ToProjectionOfSet(query).Except(query.ToProjection()).Count());
+            var tableProjection = table.ToProjectionOfSet(query);
+            var queryProjection = query.ToProjection();
+            Assert.AreEqual(table.RowCount, tableProjection.Except(queryProjection).Count());
         }
 
         [Test]
@@ -95,7 +103,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var query = from x in testCollection
                         select new { x.GuidProperty, x.IntProperty, x.StringProperty };
 
-            Assert.AreEqual(0, table.ToProjectionOfSet(query).Except(query.ToProjection()).Count());
+            var tableProjection = table.ToProjectionOfSet(query);
+            var queryProjection = query.ToProjection();
+            Assert.AreEqual(0, tableProjection.Except(queryProjection).Count());
         }
 
         [Test]
@@ -108,7 +118,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var query = from x in testCollection
                         select new { x.GuidProperty, x.IntProperty, x.StringProperty };
 
-            Assert.IsTrue(table.ToProjectionOfSet(query).SequenceEqual(query.ToProjection()));
+            var tableProjection = table.ToProjectionOfSet(query);
+            var queryProjection = query.ToProjection();
+            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
         }
 
         [Test]
@@ -120,7 +132,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var query = testCollection.AsQueryable();
 
-            Assert.IsTrue(table.ToProjectionOfSet(query).SequenceEqual(query.ToProjection()));
+            var tableProjection = table.ToProjectionOfSet(query);
+            var queryProjection = query.ToProjection();
+            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
         }
 
         [Test]
@@ -132,7 +146,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var query = testCollection.ToList();
 
-            Assert.IsTrue(table.ToProjectionOfSet(query).SequenceEqual(query.ToProjection()));
+            var tableProjection = table.ToProjectionOfSet(query);
+            var queryProjection = query.ToProjection();
+            Assert.IsTrue(tableProjection.SequenceEqual(queryProjection));
         }
 
         [Test]
@@ -141,7 +157,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = CreateTableWithAllColumns();
             table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
 
-            Assert.AreEqual(table.ToProjection<SetComparisonTestObject>(), testInstance);
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            Assert.AreEqual(tableProjection, testInstance);
         }
 
         [Test]
@@ -150,7 +167,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = CreateTableWithAllColumns();
             table.AddRow(DateTime.Today.ToString(), Guid.NewGuid().ToString(), 1.ToString(), "b");
 
-            Assert.AreNotEqual(table.ToProjection<SetComparisonTestObject>(), testInstance);
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            Assert.AreNotEqual(tableProjection, testInstance);
         }
 
         [Test]
@@ -161,7 +179,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var instance = new { IntProperty = testInstance.IntProperty, StringProperty = testInstance.StringProperty };
 
-            Assert.AreEqual(table.ToProjectionOfInstance(instance), instance);
+            var tableProjection = table.ToProjectionOfInstance(instance);
+            Assert.AreEqual(tableProjection, instance);
         }
 
         [Test]
@@ -172,7 +191,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var instance = new { IntProperty = testInstance.IntProperty, StringProperty = testInstance.StringProperty };
 
-            Assert.AreNotEqual(table.ToProjectionOfInstance(instance), instance);
+            var tableProjection = table.ToProjectionOfInstance(instance);
+            Assert.AreNotEqual(tableProjection, instance);
         }
 
         private Table CreateTableWithAllColumns()
