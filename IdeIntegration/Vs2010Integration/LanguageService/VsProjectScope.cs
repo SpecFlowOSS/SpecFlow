@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, integrationOptions.EnableAnalysis);
 
-            GeneratorServices = new VsGeneratorServices(project, VisualStudioTracer);
+            GeneratorServices = new VsGeneratorServices(project, new VsSpecFlowConfigurationReader(project, visualStudioTracer), visualStudioTracer);
         }
 
         private void EnsureInitialized()

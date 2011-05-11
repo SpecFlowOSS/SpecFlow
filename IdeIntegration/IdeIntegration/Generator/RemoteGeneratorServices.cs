@@ -10,13 +10,19 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
     public abstract class RemoteGeneratorServices : GeneratorServices
     {
         private readonly IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory;
+        private readonly IGeneratorInfoProvider generatorInfoProvider;
 
-        protected RemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory, IIdeTracer tracer, bool enableSettingsCache) : base(testGeneratorFactory, tracer, enableSettingsCache)
+        protected RemoteGeneratorServices(ITestGeneratorFactory testGeneratorFactory, IRemoteAppDomainTestGeneratorFactory remoteAppDomainTestGeneratorFactory, IGeneratorInfoProvider generatorInfoProvider, IIdeTracer tracer, bool enableSettingsCache)
+            : base(testGeneratorFactory, tracer, enableSettingsCache)
         {
             this.remoteAppDomainTestGeneratorFactory = remoteAppDomainTestGeneratorFactory;
+            this.generatorInfoProvider = generatorInfoProvider;
         }
 
-        protected abstract GeneratorInfo GetGeneratorInfo();
+        protected virtual GeneratorInfo GetGeneratorInfo()
+        {
+            return generatorInfoProvider.GetGeneratorInfo();
+        }
 
         protected Version GetCurrentGeneratorAssemblyVersion()
         {

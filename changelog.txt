@@ -8,8 +8,11 @@ New features:
   1. generator path configured in app.config (<generator path="..\lib\SpecFlow"/>)
   2. generator assembly (TechTalk.SpecFlow.Generator.dll) referenced from the SpecFlow project
   3. generator in the same folder as the runtime (TechTalk.SpecFlow.dll)
-  4. generator obtained through NuGet ("..\tools" or "..\..\tools", relative to the runtime)
+  4. generator is near to the runtime ("tools" or "..\tools", relative to the runtime)
+  5. generator obtained through NuGet ("..\..\tools", relative to the runtime)
   If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
+  If you use any custom plugins (e.g. unit test generator), this has to be in the same folder as the generator 
+  currently.
 
 1.6.1 - 2011/04/15
 
