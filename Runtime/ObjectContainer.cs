@@ -150,6 +150,12 @@ namespace TechTalk.SpecFlow
 
         #endregion
 
+        #region AsyncContext
+
+        public static AsyncContext AsyncContext { get; internal set; }
+
+        #endregion
+
         #region TraceListener
         private static ITraceListener traceListener = null;
 

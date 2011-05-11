@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow
 {
@@ -50,6 +51,9 @@ namespace TechTalk.SpecFlow
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
+            if (ObjectContainer.AsyncContext == null)
+                throw new InvalidOperationException("Cannot start an asynchronous scenario with a null AsyncContext");
+
             // No enqueueing
             // The queue is logically empty at this point (we're the first thing to run in a scenario)
             // and enqueueing right now will just add to an empty list
@@ -68,6 +72,8 @@ namespace TechTalk.SpecFlow
             // No enqueueing
             // The test framework should ensure that we're called after the test completes
             testRunner.OnScenarioEnd();
+
+            AsyncContext.Unregister();
         }
 
         public void Given(string text, string multilineTextArg, Table tableArg)

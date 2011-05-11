@@ -12,33 +12,33 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [TearDown]
         public void TearDown()
         {
-            ObjectContainer.ScenarioContext = null;
+            ObjectContainer.AsyncContext = null;
         }
 
         [Test]
         public void AsyncContextIsNullIfNothingIsRegistered()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
-
             Assert.IsNull(AsyncContext.Current);
         }
 
         private static void SetupAsyncContext()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
-
             fakeAsyncContextImpl = new FakeAsyncContextImpl();
 
             AsyncContext.Register(fakeAsyncContextImpl);
         }
 
         [Test]
-        public void AsyncContextIsStoredInScenarioContext()
+        public void AsyncContextIsStoredOnObjectContainer()
         {
             SetupAsyncContext();
             Assert.IsNotNull(AsyncContext.Current);
             Assert.IsInstanceOf<AsyncContext>(AsyncContext.Current);
-            ObjectContainer.ScenarioContext = null;
+
+            Assert.IsNotNull(ObjectContainer.AsyncContext);
+            Assert.AreSame(AsyncContext.Current, ObjectContainer.AsyncContext);
+
+            ObjectContainer.AsyncContext = null;
 
             Assert.IsNull(AsyncContext.Current);
         }

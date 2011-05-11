@@ -27,13 +27,7 @@ namespace TechTalk.SpecFlow
         /// </summary>
         public static AsyncContext Current
         {
-            get
-            {
-                AsyncContext context;
-                if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(AsyncContextKey, out context))
-                    return context;
-                return null;
-            }
+            get { return ObjectContainer.AsyncContext; }
         }
 
         private AsyncContext(IAsyncContextImpl asyncContextImpl)
@@ -52,7 +46,12 @@ namespace TechTalk.SpecFlow
         public static void Register(IAsyncContextImpl asyncContextImpl)
         {
             var asyncContext = new AsyncContext(asyncContextImpl);
-            ScenarioContext.Current.Set(asyncContext, AsyncContextKey);
+            ObjectContainer.AsyncContext = asyncContext;
+        }
+
+        internal static void Unregister()
+        {
+            ObjectContainer.AsyncContext = null;
         }
 
         internal void EnqueueWithNewContext(Action action)

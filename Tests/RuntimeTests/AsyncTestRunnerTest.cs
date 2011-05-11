@@ -25,7 +25,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             mockTestRunner = MockRepository.GenerateMock<ITestRunner>();
             fakeAsyncContextImpl = new FakeAsyncContextImpl();
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
             AsyncContext.Register(fakeAsyncContextImpl);
 
             asyncTestRunner = new AsyncTestRunner(mockTestRunner);
@@ -34,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [TearDown]
         public void TearDown()
         {
-            ObjectContainer.ScenarioContext = null;
+            ObjectContainer.AsyncContext = null;
         }
 
         [Test]
@@ -75,6 +74,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void OnScenarioStartThrowsIfAsyncContextNotSet()
+        {
+            ObjectContainer.AsyncContext = null;
+
+            try
+            {
+                asyncTestRunner.OnScenarioStart(new ScenarioInfo("title"));
+                Assert.Fail("Expected OnScenarioStart to fail if AsyncContext not set");
+            }
+            catch (InvalidOperationException e)
+            {
+                // Do nothing
+            }
+        }
+
+        [Test]
         public void OnScenarioStartDefersToInnerSynchronousTestRunner()
         {
             var scenarioInfo = new ScenarioInfo("title");
@@ -89,6 +104,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             asyncTestRunner.OnScenarioEnd();
 
             mockTestRunner.AssertWasCalled(m => m.OnScenarioEnd());
+        }
+
+        [Test]
+        public void OnScenarioEndClearsAsyncContext()
+        {
+            AsyncContext.Register(new FakeAsyncContextImpl());
+            Assert.IsNotNull(ObjectContainer.AsyncContext);
+
+            asyncTestRunner.OnScenarioEnd();
+
+            Assert.IsNull(ObjectContainer.AsyncContext);
+            Assert.IsNull(AsyncContext.Current);
         }
 
         [Test]
