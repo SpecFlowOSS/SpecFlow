@@ -16,6 +16,7 @@ New features:
 + Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (Vagif Abilov)
 + Cleaned-up CreateInstance<T> and CreateSet<T> for greater code maintainability.
 + Cleaned-up CompareToInstance<T> and CompareToSet<T> for greater code maintainability, and slightly more accurate value comparisons (like decimals with trailing zeroes).
++ Removed the |Field|Value| requirement for CreateInstance<T> and CompareToInstance<T>. Any header names can be used, so long as the first column is the name of the property and the second column is the value.
   
 1.6.1 - 2011/04/15
 
