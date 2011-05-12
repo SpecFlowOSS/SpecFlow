@@ -1,10 +1,12 @@
-﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
-{
-    public class NullableBoolValueRetriever
-    {
-        private readonly BoolValueRetriever boolValueRetriever;
+﻿using System;
 
-        public NullableBoolValueRetriever(BoolValueRetriever boolValueRetriever)
+namespace TechTalk.SpecFlow.Assist.ValueRetrievers
+{
+    internal class NullableBoolValueRetriever
+    {
+        private readonly Func<string, bool> boolValueRetriever;
+
+        public NullableBoolValueRetriever(Func<string, bool> boolValueRetriever)
         {
             this.boolValueRetriever = boolValueRetriever;
         }
@@ -12,7 +14,7 @@
         public bool? GetValue(string thisValue)
         {
             if (string.IsNullOrEmpty(thisValue)) return null;
-            return boolValueRetriever.GetValue(thisValue);
+            return boolValueRetriever(thisValue);
         }
     }
 }

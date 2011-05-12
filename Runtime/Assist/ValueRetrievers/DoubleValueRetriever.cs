@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class DoubleValueRetriever
+    internal class DoubleValueRetriever
     {
         public virtual double GetValue(string value)
         {

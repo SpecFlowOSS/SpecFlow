@@ -12,11 +12,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_the_value_from_the_DateTimeValueRetriever()
         {
-            var mock = new Mock<DateTimeValueRetriever>();
-            mock.Setup(x => x.GetValue("one")).Returns(new DateTime(2011, 1, 2));
-            mock.Setup(x => x.GetValue("two")).Returns(new DateTime(2015, 12, 31));
+            Func<string, DateTime> func = v =>
+                                              {
+                                                  if (v == "one") return new DateTime(2011, 1, 2);
+                                                  if (v == "two") return new DateTime(2015, 12, 31);
+                                                  return DateTime.MinValue;
+                                              };
 
-            var retriever = new NullableDateTimeValueRetriever(mock.Object);
+            var retriever = new NullableDateTimeValueRetriever(func);
             retriever.GetValue("one").ShouldEqual(new DateTime(2011, 1, 2));
             retriever.GetValue("two").ShouldEqual(new DateTime(2015, 12, 31));
         }
@@ -24,14 +27,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_value_is_null()
         {
-            var retriever = new NullableDateTimeValueRetriever(new Mock<DateTimeValueRetriever>().Object);
+            var retriever = new NullableDateTimeValueRetriever(v => DateTime.Parse("1/1/2016"));
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_null_when_string_is_empty()
         {
-            var retriever = new NullableDateTimeValueRetriever(new Mock<DateTimeValueRetriever>().Object);
+            var retriever = new NullableDateTimeValueRetriever(v => DateTime.Parse("1/1/2017"));
             retriever.GetValue(string.Empty).ShouldBeNull();
         }
     }

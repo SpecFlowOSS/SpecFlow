@@ -2,19 +2,19 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class DecimalValueComparer : IValueComparer
+    internal class DoubleValueComparer : IValueComparer
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (decimal);
+            return actualValue != null && actualValue.GetType() == typeof (double);
         }
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            Decimal expected;
-            if (Decimal.TryParse(expectedValue, out expected) == false)
+            Double expected;
+            if (Double.TryParse(expectedValue, out expected) == false)
                 return false;
-            return expected == (decimal) actualValue;
+            return expected == (double) actualValue;
         }
     }
 }

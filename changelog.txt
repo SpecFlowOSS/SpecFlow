@@ -10,7 +10,10 @@ New features:
   3. generator in the same folder as the runtime (TechTalk.SpecFlow.dll)
   4. generator obtained through NuGet ("..\tools" or "..\..\tools", relative to the runtime)
   If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
-
++ Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (Vagif Abilov)
++ Cleaned-up CreateInstance<T> and CreateSet<T> for greater code maintainability.
++ Cleaned-up CompareToInstance<T> and CompareToSet<T> for greater code maintainability, and slightly more accurate value comparisons (like decimals with trailing zeroes).
+  
 1.6.1 - 2011/04/15
 
 Fixed issues:

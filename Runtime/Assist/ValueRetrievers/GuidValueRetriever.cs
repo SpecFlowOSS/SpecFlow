@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class GuidValueRetriever
+    internal class GuidValueRetriever
     {
         public virtual Guid GetValue(string value)
         {

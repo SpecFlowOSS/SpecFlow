@@ -73,6 +73,7 @@ namespace TechTalk.SpecFlow.Assist
                                          new BooleanValueComparer(),
                                          new GuidValueComparer(),
                                          new DecimalValueComparer(),
+                                         new DoubleValueComparer(),
                                          new DefaultValueComparer()
                                      };
 

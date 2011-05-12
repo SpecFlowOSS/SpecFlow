@@ -1,4 +1,4 @@
-﻿using Moq;
+﻿using System;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -11,18 +11,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableDecimalValueRetriever(new Mock<DecimalValueRetriever>().Object);
+            var retriever = new NullableDecimalValueRetriever(v => 23M);
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_value_from_decimal_value_retriever_when_not_empty()
         {
-            var mock = new Mock<DecimalValueRetriever>();
-            mock.Setup(x => x.GetValue("value 1")).Returns(1M);
-            mock.Setup(x => x.GetValue("value 2")).Returns(2M);
+            Func<string, decimal> func = v =>
+                                             {
+                                                 if (v == "value 1") return 1M;
+                                                 if (v == "value 2") return 2M;
+                                                 return 0M;
+                                             };
 
-            var retriever = new NullableDecimalValueRetriever(mock.Object);
+            var retriever = new NullableDecimalValueRetriever(func);
             retriever.GetValue("value 1").ShouldEqual(1M);
             retriever.GetValue("value 2").ShouldEqual(2M);
         }
@@ -30,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableDecimalValueRetriever(new Mock<DecimalValueRetriever>().Object);
+            var retriever = new NullableDecimalValueRetriever(v => 3M);
             retriever.GetValue("").ShouldBeNull();
         }
     }
