@@ -4,9 +4,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     internal class NullableDateTimeValueRetriever
     {
-        private readonly DateTimeValueRetriever dateTimeValueRetriever;
+        private readonly Func<string, DateTime> dateTimeValueRetriever;
 
-        public NullableDateTimeValueRetriever(DateTimeValueRetriever dateTimeValueRetriever)
+        public NullableDateTimeValueRetriever(Func<string, DateTime> dateTimeValueRetriever)
         {
             this.dateTimeValueRetriever = dateTimeValueRetriever;
         }
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public DateTime? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return dateTimeValueRetriever.GetValue(value);
+            return dateTimeValueRetriever(value);
         }
     }
 }

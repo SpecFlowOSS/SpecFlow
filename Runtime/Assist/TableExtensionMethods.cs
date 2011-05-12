@@ -61,22 +61,22 @@ namespace TechTalk.SpecFlow.Assist
                        {
                            {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
                            {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
-                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(new IntValueRetriever()).GetValue(row[1])},
+                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(new DecimalValueRetriever()).GetValue(row[1])},
+                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
                            {
                                typeof (bool?),
                                (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])
                                },
                            {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(new DateTimeValueRetriever()).GetValue(row[1])},
+                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {typeof (Double?), (TableRow row) => new NullableDoubleValueRetriever(new DoubleValueRetriever()).GetValue(row[1])},
+                           {typeof (Double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(new GuidValueRetriever()).GetValue(row[1])},
+                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(new CharValueRetriever()).GetValue(row[1])},
+                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
                            {
                                typeof (Enum),
                                (TableRow row) =>

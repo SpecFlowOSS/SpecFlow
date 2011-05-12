@@ -24,14 +24,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableBoolValueRetriever(value => new Mock<BoolValueRetriever>().Object.GetValue(value));
+            var retriever = new NullableBoolValueRetriever(value => true);
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableBoolValueRetriever(value => new Mock<BoolValueRetriever>().Object.GetValue(value));
+            var retriever = new NullableBoolValueRetriever(value => true);
             retriever.GetValue(string.Empty).ShouldBeNull();
         }
     }

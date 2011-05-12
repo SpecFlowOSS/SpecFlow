@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableDoubleValueRetriever(new Mock<DoubleValueRetriever>().Object);
+            var retriever = new NullableDoubleValueRetriever(v => 3.01);
             retriever.GetValue(null).ShouldBeNull();
         }
 
@@ -21,8 +22,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var mock = new Mock<DoubleValueRetriever>();
             mock.Setup(x => x.GetValue("value 1")).Returns(1);
             mock.Setup(x => x.GetValue("value 2")).Returns(2);
+            Func<string, double> func = v =>
+                                            {
+                                                if (v == "value 1") return 1;
+                                                if (v == "value 2") return 2;
+                                                return 0;
+                                            };
 
-            var retriever = new NullableDoubleValueRetriever(mock.Object);
+            var retriever = new NullableDoubleValueRetriever(func);
             retriever.GetValue("value 1").ShouldEqual(1);
             retriever.GetValue("value 2").ShouldEqual(2);
         }
@@ -30,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableDoubleValueRetriever(new Mock<DoubleValueRetriever>().Object);
+            var retriever = new NullableDoubleValueRetriever(v => 99);
             retriever.GetValue("").ShouldBeNull();
         }
     }

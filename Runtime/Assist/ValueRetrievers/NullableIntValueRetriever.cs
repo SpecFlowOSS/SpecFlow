@@ -1,10 +1,12 @@
-﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
+﻿using System;
+
+namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     internal class NullableIntValueRetriever
     {
-        private readonly IntValueRetriever intValueRetriever;
+        private readonly Func<string, int> intValueRetriever;
 
-        public NullableIntValueRetriever(IntValueRetriever intValueRetriever)
+        public NullableIntValueRetriever(Func<string, int> intValueRetriever)
         {
             this.intValueRetriever = intValueRetriever;
         }
@@ -12,7 +14,7 @@
         public int? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return intValueRetriever.GetValue(value);
+            return intValueRetriever(value);
         }
     }
 }
