@@ -9,8 +9,17 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            var instance = (T)Activator.CreateInstance(typeof(T));
-            LoadInstanceWithKeyValuePairs(table, instance);
+            T instance;
+
+            if (HasDefaultConstructor<T>())
+            {
+                instance = CreateInstanceWithActivator<T>(table);
+            }
+            else
+            {
+                instance = CreateInstanceWithParameterizedConstructor<T>(table);
+            }
+
             return instance;
         }
 
@@ -34,6 +43,74 @@ namespace TechTalk.SpecFlow.Assist
             return list;
         }
 
+        public static IEnumerable<Projection<T>> ToProjection<T>(this IEnumerable<T> collection, Table table = null)
+        {
+            return new EnumerableProjection<T>(table, collection);
+        }
+
+        public static IEnumerable<Projection<T>> ToProjection<T>(this Table table)
+        {
+            return new EnumerableProjection<T>(table);
+        }
+
+        public static IEnumerable<Projection<T>> ToProjectionOfSet<T>(this Table table, IEnumerable<T> collection)
+        {
+            return new EnumerableProjection<T>(table);
+        }
+
+        public static IEnumerable<Projection<T>> ToProjectionOfInstance<T>(this Table table, T instance)
+        {
+            return new EnumerableProjection<T>(table);
+        }
+
+        private static T CreateInstanceWithActivator<T>(Table table)
+        {
+            var instance = (T)Activator.CreateInstance(typeof(T));
+            LoadInstanceWithKeyValuePairs(table, instance);
+            return instance;
+        }
+
+        private static T CreateInstanceWithParameterizedConstructor<T>(Table table)
+        {
+            var constructor = GetConstructorMatchingToColumnNames<T>(table);
+            if (constructor == null)
+                throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
+
+            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
+
+            var constructorParameters = constructor.GetParameters();
+            var parameterValues = new object[constructorParameters.Length];
+            for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
+            {
+                var parameterName = constructorParameters[parameterIndex].Name;
+                var property = (from p in propertiesThatNeedToBeSet
+                                where p.PropertyName == parameterName
+                                select p).FirstOrDefault();
+                if (property != null)
+                    parameterValues[parameterIndex] = property.Handler(property.Row, property.Row["Value"]);
+            }
+            return (T)constructor.Invoke(parameterValues);
+        }
+
+        private static bool HasDefaultConstructor<T>()
+        {
+            return typeof(T).GetConstructors().Where(c => c.GetParameters().Length == 0).Count() > 0;
+        }
+
+        private static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
+        {
+            var projectedPropertyNames = from property in typeof(T).GetProperties()
+                                         from row in table.Rows
+                                         where IsPropertyMatchingToColumnName(property, row["Field"])
+                                         select property.Name;
+
+            return (from constructor in typeof(T).GetConstructors()
+                    where projectedPropertyNames.Except(
+                        from parameter in constructor.GetParameters()
+                        select parameter.Name).Count() == 0
+                    select constructor).FirstOrDefault();
+        }
+
         private static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
         {
             return property.Name.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
@@ -41,17 +118,22 @@ namespace TechTalk.SpecFlow.Assist
 
         private static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs<T>();
-
-            var propertiesThatNeedToBeSet = from property in typeof(T).GetProperties()
-                                            from key in handlers.Keys
-                                            from row in table.Rows
-                                            where key.IsAssignableFrom(property.PropertyType)
-                                                && IsPropertyMatchingToColumnName(property, row["Field"])
-                                            select new { Row = row, property.Name, Handler = handlers[key] };
+            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
 
             propertiesThatNeedToBeSet.ToList()
-                .ForEach(x => instance.SetPropertyValue(x.Name, x.Handler(x.Row, x.Row["Value"])));
+                .ForEach(x => instance.SetPropertyValue(x.PropertyName, x.Handler(x.Row, x.Row["Value"])));
+        }
+
+        private static IEnumerable<PropertyHandler> GetPropertiesThatNeedToBeSet<T>(Table table)
+        {
+            var handlers = GetTypeHandlersForFieldValuePairs<T>();
+
+            return from property in typeof(T).GetProperties()
+                   from key in handlers.Keys
+                   from row in table.Rows
+                   where key.IsAssignableFrom(property.PropertyType)
+                       && IsPropertyMatchingToColumnName(property, row["Field"])
+                   select new PropertyHandler { Row = row, PropertyName = property.Name, Handler = handlers[key] };
         }
 
         private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForFieldValuePairs<T>()
@@ -75,6 +157,13 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (char), (TableRow row, string id) => row.GetChar("Value")},
                            {typeof (char?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (char?)null : row.GetChar("Value")}
                        };
+        }
+
+        private class PropertyHandler
+        {
+            public TableRow Row { get; set; }
+            public string PropertyName { get; set; }
+            public Func<TableRow, string, object> Handler { get; set; }
         }
     }
 }
