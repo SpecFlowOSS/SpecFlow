@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            var instance = (T)Activator.CreateInstance(typeof(T));
+            var instance = (T) Activator.CreateInstance(typeof (T));
             LoadInstanceWithKeyValuePairs(table, instance);
             return instance;
         }
@@ -44,12 +44,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             var handlers = GetTypeHandlersForFieldValuePairs<T>();
 
-            var propertiesThatNeedToBeSet = from property in typeof(T).GetProperties()
+            var propertiesThatNeedToBeSet = from property in typeof (T).GetProperties()
                                             from key in handlers.Keys
                                             from row in table.Rows
                                             where key.IsAssignableFrom(property.PropertyType)
-                                                && IsPropertyMatchingToColumnName(property, row[0])
-                                            select new { Row = row, property.Name, Handler = handlers[key] };
+                                                  && IsPropertyMatchingToColumnName(property, row[0])
+                                            select new {Row = row, property.Name, Handler = handlers[key]};
 
             propertiesThatNeedToBeSet.ToList()
                 .ForEach(x => instance.SetPropertyValue(x.Name, x.Handler(x.Row)));
@@ -65,7 +65,10 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
                            {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(new DecimalValueRetriever()).GetValue(row[1])},
                            {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(new BoolValueRetriever()).GetValue(row[1])},
+                           {
+                               typeof (bool?),
+                               (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
                            {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(new DateTimeValueRetriever()).GetValue(row[1])},
                            {typeof (Double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
@@ -74,7 +77,11 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(new GuidValueRetriever()).GetValue(row[1])},
                            {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
                            {typeof (char?), (TableRow row) => new NullableCharValueRetriever(new CharValueRetriever()).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof(T).GetProperties().First(x=>x.Name == row[0]).PropertyType )}
+                           {
+                               typeof (Enum),
+                               (TableRow row) =>
+                               new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name == row[0]).PropertyType)
+                               }
                        };
         }
     }

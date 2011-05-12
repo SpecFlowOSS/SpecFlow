@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System;
+using Moq;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
@@ -11,13 +12,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_the_value_from_the_BoolValueRetriever()
         {
-            var mock = new Mock<BoolValueRetriever>();
-            mock.Setup(x => x.GetValue("this value")).Returns(true);
-            mock.Setup(x => x.GetValue("another value")).Returns(true);
-            mock.Setup(x => x.GetValue("failing value")).Returns(false);
-            mock.Setup(x => x.GetValue("another thing that returns false")).Returns(false);
+            Func<string, bool> func = value => value == "this value" || value == "another value";
             
-            var retriever = new NullableBoolValueRetriever(mock.Object);
+            var retriever = new NullableBoolValueRetriever(func);
             retriever.GetValue("this value").ShouldEqual(true);
             retriever.GetValue("another value").ShouldEqual(true);
             retriever.GetValue("failing value").ShouldEqual(false);
@@ -27,14 +24,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableBoolValueRetriever(new Mock<BoolValueRetriever>().Object);
+            var retriever = new NullableBoolValueRetriever(value => new Mock<BoolValueRetriever>().Object.GetValue(value));
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableBoolValueRetriever(new Mock<BoolValueRetriever>().Object);
+            var retriever = new NullableBoolValueRetriever(value => new Mock<BoolValueRetriever>().Object.GetValue(value));
             retriever.GetValue(string.Empty).ShouldBeNull();
         }
     }
