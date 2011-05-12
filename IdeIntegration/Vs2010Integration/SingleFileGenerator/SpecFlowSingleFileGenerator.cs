@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         protected override string GenerateCode(string inputFileContent)
         {
             IVisualStudioTracer tracer = VsxHelper.ResolveMefDependency<IVisualStudioTracer>(ServiceProvider.GlobalProvider);
-            var generatorServices = new VsGeneratorServices(CurrentProject, tracer);
+            var generatorServices = new VsGeneratorServices(CurrentProject, new VsSpecFlowConfigurationReader(CurrentProject, tracer), tracer);
 
             using (var testGenerator = generatorServices.CreateTestGenerator())
             {

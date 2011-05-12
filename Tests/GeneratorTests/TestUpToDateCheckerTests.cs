@@ -36,7 +36,7 @@ namespace GeneratorTests
             };
 
             return new TestUpToDateChecker(TestHeaderWriterStub.Object, 
-                new GeneratorConfiguration { GeneratorVersion = TestGeneratorFactory.GeneratorVersion}, 
+                new GeneratorInfo { GeneratorVersion = TestGeneratorFactory.GeneratorVersion}, 
                 new ProjectSettings { ProjectFolder = Path.GetTempPath(), ProjectPlatformSettings = net35CSSettings });
         }
 

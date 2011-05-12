@@ -20,13 +20,11 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
-            return new MsBuildProjectReader(new RuntimeSpecFlowProjectConfigurationLoader()).ReadSpecFlowProject(new FileProjectReference(projectFilePath));
+            return new MsBuildProjectReader(new SpecFlowProjectConfigurationLoader()).ReadSpecFlowProject(projectFilePath);
         }
 
-        public SpecFlowProject ReadSpecFlowProject(IProjectReference projectReference)
+        public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            var projectFilePath = FileProjectReference.AssertFileProjectReference(projectReference).ProjectFilePath;
-
             var project = Engine.GlobalEngine.GetLoadedProject(projectFilePath);
             if (project == null)
             {
@@ -62,7 +60,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                     var configFileContent = File.ReadAllText(configFilePath);
                     var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
                     specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
-                    specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder, projectReference);
+                    specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
                 }
             }
             return specFlowProject;
