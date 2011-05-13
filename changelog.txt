@@ -13,7 +13,12 @@ New features:
   If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
   If you use any custom plugins (e.g. unit test generator), this has to be in the same folder as the generator 
   currently.
-
++ Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (Vagif Abilov)
++ Cleaned-up CreateInstance<T> and CreateSet<T> for greater code maintainability.
++ Cleaned-up CompareToInstance<T> and CompareToSet<T> for greater code maintainability, and slightly more accurate value comparisons (like decimals with trailing zeroes).
++ Removed the |Field|Value| requirement for CreateInstance<T> and CompareToInstance<T>. Any header names can be used, so long as the first column is the name of the property and the second column is the value.
++ Can use empty spaces and different casing in the tables used for comparison (i.e. can use |First name| instead of |FirstName| )
+ 
 1.6.1 - 2011/04/15
 
 Fixed issues:
