@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Assist
                    from key in handlers.Keys
                    from row in table.Rows
                    where key.IsAssignableFrom(property.PropertyType)
-                         && IsPropertyMatchingToColumnName(property, row["Field"])
+                         && IsPropertyMatchingToColumnName(property, row.Id())
                    select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
         }
 
