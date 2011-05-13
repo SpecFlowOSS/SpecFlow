@@ -7,18 +7,10 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            var name = table.Rows.Count() > 0 ? table.Rows[0][table.Header.First()] : null;
-            if (table.Rows.Count() == 1
-                && (table.Header.Count() != 2 ||
-                    typeof (T).GetProperties().Any(x => TEHelpers.IsPropertyMatchingToColumnName(x, name)) == false
-                   ))
-            {
-                var pivotTable = new PivotTable(table);
-                table = pivotTable.GetInstanceTable(0);
-            }
+            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
             return TEHelpers.ThisTypeHasADefaultConstructor<T>()
-                       ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(table)
-                       : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(table);
+                       ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
+                       : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
         }
 
         public static void FillInstance<T>(this Table table, T instance)

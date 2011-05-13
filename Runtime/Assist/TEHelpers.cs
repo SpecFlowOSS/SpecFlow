@@ -91,18 +91,40 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
                            {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {
+                               typeof (decimal?),
+                               (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {
+                               typeof (bool?),
+                               (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {
+                               typeof (DateTime?),
+                               (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (Double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {typeof (Double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {
+                               typeof (Double?),
+                               (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {
+                               typeof (Guid?),
+                               (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
                            {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof(T).GetProperties().First(x=>x.Name == row[0]).PropertyType )}
+                           {
+                               typeof (char?),
+                               (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])
+                               },
+                           {
+                               typeof (Enum),
+                               (TableRow row) =>
+                               new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name == row[0]).PropertyType)
+                               }
                        };
         }
 
@@ -111,6 +133,30 @@ namespace TechTalk.SpecFlow.Assist
             public TableRow Row { get; set; }
             public string PropertyName { get; set; }
             public Func<TableRow, object> Handler { get; set; }
+        }
+
+        internal static Table GetTheProperInstanceTable<T>(Table table)
+        {
+            return ThisIsAVerticalTable<T>(table)
+                       ? table
+                       : FlipThisHorizontalTableToAVerticalTable(table);
+        }
+
+        private static Table FlipThisHorizontalTableToAVerticalTable(Table table)
+        {
+            return new PivotTable(table).GetInstanceTable(0);
+        }
+
+        private static bool ThisIsAVerticalTable<T>(Table table)
+        {
+            return (table.Rows.Count() != 1) || (table.Header.Count() == 2 && TheFirstRowValueIsTheNameOfAProperty<T>(table));
+        }
+
+        private static bool TheFirstRowValueIsTheNameOfAProperty<T>(Table table)
+        {
+            var firstRowValue = table.Rows[0][table.Header.First()];
+            return typeof (T).GetProperties()
+                .Any(property => IsPropertyMatchingToColumnName(property, firstRowValue));
         }
     }
 }
