@@ -231,6 +231,32 @@ IDoNotExist: Property does not exist");
             exception.Message.ShouldEqual("The item to compare was null.");
         }
 
+        [Test]
+        public void Ignores_spaces_when_matching_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("String Property", "Howard Roark");
+
+            var test = new InstanceComparisonTestObject { StringProperty = "Howard Roark" };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Test]
+        public void Ignores_casing_when_matching_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("STRINGproperty", "Howard Roark");
+
+            var test = new InstanceComparisonTestObject { StringProperty = "Howard Roark" };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, InstanceComparisonTestObject test)
         {
             try

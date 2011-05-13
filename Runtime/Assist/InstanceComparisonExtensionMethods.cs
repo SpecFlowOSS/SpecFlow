@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Assist
         private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
-                       .Any(property => property.Name == row.Id()) == false;
+                .Any(property => TEHelpers.IsPropertyMatchingToColumnName(property, row.Id())) == false;
         }
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
