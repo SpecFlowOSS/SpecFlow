@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -18,7 +19,9 @@ namespace TechTalk.SpecFlow.Assist
 
         private static PropertyInfo GetThePropertyOnThisObject(object @object, string propertyName)
         {
-            return @object.GetType().GetProperty(propertyName);
+            var type = @object.GetType();
+            return type.GetProperties()
+                .FirstOrDefault(x => TEHelpers.IsPropertyMatchingToColumnName(x, propertyName));
         }
     }
 }

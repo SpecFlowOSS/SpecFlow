@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\..\lib\Moq\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
@@ -59,7 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
+    <Compile Include="AssistTests\ProjectionTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\FillInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
@@ -77,6 +82,27 @@
     <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
     <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\BooleanValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DoubleValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DateTimeValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DecimalValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\GuidValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableCharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDoubleValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DoubleValueRetreiverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DateTimeValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DecimalValueRetreiverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\IntValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableBoolValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDateTimeValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDecimalValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableGuidValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableIntValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="BindingRegistryTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
