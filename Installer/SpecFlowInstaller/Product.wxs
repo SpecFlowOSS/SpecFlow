@@ -65,6 +65,11 @@
                Title="Visual Studio 2008 Integration" Description="Visual Studio 2008 Integration">
         <Condition Level="0"> NOT VS90DEVENV </Condition>
         <ComponentGroupRef Id="CompGroup_VS2008" />
+
+        <Feature Id="Feature_VS2008VS2008SyntaxColoring" Level="1" AllowAdvertise="no"
+               Title="Syntax Coloring for Visual Studio 2008" Description="Provides syntax Coloring for Visual Studio 2008. Do not install this feature if you are using cuke4vs.">
+          <ComponentRef Id="Comp_VS2008SyntaxColoring" />          
+        </Feature>
       </Feature>
       <Feature Id="Feature_VS2010" Level="1" AllowAdvertise="no"
                Title="Visual Studio 2010 Integration" Description="Visual Studio 2010 Integration">
