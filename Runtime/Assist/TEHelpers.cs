@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var projectedPropertyNames = from property in typeof (T).GetProperties()
                                          from row in table.Rows
-                                         where IsPropertyMatchingToColumnName(property, row["Field"])
+                                         where IsPropertyMatchingToColumnName(property, row.Id())
                                          select property.Name;
 
             return (from constructor in typeof (T).GetConstructors()
