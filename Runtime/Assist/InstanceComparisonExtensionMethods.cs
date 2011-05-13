@@ -11,7 +11,9 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var differences = FindAnyDifferences(table, instance);
+            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+
+            var differences = FindAnyDifferences(instanceTable, instance);
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);

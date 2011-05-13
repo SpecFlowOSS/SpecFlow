@@ -149,7 +149,14 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool ThisIsAVerticalTable<T>(Table table)
         {
+            if (TheHeaderIsTheOldFieldValuePair(table))
+                return true;
             return (table.Rows.Count() != 1) || (table.Header.Count() == 2 && TheFirstRowValueIsTheNameOfAProperty<T>(table));
+        }
+
+        private static bool TheHeaderIsTheOldFieldValuePair(Table table)
+        {
+            return table.Header.Count() == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
         }
 
         private static bool TheFirstRowValueIsTheNameOfAProperty<T>(Table table)
