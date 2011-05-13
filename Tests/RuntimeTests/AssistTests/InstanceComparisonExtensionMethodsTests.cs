@@ -257,6 +257,23 @@ IDoNotExist: Property does not exist");
             comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
+        [Test]
+        public void Can_compare_a_horizontal_table()
+        {
+            var table = new Table("StringProperty", "IntProperty", "DecimalProperty");
+            table.AddRow("Test", "42", "23.01");
+
+            var test = new InstanceComparisonTestObject
+                           {
+                               StringProperty = "Test",
+                               IntProperty = 42,
+                               DecimalProperty = 23.01M
+                           };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, InstanceComparisonTestObject test)
         {
             try
