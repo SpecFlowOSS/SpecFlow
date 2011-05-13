@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
-    [TestFixture]
+    [TestFixture, SetCulture("en-US")]
     public class DateTimeValueComparerTests
     {
         [Test]

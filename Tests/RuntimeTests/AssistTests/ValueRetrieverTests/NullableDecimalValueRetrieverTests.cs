@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
-    [TestFixture]
+    [TestFixture, SetCulture("en-US")]
     public class NullableDecimalValueRetrieverTests
     {
         [Test]
