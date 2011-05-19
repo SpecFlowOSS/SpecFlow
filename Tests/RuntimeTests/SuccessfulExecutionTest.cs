@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var testRunner = new TestRunner();
             testRunner.InitializeTestRunner(new Assembly[0]); // no bindings
-            ObjectContainer.TestRunner = testRunner;
+            ObjectContainer.CurrentTestRunner = testRunner;
         }
 
         protected override void ExecuteTests(object test, Feature feature)

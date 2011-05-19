@@ -110,6 +110,12 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 case "mstest.windowsphone7":
                     GeneratorUnitTestProviderType = typeof(MsTestSilverlightGeneratorProvider);
                     break;
+                case "mstest.silverlight.async":
+                case "mstest.silverlight3.async":
+                case "mstest.silverlight4.async":
+                case "mstest.windowsphone7.async":
+                    GeneratorUnitTestProviderType = typeof(MsTestSilverlightAsyncGeneratorProvider);
+                    break;
                 default:
                     GeneratorUnitTestProviderType = null;
                     break;

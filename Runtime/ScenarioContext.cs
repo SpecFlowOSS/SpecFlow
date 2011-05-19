@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow
 
         public void Pending()
         {
-            ObjectContainer.TestRunner.Pending();
+            ObjectContainer.CurrentTestRunner.Pending();
         }
 
         private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();

@@ -103,7 +103,10 @@
     <Compile Include="AssistTests\ValueRetrieverTests\NullableGuidValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
+    <Compile Include="AsyncContextTest.cs" />
+    <Compile Include="AsyncTestRunnerTest.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
     <Compile Include="StronglyTypedContextAcessorTests.cs" />
@@ -120,6 +123,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SuccessfulCompilationTest.cs" />
     <Compile Include="SuccessfulExecutionTest.cs" />
+    <Compile Include="TestRunnerManagerTest.cs" />
+    <Compile Include="TestRunnerTest.cs" />
     <Compile Include="ValidateStepAndEventOrdersTest.cs" />
   </ItemGroup>
   <ItemGroup>

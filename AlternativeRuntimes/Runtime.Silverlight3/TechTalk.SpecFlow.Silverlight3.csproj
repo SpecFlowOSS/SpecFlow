@@ -62,6 +62,10 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Async\ISilverlightTestInstance.cs" />
+    <Compile Include="Async\ReflectionHelper.cs" />
+    <Compile Include="Async\SilverlightTestAsyncContext.cs" />
+    <Compile Include="Async\UnitTestingFrameworkHelper.cs" />
     <Compile Include="PlatformCompatibility\ConfigurationErrorsException.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
@@ -79,9 +83,7 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SharedRuntime\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,7 +6,9 @@
 
         protected Steps()
         {
-            _testRunner = TestRunnerManager.GetTestRunner();
+            // This will be AsyncTestRunner for asynchronous tests, which means Given, When, Then, etc
+            // will be enqueued in a new context
+            _testRunner = ObjectContainer.CurrentTestRunner;
         }
 
         #region Given
