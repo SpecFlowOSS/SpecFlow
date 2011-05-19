@@ -17,8 +17,6 @@ namespace TechTalk.SpecFlow
     /// </remarks>
     public class AsyncContext
     {
-        private const string AsyncContextKey = "__asyncContext__";
-
         private readonly IAsyncContextImpl asyncContextImpl;
 
         /// <summary>
