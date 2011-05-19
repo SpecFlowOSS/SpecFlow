@@ -1,6 +1,8 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Linq;
+
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -152,8 +154,23 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
         {
-            // by default, doing nothing to the final generated code
-            return;
+            var methods = from codeTypeMember in codeNameSpace.Types[0].Members.Cast<CodeTypeMember>()
+                          where codeTypeMember.Name == "ScenarioSetup"
+                          select (CodeMemberMethod)codeTypeMember;
+
+            var scenarioSetupMethod = methods.First();
+
+            var scenarioContext = new CodeTypeReferenceExpression("ScenarioContext");
+            var currentContext = new CodePropertyReferenceExpression(scenarioContext, "Current");
+
+            var scenarioContextExtensions = new CodeTypeReferenceExpression("ScenarioContextExtensions");
+
+            var setTestInstance = new CodeMethodInvokeExpression(scenarioContextExtensions, "SetTestInstance",
+                currentContext, new CodeThisReferenceExpression());
+
+            // Hmm. We have a little too much knowledge of where this should go, but it's after the call
+            // to testRunner.OnScenarioStart, and before FeatureBackground
+            scenarioSetupMethod.Statements.Insert(1, new CodeExpressionStatement(setTestInstance));
         }
 
         public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
