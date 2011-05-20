@@ -96,6 +96,9 @@
     <!-- Sequences -->
     <InstallExecuteSequence>
       <RemoveExistingProducts After="InstallValidate" />
+      <Custom Action="VS90InstallVSTemplates" Before="InstallFinalize">
+        Feature_VS2008
+      </Custom>
       <!-- Runs during both install and uninstall -->
       <InstallFinalize Sequence="7800" />
     </InstallExecuteSequence>
