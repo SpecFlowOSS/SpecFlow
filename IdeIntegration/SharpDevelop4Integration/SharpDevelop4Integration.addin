@@ -1,9 +1,11 @@
-﻿<AddIn name        = "TechTalk.SpecFlow.SharpDevelop4Integration"
+﻿<AddIn name        = "SpecFlow"
        author      = "Charles Weld"
-       url         = ""
-       description = "">
+       url         = "http://www.specflow.org"
+       copyright   = "Simplified BSD License"
+       description = "SpecFlow - Pragmatic BDD for .NET, visit http://www.specflow.org for details.">
 	<Manifest>
-		<Identity name = "TechTalk.SpecFlow.SharpDevelop4Integration"/>
+		<Identity name="TechTalk.SpecFlow.SharpDevelop4Integration" version="@TechTalk.SpecFlow.SharpDevelop4Integration.dll"/>
+    <Dependency addin="SharpDevelop" version="4.0"/>
 	</Manifest>
 	<Runtime>
 		<Import assembly = "TechTalk.SpecFlow.SharpDevelop4Integration.dll"/>

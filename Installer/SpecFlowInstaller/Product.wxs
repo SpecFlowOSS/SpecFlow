@@ -36,6 +36,11 @@
     <PropertyRef Id="VS90DEVENV" />
     <PropertyRef Id="VS2010DEVENV" />
 
+    <Property Id="SHARPDEVELOP4PATH">
+        <DirectorySearch Depth='0' Id="DirSearch_SharpDevelop4" Path="[ProgramFilesFolder]SharpDevelop\4.0">
+        </DirectorySearch>
+    </Property>
+
     <!-- Launch conditions -->
     <Condition Message="An administrator must approve or install [ProductName]."> Privileged </Condition>
     <Condition Message="The same or a later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
@@ -79,6 +84,7 @@
   		
 		<Feature Id="Feature_SharpDevelop4" Level="1" AllowAdvertise="no" 
                Title="SharpDevelop 4 Integration" Description="SharpDevelop 4 Integration">
+        <Condition Level="0"> NOT SHARPDEVELOP4PATH </Condition>
         <ComponentGroupRef Id="CompGroup_SharpDevelop4" />
       </Feature>
     </Feature>
