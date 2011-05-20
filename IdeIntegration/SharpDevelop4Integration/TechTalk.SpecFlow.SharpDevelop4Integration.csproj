@@ -65,7 +65,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SharpDevelop4Integration.addin">
+    <None Include="TechTalk.SpecFlow.SharpDevelop4Integration.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>

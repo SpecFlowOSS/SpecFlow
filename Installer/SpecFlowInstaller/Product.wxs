@@ -83,7 +83,7 @@
       </Feature>
   		
 		<Feature Id="Feature_SharpDevelop4" Level="1" AllowAdvertise="no" 
-               Title="SharpDevelop 4 Integration" Description="SharpDevelop 4 Integration">
+               Title="SharpDevelop 4 Integration" Description="SharpDevelop 4 Integration. Use the SharpDevelop AddIn Manager to register the addin from the SpecFlow installation folder.">
         <Condition Level="0"> NOT SHARPDEVELOP4PATH </Condition>
         <ComponentGroupRef Id="CompGroup_SharpDevelop4" />
       </Feature>
