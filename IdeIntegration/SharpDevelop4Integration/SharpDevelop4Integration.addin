@@ -1,0 +1,26 @@
+﻿<AddIn name        = "TechTalk.SpecFlow.SharpDevelop4Integration"
+       author      = "Charles Weld"
+       url         = ""
+       description = "">
+	<Manifest>
+		<Identity name = "TechTalk.SpecFlow.SharpDevelop4Integration"/>
+	</Manifest>
+	<Runtime>
+		<Import assembly = "TechTalk.SpecFlow.SharpDevelop4Integration.dll"/>
+		<Import assembly = "TechTalk.SpecFlow.Generator" />
+		<Import assembly = "TechTalk.SpecFlow.Parser" />
+	</Runtime>
+	
+	<Path name = "/SharpDevelop/Workbench/FileFilter">
+		<FileFilter id = "SpecFlow Features"
+		            insertbefore="AllFiles"
+		            name = "SpecFlow Feature (*.feature)"
+		            extensions = "*.feature"/>
+	</Path>
+
+	<Path name = "/SharpDevelop/CustomTools">
+		<CustomTool id    = "SpecFlowSingleFileGenerator"
+		            class = "TechTalk.SpecFlow.SharpDevelop4Integration.SpecFlowSingleFileGenerator"
+		            fileNamePattern = "\.feature$"/>
+	</Path>
+</AddIn>

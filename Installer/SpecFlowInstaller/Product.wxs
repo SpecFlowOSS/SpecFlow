@@ -76,7 +76,11 @@
         <Condition Level="0"> NOT VS2010DEVENV </Condition>
         <ComponentGroupRef Id="CompGroup_VS2010" />
       </Feature>
-
+  		
+		<Feature Id="Feature_SharpDevelop4" Level="1" AllowAdvertise="no" 
+               Title="SharpDevelop 4 Integration" Description="SharpDevelop 4 Integration">
+        <ComponentGroupRef Id="CompGroup_SharpDevelop4" />
+      </Feature>
     </Feature>
 
     <!-- icons -->
