@@ -169,6 +169,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Does_not_throw_an_exception_if_the_property_being_checked_for_has_extra_spaces_in_the_name()
+        {
+            var table = new Table("String Property");
+            table.AddRow("applesauce");
+
+            var items = new[] { new SetComparisonTestObject{StringProperty = "applesauce"} };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Does_not_throw_an_exception_if_the_property_being_checked_for_has_different_casing()
+        {
+            var table = new Table("stringproperty");
+            table.AddRow("mustard");
+
+            var items = new[] { new SetComparisonTestObject { StringProperty = "mustard" } };
+
+            var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+        }
+
+        [Test]
         public void Does_not_throw_exception_if_string_is_empty_in_table_and_null_on_item()
         {
             var table = new Table("StringProperty");
