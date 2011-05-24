@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 
         public ExampleSet GetResult()
         {
-            Table exampleTable = tableBuilder.GetResult();
+            GherkinTable exampleTable = tableBuilder.GetResult();
             if (exampleTable == null)
                 // this should never happen as the parser checks it already
                 throw new GherkinSemanticErrorException(

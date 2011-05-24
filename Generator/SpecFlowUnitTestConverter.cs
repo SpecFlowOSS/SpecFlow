@@ -356,7 +356,7 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
-        private bool CanUseFirstColumnAsName(Table table)
+        private bool CanUseFirstColumnAsName(GherkinTable table)
         {
             if (table.Header.Cells.Length == 0)
                 return false;
@@ -387,7 +387,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, 
             IEnumerable<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, string exampleSetIdentifier,
-            Row row, Tags exampleSetTags, string variantName)
+            GherkinTableRow row, Tags exampleSetTags, string variantName)
         {
             var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
 
@@ -590,7 +590,7 @@ namespace TechTalk.SpecFlow.Generator
         }
 
         private int tableCounter = 0;
-        private CodeExpression GetTableArgExpression(Table tableArg, CodeStatementCollection statements, ParameterSubstitution paramToIdentifier)
+        private CodeExpression GetTableArgExpression(GherkinTable tableArg, CodeStatementCollection statements, ParameterSubstitution paramToIdentifier)
         {
             if (tableArg == null)
                 return new CodeCastExpression(TABLE_TYPE, new CodePrimitiveExpression(null));

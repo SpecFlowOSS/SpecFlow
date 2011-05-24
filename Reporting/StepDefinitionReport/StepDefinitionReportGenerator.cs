@@ -315,17 +315,17 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             return newStep;
         }
 
-        private Table Clone(Table table)
+        private GherkinTable Clone(GherkinTable table)
         {
             if (table == null)
                 return null;
 
-            return new Table(Clone(table.Header), table.Body.Select(r => Clone(r)).ToArray());
+            return new GherkinTable(Clone(table.Header), table.Body.Select(r => Clone(r)).ToArray());
         }
 
-        private Row Clone(Row row)
+        private GherkinTableRow Clone(GherkinTableRow row)
         {
-            return new Row(row.Cells.Select(c => new Cell(){Value = c.Value}).ToArray());
+            return new GherkinTableRow(row.Cells.Select(c => new GherkinTableCell(){Value = c.Value}).ToArray());
         }
 
         private ScenarioStep CloneTo(ScenarioStep step, string currentBlock)
