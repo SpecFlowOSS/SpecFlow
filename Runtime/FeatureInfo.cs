@@ -17,13 +17,6 @@ namespace TechTalk.SpecFlow
         {
         }
 
-        //obsolete attribute removed to avoid warnings in the generated code (Issue 58)
-        //[Obsolete("Use ctor with ProgrammingLanguage")]
-        public FeatureInfo(CultureInfo language, string title, string description, GenerationTargetLanguage generationTargetLanguage, params string[] tags)
-            : this(language, title, description, (ProgrammingLanguage)generationTargetLanguage, tags)
-        {
-        }
-
         public FeatureInfo(CultureInfo language, string title, string description, ProgrammingLanguage programmingLanguage, params string[] tags)
         {
             if (language.IsNeutralCulture)
