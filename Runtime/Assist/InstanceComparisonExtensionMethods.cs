@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Assist
         private static string CreateDescriptiveErrorMessage(IEnumerable<Difference> differences)
         {
             return differences.Aggregate(@"The following fields did not match:",
-                                         (sum, next) => sum + ("\r\n" + DescribeTheErrorForThisDifference(next)));
+                                         (sum, next) => sum + (Environment.NewLine + DescribeTheErrorForThisDifference(next)));
         }
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
