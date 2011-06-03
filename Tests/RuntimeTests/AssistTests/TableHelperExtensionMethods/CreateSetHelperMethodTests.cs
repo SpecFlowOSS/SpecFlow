@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -9,6 +10,70 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
+    [TestFixture]
+    public class CreateSetHelperMethodTests_WithFunc
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        [Test]
+        public void Uses_the_instance_creation_method_when_passed_one_row()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("John");
+
+            var expectedPerson = new Person();
+            
+            var people = table.CreateSet(() => expectedPerson);
+
+            people.Single().ShouldBeSameAs(expectedPerson);
+        }
+
+        [Test]
+        public void Calls_the_instance_creation_method_for_each_row()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("one");
+            table.AddRow("two");
+
+            var first = new Person();
+            var second = new Person();
+
+            var queue = new Queue<Person>();
+            queue.Enqueue(first);
+            queue.Enqueue(second);
+
+            var people = table.CreateSet(queue.Dequeue);
+
+            people.Count().ShouldEqual(2);
+            people.First().ShouldBeSameAs(first);
+            people.Last().ShouldBeSameAs(second);
+        }
+
+        [Test]
+        public void Still_loads_the_instance_with_the_values_from_the_table()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("John");
+            table.AddRow("Howard");
+
+            var john = new Person();
+            var howard = new Person();
+
+            var queue = new Queue<Person>();
+            queue.Enqueue(john);
+            queue.Enqueue(howard);
+
+            var people = table.CreateSet(queue.Dequeue);
+
+            people.First().FirstName.ShouldEqual("John");
+            people.Last().FirstName.ShouldEqual("Howard");
+        }
+    }
+    
     [TestFixture]
     public class CreateSetHelperMethodTests
     {
