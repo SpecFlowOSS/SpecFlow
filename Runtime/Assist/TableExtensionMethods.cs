@@ -23,7 +23,8 @@ namespace TechTalk.SpecFlow.Assist
 
         public static void FillInstance<T>(this Table table, T instance)
         {
-            TEHelpers.LoadInstanceWithKeyValuePairs(table, instance);
+            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
