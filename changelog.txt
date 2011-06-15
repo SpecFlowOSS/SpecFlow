@@ -19,6 +19,7 @@ New features:
 + Removed the |Field|Value| requirement for CreateInstance<T> and CompareToInstance<T>. Any header names can be used, so long as the first column is the name of the property and the second column is the value.
 + Can use empty spaces and different casing in the tables used for comparison (i.e. can use |First name| instead of |FirstName| )
 + Tables used with CreateInstance<T> and CompareToInstance<T> can now be one-row tables with each field as a column (instead of requiring a vertical table with "Field/Value" headers)
++ A default function to create a default instance can be passed to CreateInstance<T> and CreateSet<T>. 
 + Syntax coloring support for Visual Studio 2008. Uncheck this option in the installer if you are using cuke4vs. (by Avram Korets)
 + SharpDevelop 4 (#develop) integration. Enable SharpDevelop 4 integration in the installer and use the SharpDevelop AddIn Manager 
   to install the integration (select addin file from SpecFlow installation folder). (by Charles Weld)
