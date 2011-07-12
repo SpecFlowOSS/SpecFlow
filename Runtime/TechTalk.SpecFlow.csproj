@@ -122,7 +122,7 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepArgs.cs" />
-    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
     <Compile Include="Tracing\IStepDefinitionSkeletonProvider.cs" />

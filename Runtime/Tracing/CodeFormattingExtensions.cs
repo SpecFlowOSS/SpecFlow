@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Tracing
 {
-    internal static class StringExtensions
+    public static class CodeFormattingExtensions
     {
         public static string Indent(this string text, string indent)
         {
