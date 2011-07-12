@@ -49,33 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\lib\MiniDi\MiniDi.cs">
-      <Link>MiniDi\MiniDi.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\PlatformSpecific\ConfigDefaults.cs">
-      <Link>Configuration\ConfigDefaults.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\PlatformSpecific\ConfigurationSectionHandler.cs">
-      <Link>Configuration\ConfigurationSectionHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Configuration\ConfigurationServices.cs">
-      <Link>Configuration\ConfigurationServices.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
-      <Link>Configuration\MissingOrPendingStepsOutcome.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\StringExtensions.cs">
-      <Link>StringExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
-      <Link>Tracing\DefaultListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Tracing\ITraceListener.cs">
-      <Link>Tracing\ITraceListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Tracing\NullListener.cs">
-      <Link>Tracing\NullListener.cs</Link>
-    </Compile>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
@@ -140,6 +113,10 @@
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>

@@ -66,6 +66,8 @@
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\FillInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
     <Compile Include="AssistTests\TestInfrastructure\ComparisonTestResult.cs" />

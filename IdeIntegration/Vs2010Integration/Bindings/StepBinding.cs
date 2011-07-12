@@ -5,16 +5,16 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class StepBinding
+    public class StepBindingNew
     {
         public IBindingMethod Method { get; private set; }
         public BindingType BindingType { get; private set; }
         public Regex Regex { get; private set; }
 
-        public BindingScope BindingScope { get; private set; }
+        public BindingScopeNew BindingScope { get; private set; }
         public bool IsScoped { get { return BindingScope != null; } }
 
-        public StepBinding(IBindingMethod method, BindingType bindingType, Regex regex, BindingScope bindingScope)
+        public StepBindingNew(IBindingMethod method, BindingType bindingType, Regex regex, BindingScopeNew bindingScope)
         {
             Method = method;
             BindingType = bindingType;

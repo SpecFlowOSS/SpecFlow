@@ -7,17 +7,17 @@ namespace TechTalk.SpecFlow.Parser.GherkinBuilder
 {
     internal class TableBuilder : ITableProcessor
     {
-        private readonly List<Row> tableRows = new List<Row>();
+        private readonly List<GherkinTableRow> tableRows = new List<GherkinTableRow>();
 
-        public Table GetResult()
+        public GherkinTable GetResult()
         {
             return tableRows.Count == 0 ? null :
-                new Table(tableRows[0], tableRows.Skip(1).ToArray());
+                new GherkinTable(tableRows[0], tableRows.Skip(1).ToArray());
         }
 
         public void ProcessTableRow(string[] cells, FilePosition rowPosition)
         {
-            var row = new Row(cells.Select(c => new Cell(c)).ToArray());
+            var row = new GherkinTableRow(cells.Select(c => new GherkinTableCell(c)).ToArray());
             row.FilePosition = rowPosition;
 
             if (tableRows.Count > 0 && tableRows[0].Cells.Length != row.Cells.Length)

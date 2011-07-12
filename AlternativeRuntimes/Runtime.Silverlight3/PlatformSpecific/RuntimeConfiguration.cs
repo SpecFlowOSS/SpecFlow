@@ -10,11 +10,6 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    public partial class ConfigurationSectionHandler
-    {
-
-    }
-
     internal class RuntimeConfiguration
     {
         private List<Assembly> _additionalStepAssemblies = new List<Assembly>();

@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
-        public StepInstance(ScenarioStep step, StepScope stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
+        public StepInstance(ScenarioStep step, StepScopeNew stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
             : base((BindingType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepScope)
         {
             this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, BindingType.ToString().Substring(0, 1), this);
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             return bindingMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }

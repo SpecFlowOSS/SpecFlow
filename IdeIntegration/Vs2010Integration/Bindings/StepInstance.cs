@@ -11,11 +11,11 @@ namespace TechTalk.SpecFlow.Bindings
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }
         public string Keyword { get; private set; }
         public string Text { get; private set; }
-        public StepScope StepScope { get; private set; }
+        public StepScopeNew StepScope { get; private set; }
         public string MultilineTextArgument { get; set; }
         public Table TableArgument { get; set; }
 
-        public StepInstance(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string keyword, string stepText, StepScope stepScope)
+        public StepInstance(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string keyword, string stepText, StepScopeNew stepScope)
         {
             BindingType = bindingType;
             StepDefinitionKeyword = stepDefinitionKeyword;

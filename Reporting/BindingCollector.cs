@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.Reporting
@@ -32,21 +31,11 @@ namespace TechTalk.SpecFlow.Reporting
 
     public class BindingCollector : MarshalByRefObject
     {
-        private readonly Type bindingAttributeType;
-        private readonly Type scenarioStepAttributeType;
-
-        public BindingCollector()
-        {
-            Assembly specFlowRuntime = Assembly.Load("TechTalk.SpecFlow");
-            this.bindingAttributeType = specFlowRuntime.GetType("TechTalk.SpecFlow.BindingAttribute", true);
-            this.scenarioStepAttributeType = specFlowRuntime.GetType("TechTalk.SpecFlow.ScenarioStepAttribute", true);
-        }
-
         public void BuildBindingsFromAssembly(Assembly assembly, List<BindingInfo> bindings)
         {
             foreach (Type type in assembly.GetTypes())
             {
-                Attribute bindingAttr = Attribute.GetCustomAttribute(type, bindingAttributeType);
+                Attribute bindingAttr = Attribute.GetCustomAttribute(type, typeof(BindingAttribute));
                 if (bindingAttr == null)
                     continue;
 
@@ -58,7 +47,7 @@ namespace TechTalk.SpecFlow.Reporting
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, scenarioStepAttributeType);
+                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(ScenarioStepAttribute));
                 if (scenarioStepAttrs != null)
                     foreach (var scenarioStepAttr in scenarioStepAttrs)
                     {

@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
@@ -25,11 +26,6 @@ namespace TechTalk.SpecFlow.Generator
         private const string FIXTURETEARDOWN_NAME = "FeatureTearDown";
         private const string BACKGROUND_NAME = "FeatureBackground";
         private const string TESTRUNNER_FIELD = "testRunner";
-        private const string ITESTRUNNER_TYPE = "TechTalk.SpecFlow.ITestRunner";
-        private const string TESTRUNNERMANAGER_TYPE = "TechTalk.SpecFlow.TestRunnerManager";
-        private const string FEATUREINFO_TYPE = "TechTalk.SpecFlow.FeatureInfo";
-        private const string SCENARIOINFO_TYPE = "TechTalk.SpecFlow.ScenarioInfo";
-        private const string TABLE_TYPE = "TechTalk.SpecFlow.Table";
         private const string SPECFLOW_NAMESPACE = "TechTalk.SpecFlow";
 
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
@@ -96,7 +92,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void DeclareTestRunnerMember(CodeTypeDeclaration testType)
         {
-            CodeMemberField testRunnerField = new CodeMemberField(ITESTRUNNER_TYPE, TESTRUNNER_FIELD);
+            CodeMemberField testRunnerField = new CodeMemberField(typeof(ITestRunner), TESTRUNNER_FIELD);
             testRunnerField.Attributes |= MemberAttributes.Static;
             testType.Members.Add(testRunnerField);
         }
@@ -136,20 +132,20 @@ namespace TechTalk.SpecFlow.Generator
                 new CodeAssignStatement(
                     testRunnerField,
                     new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression(TESTRUNNERMANAGER_TYPE),
+                        new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
                         "GetTestRunner", 
                         new CodeTypeOfExpression(testType.Name))));
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             setupMethod.Statements.Add(
-                new CodeVariableDeclarationStatement(FEATUREINFO_TYPE, "featureInfo",
-                    new CodeObjectCreateExpression(FEATUREINFO_TYPE,
+                new CodeVariableDeclarationStatement(typeof(FeatureInfo), "featureInfo",
+                    new CodeObjectCreateExpression(typeof(FeatureInfo),
                         new CodeObjectCreateExpression(typeof(CultureInfo),
                             new CodePrimitiveExpression(feature.Language)),
                         new CodePrimitiveExpression(feature.Title),
                         new CodePrimitiveExpression(feature.Description),
                         new CodeFieldReferenceExpression(
-                            new CodeTypeReferenceExpression("GenerationTargetLanguage"), //TODO: use ProgrammingLanguage
+                            new CodeTypeReferenceExpression("ProgrammingLanguage"),
                             codeDomHelper.TargetLanguage.ToString()),
                         GetStringArrayExpression(feature.Tags))));
 
@@ -241,7 +237,7 @@ namespace TechTalk.SpecFlow.Generator
             setupMethod.Attributes = MemberAttributes.Public;
             setupMethod.Name = SETUP_NAME;
             setupMethod.Parameters.Add(
-                new CodeParameterDeclarationExpression(SCENARIOINFO_TYPE, "scenarioInfo"));
+                new CodeParameterDeclarationExpression(typeof(ScenarioInfo), "scenarioInfo"));
 
             //testRunner.OnScenarioStart(scenarioInfo);
             var testRunnerField = GetTestRunnerExpression();
@@ -357,7 +353,7 @@ namespace TechTalk.SpecFlow.Generator
             }
         }
 
-        private bool CanUseFirstColumnAsName(Table table)
+        private bool CanUseFirstColumnAsName(GherkinTable table)
         {
             if (table.Header.Cells.Length == 0)
                 return false;
@@ -388,7 +384,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void GenerateScenarioOutlineTestVariant(CodeTypeDeclaration testType, ScenarioOutline scenarioOutline, string testMethodName, 
             IEnumerable<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, string exampleSetIdentifier,
-            Row row, Tags exampleSetTags, string variantName)
+            GherkinTableRow row, Tags exampleSetTags, string variantName)
         {
             var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
 
@@ -463,8 +459,8 @@ namespace TechTalk.SpecFlow.Generator
 //                        additionalTagsExpression));
             }
             testMethod.Statements.Add(
-                new CodeVariableDeclarationStatement(SCENARIOINFO_TYPE, "scenarioInfo",
-                    new CodeObjectCreateExpression(SCENARIOINFO_TYPE,
+                new CodeVariableDeclarationStatement(typeof(ScenarioInfo), "scenarioInfo",
+                    new CodeObjectCreateExpression(typeof(ScenarioInfo),
                         new CodePrimitiveExpression(scenario.Title),
                         tagsExpression)));
 
@@ -591,19 +587,19 @@ namespace TechTalk.SpecFlow.Generator
         }
 
         private int tableCounter = 0;
-        private CodeExpression GetTableArgExpression(Table tableArg, CodeStatementCollection statements, ParameterSubstitution paramToIdentifier)
+        private CodeExpression GetTableArgExpression(GherkinTable tableArg, CodeStatementCollection statements, ParameterSubstitution paramToIdentifier)
         {
             if (tableArg == null)
-                return new CodeCastExpression(TABLE_TYPE, new CodePrimitiveExpression(null));
+                return new CodeCastExpression(typeof(Table), new CodePrimitiveExpression(null));
 
             tableCounter++;
 
             //Table table0 = new Table(header...);
             var tableVar = new CodeVariableReferenceExpression("table" + tableCounter);
             statements.Add(
-                new CodeVariableDeclarationStatement(TABLE_TYPE, tableVar.VariableName,
+                new CodeVariableDeclarationStatement(typeof(Table), tableVar.VariableName,
                     new CodeObjectCreateExpression(
-                        TABLE_TYPE,
+                        typeof(Table),
                         GetStringArrayExpression(tableArg.Header.Cells.Select(c => c.Value), paramToIdentifier))));
 
             foreach (var row in tableArg.Body)

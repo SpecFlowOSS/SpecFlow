@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
     public interface IBoundStepSuggestion<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>
     {
-        bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService);
+        bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService);
         ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get; }
     }
 }

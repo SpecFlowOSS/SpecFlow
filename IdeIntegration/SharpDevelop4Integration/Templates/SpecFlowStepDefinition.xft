@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<Template author="Charles Weld" version="1.0">
+	
+	<Config
+		  name        = "SpecFlow Step Definition"
+		  icon        = "res:SpecFlowStepDefinitionIcon.ico"
+		  category    = "SpecFlow"
+		  defaultname = "StepDefinition${Number}.cs"
+		  language    = "C#"/>
+	 
+	<Description>Creates a SpecFlow Step Definition file.</Description>
+	
+	<!-- 
+	Special new file templates:
+		${StandardNamespace}        -> Standardnamespace of the current project or FileNameWithoutExtension
+		${FullName}                 -> Full generated path name
+		${FileName}                 -> File name with extension
+		${FileNameWithoutExtension} -> File name without extension
+		${Extension}                -> Extension in the form ".cs"
+		${Path}                     -> Full path of the file
+		${ClassName}                -> Class name (generally FileNameWithoutExtension w/o 'bad' characters)
+	-->
+	<!--<Properties>
+		<Property
+			name          = "IsSealed"
+			localizedName = "${res:Templates.File.Properties.IsSealed}"
+			type          = "System.Boolean"
+			defaultValue  = "False"
+			category      = "${res:Templates.File.Properties.ContextCategory}"
+			description   = "${res:Templates.File.Properties.IsSealed.Description}"
+		/>
+	</Properties>-->
+
+	<Files>
+		<File name="${FullName}" language=""><![CDATA[${StandardHeader.C#}
+using TechTalk.SpecFlow;
+
+namespace ${StandardNamespace}
+{
+    [Binding]
+    public class ${ClassName}
+    {
+        [Given("I have entered (.*) into the calculator")]
+        public void GivenIHaveEnteredSomethingIntoTheCalculator(int number)
+        {
+            // TODO: implement arrange (recondition) logic
+            // For storing and retrieving scenario-specific data, 
+            // the instance fields of the class or the
+            //     ScenarioContext.Current
+            // collection can be used.
+            // To use the multiline text or the table argument of the scenario,
+            // additional string/Table parameters can be defined on the step definition
+            // method. 
+
+            ScenarioContext.Current.Pending();
+        }
+
+        [When("I press add")]
+        public void WhenIPressAdd()
+        {
+            // TODO: implement act (action) logic
+
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then("the result should be (.*) on the screen")]
+        public void ThenTheResultShouldBe(int result)
+        {
+            // TODO: implement assert (verification) logic
+          
+            ScenarioContext.Current.Pending();
+        }
+    }
+}
+]]></File>
+	</Files>
+	
+	<AdditionalOptions/>
+</Template>
+

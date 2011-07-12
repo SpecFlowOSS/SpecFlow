@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {

@@ -2,13 +2,13 @@
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class StepScope
+    public class StepScopeNew
     {
         public string FeatureTitle { get; private set; }
         public string ScenarioTitle { get; private set; }
         public IEnumerable<string> Tags { get; private set; }
 
-        public StepScope(string featureTitle, string scenarioTitle, IEnumerable<string> tags)
+        public StepScopeNew(string featureTitle, string scenarioTitle, IEnumerable<string> tags)
         {
             FeatureTitle = featureTitle;
             ScenarioTitle = scenarioTitle;

@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<Template author="Charles Weld" version="1.0">
+	
+	<Config
+		  name        = "SpecFlow Event Definition"
+		  icon        = "res:SpecFlowEventDefinitionIcon.ico"
+		  category    = "SpecFlow"
+		  defaultname = "EventDefinition${Number}.cs"
+		  language    = "C#"/>
+	 
+	<Description>Creates a SpecFlow Event Definition file.</Description>
+	
+	<!-- 
+	Special new file templates:
+		${StandardNamespace}        -> Standardnamespace of the current project or FileNameWithoutExtension
+		${FullName}                 -> Full generated path name
+		${FileName}                 -> File name with extension
+		${FileNameWithoutExtension} -> File name without extension
+		${Extension}                -> Extension in the form ".cs"
+		${Path}                     -> Full path of the file
+		${ClassName}                -> Class name (generally FileNameWithoutExtension w/o 'bad' characters)
+	-->
+	<!--<Properties>
+		<Property
+			name          = "IsSealed"
+			localizedName = "${res:Templates.File.Properties.IsSealed}"
+			type          = "System.Boolean"
+			defaultValue  = "False"
+			category      = "${res:Templates.File.Properties.ContextCategory}"
+			description   = "${res:Templates.File.Properties.IsSealed.Description}"
+		/>
+	</Properties>-->
+
+	<Files>
+		<File name="${FullName}" language=""><![CDATA[${StandardHeader.C#}
+using System;
+
+using TechTalk.SpecFlow;
+
+namespace ${StandardNamespace}
+{
+    [Binding]
+    public class ${ClassName}
+    {
+    	[BeforeStep]
+        public void BeforeStep()
+        {
+            // TODO: implement logic that has to run before each scenario step
+            // For storing and retrieving scenario-specific data, 
+            // the instance fields of the class or the
+            //     ScenarioContext.Current
+            // collection can be used.
+            // For storing and retrieving feature-specific data, the 
+            //     FeatureContext.Current
+            // collection can be used.
+            // Use the attribute overload to specify tags. If tags are specified, the event 
+            // handler will be executed only if any of the tags are specified for the 
+            // feature or the scenario.
+            //     [BeforeStep("mytag")]
+        }
+
+        [AfterStep]
+        public void AfterStep()
+        {
+            // TODO: implement logic that has to run after each scenario step
+        }
+
+        [BeforeScenarioBlock]
+        public void BeforeScenarioBlock()
+        {
+            // TODO: implement logic that has to run before each scenario block (given-when-then)
+        }
+
+        [AfterScenarioBlock]
+        public void AfterScenarioBlock()
+        {
+            // TODO: implement logic that has to run after each scenario block (given-when-then)
+        }
+
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            // TODO: implement logic that has to run before executing each scenario
+        }
+
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            // TODO: implement logic that has to run after executing each scenario
+        }
+
+        [BeforeFeature]
+        public static void BeforeFeature()
+        {
+            // TODO: implement logic that has to run before executing each feature
+        }
+
+        [AfterFeature]
+        public static void AfterFeature()
+        {
+            // TODO: implement logic that has to run after executing each feature
+        }
+
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            // TODO: implement logic that has to run before the entire test run
+        }
+
+        [AfterTestRun]
+        public static void AfterTestRun()
+        {
+            // TODO: implement logic that has to run after the entire test run
+        }
+    }
+}
+]]></File>
+	</Files>
+	
+	<AdditionalOptions/>
+</Template>
+

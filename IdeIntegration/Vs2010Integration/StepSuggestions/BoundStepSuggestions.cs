@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
 
-        public StepBinding StepBinding { get; private set; }
+        public StepBindingNew StepBinding { get; private set; }
         public BindingType BindingType { get; set; }
 
         public BoundStepSuggestions(BindingType bindingType, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        public BoundStepSuggestions(StepBinding stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public BoundStepSuggestions(StepBindingNew stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             if (stepBinding == null) throw new ArgumentNullException("stepBinding");
 
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        private string GetSuggestionText(StepBinding stepBinding)
+        private string GetSuggestionText(StepBindingNew stepBinding)
         {
             string suggestionTextBase = stepBinding.Regex == null ? "[...]" :
                 "[" + RegexSampler.GetRegexSample(stepBinding.Regex.ToString(), stepBinding.Method.Parameters.Select(p => p.ParameterName).ToArray()) + "]";
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return string.Format("{0} -> {1}", suggestionTextBase, stepBinding.Method.ShortDisplayText);
         }
 
-        private string GetInsertionText(StepBinding stepBinding)
+        private string GetInsertionText(StepBindingNew stepBinding)
         {
             if (stepBinding.Regex == null)
                 return "...";
