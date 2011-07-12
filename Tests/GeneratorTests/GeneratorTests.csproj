@@ -62,6 +62,10 @@
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
