@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
         }
 
-        public bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.BindingType != BindingType)
                 return false;
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public BindingType BindingType { get; private set; }
         internal string StepPrefix { get; private set; }
 
-        public bool Match(StepBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.BindingType != BindingType)
                 return false;
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
 
-        public StepInstanceTemplate(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepScope stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public StepInstanceTemplate(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepScopeNew stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             BindingType = (BindingType)scenarioStep.ScenarioBlock;
 
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             StepPrefix = match.Success ? scenarioStep.Text.Substring(0, match.Index) : scenarioStep.Text;
         }
 
-        private void AddInstances(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepScope stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        private void AddInstances(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepScopeNew stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
             {

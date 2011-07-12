@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Bindings
         Given = ScenarioBlock.Given,
         When = ScenarioBlock.When,
         Then = ScenarioBlock.Then,
-        And,
-        But
+        And = 4,
+        But = 5
     }
 }

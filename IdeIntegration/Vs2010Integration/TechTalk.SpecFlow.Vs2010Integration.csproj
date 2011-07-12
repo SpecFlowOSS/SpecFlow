@@ -188,12 +188,10 @@
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
-    <Compile Include="Bindings\BindingType.cs" />
     <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
     <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
     <Compile Include="Bindings\Reflection\IBindingType.cs" />
     <Compile Include="Bindings\StepBinding.cs" />
-    <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Bindings\StepScope.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />

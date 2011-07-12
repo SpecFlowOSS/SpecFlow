@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.nativeSuggestionItemFactory = nativeSuggestionItemFactory;
         }
 
-        public void AddBinding(StepBinding stepBinding)
+        public void AddBinding(StepBindingNew stepBinding)
         {
             var item = new BoundStepSuggestions<TNativeSuggestionItem>(stepBinding, nativeSuggestionItemFactory);
 
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                 AddStepSuggestion(affectedSuggestion);
         }
 
-        public void RemoveBinding(StepBinding stepBinding)
+        public void RemoveBinding(StepBindingNew stepBinding)
         {
             var item = boundStepSuggestions.GetRelatedItems(stepBinding.Regex).FirstOrDefault(it => it.StepBinding == stepBinding);
             if (item == null)
@@ -167,7 +167,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public IEnumerable<StepBinding> GetConsideredBindings(string stepText)
+        public IEnumerable<StepBindingNew> GetConsideredBindings(string stepText)
         {
             return boundStepSuggestions.GetMatchingItems(stepText).Select(it => it.StepBinding);
         }

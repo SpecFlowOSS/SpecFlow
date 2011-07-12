@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public int BlockRelativeLine { get; set; }
         public BindingStatus BindingStatus { get; set; }
 
-        public GherkinStep(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string stepText, StepScope stepScope, string keyword, int blockRelativeLine)
+        public GherkinStep(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string stepText, StepScopeNew stepScope, string keyword, int blockRelativeLine)
             : base(bindingType, stepDefinitionKeyword, keyword, stepText, stepScope)
         {
             BlockRelativeLine = blockRelativeLine;

@@ -3,27 +3,27 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingScope
+    public class BindingScopeNew
     {
         public string Tag { get; private set; }
         public string FeatureTitle { get; private set; }
         public string ScenarioTitle { get; private set; }
 
-        public BindingScope(string tag, string featureTitle, string scenarioTitle)
+        public BindingScopeNew(string tag, string featureTitle, string scenarioTitle)
         {
             Tag = tag;
             FeatureTitle = featureTitle;
             ScenarioTitle = scenarioTitle;
         }
 
-        public bool Match(StepScope stepScope)
+        public bool Match(StepScopeNew stepScope)
         {
             int dummy;
             return Match(stepScope, out dummy);
         }
 
         private readonly string[] emptyTagList = new string[0];
-        public bool Match(StepScope stepScope, out int scopeMatches)
+        public bool Match(StepScopeNew stepScope, out int scopeMatches)
         {
             scopeMatches = 0;
             var tags = stepScope.Tags ?? emptyTagList;
