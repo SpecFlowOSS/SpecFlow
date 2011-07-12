@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration;
@@ -132,8 +133,10 @@ namespace IdeIntegrationTests
         {
             using(var tempFolder = new TempFolder())
             {
+                var runtimeAssemblyFile = typeof(BindingAttribute).Assembly.Location;
                 var generatorAssemblyFile = typeof(TestGeneratorFactory).Assembly.Location;
                 var utilsAssemblyFile = typeof(FileSystemHelper).Assembly.Location;
+                FileSystemHelper.CopyFileToFolder(runtimeAssemblyFile, tempFolder.FolderName);
                 FileSystemHelper.CopyFileToFolder(generatorAssemblyFile, tempFolder.FolderName);
                 FileSystemHelper.CopyFileToFolder(utilsAssemblyFile, tempFolder.FolderName);
 
