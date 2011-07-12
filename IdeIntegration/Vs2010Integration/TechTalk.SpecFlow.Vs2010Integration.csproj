@@ -167,12 +167,6 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Runtime\ProgrammingLanguage.cs">
-      <Link>BindingSkeletons\ProgrammingLanguage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Table.cs">
-      <Link>Bindings\Table.cs</Link>
-    </Compile>
     <Compile Include="..\Vs2008Integration\BaseCodeGenerator.cs">
       <Link>SingleFileGenerator\BaseCodeGenerator.cs</Link>
     </Compile>

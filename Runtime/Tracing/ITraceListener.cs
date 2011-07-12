@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Tracing
         void WriteToolOutput(string message);
     }
 
-    static internal class TraceListenerHelper
+    static public class TraceListenerHelper
     {
         public static void WriteTestOutput(this ITraceListener traceListener, string messageFormat, params object[] args)
         {

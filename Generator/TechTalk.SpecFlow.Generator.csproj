@@ -49,15 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
-      <Link>Tracing\DefaultListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Tracing\ITraceListener.cs">
-      <Link>Tracing\ITraceListener.cs</Link>
-    </Compile>
-    <Compile Include="..\Runtime\Tracing\NullListener.cs">
-      <Link>Tracing\NullListener.cs</Link>
-    </Compile>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
