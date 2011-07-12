@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\PlatformSpecific\ConfigurationSectionHandler.cs">
-      <Link>Configuration\ConfigurationSectionHandler.cs</Link>
-    </Compile>
     <Compile Include="..\Runtime\Tracing\DefaultListener.cs">
       <Link>Tracing\DefaultListener.cs</Link>
     </Compile>
