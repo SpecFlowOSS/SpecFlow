@@ -1,22 +1,25 @@
 ﻿using System;
 using TechTalk.SpecFlow.Async;
 
-namespace TechTalk.SpecFlow.RuntimeTests
+namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 {
     internal class FakeAsyncTestExecutor : IAsyncTestExecutor
     {
         public bool TestComplete;
         public Action EnqueuedWithNewContext;
         public Action EnqueuedCallback;
+        public TimeSpan EnqueuedDelay;
+        public Action[] EnqueuedCallbacks;
+        public Func<bool> EnqueuedConditional;
 
         public void EnqueueDelay(TimeSpan delay)
         {
-            throw new NotImplementedException();
+            EnqueuedDelay = delay;
         }
 
         public void EnqueueConditional(Func<bool> continueUntil)
         {
-            throw new NotImplementedException();
+            EnqueuedConditional = continueUntil;
         }
 
         public void EnqueueCallback(Action callback)
@@ -26,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         public void EnqueueCallback(params Action[] callbacks)
         {
-            throw new NotImplementedException();
+            EnqueuedCallbacks = callbacks;
         }
 
         public void EnqueueWithNewContext(Action action)

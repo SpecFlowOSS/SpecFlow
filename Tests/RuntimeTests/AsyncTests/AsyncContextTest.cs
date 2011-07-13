@@ -1,19 +1,18 @@
-/*using System;
-
+using System;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Async;
 
-namespace TechTalk.SpecFlow.RuntimeTests
+namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 {
     [TestFixture]
     public class AsyncContextTest
     {
         private static FakeAsyncTestExecutor fakeAsyncTestExecutor;
 
-        [TearDown]
-        public void TearDown()
+        [SetUp]
+        public void Setup()
         {
-            ObjectContainer.AsyncContext = null;
+            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("sample scenario"), null);
         }
 
         [Test]
@@ -25,35 +24,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private static void SetupAsyncContext()
         {
             fakeAsyncTestExecutor = new FakeAsyncTestExecutor();
-
-            AsyncContext.Register(fakeAsyncTestExecutor);
+            ScenarioContext.Current.Set<IAsyncTestExecutor>(fakeAsyncTestExecutor);
         }
 
         [Test]
-        public void AsyncContextIsStoredOnObjectContainer()
+        public void AsyncContextIsStoredInScenarioContext()
         {
             SetupAsyncContext();
             Assert.IsNotNull(AsyncContext.Current);
             Assert.IsInstanceOf<AsyncContext>(AsyncContext.Current);
 
-            Assert.IsNotNull(ObjectContainer.AsyncContext);
-            Assert.AreSame(AsyncContext.Current, ObjectContainer.AsyncContext);
-
-            ObjectContainer.AsyncContext = null;
-
-            Assert.IsNull(AsyncContext.Current);
-        }
-
-        [Test]
-        public void EnqueueWithNewContextIsDeferredToImpl()
-        {
-            Action action = () => { };
-
-            SetupAsyncContext();
-            AsyncContext.Current.EnqueueWithNewContext(action);
-
-            Assert.IsNotNull(fakeAsyncTestExecutor.EnqueuedWithNewContextAction);
-            Assert.AreSame(action, fakeAsyncTestExecutor.EnqueuedWithNewContextAction);
+            Assert.IsNotNull(ScenarioContext.Current.Get<AsyncContext>());
+            Assert.AreSame(AsyncContext.Current, ScenarioContext.Current.Get<AsyncContext>());
         }
 
         [Test]
@@ -64,8 +46,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             SetupAsyncContext();
             AsyncContext.Current.EnqueueCallback(action);
 
-            Assert.IsNotNull(fakeAsyncTestExecutor.EnqueuedAction);
-            Assert.AreSame(action, fakeAsyncTestExecutor.EnqueuedAction);
+            Assert.IsNotNull(fakeAsyncTestExecutor.EnqueuedCallback);
+            Assert.AreSame(action, fakeAsyncTestExecutor.EnqueuedCallback);
         }
 
         [Test]
@@ -80,8 +62,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             SetupAsyncContext();
             AsyncContext.Current.EnqueueCallback(actions);
 
-            Assert.IsNotNull(fakeAsyncTestExecutor.EnqueuedActions);
-            Assert.AreSame(actions, fakeAsyncTestExecutor.EnqueuedActions);
+            Assert.IsNotNull(fakeAsyncTestExecutor.EnqueuedCallbacks);
+            Assert.AreSame(actions, fakeAsyncTestExecutor.EnqueuedCallbacks);
         }
 
         [Test]
@@ -106,59 +88,5 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.AreEqual(TimeSpan.FromMilliseconds(delay), fakeAsyncTestExecutor.EnqueuedDelay);
         }
-
-        [Test]
-        public void EnqueueTestCompleteIsDeferredToImpl()
-        {
-            SetupAsyncContext();
-            AsyncContext.Current.EnqueueTestComplete();
-
-            Assert.IsTrue(fakeAsyncTestExecutor.EnqueuedTestComplete);
-        }
-
-        private class FakeAsyncTestExecutor : IAsyncTestExecutor
-        {
-            public TimeSpan EnqueuedDelay;
-            public Action EnqueuedAction;
-            public Action[] EnqueuedActions;
-            public Func<bool> EnqueuedConditional;
-            public Action EnqueuedWithNewContextAction;
-            public bool EnqueuedTestComplete;
-
-            public void EnqueueDelay(TimeSpan delay)
-            {
-                EnqueuedDelay = delay;
-            }
-
-            public void EnqueueConditional(Func<bool> continueUntil)
-            {
-                EnqueuedConditional = continueUntil;
-            }
-
-            public void EnqueueCallback(Action callback)
-            {
-                EnqueuedAction = callback;
-            }
-
-            public void EnqueueCallback(params Action[] callbacks)
-            {
-                EnqueuedActions = callbacks;
-            }
-
-            public void EnqueueWithNewContext(Action action)
-            {
-                EnqueuedWithNewContextAction = action;
-            }
-
-            public void EnqueueTestComplete()
-            {
-                EnqueuedTestComplete = true;
-            }
-
-            public void Dispose()
-            {
-                
-            }
-        }
     }
-}*/
+}

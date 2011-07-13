@@ -1,7 +1,6 @@
 using System;
-using TechTalk.SpecFlow.Async;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Async
 {
     /// <summary>
     /// Provides the entry point to enqueue tasks to run asynchronously
@@ -20,6 +19,11 @@ namespace TechTalk.SpecFlow
     {
         private readonly IAsyncTestExecutor asyncTestExecutor;
 
+        public AsyncContext(IAsyncTestExecutor asyncTestExecutor)
+        {
+            this.asyncTestExecutor = asyncTestExecutor;
+        }
+
         /// <summary>
         /// Retrieve the current <see cref="AsyncContext"/>. Will be null unless the
         /// generator and runtime support asynchronous tests.
@@ -29,39 +33,18 @@ namespace TechTalk.SpecFlow
             //get { return ObjectContainer.AsyncContext; }
             get
             {
-                throw new NotImplementedException(); //TODO
+                AsyncContext current;
+                if (!ScenarioContext.Current.TryGetValue(out current))
+                {
+                    IAsyncTestExecutor testExecutor;
+                    if (!ScenarioContext.Current.TryGetValue(out testExecutor))
+                        return null;
+
+                    current = new AsyncContext(testExecutor);
+                    ScenarioContext.Current.Set(current);
+                }
+                return current;
             }
-        }
-
-        private AsyncContext(IAsyncTestExecutor asyncTestExecutor)
-        {
-            this.asyncTestExecutor = asyncTestExecutor;
-        }
-
-        /// <summary>
-        /// Intended for framework use.
-        /// </summary>
-        /// <remarks>
-        /// Creates a new instance of <see cref="AsyncContext"/> using the given
-        /// <see cref="IAsyncTestExecutor"/> as its implementation. Intended to be
-        /// called from the generated test code.
-        /// </remarks>
-        public static void Register(IAsyncTestExecutor asyncTestExecutor)
-        {
-            var asyncContext = new AsyncContext(asyncTestExecutor);
-            //ObjectContainer.AsyncContext = asyncContext;
-            throw new NotImplementedException(); //TODO
-        }
-
-        internal static void Unregister()
-        {
-            //ObjectContainer.AsyncContext = null;
-            throw new NotImplementedException(); //TODO
-        }
-
-        internal void EnqueueWithNewContext(Action action)
-        {
-            asyncTestExecutor.EnqueueWithNewContext(action);
         }
 
         /// <summary>
@@ -110,11 +93,6 @@ namespace TechTalk.SpecFlow
         public void EnqueueDelay(double milliseconds)
         {
             EnqueueDelay(TimeSpan.FromMilliseconds(milliseconds));
-        }
-
-        internal void EnqueueTestComplete()
-        {
-            asyncTestExecutor.EnqueueTestComplete();
         }
     }
 }

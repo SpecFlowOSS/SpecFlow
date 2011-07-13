@@ -14,6 +14,11 @@ namespace TechTalk.SpecFlow
             Dispose();
         }
 
+        public bool TryGetValue<TValue>(out TValue value)
+        {
+            return TryGetValue(GetDefaultKey<TValue>(), out value);
+        }
+
         public bool TryGetValue<TValue>(string key, out TValue value)
         {
             object result;
@@ -27,31 +32,34 @@ namespace TechTalk.SpecFlow
             return false;
         }
 
-        public void Set<T>(T data)
+        private string GetDefaultKey<T>()
         {
-            var id = typeof(T).ToString();
-            Set(data, id);
+            return typeof(T).FullName;
         }
 
-        public void Set<T>(T data, string id)
+        public void Set<T>(T data)
         {
-            this[id] = data;
+            Set(data, GetDefaultKey<T>());
+        }
+
+        public void Set<T>(T data, string key)
+        {
+            this[key] = data;
         }
 
         public void Set<T>(Func<T> func)
         {
-            this[typeof(T).ToString()] = func;
+            this[GetDefaultKey<T>()] = func;
         }
 
         public T Get<T>()
         {
-            var id = typeof(T).ToString();
-            return Get<T>(id);
+            return Get<T>(GetDefaultKey<T>());
         }
 
-        public T Get<T>(string id)
+        public T Get<T>(string key)
         {
-            var value = this[id];
+            var value = this[key];
             if (TheValueIsAFactoryMethod<T>(value))
                 value = CallTheFactoryMethodToGetTheValue<T>(value);
             return (T)value;
