@@ -41,6 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private void SetupTestRunnerMock(MockRepository mockRepository, Feature feature)
         {
             var testRunnerMock = mockRepository.StrictMock<ITestRunner>();
+            ObjectContainer.SyncTestRunner = testRunnerMock;
             using (mockRepository.Ordered())
             {
                 testRunnerMock.Expect(tr => tr.OnFeatureStart(null)).IgnoreArguments();

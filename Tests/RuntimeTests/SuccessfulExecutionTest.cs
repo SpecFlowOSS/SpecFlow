@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var testRunner = new TestRunner();
             testRunner.InitializeTestRunner(new Assembly[0]); // no bindings
+            ObjectContainer.SyncTestRunner = testRunner;
         }
 
         [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]

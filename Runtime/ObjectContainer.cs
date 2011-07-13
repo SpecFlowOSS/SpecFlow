@@ -40,14 +40,11 @@ namespace TechTalk.SpecFlow
         private static ITestRunner syncTestRunner;
         private static ITestRunner asyncTestRunner;
 
-        //TODO
-//        public static ITestRunner CurrentTestRunner { get; set; }
-//
-//        internal static ITestRunner SyncTestRunner
-//        {
-//            get { return EnsureSyncTestRunner(Assembly.GetCallingAssembly()); }
-//            set { syncTestRunner = value; }
-//        }
+        internal static ITestRunner SyncTestRunner
+        {
+            get { return EnsureSyncTestRunner(Assembly.GetCallingAssembly()); }
+            set { syncTestRunner = value; }
+        }
 
         internal static ITestRunner EnsureSyncTestRunner(Assembly callingAssembly)
         {
@@ -60,11 +57,11 @@ namespace TechTalk.SpecFlow
                                });
         }
 
-//        internal static ITestRunner AsyncTestRunner
-//        {
-//            get { return EnsureAsyncTestRunner(Assembly.GetCallingAssembly()); }
-//            set { asyncTestRunner = value; }
-//        }
+        internal static ITestRunner AsyncTestRunner
+        {
+            get { return EnsureAsyncTestRunner(Assembly.GetCallingAssembly()); }
+            set { asyncTestRunner = value; }
+        }
 
         internal static ITestRunner EnsureAsyncTestRunner(Assembly callingAssembly)
         {
