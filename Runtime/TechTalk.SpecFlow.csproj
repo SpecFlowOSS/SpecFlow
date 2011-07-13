@@ -90,6 +90,7 @@
     <Compile Include="Assist\ValueRetrievers\NullableIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
     <Compile Include="Async\AsyncContext.cs" />
+    <Compile Include="Async\AsyncSteps.cs" />
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
