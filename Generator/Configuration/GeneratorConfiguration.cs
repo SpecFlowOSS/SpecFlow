@@ -22,6 +22,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
+        public bool GenerateAsyncTests { get; set; }
         public string GeneratorPath { get; set; }
 
         public bool UsesPlugins { get; private set; }
@@ -35,6 +36,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
+            GenerateAsyncTests = ConfigDefaults.GenerateAsyncTests;
             GeneratorPath = ConfigDefaults.GeneratorPath;
 
             UsesPlugins = false;
@@ -109,12 +111,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 case "mstest.silverlight4":
                 case "mstest.windowsphone7":
                     GeneratorUnitTestProviderType = typeof(MsTestSilverlightGeneratorProvider);
-                    break;
-                case "mstest.silverlight.async":
-                case "mstest.silverlight3.async":
-                case "mstest.silverlight4.async":
-                case "mstest.windowsphone7.async":
-                    GeneratorUnitTestProviderType = typeof(MsTestSilverlightAsyncGeneratorProvider);
                     break;
                 default:
                     GeneratorUnitTestProviderType = null;

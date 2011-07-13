@@ -20,121 +20,6 @@ namespace ParserTests
     [TestFixture]
     public class SuccessfulGenerationTest
     {
-        [Test]
-        public void CanGenerateFromFiles()
-        {
-            foreach (var testFile in TestFileHelper.GetTestFiles())
-            {
-                CanGenerateFromFile(testFile);
-            }
-        }
-
-        [Test]
-        public void CanGenerateSimpleFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "simple.feature"));
-        }
-
-        [Test]
-        public void CanGenerateAsterisksFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "asterisks.feature"));
-        }
-
-        [Test]
-        public void CanGenerateCommentsFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "comments.feature"));
-        }
-
-        [Test]
-        public void CanGenerateFeatureheaderFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "featureheader.feature"));
-        }
-
-        [Test]
-        public void CanGenerateTagsFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "tags.feature"));
-        }
-
-        [Test]
-        public void CanGeneratebackgroundFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "background.feature"));
-        }
-
-        [Test]
-        public void CanGeneratebackgroundWithTitleFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "background_withtitle.feature"));
-        }
-
-        [Test]
-        public void CanGenerateWhitespacesFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "whitespaces.feature"));
-        }
-
-        [Test]
-        public void CanGenerateGivenWhenThenDuplicationFeatureFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "givenwhenthenduplication.feature"));
-        }
-
-        [Test]
-        public void CanGenerateButFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "but.feature"));
-        }
-
-        [Test]
-        public void CanGenerateMultilinetitleFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "multilinetitle.feature"));
-        }
-
-        [Test]
-        public void CanGenerateMultilineargumentFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "multilineargument.feature"));
-        }
-
-        [Test]
-        public void CanGenerateTableargumentFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "tableargument.feature"));
-        }
-
-        [Test]
-        public void CanGenerateScneriooutlineFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "scenariooutline.feature"));
-        }
-
-        [Test]
-        public void CanGenerateMixedGWTFeature()
-        {
-            var folder = Path.GetFullPath(Path.Combine(TestFileHelper.GetProjectLocation(), "TestFiles"));
-            CanGenerateFromFile(Path.Combine(folder, "mixedgivenwhenthen.feature"));
-        }
-
-
         [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
         public void CanGenerateFromFile(string fileName)
         {
@@ -165,7 +50,7 @@ namespace ParserTests
 
         private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
         {
-            SpecFlowUnitTestConverter converter = new SpecFlowUnitTestConverter(new NUnitTestConverter(), new CodeDomHelper(CodeDomProviderLanguage.CSharp), true, true);
+            SpecFlowUnitTestConverter converter = FactoryMethods.CreateUnitTestConverter(new NUnitTestConverter());
             var codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();

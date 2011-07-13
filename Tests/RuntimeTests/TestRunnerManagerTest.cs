@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class TestRunnerManagerTest
     {
         [Test]
-        public void ReturnsSynchronousTestRunnerByDefault()
+        public void GetTestRunner_ReturnsSynchronousTestRunner()
         {
             var testRunner = TestRunnerManager.GetTestRunner();
 
@@ -15,47 +15,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ReturnsAsyncTestRunnerIfFeatureInstanceImplementsIAsyncFeature()
+        public void GetAsyncTestRunner_ReturnsSynchronousAsyncTestRunner()
         {
-            var testRunner = TestRunnerManager.GetTestRunner(new AsyncFeature());
+            var testRunner = TestRunnerManager.GetAsyncTestRunner();
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<AsyncTestRunner>(testRunner);
-        }
-
-        [Test]
-        public void ReturnsAsyncTestRunnerIfFeatureClassImplementsIAsyncFeature()
-        {
-            var testRunner = TestRunnerManager.GetTestRunner(typeof(AsyncFeature));
-
-            Assert.IsNotNull(testRunner);
-            Assert.IsInstanceOf<AsyncTestRunner>(testRunner);
-        }
-
-        [Test]
-        public void ReturnsSynchronousTestRunnerIfFeatureInstanceDoesNotImplementIAsyncFeature()
-        {
-            var testRunner = TestRunnerManager.GetTestRunner(new SynchronousFeature());
-
-            Assert.IsNotNull(testRunner);
-            Assert.IsInstanceOf<TestRunner>(testRunner);
-        }
-
-        [Test]
-        public void ReturnsSynchronousTestRunnerIfFeatureClassDoesNotImplementIAsyncFeature()
-        {
-            var testRunner = TestRunnerManager.GetTestRunner(typeof(SynchronousFeature));
-
-            Assert.IsNotNull(testRunner);
-            Assert.IsInstanceOf<TestRunner>(testRunner);
-        }
-
-        public class AsyncFeature : IAsyncFeature
-        {
-        }
-
-        public class SynchronousFeature
-        {
         }
     }
 }

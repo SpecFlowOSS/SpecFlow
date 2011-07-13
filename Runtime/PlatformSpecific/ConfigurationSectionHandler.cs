@@ -190,6 +190,13 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["allowRowTests"] = value; }
         }
 
+        [ConfigurationProperty("generateAsyncTests", DefaultValue = ConfigDefaults.GenerateAsyncTests, IsRequired = false)]
+        public bool GenerateAsyncTests
+        {
+            get { return (bool)this["generateAsyncTests"]; }
+            set { this["generateAsyncTests"] = value; }
+        }
+
         [ConfigurationProperty("path", DefaultValue = ConfigDefaults.GeneratorPath, IsRequired = false)]
         public string GeneratorPath
         {

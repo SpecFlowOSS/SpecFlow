@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public const bool AllowDebugGeneratedFiles = false;
         public const bool AllowRowTests = true;
+        public const bool GenerateAsyncTests = false;
         public const string GeneratorPath = null;
     }
 }

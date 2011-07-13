@@ -92,7 +92,6 @@
     <Compile Include="Async\AsyncContext.cs" />
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncContextImpl.cs" />
-    <Compile Include="Async\IAsyncFeature.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
@@ -126,6 +125,7 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepArgs.cs" />
+    <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />

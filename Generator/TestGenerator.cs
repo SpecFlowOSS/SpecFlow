@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.Generator
             IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(generatorConfiguration.GeneratorUnitTestProviderType);
             codeDomHelper.InjectIfRequired(generatorProvider);
 
-            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, generatorConfiguration.AllowDebugGeneratedFiles, generatorConfiguration.AllowRowTests);
+            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, generatorConfiguration);
 
             var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;

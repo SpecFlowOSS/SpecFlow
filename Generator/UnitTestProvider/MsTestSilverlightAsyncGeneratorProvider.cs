@@ -1,4 +1,4 @@
-using System.CodeDom;
+/*using System.CodeDom;
 using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
@@ -39,4 +39,4 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             scenarioSetupMethod.Statements.Insert(0, new CodeExpressionStatement(registerAsyncExpression));
         }
     }
-}
+}*/

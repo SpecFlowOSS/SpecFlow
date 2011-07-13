@@ -2,165 +2,133 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-    public class MsTestGeneratorProvider : IUnitTestGeneratorProvider
+    public class MsTestGeneratorProvider : IUnitTestGeneratorProvider, ICodeDomHelperRequired
     {
-        private const string TESTFIXTURE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute";
-        private const string TEST_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute";
-        private const string PROPERTY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute";
-        private const string TESTFIXTURESETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute";
-        private const string TESTFIXTURETEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute";
-        private const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute";
-        private const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
-        private const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
-        private const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
+        protected const string TESTFIXTURE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute";
+        protected const string TEST_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute";
+        protected const string PROPERTY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute";
+        protected const string TESTFIXTURESETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute";
+        protected const string TESTFIXTURETEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute";
+        protected const string TESTSETUP_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute";
+        protected const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
+        protected const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
+        protected const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
 
-        private const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
-        private const string FEATURE_TITILE_KEY = "FeatureTitle";
+        protected const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
 
-        private const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
+        protected const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
-        private CodeTypeDeclaration currentTestTypeDeclaration = null;
+        public CodeDomHelper CodeDomHelper { get; set; }
 
         public virtual bool SupportsRowTests { get { return false; } }
+        public virtual bool SupportsAsyncTests { get { return false; } }
 
-        public virtual void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
+        private void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
         {
-            typeDeclaration.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURE_ATTR)));
-
-            //as in mstest, you cannot mark classes with the description attribute, we
-            //just remember the feature title, and we will apply it for each test method
-            typeDeclaration.UserData[FEATURE_TITILE_KEY] = title;
-
-            currentTestTypeDeclaration = typeDeclaration;
+            CodeDomHelper.AddAttribute(codeTypeMember, PROPERTY_ATTR, name, value);
         }
 
-        private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
+        public virtual void SetTestFixture(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            customAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(DESCRIPTION_ATTR),
-                    new CodeAttributeArgument(
-                        new CodePrimitiveExpression(description))));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
         }
 
-        private void SetProperty(CodeAttributeDeclarationCollection customAttributes, string name, string value)
-        {
-            customAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(PROPERTY_ATTR),
-                    new CodeAttributeArgument(
-                        new CodePrimitiveExpression(name)),
-                    new CodeAttributeArgument(
-                        new CodePrimitiveExpression(value))));
-        }
-
-        public virtual void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        public virtual void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             //MsTest does not support caregories... :(
         }
 
-        public virtual void SetTest(CodeMemberMethod memberMethod, string title)
+        public void SetTestClassIgnore(TestClassGenerationContext generationContext)
         {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TEST_ATTR)));
-
-            SetDescription(memberMethod.CustomAttributes, title);
-
-            if (currentTestTypeDeclaration == null)
-                return;
-
-            string featureTitle = currentTestTypeDeclaration.UserData[FEATURE_TITILE_KEY] as string;
-            if (featureTitle != null)
-                SetProperty(memberMethod.CustomAttributes, FEATURE_TITILE_PROPERTY_NAME, featureTitle);
+            CodeDomHelper.AddAttribute(generationContext.TestClass, IGNORE_ATTR);
         }
 
-        public virtual void SetRowTest(CodeMemberMethod memberMethod, string title)
-        {
-            //MsTest does not support row tests... :(
-            throw new NotSupportedException();
-        }
-
-        public virtual void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
-        {
-            //MsTest does not support row tests... :(
-            throw new NotSupportedException();
-        }
-
-        public virtual void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
-        {
-            //MsTest does not support caregories... :(
-        }
-
-        public void SetTestSetup(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTSETUP_ATTR)));
-        }
-
-        public void SetTestFixtureSetup(CodeMemberMethod memberMethod)
-        {
-            memberMethod.Attributes |= MemberAttributes.Static;
-            memberMethod.Parameters.Add(new CodeParameterDeclarationExpression(
-                TESTCONTEXT_TYPE, "testContext"));
-
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURESETUP_ATTR)));
-        }
-
-        public void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
-        {
-            memberMethod.Attributes |= MemberAttributes.Static;
-
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURETEARDOWN_ATTR)));
-        }
-
-        public void SetTestTearDown(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTTEARDOWN_ATTR)));
-        }
-
-        public void SetIgnore(CodeTypeMember codeTypeMember)
-        {
-            codeTypeMember.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(IGNORE_ATTR)));
-        }
-
-
-        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
+        public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
             // by default, doing nothing to the final generated code
-            return;
         }
 
-        public virtual void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+
+        public virtual void SetTestFixtureSetup(TestClassGenerationContext generationContext)
+        {
+            generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestClassInitializeMethod.Parameters.Add(new CodeParameterDeclarationExpression(
+                TESTCONTEXT_TYPE, "testContext"));
+
+            CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
+        }
+
+        public void SetTestFixtureTearDown(TestClassGenerationContext generationContext)
+        {
+            generationContext.TestClassCleanupMethod.Attributes |= MemberAttributes.Static;
+            CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR);
+        }
+
+
+        public void SetTestSetup(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
+        }
+
+        public void SetTestTearDown(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
+        }
+
+
+        public virtual void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        {
+            CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
+
+            //as in mstest, you cannot mark classes with the description attribute, we
+            //just apply it for each test method as a property
+            SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Title);
+        }
+
+        public virtual void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        {
+            //MsTest does not support caregories... :(
+        }
+
+        public void SetIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        {
+            CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
+        }
+
+
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        {
+            //MsTest does not support row tests... :(
+            throw new NotSupportedException();
+        }
+
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        {
+            //MsTest does not support row tests... :(
+            throw new NotSupportedException();
+        }
+
+
+        public virtual void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             if (!string.IsNullOrEmpty(exampleSetName))
             {
-                SetProperty(memberMethod.CustomAttributes,"ExampleSetName", exampleSetName);
+                SetProperty(testMethod, "ExampleSetName", exampleSetName);
             }
 
             if (!string.IsNullOrEmpty(variantName))
             {
-                SetProperty(memberMethod.CustomAttributes,"VariantName", variantName);
+                SetProperty(testMethod, "VariantName", variantName);
             }
 
             foreach (var pair in arguments)
             {
-                SetProperty(memberMethod.CustomAttributes, "Parameter:" + pair.Key, pair.Value);
+                SetProperty(testMethod, "Parameter:" + pair.Key, pair.Value);
             }
         }
     }

@@ -74,27 +74,4 @@ namespace TechTalk.SpecFlow
             testRunner.But(text, multilineTextArg, null);
         }
     }
-
-    public static class TestRunnerManager
-    {
-        // This method should be considered obsolete. Only retained to maintain backwards compatibility
-        // We should pass in a type or an instance so that we can potentially use the async runner
-        public static ITestRunner GetTestRunner()
-        {
-            return ObjectContainer.EnsureSyncTestRunner(Assembly.GetCallingAssembly());
-        }
-
-        public static ITestRunner GetTestRunner(object featureInstance)
-        {
-            return GetTestRunner(featureInstance.GetType());
-        }
-
-        public static ITestRunner GetTestRunner(Type featureType)
-        {
-            var callingAssembly = Assembly.GetCallingAssembly();
-            return typeof(IAsyncFeature).IsAssignableFrom(featureType)
-                       ? ObjectContainer.EnsureAsyncTestRunner(callingAssembly)
-                       : ObjectContainer.EnsureSyncTestRunner(callingAssembly);
-        }
-    }
 }
