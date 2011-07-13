@@ -12,6 +12,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string ASYNCTEST_BASE = "Microsoft.Silverlight.Testing.SilverlightTest";
         private const string ASYNCTEST_ATTR = "Microsoft.Silverlight.Testing.AsynchronousAttribute";
 
+        public override bool SupportsAsyncTests { get { return true; } }
+
         public override void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             generationContext.CustomData["featureCategories"] = featureCategories.ToArray();

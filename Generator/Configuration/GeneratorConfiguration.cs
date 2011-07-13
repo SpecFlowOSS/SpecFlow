@@ -71,6 +71,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
+                GenerateAsyncTests = configSection.Generator.GenerateAsyncTests;
                 GeneratorPath = configSection.Generator.GeneratorPath;
             }
 
