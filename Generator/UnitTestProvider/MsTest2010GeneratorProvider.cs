@@ -16,9 +16,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public override void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             base.SetTest(generationContext, testMethod, scenarioTitle);
-            var featureCategories = (string[]) generationContext.CustomData["featureCategories"];
-            if (featureCategories != null)
+            if (generationContext.CustomData.ContainsKey("featureCategories"))
+            {
+                var featureCategories = (string[])generationContext.CustomData["featureCategories"];
                 CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, featureCategories);
+            }
         }
 
         public override void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
