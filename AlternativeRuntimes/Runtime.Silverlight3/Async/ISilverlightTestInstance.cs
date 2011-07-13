@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow.AsyncContextProvider
+namespace TechTalk.SpecFlow.Async
 {
     // Implemented by the generated test code, to provide an easy way to
     // call into the enqueue methods. These map directly to the methods on

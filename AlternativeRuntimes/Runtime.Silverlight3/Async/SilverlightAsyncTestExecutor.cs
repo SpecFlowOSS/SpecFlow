@@ -1,19 +1,18 @@
 using System;
 using System.Reflection;
-using TechTalk.SpecFlow.Async;
 
-namespace TechTalk.SpecFlow.AsyncContextProvider
+namespace TechTalk.SpecFlow.Async
 {
     /// <summary>
-    /// Provides an implementation of <see cref="IAsyncContextImpl"/> using the Silverlight
+    /// Provides an implementation of <see cref="IAsyncTestExecutor"/> using the Silverlight
     /// Unit Testing Framework's asynchronous support.
     /// </summary>
-    public class SilverlightTestAsyncContext : IAsyncTestExecutor
+    public class SilverlightAsyncTestExecutor : IAsyncTestExecutor
     {
         private readonly ISilverlightTestInstance silverlightTestInstance;
         private readonly UnitTestingFrameworkHelper unitTestingFrameworkHelper;
 
-        public SilverlightTestAsyncContext(ISilverlightTestInstance silverlightTestInstance)
+        public SilverlightAsyncTestExecutor(ISilverlightTestInstance silverlightTestInstance)
         {
             this.silverlightTestInstance = silverlightTestInstance;
 

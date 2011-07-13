@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow.AsyncContextProvider
+namespace TechTalk.SpecFlow.Async
 {
     internal class UnitTestingFrameworkHelper
     {

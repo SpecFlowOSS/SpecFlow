@@ -64,7 +64,7 @@
     </Compile>
     <Compile Include="Async\ISilverlightTestInstance.cs" />
     <Compile Include="Async\ReflectionHelper.cs" />
-    <Compile Include="Async\SilverlightTestAsyncContext.cs" />
+    <Compile Include="Async\SilverlightAsyncTestExecutor.cs" />
     <Compile Include="Async\UnitTestingFrameworkHelper.cs" />
     <Compile Include="PlatformCompatibility\ConfigurationErrorsException.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />

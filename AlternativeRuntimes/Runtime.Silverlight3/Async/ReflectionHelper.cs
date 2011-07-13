@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace TechTalk.SpecFlow.AsyncContextProvider
+namespace TechTalk.SpecFlow.Async
 {
     // Yikes!
     internal class ReflectionHelper

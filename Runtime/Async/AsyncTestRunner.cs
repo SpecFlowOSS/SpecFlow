@@ -43,6 +43,13 @@ namespace TechTalk.SpecFlow.Async
             }
         }
 
+        static public void RegisterAsyncTestExecutor(ITestRunner testRunner, IAsyncTestExecutor newAsyncTestExecutor)
+        {
+            AsyncTestRunner asyncTestRunner = testRunner as AsyncTestRunner;
+            if (asyncTestRunner != null)
+                asyncTestRunner.RegisterAsyncTestExecutor(newAsyncTestExecutor);
+        }
+
         public void RegisterAsyncTestExecutor(IAsyncTestExecutor newAsyncTestExecutor)
         {
             UnregisterAsyncTestExecutor();
