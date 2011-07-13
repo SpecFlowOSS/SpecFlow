@@ -18,9 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             mockTestRunner = MockRepository.GenerateMock<ITestRunner>();
-            ObjectContainer.CurrentTestRunner = mockTestRunner;
-
-            steps = new StepsTestableHelper();
+            steps = new StepsTestableHelper(mockTestRunner);
         }
 
         [Test]
@@ -65,6 +63,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         public class StepsTestableHelper : Steps
         {
+            public StepsTestableHelper(ITestRunner testRunner) : base(testRunner)
+            {
+            }
         }
     }
 }

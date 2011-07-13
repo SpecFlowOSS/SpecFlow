@@ -4,11 +4,14 @@
     {
         private static ITestRunner _testRunner;
 
-        protected Steps()
+        protected Steps(ITestRunner testRunner)
         {
-            // This will be AsyncTestRunner for asynchronous tests, which means Given, When, Then, etc
-            // will be enqueued in a new context
-            _testRunner = ObjectContainer.CurrentTestRunner;
+            _testRunner = testRunner;
+        }
+
+        protected Steps() : this(ScenarioContext.Current.TestRunner)  // This will be AsyncTestRunner for asynchronous tests
+        {
+            _testRunner = ScenarioContext.Current.TestRunner;
         }
 
         #region Given

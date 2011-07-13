@@ -90,10 +90,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             FeatureLanguage = GetFeatureLanguage();
             CultureInfo bindingCulture = GetBindingCulture();
             ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"));
+            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"), null);
 
             ObjectContainer.StepFormatter = MockRepository.Stub<IStepFormatter>();
-            //ObjectContainer.TestTracer = MockRepository.Stub<ITestTracer>();
             ObjectContainer.TestTracer = new DummyTestTracer();
         }
 

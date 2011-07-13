@@ -91,7 +91,7 @@
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
     <Compile Include="Async\AsyncContext.cs" />
     <Compile Include="Async\AsyncTestRunner.cs" />
-    <Compile Include="Async\IAsyncContextImpl.cs" />
+    <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />

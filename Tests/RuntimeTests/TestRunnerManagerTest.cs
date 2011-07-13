@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using TechTalk.SpecFlow.Async;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

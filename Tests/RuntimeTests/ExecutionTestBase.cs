@@ -19,8 +19,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     public abstract class ExecutionTestBase
     {
-        [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
-        public void CanGenerateFromFile(string fileName)
+        protected void ExecuteForFile(string fileName)
         {
             Console.WriteLine(fileName);
             SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));

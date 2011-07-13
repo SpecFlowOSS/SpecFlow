@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -39,13 +40,14 @@ namespace TechTalk.SpecFlow
         private static ITestRunner syncTestRunner;
         private static ITestRunner asyncTestRunner;
 
-        public static ITestRunner CurrentTestRunner { get; set; }
-
-        internal static ITestRunner SyncTestRunner
-        {
-            get { return EnsureSyncTestRunner(Assembly.GetCallingAssembly()); }
-            set { syncTestRunner = value; }
-        }
+        //TODO
+//        public static ITestRunner CurrentTestRunner { get; set; }
+//
+//        internal static ITestRunner SyncTestRunner
+//        {
+//            get { return EnsureSyncTestRunner(Assembly.GetCallingAssembly()); }
+//            set { syncTestRunner = value; }
+//        }
 
         internal static ITestRunner EnsureSyncTestRunner(Assembly callingAssembly)
         {
@@ -58,11 +60,11 @@ namespace TechTalk.SpecFlow
                                });
         }
 
-        internal static ITestRunner AsyncTestRunner
-        {
-            get { return EnsureAsyncTestRunner(Assembly.GetCallingAssembly()); }
-            set { asyncTestRunner = value; }
-        }
+//        internal static ITestRunner AsyncTestRunner
+//        {
+//            get { return EnsureAsyncTestRunner(Assembly.GetCallingAssembly()); }
+//            set { asyncTestRunner = value; }
+//        }
 
         internal static ITestRunner EnsureAsyncTestRunner(Assembly callingAssembly)
         {
@@ -147,12 +149,6 @@ namespace TechTalk.SpecFlow
             ((IDisposable)scenarioContext).Dispose();
             scenarioContext = null;
         }
-
-        #endregion
-
-        #region AsyncContext
-
-        public static AsyncContext AsyncContext { get; internal set; }
 
         #endregion
 

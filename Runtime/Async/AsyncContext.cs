@@ -1,4 +1,5 @@
 using System;
+using TechTalk.SpecFlow.Async;
 
 namespace TechTalk.SpecFlow
 {
@@ -17,7 +18,7 @@ namespace TechTalk.SpecFlow
     /// </remarks>
     public class AsyncContext
     {
-        private readonly IAsyncContextImpl asyncContextImpl;
+        private readonly IAsyncTestExecutor asyncTestExecutor;
 
         /// <summary>
         /// Retrieve the current <see cref="AsyncContext"/>. Will be null unless the
@@ -25,12 +26,16 @@ namespace TechTalk.SpecFlow
         /// </summary>
         public static AsyncContext Current
         {
-            get { return ObjectContainer.AsyncContext; }
+            //get { return ObjectContainer.AsyncContext; }
+            get
+            {
+                throw new NotImplementedException(); //TODO
+            }
         }
 
-        private AsyncContext(IAsyncContextImpl asyncContextImpl)
+        private AsyncContext(IAsyncTestExecutor asyncTestExecutor)
         {
-            this.asyncContextImpl = asyncContextImpl;
+            this.asyncTestExecutor = asyncTestExecutor;
         }
 
         /// <summary>
@@ -38,23 +43,25 @@ namespace TechTalk.SpecFlow
         /// </summary>
         /// <remarks>
         /// Creates a new instance of <see cref="AsyncContext"/> using the given
-        /// <see cref="IAsyncContextImpl"/> as its implementation. Intended to be
+        /// <see cref="IAsyncTestExecutor"/> as its implementation. Intended to be
         /// called from the generated test code.
         /// </remarks>
-        public static void Register(IAsyncContextImpl asyncContextImpl)
+        public static void Register(IAsyncTestExecutor asyncTestExecutor)
         {
-            var asyncContext = new AsyncContext(asyncContextImpl);
-            ObjectContainer.AsyncContext = asyncContext;
+            var asyncContext = new AsyncContext(asyncTestExecutor);
+            //ObjectContainer.AsyncContext = asyncContext;
+            throw new NotImplementedException(); //TODO
         }
 
         internal static void Unregister()
         {
-            ObjectContainer.AsyncContext = null;
+            //ObjectContainer.AsyncContext = null;
+            throw new NotImplementedException(); //TODO
         }
 
         internal void EnqueueWithNewContext(Action action)
         {
-            asyncContextImpl.EnqueueWithNewContext(action);
+            asyncTestExecutor.EnqueueWithNewContext(action);
         }
 
         /// <summary>
@@ -63,7 +70,7 @@ namespace TechTalk.SpecFlow
         /// <param name="callback"></param>
         public void EnqueueCallback(Action callback)
         {
-            asyncContextImpl.EnqueueCallback(callback);
+            asyncTestExecutor.EnqueueCallback(callback);
         }
 
         /// <summary>
@@ -71,7 +78,7 @@ namespace TechTalk.SpecFlow
         /// </summary>
         public void EnqueueCallback(params Action[] callbacks)
         {
-            asyncContextImpl.EnqueueCallback(callbacks);
+            asyncTestExecutor.EnqueueCallback(callbacks);
         }
 
         /// <summary>
@@ -80,7 +87,7 @@ namespace TechTalk.SpecFlow
         /// <param name="continueUntil">Predicate that must return true before the work queue is continued.</param>
         public void EnqueueConditional(Func<bool> continueUntil)
         {
-            asyncContextImpl.EnqueueConditional(continueUntil);
+            asyncTestExecutor.EnqueueConditional(continueUntil);
         }
 
         /// <summary>
@@ -91,7 +98,7 @@ namespace TechTalk.SpecFlow
         /// </remarks>
         public void EnqueueDelay(TimeSpan delay)
         {
-            asyncContextImpl.EnqueueDelay(delay);
+            asyncTestExecutor.EnqueueDelay(delay);
         }
 
         /// <summary>
@@ -107,7 +114,7 @@ namespace TechTalk.SpecFlow
 
         internal void EnqueueTestComplete()
         {
-            asyncContextImpl.EnqueueTestComplete();
+            asyncTestExecutor.EnqueueTestComplete();
         }
     }
 }

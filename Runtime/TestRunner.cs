@@ -81,7 +81,6 @@ namespace TechTalk.SpecFlow
             CultureInfo bindingCulture = ObjectContainer.Configuration.BindingCulture ?? featureInfo.Language;
             ObjectContainer.FeatureContext = new FeatureContext(featureInfo, bindingCulture);
             FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
-            ObjectContainer.CurrentTestRunner = this;
         }
 
         public void OnFeatureEnd()
@@ -103,12 +102,11 @@ namespace TechTalk.SpecFlow
             }
 
             ObjectContainer.FeatureContext = null;
-            ObjectContainer.CurrentTestRunner = null;
         }
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo);
+            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 

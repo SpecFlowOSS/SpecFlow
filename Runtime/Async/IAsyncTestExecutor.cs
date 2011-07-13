@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Async
 {
     /// <summary>
     /// Intended for framework use.
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow
     /// implemented by the feature test classes.
     /// </para>
     /// </remarks>
-    public interface IAsyncContextImpl
+    public interface IAsyncTestExecutor : IDisposable
     {
         /// <summary>
         /// Enqueues an asynchronous and non-blocking wait for at least the given time before continuing.
@@ -84,8 +84,8 @@ namespace TechTalk.SpecFlow
         /// </para>
         /// <para>
         /// Used by the <see cref="AsyncTestRunner"/> during <see cref="ITestRunner.CollectScenarioErrors"/>.
-        /// Marked as internal abstract rather than implemented on <see cref="IAsyncContextImpl"/>
-        /// because <see cref="IAsyncContextImpl"/> is public (so others can implement it) and
+        /// Marked as internal abstract rather than implemented on <see cref="IAsyncTestExecutor"/>
+        /// because <see cref="IAsyncTestExecutor"/> is public (so others can implement it) and
         /// we don't want people calling it unexpectedly.
         /// </para>
         /// </remarks>
