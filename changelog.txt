@@ -28,6 +28,8 @@ New features:
 + Syntax coloring support for Visual Studio 2008. Uncheck this option in the installer if you are using cuke4vs. (by Avram Korets)
 + SharpDevelop 4 (#develop) integration. Enable SharpDevelop 4 integration in the installer and use the SharpDevelop AddIn Manager 
   to install the integration (select addin file from SpecFlow installation folder). (by Charles Weld)
++ Support for testing Silverlight asynchronous code. (by Matt Ellis & Ryan Burnham)
+  See https://github.com/techtalk/SpecFlow/wiki/Testing-Silverlight-Asynchronous-Code for details.
 
 Fixed issues:
 + Installer executes devenv /installtemplates even if VS2008 integration is not selected.
