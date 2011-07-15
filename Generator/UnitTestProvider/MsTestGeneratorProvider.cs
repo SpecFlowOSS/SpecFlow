@@ -72,6 +72,43 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public void SetTestSetup(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
+
+            //if (FeatureContext.Current != null && FeatureContext.Current.FeatureInfo.Title != "<current_feature_title>")
+            //  <TestClass>.<TestClassInitialize>(null);
+
+            FixTestRunOrderingIssue(generationContext);
+        }
+
+        protected virtual void FixTestRunOrderingIssue(TestClassGenerationContext generationContext)
+        {
+            //see https://github.com/techtalk/SpecFlow/issues/96
+            generationContext.TestInitializeMethod.Statements.Add(
+                new CodeConditionStatement(
+                    new CodeBinaryOperatorExpression(
+                        new CodeBinaryOperatorExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodeTypeReferenceExpression(typeof (FeatureContext)),
+                                "Current"),
+                            CodeBinaryOperatorType.IdentityInequality,
+                            new CodePrimitiveExpression(null)),
+                        CodeBinaryOperatorType.BooleanAnd,
+                        new CodeBinaryOperatorExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(
+                                    new CodePropertyReferenceExpression(
+                                        new CodeTypeReferenceExpression(typeof (FeatureContext)),
+                                        "Current"),
+                                    "FeatureInfo"),
+                                "Title"),
+                            CodeBinaryOperatorType.IdentityInequality,
+                            new CodePrimitiveExpression(generationContext.Feature.Title))),
+                    new CodeExpressionStatement(
+                        new CodeMethodInvokeExpression(
+                            new CodeTypeReferenceExpression(
+                                generationContext.Namespace.Name + "." + generationContext.TestClass.Name
+                                ),
+                            generationContext.TestClassInitializeMethod.Name,
+                            new CodePrimitiveExpression(null)))));
         }
 
         public void SetTestTearDown(TestClassGenerationContext generationContext)

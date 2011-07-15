@@ -26,6 +26,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
         }
 
+        protected override void FixTestRunOrderingIssue(TestClassGenerationContext generationContext)
+        {
+            //nop; hopefully the issue is not present on Silverlight
+        }
+
         public override void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             base.SetTest(generationContext, testMethod, scenarioTitle);
