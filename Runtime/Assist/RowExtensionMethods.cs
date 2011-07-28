@@ -61,25 +61,30 @@ namespace TechTalk.SpecFlow.Assist
             var value = row[id].Replace(" ", string.Empty);
 
             // Get all enums with values that matches the sought value
-            var p = (from property in typeof(T).GetProperties()
+            var properties = typeof(T).GetProperties();
+            var singleProperty = properties.Where(x=>x.Name == id);
+            var p = (from property in singleProperty
                      where property.PropertyType.IsEnum &&
                            EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
                      select property.PropertyType).ToList();
 
-            Type enumType;
-            try
-            {
-                enumType = p.Single();
-            }
-            catch (InvalidOperationException exception)
-            {
-                // Wrap in some nicer message
-                // We know that not exactly one hit has been found, hence the exception from Single
-                if (p.Any())
-                    // there was more than one hit
-                    throw new InvalidOperationException(string.Format("Found several enums with the value {0} in type {1}", value, typeof(T).Name));
+            if (p.Count() == 0)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
-            }
+
+            Type enumType = p.First();
+            //try
+            //{
+            //    enumType = p.Single();
+            //}
+            //catch (InvalidOperationException exception)
+            //{
+            //    // Wrap in some nicer message
+            //    // We know that not exactly one hit has been found, hence the exception from Single
+            //    if (p.Any())
+            //        // there was more than one hit
+            //        throw new InvalidOperationException(string.Format("Found several enums with the value {0} in type {1}", value, typeof(T).Name));
+            //    throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
+            //}
 
             // Save to parse this now
             return Enum.Parse(enumType, value, true) as Enum;

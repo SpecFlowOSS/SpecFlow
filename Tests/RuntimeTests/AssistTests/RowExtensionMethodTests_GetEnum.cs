@@ -107,5 +107,56 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             }
             exceptionThrown.ShouldBeTrue();
         }
+
+        [Test]
+        public void GetEnum_should_work_when_there_are_two_enums_of_the_same_type()
+        {
+            var table = new Table("Color", "AnotherColor");
+            table.AddRow("Red", "Green");
+
+            var row = table.Rows.First();
+
+            row.GetEnum<AClassWithTwoEnumsOfTheSameType>("Color")
+                .ShouldEqual(Colors.Red);
+
+            row.GetEnum<AClassWithTwoEnumsOfTheSameType>("AnotherColor")
+                .ShouldEqual(Colors.Green);
+        }
+
+        [Test]
+        public void GetEnums_should_only_return_the_enum_of_the_requested_property()
+        {
+            var table = new Table("ColorsAgain1", "Color", "ColorsAgain2");
+            table.AddRow("Green", "Green", "Green");
+
+            var row = table.Rows.First();
+
+            row.GetEnum<AClassWithSimilarEnums>("ColorsAgain1")
+                .ShouldEqual(ColorsAgain.Green);
+
+            row.GetEnum<AClassWithSimilarEnums>("Color")
+                .ShouldEqual(Colors.Green);
+
+            row.GetEnum<AClassWithSimilarEnums>("ColorsAgain2")
+                .ShouldEqual(ColorsAgain.Green);
+        }
+
+        public class AClassWithTwoEnumsOfTheSameType
+        {
+            public Colors Color { get; set; }
+            public Colors AnotherColor { get; set; }
+        }
+
+        public class AClassWithSimilarEnums
+        {
+            public ColorsAgain ColorsAgain1 { get; set; }
+            public Colors Color { get; set; }
+            public ColorsAgain ColorsAgain2 { get; set; }
+        }
+
+        public enum Colors { Red, Green, Blue }
+        public enum ColorsAgain { Red, Green, Blue}
+
+        public enum ShirtSizes { Small, Medium, Large }
     }
 }
