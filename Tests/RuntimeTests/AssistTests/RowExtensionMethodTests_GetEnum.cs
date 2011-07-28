@@ -71,25 +71,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void GetEnum_throws_exception_when_the_value_is_not_defined_in_more_than_one_Enum_in_the_type()
-        {
-            var table = new Table("Sex");
-            table.AddRow("Male");
-
-            var exceptionThrown = false;
-            try
-            {
-                var e = RowExtensionMethods.GetEnum<PersonWithStyle>(table.Rows.First(), "Sex");
-            }
-            catch (Exception exception)
-            {
-                if (exception.Message == "Found several enums with the value Male in type PersonWithStyle")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.ShouldBeTrue();
-        }
-
-        [Test]
         public void GetEnum_should_work_when_there_are_two_enums_of_the_same_type()
         {
             var table = new Table("Color", "AnotherColor");
