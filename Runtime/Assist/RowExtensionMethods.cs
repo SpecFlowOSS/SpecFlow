@@ -92,20 +92,7 @@ namespace TechTalk.SpecFlow.Assist
             if (p.Count() == 0)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
 
-            Type enumType = p.First();
-            //try
-            //{
-            //    enumType = p.Single();
-            //}
-            //catch (InvalidOperationException exception)
-            //{
-            //    // Wrap in some nicer message
-            //    // We know that not exactly one hit has been found, hence the exception from Single
-            //    if (p.Any())
-            //        // there was more than one hit
-            //        throw new InvalidOperationException(string.Format("Found several enums with the value {0} in type {1}", value, typeof(T).Name));
-            //    throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
-            //}
+            var enumType = p.First();
 
             // Save to parse this now
             return Enum.Parse(enumType, value, true) as Enum;
