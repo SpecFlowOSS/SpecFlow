@@ -3,6 +3,9 @@
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.6
 
+Fixed Issues:
++ Assist methods now work with classes with multiple properties of the same enum type.
+
 1.6.1 - 2011/04/15
 
 Fixed issues:
