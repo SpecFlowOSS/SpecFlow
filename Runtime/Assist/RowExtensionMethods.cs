@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -56,46 +57,37 @@ namespace TechTalk.SpecFlow.Assist
             return Convert.ToChar(row[id]);
         }
 
-        public static Enum GetEnumFromSingleInstanceRow<T>(this TableRow row)
+        internal static Enum GetEnumFromSingleInstanceRow<T>(this TableRow row)
         {
-            var value = row[1].Replace(" ", string.Empty);
-
-            // Get all enums with values that matches the sought value
-            var properties = typeof(T).GetProperties();
-            var singleProperty = properties.Where(x => x.Name == row[0]);
-            var p = (from property in singleProperty
-                     where property.PropertyType.IsEnum &&
-                           EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
-                     select property.PropertyType).ToList();
-
-            if (p.Count() == 0)
-                throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
-
-            Type enumType = p.First();
-
-            // Save to parse this now
-            return Enum.Parse(enumType, value, true) as Enum;
+            return GetTheEnumValue<T>(row[1], row[0]);
         }
 
         public static Enum GetEnum<T>(this TableRow row, string id)
         {
-            var value = row[id].Replace(" ", string.Empty);
+            return GetTheEnumValue<T>(row[id], id);
+        }
 
-            // Get all enums with values that matches the sought value
-            var properties = typeof(T).GetProperties();
-            var singleProperty = properties.Where(x=>x.Name == id);
-            var p = (from property in singleProperty
-                     where property.PropertyType.IsEnum &&
-                           EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
-                     select property.PropertyType).ToList();
+        private static Enum GetTheEnumValue<T>(string rowValue, string propertyName)
+        {
+            var value = rowValue.Replace(" ", string.Empty);
 
-            if (p.Count() == 0)
+            var enumType = GetTheEnumType<T>(propertyName, value);
+
+            return Enum.Parse(enumType, value, true) as Enum;
+        }
+
+        private static Type GetTheEnumType<T>(string propertyName, string value)
+        {
+            var propertyType = (from property in typeof (T).GetProperties()
+                                where property.Name == propertyName
+                                      && property.PropertyType.IsEnum
+                                      && EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
+                                select property.PropertyType);
+
+            if (propertyType.Count() == 0)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
 
-            var enumType = p.First();
-
-            // Save to parse this now
-            return Enum.Parse(enumType, value, true) as Enum;
+            return propertyType.First();
         }
 
         private static bool EnumValueIsDefinedCaseInsensitve(Type @enum, string value)
