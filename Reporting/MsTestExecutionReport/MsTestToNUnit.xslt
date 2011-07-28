@@ -197,6 +197,13 @@
 
       <xsl:attribute name="description">
         <xsl:value-of select="mstest:Description" />
+        <xsl:if test="mstest:Properties/mstest:Property[string(mstest:Key)='VariantName']">
+          <xsl:text>(</xsl:text>
+          <xsl:for-each select="mstest:Properties/mstest:Property[string(mstest:Key)='VariantName']">
+            <xsl:value-of select="mstest:Value"/>
+          </xsl:for-each>
+          <xsl:text>)</xsl:text>
+        </xsl:if>
       </xsl:attribute>
 
       <xsl:attribute name="executed">True</xsl:attribute>
