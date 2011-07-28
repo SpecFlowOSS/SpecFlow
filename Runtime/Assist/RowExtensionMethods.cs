@@ -60,18 +60,29 @@ namespace TechTalk.SpecFlow.Assist
         {
             var value = row[id].Replace(" ", string.Empty);
 
+            // Get all enums with values that matches the sought value
             var p = (from property in typeof(T).GetProperties()
                      where property.PropertyType.IsEnum &&
                            EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
                      select property.PropertyType).ToList();
 
-            if (p.Count == 1)
-                return Enum.Parse(p[0], value, true) as Enum;
-
-            if (p.Count == 0)
+            Type enumType;
+            try
+            {
+                enumType = p.Single();
+            }
+            catch (InvalidOperationException exception)
+            {
+                // Wrap in some nicer message
+                // We know that not exactly one hit has been found, hence the exception from Single
+                if (p.Any())
+                    // there was more than one hit
+                    throw new InvalidOperationException(string.Format("Found sevral enums with the value {0} in type {1}", value, typeof(T).Name));
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
+            }
 
-            throw new InvalidOperationException(string.Format("Found sevral enums with the value {0} in type {1}", value, typeof(T).Name));
+            // Save to parse this now
+            return Enum.Parse(enumType, value, true) as Enum;
         }
 
         private static bool EnumValueIsDefinedCaseInsensitve(Type @enum, string value)

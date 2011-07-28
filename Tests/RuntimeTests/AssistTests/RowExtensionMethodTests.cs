@@ -338,7 +338,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             {
                 var e = table.Rows.First().GetEnum<PersonWithStyle>("Sex");
             }
-            catch (InvalidOperationException exception)
+            catch (Exception exception)
             {
                 if (exception.Message == "Found sevral enums with the value Male in type PersonWithStyle")
                     exceptionThrown = true;
