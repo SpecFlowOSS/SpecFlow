@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\PivotTableTests.cs" />
+    <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\FillInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
