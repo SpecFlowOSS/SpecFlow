@@ -56,6 +56,27 @@ namespace TechTalk.SpecFlow.Assist
             return Convert.ToChar(row[id]);
         }
 
+        public static Enum GetEnumFromSingleInstanceRow<T>(this TableRow row)
+        {
+            var value = row[1].Replace(" ", string.Empty);
+
+            // Get all enums with values that matches the sought value
+            var properties = typeof(T).GetProperties();
+            var singleProperty = properties.Where(x => x.Name == row[0]);
+            var p = (from property in singleProperty
+                     where property.PropertyType.IsEnum &&
+                           EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
+                     select property.PropertyType).ToList();
+
+            if (p.Count() == 0)
+                throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
+
+            Type enumType = p.First();
+
+            // Save to parse this now
+            return Enum.Parse(enumType, value, true) as Enum;
+        }
+
         public static Enum GetEnum<T>(this TableRow row, string id)
         {
             var value = row[id].Replace(" ", string.Empty);
