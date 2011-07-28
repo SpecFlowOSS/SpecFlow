@@ -82,12 +82,12 @@ namespace TechTalk.SpecFlow.Assist
                                 where property.Name == propertyName
                                       && property.PropertyType.IsEnum
                                       && EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
-                                select property.PropertyType);
+                                select property.PropertyType).FirstOrDefault();
 
-            if (propertyType.Count() == 0)
+            if (propertyType == null)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
 
-            return propertyType.First();
+            return propertyType;
         }
 
         private static bool EnumValueIsDefinedCaseInsensitve(Type @enum, string value)
