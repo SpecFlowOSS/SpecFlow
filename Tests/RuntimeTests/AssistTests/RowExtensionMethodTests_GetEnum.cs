@@ -12,25 +12,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     public class RowExtensionMethodTests_GetEnum
     {
         [Test]
-        public void GetEnum_returns_enum_value_when_the_value_is_defined_in_the_type()
-        {
-            var table = new Table("Sex");
-            table.AddRow("NotDefinied");
-
-            var exceptionThrown = false;
-            try
-            {
-                var e = RowExtensionMethods.GetEnum<Person>(table.Rows.First(), "Sex");
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (exception.Message == "No enum with value NotDefinied found in type Person")
-                    exceptionThrown = true;
-            }
-            exceptionThrown.ShouldBeTrue();
-        }
-
-        [Test]
         public void GetEnum_should_return_the_enum_value_from_the_row()
         {
             var table = new Table("Sex");
