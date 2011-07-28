@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             }
             catch (Exception exception)
             {
-                if (exception.Message == "Found sevral enums with the value Male in type PersonWithStyle")
+                if (exception.Message == "Found several enums with the value Male in type PersonWithStyle")
                     exceptionThrown = true;
             }
             exceptionThrown.ShouldBeTrue();

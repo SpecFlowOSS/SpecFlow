@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.Assist
                 // We know that not exactly one hit has been found, hence the exception from Single
                 if (p.Any())
                     // there was more than one hit
-                    throw new InvalidOperationException(string.Format("Found sevral enums with the value {0} in type {1}", value, typeof(T).Name));
+                    throw new InvalidOperationException(string.Format("Found several enums with the value {0} in type {1}", value, typeof(T).Name));
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
             }
 
