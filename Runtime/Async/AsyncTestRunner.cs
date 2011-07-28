@@ -77,6 +77,14 @@ namespace TechTalk.SpecFlow.Async
             testRunner.OnFeatureEnd();
         }
 
+        public void OnTestRunEnd()
+        {
+            // No enqueueing
+            // We're at the end of the async task list, so again, feels like a smell to try and enqueue something
+            // And again, static method, so no context
+            testRunner.OnTestRunEnd();
+        }
+
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             if (asyncTestExecutor == null)

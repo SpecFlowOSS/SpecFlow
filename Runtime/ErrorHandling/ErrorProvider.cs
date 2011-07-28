@@ -82,6 +82,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
         {
             switch (RuntimeConfiguration.Current.MissingOrPendingStepsOutcome)
             {
+                case MissingOrPendingStepsOutcome.Pending:
+                    unitTestRuntimeProvider.TestPending(message);
+                    break;
                 case MissingOrPendingStepsOutcome.Inconclusive:
                     unitTestRuntimeProvider.TestInconclusive(message);
                     break;

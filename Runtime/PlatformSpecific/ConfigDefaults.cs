@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public const bool DetectAmbiguousMatches = true;
         public const bool StopAtFirstError = false;
-        public const MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome = TechTalk.SpecFlow.Configuration.MissingOrPendingStepsOutcome.Inconclusive;
+        public const MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome = TechTalk.SpecFlow.Configuration.MissingOrPendingStepsOutcome.Pending;
 
         public const bool TraceSuccessfulSteps = true;
         public const bool TraceTimings = false;

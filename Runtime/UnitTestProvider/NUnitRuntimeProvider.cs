@@ -11,6 +11,11 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         Action<string, object[]> assertInconclusive = null;
         Action<string, object[]> assertIgnore = null;
 
+        public void TestPending(string message)
+        {
+            TestInconclusive(message);
+        }
+
         public void TestInconclusive(string message)
         {
             if (assertInconclusive == null)

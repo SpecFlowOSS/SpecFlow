@@ -5,7 +5,12 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 {
 	public class XUnitRuntimeProvider : IUnitTestRuntimeProvider
 	{
-		public void TestInconclusive(string message)
+        public void TestPending(string message)
+        {
+            throw new SpecFlowException("Test pending: " + message);
+        }
+
+        public void TestInconclusive(string message)
 		{
 		    throw new SpecFlowException("Test inconclusive: " + message);
 		}

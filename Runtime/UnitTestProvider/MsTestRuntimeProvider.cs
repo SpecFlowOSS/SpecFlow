@@ -15,6 +15,11 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             get { return MSTEST_ASSEMBLY; }
         }
 
+        public void TestPending(string message)
+        {
+            TestInconclusive(message);
+        }
+
         public void TestInconclusive(string message)
         {
             if (assertInconclusive == null)

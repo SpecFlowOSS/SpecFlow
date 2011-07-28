@@ -9,7 +9,10 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 
         private Action<string, object[]> assertInconclusive;
 
-        #region IUnitTestRuntimeProvider Members
+        public void TestPending(string message)
+        {
+            TestInconclusive(message);
+        }
 
         public void TestInconclusive(string message)
         {
@@ -31,7 +34,5 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         {
             get { return true; }
         }
-
-        #endregion
     }
 }

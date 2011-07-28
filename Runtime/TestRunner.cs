@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow
             AppDomain.CurrentDomain.DomainUnload += 
                 delegate
                     {
-                        OnTestRunnerEnd();
+                        OnTestRunEnd();
                     };
             //TODO: Siverlight
 #endif
@@ -58,8 +58,14 @@ namespace TechTalk.SpecFlow
             FireEvents(BindingEvent.TestRunStart, null);
         }
 
-        protected virtual void OnTestRunnerEnd()
+        private bool testRunnerEndExecuted = false;
+
+        public virtual void OnTestRunEnd()
         {
+            if (testRunnerEndExecuted)
+                return;
+
+            testRunnerEndExecuted = true;
             FireEvents(BindingEvent.TestRunEnd, null);
         }
 
@@ -282,9 +288,9 @@ namespace TechTalk.SpecFlow
 
         private void ExecuteStep(StepArgs stepArgs)
         {
-            testTracer.TraceStep(stepArgs, true);
-
             HandleBlockSwitch(stepArgs.Type.ToScenarioBlock());
+
+            testTracer.TraceStep(stepArgs, true);
 
             BindingMatch match = null;
             object[] arguments = null;

@@ -12,6 +12,7 @@ namespace TechTalk.SpecFlow
         void OnScenarioStart(ScenarioInfo scenarioInfo);
         void CollectScenarioErrors();
         void OnScenarioEnd();
+        void OnTestRunEnd();
 
         void Given(string text, string multilineTextArg, Table tableArg);
         void When(string text, string multilineTextArg, Table tableArg);

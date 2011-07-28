@@ -166,20 +166,26 @@ namespace TechTalk.SpecFlow.Utils
             }
         }
 
-        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType)
+        public CodeAttributeDeclaration AddAttribute(CodeTypeMember codeTypeMember, string attrType)
         {
-            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(attrType);
+            codeTypeMember.CustomAttributes.Add(codeAttributeDeclaration);
+            return codeAttributeDeclaration;
         }
 
-        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType, params object[] attrValues)
+        public CodeAttributeDeclaration AddAttribute(CodeTypeMember codeTypeMember, string attrType, params object[] attrValues)
         {
-            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType,
-                attrValues.Select(attrValue => new CodeAttributeArgument(new CodePrimitiveExpression(attrValue))).ToArray()));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(attrType,
+                attrValues.Select(attrValue => new CodeAttributeArgument(new CodePrimitiveExpression(attrValue))).ToArray());
+            codeTypeMember.CustomAttributes.Add(codeAttributeDeclaration);
+            return codeAttributeDeclaration;
         }
 
-        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType, params CodeAttributeArgument[] attrArgumets)
+        public CodeAttributeDeclaration AddAttribute(CodeTypeMember codeTypeMember, string attrType, params CodeAttributeArgument[] attrArgumets)
         {
-            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType, attrArgumets));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(attrType, attrArgumets);
+            codeTypeMember.CustomAttributes.Add(codeAttributeDeclaration);
+            return codeAttributeDeclaration;
         }
 
         public void AddAttributeForEachValue<TValue>(CodeTypeMember codeTypeMember, string attrType, IEnumerable<TValue> attrValues)
