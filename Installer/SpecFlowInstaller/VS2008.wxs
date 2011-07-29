@@ -115,7 +115,7 @@
         </RegistryKey>
 
         <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Packages\{c0328222-6d96-11e0-9525-e7494824019b}" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2, TechTalk.SpecFlow.Vs2008Integration, Version=1.6.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41" Type="string"/>
+          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2, TechTalk.SpecFlow.Vs2008Integration, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41" Type="string"/>
           <RegistryValue Name="InprocServer32" Value="[SystemFolder]mscoree.dll" Type="string" />
           <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2" Type="string" />
           <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2008Integration.dll" Type="string" />
