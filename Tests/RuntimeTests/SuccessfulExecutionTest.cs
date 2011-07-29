@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using NUnit.Framework;
+using ParserTests;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -13,7 +14,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var testRunner = new TestRunner();
             testRunner.InitializeTestRunner(new Assembly[0]); // no bindings
-            ObjectContainer.TestRunner = testRunner;
+            ObjectContainer.SyncTestRunner = testRunner;
+        }
+
+        [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
+        public void CanExecuteForFile(string fileName)
+        {
+            ExecuteForFile(fileName);
         }
 
         protected override void ExecuteTests(object test, Feature feature)

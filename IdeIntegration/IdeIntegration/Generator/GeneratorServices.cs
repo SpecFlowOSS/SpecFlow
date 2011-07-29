@@ -1,24 +1,20 @@
 ﻿using System;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
-    public interface IGeneratorServices : IDisposable
-    {
-        void InvalidateSettings();
-        ITestGenerator CreateTestGenerator();
-        Version GetGeneratorVersion();
-    }
-
     public abstract class GeneratorServices : IGeneratorServices
     {
-        private readonly ITestGeneratorFactory testGeneratorFactory;
+        protected readonly ITestGeneratorFactory testGeneratorFactory;
+        protected readonly IIdeTracer tracer;
         private readonly bool enableSettingsCache = true;
         private ProjectSettings projectSettings = null;
 
-        protected GeneratorServices(ITestGeneratorFactory testGeneratorFactory, bool enableSettingsCache)
+        protected GeneratorServices(ITestGeneratorFactory testGeneratorFactory, IIdeTracer tracer, bool enableSettingsCache)
         {
             this.testGeneratorFactory = testGeneratorFactory;
+            this.tracer = tracer;
             this.enableSettingsCache = enableSettingsCache;
         }
 
@@ -44,7 +40,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         
         protected virtual ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
-            //TODO: create it in new AppDomain if neccessary
             return testGeneratorFactory; 
         }
 

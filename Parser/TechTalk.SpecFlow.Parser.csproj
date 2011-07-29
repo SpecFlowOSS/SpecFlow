@@ -112,7 +112,7 @@
     <Compile Include="SyntaxElements\Scenario.cs" />
     <Compile Include="SyntaxElements\ScenarioOutline.cs" />
     <Compile Include="SyntaxElements\ScenarioStep.cs" />
-    <Compile Include="SyntaxElements\Table.cs" />
+    <Compile Include="SyntaxElements\GherkinTable.cs" />
     <Compile Include="SyntaxElements\Tag.cs" />
     <Compile Include="SyntaxElements\Then.cs" />
     <Compile Include="SyntaxElements\When.cs" />

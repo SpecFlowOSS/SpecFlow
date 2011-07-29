@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FactoryMethods.cs" />
     <Compile Include="HandlingParserErrors.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

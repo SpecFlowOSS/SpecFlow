@@ -8,15 +8,15 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestUpToDateChecker : ITestUpToDateChecker
     {
-        protected readonly GeneratorConfiguration generatorConfiguration;
+        protected readonly GeneratorInfo generatorInfo;
         private readonly ITestHeaderWriter testHeaderWriter;
         private readonly ProjectSettings projectSettings;
 
-        public TestUpToDateChecker(ITestHeaderWriter testHeaderWriter, GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings)
+        public TestUpToDateChecker(ITestHeaderWriter testHeaderWriter, GeneratorInfo generatorInfo, ProjectSettings projectSettings)
         {
             this.testHeaderWriter = testHeaderWriter;
+            this.generatorInfo = generatorInfo;
             this.projectSettings = projectSettings;
-            this.generatorConfiguration = generatorConfiguration;
         }
 
         private bool IsUpToDateByModificationTimeAndGeneratorVersion(FeatureFileInput featureFileInput, string generatedTestFullPath)
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Generator
 
                 // check tools version
                 var codeFileVersion = testHeaderWriter.DetectGeneratedTestVersion(featureFileInput.GetGeneratedTestContent(generatedTestFullPath));
-                if (codeFileVersion == null || codeFileVersion != generatorConfiguration.GeneratorVersion)
+                if (codeFileVersion == null || codeFileVersion != generatorInfo.GeneratorVersion)
                     return false;
             }
             catch (Exception ex)

@@ -73,37 +73,6 @@
           <RegistryValue Name="ThreadingModel" Value="Both" Type="string" />
         </RegistryKey>
 
-        <!-- color highligher 2008 -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\InstalledProducts\RegularExpressionLanguageServicePackage2"  Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="#100" Type="string"/>
-          <RegistryValue Name="Package" Value="{c0328222-6d96-11e0-9525-e7494824019b}" Type="string" />
-          <RegistryValue Name="ProductDetails" Value="#102" Type="string" />
-          <RegistryValue Name="PID" Value="1.0" Type="string" />
-          <RegistryValue Name="LogoID" Value="#400" Type="string" />
-        </RegistryKey>
-
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Packages\{c0328222-6d96-11e0-9525-e7494824019b}" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2, TechTalk.SpecFlow.Vs2008Integration, Version=1.6.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41" Type="string"/>
-          <RegistryValue Name="InprocServer32" Value="[SystemFolder]mscoree.dll" Type="string" />
-          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2" Type="string" />
-          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2008Integration.dll" Type="string" />
-          <RegistryValue Name="ID" Value="1" Type="integer" />
-          <RegistryValue Name="MinEdition" Value="Standard" Type="string" />
-          <RegistryValue Name="ProductVersion" Value="1.0" Type="string" />
-          <RegistryValue Name="ProductName" Value="Regular Expression Language Service" Type="string" />
-          <RegistryValue Name="CompanyName" Value="Microsoft Corporation" Type="string" />
-        </RegistryKey>
-
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Languages\File Extensions\.feature" Action="createAndRemoveOnUninstall">
-          <RegistryValue  Value="$(var.CLSID_SpecFlowColorHighligher)" Type="string" />
-        </RegistryKey>
-
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Services\$(var.CLSID_SpecFlowColorHighligher)" Action="createAndRemoveOnUninstall">
-          <RegistryValue Value="{c0328222-6d96-11e0-9525-e7494824019b}" Type="string"/>
-          <RegistryValue Name="Name" Value="RegularExpressionLanguageService2" Type="string" />
-        </RegistryKey>
-
-
         <!-- VB.NET registration -->
         <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.VBLangId)\.feature" Action="createAndRemoveOnUninstall">
           <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
@@ -132,6 +101,38 @@
           <RegistryValue Value="Silverlight SpecFlow Generator" Type="string" />
           <RegistryValue Name="CLSID" Value="$(var.CLSID_SpecFlowSingleFileGenerator)" Type="string" />
           <RegistryValue Name="GeneratesDesignTimeSource" Value="1" Type="integer" />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="Comp_VS2008SyntaxColoring" Guid="31525C4B-0582-4126-9207-B3972C7EDACD">
+        <!-- color highligher 2008 -->
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\InstalledProducts\RegularExpressionLanguageServicePackage2"  Action="createAndRemoveOnUninstall">
+          <RegistryValue Value="#100" Type="string"/>
+          <RegistryValue Name="Package" Value="{c0328222-6d96-11e0-9525-e7494824019b}" Type="string" />
+          <RegistryValue Name="ProductDetails" Value="#102" Type="string" />
+          <RegistryValue Name="PID" Value="1.0" Type="string" />
+          <RegistryValue Name="LogoID" Value="#400" Type="string" />
+        </RegistryKey>
+
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Packages\{c0328222-6d96-11e0-9525-e7494824019b}" Action="createAndRemoveOnUninstall">
+          <RegistryValue Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2, TechTalk.SpecFlow.Vs2008Integration, Version=1.6.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41" Type="string"/>
+          <RegistryValue Name="InprocServer32" Value="[SystemFolder]mscoree.dll" Type="string" />
+          <RegistryValue Name="Class" Value="TechTalk.SpecFlow.Vs2008Integration.RegularExpressionLanguageServicePackage2" Type="string" />
+          <RegistryValue Name="CodeBase" Value="[INSTALLLOCATION]TechTalk.SpecFlow.Vs2008Integration.dll" Type="string" />
+          <RegistryValue Name="ID" Value="1" Type="integer" />
+          <RegistryValue Name="MinEdition" Value="Standard" Type="string" />
+          <RegistryValue Name="ProductVersion" Value="1.0" Type="string" />
+          <RegistryValue Name="ProductName" Value="Regular Expression Language Service" Type="string" />
+          <RegistryValue Name="CompanyName" Value="Microsoft Corporation" Type="string" />
+        </RegistryKey>
+
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Languages\File Extensions\.feature" Action="createAndRemoveOnUninstall">
+          <RegistryValue  Value="$(var.CLSID_SpecFlowColorHighligher)" Type="string" />
+        </RegistryKey>
+
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Services\$(var.CLSID_SpecFlowColorHighligher)" Action="createAndRemoveOnUninstall">
+          <RegistryValue Value="{c0328222-6d96-11e0-9525-e7494824019b}" Type="string"/>
+          <RegistryValue Name="Name" Value="RegularExpressionLanguageService2" Type="string" />
         </RegistryKey>
       </Component>
     </DirectoryRef>

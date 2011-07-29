@@ -8,7 +8,7 @@ using MiniDi;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    partial class ConfigurationSectionHandler : ConfigurationSection
+    public class ConfigurationSectionHandler : ConfigurationSection
     {
         [ConfigurationProperty("language", IsRequired = false)]
         public LanguageConfigElement Language
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["stepAssemblies"] = value; }
         }
 
-        static internal ConfigurationSectionHandler CreateFromXml(string xmlContent)
+        static public ConfigurationSectionHandler CreateFromXml(string xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
             section.Init();
@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.Configuration
             return section;
         }
 
-        static internal ConfigurationSectionHandler CreateFromXml(XmlNode xmlContent)
+        static public ConfigurationSectionHandler CreateFromXml(XmlNode xmlContent)
         {
             ConfigurationSectionHandler section = new ConfigurationSectionHandler();
             section.Init();
@@ -188,6 +188,20 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (bool)this["allowRowTests"]; }
             set { this["allowRowTests"] = value; }
+        }
+
+        [ConfigurationProperty("generateAsyncTests", DefaultValue = ConfigDefaults.GenerateAsyncTests, IsRequired = false)]
+        public bool GenerateAsyncTests
+        {
+            get { return (bool)this["generateAsyncTests"]; }
+            set { this["generateAsyncTests"] = value; }
+        }
+
+        [ConfigurationProperty("path", DefaultValue = ConfigDefaults.GeneratorPath, IsRequired = false)]
+        public string GeneratorPath
+        {
+            get { return (string)this["path"]; }
+            set { this["path"] = value; }
         }
     }
 

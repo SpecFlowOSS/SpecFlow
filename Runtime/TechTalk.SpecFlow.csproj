@@ -57,12 +57,42 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\EnumerableProjection.cs" />
+    <Compile Include="Assist\TEHelpers.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
+    <Compile Include="Assist\IValueComparer.cs" />
     <Compile Include="Assist\PivotTable.cs" />
+    <Compile Include="Assist\ProjectionExtensionMethods.cs" />
     <Compile Include="Assist\PropertyExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
+    <Compile Include="Assist\ValueComparers\BooleanValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\DoubleValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\DateTimeValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\DecimalValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\DefaultValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
+    <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableCharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableDoubleValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\DoubleValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\DateTimeValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\DecimalValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\IntValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableBoolValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableDateTimeValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableDecimalValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableGuidValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableIntValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
+    <Compile Include="Async\AsyncContext.cs" />
+    <Compile Include="Async\AsyncSteps.cs" />
+    <Compile Include="Async\AsyncTestRunner.cs" />
+    <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
@@ -76,7 +106,6 @@
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="DictionaryHelpers.cs" />
-    <Compile Include="GenerationTargetLanguage_obs.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
@@ -97,7 +126,8 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepArgs.cs" />
-    <Compile Include="StringExtensions.cs" />
+    <Compile Include="TestRunnerManager.cs" />
+    <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
     <Compile Include="Tracing\IStepDefinitionSkeletonProvider.cs" />
@@ -130,6 +160,7 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

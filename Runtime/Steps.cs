@@ -2,11 +2,16 @@
 {
     public abstract class Steps
     {
-        private static ITestRunner _testRunner;
+        protected readonly ITestRunner testRunner;
 
-        protected Steps()
+        protected Steps(ITestRunner testRunner)
         {
-            _testRunner = TestRunnerManager.GetTestRunner();
+            this.testRunner = testRunner;
+        }
+
+        protected Steps() : this(ScenarioContext.Current.TestRunner)  // This will be AsyncTestRunner for asynchronous tests
+        {
+            testRunner = ScenarioContext.Current.TestRunner;
         }
 
         #region Given
@@ -27,7 +32,7 @@
 
         public void Given(string step, string multilineTextArg, Table tableArg)
         {
-            _testRunner.Given(step, multilineTextArg, tableArg);
+            testRunner.Given(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -49,7 +54,7 @@
 
         public void When(string step, string multilineTextArg, Table tableArg)
         {
-            _testRunner.When(step, multilineTextArg, tableArg);
+            testRunner.When(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -71,7 +76,7 @@
 
         public void Then(string step, string multilineTextArg, Table tableArg)
         {
-            _testRunner.Then(step, multilineTextArg, tableArg);
+            testRunner.Then(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -93,7 +98,7 @@
 
         public void But(string step, string multilineTextArg, Table tableArg)
         {
-            _testRunner.But(step, multilineTextArg, tableArg);
+            testRunner.But(step, multilineTextArg, tableArg);
         }
         #endregion
 
@@ -115,7 +120,7 @@
 
         public void And(string step, string multilineTextArg, Table tableArg)
         {
-            _testRunner.And(step, multilineTextArg, tableArg);
+            testRunner.And(step, multilineTextArg, tableArg);
         }
         #endregion
     }

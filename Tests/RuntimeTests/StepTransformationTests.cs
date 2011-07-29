@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
-            ObjectContainer.ScenarioContext = new ScenarioContext(null);
+            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(null);
+            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
             BindingRegistry bindingRegistry = new BindingRegistry();
             ObjectContainer.BindingRegistry = bindingRegistry;
 
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldUseStepArgumentTransformationToConvertTable()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(null);
+            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
             BindingRegistry bindingRegistry = new BindingRegistry();
             ObjectContainer.BindingRegistry = bindingRegistry;
 

@@ -1,14 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Reflection;
+using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
-using System.Linq;
 
 namespace TechTalk.SpecFlow
 {
@@ -39,36 +37,48 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region TestRunner
-        private static ITestRunner testRunner = null;
+        private static ITestRunner syncTestRunner;
+        private static ITestRunner asyncTestRunner;
 
-        public static ITestRunner TestRunner
+        internal static ITestRunner SyncTestRunner
         {
-            get
-            {
-                return EnsureTestRunner(Assembly.GetCallingAssembly());
-            }
-            internal set
-            {
-                testRunner = value;
-            }
+            get { return EnsureSyncTestRunner(Assembly.GetCallingAssembly()); }
+            set { syncTestRunner = value; }
         }
 
-        internal static ITestRunner EnsureTestRunner(Assembly callingAssembly)
+        internal static ITestRunner EnsureSyncTestRunner(Assembly callingAssembly)
         {
-            return GetOrCreate(ref testRunner,
-                delegate
-                {
-                    var result = new TestRunner();
+            return GetOrCreate(ref syncTestRunner,
+                               delegate
+                               {
+                                   var runner = new TestRunner();
+                                   InitialiseTestRunner(runner, callingAssembly);
+                                   return runner;
+                               });
+        }
 
-                    List<Assembly> bindingAssemblies = new List<Assembly>();
-                    bindingAssemblies.Add(callingAssembly);
+        internal static ITestRunner AsyncTestRunner
+        {
+            get { return EnsureAsyncTestRunner(Assembly.GetCallingAssembly()); }
+            set { asyncTestRunner = value; }
+        }
 
-                    bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
+        internal static ITestRunner EnsureAsyncTestRunner(Assembly callingAssembly)
+        {
+            return GetOrCreate(ref asyncTestRunner,
+                               delegate
+                               {
+                                   var runner = new AsyncTestRunner(EnsureSyncTestRunner(callingAssembly));
+                                   InitialiseTestRunner(runner, callingAssembly);
+                                   return runner;
+                               });
+        }
 
-                    result.InitializeTestRunner(bindingAssemblies.ToArray());
-
-                    return result;
-                });
+        private static void InitialiseTestRunner(ITestRunner runner, Assembly callingAssembly)
+        {
+            var bindingAssemblies = new List<Assembly> { callingAssembly };
+            bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
+            runner.InitializeTestRunner(bindingAssemblies.ToArray());
         }
 
         #endregion

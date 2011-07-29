@@ -1,8 +1,41 @@
 ﻿Next - ???
 
+Breaking changes:
++ There are a few breaking changes in the generated test code. If you upgrade to SpecFlow 1.7, you should either 
+  re-generate the tests, or setup your project to use a version for generating the tests that is compatible with
+  the runtime you use (see "Using SpecFlow generator from the project's lib folder" feature).
+
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.3.6
++ Using SpecFlow generator from the project's lib folder instead of SpecFlow installed for IDE integration.
+  The VS2010 integration can be installed independently from projects using a different version. The VS2010
+  integration checks the generator in the following paths:
+  1. generator path configured in app.config (<generator path="..\lib\SpecFlow"/>)
+  2. generator assembly (TechTalk.SpecFlow.Generator.dll) referenced from the SpecFlow project
+  3. generator in the same folder as the runtime (TechTalk.SpecFlow.dll)
+  4. generator is near to the runtime ("tools" or "..\tools", relative to the runtime)
+  5. generator obtained through NuGet ("..\..\tools", relative to the runtime)
+  If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
+  If you use any custom plugins (e.g. unit test generator), this has to be in the same folder as the generator 
+  currently.
++ Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (Vagif Abilov)
++ Cleaned-up CreateInstance<T> and CreateSet<T> for greater code maintainability.
++ Cleaned-up CompareToInstance<T> and CompareToSet<T> for greater code maintainability, and slightly more accurate value comparisons (like decimals with trailing zeroes).
++ Removed the |Field|Value| requirement for CreateInstance<T> and CompareToInstance<T>. Any header names can be used, so long as the first column is the name of the property and the second column is the value.
++ Can use empty spaces and different casing in the tables used for comparison (i.e. can use |First name| instead of |FirstName| )
++ Tables used with CreateInstance<T> and CompareToInstance<T> can now be one-row tables with each field as a column (instead of requiring a vertical table with "Field/Value" headers)
++ A default function to create a default instance can be passed to CreateInstance<T> and CreateSet<T>. 
++ Syntax coloring support for Visual Studio 2008. Uncheck this option in the installer if you are using cuke4vs. (by Avram Korets)
++ SharpDevelop 4 (#develop) integration. Enable SharpDevelop 4 integration in the installer and use the SharpDevelop AddIn Manager 
+  to install the integration (select addin file from SpecFlow installation folder). (by Charles Weld)
++ Support for testing Silverlight asynchronous code. (by Matt Ellis & Ryan Burnham)
+  See https://github.com/techtalk/SpecFlow/wiki/Testing-Silverlight-Asynchronous-Code for details.
 
+Fixed issues:
++ Installer executes devenv /installtemplates even if VS2008 integration is not selected.
++ Duplicated logic between generator and runtime (generator depends on runtime now)
++ MsTest tests are not properly attached to the right feature (Issue 96)
+ 
 Fixed Issues:
 + Assist methods now work with classes with multiple properties of the same enum type.
 

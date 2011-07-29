@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         public string Keyword { get; set; }
         public string Text { get; set; }
         public string MultiLineTextArgument { get; set; }
-        public Table TableArg { get; set; }
+        public GherkinTable TableArg { get; set; }
         public FilePosition FilePosition { get; set; }
 
         public ScenarioStep Clone()

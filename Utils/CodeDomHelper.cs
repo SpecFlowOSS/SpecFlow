@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Globalization;
@@ -162,6 +164,28 @@ namespace TechTalk.SpecFlow.Utils
                 default:
                     return msg;
             }
+        }
+
+        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType)
+        {
+            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType));
+        }
+
+        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType, params object[] attrValues)
+        {
+            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType,
+                attrValues.Select(attrValue => new CodeAttributeArgument(new CodePrimitiveExpression(attrValue))).ToArray()));
+        }
+
+        public void AddAttribute(CodeTypeMember codeTypeMember, string attrType, params CodeAttributeArgument[] attrArgumets)
+        {
+            codeTypeMember.CustomAttributes.Add(new CodeAttributeDeclaration(attrType, attrArgumets));
+        }
+
+        public void AddAttributeForEachValue<TValue>(CodeTypeMember codeTypeMember, string attrType, IEnumerable<TValue> attrValues)
+        {
+            foreach (var attrValue in attrValues)
+                AddAttribute(codeTypeMember, attrType, attrValue);
         }
     }
 }

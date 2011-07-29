@@ -38,9 +38,8 @@ namespace ParserTests
 
                     Console.WriteLine("Testing {0}", Path.GetFileName(testFile));
 
-                    var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
                     var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider();
-                    var converter = new SpecFlowUnitTestConverter(sampleTestGeneratorProvider, codeDomHelper, true, true);
+                    var converter = FactoryMethods.CreateUnitTestConverter(sampleTestGeneratorProvider);
                     CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
                     Assert.IsNotNull(code);
@@ -76,21 +75,20 @@ namespace ParserTests
                 }
             }
 
-            public override void FinalizeTestClass(System.CodeDom.CodeNamespace codeNameSpace)
+            public override void FinalizeTestClass(TestClassGenerationContext generationContext)
             {
-                base.FinalizeTestClass(codeNameSpace);
+                base.FinalizeTestClass(generationContext);
                 // change namespace 
-                codeNameSpace.Name = DefaultNameSpace;
-
+                generationContext.Namespace.Name = DefaultNameSpace;
             }
 
-            public override void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+            public override void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
             {
-                base.SetTestVariant(memberMethod, title, exampleSetName, variantName, arguments);
+                base.SetTestVariant(generationContext, testMethod, scenarioTitle, exampleSetName, variantName, arguments);
 
                 // change memberMethodName
-                memberMethod.Name = GetMethodName(title, exampleSetName, arguments);
-                newTitles.Add(memberMethod.Name);
+                testMethod.Name = GetMethodName(scenarioTitle, exampleSetName, arguments);
+                newTitles.Add(testMethod.Name);
             }
 
             public List<string> newTitles = new List<string>();

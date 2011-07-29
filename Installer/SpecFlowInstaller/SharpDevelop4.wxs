@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?include Common.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+    <ComponentGroup Id="CompGroup_SharpDevelop4">
+      <ComponentRef Id="Comp_SharpDevelop4Integration_Core" />
+      <ComponentRef Id="Comp_SharpDevelop4Templates" />
+    </ComponentGroup>
+
+    <!-- CompGroup_SHARPDEVELOP4 core integration components -->
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="Comp_SharpDevelop4Integration_Core" Guid="B54570DC-97BD-4D1F-A023-6D97A6F2DAF0">
+        <File Id="TechTalk.SpecFlow.SharpDevelop4Integration.dll" Name="TechTalk.SpecFlow.SharpDevelop4Integration.dll" Source="$(var.TechTalk.SpecFlow.SharpDevelop4Integration.TargetDir)\TechTalk.SpecFlow.SharpDevelop4Integration.dll" />
+        <File Id="TechTalk.SpecFlow.SharpDevelop4Integration.addin" Name="TechTalk.SpecFlow.SharpDevelop4Integration.addin" Source="$(var.TechTalk.SpecFlow.SharpDevelop4Integration.TargetDir)\TechTalk.SpecFlow.SharpDevelop4Integration.addin" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- unfortunately installing an addin this way is not stable, as for new SharpDevelop installations the AddIns.xml is not there yet. -->
+    <!--<DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="Comp_SharpDevelop4Integration_InstallAddIn" Guid="AB165AA5-EA1E-408E-B57A-E1DC90EC6D71">
+        <CreateFolder Directory="INSTALLLOCATION" />
+        
+        --><!-- we need to modify the AddIns.xml file like this:
+             <AddInConfiguration>
+               <AddIn file="C:\Program Files...\SpecFlow\TechTalk.SpecFlow.SharpDevelop4Integration.addin" />
+             </AddInConfiguration>
+        --><!--
+
+        <util:XmlConfig On="install" Action="create" Id="SharpDevelop4_RegisterAddin" Sequence="1001" Node="element"
+                        File="[AppDataFolder]ICSharpCode\SharpDevelop4.0\AddIns.xml"
+                        ElementPath="/AddInConfiguration" Name="AddIn" 
+                        VerifyPath="AddIn[\[]@file='[INSTALLLOCATION]TechTalk.SpecFlow.SharpDevelop4Integration.addin'[\]]" />
+        <util:XmlConfig Id="SharpDevelop4_RegisterAddin_FileAttr" Sequence="1002"
+                        File="[AppDataFolder]ICSharpCode\SharpDevelop4.0\AddIns.xml"
+                        ElementPath="SharpDevelop4_RegisterAddin" Name="file" Value="[INSTALLLOCATION]TechTalk.SpecFlow.SharpDevelop4Integration.addin"  />
+
+        --><!-- this should do the removal on unistall, but does not work... 
+        <util:XmlConfig On="uninstall" Action="delete" Id="SharpDevelop4_UnRegisterAddin" Sequence="1" Node="element"
+                        File="[AppDataFolder]ICSharpCode\SharpDevelop4.0\AddIns.xml"
+                        ElementPath="/AddInConfiguration"
+                        VerifyPath='AddIn[\[]@file="[INSTALLLOCATION]TechTalk.SpecFlow.SharpDevelop4Integration.addin"[\]]' />
+        --><!--
+      </Component>-->
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Directory Id="Dir_SharpDevelop4_PF" Name="Dir_SharpDevelop4_PF">
+        <Directory Id="Dir_SharpDevelop4_PF_4_data" Name="data">
+          <Directory Id="Dir_SharpDevelop4_PF_4_data_tpl" Name="templates">
+            <Directory Id="Dir_SharpDevelop4_PF_4_data_tpl_file" Name="file">
+              <Directory Id="Dir_SharpDevelop4_ItemTemplates" Name="SpecFlow" FileSource="$(var.TechTalk.SpecFlow.SharpDevelop4Integration.TargetDir)\Templates\">
+                <Component Id="Comp_SharpDevelop4Templates" Guid="AA339BC2-FE70-4A0D-A022-BEDC8E4C741F">
+                  <File Id="SpecFlowFeature.xft_SHARPDEV4" Name="SpecFlowFeature.xft" />
+                  <File Id="SpecFlowEventDefinition.xft_SHARPDEV4" Name="SpecFlowEventDefinition.xft" />
+                  <File Id="SpecFlowStepDefinition.xft_SHARPDEV4" Name="SpecFlowStepDefinition.xft" />
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <PropertyRef Id='SHARPDEVELOP4PATH'/>
+    <SetDirectory Id="Dir_SharpDevelop4_PF" Value="[SHARPDEVELOP4PATH]" Sequence="both" />
+  </Fragment>
+</Wix>

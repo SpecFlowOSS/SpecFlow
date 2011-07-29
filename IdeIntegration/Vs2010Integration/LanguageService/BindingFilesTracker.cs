@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public string ProjectRelativePath { get; private set; }
         public bool IsAnalyzed { get; set; }
-        public IEnumerable<StepBinding> StepBindings { get; set; }
+        public IEnumerable<StepBindingNew> StepBindings { get; set; }
 
         public BindingFileInfo(ProjectItem projectItem)
         {

@@ -21,8 +21,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public GherkinDialectServices GherkinDialectServices { get; private set; }
         public IIntegrationOptionsProvider IntegrationOptionsProvider { get; private set; }
 
-        public event EventHandler SpecFlowProjectConfigurationChanged;
-        public event EventHandler GherkinDialectServicesChanged;
+        public event EventHandler SpecFlowProjectConfigurationChanged { add {} remove {} }
+        public event EventHandler GherkinDialectServicesChanged { add { } remove { } }
 
         public GherkinScopeAnalyzer GherkinScopeAnalyzer
         {

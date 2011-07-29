@@ -8,43 +8,24 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 
-        public override void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
+        public override void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            base.SetTestFixture(typeDeclaration, title, description);
-
-            featureCategories = null;
+            generationContext.CustomData["featureCategories"] = featureCategories.ToArray();
         }
 
-        private IEnumerable<string> featureCategories = null;
-
-        public override void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        public override void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
-            featureCategories = categories.ToArray();
-        }
-
-        public override void SetTest(CodeMemberMethod memberMethod, string title)
-        {
-            base.SetTest(memberMethod, title);
-            if (featureCategories != null)
-                SetCategories(memberMethod.CustomAttributes, featureCategories);
-        }
-
-        public override void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
-        {
-            SetCategories(memberMethod.CustomAttributes, categories);
-        }
-
-        private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
-        {
-            foreach (var category in categories)
+            base.SetTest(generationContext, testMethod, scenarioTitle);
+            if (generationContext.CustomData.ContainsKey("featureCategories"))
             {
-                customAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        new CodeTypeReference(CATEGORY_ATTR),
-                        new CodeAttributeArgument(
-                            new CodePrimitiveExpression(category))));
+                var featureCategories = (string[])generationContext.CustomData["featureCategories"];
+                CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, featureCategories);
             }
         }
 
+        public override void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        {
+            CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
+        }
     }
 }

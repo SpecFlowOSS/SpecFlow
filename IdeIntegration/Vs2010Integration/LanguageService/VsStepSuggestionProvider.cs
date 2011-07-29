@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool bindingsPopulated = false;
         private readonly VsProjectScope vsProjectScope;
 
-        private readonly Dictionary<BindingFileInfo, List<StepBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBinding>>();
+        private readonly Dictionary<BindingFileInfo, List<StepBindingNew>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBindingNew>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
         public bool Populated
@@ -133,20 +133,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
 
-        private static StepScope CreateStepScope(Feature feature, Scenario scenario)
+        private static StepScopeNew CreateStepScope(Feature feature, Scenario scenario)
         {
             var tags =
                 (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Concat(scenario.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScope(feature.Title, scenario.Title, tags.ToArray());
+            return new StepScopeNew(feature.Title, scenario.Title, tags.ToArray());
         }
 
-        private static StepScope CreateStepScope(Feature feature)
+        private static StepScopeNew CreateStepScope(Feature feature)
         {
             var tags = (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScope(feature.Title, null, tags.ToArray());
+            return new StepScopeNew(feature.Title, null, tags.ToArray());
         }
 
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)
@@ -222,7 +222,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
         {
-            List<StepBinding> bindings;
+            List<StepBindingNew> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -232,7 +232,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
         {
-            List<StepBinding> bindings;
+            List<StepBindingNew> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -240,7 +240,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                bindings = new List<StepBinding>();
+                bindings = new List<StepBindingNew>();
                 bindingSuggestions.Add(bindingFileInfo, bindings);
             }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using ParserTests;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -12,6 +13,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [TestFixture]
     public class ValidateStepAndEventOrdersTest : ExecutionTestBase
     {
+        [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]
+        public void CanValidateStepAndEventOrdersForFile(string fileName)
+        {
+            ExecuteForFile(fileName);
+        }
+
         protected override void ExecuteTests(object test, Feature feature)
         {
             MockRepository mockRepository = SetupTests(feature);
@@ -34,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private void SetupTestRunnerMock(MockRepository mockRepository, Feature feature)
         {
             var testRunnerMock = mockRepository.StrictMock<ITestRunner>();
-            ObjectContainer.TestRunner = testRunnerMock;
+            ObjectContainer.SyncTestRunner = testRunnerMock;
             using (mockRepository.Ordered())
             {
                 testRunnerMock.Expect(tr => tr.OnFeatureStart(null)).IgnoreArguments();

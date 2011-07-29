@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 namespace TechTalk.SpecFlow
@@ -71,14 +72,6 @@ namespace TechTalk.SpecFlow
         public static void But(this ITestRunner testRunner, string text, string multilineTextArg)
         {
             testRunner.But(text, multilineTextArg, null);
-        }
-    }
-
-    public static class TestRunnerManager
-    {
-        public static ITestRunner GetTestRunner()
-        {
-            return ObjectContainer.EnsureTestRunner(Assembly.GetCallingAssembly());
         }
     }
 }

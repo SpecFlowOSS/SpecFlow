@@ -2,11 +2,11 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-    public class NUnitTestConverter : IUnitTestGeneratorProvider
+    public class NUnitTestConverter : IUnitTestGeneratorProvider, ICodeDomHelperRequired
     {
         private const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
         private const string TEST_ATTR = "NUnit.Framework.TestAttribute";
@@ -19,58 +19,78 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
         private const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
 
+        public CodeDomHelper CodeDomHelper { get; set; }
+
         public bool SupportsRowTests { get { return true; } }
+        public bool SupportsAsyncTests { get { return false; } }
 
-        public void SetTestFixture(CodeTypeDeclaration typeDeclaration, string title, string description)
+        public void SetTestFixture(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
-            typeDeclaration.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURE_ATTR)));
-
-            SetDescription(typeDeclaration.CustomAttributes, title);
+            CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
+            CodeDomHelper.AddAttribute(generationContext.TestClass, DESCRIPTION_ATTR, featureDescription);
         }
 
-        private void SetDescription(CodeAttributeDeclarationCollection customAttributes, string description)
+        public void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            customAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(DESCRIPTION_ATTR),
-                    new CodeAttributeArgument(
-                        new CodePrimitiveExpression(description))));
+            CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, CATEGORY_ATTR, featureCategories);
         }
 
-        private void SetCategories(CodeAttributeDeclarationCollection customAttributes, IEnumerable<string> categories)
+        public void SetTestClassIgnore(TestClassGenerationContext generationContext)
         {
-            foreach (var category in categories)
-            {
-                customAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        new CodeTypeReference(CATEGORY_ATTR),
-                        new CodeAttributeArgument(
-                            new CodePrimitiveExpression(category))));
-            }
+            CodeDomHelper.AddAttribute(generationContext.TestClass, IGNORE_ATTR);
         }
 
-        public void SetTestFixtureCategories(CodeTypeDeclaration typeDeclaration, IEnumerable<string> categories)
+        public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {
-            SetCategories(typeDeclaration.CustomAttributes, categories);
+            // by default, doing nothing to the final generated code
         }
 
-        public void SetTest(CodeMemberMethod memberMethod, string title)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TEST_ATTR)));
 
-            SetDescription(memberMethod.CustomAttributes, title);
-        }
-        
-        public void SetRowTest(CodeMemberMethod memberMethod, string title)
+        public void SetTestFixtureSetup(TestClassGenerationContext generationContext)
         {
-            SetTest(memberMethod, title);
+            CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
         }
 
-        public void SetRow(CodeMemberMethod memberMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public void SetTestFixtureTearDown(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR);
+        }
+
+
+        public void SetTestSetup(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
+        }
+
+        public void SetTestTearDown(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
+        }
+
+
+        public void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        {
+            CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
+        }
+
+        public void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        {
+            CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
+        }
+
+        public void SetIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        {
+            CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
+        }
+
+
+        public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        {
+            SetTest(generationContext, testMethod, scenarioTitle);
+        }
+
+        public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             var args = arguments.Select(
               arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
@@ -82,63 +102,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             if (isIgnored)
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
 
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(ROW_ATTR),
-                    args.ToArray()));
+            CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
 
-        public void SetTestCategories(CodeMemberMethod memberMethod, IEnumerable<string> categories)
-        {
-            SetCategories(memberMethod.CustomAttributes, categories);
-        }
-
-        public void SetTestSetup(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTSETUP_ATTR)));
-        }
-
-        public void SetTestFixtureSetup(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURESETUP_ATTR)));
-        }
-
-        public void SetTestFixtureTearDown(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTFIXTURETEARDOWN_ATTR)));
-        }
-
-        public void SetTestTearDown(CodeMemberMethod memberMethod)
-        {
-            memberMethod.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(TESTTEARDOWN_ATTR)));
-        }
-
-        public void SetIgnore(CodeTypeMember codeTypeMember)
-        {
-            codeTypeMember.CustomAttributes.Add(
-                new CodeAttributeDeclaration(
-                    new CodeTypeReference(IGNORE_ATTR)));
-        }
-
-
-        public virtual void FinalizeTestClass(CodeNamespace codeNameSpace)
-        {
-            // by default, doing nothing to the final generated code
-            return;
-        }
-
-        public void SetTestVariant(CodeMemberMethod memberMethod, string title, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
-            return;
         }
     }
 }

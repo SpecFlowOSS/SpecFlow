@@ -4,14 +4,12 @@ using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
-using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
-using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -130,7 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, integrationOptions.EnableAnalysis);
 
-            GeneratorServices = new VsGeneratorServices(project);
+            GeneratorServices = new VsGeneratorServices(project, new VsSpecFlowConfigurationReader(project, visualStudioTracer), visualStudioTracer);
         }
 
         private void EnsureInitialized()
@@ -182,7 +180,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void FeatureFilesTrackerOnReady()
         {
             //compare generated file versions with the generator version
-            Version generatorVersion = SpecFlowProjectConfiguration.GeneratorConfiguration.GeneratorVersion;
+            Version generatorVersion = GeneratorServices.GetGeneratorVersion(); //TODO: cache GeneratorVersion
             if (generatorVersion == null)
                 return;
 
@@ -247,12 +245,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
-            ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
-            ISpecFlowProjectConfigurationLoader configurationLoader = new VsSpecFlowProjectConfigurationLoader(); //TODO: load through DI
+            ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, visualStudioTracer); //TODO: load through DI
+            ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoaderWithoutPlugins(); //TODO: load through DI
 
-            IProjectReference projectReference = new VsProjectScopeReference(this);
-
-            return configurationLoader.LoadConfiguration(configurationReader.ReadConfiguration(projectReference), projectReference);
+            try
+            {
+                return configurationLoader.LoadConfiguration(configurationReader.ReadConfiguration());
+            }
+            catch(Exception exception)
+            {
+                visualStudioTracer.Trace("Configuration loading error: " + exception, "VsProjectScope");
+                return new SpecFlowProjectConfiguration();
+            }
         }
 
         private void OnSpecFlowProjectConfigurationChanged()

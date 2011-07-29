@@ -16,3 +16,5 @@ _ReSharper*/
 *.cache
 *.gpState
 test-results
+
+*.docstates

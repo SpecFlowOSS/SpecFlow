@@ -1,29 +1,45 @@
 ﻿using System;
+using System.Configuration;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
-    public abstract class SpecFlowProjectConfigurationLoader : ISpecFlowProjectConfigurationLoader
+    public class SpecFlowProjectConfigurationLoader : ISpecFlowProjectConfigurationLoader
     {
-        public virtual SpecFlowProjectConfiguration LoadConfiguration(SpecFlowConfigurationHolder configurationHolder, IProjectReference projectReference)
+        public virtual SpecFlowProjectConfiguration LoadConfiguration(SpecFlowConfigurationHolder configurationHolder)
         {
-            SpecFlowProjectConfiguration configuration = new SpecFlowProjectConfiguration();
-
-            if (configurationHolder != null && configurationHolder.HasConfiguration)
+            try
             {
-                ConfigurationSectionHandler specFlowConfigSection = ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
-                if (specFlowConfigSection != null)
+                SpecFlowProjectConfiguration configuration = new SpecFlowProjectConfiguration();
+
+                if (configurationHolder != null && configurationHolder.HasConfiguration)
                 {
-                    configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection);
-                    configuration.RuntimeConfiguration.UpdateFromConfigFile(specFlowConfigSection);
+                    ConfigurationSectionHandler specFlowConfigSection =
+                        ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
+                    if (specFlowConfigSection != null)
+                    {
+                        UpdateGeneratorConfiguration(configuration, specFlowConfigSection);
+                        UpdateRuntimeConfiguration(configuration, specFlowConfigSection);
+                    }
                 }
+                return configuration;
             }
-            configuration.GeneratorConfiguration.GeneratorVersion = GetGeneratorVersion(projectReference);
-            return configuration;
+            catch(Exception ex)
+            {
+                throw new ConfigurationErrorsException("SpecFlow configuration error", ex);
+            }
         }
 
-        protected abstract Version GetGeneratorVersion(IProjectReference projectReference);
+        internal virtual void UpdateRuntimeConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
+        {
+            configuration.RuntimeConfiguration.UpdateFromConfigFile(specFlowConfigSection);
+        }
+
+        internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
+        {
+            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection, true);
+        }
     }
 }

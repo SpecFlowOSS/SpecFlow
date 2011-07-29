@@ -1,8 +1,8 @@
-﻿namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
+﻿using TechTalk.SpecFlow.IdeIntegration.Tracing;
+
+namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
 {
-    public interface IVisualStudioTracer
+    public interface IVisualStudioTracer : IIdeTracer
     {
-        void Trace(string message, string category);
-        bool IsEnabled(string category);
     }
 }

@@ -35,8 +35,18 @@ namespace TechTalk.SpecFlow
         internal List<string> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
-        public ScenarioContext(ScenarioInfo scenarioInfo)
+        internal ITestRunner TestRunner { get; private set; } //TODO: initialize
+
+        [Obsolete("eliminate this method when separating test runner from test execution engine")]
+        internal void SetTestRunnerUnchecked(ITestRunner newTestRunner)
         {
+            TestRunner = newTestRunner;
+        }
+
+        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
+        {
+            TestRunner = testRunner;
+
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
 
@@ -49,7 +59,7 @@ namespace TechTalk.SpecFlow
 
         public void Pending()
         {
-            ObjectContainer.TestRunner.Pending();
+            TestRunner.Pending();
         }
 
         private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();

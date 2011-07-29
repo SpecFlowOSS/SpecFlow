@@ -199,6 +199,19 @@ IDoNotExist: Property does not exist");
         }
 
         [Test]
+        public void Will_match_decimals_regardless_of_trailing_zeroes()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("DecimalProperty", "4.23");
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
+                                                                                 {
+                                                                                     DecimalProperty = 4.23000000M
+                                                                                 });
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+        }
+
+        [Test]
         public void Throws_exception_when_the_result_is_null()
         {
             var table = new Table("Field", "Value");
@@ -216,6 +229,49 @@ IDoNotExist: Property does not exist");
             var exception = GetExceptionThrownByThisComparison(table, null);
 
             exception.Message.ShouldEqual("The item to compare was null.");
+        }
+
+        [Test]
+        public void Ignores_spaces_when_matching_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("String Property", "Howard Roark");
+
+            var test = new InstanceComparisonTestObject { StringProperty = "Howard Roark" };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Test]
+        public void Ignores_casing_when_matching_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("STRINGproperty", "Howard Roark");
+
+            var test = new InstanceComparisonTestObject { StringProperty = "Howard Roark" };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Test]
+        public void Can_compare_a_horizontal_table()
+        {
+            var table = new Table("StringProperty", "IntProperty", "DecimalProperty");
+            table.AddRow("Test", "42", "23.01");
+
+            var test = new InstanceComparisonTestObject
+                           {
+                               StringProperty = "Test",
+                               IntProperty = 42,
+                               DecimalProperty = 23.01M
+                           };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
         }
 
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, InstanceComparisonTestObject test)

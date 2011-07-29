@@ -4,28 +4,32 @@ using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Generator
 {
-    internal class VsGeneratorServices : GeneratorServices
+    internal class VsGeneratorServices : RemoteGeneratorServices
     {
-        private readonly Project project;
+        protected readonly Project project;
         private readonly ISpecFlowConfigurationReader configurationReader;
 
-        public VsGeneratorServices(Project project) : base(
+        public VsGeneratorServices(Project project, ISpecFlowConfigurationReader configurationReader, IIdeTracer tracer) : base(
             new TestGeneratorFactory(), //TODO: load through DI
-            false)
+            new RemoteAppDomainTestGeneratorFactory(tracer), //TODO: load through DI
+            new VsGeneratorInfoProvider(project, tracer, configurationReader), //TODO: load through DI
+            tracer, false)
         {
             this.project = project;
-            this.configurationReader = new VsSpecFlowConfigurationReader(); //TODO: load through DI
+            this.configurationReader = configurationReader;
         }
 
         protected override ProjectSettings GetProjectSettings()
         {
+            tracer.Trace("Discover project settings", "VsGeneratorServices");
+
             ProjectPlatformSettings projectPlatformSettings;
             var tergetLanguage = VsProjectScope.GetTargetLanguage(project);
             switch (tergetLanguage)
@@ -52,8 +56,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
                     throw new NotSupportedException("target language not supported");
             }
 
-            var configurationHolder = configurationReader.ReadConfiguration(new VsProjectReference(project));
-            return new ProjectSettings()
+            var configurationHolder = configurationReader.ReadConfiguration();
+            return new ProjectSettings
                        {
                            ProjectName = Path.GetFileNameWithoutExtension(project.FullName),
                            AssemblyName = VsxHelper.GetProjectAssemblyName(project),

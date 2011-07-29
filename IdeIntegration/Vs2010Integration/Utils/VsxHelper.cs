@@ -5,11 +5,13 @@ using System.IO;
 using System.Linq;
 using EnvDTE;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Utils;
+using VSLangProj;
 using Constants = EnvDTE.Constants;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
@@ -323,6 +325,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         public static string GetProjectAssemblyName(Project project)
         {
             return project.Properties.Item("AssemblyName").Value as string;
+        }
+
+        public static T ResolveMefDependency<T>(System.IServiceProvider serviceProvider) where T : class
+        {
+            IComponentModel componentModel = (IComponentModel)serviceProvider.GetService(typeof(SComponentModel));
+            return componentModel.GetService<T>();
+        }
+
+        public static Reference GetReference(Project project, string assemblyName)
+        {
+            VSProject vsProject = project.Object as VSProject;
+            if (vsProject == null)
+                return null;
+
+            return vsProject.References.OfType<Reference>().FirstOrDefault(r => r.Name == assemblyName);
         }
     }
 }

@@ -48,11 +48,14 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Generator\GeneratorServices.cs" />
+    <Compile Include="Generator\IGeneratorServices.cs" />
+    <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Options\IIntegrationOptionsProvider.cs" />
     <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Generator\RemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Generator\RemoteGeneratorServices.cs" />
+    <Compile Include="Tracing\IIdeTracer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

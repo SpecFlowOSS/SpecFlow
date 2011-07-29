@@ -24,6 +24,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SharpDevelop4.wxs" />
     <Compile Include="VS2010.wxs" />
     <Compile Include="CoreFiles.wxs" />
     <Compile Include="Product.wxs" />
@@ -54,6 +55,10 @@
       <Private>True</Private>
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IdeIntegration\SharpDevelop4Integration\TechTalk.SpecFlow.SharpDevelop4Integration.csproj">
+      <Project>{C091E608-2A76-40B2-9548-AB5A2A77BD78}</Project>
+      <Name>TechTalk.SpecFlow.SharpDevelop4Integration</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\IdeIntegration\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
       <Name>TechTalk.SpecFlow.IdeIntegration</Name>
@@ -116,6 +121,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>..\..\lib\WiX\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>

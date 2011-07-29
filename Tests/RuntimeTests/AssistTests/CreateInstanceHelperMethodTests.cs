@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -23,6 +24,69 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             var person = table.CreateInstance<Person>();
             person.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Create_instance_will_set_values_with_a_vertical_table_when_there_is_one_row_and_one_column()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("Howard");
+            var person = table.CreateInstance<Person>();
+
+            person.FirstName.ShouldEqual("Howard");
+        }
+
+        [Test]
+        public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_not_a_property_then_treat_as_horizontal_table()
+        {
+            var table = new Table("AnotherValue", "YetAnotherValue");
+            table.AddRow("x", "y");
+
+            var test = table.CreateInstance<TestingVerticalTable>();
+            test.AnotherValue.ShouldEqual("x");
+            test.YetAnotherValue.ShouldEqual("y");
+        }
+
+        [Test]
+        public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_a_property_then_treat_as_a_vertical_table()
+        {
+            var table = new Table("AnotherValue", "YetAnotherValue");
+            table.AddRow("AnotherValue", "applesauce");
+
+            var test = table.CreateInstance<TestingVerticalTable>();
+            test.AnotherValue.ShouldEqual("applesauce");
+            test.YetAnotherValue.ShouldBeNull();
+        }
+
+        [Test]
+        public void When_one_row_exists_with_two_headers_and_the_first_row_value_is_a_property_without_perfect_name_match_then_treat_as_a_vertical_table()
+        {
+            var table = new Table("AnotherValue", "YetAnotherValue");
+            table.AddRow("Another  value", "applesauce");
+
+            var test = table.CreateInstance<TestingVerticalTable>();
+            test.AnotherValue.ShouldEqual("applesauce");
+            test.YetAnotherValue.ShouldBeNull();
+        }
+
+        [Test]
+        public void When_one_row_exists_with_three_headers_then_treat_as_horizontal_table()
+        {
+            var table = new Table("Field", "Value", "AnotherValue");
+            table.AddRow("one", "two", "three");
+
+            var test = table.CreateInstance<TestingVerticalTable>();
+            test.Field.ShouldEqual("one");
+            test.Value.ShouldEqual("two");
+            test.AnotherValue.ShouldEqual("three");
+        }
+
+        public class TestingVerticalTable
+        {
+            public string Field { get; set; }
+            public string Value { get; set; }
+            public string AnotherValue { get; set; }
+            public string YetAnotherValue { get; set; }
         }
 
         [Test]

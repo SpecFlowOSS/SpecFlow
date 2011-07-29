@@ -12,8 +12,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
     {
         public ContainerRegistrationCollection CustomDependencies { get; set; }
 
-        public Version GeneratorVersion { get; set; }
-
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
         public CultureInfo ToolLanguage { get; set; }
@@ -24,6 +22,10 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
+        public bool GenerateAsyncTests { get; set; }
+        public string GeneratorPath { get; set; }
+
+        public bool UsesPlugins { get; private set; }
 
         public GeneratorConfiguration()
         {
@@ -34,11 +36,13 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
+            GenerateAsyncTests = ConfigDefaults.GenerateAsyncTests;
+            GeneratorPath = ConfigDefaults.GeneratorPath;
 
-            GeneratorVersion = TestGeneratorFactory.GeneratorVersion;
+            UsesPlugins = false;
         }
 
-        internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection)
+        internal void UpdateFromConfigFile(ConfigurationSectionHandler configSection, bool loadPlugins)
         {
             if (configSection == null) throw new ArgumentNullException("configSection");
 
@@ -54,7 +58,11 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 SetUnitTestDefaultsByName(configSection.UnitTestProvider.Name);
 
                 if (!string.IsNullOrEmpty(configSection.UnitTestProvider.GeneratorProvider))
-                    GeneratorUnitTestProviderType = GetTypeConfig(configSection.UnitTestProvider.GeneratorProvider);
+                {
+                    if (loadPlugins)
+                        GeneratorUnitTestProviderType = GetTypeConfig(configSection.UnitTestProvider.GeneratorProvider);
+                    UsesPlugins = true;
+                }
 
                 //TODO: config.CheckUnitTestConfig();
             }
@@ -63,10 +71,15 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
+                GenerateAsyncTests = configSection.Generator.GenerateAsyncTests;
+                GeneratorPath = configSection.Generator.GeneratorPath;
             }
 
             if (configSection.Generator != null && configSection.Generator.Dependencies != null)
+            {
                 CustomDependencies = configSection.Generator.Dependencies;
+                UsesPlugins = true; //TODO: this calculation can be refined later
+            }
         }
 
         private static Type GetTypeConfig(string typeName)
@@ -113,7 +126,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(other.FeatureLanguage, FeatureLanguage) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.GeneratorUnitTestProviderType, GeneratorUnitTestProviderType) && other.AllowDebugGeneratedFiles.Equals(AllowDebugGeneratedFiles) && other.AllowRowTests.Equals(AllowRowTests) && other.GeneratorVersion.Equals(GeneratorVersion);
+            return Equals(other.FeatureLanguage, FeatureLanguage) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.GeneratorUnitTestProviderType, GeneratorUnitTestProviderType) && other.AllowDebugGeneratedFiles.Equals(AllowDebugGeneratedFiles) && other.AllowRowTests.Equals(AllowRowTests);
         }
 
         public override bool Equals(object obj)

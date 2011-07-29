@@ -1,0 +1,28 @@
+﻿<AddIn name        = "SpecFlow"
+       author      = "Charles Weld"
+       url         = "http://www.specflow.org"
+       copyright   = "Simplified BSD License"
+       description = "SpecFlow - Pragmatic BDD for .NET, visit http://www.specflow.org for details.">
+	<Manifest>
+		<Identity name="TechTalk.SpecFlow.SharpDevelop4Integration" version="@TechTalk.SpecFlow.SharpDevelop4Integration.dll"/>
+    <Dependency addin="SharpDevelop" version="4.0"/>
+	</Manifest>
+	<Runtime>
+		<Import assembly = "TechTalk.SpecFlow.SharpDevelop4Integration.dll"/>
+		<Import assembly = "TechTalk.SpecFlow.Generator" />
+		<Import assembly = "TechTalk.SpecFlow.Parser" />
+	</Runtime>
+	
+	<Path name = "/SharpDevelop/Workbench/FileFilter">
+		<FileFilter id = "SpecFlow Features"
+		            insertbefore="AllFiles"
+		            name = "SpecFlow Feature (*.feature)"
+		            extensions = "*.feature"/>
+	</Path>
+
+	<Path name = "/SharpDevelop/CustomTools">
+		<CustomTool id    = "SpecFlowSingleFileGenerator"
+		            class = "TechTalk.SpecFlow.SharpDevelop4Integration.SpecFlowSingleFileGenerator"
+		            fileNamePattern = "\.feature$"/>
+	</Path>
+</AddIn>

@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8FACCF0-5497-4C6B-861F-78D72FD9561B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TechTalk.SpecFlow.RuntimeTests</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.RuntimeTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\nunit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\mocking\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Should">
+      <HintPath>..\..\lib\Should\Should.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\PivotTableTests.cs" />
+<<<<<<< HEAD
+    <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
+=======
+    <Compile Include="AssistTests\ProjectionTests.cs" />
+>>>>>>> master
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests_WithFunc.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\FillInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\TestInfrastructure\InstanceComparisonTestObject.cs" />
+    <Compile Include="AssistTests\TestInfrastructure\ComparisonTestResult.cs" />
+    <Compile Include="AssistTests\ExampleEntities\NullablePerson.cs" />
+    <Compile Include="AssistTests\InstanceComparisonExtensionMethodsTests.cs" />
+    <Compile Include="AssistTests\TestInfrastructure\SetComparisonTestObject.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetHelperMethodTests.cs" />
+    <Compile Include="AssistTests\TableHelperExtensionMethods\CreateSetWithNullableValuesTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\Person.cs" />
+    <Compile Include="AssistTests\ExampleEntities\Enums.cs" />
+    <Compile Include="AssistTests\ExampleEntities\PersonWithStyle.cs" />
+    <Compile Include="AssistTests\PropertyExtensionMethodsTests.cs" />
+    <Compile Include="AssistTests\RowExtensionMethodTests.cs" />
+    <Compile Include="AssistTests\SetComparisonExtensionMethods_MessageTests.cs" />
+    <Compile Include="AssistTests\SetComparisonExtensionMethods_ThrowTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\BooleanValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DoubleValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DateTimeValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\DecimalValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueComparerTests\GuidValueComparerTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableCharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDoubleValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DoubleValueRetreiverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DateTimeValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DecimalValueRetreiverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\IntValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableBoolValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDateTimeValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDecimalValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableGuidValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableIntValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
+    <Compile Include="AsyncTests\AsyncContextTest.cs" />
+    <Compile Include="AsyncTests\AsyncTestRunnerTest.cs" />
+    <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
+    <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
+    <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepsTest.cs" />
+    <Compile Include="TableTests.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
+    <Compile Include="StronglyTypedContextAcessorTests.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsFeatureIsNonEnglishButBindingIsEnglishCulture.cs" />
+    <Compile Include="StepExecutionTests.cs" />
+    <Compile Include="StepExecutionTestsBase.cs" />
+    <Compile Include="StepExecutionTestsWithConversions.cs" />
+    <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
+    <Compile Include="StepTransformationTests.cs" />
+    <Compile Include="StepArgumentTypeConverterTest.cs" />
+    <Compile Include="ConfigurationTest.cs" />
+    <Compile Include="ExecutionTestBase.cs" />
+    <Compile Include="NUnitTestExecutor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SuccessfulCompilationTest.cs" />
+    <Compile Include="SuccessfulExecutionTest.cs" />
+    <Compile Include="TestRunnerManagerTest.cs" />
+    <Compile Include="TestRunnerTest.cs" />
+    <Compile Include="ValidateStepAndEventOrdersTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
+      <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
+      <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParserTests\ParserTests.csproj">
+      <Project>{70376361-0BE1-478D-8EEC-47BD1C768165}</Project>
+      <Name>ParserTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
