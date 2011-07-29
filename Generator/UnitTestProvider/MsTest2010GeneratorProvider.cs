@@ -8,14 +8,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 
-        public override void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             generationContext.CustomData["featureCategories"] = featureCategories.ToArray();
         }
 
-        public override void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
-            base.SetTest(generationContext, testMethod, scenarioTitle);
+            base.SetTestMethod(generationContext, testMethod, scenarioTitle);
             if (generationContext.CustomData.ContainsKey("featureCategories"))
             {
                 var featureCategories = (string[])generationContext.CustomData["featureCategories"];
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
-        public override void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public override void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
         }

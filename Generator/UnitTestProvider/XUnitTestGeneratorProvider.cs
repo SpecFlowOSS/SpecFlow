@@ -25,17 +25,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public bool SupportsRowTests { get { return true; } }
         public bool SupportsAsyncTests { get { return false; } }
 
-        public void SetTestFixture(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             // xUnit does not use an attribute for the TestFixture, all public classes are potential fixtures
         }
 
-        public void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             // xUnit does not support caregories
         }
 
-        public void SetTestFixtureSetup(TestClassGenerationContext generationContext)
+        public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             // xUnit uses IUseFixture<T> on the class
 
@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassInitializeMethod.Name));
         }
 
-        public void SetTestFixtureTearDown(TestClassGenerationContext generationContext)
+        public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {
             // xUnit uses IUseFixture<T> on the class
 
@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassCleanupMethod.Name));
         }
 
-        public void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE);
 
@@ -124,12 +124,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, INLINEDATA_ATTRIBUTE, args.ToArray());
         }
 
-        public void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             // xUnit does not support caregories
         }
 
-        public void SetTestSetup(TestClassGenerationContext generationContext)
+        public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             // xUnit uses a parameterless constructor
 
@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestInitializeMethod.Name));
         }
 
-        public void SetTestTearDown(TestClassGenerationContext generationContext)
+        public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
         {
             // xUnit supports test tear down through the IDisposable interface
 
@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //TODO: how to do class level ignore?
         }
 
-        public void SetIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
                 .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
@@ -201,7 +201,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // by default, doing nothing to the final generated code
         }
 
-        public void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
         }

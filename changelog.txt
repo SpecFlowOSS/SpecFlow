@@ -39,6 +39,7 @@ Fixed issues:
 + Duplicated logic between generator and runtime (generator depends on runtime now)
 + MsTest tests are not properly attached to the right feature (Issue 96)
 + Assist methods now work with classes with multiple properties of the same enum type.
++ Refactor IUnitTestGeneratorProvider interface to be more consistent (Issue 4)
 
 1.6.1 - 2011/04/15
 

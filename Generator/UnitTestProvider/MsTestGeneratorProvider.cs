@@ -32,12 +32,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(codeTypeMember, PROPERTY_ATTR, name, value);
         }
 
-        public virtual void SetTestFixture(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public virtual void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
         }
 
-        public virtual void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             //MsTest does not support caregories... :(
         }
@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetTestFixtureSetup(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
             generationContext.TestClassInitializeMethod.Parameters.Add(new CodeParameterDeclarationExpression(
@@ -62,14 +62,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
         }
 
-        public void SetTestFixtureTearDown(TestClassGenerationContext generationContext)
+        public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassCleanupMethod.Attributes |= MemberAttributes.Static;
             CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR);
         }
 
 
-        public void SetTestSetup(TestClassGenerationContext generationContext)
+        public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
 
@@ -111,13 +111,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                             new CodePrimitiveExpression(null)))));
         }
 
-        public void SetTestTearDown(TestClassGenerationContext generationContext)
+        public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
         }
 
 
-        public virtual void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
@@ -127,12 +127,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Title);
         }
 
-        public virtual void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             //MsTest does not support caregories... :(
         }
 
-        public void SetIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
         }
@@ -151,7 +151,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public virtual void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             if (!string.IsNullOrEmpty(exampleSetName))
             {

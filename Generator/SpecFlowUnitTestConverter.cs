@@ -137,10 +137,10 @@ namespace TechTalk.SpecFlow.Generator
 
             AddLinePragmaInitial(generationContext.TestClass, generationContext.Feature.SourceFile);
 
-            testGeneratorProvider.SetTestFixture(generationContext, generationContext.Feature.Title, generationContext.Feature.Description);
+            testGeneratorProvider.SetTestClass(generationContext, generationContext.Feature.Title, generationContext.Feature.Description);
             if (generationContext.Feature.Tags != null)
             {
-                testGeneratorProvider.SetTestFixtureCategories(generationContext, GetNonIgnoreTags(generationContext.Feature.Tags));
+                testGeneratorProvider.SetTestClassCategories(generationContext, GetNonIgnoreTags(generationContext.Feature.Tags));
                 if (HasIgnoreTag(generationContext.Feature.Tags))
                     testGeneratorProvider.SetTestClassIgnore(generationContext);
             }
@@ -181,7 +181,7 @@ namespace TechTalk.SpecFlow.Generator
             testClassInitializeMethod.Attributes = MemberAttributes.Public;
             testClassInitializeMethod.Name = TESTCLASS_INITIALIZE_NAME;
 
-            testGeneratorProvider.SetTestFixtureSetup(generationContext);
+            testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
             //testRunner = TestRunnerManager.GetTestRunner();
             var testRunnerField = GetTestRunnerExpression();
@@ -234,7 +234,7 @@ namespace TechTalk.SpecFlow.Generator
             testClassCleanupMethod.Attributes = MemberAttributes.Public;
             testClassCleanupMethod.Name = TESTCLASS_CLEANUP_NAME;
 
-            testGeneratorProvider.SetTestFixtureTearDown(generationContext);
+            testGeneratorProvider.SetTestClassCleanupMethod(generationContext);
 
             var testRunnerField = GetTestRunnerExpression();
             //            testRunner.OnFeatureEnd();
@@ -256,7 +256,7 @@ namespace TechTalk.SpecFlow.Generator
             testInitializeMethod.Attributes = MemberAttributes.Public;
             testInitializeMethod.Name = TEST_INITIALIZE_NAME;
 
-            testGeneratorProvider.SetTestSetup(generationContext);
+            testGeneratorProvider.SetTestInitializeMethod(generationContext);
         }
 
         private void SetupTestCleanupMethod(TestClassGenerationContext generationContext)
@@ -266,7 +266,7 @@ namespace TechTalk.SpecFlow.Generator
             testCleanupMethod.Attributes = MemberAttributes.Public;
             testCleanupMethod.Name = TEST_CLEANUP_NAME;
 
-            testGeneratorProvider.SetTestTearDown(generationContext);
+            testGeneratorProvider.SetTestCleanupMethod(generationContext);
 
             var testRunnerField = GetTestRunnerExpression();
             //testRunner.OnScenarioEnd();
@@ -466,7 +466,7 @@ namespace TechTalk.SpecFlow.Generator
                     argumentExpressions.ToArray()));
 
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells[paramIndex].Value)).ToList();
-            testGeneratorProvider.SetTestVariant(generationContext, testMethod, scenarioOutline.Title, exampleSetTitle, variantName, arguments);
+            testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Title, exampleSetTitle, variantName, arguments);
         }
 
         private void GenerateTest(TestClassGenerationContext generationContext, Scenario scenario)
@@ -554,7 +554,7 @@ namespace TechTalk.SpecFlow.Generator
             if (rowTest)
                 testGeneratorProvider.SetRowTest(generationContext, testMethod, scenario.Title);
             else
-                testGeneratorProvider.SetTest(generationContext, testMethod, scenario.Title);
+                testGeneratorProvider.SetTestMethod(generationContext, testMethod, scenario.Title);
 
             if (scenario.Tags != null)
                 SetCategoriesFromTags(generationContext, testMethod, scenario.Tags);
@@ -564,9 +564,9 @@ namespace TechTalk.SpecFlow.Generator
 
         private void SetCategoriesFromTags(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, Tags tags)
         {
-            testGeneratorProvider.SetTestCategories(generationContext, testMethod, GetNonIgnoreTags(tags));
+            testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, GetNonIgnoreTags(tags));
             if (HasIgnoreTag(tags))
-                testGeneratorProvider.SetIgnore(generationContext, testMethod);
+                testGeneratorProvider.SetTestMethodIgnore(generationContext, testMethod);
         }
 
         private CodeExpression GetSubstitutedString(string text, ParameterSubstitution paramToIdentifier)

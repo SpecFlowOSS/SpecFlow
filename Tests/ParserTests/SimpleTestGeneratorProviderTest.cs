@@ -82,9 +82,9 @@ namespace ParserTests
                 generationContext.Namespace.Name = DefaultNameSpace;
             }
 
-            public override void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+            public override void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
             {
-                base.SetTestVariant(generationContext, testMethod, scenarioTitle, exampleSetName, variantName, arguments);
+                base.SetTestMethodAsRow(generationContext, testMethod, scenarioTitle, exampleSetName, variantName, arguments);
 
                 // change memberMethodName
                 testMethod.Name = GetMethodName(scenarioTitle, exampleSetName, arguments);

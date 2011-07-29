@@ -25,13 +25,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public bool SupportsRowTests { get { return true; } }
         public bool SupportsAsyncTests { get { return false; } }
 
-        public void SetTestFixture(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        public void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, TESTFIXTURE_ATTR);
             CodeDomHelper.AddAttribute(generationContext.TestClass, DESCRIPTION_ATTR, featureDescription);
         }
 
-        public void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, CATEGORY_ATTR, featureCategories);
         }
@@ -47,40 +47,40 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public void SetTestFixtureSetup(TestClassGenerationContext generationContext)
+        public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
         }
 
-        public void SetTestFixtureTearDown(TestClassGenerationContext generationContext)
+        public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR);
         }
 
 
-        public void SetTestSetup(TestClassGenerationContext generationContext)
+        public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
         }
 
-        public void SetTestTearDown(TestClassGenerationContext generationContext)
+        public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestCleanupMethod, TESTTEARDOWN_ATTR);
         }
 
 
-        public void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
         }
 
-        public void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
         }
 
-        public void SetIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
         }
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
 
-        public void SetTestVariant(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
+        public void SetTestMethodAsRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle, string exampleSetName, string variantName, IEnumerable<KeyValuePair<string, string>> arguments)
         {
             // doing nothing since we support RowTest
         }

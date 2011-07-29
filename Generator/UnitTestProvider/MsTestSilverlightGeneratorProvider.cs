@@ -14,12 +14,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override bool SupportsAsyncTests { get { return true; } }
 
-        public override void SetTestFixtureCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+        public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
             generationContext.CustomData["featureCategories"] = featureCategories.ToArray();
         }
 
-        public override void SetTestFixtureSetup(TestClassGenerationContext generationContext)
+        public override void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
 
@@ -31,9 +31,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //nop; hopefully the issue is not present on Silverlight
         }
 
-        public override void SetTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
-            base.SetTest(generationContext, testMethod, scenarioTitle);
+            base.SetTestMethod(generationContext, testMethod, scenarioTitle);
             if (generationContext.CustomData.ContainsKey("featureCategories"))
             {
                 var featureCategories = (string[]) generationContext.CustomData["featureCategories"];
@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetupAsyncTest(testMethod);
         }
 
-        public override void SetTestCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
+        public override void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
             CodeDomHelper.AddAttributeForEachValue(testMethod, TAG_ATTR, scenarioCategories);
         }
