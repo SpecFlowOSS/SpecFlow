@@ -35,8 +35,6 @@ Fixed issues:
 + Installer executes devenv /installtemplates even if VS2008 integration is not selected.
 + Duplicated logic between generator and runtime (generator depends on runtime now)
 + MsTest tests are not properly attached to the right feature (Issue 96)
- 
-Fixed Issues:
 + Assist methods now work with classes with multiple properties of the same enum type.
 
 1.6.1 - 2011/04/15
