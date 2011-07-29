@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -78,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mess = string.Empty;
             try
             {
-                t.AddRow(null);
+                t.AddRow((string[])null);
             }
             catch (Exception ex)
             {
@@ -124,6 +125,62 @@ namespace TechTalk.SpecFlow.RuntimeTests
             t.AddRow("Value 3:1", "Value 3:2", "Value 3:3");
 
             return t;
+        }
+
+        [Test]
+        public void should_be_able_to_set_cell_by_indexing_the_row_with_header()
+        {
+            var table = CreateDemoTable();
+            table.Rows[0]["Column 2"] = "newvalue";
+            Assert.AreEqual("newvalue", table.Rows[0]["Column 2"]);
+        }
+
+        [Test]
+        public void should_be_able_to_get_cell_by_a_valid_header_with_TryGetValue()
+        {
+            var table = CreateDemoTable();
+            string cellValue;
+            var result = table.Rows[0].TryGetValue("Column 2", out cellValue);
+            Assert.IsTrue(result);
+            Assert.AreEqual("Value 1:2", cellValue);
+        }
+
+        [Test]
+        public void should_be_able_to_get_false_by_an_invalid_header_with_TryGetValue()
+        {
+            var table = CreateDemoTable();
+            string cellValue;
+            var result = table.Rows[0].TryGetValue("nosuchcolumn", out cellValue);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void should_be_able_to_add_row_from_a_dictionary()
+        {
+            var table = CreateDemoTable();
+
+            table.AddRow(new Dictionary<string, string>() { {"Column 1", "v1"}, {"Column 3", "v3"}, {"Column 2", "v2"} });
+
+            CollectionAssert.AreEqual(new string[] { "v1", "v2", "v3"}, table.Rows[table.RowCount - 1].Values);
+        }
+
+        [Test]
+        public void should_be_able_to_add_row_from_a_partial_dictionary()
+        {
+            var table = CreateDemoTable();
+
+            table.AddRow(new Dictionary<string, string>() { {"Column 1", "v1"}, {"Column 3", "v3"} });
+
+            CollectionAssert.AreEqual(new string[] { "v1", "", "v3"}, table.Rows[table.RowCount - 1].Values);
+        }
+
+        [Test]
+        public void should_be_able_to_rename_column()
+        {
+            var table = CreateDemoTable();
+            table.RenameColumn("Column 1", "c1");
+
+            CollectionAssert.AreEqual(new string[] { "c1", "Column 2", "Column 3" }, table.Header);
         }
     }
 }

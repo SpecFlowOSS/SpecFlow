@@ -30,6 +30,9 @@ New features:
   to install the integration (select addin file from SpecFlow installation folder). (by Charles Weld)
 + Support for testing Silverlight asynchronous code. (by Matt Ellis & Ryan Burnham)
   See https://github.com/techtalk/SpecFlow/wiki/Testing-Silverlight-Asynchronous-Code for details.
++ TableRow implements IDictionary<string, string>
++ Add table row from a (total or partially filled) dictionary
++ Raname table column (Table.RenameColumn(stirng, string))
 
 Fixed issues:
 + Installer executes devenv /installtemplates even if VS2008 integration is not selected.

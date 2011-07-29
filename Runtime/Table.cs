@@ -17,9 +17,7 @@ namespace TechTalk.SpecFlow
         private readonly string[] header;
         private readonly TableRows rows = new TableRows();
 
-
-
-        public IEnumerable<string> Header
+        public ICollection<string> Header
         {
             get { return header; }
         }
@@ -46,9 +44,16 @@ namespace TechTalk.SpecFlow
             this.header = header;
         }
 
-        internal int GetHeaderIndex(string column)
+        public bool ContainsColumn(string column)
+        {
+            return GetHeaderIndex(column, false) >= 0;
+        }
+
+        internal int GetHeaderIndex(string column, bool throwIfNotFound = true)
         {
             int index = Array.IndexOf(header, column);
+            if (!throwIfNotFound)
+                return index;
             if (index < 0)
             {
                 var mess = string.Format(
@@ -58,6 +63,18 @@ namespace TechTalk.SpecFlow
                 throw new IndexOutOfRangeException(mess);
             }
             return index;
+        }
+
+        public void AddRow(IDictionary<string, string> values)
+        {
+            string[] cells = new string[header.Length];
+            foreach (var value in values)
+            {
+                int headerIndex = GetHeaderIndex(value.Key);
+                cells[headerIndex] = value.Value;
+            }
+
+            AddRow(cells);
         }
 
         public void AddRow(params string[] cells)
@@ -77,6 +94,12 @@ namespace TechTalk.SpecFlow
             }
             var row = new TableRow(this, cells);
             rows.Add(row);
+        }
+
+        public void RenameColumn(string oldColumn, string newColumn)
+        {
+            int colIndex = GetHeaderIndex(oldColumn);
+            header[colIndex] = newColumn;
         }
 
         public override string ToString()
@@ -149,7 +172,7 @@ namespace TechTalk.SpecFlow
         }
     }
 
-    public class TableRow : IEnumerable<KeyValuePair<string, string>>
+    public class TableRow : IDictionary<string, string>
     {
         private readonly Table table;
         private readonly string[] items;
@@ -169,6 +192,11 @@ namespace TechTalk.SpecFlow
             {
                 int itemIndex = table.GetHeaderIndex(header);
                 return items[itemIndex];
+            }
+            set
+            {
+                int keyIndex = table.GetHeaderIndex(header, true);
+                items[keyIndex] = value;
             }
         }
 
@@ -200,5 +228,89 @@ namespace TechTalk.SpecFlow
         {
             return GetEnumerator();
         }
+
+        private SpecFlowException ThrowTableStructureCannotBeModified()
+        {
+            return new SpecFlowException("The table rows must contain the same number of items as the header count of the table. The structure cannot be modified.");
+        }
+
+        #region Implementation of ICollection<KeyValuePair<string,string>>
+
+        void ICollection<KeyValuePair<string, string>>.Add(KeyValuePair<string, string> item)
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        void ICollection<KeyValuePair<string, string>>.Clear()
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        bool ICollection<KeyValuePair<string, string>>.Contains(KeyValuePair<string, string> item)
+        {
+            int keyIndex = table.GetHeaderIndex(item.Key, false);
+            if (keyIndex < 0)
+                return false;
+            return items[keyIndex].Equals(item.Value);
+        }
+
+        void ICollection<KeyValuePair<string, string>>.CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        bool ICollection<KeyValuePair<string, string>>.Remove(KeyValuePair<string, string> item)
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        bool ICollection<KeyValuePair<string, string>>.IsReadOnly
+        {
+            get { return false; }
+        }
+
+        #endregion
+
+        #region Implementation of IDictionary<string,string>
+
+        public bool ContainsKey(string key)
+        {
+            return table.Header.Contains(key);
+        }
+
+        void IDictionary<string, string>.Add(string key, string value)
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        bool IDictionary<string, string>.Remove(string key)
+        {
+            throw ThrowTableStructureCannotBeModified();
+        }
+
+        public bool TryGetValue(string key, out string value)
+        {
+            int keyIndex = table.GetHeaderIndex(key, false);
+            if (keyIndex < 0)
+            {
+                value = null;
+                return false;
+            }
+
+            value = items[keyIndex];
+            return true;
+        }
+
+        public ICollection<string> Keys
+        {
+            get { return table.Header; }
+        }
+
+        public ICollection<string> Values
+        {
+            get { return items; }
+        }
+
+        #endregion
     }
 }
