@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -56,22 +57,37 @@ namespace TechTalk.SpecFlow.Assist
             return Convert.ToChar(row[id]);
         }
 
+        internal static Enum GetEnumFromSingleInstanceRow<T>(this TableRow row)
+        {
+            return GetTheEnumValue<T>(row[1], row[0]);
+        }
+
         public static Enum GetEnum<T>(this TableRow row, string id)
         {
-            var value = row[id].Replace(" ", string.Empty);
+            return GetTheEnumValue<T>(row[id], id);
+        }
 
-            var p = (from property in typeof(T).GetProperties()
-                     where property.PropertyType.IsEnum &&
-                           EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
-                     select property.PropertyType).ToList();
+        private static Enum GetTheEnumValue<T>(string rowValue, string propertyName)
+        {
+            var value = rowValue.Replace(" ", string.Empty);
 
-            if (p.Count == 1)
-                return Enum.Parse(p[0], value, true) as Enum;
+            var enumType = GetTheEnumType<T>(propertyName, value);
 
-            if (p.Count == 0)
+            return Enum.Parse(enumType, value, true) as Enum;
+        }
+
+        private static Type GetTheEnumType<T>(string propertyName, string value)
+        {
+            var propertyType = (from property in typeof (T).GetProperties()
+                                where property.Name == propertyName
+                                      && property.PropertyType.IsEnum
+                                      && EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
+                                select property.PropertyType).FirstOrDefault();
+
+            if (propertyType == null)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
 
-            throw new InvalidOperationException(string.Format("Found sevral enums with the value {0} in type {1}", value, typeof(T).Name));
+            return propertyType;
         }
 
         private static bool EnumValueIsDefinedCaseInsensitve(Type @enum, string value)

@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TechTalk.SpecFlow.Assist
+{
+    public static class TableHelperExtensionMethods
+    {
+        public static T CreateInstance<T>(this Table table)
+        {
+            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            return TEHelpers.ThisTypeHasADefaultConstructor<T>()
+                       ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
+                       : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
+        }
+
+        public static T CreateInstance<T>(this Table table, Func<T> methodToCreateTheInstance)
+        {
+            var instance = methodToCreateTheInstance();
+            table.FillInstance(instance);
+            return instance;
+        }
+
+        public static void FillInstance<T>(this Table table, T instance)
+        {
+            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
+        }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table)
+        {
+            var list = new List<T>();
+
+            var pivotTable = new PivotTable(table);
+            for (var index = 0; index < table.Rows.Count(); index++)
+            {
+                var instance = pivotTable.GetInstanceTable(index).CreateInstance<T>();
+                list.Add(instance);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)
+        {
+            var list = new List<T>();
+
+            var pivotTable = new PivotTable(table);
+            for (var index = 0; index < table.Rows.Count(); index++)
+            {
+                var instance = methodToCreateEachInstance();
+                pivotTable.GetInstanceTable(index).FillInstance(instance);
+                list.Add(instance);
+            }
+
+<<<<<<< HEAD
+        private static Dictionary<Type, Func<TableRow, string, object>> GetTypeHandlersForFieldValuePairs<T>()
+        {
+            return new Dictionary<Type, Func<TableRow, string, object>>
+                       {
+                           {typeof (string), (TableRow row, string id) => row.GetString("Value")},
+                           {typeof (int), (TableRow row, string id) => row.GetInt32("Value")},
+                           {typeof (int?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (int?)null : row.GetInt32("Value")},
+                           {typeof (decimal), (TableRow row, string id) => row.GetDecimal("Value")},
+                           {typeof (decimal?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (decimal?)null : row.GetDecimal("Value")},
+                           {typeof (bool), (TableRow row, string id) => row.GetBoolean("Value")},
+                           {typeof (bool?), (TableRow row, string id) => row["Value"] == "" ? (bool?)null : row.GetBoolean("Value")},
+                           {typeof (DateTime), (TableRow row, string id) => row.GetDateTime("Value")},
+                           {typeof (DateTime?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (DateTime?)null :  row.GetDateTime("Value")},
+                           {typeof (Double), (TableRow row, string id) => row.GetDouble("Value")},
+                           {typeof (Double?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (Double?)null : row.GetDouble("Value")},
+                           {typeof (Guid), (TableRow row, string id) => row.GetGuid("Value")},
+                           {typeof (Guid?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (Guid?)null : row.GetGuid("Value")},
+                           {typeof (Enum), (TableRow row, string id) => row.GetEnumFromSingleInstanceRow<T>()},
+                           {typeof (char), (TableRow row, string id) => row.GetChar("Value")},
+                           {typeof (char?), (TableRow row, string id) => string.IsNullOrEmpty(row["Value"]) ? (char?)null : row.GetChar("Value")}
+                       };
+=======
+            return list;
+>>>>>>> master
+        }
+    }
+}
