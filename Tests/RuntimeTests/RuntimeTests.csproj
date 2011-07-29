@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
+    <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
@@ -137,6 +138,10 @@
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
       <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
       <Name>TechTalk.SpecFlow</Name>
@@ -148,10 +153,6 @@
     <ProjectReference Include="..\ParserTests\ParserTests.csproj">
       <Project>{70376361-0BE1-478D-8EEC-47BD1C768165}</Project>
       <Name>ParserTests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
-      <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
