@@ -17,6 +17,7 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons;
+using StepDefSkeletonInfo = TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons.StepDefSkeletonInfo;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
 {

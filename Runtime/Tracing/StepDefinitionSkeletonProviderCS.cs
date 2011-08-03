@@ -7,7 +7,7 @@ using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    public class StepDefinitionSkeletonProviderCS : StepDefinitionSkeletonProviderBase
+    internal class StepDefinitionSkeletonProviderCS : StepDefinitionSkeletonProviderBase
     {
         public override string GetStepDefinitionSkeleton(StepArgs stepArgs)
         {
