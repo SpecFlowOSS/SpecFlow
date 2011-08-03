@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
+using TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
@@ -29,6 +27,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [ProvideOptionPageAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true)]
     [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true, DescriptionResourceID = 121)]
     [Guid(GuidList.guidSpecFlowPkgString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
     public sealed class SpecFlowPackagePackage : Package
     {
         /// <summary>
@@ -49,9 +49,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         /// </summary>
         protected override void Initialize()
         {
+
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
+            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+
+            if (mcs != null)
+            {
+                // Create the command to generate the missing steps skeleton
+                CommandID menuCommandID = new CommandID(GuidList.guidSpecFlowGenerateOption,
+                                                        (int)PkgCmdIDList.cmdidGenerate);
+
+                //Create a menu item corresponding to that command
+                IFileHandler fileHandler = new FileHandler();
+                StepFileGenerator stepFileGen = new StepFileGenerator(fileHandler);
+                OleMenuCommand menuItem = new OleMenuCommand(stepFileGen.GenerateStepFileMenuItemCallback, menuCommandID);
+
+                //Add an event handler to the menu item
+                menuItem.BeforeQueryStatus += stepFileGen.QueryStatusMenuCommandBeforeQueryStatus;
+                mcs.AddCommand(menuItem);
+
+            }
         }
     }
 }
