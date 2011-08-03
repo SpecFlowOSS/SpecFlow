@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using TechTalk.SpecFlow.Bindings;
 
 #if SILVERLIGHT
 using TechTalk.SpecFlow.Compatibility;
@@ -16,6 +18,7 @@ namespace TechTalk.SpecFlow
 
             BindingCulture = bindingCulture;
             FeatureInfo = featureInfo;
+            MissingStepsArgs = new List<StepArgs>();
         }
 
         public static FeatureContext Current
@@ -23,6 +26,7 @@ namespace TechTalk.SpecFlow
             get { return ObjectContainer.FeatureContext; }
         }
 
+        internal List<StepArgs> MissingStepsArgs { get; private set; }
         public FeatureInfo FeatureInfo { get; private set; }
         public CultureInfo BindingCulture { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }

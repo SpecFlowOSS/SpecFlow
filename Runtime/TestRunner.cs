@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow
         private readonly IStepFormatter stepFormatter;
         private IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly BindingRegistry bindingRegistry;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
 
         public TestRunner()
         {
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow
             testTracer = ObjectContainer.TestTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             stepFormatter = ObjectContainer.StepFormatter;
- 
+
             bindingRegistry = ObjectContainer.BindingRegistry;
             stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
         }
@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow
 
             OnTestRunnerStart();
 #if !SILVERLIGHT
-            AppDomain.CurrentDomain.DomainUnload += 
+            AppDomain.CurrentDomain.DomainUnload +=
                 delegate
                     {
                         OnTestRunEnd();
@@ -86,6 +86,7 @@ namespace TechTalk.SpecFlow
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = ObjectContainer.Configuration.BindingCulture ?? featureInfo.Language;
             ObjectContainer.FeatureContext = new FeatureContext(featureInfo, bindingCulture);
+
             FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
         }
 
@@ -97,8 +98,15 @@ namespace TechTalk.SpecFlow
             if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
                 ObjectContainer.FeatureContext == null)
                 return;
-                
             FireEvents(BindingEvent.FeatureEnd, ObjectContainer.FeatureContext.FeatureInfo.Tags);
+
+            //Display the class for suggested implementation of steps
+            var missingSteps = ObjectContainer.FeatureContext.MissingStepsArgs;
+            if (missingSteps.Count() > 0)
+            {
+                string classOutput = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(missingSteps);
+                ObjectContainer.TraceListener.WriteToolOutput("Suggested implementation of steps:\n" + classOutput);
+            }
 
             if (RuntimeConfiguration.Current.TraceTimings)
             {
@@ -106,7 +114,6 @@ namespace TechTalk.SpecFlow
                 var duration = ObjectContainer.FeatureContext.Stopwatch.Elapsed;
                 testTracer.TraceDuration(duration, "Feature: " + ObjectContainer.FeatureContext.FeatureInfo.Title);
             }
-
             ObjectContainer.FeatureContext = null;
         }
 
@@ -143,10 +150,9 @@ namespace TechTalk.SpecFlow
 
             if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.MissingStepDefinition)
             {
-                var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
+                var missingSteps = FeatureContext.Current.MissingStepsArgs;
                 string bindingSkeleton =
-                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                        string.Join(Environment.NewLine, missingSteps.ToArray()));
+                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(missingSteps);
                 errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
                     bindingSkeleton,
@@ -172,7 +178,7 @@ namespace TechTalk.SpecFlow
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(BindingEvent.BlockStart); 
+            FireScenarioEvents(BindingEvent.BlockStart);
         }
 
         protected virtual void OnBlockEnd(ScenarioBlock block)
@@ -185,7 +191,7 @@ namespace TechTalk.SpecFlow
 
         protected virtual void OnStepStart()
         {
-            FireScenarioEvents(BindingEvent.StepStart); 
+            FireScenarioEvents(BindingEvent.StepStart);
         }
 
         protected virtual void OnStepEnd()
@@ -302,7 +308,7 @@ namespace TechTalk.SpecFlow
                 if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
                 {
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
-                    if (RuntimeConfiguration.Current.TraceSuccessfulSteps) 
+                    if (RuntimeConfiguration.Current.TraceSuccessfulSteps)
                         testTracer.TraceStepDone(match, arguments, duration);
                 }
                 else
@@ -398,10 +404,15 @@ namespace TechTalk.SpecFlow
                         throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
                     }
                 }
-
                 testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
                     stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                
+                //Adds missing steps to the feature contexts if they are unique
+                bool contains = ObjectContainer.FeatureContext.MissingStepsArgs.Any(ms => ms.Text == stepArgs.Text && ms.Type == stepArgs.Type);
+                if (!contains)
+                    ObjectContainer.FeatureContext.MissingStepsArgs.Add(stepArgs);
+
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)
