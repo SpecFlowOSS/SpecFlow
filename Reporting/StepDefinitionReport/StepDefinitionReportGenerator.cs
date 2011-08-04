@@ -270,7 +270,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     if (stepDefinition.ScenarioStep == null)
                     {
                         stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock);
-                        stepDefinition.ScenarioStep.Text = GetSampleText(bindingInfo, stepDefinition.ScenarioStep.Text,match);
+                        stepDefinition.ScenarioStep.Text = GetSampleText(bindingInfo, stepDefinition.ScenarioStep.Text, match);
                     }
 
                     found = true;
