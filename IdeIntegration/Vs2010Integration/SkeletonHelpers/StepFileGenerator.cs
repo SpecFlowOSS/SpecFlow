@@ -13,7 +13,6 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-//using TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons;
@@ -24,10 +23,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
     public class StepFileGenerator
     {
         private const string MessageBoxHeader = "Generate SpecFlow Step Definition File";
-        private IFileHandler _handler;
+        private readonly IFileHandler _handler;
         private BindingsAnalyser _analyser;
         private Solution _sln;
-        private string _featurePath, _namespaceName;
+        private string _featurePath, _defaultNamespace;
         private uint _projectItemId;
         private string _suggestedStepDefName;
 
@@ -44,9 +43,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             OleMenuCommand menuCommand = sender as OleMenuCommand; //The menu item command we are dealing with
             if (menuCommand != null)
             {
+                //Get the hierarchy of files, and set _projectItemId to be the selected file
                 var hierarchy = GetHierarchy();
                 if (hierarchy != null)
                 {
+                    //Get the name of the selected file
                     hierarchy.GetCanonicalName(_projectItemId, out _featurePath);
                     //If the file ends in .feature make the menu command visible
                     if (_featurePath != null && _featurePath.EndsWith(".feature"))
@@ -59,7 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
 
         /// <summary>
         /// When the menu item command to generate a step definition file is selected,
-        /// this starts the step fiel generatino and catches any specflow exceptions,
+        /// this starts the step file generation and catches any special exceptions,
         /// presenting the message from that error in a message box
         /// </summary>
         public void GenerateStepFileMenuItemCallback(object sender, EventArgs e)
@@ -75,20 +76,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         }
 
         /// <summary>
-        /// Links together the different generation parts to produce a new file, update and existing one
-        /// or throw an expection if neither is suitable
+        /// Links together the different generation parts to produce a new file or update an existing one.
         /// </summary>
         private void GenerateStepFile()
         {
             DTE2 dte = (DTE2)Package.GetGlobalService(typeof(SDTE)); //The DTE2 provides access to the solution
             _sln = dte.Solution;
 
-            string projectName = ProcessSelectedFile();
-            GenerateFeatureInformation(projectName);
-            //Get the skeleton corresponding to the correct programming langauge
+            _defaultNamespace = GetCurrentNamespaceFromSolutionExplorer();
+            string projectName = GetProjectFile(); //Get the full path location of the project
+
+            //If the project has not been built since it was last modified then the correct bindings will not have
+            // established so the project must be built or the user must be made aware of the potential issue
+            EnsureProjectBuilt();
+
+            GenerateProject(projectName); //Builds a project and sets the bindings analyser
+            
             IStepDefinitionSkeletonProvider skeletonProvider;
             string classExtension;
             ProgrammingLanguage pl = GetProgrammingLanguage(projectName);
+            //Get the skeleton corresponding to the correct programming langauge
             switch (pl)
             {
                 case ProgrammingLanguage.VB:
@@ -104,9 +111,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         }
 
         /// <summary>
-        /// Navigates the hierarchy of selected files to gather the basic info on the selected feature file
+        /// Navigates the hierarchy of the selected file in the solution explorer to gather the defualt namespace.
         /// </summary>
-        private string ProcessSelectedFile()
+        private string GetCurrentNamespaceFromSolutionExplorer()
         {
             var hierarchy = GetHierarchy();
 
@@ -117,19 +124,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             //From the hierarchy get the namespace and the path to the feature file
             object namespaceObj;
             hierarchy.GetProperty(_projectItemId, (int)__VSHPROPID.VSHPROPID_DefaultNamespace, out namespaceObj);
-            _namespaceName = namespaceObj.ToString();
-
-            string projectName = GetProjectFile(); //Get the location of the project
-            if (String.IsNullOrEmpty(projectName))
-            {
-                throw new FileGeneratorException("Could not find a SpecFlow project containing your feature file");
-            }
-            return projectName;
+            
+            return namespaceObj.ToString();
         }
 
-        private void GenerateFeatureInformation(string projectName)
+        /// <summary>
+        /// Builds a specFlow project, parses a feature corresponding to the _featurePath and analyses the projects bindings.
+        /// </summary>
+        /// <param name="projectName">The full path of the project to generate</param>
+        private void GenerateProject(string projectName)
         {
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectName); //handle expcetions
+
+            //Build project
+            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectName);
+            //Prase feature
             Feature feature = ParseFeature(_featurePath, specFlowProject);
             if (feature == null)
             {
@@ -180,9 +188,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         /// </summary>
         private void WriteStepsToFile(IStepDefinitionSkeletonProvider skeletonProvider, List<StepInstance> missingSteps)
         {
+            //Store info on file
             StepDefSkeletonInfo info = new StepDefSkeletonInfo(_suggestedStepDefName,
-                                                               _namespaceName);
-            //Gather info on file
+                                                               _defaultNamespace);
             //Generate the skeleton for the new file
             string skeleton = skeletonProvider.GetFileSkeleton(missingSteps, info);
             string file;
@@ -200,11 +208,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
                 if (overwrite == DialogResult.Yes)
                     file = _handler.WriteToFile(skeleton, true, _suggestedStepDefName, _featurePath);
                 else
-                {
-                    MessageBox.Show("Cancelled creating step definition file.", MessageBoxHeader);
-                    return;
-                }
+                    throw new FileGeneratorException("Cancelled creating step definition file.");
             }
+            //Add the file generated to the visual studio solution
             if (!_handler.AddToSolution(_sln, _featurePath, file))
                 MessageBox.Show(
                     "A step defintion file has been created but it could not be added to an existing visual studio project",
@@ -258,7 +264,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         }
 
         /// <summary>
-        /// Retrieves the hierarchy containing the currently selected file in the visual studio solution explorer
+        /// Retrieves the hierarchy containing the currently selected file in the visual studio
+        /// solution explorer and sets _ProjectItemId to be the value corresponding to the currently
+        /// selected file.
         /// </summary>
         private IVsHierarchy GetHierarchy()
         {
@@ -274,10 +282,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             return Marshal.GetTypedObjectForIUnknown(hierarchyPtr, typeof(IVsHierarchy)) as IVsHierarchy;
         }
 
+        /// <summary>
+        /// Searches for the visual studio solution for the feature file selected,
+        /// it then calculates the path to the project containing that feature file.
+        /// </summary>
         private string GetProjectFile()
         {
             ProjectItem prjItem = _sln.FindProjectItem(_featurePath);
-            return prjItem == null ? null : prjItem.ContainingProject.FileName;
+            if (prjItem == null || prjItem.ContainingProject == null || String.IsNullOrEmpty(prjItem.ContainingProject.FileName))
+            {
+                throw new FileGeneratorException("Could not find a SpecFlow project containing your feature file");
+            }
+            return prjItem.ContainingProject.FileName;
+        }
+
+        /// <summary>
+        /// This method checks if the project is dirty and if it is asks if the user wants to continue regardless.
+        /// </summary>
+        private void EnsureProjectBuilt()
+        {
+            Project project = _sln.FindProjectItem(_featurePath).ContainingProject;
+            if(project.IsDirty)
+            {
+                var result = MessageBox.Show("The project has not been built, this may result in incorrect generation. Proceed anyway?",
+                         MessageBoxHeader, MessageBoxButtons.YesNo,
+                         MessageBoxIcon.Warning);
+                if (result == DialogResult.No)
+                    throw new FileGeneratorException("Project build cancelled");
+            }
         }
 
         /// <summary>

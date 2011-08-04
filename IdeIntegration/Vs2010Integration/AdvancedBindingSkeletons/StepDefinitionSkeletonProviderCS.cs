@@ -53,7 +53,7 @@ public class StepDefinitions
 {{
 {1}{2}
 }}",
-                "Binding", //TODO GetAttributeName(typeof(BindingAttribute))
+                GetAttributeName(typeof(BindingAttribute)),
                 body,
                 CODEINDENT);
             result.AppendLine();
@@ -83,7 +83,7 @@ namespace {0}
 {4}}}
 }}",
               info.NamespaceName,
-              "Binding", //TODO GetAttributeName(typeof(BindingAttribute))
+              GetAttributeName(typeof(BindingAttribute)),
               info.SuggestedStepDefName,
               body,
               CODEINDENT);
@@ -116,6 +116,9 @@ namespace {0}
             return file;
         }
 
+        /// <summary>
+        /// Attempts to add steps to an existing file inside regions already set up in that file.
+        /// </summary>
         private bool TryAddToRegion(ref string file, List<string> steps, string regionName)
         {
             if (steps == null || steps.Count() == 0)
@@ -141,6 +144,9 @@ namespace {0}
             return true;
         }
 
+        /// <summary>
+        /// Attemps to add steps to the top of a binding class file.
+        /// </summary>
         private bool TryAddRemainingSteps(ref string file, string body)
         {
             int posBinding = file.IndexOf("[Binding");
@@ -164,6 +170,9 @@ namespace {0}
             return false;
         }
 
+        /// <summary>
+        /// Takes anything between quotes in a string and parses its type to store it as a parameter for the method.
+        /// </summary>
         private IEnumerable<string> ParseArgsFromQuotes(ref string text)
         {
             var args = new List<string>();
@@ -210,6 +219,9 @@ namespace {0}
             return args;
         }
 
+        /// <summary>
+        /// Takes 3 sets of steps and combines them into a structured skeleton string.
+        /// </summary>
         private string GetStructuredMethodsSkeleton(List<string> givens, List<string> whens, List<string> thens)
         {
             StringBuilder result = new StringBuilder();

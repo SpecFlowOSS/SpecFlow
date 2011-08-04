@@ -27,7 +27,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
             return attributeType.Name.Substring(0, attributeType.Name.Length - "Attribute".Length);
         }
 
-        /*This method only escapes the special characters that are not contained within quotes */
+        /// <summary>
+        /// Escapes the special characters that are not contained within quotes.
+        /// </summary>
         protected static string EscapeRegexOutsideQuotes(string text)
         {
             var sections = text.Split('"');
@@ -40,6 +42,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
             return newText;
         }
 
+        /// <summary>
+        /// Splits a list of steps into 3 seperate lists according to the binding type of each step.
+        /// </summary>
         protected void GroupByBindingType(IEnumerable<StepInstance> steps, out List<string> givens, out List<String> whens, out List<string> thens)
         {
             givens = new List<string>();
@@ -68,6 +73,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
             }
         }
 
+        /// <summary>
+        /// Takes a list of method declarations and combines them to produce the body of a class.
+        /// </summary>
         protected string CombineMethods(IEnumerable<string> steps)
         {
             var result = new StringBuilder();
@@ -78,6 +86,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
             return result.ToString();
         }
 
+        /// <summary>
+        /// Turns each step in the list into a string representing its suggested step definition.
+        /// </summary>
         protected List<string> GetCombinedMethodsSkeleton(List<StepInstance> steps)
         {
             return steps.Select(GetStepDefinitionSkeleton).ToList();

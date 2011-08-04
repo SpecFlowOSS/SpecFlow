@@ -94,6 +94,9 @@ Public Class {2}
             return file;
         }
 
+        /// <summary>
+        /// Attemps to add steps to the top of a binding class file.
+        /// </summary>
         private bool TryAddRemainingSteps(ref string file, string body)
         {
             int posBinding = file.IndexOf("<Binding");
@@ -114,6 +117,9 @@ Public Class {2}
             return false;
         }
 
+        /// <summary>
+        /// Takes anything between quotes in a string and parses its type to store it as a parameter for the method.
+        /// </summary>
         private IEnumerable<string> ParseArgsFromQuotes(ref string text)
         {
             var args = new List<string>();
