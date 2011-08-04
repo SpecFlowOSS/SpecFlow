@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             string projectName = GetProjectFile(); //Get the full path location of the project
 
             //If the project has not been built since it was last modified then the correct bindings will not have
-            // established so the project must be built or the user must be made aware of the potential issue
+            // established so an exception must be thrown.
             EnsureProjectBuilt();
 
             GenerateProject(projectName); //Builds a project and sets the bindings analyser
@@ -310,18 +310,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         }
 
         /// <summary>
-        /// This method checks if the project is dirty and if it is asks if the user wants to continue regardless.
+        /// If the project is dirty this will throw an exception.
         /// </summary>
         private void EnsureProjectBuilt()
         {
             Project project = _sln.FindProjectItem(_featurePath).ContainingProject;
             if(project.IsDirty)
             {
-                var result = MessageBox.Show("The project has not been built, this may result in incorrect generation. Proceed anyway?",
-                         MessageBoxHeader, MessageBoxButtons.YesNo,
-                         MessageBoxIcon.Warning);
-                if (result == DialogResult.No)
-                    throw new FileGeneratorException("Project build cancelled");
+                throw new FileGeneratorException("Project requires to be built before generating step definitions.");
             }
         }
 
