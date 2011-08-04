@@ -20,7 +20,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidGenerate</CommandName>
-          <ButtonText>Generate SpecFlow Step Defnition File</ButtonText>
+          <ButtonText>Generate SpecFlow Step Definition File</ButtonText>
         </Strings>
       </Button>
     </Buttons>

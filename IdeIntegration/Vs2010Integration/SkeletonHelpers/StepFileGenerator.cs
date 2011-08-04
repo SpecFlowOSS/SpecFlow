@@ -168,7 +168,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
                 throw new FileGeneratorException("There are no unimplemented steps for this feature.");
             }
 
-            var result = MessageBox.Show("Do you wish to add your step defintions to an existing file?",
+            var result = MessageBox.Show("Do you wish to add your step definitions to an existing file?",
                                          MessageBoxHeader, MessageBoxButtons.YesNoCancel,
                                          MessageBoxIcon.Question);
             switch (result)
@@ -317,7 +317,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             Project project = _sln.FindProjectItem(_featurePath).ContainingProject;
             if(project.IsDirty)
             {
-                throw new FileGeneratorException("Project requires to be built before generating step definitions.");
+                throw new FileGeneratorException("The project must be built before generating step definitions.");
             }
         }
 
