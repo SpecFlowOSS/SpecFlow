@@ -15,11 +15,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         private readonly SpecFlowProject _specFlowProject;
         private readonly Feature _feature;
 
-        public BindingsAnalyser(SpecFlowProject specFlowProject, Feature feature)
+        public BindingsAnalyser(SpecFlowProject specFlowProject, Feature feature, string binFolder)
         {
             _specFlowProject = specFlowProject;
             _feature = feature;
-            var basePath = Path.Combine(_specFlowProject.ProjectSettings.ProjectFolder, "bin\\Debug"); //badddd
+            var basePath = Path.Combine(_specFlowProject.ProjectSettings.ProjectFolder, binFolder);
             Bindings = BindingCollector.CollectBindings(_specFlowProject, basePath);
         }
 

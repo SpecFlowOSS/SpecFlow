@@ -145,7 +145,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             }
             _suggestedStepDefName = "StepsFor" + feature.Title.ToIdentifier();
 
-            _analyser = new BindingsAnalyser(specFlowProject, feature); //Collect bindings
+            //The bin folder to collect the bindings from must be calculated.
+            Project vsProject = GetProject();
+            string binFolder = vsProject.ConfigurationManager.ActiveConfiguration.Properties.Item("OutputPath").Value.ToString();
+
+            _analyser = new BindingsAnalyser(specFlowProject, feature, binFolder); //Collect bindings
             if (_analyser.Bindings == null)
             {
                 throw new FileGeneratorException("Bindings are still being analysed.. Please Wait");
@@ -288,12 +292,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         /// </summary>
         private string GetProjectFile()
         {
-            ProjectItem prjItem = _sln.FindProjectItem(_featurePath);
-            if (prjItem == null || prjItem.ContainingProject == null || String.IsNullOrEmpty(prjItem.ContainingProject.FileName))
+            Project prj = GetProject();
+            if (String.IsNullOrEmpty(prj.FileName))
             {
                 throw new FileGeneratorException("Could not find a SpecFlow project containing your feature file");
             }
-            return prjItem.ContainingProject.FileName;
+            return prj.FileName;
+        }
+        private Project GetProject()
+        {
+            ProjectItem prjItem = _sln.FindProjectItem(_featurePath);
+            if (prjItem == null || prjItem.ContainingProject == null)
+            {
+                throw new FileGeneratorException("Could not find a SpecFlow project containing your feature file");
+            }
+            return prjItem.ContainingProject;
         }
 
         /// <summary>
