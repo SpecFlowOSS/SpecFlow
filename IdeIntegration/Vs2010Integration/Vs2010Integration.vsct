@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
-  <Extern href="C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Inc\stdidcmd.h"/>
+  <Extern href="stdidcmd.h"/>
 
   <!--This header contains the command ids for the menus provided by the shell. -->
-  <Extern href="C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Inc\vsshlids.h"/>
+  <Extern href="vsshlids.h"/>
 
   <Commands package="guidSpecFlowPkgString">
     <Groups>
