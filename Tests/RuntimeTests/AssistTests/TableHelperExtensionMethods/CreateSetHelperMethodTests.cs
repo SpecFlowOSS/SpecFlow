@@ -150,6 +150,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_singles_on_the_instance_when_type_is_single()
+        {
+            var table = new Table("Single", "NullableSingle");
+            table.AddRow("2.698", "8.954");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().Single.ShouldEqual(2.698F);
+            people.First().NullableSingle.ShouldEqual(8.954F);
+        }
+
+        [Test]
         public void Sets_guids_on_the_instance_when_the_type_is_guid()
         {
             var table = new Table("GuidId", "NullableGuidId");

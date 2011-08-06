@@ -243,5 +243,32 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.Rows.First()
                 .GetGuid("GetGuid").ShouldEqual(new Guid());
         }
+
+        [Test]
+        public void GetSingle_should_return_the_single_from_the_row()
+        {
+            var table = new Table("Amount");
+            table.AddRow(99.90F.ToString());
+            table.Rows.First()
+                .GetSingle("Amount").ShouldEqual(99.90F);
+        }
+
+        [Test]
+        public void GetSingle_should_return_MinValue_when_the_value_is_empty()
+        {
+            var table = new Table("Amount");
+            table.AddRow("");
+            table.Rows.First()
+                .GetSingle("Amount").ShouldEqual(Single.MinValue);
+        }
+
+        [Test]
+        public void GetSingle_should_return_MinValue_When_the_value_is_not_defined()
+        {
+            var table = new Table("Amount");
+            table.AddRow(11.11F.ToString());
+            table.Rows.First()
+                .GetSingle("SomethingThatDoesNotExist").ShouldEqual(Single.MinValue);
+        }
     }
 }

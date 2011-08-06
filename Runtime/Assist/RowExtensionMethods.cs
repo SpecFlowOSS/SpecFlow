@@ -52,6 +52,13 @@ namespace TechTalk.SpecFlow.Assist
                        : double.MinValue;
         }
 
+        public static Single GetSingle(this TableRow row, string id)
+        {
+            return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
+                ? Convert.ToSingle(row[id])
+                : Single.MinValue;
+        }
+
         public static char GetChar(this TableRow row, string id)
         {
             return Convert.ToChar(row[id]);

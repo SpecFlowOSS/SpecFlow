@@ -25,5 +25,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 
         public Guid GuidId { get; set; }
         public Guid? NullableGuidId { get; set; }
+
+        public Single Single { get; set; }
+        public Single? NullableSingle { get; set; }
     }
 }
