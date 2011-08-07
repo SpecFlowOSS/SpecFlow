@@ -162,6 +162,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_uints_on_the_instance_when_the_type_is_uint()
+        {
+            var table = new Table("UnsignedInt", "NullableUnsignedInt");
+            table.AddRow("1", "2");
+
+            var people = table.CreateSet<Person>();
+
+            people.First().UnsignedInt.ShouldEqual<uint>(1);
+            people.First().NullableUnsignedInt.ShouldEqual<uint?>(2);
+        }
+
+        [Test]
         public void Sets_chars_on_the_instance_when_the_type_is_char()
         {
             var table = new Table("MiddleInitial", "NullableChar");

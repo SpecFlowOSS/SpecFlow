@@ -86,6 +86,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public virtual void Sets_uint_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("UnsignedInt", "3");
+
+            var person = GetThePerson(table);
+
+            person.UnsignedInt.ShouldEqual<uint>(3);
+        }
+
+        [Test]
         public virtual void Sets_decimal_values()
         {
             var table = new Table("Field", "Value");

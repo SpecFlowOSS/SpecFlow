@@ -1,4 +1,7 @@
-﻿1.7.0 - 2011/07/29
+﻿﻿New features:
++ Added support for unsigned integer properties to table assist methods
+
+1.7.0 - 2011/07/29
 
 Breaking changes:
 + There are a few breaking changes in the generated test code. If you upgrade to SpecFlow 1.7, you should either 
