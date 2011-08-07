@@ -125,6 +125,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Sets_uint_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("UnsignedInt", "3");
+
+            var person = table.CreateInstance<Person>();
+
+            person.UnsignedInt.ShouldEqual<uint>(3);
+        }
+
+        [Test]
+        public void Sets_nullable_uint_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableUnsignedInt", "9");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableUnsignedInt.ShouldEqual<uint?>(9);
+        }
+
+        [Test]
         public void Sets_decimal_values()
         {
             var table = new Table("Field", "Value");

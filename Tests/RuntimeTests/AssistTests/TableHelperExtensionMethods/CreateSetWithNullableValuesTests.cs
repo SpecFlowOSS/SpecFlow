@@ -123,6 +123,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Can_set_a_nullable_uint()
+        {
+            var table = new Table("NullableUnsignedInt");
+            table.AddRow("3");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableUnsignedInt.ShouldEqual<uint?>(3);
+        }
+
+        [Test]
+        public void Sets_a_nullable_uint_to_null_when_the_value_is_empty()
+        {
+            var table = new Table("NullableUnsignedInt");
+            table.AddRow("");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableUnsignedInt.ShouldBeNull();
+        }
+
+        [Test]
         public void Can_set_a_nullable_decimal()
         {
             var table = CreatePersonTableHeaders();

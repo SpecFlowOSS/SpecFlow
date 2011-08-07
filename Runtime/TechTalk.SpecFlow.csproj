@@ -75,6 +75,8 @@
     <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableUIntValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\UIntValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableCharValueRetriever.cs" />
