@@ -124,7 +124,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
             //From the hierarchy get the namespace and the path to the feature file
             object namespaceObj;
             hierarchy.GetProperty(_projectItemId, (int)__VSHPROPID.VSHPROPID_DefaultNamespace, out namespaceObj);
-            
+            if(namespaceObj == null)
+                throw new FileGeneratorException("The namespace could not be located, ensure the feature file is located in a SpecFLow Project.");
             return namespaceObj.ToString();
         }
 
@@ -326,18 +327,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         /// to the targetFeature path
         private static Feature ParseFeature(string targetFeature, SpecFlowProject specFlowProject)
         {
-            var featureFiles =
-                specFlowProject.FeatureFiles.Select(ff => ff.GetFullPath(specFlowProject.ProjectSettings));
-            foreach (var featureFile in featureFiles)
+            SpecFlowLangParser parser = new SpecFlowLangParser(specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
+            using (var reader = new StreamReader(targetFeature))
             {
-                SpecFlowLangParser parser = new SpecFlowLangParser(specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
-                if (targetFeature.ToLower() == featureFile.ToLower())
-                    using (var reader = new StreamReader(featureFile))
-                    {
-                        return parser.Parse(reader, featureFile);
-                    }
+                return parser.Parse(reader, targetFeature);
             }
-            return null;
         }
 
         private static ProgrammingLanguage GetProgrammingLanguage(string projectName)
