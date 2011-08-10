@@ -249,8 +249,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
                     string newText = skeletonProvider.AddStepsToExistingFile(contents, missingSteps);
                     if (!String.IsNullOrEmpty(newText))
                     {
-                        string newContents = skeletonProvider.AddStepsToExistingFile(contents, missingSteps);
-                        _handler.WriteToFile(newContents, true, ofd.FileName);
+                        _handler.WriteToFile(newText, true, ofd.FileName);
                         MessageBox.Show("Success! Your steps have been added successfully",
                                         MessageBoxHeader);
                     }
