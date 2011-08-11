@@ -55,15 +55,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
                 tags = _feature.Tags.Select(
                                                 tag => tag.ToString());
             StepScopeNew scope = new StepScopeNew(_feature.Title, scenarioTitle, tags);
-            if (scenarioStep is Given)
+            if (scenarioStep.ScenarioBlock == Parser.Gherkin.ScenarioBlock.Given)
                 stepInstance = new StepInstance(BindingType.Given, StepDefinitionKeyword.Given, scenarioStep.Keyword,
                                             scenarioStep.Text, scope);
-            else if (scenarioStep is When)
+            else if (scenarioStep.ScenarioBlock == Parser.Gherkin.ScenarioBlock.When)
                 stepInstance = new StepInstance(BindingType.When, StepDefinitionKeyword.When, scenarioStep.Keyword,
                                             scenarioStep.Text, scope);
-            else
+            else if (scenarioStep.ScenarioBlock == Parser.Gherkin.ScenarioBlock.Then)
                 stepInstance = new StepInstance(BindingType.Then, StepDefinitionKeyword.Then, scenarioStep.Keyword,
                                             scenarioStep.Text, scope);
+            else throw new SpecFlowException();
             stepInstance.MultilineTextArgument = scenarioStep.MultiLineTextArgument;
             if (scenarioStep.TableArg != null)
                 //HACK: The tables are of different type, and I see no availble way of converting between types. 
