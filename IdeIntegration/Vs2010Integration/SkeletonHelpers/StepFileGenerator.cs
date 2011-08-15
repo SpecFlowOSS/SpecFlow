@@ -315,10 +315,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.SkeletonHelpers
         private void EnsureProjectBuilt()
         {
             Project project = _sln.FindProjectItem(_featurePath).ContainingProject;
-            if(project.IsDirty)
-            {
-                throw new FileGeneratorException("The project must be built before generating step definitions.");
-            }
+            _sln.SolutionBuild.BuildProject(project.ConfigurationManager.ActiveConfiguration.ConfigurationName, project.UniqueName, true);
         }
 
         /// <summary>
