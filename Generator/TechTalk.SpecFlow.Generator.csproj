@@ -107,7 +107,7 @@
     <Compile Include="UnitTestProvider\XUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
-    <Compile Include="UnitTestProvider\NUnitTestConverter.cs" />
+    <Compile Include="UnitTestProvider\NUnitTestGeneratorProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">

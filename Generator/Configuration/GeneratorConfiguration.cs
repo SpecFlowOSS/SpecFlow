@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             switch (name.ToLowerInvariant())
             {
                 case "nunit":
-                    GeneratorUnitTestProviderType = typeof(NUnitTestConverter);
+                    GeneratorUnitTestProviderType = typeof(NUnitTestGeneratorProvider);
                     break;
                 case "mbunit":
                     GeneratorUnitTestProviderType = typeof(MbUnitTestGeneratorProvider);

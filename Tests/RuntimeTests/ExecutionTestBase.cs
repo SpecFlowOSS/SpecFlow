@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected virtual IUnitTestGeneratorProvider CreateUnitTestGeneratorProvider()
         {
-            return new NUnitTestConverter();
+            return new NUnitTestGeneratorProvider();
         }
     }
 }
