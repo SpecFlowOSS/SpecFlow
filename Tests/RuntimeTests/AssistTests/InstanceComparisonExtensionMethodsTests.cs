@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new InstanceComparisonTestObject {StringProperty = "Peter Keating"};
+            var test = new InstanceComparisonTestObject { StringProperty = "Peter Keating" };
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new InstanceComparisonTestObject {StringProperty = "Howard Roark"};
+            var test = new InstanceComparisonTestObject { StringProperty = "Howard Roark" };
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Field", "Value");
             table.AddRow("StringProperty", "Howard Roark");
 
-            var test = new InstanceComparisonTestObject {StringProperty = "Peter Keating"};
+            var test = new InstanceComparisonTestObject { StringProperty = "Peter Keating" };
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
@@ -173,7 +173,7 @@ IDoNotExist: Property does not exist");
                                                                                                         {
                                                                                                             BooleanProperty = true
                                                                                                         });
-            
+
             comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
 
             comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
@@ -260,14 +260,15 @@ IDoNotExist: Property does not exist");
         [Test]
         public void Can_compare_a_horizontal_table()
         {
-            var table = new Table("StringProperty", "IntProperty", "DecimalProperty");
-            table.AddRow("Test", "42", "23.01");
+            var table = new Table("StringProperty", "IntProperty", "DecimalProperty", "SingleProperty");
+            table.AddRow("Test", "42", "23.01", "11.56");
 
             var test = new InstanceComparisonTestObject
                            {
                                StringProperty = "Test",
                                IntProperty = 42,
-                               DecimalProperty = 23.01M
+                               DecimalProperty = 23.01M,
+                               SingleProperty = 11.56F
                            };
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);

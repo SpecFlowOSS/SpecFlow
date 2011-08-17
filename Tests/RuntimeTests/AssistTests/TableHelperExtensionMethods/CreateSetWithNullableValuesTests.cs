@@ -143,5 +143,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             people.First().Salary.ShouldBeNull();
         }
+
+        [Test]
+        public void Sets_a_nullable_single_to_null_when_the_value_is_empty()
+        {
+            var table = new Table("NullableSingle");
+            table.AddRow("");
+
+            var people = table.CreateSet<NullablePerson>();
+
+            people.First().NullableSingle.ShouldBeNull();
+        }
     }
 }

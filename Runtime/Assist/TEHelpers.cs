@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
         {
-            var instance = (T) Activator.CreateInstance(typeof (T));
+            var instance = (T)Activator.CreateInstance(typeof(T));
             LoadInstanceWithKeyValuePairs(table, instance);
             return instance;
         }
@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
-                throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof (T).Name));
+                throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
 
             var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
 
@@ -34,24 +34,24 @@ namespace TechTalk.SpecFlow.Assist
                 if (property != null)
                     parameterValues[parameterIndex] = property.Handler(property.Row);
             }
-            return (T) constructor.Invoke(parameterValues);
+            return (T)constructor.Invoke(parameterValues);
         }
 
         internal static bool ThisTypeHasADefaultConstructor<T>()
         {
-            return typeof (T).GetConstructors()
+            return typeof(T).GetConstructors()
                        .Where(c => c.GetParameters().Length == 0)
                        .Count() > 0;
         }
 
         internal static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
         {
-            var projectedPropertyNames = from property in typeof (T).GetProperties()
+            var projectedPropertyNames = from property in typeof(T).GetProperties()
                                          from row in table.Rows
                                          where IsPropertyMatchingToColumnName(property, row.Id())
                                          select property.Name;
 
-            return (from constructor in typeof (T).GetConstructors()
+            return (from constructor in typeof(T).GetConstructors()
                     where projectedPropertyNames.Except(
                         from parameter in constructor.GetParameters()
                         select parameter.Name).Count() == 0
@@ -75,12 +75,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             var handlers = GetTypeHandlersForFieldValuePairs<T>();
 
-            return from property in typeof (T).GetProperties()
+            return from property in typeof(T).GetProperties()
                    from key in handlers.Keys
                    from row in table.Rows
                    where key.IsAssignableFrom(property.PropertyType)
                          && IsPropertyMatchingToColumnName(property, row.Id())
-                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+                   select new PropertyHandler { Row = row, PropertyName = property.Name, Handler = handlers[key] };
         }
 
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
@@ -124,7 +124,12 @@ namespace TechTalk.SpecFlow.Assist
                                typeof (Enum),
                                (TableRow row) =>
                                new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name == row[0]).PropertyType)
-                               }
+                               },
+                           {typeof (Single), (TableRow row) => new SingleValueRetriever().GetValue(row[1])},
+                           {
+                               typeof (Single?),
+                               (TableRow row) => new NullableSingleValueRetriever(v => new SingleValueRetriever().GetValue(v)).GetValue(row[1])
+                           }
                        };
         }
 
@@ -162,7 +167,7 @@ namespace TechTalk.SpecFlow.Assist
         private static bool TheFirstRowValueIsTheNameOfAProperty<T>(Table table)
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
-            return typeof (T).GetProperties()
+            return typeof(T).GetProperties()
                 .Any(property => IsPropertyMatchingToColumnName(property, firstRowValue));
         }
     }

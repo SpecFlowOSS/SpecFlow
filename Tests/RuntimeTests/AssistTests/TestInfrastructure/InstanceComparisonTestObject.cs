@@ -14,5 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure
         public int? NullableField { get; set; }
 
         public decimal DecimalProperty { get; set; }
+
+        public Single SingleProperty { get; set; }
     }
 }
