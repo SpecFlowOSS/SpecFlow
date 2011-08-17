@@ -102,6 +102,9 @@ namespace TechTalk.SpecFlow.Generator
 
             foreach (var scenario in feature.Scenarios)
             {
+                if (string.IsNullOrEmpty(scenario.Title))
+                    throw new TestGeneratorException("The scenario must have a title specified.");
+
                 var scenarioOutline = scenario as ScenarioOutline;
                 if (scenarioOutline != null)
                     GenerateScenarioOutlineTest(generationContext, scenarioOutline);

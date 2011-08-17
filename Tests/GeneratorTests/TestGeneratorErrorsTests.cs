@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
@@ -54,6 +55,21 @@ namespace GeneratorTests
             var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), defaultSettings);
             result.Errors.ShouldNotBeNull();
             result.Errors.ShouldNotBeEmpty();
+        }
+
+        [Test]
+        public void Should_report_error_when_the_scenario_has_no_title()
+        {
+            var testGenerator = CreateTestGenerator(net35CSProjectSettings);
+
+            var result = testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(@"
+                Feature: Addition
+                Scenario:
+	                Given I have entered 50 into the calculator"), defaultSettings);
+            result.Errors.ShouldNotBeNull();
+            result.Errors.Count().ShouldEqual(1);
+            result.Errors.First().Message.ShouldContain("scenario", StringComparison.InvariantCultureIgnoreCase);
+            result.Errors.First().Message.ShouldContain("title", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
