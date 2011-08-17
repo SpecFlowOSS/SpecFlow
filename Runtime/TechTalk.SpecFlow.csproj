@@ -68,6 +68,7 @@
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />
     <Compile Include="Assist\ValueComparers\BooleanValueComparer.cs" />
+    <Compile Include="Assist\ValueComparers\SingleValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DoubleValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DateTimeValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DecimalValueComparer.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableSingleValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\SingleValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\EnumValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\GuidValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableCharValueRetriever.cs" />

@@ -233,5 +233,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             person.NullableGuidId.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
         }
+
+        [Test]
+        public void Sets_single_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Single", "98.22");
+
+            var person = table.CreateInstance<Person>();
+
+            person.Single.ShouldEqual(98.22F);
+        }
+
+        [Test]
+        public void Sets_nullable_single_values()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("NullableSingle", "55.66");
+
+            var person = table.CreateInstance<Person>();
+
+            person.NullableSingle.ShouldEqual(55.66F);
+        }
+
     }
 }
