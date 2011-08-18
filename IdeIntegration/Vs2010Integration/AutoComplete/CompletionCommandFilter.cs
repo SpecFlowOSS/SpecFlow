@@ -68,10 +68,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                             if (!IsAutoCompleteSessionActive)
                                 StartAutoCompleteSession(ch);
                             else 
-                                FilterAutoComplete();
+                                FilterAutoComplete(ch);
                             break;
                         case VSConstants.VSStd2KCmdID.BACKSPACE:
-                            FilterAutoComplete();
+                            FilterAutoComplete('\0');
                             break;
                     }
                 }
@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return true;
         }
 
-        protected void FilterAutoComplete()
+        protected void FilterAutoComplete(char ch)
         {
             if (!IsAutoCompleteSessionActive)
                 return;
@@ -132,12 +132,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             currentAutoCompleteSession.SelectedCompletionSet.SelectBestMatch();
             currentAutoCompleteSession.SelectedCompletionSet.Recalculate();
 
-            if (currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected)
+            if (currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected &&
+                currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsUnique)
             {
                 string insertedText = currentAutoCompleteSession.SelectedCompletionSet.ApplicableTo.GetText(TextView.TextSnapshot);
                 string selectedText = currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
                 if (insertedText.TrimEnd().Equals(selectedText.TrimEnd(), StringComparison.CurrentCulture))
+                {
                     currentAutoCompleteSession.Dismiss();
+                    return;
+                }
+            }
+
+            if (!currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected && ch == ' ')
+            {
+                currentAutoCompleteSession.Dismiss();
+                StartAutoCompleteSession(ch);
             }
         }
 
