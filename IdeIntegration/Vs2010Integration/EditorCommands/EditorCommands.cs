@@ -161,6 +161,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         private string FormatTableString(string oldTable)
         {
+            const string escapedPipeString = "\\\0";
+            oldTable = oldTable.Replace("\\|", escapedPipeString);
+
             string[] lines = oldTable.Replace("\r\n", "\n").Split('\n');
             if (lines.Length < 2)
                 return null;
@@ -213,7 +216,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
             stringBuilder.Remove(stringBuilder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
 
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().Replace(escapedPipeString, "\\|");
         }
 
         private string[] GetCells(string line)
