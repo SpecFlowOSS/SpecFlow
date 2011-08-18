@@ -79,9 +79,13 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                 bytes = GetBytesForError(pGenerateProgress, ex);
             }
 
-            int outputLength = bytes.Length;
+            byte[] utf8BOM = new byte[] { 0xEF, 0xBB, 0xBF };
+            int outputLength = utf8BOM.Length + bytes.Length;
+            byte[] output = new byte[outputLength];
+            Array.Copy(utf8BOM, 0, output, 0, utf8BOM.Length);
+            Array.Copy(bytes, 0, output, utf8BOM.Length, bytes.Length);
             rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(outputLength);
-            Marshal.Copy(bytes, 0, rgbOutputFileContents[0], outputLength);
+            Marshal.Copy(output, 0, rgbOutputFileContents[0], outputLength);
             pcbOutput = (uint)outputLength;
 
             RefreshMsTestWindow();

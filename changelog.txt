@@ -4,6 +4,7 @@ Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)
 + Incomprehensible error message when Scenario-description is empty (Issue 117)
 + Assist helpers do not support Singles (Issue 114)
++ The test class is not generated as UTF-8, so some accented characters might be displayed incorrectly. (Issue 112)
 
 1.7.0 - 2011/07/29
 
