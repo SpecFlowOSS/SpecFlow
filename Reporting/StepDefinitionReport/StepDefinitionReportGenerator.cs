@@ -93,6 +93,19 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 {
                     stepDefinition.Instances = null;
                 }
+
+                if(stepDefinition.ScenarioStep.ScenarioBlock == 0)
+                {
+                    stepDefinition.ScenarioStep.ScenarioBlock =
+                        (Parser.Gherkin.ScenarioBlock)
+                        Enum.Parse(typeof (Parser.Gherkin.ScenarioBlock), stepDefinition.Type);
+                }
+
+                if(stepDefinition.ScenarioStep.StepKeyword == 0)
+                {
+                    stepDefinition.ScenarioStep.StepKeyword = (Parser.Gherkin.StepKeyword)
+                        Enum.Parse(typeof(Parser.Gherkin.StepKeyword), stepDefinition.Type);
+                }
             }
 
             return report;
@@ -221,12 +234,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
         private void AddStepInstances(FeatureRef featureRef, ScenarioRef scenarioRef, IEnumerable<ScenarioStep> scenarioSteps, bool fromScenarioOutline)
         {
-            string currentBlock = "";
-
             foreach (var scenarioStep in scenarioSteps)
             {
-                if (scenarioStep is Given || scenarioStep is When || scenarioStep is Then)
-                    currentBlock = scenarioStep.GetType().Name;
+                string currentBlock = scenarioStep.ScenarioBlock.ToString();                  
 
                 bool found = false;
 
@@ -312,6 +322,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             newStep.Text = step.Text;
             newStep.MultiLineTextArgument = step.MultiLineTextArgument;
             newStep.TableArg = Clone(step.TableArg);
+            newStep.ScenarioBlock = step.ScenarioBlock;
+            newStep.StepKeyword = step.StepKeyword;
+
             return newStep;
         }
 
@@ -343,6 +356,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             newStep.Text = step.Text;
             newStep.MultiLineTextArgument = step.MultiLineTextArgument;
             newStep.TableArg = Clone(step.TableArg);
+            newStep.ScenarioBlock = step.ScenarioBlock;
+            newStep.StepKeyword = step.StepKeyword;
+
             return newStep;
         }
 
