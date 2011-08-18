@@ -3,8 +3,9 @@
 Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)
 + Incomprehensible error message when Scenario-description is empty (Issue 117)
-+ Assist helpers do not support Singles (Issue 114)
++ Assist helpers do not support Singles (Issue 114, by Joe Parkin)
 + The test class is not generated as UTF-8, so some accented characters might be displayed incorrectly. (Issue 112)
++ Fix step definition report broken by v1.7. (Issue 111, by Chris Roff)
 
 1.7.0 - 2011/07/29
 
@@ -26,7 +27,7 @@ New features:
   If SpecFlow cannot find the generator or it is older than v1.6.0, the installed SpecFlow generator is used.
   If you use any custom plugins (e.g. unit test generator), this has to be in the same folder as the generator 
   currently.
-+ Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (Vagif Abilov)
++ Added ToProjection<T>, ToProjectionOfSet<T>, ToProjectionOfInstance<T> to allow for LINQ-based comparisons. (by Vagif Abilov)
 + Cleaned-up CreateInstance<T> and CreateSet<T> for greater code maintainability.
 + Cleaned-up CompareToInstance<T> and CompareToSet<T> for greater code maintainability, and slightly more accurate value comparisons (like decimals with trailing zeroes).
 + Removed the |Field|Value| requirement for CreateInstance<T> and CompareToInstance<T>. Any header names can be used, so long as the first column is the name of the property and the second column is the value.
