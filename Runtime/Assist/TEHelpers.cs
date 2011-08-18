@@ -90,6 +90,8 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
                            {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
                            {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (uint), (TableRow row) => new UIntValueRetriever().GetValue(row[1])},
+                           {typeof (uint?), (TableRow row) => new NullableUIntValueRetriever(v => new UIntValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
                            {
                                typeof (decimal?),

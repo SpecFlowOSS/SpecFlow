@@ -96,6 +96,8 @@
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableSingleValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\SingleValueRetreiverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableUIntValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\UIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableCharValueRetrieverTests.cs" />

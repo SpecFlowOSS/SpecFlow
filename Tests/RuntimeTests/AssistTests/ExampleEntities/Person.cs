@@ -28,5 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 
         public Single Single { get; set; }
         public Single? NullableSingle { get; set; }
+        public uint UnsignedInt { get; set; }
+        public uint? NullableUnsignedInt { get; set; }
     }
 }
