@@ -8,6 +8,7 @@ Fixed issues:
 + The test class is not generated as UTF-8, so some accented characters might be displayed incorrectly. (Issue 112)
 + Fix step definition report broken by v1.7. (Issue 111, by Chris Roff)
 + Intellisense breaks when typing keyword 'E' (And in pt-BR) followed by a space (Issue 109)
++ Intellisense completition removes the non-first words of keywords (e.g. for "Gegeben sei") (Issue 65)
 
 1.7.0 - 2011/07/29
 

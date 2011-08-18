@@ -71,7 +71,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             }
             else
             {
-                var bindingType = GetCurrentBindingType(triggerPoint.Value);
+                string parsedKeyword;
+                var bindingType = GetCurrentBindingType(triggerPoint.Value, out parsedKeyword);
                 if (bindingType == null)
                     return;
 
@@ -79,7 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 IEnumerable<Completion> completionBuilders;
                 GetCompletionsForBindingType(bindingType.Value, out completions, out completionBuilders);
 
-                ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value);
+                ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value, parsedKeyword);
 
                 string displayName = string.Format("All {0} Steps", bindingType.Value);
                 completionSets.Add(
@@ -127,13 +128,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return triggerPoint.Snapshot.GetText(start, end.Position - start);
         }
 
+        //HACK: this is a hotfix to support "Gegeben sei" 'Given' keyword in German
+        static private string GetFirstTwoWords(SnapshotPoint triggerPoint)
+        {
+            var line = triggerPoint.GetContainingLine();
+            SnapshotPoint start = line.Start;
+            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            SnapshotPoint end = start;
+            ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            ForwardWhile(ref end, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            if (start >= end)
+                return null;
+
+            return triggerPoint.Snapshot.GetText(start, end.Position - start);
+        }
+
         static internal bool IsStepLine(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
         {
-            var firstWord = GetFirstWord(triggerPoint);
-            if (firstWord == null)
+            var keywordCandidate = GetFirstWord(triggerPoint);
+            if (keywordCandidate == null)
                 return false;
             GherkinDialect dialect = GetDialect(languageService);
-            return dialect.IsStepKeyword(firstWord);
+
+            if (dialect.IsStepKeyword(keywordCandidate))
+                return true;
+
+            keywordCandidate = GetFirstTwoWords(triggerPoint);
+            if (keywordCandidate == null)
+                return false;
+            return dialect.IsStepKeyword(keywordCandidate);
         }
 
         static internal bool IsKeywordPrefix(SnapshotPoint triggerPoint, GherkinLanguageService languageService)
@@ -145,8 +169,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             ForwardWhile(ref end, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
             if (start >= end)
                 return true; // returns true for empty word
-            if (end < triggerPoint)
-                return false;
+
+            end = triggerPoint;
+//            if (end < triggerPoint)
+//                return false;
 
             var firstWord = triggerPoint.Snapshot.GetText(start, end.Position - start);
             GherkinDialect dialect = GetDialect(languageService);
@@ -161,13 +187,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return snapshot.CreateTrackingSpan(new SnapshotSpan(start, line.End), SpanTrackingMode.EdgeInclusive);
         }
 
-        private ITrackingSpan GetApplicableToForStep(ITextSnapshot snapshot, SnapshotPoint triggerPoint)
+        private ITrackingSpan GetApplicableToForStep(ITextSnapshot snapshot, SnapshotPoint triggerPoint, string parsedKeyword)
         {
             var line = triggerPoint.GetContainingLine();
 
-            SnapshotPoint start = line.Start;
-            ForwardWhile(ref start, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
-            ForwardWhile(ref start, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+            SnapshotPoint keywordEnd = line.Start;
+            ForwardWhile(ref keywordEnd, triggerPoint, p => char.IsWhiteSpace(p.GetChar()));
+            if (parsedKeyword != null)
+                keywordEnd += parsedKeyword.Length;
+            else
+                ForwardWhile(ref keywordEnd, triggerPoint, p => !char.IsWhiteSpace(p.GetChar()));
+
+            var start = keywordEnd;
             if (start < triggerPoint)
                 ForwardWhile(ref start, start + 1, p => char.IsWhiteSpace(p.GetChar()));
 
@@ -180,8 +211,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 point += 1;
         }
 
-        private BindingType? GetCurrentBindingType(SnapshotPoint triggerPoint)
+        private BindingType? GetCurrentBindingType(SnapshotPoint triggerPoint, out string parsedKeyword)
         {
+            parsedKeyword = null;
             var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
             if (fileScope == null)
                 return null;
@@ -189,21 +221,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             var triggerLineNumber = triggerPoint.Snapshot.GetLineNumberFromPosition(triggerPoint.Position);
             var step = fileScope.GetStepAtPosition(triggerLineNumber);
             if (step != null)
+            {
+                parsedKeyword = step.Keyword.TrimEnd();
                 return step.BindingType;
+            }
 
             if (!IsStepLine(triggerPoint, languageService))
                 return null;
 
             // this is a step line that just started. we need to calculate the binding type from
             // the keyword and the context
-            var firstWord = GetFirstWord(triggerPoint);
-            if (firstWord == null)
+            var keywordCandidate = GetFirstWord(triggerPoint);
+            if (keywordCandidate == null)
                 return null;
 
             GherkinDialect dialect = GetDialect(languageService);
-            var stepKeyword = dialect.TryParseStepKeyword(firstWord);
+            var stepKeyword = dialect.TryParseStepKeyword(keywordCandidate);
             if (stepKeyword == null)
-                return null;
+            {
+                keywordCandidate = GetFirstTwoWords(triggerPoint);
+                if (keywordCandidate != null)
+                {
+                    stepKeyword = dialect.TryParseStepKeyword(keywordCandidate);
+                }
+
+                if (stepKeyword == null)
+                    return null;
+            }
+
+            parsedKeyword = keywordCandidate;
 
             if (stepKeyword == StepKeyword.Given)
                 return BindingType.Given;
@@ -211,7 +257,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 return BindingType.When;
             if (stepKeyword == StepKeyword.Then)
                 return BindingType.Then;
-            
+
+            parsedKeyword = null;
             // now we need the context
             var stepBlock = fileScope.GetStepBlockFromStepPosition(triggerLineNumber);
             var lastStep = stepBlock.Steps.LastOrDefault(s => s.BlockRelativeLine + stepBlock.KeywordLine < triggerLineNumber);
