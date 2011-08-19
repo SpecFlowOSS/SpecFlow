@@ -26,10 +26,10 @@ namespace TechTalk.SpecFlow.Tracing
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
 
-        public TestTracer()
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter)
         {
-            this.traceListener = ObjectContainer.TraceListener;
-            this.stepFormatter = ObjectContainer.StepFormatter;
+            this.traceListener = traceListener;
+            this.stepFormatter = stepFormatter;
         }
 
         public void TraceStep(StepArgs stepArgs, bool showAdditionalArguments)

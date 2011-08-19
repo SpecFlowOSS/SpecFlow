@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly ITestTracer testTracer;
 
-        public StepArgumentTypeConverter()
+        public StepArgumentTypeConverter(ITestTracer testTracer)
         {
-            testTracer = ObjectContainer.TestTracer;
+            this.testTracer = testTracer;
             StepTransformations = ObjectContainer.BindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
         }
 

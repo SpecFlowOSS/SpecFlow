@@ -102,6 +102,12 @@ namespace MiniDi
 
         #region Registration
 
+        public void RegisterTypeAs<TInterface>(Type implementationType) where TInterface : class
+        {
+            Type interfaceType = typeof(TInterface);
+            RegisterTypeAs(implementationType, interfaceType);
+        }
+
         public void RegisterTypeAs<TType, TInterface>() where TType : class, TInterface
         {
             Type interfaceType = typeof(TInterface);
@@ -289,6 +295,9 @@ namespace MiniDi
             if (ctors.Length == 1)
             {
                 ConstructorInfo ctor = ctors[0];
+                if (resolutionPath.Contains(type))
+                    throw new ObjectContainerException("Circular dependency found! " + type.FullName, resolutionPath);
+
                 var args = ResolveArguments(ctor.GetParameters(), resolutionPath.Concat(new[] { type }));
                 obj = ctor.Invoke(args);
             }

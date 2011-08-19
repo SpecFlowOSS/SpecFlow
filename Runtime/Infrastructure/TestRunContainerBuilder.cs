@@ -1,5 +1,8 @@
 ﻿using MiniDi;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -24,6 +27,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             var runtimeConfiguration = RuntimeConfiguration.GetConfig();
             container.RegisterInstanceAs(runtimeConfiguration);
 
+            if (runtimeConfiguration.TraceListenerType != null)
+                container.RegisterTypeAs<ITraceListener>(runtimeConfiguration.TraceListenerType);
+
             return container;
         }
 
@@ -31,6 +37,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();
+
+            container.RegisterTypeAs<StepFormatter, IStepFormatter>();
+            container.RegisterTypeAs<TestTracer, ITestTracer>();
+
+            container.RegisterTypeAs<DefaultListener, ITraceListener>();
+
+            container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
+            container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
         }
     }
 }

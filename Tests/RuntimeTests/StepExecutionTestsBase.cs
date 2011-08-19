@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using MiniDi;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
@@ -15,6 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected MockRepository MockRepository;
         private BindingRegistry bindingRegistry;
         protected CultureInfo FeatureLanguage;
+        protected IStepArgumentTypeConverter StepArgumentTypeConverterStub;
 
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
@@ -80,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }        
 
         [SetUp]
-        public void SetUp()
+        public virtual void SetUp()
         {
             ObjectContainer.Reset();
 
@@ -94,9 +96,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             ObjectContainer.StepFormatter = MockRepository.Stub<IStepFormatter>();
             ObjectContainer.TestTracer = new DummyTestTracer();
+
+            StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }
 
         protected TestRunner GetTestRunnerFor(params Type[] bindingTypes)
+        {
+            return GetTestRunnerFor(null, bindingTypes);
+        }
+
+        protected TestRunner GetTestRunnerFor(Action<IObjectContainer> registerMocks, params Type[] bindingTypes)
         {
             bindingRegistry = new BindingRegistry();
             foreach (var bindingType in bindingTypes)
@@ -105,16 +114,26 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
             ObjectContainer.BindingRegistry = bindingRegistry;
 
-            return new TestRunner();
+            return TestRunner.CreateTestRunnerForCompatibility(registerMocks);
         }
 
         protected TestRunner GetTestRunnerFor<TBinding>(out TBinding bindingInstance)
         {
-            TestRunner testRunner = GetTestRunnerFor(typeof(TBinding));
+            return GetTestRunnerFor(null, out bindingInstance);
+        }
+
+        protected TestRunner GetTestRunnerFor<TBinding>(Action<IObjectContainer> registerMocks, out TBinding bindingInstance)
+        {
+            TestRunner testRunner = GetTestRunnerFor(registerMocks, typeof(TBinding));
 
             bindingInstance = MockRepository.StrictMock<TBinding>();
             ObjectContainer.ScenarioContext.SetBindingInstance(typeof(TBinding), bindingInstance);
             return testRunner;
+        }
+
+        protected TestRunner GetTestRunnerWithConverterStub<TBinding>(out TBinding bindingInstance)
+        {
+            return GetTestRunnerFor(c => c.RegisterInstanceAs(StepArgumentTypeConverterStub), out bindingInstance);
         }
     }
 }

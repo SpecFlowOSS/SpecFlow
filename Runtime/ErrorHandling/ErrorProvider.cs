@@ -4,20 +4,38 @@ using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.ErrorHandling
 {
-    internal class ErrorProvider
+    public interface IErrorProvider
+    {
+        string GetMethodText(MethodInfo methodInfo);
+        Exception GetCallError(MethodInfo methodInfo, Exception ex);
+        Exception GetParameterCountError(BindingMatch match, int expectedParameterCount);
+        Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepArgs stepArgs);
+        Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepArgs stepArgs);
+        Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepArgs stepArgs);
+        MissingStepDefinitionException GetMissingStepDefinitionError();
+        PendingStepException GetPendingStepDefinitionError();
+        void ThrowPendingError(TestStatus testStatus, string message);
+        Exception GetTooManyBindingParamError(int maxParam);
+        Exception GetNonStaticEventError(MethodInfo methodInfo);
+    }
+
+    internal class ErrorProvider : IErrorProvider
     {
         private readonly IStepFormatter stepFormatter;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
+        private readonly RuntimeConfiguration runtimeConfiguration;
 
-        public ErrorProvider()
+        public ErrorProvider(IStepFormatter stepFormatter, RuntimeConfiguration runtimeConfiguration)
         {
-            stepFormatter = ObjectContainer.StepFormatter;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
+            this.stepFormatter = stepFormatter;
+            this.runtimeConfiguration = runtimeConfiguration;
         }
 
         public string GetMethodText(MethodInfo methodInfo)
@@ -80,7 +98,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
 
         public void ThrowPendingError(TestStatus testStatus, string message)
         {
-            switch (RuntimeConfiguration.Current.MissingOrPendingStepsOutcome)
+            switch (runtimeConfiguration.MissingOrPendingStepsOutcome)
             {
                 case MissingOrPendingStepsOutcome.Pending:
                     unitTestRuntimeProvider.TestPending(message);

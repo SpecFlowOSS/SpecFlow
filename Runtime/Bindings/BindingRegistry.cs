@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Bindings
 
     internal class BindingRegistry : IEnumerable<StepBinding>
     {
-        private readonly ErrorProvider errorProvider;
+        private readonly IErrorProvider errorProvider;
 
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
         private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();

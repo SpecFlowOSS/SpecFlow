@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using TechTalk.SpecFlow.Infrastructure;
 
 #if SILVERLIGHT
 using TechTalk.SpecFlow.Compatibility;
@@ -9,15 +10,6 @@ using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow
 {
-    internal enum TestStatus
-    {
-        OK,
-        StepDefinitionPending,
-        MissingStepDefinition,
-        BindingError,
-        TestError
-    }
-
     public class ScenarioContext : SpecFlowContext
     {
         static public ScenarioContext Current

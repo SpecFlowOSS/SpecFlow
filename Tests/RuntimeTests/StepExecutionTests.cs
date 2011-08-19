@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

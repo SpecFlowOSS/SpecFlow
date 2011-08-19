@@ -1,7 +1,9 @@
 using System;
 using System.Globalization;
+using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -14,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void SetUp()
         {
-            _stepArgumentTypeConverter = new StepArgumentTypeConverter();
+            _stepArgumentTypeConverter = new StepArgumentTypeConverter(new Mock<ITestTracer>().Object);
             _enUSCulture = new CultureInfo("en-US");
         }
 

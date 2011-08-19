@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -65,11 +67,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
             bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"user (\w+)", transformMethod));
 
-            var stepArgumentTypeConverter = new StepArgumentTypeConverter();
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
             var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
+        }
+
+        private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
+        {
+            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object);
         }
 
         [Test]
@@ -83,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
             bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"", transformMethod));
 
-            var stepArgumentTypeConverter = new StepArgumentTypeConverter();
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
             var table = new Table("Name");
             table.AddRow("Tom");

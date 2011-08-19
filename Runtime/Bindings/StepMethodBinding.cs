@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public abstract class MethodBinding
     {
-        private readonly ErrorProvider errorProvider;
+        private readonly IErrorProvider errorProvider;
 
         protected MethodBinding(MethodInfo method)
         {
@@ -151,7 +151,7 @@ namespace TechTalk.SpecFlow.Bindings
                     stopwatch.Stop();
                 }
 
-                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
+                if (ObjectContainer.Configuration.TraceTimings && stopwatch.Elapsed >= ObjectContainer.Configuration.MinTracedDuration)
                 {
                     testTracer.TraceDuration(stopwatch.Elapsed, MethodInfo, arguments);
                 }

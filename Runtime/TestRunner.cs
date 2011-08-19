@@ -5,10 +5,12 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using MiniDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -16,23 +18,37 @@ namespace TechTalk.SpecFlow
 {
     public class TestRunner : ITestRunner
     {
-        private readonly ErrorProvider errorProvider;
+        private readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly IErrorProvider errorProvider;
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
         private IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly BindingRegistry bindingRegistry;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter; 
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
 
-        public TestRunner()
+        [Obsolete("Use DI")]
+        static internal TestRunner CreateTestRunnerForCompatibility(Action<IObjectContainer> registerMocks = null)
         {
-            errorProvider = ObjectContainer.ErrorProvider;
-            testTracer = ObjectContainer.TestTracer;
+            var container = TestRunContainerBuilder.CreateContainer();
+
+            if (registerMocks != null)
+                registerMocks(container);
+
+            return (TestRunner)container.Resolve<ITestRunner>();
+        }
+
+        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, RuntimeConfiguration runtimeConfiguration)
+        {
+            this.errorProvider = errorProvider;
+            this.runtimeConfiguration = runtimeConfiguration;
+            this.testTracer = testTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
-            stepFormatter = ObjectContainer.StepFormatter;
- 
+
+            this.stepFormatter = stepFormatter;
+
             bindingRegistry = ObjectContainer.BindingRegistry;
-            stepArgumentTypeConverter = ObjectContainer.StepArgumentTypeConverter;
+            this.stepArgumentTypeConverter = stepArgumentTypeConverter;
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
@@ -84,7 +100,7 @@ namespace TechTalk.SpecFlow
 
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
-            CultureInfo bindingCulture = ObjectContainer.Configuration.BindingCulture ?? featureInfo.Language;
+            CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
             ObjectContainer.FeatureContext = new FeatureContext(featureInfo, bindingCulture);
             FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
         }
@@ -100,7 +116,7 @@ namespace TechTalk.SpecFlow
                 
             FireEvents(BindingEvent.FeatureEnd, ObjectContainer.FeatureContext.FeatureInfo.Tags);
 
-            if (RuntimeConfiguration.Current.TraceTimings)
+            if (runtimeConfiguration.TraceTimings)
             {
                 ObjectContainer.FeatureContext.Stopwatch.Stop();
                 var duration = ObjectContainer.FeatureContext.Stopwatch.Elapsed;
@@ -121,7 +137,7 @@ namespace TechTalk.SpecFlow
         {
             HandleBlockSwitch(ScenarioBlock.None);
 
-            if (RuntimeConfiguration.Current.TraceTimings)
+            if (runtimeConfiguration.TraceTimings)
             {
                 ObjectContainer.ScenarioContext.Stopwatch.Stop();
                 var duration = ObjectContainer.ScenarioContext.Stopwatch.Elapsed;
@@ -302,7 +318,7 @@ namespace TechTalk.SpecFlow
                 if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
                 {
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
-                    if (RuntimeConfiguration.Current.TraceSuccessfulSteps) 
+                    if (runtimeConfiguration.TraceSuccessfulSteps) 
                         testTracer.TraceStepDone(match, arguments, duration);
                 }
                 else
@@ -345,7 +361,7 @@ namespace TechTalk.SpecFlow
                     ObjectContainer.ScenarioContext.TestStatus = TestStatus.TestError;
                     ObjectContainer.ScenarioContext.TestError = ex;
                 }
-                if (RuntimeConfiguration.Current.StopAtFirstError)
+                if (runtimeConfiguration.StopAtFirstError)
                     throw;
             }
         }
@@ -406,7 +422,7 @@ namespace TechTalk.SpecFlow
             }
             if (matches.Count > 1)
             {
-                if (RuntimeConfiguration.Current.DetectAmbiguousMatches)
+                if (runtimeConfiguration.DetectAmbiguousMatches)
                     throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
             }
             return matches[0];

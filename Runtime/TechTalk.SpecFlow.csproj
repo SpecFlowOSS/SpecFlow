@@ -102,6 +102,7 @@
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="Infrastructure\AsyncTestRunnerFactory.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Bindings\StepArgs.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilder.cs" />
     <Compile Include="TestRunnerManager.cs" />
+    <Compile Include="Infrastructure\TestStatus.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />

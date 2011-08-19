@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow
                                delegate
                                {
                                    var container = TestRunContainerBuilder.CreateContainer();
-                                   container.RegisterTypeAs<AsyncTestRunner, ITestRunner>(); //TODO: better support this in the DI container
+                                   container.RegisterTypeAs<AsyncTestRunnerFactory, ITestRunnerFactory>(); //TODO: better support this in the DI container
                                    var factory = container.Resolve<ITestRunnerFactory>();
                                    return factory.Create(callingAssembly);
                                });
@@ -146,6 +146,7 @@ namespace TechTalk.SpecFlow
         #region TraceListener
         private static ITraceListener traceListener = null;
 
+        [Obsolete("Use DI")]
         public static ITraceListener TraceListener
         {
             get
@@ -158,6 +159,7 @@ namespace TechTalk.SpecFlow
         #region TestTracer
         private static ITestTracer testTracer = null;
 
+        [Obsolete("Use DI")]
         public static ITestTracer TestTracer
         {
             get
@@ -172,13 +174,14 @@ namespace TechTalk.SpecFlow
         #endregion
 
         #region ErrorProvider
-        private static ErrorProvider errorProvider = null;
+        private static IErrorProvider errorProvider = null;
 
-        public static ErrorProvider ErrorProvider
+        [Obsolete("Use DI")]
+        public static IErrorProvider ErrorProvider
         {
             get
             {
-                return GetOrCreate(ref errorProvider);
+                return GetOrCreate(ref errorProvider, typeof(ErrorProvider));
             }
         }
         #endregion
@@ -186,6 +189,7 @@ namespace TechTalk.SpecFlow
         #region StepFormatter
         private static IStepFormatter stepFormatter = null;
 
+        [Obsolete("Use DI")]
         public static IStepFormatter StepFormatter
         {
             get
@@ -210,22 +214,6 @@ namespace TechTalk.SpecFlow
                     return GetOrCreate(ref _stepDefinitionSkeletonProviderVB, typeof(StepDefinitionSkeletonProviderVB));
                 default:
                     return GetOrCreate(ref _stepDefinitionSkeletonProviderCS, typeof(StepDefinitionSkeletonProviderCS));
-            }
-        }
-        #endregion
-
-        #region StepArgumentTypeConverter
-        private static IStepArgumentTypeConverter stepArgumentTypeConverter = null;
-
-        public static IStepArgumentTypeConverter StepArgumentTypeConverter
-        {
-            get
-            {
-                return GetOrCreate(ref stepArgumentTypeConverter, typeof(StepArgumentTypeConverter));
-            }
-            internal set
-            {
-                stepArgumentTypeConverter = value;
             }
         }
         #endregion
