@@ -55,6 +55,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<NUnitRuntimeProvider, IUnitTestRuntimeProvider>();
 
+            container.RegisterTypeAs<ContextManager, IContextManager>();
+
             //this part will be changed for proper named registration support
             IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders =
                 new Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider>

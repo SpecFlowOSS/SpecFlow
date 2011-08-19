@@ -12,10 +12,7 @@ namespace TechTalk.SpecFlow
 {
     public class ScenarioContext : SpecFlowContext
     {
-        static public ScenarioContext Current
-        {
-            get { return ObjectContainer.ScenarioContext; }
-        }
+        public static ScenarioContext Current { get; internal set; }
 
         public ScenarioInfo ScenarioInfo { get; private set; }
 

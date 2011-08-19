@@ -57,47 +57,16 @@ namespace TechTalk.SpecFlow
 
         #endregion
 
-        #region FeautreContext
-
-        private static FeatureContext featureContext = null;
-
-        static public FeatureContext FeatureContext
-        {
-            get
-            {
-                if (featureContext == null)
-                    return null;
-                return featureContext;
-            }
-            internal set
-            {
-                if (featureContext != null)
-                {
-                    if (value != null)
-                        TestTracer.TraceWarning("The previous feature context was not disposed.");
-                    DisposeFeatureContext();
-                }
-
-                featureContext = value;
-            }
-        }
-
-        private static void DisposeFeatureContext()
-        {
-            ((IDisposable)featureContext).Dispose();
-            featureContext = null;
-        }
-
-        #endregion
-
         #region ScenarioContext
 
         private static ScenarioContext scenarioContext = null;
 
+        [Obsolete("use DI")]
         static public ScenarioContext ScenarioContext
         {
             get
             {
+                throw new NotSupportedException();
                 if (scenarioContext == null)
                     return null;
                 return scenarioContext;

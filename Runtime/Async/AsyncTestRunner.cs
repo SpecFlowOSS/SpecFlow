@@ -21,6 +21,16 @@ namespace TechTalk.SpecFlow.Async
             this.testRunner = testRunner;
         }
 
+        public FeatureContext FeatureContext
+        {
+            get { return testRunner.FeatureContext; }
+        }
+
+        public ScenarioContext ScenarioContext
+        {
+            get { return testRunner.ScenarioContext; }
+        }
+
         private IAsyncTestExecutor asyncTestExecutor;
 
         public IAsyncTestExecutor AsyncTestExecutor
@@ -96,8 +106,8 @@ namespace TechTalk.SpecFlow.Async
             testRunner.OnScenarioStart(scenarioInfo);
 
             // register the test executor in the scenario context to be able to used AOP style
-            ObjectContainer.ScenarioContext.Set(asyncTestExecutor);
-            ObjectContainer.ScenarioContext.SetTestRunnerUnchecked(this);
+            ScenarioContext.Set(asyncTestExecutor);
+            ScenarioContext.SetTestRunnerUnchecked(this);
         }
 
         public void CollectScenarioErrors()

@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: 1.23");
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: not-a-double");
 
-            Assert.AreEqual(TestStatus.TestError, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.TestError, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 
@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert: argument");
 
 
-            Assert.AreEqual(TestStatus.BindingError, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.BindingError, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 
@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunner.Given("sample step for argument convert with table: argument", null, table);
 
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 
@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert: argument");
 
-            Assert.AreEqual(TestStatus.BindingError, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.BindingError, ScenarioContext.Current.TestStatus);
             MockRepository.VerifyAll();
         }
 

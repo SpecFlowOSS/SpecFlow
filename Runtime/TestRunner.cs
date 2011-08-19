@@ -26,6 +26,7 @@ namespace TechTalk.SpecFlow
         private readonly IBindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
+        private readonly IContextManager contextManager;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
@@ -42,9 +43,10 @@ namespace TechTalk.SpecFlow
 
         public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager)
         {
             this.errorProvider = errorProvider;
+            this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
             this.bindingRegistry = bindingRegistry;
@@ -54,6 +56,16 @@ namespace TechTalk.SpecFlow
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
 
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
+        }
+
+        public FeatureContext FeatureContext
+        {
+            get { return contextManager.FeatureContext; }
+        }
+
+        public ScenarioContext ScenarioContext
+        {
+            get { return contextManager.ScenarioContext; }
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
@@ -96,7 +108,7 @@ namespace TechTalk.SpecFlow
             // only delayed (at the end of the execution), we automatically close 
             // the current feature if necessary
             if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                ObjectContainer.FeatureContext != null)
+                contextManager.FeatureContext != null)
             {
                 OnFeatureEnd();
             }
@@ -108,8 +120,8 @@ namespace TechTalk.SpecFlow
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
-            ObjectContainer.FeatureContext = new FeatureContext(featureInfo, bindingCulture);
-            FireEvents(BindingEvent.FeatureStart, ObjectContainer.FeatureContext.FeatureInfo.Tags);
+            contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
+            FireEvents(BindingEvent.FeatureStart, contextManager.FeatureContext.FeatureInfo.Tags);
         }
 
         public void OnFeatureEnd()
@@ -118,24 +130,24 @@ namespace TechTalk.SpecFlow
             // only delayed (at the end of the execution), we ignore the 
             // feature-end call, if the feature has been closed already
             if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                ObjectContainer.FeatureContext == null)
+                contextManager.FeatureContext == null)
                 return;
                 
-            FireEvents(BindingEvent.FeatureEnd, ObjectContainer.FeatureContext.FeatureInfo.Tags);
+            FireEvents(BindingEvent.FeatureEnd, contextManager.FeatureContext.FeatureInfo.Tags);
 
             if (runtimeConfiguration.TraceTimings)
             {
-                ObjectContainer.FeatureContext.Stopwatch.Stop();
-                var duration = ObjectContainer.FeatureContext.Stopwatch.Elapsed;
-                testTracer.TraceDuration(duration, "Feature: " + ObjectContainer.FeatureContext.FeatureInfo.Title);
+                contextManager.FeatureContext.Stopwatch.Stop();
+                var duration = contextManager.FeatureContext.Stopwatch.Elapsed;
+                testTracer.TraceDuration(duration, "Feature: " + contextManager.FeatureContext.FeatureInfo.Title);
             }
 
-            ObjectContainer.FeatureContext = null;
+            contextManager.CleanupFeatureContext();
         }
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
+            contextManager.InitializeScenarioontext(scenarioInfo, this);
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 
@@ -146,48 +158,48 @@ namespace TechTalk.SpecFlow
 
             if (runtimeConfiguration.TraceTimings)
             {
-                ObjectContainer.ScenarioContext.Stopwatch.Stop();
-                var duration = ObjectContainer.ScenarioContext.Stopwatch.Elapsed;
-                testTracer.TraceDuration(duration, "Scenario: " + ObjectContainer.ScenarioContext.ScenarioInfo.Title);
+                contextManager.ScenarioContext.Stopwatch.Stop();
+                var duration = contextManager.ScenarioContext.Stopwatch.Elapsed;
+                testTracer.TraceDuration(duration, "Scenario: " + contextManager.ScenarioContext.ScenarioInfo.Title);
             }
 
-            if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
+            if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
                 return;
 
-            if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.StepDefinitionPending)
+            if (contextManager.ScenarioContext.TestStatus == TestStatus.StepDefinitionPending)
             {
-                var pendingSteps = ObjectContainer.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
-                errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
+                var pendingSteps = contextManager.ScenarioContext.PendingSteps.Distinct().OrderBy(s => s);
+                errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}  {1}",
                     errorProvider.GetPendingStepDefinitionError().Message,
                     string.Join(Environment.NewLine + "  ", pendingSteps.ToArray()),
                     Environment.NewLine));
                 return;
             }
 
-            if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.MissingStepDefinition)
+            if (contextManager.ScenarioContext.TestStatus == TestStatus.MissingStepDefinition)
             {
-                var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
+                var missingSteps = contextManager.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
                     currentStepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
-                errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
+                errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
                     bindingSkeleton,
                     Environment.NewLine));
                 return;
             }
 
-            if (ObjectContainer.ScenarioContext.TestError == null)
+            if (contextManager.ScenarioContext.TestError == null)
                 throw new InvalidOperationException("test failed with an unknown error");
 
-            ObjectContainer.ScenarioContext.TestError.PreserveStackTrace();
-            throw ObjectContainer.ScenarioContext.TestError;
+            contextManager.ScenarioContext.TestError.PreserveStackTrace();
+            throw contextManager.ScenarioContext.TestError;
         }
 
         public void OnScenarioEnd()
         {
             FireScenarioEvents(BindingEvent.ScenarioEnd);
-            ObjectContainer.ScenarioContext = null;
+            contextManager.CleanupScenarioContext();
         }
 
         protected virtual void OnBlockStart(ScenarioBlock block)
@@ -221,8 +233,8 @@ namespace TechTalk.SpecFlow
 
         private void FireScenarioEvents(BindingEvent bindingEvent)
         {
-            var tags = (ObjectContainer.FeatureContext.FeatureInfo.Tags ?? emptyTagList).Concat(
-                ObjectContainer.ScenarioContext.ScenarioInfo.Tags ?? emptyTagList);
+            var tags = (contextManager.FeatureContext.FeatureInfo.Tags ?? emptyTagList).Concat(
+                contextManager.ScenarioContext.ScenarioInfo.Tags ?? emptyTagList);
             FireEvents(bindingEvent, tags);
         }
 
@@ -322,7 +334,7 @@ namespace TechTalk.SpecFlow
                 match = GetStepMatch(stepArgs);
                 arguments = GetExecuteArguments(match);
 
-                if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
+                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
                 {
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
                     if (runtimeConfiguration.TraceSuccessfulSteps) 
@@ -339,34 +351,34 @@ namespace TechTalk.SpecFlow
                 Debug.Assert(arguments != null);
 
                 testTracer.TraceStepPending(match, arguments);
-                ObjectContainer.ScenarioContext.PendingSteps.Add(
+                contextManager.ScenarioContext.PendingSteps.Add(
                     stepFormatter.GetMatchText(match, arguments));
 
-                if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.StepDefinitionPending)
-                    ObjectContainer.ScenarioContext.TestStatus = TestStatus.StepDefinitionPending;
+                if (contextManager.ScenarioContext.TestStatus < TestStatus.StepDefinitionPending)
+                    contextManager.ScenarioContext.TestStatus = TestStatus.StepDefinitionPending;
             }
             catch(MissingStepDefinitionException)
             {
-                if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.MissingStepDefinition)
-                    ObjectContainer.ScenarioContext.TestStatus = TestStatus.MissingStepDefinition;
+                if (contextManager.ScenarioContext.TestStatus < TestStatus.MissingStepDefinition)
+                    contextManager.ScenarioContext.TestStatus = TestStatus.MissingStepDefinition;
             }
             catch(BindingException ex)
             {
                 testTracer.TraceBindingError(ex);
-                if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.BindingError)
+                if (contextManager.ScenarioContext.TestStatus < TestStatus.BindingError)
                 {
-                    ObjectContainer.ScenarioContext.TestStatus = TestStatus.BindingError;
-                    ObjectContainer.ScenarioContext.TestError = ex;
+                    contextManager.ScenarioContext.TestStatus = TestStatus.BindingError;
+                    contextManager.ScenarioContext.TestError = ex;
                 }
             }
             catch(Exception ex)
             {
                 testTracer.TraceError(ex);
 
-                if (ObjectContainer.ScenarioContext.TestStatus < TestStatus.TestError)
+                if (contextManager.ScenarioContext.TestStatus < TestStatus.TestError)
                 {
-                    ObjectContainer.ScenarioContext.TestStatus = TestStatus.TestError;
-                    ObjectContainer.ScenarioContext.TestError = ex;
+                    contextManager.ScenarioContext.TestStatus = TestStatus.TestError;
+                    contextManager.ScenarioContext.TestError = ex;
                 }
                 if (runtimeConfiguration.StopAtFirstError)
                     throw;
@@ -422,8 +434,8 @@ namespace TechTalk.SpecFlow
                     }
                 }
 
-                testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
-                ObjectContainer.ScenarioContext.MissingSteps.Add(
+                testTracer.TraceNoMatchingStepDefinition(stepArgs, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
+                contextManager.ScenarioContext.MissingSteps.Add(
                     currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
@@ -457,15 +469,15 @@ namespace TechTalk.SpecFlow
 
         private void HandleBlockSwitch(ScenarioBlock block)
         {
-            if (ObjectContainer.ScenarioContext.CurrentScenarioBlock != block)
+            if (contextManager.ScenarioContext.CurrentScenarioBlock != block)
             {
-                if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
-                    OnBlockEnd(ObjectContainer.ScenarioContext.CurrentScenarioBlock);
+                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+                    OnBlockEnd(contextManager.ScenarioContext.CurrentScenarioBlock);
 
-                ObjectContainer.ScenarioContext.CurrentScenarioBlock = block;
+                contextManager.ScenarioContext.CurrentScenarioBlock = block;
 
-                if (ObjectContainer.ScenarioContext.TestStatus == TestStatus.OK)
-                    OnBlockStart(ObjectContainer.ScenarioContext.CurrentScenarioBlock);
+                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+                    OnBlockStart(contextManager.ScenarioContext.CurrentScenarioBlock);
             }
         }
 
@@ -497,7 +509,7 @@ namespace TechTalk.SpecFlow
         #region Given-When-Then
         public StepContext GetStepContext()
         {
-            return new StepContext(ObjectContainer.FeatureContext.FeatureInfo, ObjectContainer.ScenarioContext.ScenarioInfo);
+            return new StepContext(contextManager.FeatureContext.FeatureInfo, contextManager.ScenarioContext.ScenarioInfo);
         }
 
         public void Given(string text, string multilineTextArg, Table tableArg)
@@ -529,7 +541,7 @@ namespace TechTalk.SpecFlow
 
         private BindingType GetCurrentBindingType()
         {
-            ScenarioBlock currentScenarioBlock = ObjectContainer.ScenarioContext.CurrentScenarioBlock;
+            ScenarioBlock currentScenarioBlock = contextManager.ScenarioContext.CurrentScenarioBlock;
             return currentScenarioBlock == ScenarioBlock.None ? BindingType.Given : currentScenarioBlock.ToBindingType();
         }
 

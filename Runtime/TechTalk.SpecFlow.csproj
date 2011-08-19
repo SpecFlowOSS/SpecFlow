@@ -104,6 +104,7 @@
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\StepMethodBinding.cs" />
     <Compile Include="Infrastructure\AsyncTestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />

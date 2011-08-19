@@ -6,6 +6,7 @@ using MiniDi;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
@@ -16,6 +17,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected MockRepository MockRepository;
         protected CultureInfo FeatureLanguage;
         protected IStepArgumentTypeConverter StepArgumentTypeConverterStub;
+
+        protected IContextManager ContextManagerStub;
 
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
@@ -90,8 +93,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
             CultureInfo bindingCulture = GetBindingCulture();
-            ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"), null);
+
+            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>());
+            ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
+            ContextManagerStub.InitializeScenarioontext(new ScenarioInfo("test scenario"), null);
 
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }
@@ -107,6 +112,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 container =>
                     {
                         container.RegisterTypeAs<DummyTestTracer, ITestTracer>();
+                        container.RegisterInstanceAs(ContextManagerStub);
 
                         var bindingRegistry = (BindingRegistry) container.Resolve<IBindingRegistry>();
                         foreach (var bindingType in bindingTypes)
@@ -127,7 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             TestRunner testRunner = GetTestRunnerFor(registerMocks, typeof(TBinding));
 
             bindingInstance = MockRepository.StrictMock<TBinding>();
-            ObjectContainer.ScenarioContext.SetBindingInstance(typeof(TBinding), bindingInstance);
+            testRunner.ScenarioContext.SetBindingInstance(typeof(TBinding), bindingInstance);
             return testRunner;
         }
 

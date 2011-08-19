@@ -18,10 +18,7 @@ namespace TechTalk.SpecFlow
             FeatureInfo = featureInfo;
         }
 
-        public static FeatureContext Current
-        {
-            get { return ObjectContainer.FeatureContext; }
-        }
+        public static FeatureContext Current { get; internal set; }
 
         public FeatureInfo FeatureInfo { get; private set; }
         public CultureInfo BindingCulture { get; private set; }
