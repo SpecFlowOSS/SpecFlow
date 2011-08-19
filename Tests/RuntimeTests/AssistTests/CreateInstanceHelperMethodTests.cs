@@ -278,5 +278,34 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.NullableFloat.ShouldEqual(55.66F);
         }
 
+        [Test]
+        public void Ignores_spaces_when_matching_enum_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("This Is A Style", "Soft");
+
+            var test = table.CreateInstance<EnumPropertyTest>();
+
+            test.ThisIsAStyle.ShouldEqual(Style.Soft);
+        }
+
+        [Test]
+        public void Ignores_casing_when_matching_enum_property_name()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("ThisisaSTYLE", "VeryCool");
+
+            var test = table.CreateInstance<EnumPropertyTest>();
+
+            test.ThisIsAStyle.ShouldEqual(Style.VeryCool);
+        }
+
+        private class EnumPropertyTest
+        {
+            public Style ThisIsAStyle { get; set; }
+        }
+
+
+
     }
 }
