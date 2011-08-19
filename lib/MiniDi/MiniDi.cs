@@ -290,6 +290,8 @@ namespace MiniDi
         private object CreateObject(Type type, IEnumerable<Type> resolutionPath)
         {
             var ctors = type.GetConstructors();
+            if (ctors.Length == 0)
+                ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
 
             object obj;
             if (ctors.Length == 1)
@@ -303,7 +305,7 @@ namespace MiniDi
             }
             else if (ctors.Length == 0)
             {
-                throw new ObjectContainerException("Class must have a public constructor! " + type.FullName, resolutionPath);
+                throw new ObjectContainerException("Class must have a constructor! " + type.FullName, resolutionPath);
             }
             else
             {

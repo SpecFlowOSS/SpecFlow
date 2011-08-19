@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
         private IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
-        private readonly BindingRegistry bindingRegistry;
+        private readonly IBindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
 
         [Obsolete("Use DI")]
@@ -38,16 +38,15 @@ namespace TechTalk.SpecFlow
             return (TestRunner)container.Resolve<ITestRunner>();
         }
 
-        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, RuntimeConfiguration runtimeConfiguration)
+        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry)
         {
-            this.errorProvider = errorProvider;
-            this.runtimeConfiguration = runtimeConfiguration;
-            this.testTracer = testTracer;
             unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
 
+            this.errorProvider = errorProvider;
+            this.bindingRegistry = bindingRegistry;
+            this.runtimeConfiguration = runtimeConfiguration;
+            this.testTracer = testTracer;
             this.stepFormatter = stepFormatter;
-
-            bindingRegistry = ObjectContainer.BindingRegistry;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
         }
 

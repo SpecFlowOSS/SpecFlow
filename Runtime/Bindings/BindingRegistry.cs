@@ -7,7 +7,7 @@ using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    internal enum BindingEvent
+    public enum BindingEvent
     {
         TestRunStart,
         TestRunEnd,
@@ -21,7 +21,14 @@ namespace TechTalk.SpecFlow.Bindings
         StepEnd
     }
 
-    internal class BindingRegistry : IEnumerable<StepBinding>
+    public interface IBindingRegistry : IEnumerable<StepBinding>
+    {
+        void BuildBindingsFromAssembly(Assembly assembly);
+        List<EventBinding> GetEvents(BindingEvent bindingEvent);
+        ICollection<StepTransformationBinding> StepTransformations { get; }
+    }
+
+    internal class BindingRegistry : IBindingRegistry
     {
         private readonly IErrorProvider errorProvider;
 
@@ -29,9 +36,9 @@ namespace TechTalk.SpecFlow.Bindings
         private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
 
-        public BindingRegistry()
+        public BindingRegistry(IErrorProvider errorProvider)
         {
-            this.errorProvider = ObjectContainer.ErrorProvider;
+            this.errorProvider = errorProvider;
         }
 
         public void BuildBindingsFromAssembly(Assembly assembly)

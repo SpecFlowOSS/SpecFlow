@@ -16,10 +16,10 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly ITestTracer testTracer;
 
-        public StepArgumentTypeConverter(ITestTracer testTracer)
+        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry)
         {
             this.testTracer = testTracer;
-            StepTransformations = ObjectContainer.BindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
+            StepTransformations = bindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
         }
 
         public ICollection<StepTransformationBinding> StepTransformations { get; private set; }

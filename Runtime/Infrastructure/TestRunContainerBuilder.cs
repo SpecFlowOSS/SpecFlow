@@ -45,6 +45,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
+            container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
         }
     }
 }

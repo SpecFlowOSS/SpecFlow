@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    internal class EventBinding : MethodBinding
+    public class EventBinding : MethodBinding
     {
         public string[] Tags { get; private set; }
 

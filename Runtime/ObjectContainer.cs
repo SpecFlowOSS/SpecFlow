@@ -143,19 +143,6 @@ namespace TechTalk.SpecFlow
 
         #endregion
 
-        #region TraceListener
-        private static ITraceListener traceListener = null;
-
-        [Obsolete("Use DI")]
-        public static ITraceListener TraceListener
-        {
-            get
-            {
-                return GetOrCreate(ref traceListener, Configuration.TraceListenerType);
-            }
-        }
-        #endregion
-
         #region TestTracer
         private static ITestTracer testTracer = null;
 
@@ -182,23 +169,6 @@ namespace TechTalk.SpecFlow
             get
             {
                 return GetOrCreate(ref errorProvider, typeof(ErrorProvider));
-            }
-        }
-        #endregion
-
-        #region StepFormatter
-        private static IStepFormatter stepFormatter = null;
-
-        [Obsolete("Use DI")]
-        public static IStepFormatter StepFormatter
-        {
-            get
-            {
-                return GetOrCreate(ref stepFormatter, typeof(StepFormatter));
-            }
-            internal set
-            {
-                stepFormatter = value;
             }
         }
         #endregion
@@ -230,24 +200,6 @@ namespace TechTalk.SpecFlow
         }
 
         #endregion
-
-        #region BindingRegistry
-        private static BindingRegistry bindingRegistry = null;
-
-        public static BindingRegistry BindingRegistry
-        {
-            get
-            {
-                return GetOrCreate(ref bindingRegistry);
-            }
-            internal set
-            {
-                bindingRegistry = value;
-            }
-        }
-
-        #endregion
-
 
         #region factory helper methods
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class

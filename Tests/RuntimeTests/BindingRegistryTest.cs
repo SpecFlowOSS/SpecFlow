@@ -1,9 +1,11 @@
 using System;
 using System.Globalization;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -23,10 +25,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldFindExampleConverter()
         {
-            BindingRegistry registry = new BindingRegistry();
+            BindingRegistry registry = CreateBindingRegistry();
             registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
             Assert.AreEqual(1, registry.StepTransformations.Where(s => s.Regex != null && s.Regex.Match("BindingRegistryTests").Success && s.Regex.Match("").Success == false).Count());
+        }
+
+        private BindingRegistry CreateBindingRegistry()
+        {
+            return new BindingRegistry(new Mock<IErrorProvider>().Object);
         }
 
         /*        Steps that are feature scoped               */
@@ -56,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldFindScopedExampleConverter()
         {
-            BindingRegistry registry = new BindingRegistry();
+            BindingRegistry registry = CreateBindingRegistry();
             registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
             Assert.AreEqual(2,

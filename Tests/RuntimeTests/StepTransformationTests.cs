@@ -33,12 +33,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [TestFixture]
     public class StepTransformationTests
     {
+        private readonly Mock<IBindingRegistry> bindingRegistryStub = new Mock<IBindingRegistry>();
 
         [SetUp]
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
             ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
+
+            List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
+            bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
         }
 
         [Test]
@@ -60,12 +64,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
             ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
-            BindingRegistry bindingRegistry = new BindingRegistry();
-            ObjectContainer.BindingRegistry = bindingRegistry;
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"user (\w+)", transformMethod));
+            bindingRegistryStub.Object.StepTransformations.Add(new StepTransformationBinding(@"user (\w+)", transformMethod));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
@@ -76,19 +78,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
         {
-            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object);
+            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object);
         }
 
         [Test]
         public void ShouldUseStepArgumentTransformationToConvertTable()
         {
             ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
-            BindingRegistry bindingRegistry = new BindingRegistry();
-            ObjectContainer.BindingRegistry = bindingRegistry;
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
-            bindingRegistry.StepTransformations.Add(new StepTransformationBinding(@"", transformMethod));
+            bindingRegistryStub.Object.StepTransformations.Add(new StepTransformationBinding(@"", transformMethod));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 

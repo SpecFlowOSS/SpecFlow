@@ -14,7 +14,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepExecutionTestsBase
     {
         protected MockRepository MockRepository;
-        private BindingRegistry bindingRegistry;
         protected CultureInfo FeatureLanguage;
         protected IStepArgumentTypeConverter StepArgumentTypeConverterStub;
 
@@ -94,9 +93,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             ObjectContainer.FeatureContext = new FeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
             ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("test scenario"), null);
 
-            ObjectContainer.StepFormatter = MockRepository.Stub<IStepFormatter>();
-            ObjectContainer.TestTracer = new DummyTestTracer();
-
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }
 
@@ -107,14 +103,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected TestRunner GetTestRunnerFor(Action<IObjectContainer> registerMocks, params Type[] bindingTypes)
         {
-            bindingRegistry = new BindingRegistry();
-            foreach (var bindingType in bindingTypes)
-            {
-                bindingRegistry.BuildBindingsFromType(bindingType);
-            }
-            ObjectContainer.BindingRegistry = bindingRegistry;
+            return TestRunner.CreateTestRunnerForCompatibility(
+                container =>
+                    {
+                        container.RegisterTypeAs<DummyTestTracer, ITestTracer>();
 
-            return TestRunner.CreateTestRunnerForCompatibility(registerMocks);
+                        var bindingRegistry = (BindingRegistry) container.Resolve<IBindingRegistry>();
+                        foreach (var bindingType in bindingTypes)
+                            bindingRegistry.BuildBindingsFromType(bindingType);
+
+                        if (registerMocks != null)
+                            registerMocks(container);
+                    });
         }
 
         protected TestRunner GetTestRunnerFor<TBinding>(out TBinding bindingInstance)
