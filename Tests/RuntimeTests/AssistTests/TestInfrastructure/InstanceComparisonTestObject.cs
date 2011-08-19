@@ -8,13 +8,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure
         public int IntProperty { get; set; }
         public DateTime DateTimeProperty { get; set; }
         public Guid GuidProperty { get; set; }
-
-        public bool BooleanProperty { get; set; }
-
-        public int? NullableField { get; set; }
-
+        public bool BoolProperty { get; set; }
+        public int? NullableIntProperty { get; set; }
         public decimal DecimalProperty { get; set; }
-
-        public Single SingleProperty { get; set; }
+        public float FloatProperty { get; set; }
     }
 }

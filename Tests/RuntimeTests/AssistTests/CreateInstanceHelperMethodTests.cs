@@ -257,25 +257,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Sets_single_values()
+        public void Sets_float_values()
         {
             var table = new Table("Field", "Value");
-            table.AddRow("Single", "98.22");
+            table.AddRow("Float", "98.22");
 
             var person = table.CreateInstance<Person>();
 
-            person.Single.ShouldEqual(98.22F);
+            person.Float.ShouldEqual(98.22F);
         }
 
         [Test]
-        public void Sets_nullable_single_values()
+        public void Sets_nullable_float_values()
         {
             var table = new Table("Field", "Value");
-            table.AddRow("NullableSingle", "55.66");
+            table.AddRow("NullableFloat", "55.66");
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableSingle.ShouldEqual(55.66F);
+            person.NullableFloat.ShouldEqual(55.66F);
         }
 
     }

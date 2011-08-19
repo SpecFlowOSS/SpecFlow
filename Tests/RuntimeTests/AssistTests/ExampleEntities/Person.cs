@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 
         public DateTime? NullableDateTime { get; set; }
         public bool? NullableBool { get; set; }
+
         public decimal? NullableDecimal { get; set; }
         public int? NullableInt { get; set; }
 
@@ -26,8 +27,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public Guid GuidId { get; set; }
         public Guid? NullableGuidId { get; set; }
 
-        public Single Single { get; set; }
-        public Single? NullableSingle { get; set; }
+        public float Float { get; set; }
+        public float? NullableFloat { get; set; }
         public uint UnsignedInt { get; set; }
         public uint? NullableUnsignedInt { get; set; }
     }
