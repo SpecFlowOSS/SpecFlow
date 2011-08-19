@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -50,11 +50,11 @@ namespace TechTalk.SpecFlow
         {
             return GetOrCreate(ref syncTestRunner,
                                delegate
-                               {
-                                   var runner = new TestRunner();
-                                   InitialiseTestRunner(runner, callingAssembly);
-                                   return runner;
-                               });
+                                   {
+                                       var container = TestRunContainerBuilder.CreateContainer();
+                                       var factory = container.Resolve<ITestRunnerFactory>();
+                                       return factory.Create(callingAssembly);
+                                   });
         }
 
         internal static ITestRunner AsyncTestRunner
@@ -68,17 +68,11 @@ namespace TechTalk.SpecFlow
             return GetOrCreate(ref asyncTestRunner,
                                delegate
                                {
-                                   var runner = new AsyncTestRunner(EnsureSyncTestRunner(callingAssembly));
-                                   InitialiseTestRunner(runner, callingAssembly);
-                                   return runner;
+                                   var container = TestRunContainerBuilder.CreateContainer();
+                                   container.RegisterTypeAs<AsyncTestRunner, ITestRunner>(); //TODO: better support this in the DI container
+                                   var factory = container.Resolve<ITestRunnerFactory>();
+                                   return factory.Create(callingAssembly);
                                });
-        }
-
-        private static void InitialiseTestRunner(ITestRunner runner, Assembly callingAssembly)
-        {
-            var bindingAssemblies = new List<Assembly> { callingAssembly };
-            bindingAssemblies.AddRange(configuration.AdditionalStepAssemblies);
-            runner.InitializeTestRunner(bindingAssemblies.ToArray());
         }
 
         #endregion

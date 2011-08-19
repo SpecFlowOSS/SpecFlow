@@ -117,6 +117,9 @@
     <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
     <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="Infrastructure\RuntimeConfigurationExtensions.cs" />
+    <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
+    <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
