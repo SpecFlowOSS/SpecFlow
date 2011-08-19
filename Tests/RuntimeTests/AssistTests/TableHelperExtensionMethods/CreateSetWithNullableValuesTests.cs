@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Can_set_a_nullable_boolean()
+        public void Can_set_a_nullable_bool()
         {
             var table = CreatePersonTableHeaders();
             table.AddRow("", "", "", "3", "", "true");
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_a_nullable_boolean_to_null_when_the_value_is_empty()
+        public void Sets_a_nullable_bool_to_null_when_the_value_is_empty()
         {
             var table = CreatePersonTableHeaders();
             table.AddRow("", "", "", "", "", "");
@@ -167,14 +167,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_a_nullable_single_to_null_when_the_value_is_empty()
+        public void Sets_a_nullable_float_to_null_when_the_value_is_empty()
         {
-            var table = new Table("NullableSingle");
+            var table = new Table("NullableFloat");
             table.AddRow("");
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableSingle.ShouldBeNull();
+            people.First().NullableFloat.ShouldBeNull();
         }
     }
 }
