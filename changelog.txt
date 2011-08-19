@@ -11,6 +11,7 @@ Fixed issues:
 + Intellisense completition removes the non-first words of keywords (e.g. for "Gegeben sei") (Issue 65)
 + Support table delimiter escaping for table formatting (Issue 99)
 + Fixed enum property name match (Issue 119)
++ Added Assist support for byte, float, long, ulong, sbyte, ushort, single. With nullables. (Issue 120)
 
 1.7.0 - 2011/07/29
 
