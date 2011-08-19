@@ -1,4 +1,5 @@
 using System.Reflection;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -6,8 +7,8 @@ namespace TechTalk.SpecFlow.Bindings
     {
         public string[] Tags { get; private set; }
 
-        public EventBinding(string[] tags, MethodInfo methodInfo)
-            : base(methodInfo)
+        public EventBinding(IErrorProvider errorProvider, string[] tags, MethodInfo methodInfo)
+            : base(errorProvider, methodInfo)
         {
             Tags = tags;
         }

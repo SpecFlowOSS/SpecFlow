@@ -160,19 +160,6 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        #region ErrorProvider
-        private static IErrorProvider errorProvider = null;
-
-        [Obsolete("Use DI")]
-        public static IErrorProvider ErrorProvider
-        {
-            get
-            {
-                return GetOrCreate(ref errorProvider, typeof(ErrorProvider));
-            }
-        }
-        #endregion
-
         #region StepDefinitionSkeletonProviderCS
         private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderCS = null;
         private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderVB = null;

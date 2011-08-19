@@ -101,7 +101,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckEventBindingMethod(bindingEventAttr.Event, method);
 
-            var eventBinding = new EventBinding(bindingEventAttr.Tags, method);
+            var eventBinding = new EventBinding(errorProvider, bindingEventAttr.Tags, method);
 
             GetEvents(bindingEventAttr.Event).Add(eventBinding);
         }
@@ -157,13 +157,13 @@ namespace TechTalk.SpecFlow.Bindings
 
         private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
         {
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
+            StepBinding stepBinding = new StepBinding(errorProvider, scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
             stepBindings.Add(stepBinding);
         }
 
         private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
         {
-            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(argumentTransformationAttribute.Regex, method);
+            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(errorProvider, argumentTransformationAttribute.Regex, method);
 
             stepTransformations.Add(stepTransformationBinding);
         }

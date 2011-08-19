@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -17,8 +18,8 @@ namespace TechTalk.SpecFlow.Bindings
 
         public Regex Regex { get; private set; }
 
-        public StepTransformationBinding(string regexString, MethodInfo methodInfo)
-            : base(methodInfo)
+        public StepTransformationBinding(IErrorProvider errorProvider, string regexString, MethodInfo methodInfo)
+            : base(errorProvider, methodInfo)
         {
             Regex = regexString == null ? null : new Regex("^" + regexString + "$", RegexOptions);
         }

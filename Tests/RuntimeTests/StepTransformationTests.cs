@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -45,12 +47,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
         }
 
+        private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
+        {
+            return new StepTransformationBinding(new Mock<IErrorProvider>().Object, regexString, transformMethod);
+        }
+
         [Test]
         public void UserConverterShouldConvertStringToUser()
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(@"user (\w+)", transformMethod);
+            StepTransformationBinding stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
@@ -67,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            bindingRegistryStub.Object.StepTransformations.Add(new StepTransformationBinding(@"user (\w+)", transformMethod));
+            bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"user (\w+)", transformMethod));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
@@ -88,7 +95,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
-            bindingRegistryStub.Object.StepTransformations.Add(new StepTransformationBinding(@"", transformMethod));
+            bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"", transformMethod));
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 

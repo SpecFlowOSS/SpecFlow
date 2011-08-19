@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly IErrorProvider errorProvider;
 
-        protected MethodBinding(MethodInfo method)
+        protected MethodBinding(IErrorProvider errorProvider, MethodInfo method)
         {
-            errorProvider = ObjectContainer.ErrorProvider;
+            this.errorProvider = errorProvider;
 
             BindingAction = CreateMethodDelegate(method);
             MethodInfo = method;
