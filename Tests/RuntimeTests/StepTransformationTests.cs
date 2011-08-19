@@ -5,6 +5,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 
@@ -49,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
         {
-            return new StepTransformationBinding(new Mock<IErrorProvider>().Object, regexString, transformMethod);
+            return new StepTransformationBinding(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object, regexString, transformMethod);
         }
 
         [Test]

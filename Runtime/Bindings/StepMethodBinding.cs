@@ -14,10 +14,12 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public abstract class MethodBinding
     {
+        private readonly RuntimeConfiguration runtimeConfiguration;
         private readonly IErrorProvider errorProvider;
 
-        protected MethodBinding(IErrorProvider errorProvider, MethodInfo method)
+        protected MethodBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo method)
         {
+            this.runtimeConfiguration = runtimeConfiguration;
             this.errorProvider = errorProvider;
 
             BindingAction = CreateMethodDelegate(method);
@@ -151,7 +153,7 @@ namespace TechTalk.SpecFlow.Bindings
                     stopwatch.Stop();
                 }
 
-                if (ObjectContainer.Configuration.TraceTimings && stopwatch.Elapsed >= ObjectContainer.Configuration.MinTracedDuration)
+                if (runtimeConfiguration.TraceTimings && stopwatch.Elapsed >= runtimeConfiguration.MinTracedDuration)
                 {
                     testTracer.TraceDuration(stopwatch.Elapsed, MethodInfo, arguments);
                 }

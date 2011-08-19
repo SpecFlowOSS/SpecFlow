@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using System.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -33,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private BindingRegistry CreateBindingRegistry()
         {
-            return new BindingRegistry(new Mock<IErrorProvider>().Object);
+            return new BindingRegistry(new Mock<IErrorProvider>().Object, new BindingFactory(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object));
         }
 
         /*        Steps that are feature scoped               */

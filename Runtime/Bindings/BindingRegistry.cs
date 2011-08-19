@@ -31,14 +31,16 @@ namespace TechTalk.SpecFlow.Bindings
     internal class BindingRegistry : IBindingRegistry
     {
         private readonly IErrorProvider errorProvider;
+        private readonly IBindingFactory bindingFactory;
 
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
         private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
 
-        public BindingRegistry(IErrorProvider errorProvider)
+        public BindingRegistry(IErrorProvider errorProvider, IBindingFactory bindingFactory)
         {
             this.errorProvider = errorProvider;
+            this.bindingFactory = bindingFactory;
         }
 
         public void BuildBindingsFromAssembly(Assembly assembly)
@@ -101,7 +103,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckEventBindingMethod(bindingEventAttr.Event, method);
 
-            var eventBinding = new EventBinding(errorProvider, bindingEventAttr.Tags, method);
+            var eventBinding = bindingFactory.CreateEventBinding(bindingEventAttr.Tags, method);
 
             GetEvents(bindingEventAttr.Event).Add(eventBinding);
         }
@@ -157,13 +159,13 @@ namespace TechTalk.SpecFlow.Bindings
 
         private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
         {
-            StepBinding stepBinding = new StepBinding(errorProvider, scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
+            var stepBinding = bindingFactory.CreateStepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
             stepBindings.Add(stepBinding);
         }
 
         private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
         {
-            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(errorProvider, argumentTransformationAttribute.Regex, method);
+            var stepTransformationBinding = bindingFactory.CreateStepArgumentTransformation(argumentTransformationAttribute.Regex, method);
 
             stepTransformations.Add(stepTransformationBinding);
         }

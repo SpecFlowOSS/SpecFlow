@@ -1,9 +1,6 @@
 using System;
 using System.Reflection;
-using TechTalk.SpecFlow.Async;
-using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -22,7 +19,8 @@ namespace TechTalk.SpecFlow
         #region Configuration
         private static RuntimeConfiguration configuration = null;
 
-        public static RuntimeConfiguration Configuration
+        [Obsolete("Use DI")]
+        private static RuntimeConfiguration Configuration
         {
             get
             {
@@ -147,15 +145,11 @@ namespace TechTalk.SpecFlow
         private static ITestTracer testTracer = null;
 
         [Obsolete("Use DI")]
-        public static ITestTracer TestTracer
+        private static ITestTracer TestTracer
         {
             get
             {
                 return GetOrCreate(ref testTracer, typeof(TestTracer));
-            }
-            internal set
-            {
-                testTracer = value;
             }
         }
         #endregion
@@ -192,11 +186,6 @@ namespace TechTalk.SpecFlow
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class
         {
             return GetOrCreate(ref storage, () => ConfigurationServices.CreateInstance<TInterface>(implementationType));
-        }
-
-        private static TClass GetOrCreate<TClass>(ref TClass storage) where TClass : class, new()
-        {
-            return GetOrCreate(ref storage, () => new TClass());
         }
 
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Func<TInterface> factory) where TInterface : class
