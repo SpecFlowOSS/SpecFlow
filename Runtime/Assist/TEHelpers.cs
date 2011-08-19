@@ -60,7 +60,13 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
         {
-            return property.Name.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+            return property.Name.MatchesThisColumnName(columnName);
+        }
+
+        internal static bool MatchesThisColumnName(this string propertyName, string columnName)
+        {
+            return propertyName.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+            
         }
 
         internal static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
@@ -125,7 +131,7 @@ namespace TechTalk.SpecFlow.Assist
                            {
                                typeof (Enum),
                                (TableRow row) =>
-                               new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name == row[0]).PropertyType)
+                               new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)
                                },
                            {typeof (Single), (TableRow row) => new SingleValueRetriever().GetValue(row[1])},
                            {
