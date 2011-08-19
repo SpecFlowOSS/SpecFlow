@@ -127,7 +127,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_booleans_on_the_instance_when_type_is_boolean()
+        public void Sets_bools_on_the_instance_when_type_is_bool()
         {
             var table = CreatePersonTableHeaders();
             table.AddRow("", "", "4/28/2009", "3", "", "true");
@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_doubless_on_the_instance_when_type_is_double()
+        public void Sets_doubles_on_the_instance_when_type_is_double()
         {
             var table = new Table("Double", "NullableDouble");
             table.AddRow("4.193", "7.28");
@@ -150,15 +150,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_singles_on_the_instance_when_type_is_single()
+        public void Sets_floats_on_the_instance_when_type_is_float()
         {
-            var table = new Table("Single", "NullableSingle");
+            var table = new Table("Float", "NullableFloat");
             table.AddRow("2.698", "8.954");
 
             var people = table.CreateSet<Person>();
 
-            people.First().Single.ShouldEqual(2.698F);
-            people.First().NullableSingle.ShouldEqual(8.954F);
+            people.First().Float.ShouldEqual(2.698F);
+            people.First().NullableFloat.ShouldEqual(8.954F);
         }
 
         [Test]

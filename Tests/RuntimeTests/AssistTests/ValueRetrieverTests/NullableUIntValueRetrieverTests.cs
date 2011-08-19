@@ -35,6 +35,5 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var retriever = new NullableUIntValueRetriever(v => 3);
             retriever.GetValue(string.Empty).ShouldBeNull();
         }
-
     }
 }

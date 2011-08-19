@@ -60,7 +60,13 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
         {
-            return property.Name.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+            return property.Name.MatchesThisColumnName(columnName);
+        }
+
+        internal static bool MatchesThisColumnName(this string propertyName, string columnName)
+        {
+            return propertyName.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+
         }
 
         internal static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
@@ -88,50 +94,37 @@ namespace TechTalk.SpecFlow.Assist
             return new Dictionary<Type, Func<TableRow, object>>
                        {
                            {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
+                           {typeof (byte), (TableRow row) => new ByteValueRetriever().GetValue(row[1])},
+                           {typeof (byte?), (TableRow row) => new NullableByteValueRetriever(v => new ByteValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (sbyte), (TableRow row) => new SByteValueRetriever().GetValue(row[1])},
+                           {typeof (sbyte?), (TableRow row) => new NullableSByteValueRetriever(v => new SByteValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
                            {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (uint), (TableRow row) => new UIntValueRetriever().GetValue(row[1])},
                            {typeof (uint?), (TableRow row) => new NullableUIntValueRetriever(v => new UIntValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (short), (TableRow row) => new ShortValueRetriever().GetValue(row[1])},
+                           {typeof (short?), (TableRow row) => new NullableShortValueRetriever(v => new ShortValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (ushort), (TableRow row) => new UShortValueRetriever().GetValue(row[1])},
+                           {typeof (ushort?), (TableRow row) => new NullableUShortValueRetriever(v => new UShortValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (long), (TableRow row) => new LongValueRetriever().GetValue(row[1])},
+                           {typeof (long?), (TableRow row) => new NullableLongValueRetriever(v => new LongValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (ulong), (TableRow row) => new ULongValueRetriever().GetValue(row[1])},
+                           {typeof (ulong?), (TableRow row) => new NullableULongValueRetriever(v => new ULongValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (float), (TableRow row) => new FloatValueRetriever().GetValue(row[1])},
+                           {typeof (float?), (TableRow row) => new NullableFloatValueRetriever(v => new FloatValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
+                           {typeof (double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (decimal?),
-                               (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
-                           {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (bool?),
-                               (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
-                           {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (DateTime?),
-                               (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
-                           {typeof (Double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (Double?),
-                               (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
-                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (Guid?),
-                               (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
+                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (char?),
-                               (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])
-                               },
-                           {
-                               typeof (Enum),
-                               (TableRow row) =>
-                               new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name == row[0]).PropertyType)
-                               },
-                           {typeof (Single), (TableRow row) => new SingleValueRetriever().GetValue(row[1])},
-                           {
-                               typeof (Single?),
-                               (TableRow row) => new NullableSingleValueRetriever(v => new SingleValueRetriever().GetValue(v)).GetValue(row[1])
-                           }
+                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
+                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
+                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
+                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
                        };
         }
 

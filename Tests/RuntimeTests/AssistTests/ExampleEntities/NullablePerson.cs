@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public double? NullableDouble { get; set; }
         public Guid? NullableGuid { get; set; }
         public char? NullableChar { get; set; }
-        public Single? NullableSingle { get; set; }
+        public float? NullableFloat { get; set; }
         public uint? NullableUnsignedInt { get; set; }
     }
 }

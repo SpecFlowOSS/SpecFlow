@@ -72,11 +72,11 @@ namespace TechTalk.SpecFlow.Assist
             var valueComparers = new IValueComparer[]
                                      {
                                          new DateTimeValueComparer(),
-                                         new BooleanValueComparer(),
+                                         new BoolValueComparer(),
                                          new GuidValueComparer(),
                                          new DecimalValueComparer(),
                                          new DoubleValueComparer(),
-                                         new SingleValueComparer(),
+                                         new FloatValueComparer(),
                                          new DefaultValueComparer()
                                      };
 

@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
-        public void Returns_false_for_data_that_is_not_boolean()
+        public void Returns_false_for_data_that_is_not_bool()
         {
             var retriever = new BoolValueRetriever();
             retriever.GetValue("sssssdfsd").ShouldBeFalse();
