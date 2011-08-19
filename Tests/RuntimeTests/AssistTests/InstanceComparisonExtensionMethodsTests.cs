@@ -101,11 +101,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Should_not_throw_an_exception_when_actual_value_is_null_and_expected_is_empty()
         {
             var table = new Table("Field", "Value");
-            table.AddRow("NullableField", "");
+            table.AddRow("NullableIntProperty", "");
 
             var test = new InstanceComparisonTestObject
             {
-                NullableField = null,
+                NullableIntProperty = null,
             };
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
@@ -167,18 +167,18 @@ IDoNotExist: Property does not exist");
         public void Will_property_handle_true_boolean_matches()
         {
             var table = new Table("Field", "Value");
-            table.AddRow("BooleanProperty", "true");
+            table.AddRow("BoolProperty", "true");
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
                                                                                                         {
-                                                                                                            BooleanProperty = true
+                                                                                                            BoolProperty = true
                                                                                                         });
 
             comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
 
             comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
                                                                                                     {
-                                                                                                        BooleanProperty = false
+                                                                                                        BoolProperty = false
                                                                                                     });
 
             comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
@@ -216,7 +216,7 @@ IDoNotExist: Property does not exist");
         {
             var table = new Table("Field", "Value");
 
-            var comparisonResult = ExceptionWasThrownByThisComparison(table, null);
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, (InstanceComparisonTestObject)null);
 
             comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
         }
@@ -226,7 +226,7 @@ IDoNotExist: Property does not exist");
         {
             var table = new Table("Field", "Value");
 
-            var exception = GetExceptionThrownByThisComparison(table, null);
+            var exception = GetExceptionThrownByThisComparison(table, (InstanceComparisonTestObject)null);
 
             exception.Message.ShouldEqual("The item to compare was null.");
         }
@@ -260,7 +260,7 @@ IDoNotExist: Property does not exist");
         [Test]
         public void Can_compare_a_horizontal_table()
         {
-            var table = new Table("StringProperty", "IntProperty", "DecimalProperty", "SingleProperty");
+            var table = new Table("StringProperty", "IntProperty", "DecimalProperty", "FloatProperty");
             table.AddRow("Test", "42", "23.01", "11.56");
 
             var test = new InstanceComparisonTestObject
@@ -268,8 +268,89 @@ IDoNotExist: Property does not exist");
                                StringProperty = "Test",
                                IntProperty = 42,
                                DecimalProperty = 23.01M,
-                               SingleProperty = 11.56F
+                               FloatProperty = 11.56F
                            };
+
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
+
+        [Test]
+        public void Supports_all_standard_types()
+        {
+            var table = new Table(
+                "ByteProperty", "NullableByteProperty", "SByteProperty", "NullableSByteProperty",
+                "IntProperty", "NullableIntProperty", "UIntProperty", "NullableUIntProperty",
+                "ShortProperty", "NullableShortProperty", "UShortProperty", "NullableUShortProperty",
+                "LongProperty", "NullableLongProperty", "ULongProperty", "NullableULongProperty",
+                "FloatProperty", "NullableFloatProperty",
+                "DoubleProperty", "NullableDoubleProperty",
+                "DecimalProperty", "NullableDecimalProperty",
+                "CharProperty", "NullableCharProperty",
+                "BoolProperty", "NullableBoolProperty",
+                "DateTimeProperty", "NullableDateTimeProperty",
+                "GuidProperty", "NullableGuidProperty",
+                "StringProperty");
+
+            table.AddRow(
+                "1", "2", "3", "4",
+                "5", "6", "7", "8",
+                "9", "10", "11", "12",
+                "13", "14", "15", "16",
+                "1.01", "2.02",
+                "3.03", "4.04",
+                "5.05", "6.06",
+                "a", "b",
+                "true", "false",
+                "1.1.2011", "2.2.2022",
+                "45D7E8BA-74C9-4B92-9570-42D680F05C2C", "C56B8A48-D7A3-4B75-99FE-93FADBB06180",
+                "Test");
+
+            var test = new StandardTypesComparisonTestObject
+            {
+                ByteProperty = 1,
+                NullableByteProperty = 2,
+                SByteProperty = 3,
+                NullableSByteProperty = 4,
+
+                IntProperty = 5,
+                NullableIntProperty = 6,
+                UIntProperty = 7,
+                NullableUIntProperty = 8,
+
+                ShortProperty = 9,
+                NullableShortProperty = 10,
+                UShortProperty = 11,
+                NullableUShortProperty = 12,
+
+                LongProperty = 13,
+                NullableLongProperty = 14,
+                ULongProperty = 15,
+                NullableULongProperty = 16,
+
+                FloatProperty = 1.01f,
+                NullableFloatProperty = 2.02f,
+
+                DoubleProperty = 3.03,
+                NullableDoubleProperty = 4.04,
+
+                DecimalProperty = 5.05m,
+                NullableDecimalProperty = 6.06m,
+
+                CharProperty = 'a',
+                NullableCharProperty = 'b',
+
+                BoolProperty = true,
+                NullableBoolProperty = false,
+
+                DateTimeProperty = new DateTime(2011, 1, 1),
+                NullableDateTimeProperty = new DateTime(2022, 2, 2),
+
+                GuidProperty = new Guid("45D7E8BA-74C9-4B92-9570-42D680F05C2C"),
+                NullableGuidProperty = new Guid("C56B8A48-D7A3-4B75-99FE-93FADBB06180"),
+
+                StringProperty = "Test"
+            };
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
             comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
@@ -289,6 +370,34 @@ IDoNotExist: Property does not exist");
         }
 
         private static ComparisonTestResult ExceptionWasThrownByThisComparison(Table table, InstanceComparisonTestObject test)
+        {
+            var result = new ComparisonTestResult { ExceptionWasThrown = false };
+            try
+            {
+                table.CompareToInstance(test);
+            }
+            catch (ComparisonException ex)
+            {
+                result.ExceptionWasThrown = true;
+                result.ExceptionMessage = ex.Message;
+            }
+            return result;
+        }
+
+        private static ComparisonException GetExceptionThrownByThisComparison(Table table, StandardTypesComparisonTestObject test)
+        {
+            try
+            {
+                table.CompareToInstance(test);
+            }
+            catch (ComparisonException ex)
+            {
+                return ex;
+            }
+            return null;
+        }
+
+        private static ComparisonTestResult ExceptionWasThrownByThisComparison(Table table, StandardTypesComparisonTestObject test)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };
             try
