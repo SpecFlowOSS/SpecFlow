@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    internal interface IStepDefinitionSkeletonProvider
+    public interface IStepDefinitionSkeletonProvider
     {
         string GetStepDefinitionSkeleton(StepArgs stepArgs);
         string GetBindingClassSkeleton(string stepDefinitions);

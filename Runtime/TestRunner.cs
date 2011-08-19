@@ -23,9 +23,11 @@ namespace TechTalk.SpecFlow
         private readonly ITestTracer testTracer;
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly IStepFormatter stepFormatter;
-        private IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly IBindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
+        private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
+
+        private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         [Obsolete("Use DI")]
         static internal TestRunner CreateTestRunnerForCompatibility(Action<IObjectContainer> registerMocks = null)
@@ -38,16 +40,20 @@ namespace TechTalk.SpecFlow
             return (TestRunner)container.Resolve<ITestRunner>();
         }
 
-        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry)
+        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
+            RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders)
         {
-            unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
-
             this.errorProvider = errorProvider;
+            this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
+            this.unitTestRuntimeProvider = unitTestRuntimeProvider;
             this.bindingRegistry = bindingRegistry;
             this.runtimeConfiguration = runtimeConfiguration;
             this.testTracer = testTracer;
             this.stepFormatter = stepFormatter;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
+
+            this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
         }
 
         public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
@@ -95,7 +101,9 @@ namespace TechTalk.SpecFlow
                 OnFeatureEnd();
             }
 
-            stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(featureInfo.GenerationTargetLanguage);
+            if (!stepDefinitionSkeletonProviders.ContainsKey(featureInfo.GenerationTargetLanguage))
+                currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback case for unsupported skeleton provider
+            currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[featureInfo.GenerationTargetLanguage];
 
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
@@ -160,7 +168,7 @@ namespace TechTalk.SpecFlow
             {
                 var missingSteps = ObjectContainer.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
                 string bindingSkeleton =
-                    stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    currentStepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                         string.Join(Environment.NewLine, missingSteps.ToArray()));
                 errorProvider.ThrowPendingError(ObjectContainer.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
@@ -416,7 +424,7 @@ namespace TechTalk.SpecFlow
 
                 testTracer.TraceNoMatchingStepDefinition(stepArgs, ObjectContainer.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
                 ObjectContainer.ScenarioContext.MissingSteps.Add(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                    currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)

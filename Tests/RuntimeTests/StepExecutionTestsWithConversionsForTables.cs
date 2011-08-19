@@ -33,8 +33,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldCallTheUserConverterToConvertTableWithTable()
         {
-            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
-
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerWithConverterStub(out bindingInstance);
 
@@ -58,8 +56,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldCallTheUserConverterToConvertTableWithTableAndMultilineArg()
         {
-            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
-
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerWithConverterStub(out bindingInstance);
 
@@ -84,8 +80,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldCallTheUserConverterToConvertTableWithTableAndMultilineArgAndParameter()
         {
-            ObjectContainer.StepDefinitionSkeletonProvider(ProgrammingLanguage.CSharp);
-
             StepExecutionTestsBindingsForTableArgumentConvert bindingInstance;
             TestRunner testRunner = GetTestRunnerWithConverterStub(out bindingInstance);
 

@@ -25,10 +25,12 @@ namespace TechTalk.SpecFlow.Tracing
     {
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
+        private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders)
         {
             this.traceListener = traceListener;
+            this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.stepFormatter = stepFormatter;
         }
 
@@ -79,7 +81,7 @@ namespace TechTalk.SpecFlow.Tracing
 //                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
 
 
-            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(targetLanguage);
+            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[targetLanguage];
 
             StringBuilder message = new StringBuilder();
             if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)

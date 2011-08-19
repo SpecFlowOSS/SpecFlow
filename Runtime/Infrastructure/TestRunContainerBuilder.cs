@@ -1,8 +1,10 @@
-﻿using MiniDi;
+﻿using System.Collections.Generic;
+using MiniDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -30,6 +32,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (runtimeConfiguration.TraceListenerType != null)
                 container.RegisterTypeAs<ITraceListener>(runtimeConfiguration.TraceListenerType);
 
+            if (runtimeConfiguration.RuntimeUnitTestProviderType != null)
+                container.RegisterTypeAs<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProviderType);
+
             return container;
         }
 
@@ -47,6 +52,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
+
+            container.RegisterTypeAs<NUnitRuntimeProvider, IUnitTestRuntimeProvider>();
+
+            //this part will be changed for proper named registration support
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders =
+                new Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider>
+                    {
+                        { ProgrammingLanguage.CSharp, new StepDefinitionSkeletonProviderCS() },
+                        { ProgrammingLanguage.VB, new StepDefinitionSkeletonProviderVB() },
+                    };
+            container.RegisterInstanceAs(stepDefinitionSkeletonProviders);
         }
     }
 }

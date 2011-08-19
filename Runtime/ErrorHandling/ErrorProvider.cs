@@ -31,10 +31,10 @@ namespace TechTalk.SpecFlow.ErrorHandling
         private readonly IUnitTestRuntimeProvider unitTestRuntimeProvider;
         private readonly RuntimeConfiguration runtimeConfiguration;
 
-        public ErrorProvider(IStepFormatter stepFormatter, RuntimeConfiguration runtimeConfiguration)
+        public ErrorProvider(IStepFormatter stepFormatter, RuntimeConfiguration runtimeConfiguration, IUnitTestRuntimeProvider unitTestRuntimeProvider)
         {
-            unitTestRuntimeProvider = ObjectContainer.UnitTestRuntimeProvider;
             this.stepFormatter = stepFormatter;
+            this.unitTestRuntimeProvider = unitTestRuntimeProvider;
             this.runtimeConfiguration = runtimeConfiguration;
         }
 

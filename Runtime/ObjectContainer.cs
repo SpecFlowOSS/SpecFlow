@@ -16,24 +16,6 @@ namespace TechTalk.SpecFlow
     /// </remarks>
     internal class ObjectContainer
     {
-        #region Configuration
-        private static RuntimeConfiguration configuration = null;
-
-        [Obsolete("Use DI")]
-        private static RuntimeConfiguration Configuration
-        {
-            get
-            {
-                return GetOrCreate(ref configuration, GetConfiguration);
-            }
-        }
-
-        private static RuntimeConfiguration GetConfiguration()
-        {
-            return RuntimeConfiguration.GetConfig();
-        }
-        #endregion
-
         #region TestRunner
         private static ITestRunner syncTestRunner;
         private static ITestRunner asyncTestRunner;
@@ -152,34 +134,6 @@ namespace TechTalk.SpecFlow
                 return GetOrCreate(ref testTracer, typeof(TestTracer));
             }
         }
-        #endregion
-
-        #region StepDefinitionSkeletonProviderCS
-        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderCS = null;
-        private static IStepDefinitionSkeletonProvider _stepDefinitionSkeletonProviderVB = null;
-        public static IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider(ProgrammingLanguage targetLanguage)
-        {
-            switch (targetLanguage)
-            {
-                case ProgrammingLanguage.VB:
-                    return GetOrCreate(ref _stepDefinitionSkeletonProviderVB, typeof(StepDefinitionSkeletonProviderVB));
-                default:
-                    return GetOrCreate(ref _stepDefinitionSkeletonProviderCS, typeof(StepDefinitionSkeletonProviderCS));
-            }
-        }
-        #endregion
-
-        #region UnitTestRuntimeProvider
-        private static IUnitTestRuntimeProvider unitTestRuntimeProvider = null;
-
-        public static IUnitTestRuntimeProvider UnitTestRuntimeProvider
-        {
-            get
-            {
-                return GetOrCreate(ref unitTestRuntimeProvider, Configuration.RuntimeUnitTestProviderType);
-            }
-        }
-
         #endregion
 
         #region factory helper methods
