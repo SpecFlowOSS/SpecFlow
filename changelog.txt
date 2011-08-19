@@ -1,4 +1,4 @@
-﻿vNext - ???
+﻿1.7.1 - 2011/08/19
 
 Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)
