@@ -150,6 +150,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (keywordCandidate == null)
                 return false;
             GherkinDialect dialect = GetDialect(languageService);
+            if (dialect == null)
+                return false;
 
             if (dialect.IsStepKeyword(keywordCandidate))
                 return true;
