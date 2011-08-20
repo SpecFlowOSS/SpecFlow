@@ -91,7 +91,7 @@ namespace TechTalk.SpecFlow.Async
                 throw new InvalidOperationException("Cannot start an asynchronous scenario with a null AsyncContext");
 
 
-            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
+            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, testRunner);
             // register the test executor in the scenario context to be able to used AOP style
             ObjectContainer.ScenarioContext.Set(asyncTestExecutor);
             ObjectContainer.ScenarioContext.SetTestRunnerUnchecked(this);
