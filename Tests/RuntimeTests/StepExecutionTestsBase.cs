@@ -96,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>());
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
-            ContextManagerStub.InitializeScenarioontext(new ScenarioInfo("test scenario"), null);
+            ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"), null);
 
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }
@@ -140,6 +140,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         protected TestRunner GetTestRunnerWithConverterStub<TBinding>(out TBinding bindingInstance)
         {
             return GetTestRunnerFor(c => c.RegisterInstanceAs(StepArgumentTypeConverterStub), out bindingInstance);
+        }
+
+        protected TestStatus GetLastTestStatus()
+        {
+            return ContextManagerStub.ScenarioContext.TestStatus;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -32,7 +33,7 @@ namespace TechTalk.SpecFlow.Bindings
             return argumentStrings;
         }
 
-        public object Transform(object value, ITestTracer testTracer)
+        public object Transform(IContextManager contextManager, object value, ITestTracer testTracer)
         {
             object[] arguments;
             if (Regex != null && value is string)
@@ -40,7 +41,7 @@ namespace TechTalk.SpecFlow.Bindings
             else
                 arguments = new object[] {value};
 
-            return InvokeAction(arguments, testTracer);
+            return InvokeAction(contextManager, arguments, testTracer);
         }
     }
 }

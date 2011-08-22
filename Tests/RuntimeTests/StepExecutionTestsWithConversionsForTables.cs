@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with table", null, table);
 
-            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -73,7 +73,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with multiline argument and table", multiLineArg, table);
 
-            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step for argument convert with parameter, multiline argument and table: argument", multiLineArg, table);
 
-            Assert.AreEqual(TestStatus.OK, ScenarioContext.Current.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
     }

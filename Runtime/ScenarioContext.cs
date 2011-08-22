@@ -12,7 +12,19 @@ namespace TechTalk.SpecFlow
 {
     public class ScenarioContext : SpecFlowContext
     {
-        public static ScenarioContext Current { get; internal set; }
+        private static ScenarioContext current;
+        public static ScenarioContext Current
+        {
+            get
+            {
+                if (current == null)
+                {
+                    Debug.WriteLine("Accessing NULL ScenarioContext");
+                }
+                return current;
+            }
+            internal set { current = value; }
+        }
 
         public ScenarioInfo ScenarioInfo { get; private set; }
 

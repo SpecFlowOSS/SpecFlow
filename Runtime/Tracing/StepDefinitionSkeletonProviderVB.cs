@@ -29,7 +29,7 @@ Public Sub {1}{3}({4})
     ScenarioContext.Current.Pending()
 End Sub",
                 stepArgs.Type,
-                LanguageHelper.GetDefaultKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
+                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
                 EscapeRegex(stepArgs.Text),
                 stepArgs.Text.ToIdentifier(),
                 string.Join(", ", extraArgs.ToArray()),

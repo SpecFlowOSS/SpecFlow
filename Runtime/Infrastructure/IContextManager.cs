@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
         void CleanupFeatureContext();
 
-        void InitializeScenarioontext(ScenarioInfo scenarioInfo, ITestRunner testRunner);
+        void InitializeScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner);
         void CleanupScenarioContext();
     }
 
@@ -98,10 +98,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             featureContext.Cleanup();
         }
 
-        public void InitializeScenarioontext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
+        public void InitializeScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
         {
             var newContext = new ScenarioContext(scenarioInfo, testRunner);
             scenarioContext.Init(newContext);
+            ScenarioContext.Current = newContext;
         }
 
         public void CleanupScenarioContext()

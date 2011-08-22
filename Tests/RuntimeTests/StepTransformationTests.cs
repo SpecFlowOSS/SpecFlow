@@ -7,6 +7,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -37,12 +38,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepTransformationTests
     {
         private readonly Mock<IBindingRegistry> bindingRegistryStub = new Mock<IBindingRegistry>();
+        private readonly Mock<IContextManager> contextManagerStub = new Mock<IContextManager>();
 
         [SetUp]
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
-            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
+            var scenarioContext = new ScenarioContext(null, null);
+            contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
 
             List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
@@ -62,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
-            var result = stepTransformationBinding.BindingAction.DynamicInvoke("xyz");
+            var result = stepTransformationBinding.BindingAction.DynamicInvoke(contextManagerStub.Object, "xyz");
             Assert.NotNull(result);
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
@@ -71,8 +74,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
-
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
             bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"user (\w+)", transformMethod));
@@ -86,14 +87,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
         {
-            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object);
+            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, contextManagerStub.Object);
         }
 
         [Test]
         public void ShouldUseStepArgumentTransformationToConvertTable()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(null, null);
-
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
             bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"", transformMethod));

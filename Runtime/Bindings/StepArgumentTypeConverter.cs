@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -15,10 +16,12 @@ namespace TechTalk.SpecFlow.Bindings
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
         private readonly ITestTracer testTracer;
+        private readonly IContextManager contextManager;
 
-        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry)
+        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager)
         {
             this.testTracer = testTracer;
+            this.contextManager = contextManager;
             StepTransformations = bindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
         }
 
@@ -44,7 +47,7 @@ namespace TechTalk.SpecFlow.Bindings
 
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
-                return stepTransformation.Transform(value, testTracer);
+                return stepTransformation.Transform(contextManager, value, testTracer);
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }

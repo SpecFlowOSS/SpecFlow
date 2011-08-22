@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            contextManager.InitializeScenarioontext(scenarioInfo, this);
+            contextManager.InitializeScenarioContext(scenarioInfo, this);
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 
@@ -244,7 +244,7 @@ namespace TechTalk.SpecFlow
             {
                 if (IsTagNeeded(eventBinding.Tags, tags))
                 {
-                    eventBinding.InvokeAction(null, testTracer);
+                    eventBinding.InvokeAction(contextManager, null, testTracer);
                 }
             }
         }
@@ -304,7 +304,7 @@ namespace TechTalk.SpecFlow
             if (value.GetType().IsAssignableFrom(typeToConvertTo))
                 return true;
 
-            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, FeatureContext.Current.BindingCulture);
+            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];
@@ -461,7 +461,7 @@ namespace TechTalk.SpecFlow
         {
             OnStepStart();
             TimeSpan duration;
-            match.StepBinding.InvokeAction(arguments, testTracer, out duration);
+            match.StepBinding.InvokeAction(contextManager, arguments, testTracer, out duration);
             OnStepEnd();
 
             return duration;
@@ -501,7 +501,7 @@ namespace TechTalk.SpecFlow
             if (value.GetType().IsAssignableFrom(typeToConvertTo))
                 return value;
 
-            return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.Current.BindingCulture);
+            return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
         }
 
         #endregion

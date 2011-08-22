@@ -18,7 +18,19 @@ namespace TechTalk.SpecFlow
             FeatureInfo = featureInfo;
         }
 
-        public static FeatureContext Current { get; internal set; }
+        private static FeatureContext current;
+        public static FeatureContext Current
+        {
+            get
+            {
+                if (current == null)
+                {
+                    Debug.WriteLine("Accessing NULL FeatureContext");
+                }
+                return current;
+            }
+            internal set { current = value; }
+        }
 
         public FeatureInfo FeatureInfo { get; private set; }
         public CultureInfo BindingCulture { get; private set; }

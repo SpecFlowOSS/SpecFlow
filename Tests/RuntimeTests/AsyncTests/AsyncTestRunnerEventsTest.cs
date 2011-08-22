@@ -1,5 +1,4 @@
 using System;
-using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Compatibility;
@@ -7,29 +6,8 @@ using TechTalk.SpecFlow.Compatibility;
 namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 {
     [TestFixture]
-    public class AsyncTestRunnerEventsTest
+    public class AsyncTestRunnerEventsTest : AsyncTestRunnerTestBase
     {
-        private Mock<ITestRunner> mockTestRunner;
-        private FakeAsyncTestExecutor fakeAsyncTestExecutor;
-        private AsyncTestRunner asyncTestRunner;
-
-        [SetUp]
-        public void SetUp()
-        {
-            mockTestRunner = new Mock<ITestRunner>();
-            mockTestRunner.Setup(m => m.OnScenarioStart(It.IsAny<ScenarioInfo>())).Callback(
-                (ScenarioInfo si) => ObjectContainer.ScenarioContext = new ScenarioContext(si, mockTestRunner.Object));
-            fakeAsyncTestExecutor = new FakeAsyncTestExecutor();
-
-            asyncTestRunner = new AsyncTestRunner(mockTestRunner.Object);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            //ObjectContainer.AsyncContext = null;
-        }
-
         [Test]
         public void OnFeatureStart_DefersToInnerSynchronousTestRunner()
         {
@@ -73,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
             var scenarioInfo = new ScenarioInfo("title");
             asyncTestRunner.OnScenarioStart(scenarioInfo);
 
-            Assert.IsNotNull(ScenarioContext.Current.Get<IAsyncTestExecutor>());
+            Assert.IsNotNull(CurrentScenarioContext.Get<IAsyncTestExecutor>());
         }
 
         [Test]
@@ -83,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
             var scenarioInfo = new ScenarioInfo("title");
             asyncTestRunner.OnScenarioStart(scenarioInfo);
 
-            Assert.AreEqual(asyncTestRunner, ScenarioContext.Current.TestRunner);
+            Assert.AreEqual(asyncTestRunner, CurrentScenarioContext.TestRunner);
         }
 
         [Test]

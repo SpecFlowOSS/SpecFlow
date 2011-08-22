@@ -4,6 +4,7 @@ using System.Globalization;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -21,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
 
-            _stepArgumentTypeConverter = new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object);
+            _stepArgumentTypeConverter = new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, new Mock<IContextManager>().Object);
             _enUSCulture = new CultureInfo("en-US");
         }
 

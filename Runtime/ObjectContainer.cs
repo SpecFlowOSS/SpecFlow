@@ -57,60 +57,7 @@ namespace TechTalk.SpecFlow
 
         #endregion
 
-        #region ScenarioContext
-
-        private static ScenarioContext scenarioContext = null;
-
-        [Obsolete("use DI")]
-        static public ScenarioContext ScenarioContext
-        {
-            get
-            {
-                throw new NotSupportedException();
-                if (scenarioContext == null)
-                    return null;
-                return scenarioContext;
-            }
-            internal set
-            {
-                if (scenarioContext != null)
-                {
-                    if (value != null)
-                        TestTracer.TraceWarning("The previous scenario context was not disposed.");
-                    DisposeScenarioContext();
-                }
-
-                scenarioContext = value;
-            }
-        }
-
-        private static void DisposeScenarioContext()
-        {
-            ((IDisposable)scenarioContext).Dispose();
-            scenarioContext = null;
-        }
-
-        #endregion
-
-        #region TestTracer
-        private static ITestTracer testTracer = null;
-
-        [Obsolete("Use DI")]
-        private static ITestTracer TestTracer
-        {
-            get
-            {
-                return GetOrCreate(ref testTracer, typeof(TestTracer));
-            }
-        }
-        #endregion
-
         #region factory helper methods
-        private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Type implementationType) where TInterface : class
-        {
-            return GetOrCreate(ref storage, () => ConfigurationServices.CreateInstance<TInterface>(implementationType));
-        }
-
         private static TInterface GetOrCreate<TInterface>(ref TInterface storage, Func<TInterface> factory) where TInterface : class
         {
             if (storage == null)

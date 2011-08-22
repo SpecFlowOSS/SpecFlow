@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         [SetUp]
         public void Setup()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("sample scenario"), null);
+            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), null);
         }
 
         [Test]
