@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    internal static class ExpressionHelper
+    internal static class ExpressionMemberAccessor
     {
         public static PropertyInfo GetPropertyInfo<T, TResult>(this Expression<Func<T, TResult>> expression)
         {

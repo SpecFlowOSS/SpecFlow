@@ -111,7 +111,7 @@
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
-    <Compile Include="Bindings\ExpressionHelper.cs" />
+    <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
     <Compile Include="Bindings\IBindingFactory.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />

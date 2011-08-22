@@ -24,18 +24,22 @@ using System.Runtime.Serialization;
 
 namespace MiniDi
 {
+#if !MINIDI_LIMITEDRUNTIME
     [Serializable]
+#endif
     public class ObjectContainerException : Exception
     {
         public ObjectContainerException(string message, IEnumerable<Type> resolutionPath) : base(GetMessage(message, resolutionPath))
         {
         }
 
+#if !MINIDI_LIMITEDRUNTIME
         protected ObjectContainerException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
         }
+#endif
 
         static private string GetMessage(string message, IEnumerable<Type> resolutionPath)
         {
@@ -146,6 +150,7 @@ namespace MiniDi
             instanceRegistrations.Remove(interfaceType);
         }
 
+#if !MINIDI_LIMITEDRUNTIME
         public void RegisterFromConfiguration()
         {
             var section = (MiniDiConfigurationSection)ConfigurationManager.GetSection("miniDi");
@@ -173,6 +178,7 @@ namespace MiniDi
 
             RegisterTypeAs(implementationType, interfaceType);
         }
+#endif
 
         #endregion
 
@@ -324,6 +330,7 @@ namespace MiniDi
     }
 
     #region Configuration handling
+#if !MINIDI_LIMITEDRUNTIME
 
     public class MiniDiConfigurationSection : ConfigurationSection
     {
@@ -366,5 +373,6 @@ namespace MiniDi
         }
     }
 
+#endif
     #endregion
 }

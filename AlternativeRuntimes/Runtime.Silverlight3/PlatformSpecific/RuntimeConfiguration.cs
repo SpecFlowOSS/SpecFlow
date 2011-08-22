@@ -10,14 +10,9 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    internal class RuntimeConfiguration
+    public class RuntimeConfiguration
     {
         private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
-
-        static public RuntimeConfiguration Current
-        {
-            get { return ObjectContainer.Configuration; }
-        }
 
         //language settings
         public CultureInfo ToolLanguage { get; set; }

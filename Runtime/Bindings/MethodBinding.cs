@@ -55,9 +55,9 @@ namespace TechTalk.SpecFlow.Bindings
             }
             else
             {
-                var getInstanceMethod = ExpressionHelper.GetMethodInfo((ScenarioContext sc) => sc.GetBindingInstance(null));
+                var getInstanceMethod = ExpressionMemberAccessor.GetMethodInfo((ScenarioContext sc) => sc.GetBindingInstance(null));
                 Debug.Assert(getInstanceMethod != null, "GetBindingInstance not found");
-                var scenarioContextProperty = ExpressionHelper.GetPropertyInfo((IContextManager cm) => cm.ScenarioContext);
+                var scenarioContextProperty = ExpressionMemberAccessor.GetPropertyInfo((IContextManager cm) => cm.ScenarioContext);
                 Debug.Assert(scenarioContextProperty != null, "ScenarioContext not found");
 
                 lambda = Expression.Lambda(
