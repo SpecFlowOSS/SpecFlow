@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public virtual void SetUp()
         {
-            ObjectContainer.Reset();
+            TestRunnerManager.Reset();
 
             MockRepository = new MockRepository();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using ParserTests;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -9,12 +10,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [TestFixture]
     public class SuccessfulExecutionTest : ExecutionTestBase
     {
-        [TestFixtureSetUp]
+        [SetUp]
         public void FixtureSetup()
         {
             var testRunner = TestRunner.CreateTestRunnerForCompatibility();
             testRunner.InitializeTestRunner(new Assembly[0]); // no bindings
-            ObjectContainer.SyncTestRunner = testRunner;
+
+            var testRunnerManagerStub = new Mock<ITestRunnerManager>();
+            testRunnerManagerStub.Setup(trm => trm.GetTestRunner(It.IsAny<Assembly>(), It.IsAny<bool>())).Returns(testRunner);
+
+            TestRunnerManager.Instance = testRunnerManagerStub.Object;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            TestRunnerManager.Reset();
         }
 
         [Test, TestCaseSource(typeof(TestFileHelper), "GetTestFiles")]

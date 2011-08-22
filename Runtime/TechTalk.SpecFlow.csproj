@@ -163,7 +163,6 @@
     <Compile Include="Table.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ObjectContainer.cs" />
     <Compile Include="Tracing\TestTracer.cs" />
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />
