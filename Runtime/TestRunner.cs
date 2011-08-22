@@ -30,17 +30,6 @@ namespace TechTalk.SpecFlow
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
-        [Obsolete("Use DI")]
-        static internal TestRunner CreateTestRunnerForCompatibility(Action<IObjectContainer> registerMocks = null)
-        {
-            var container = TestRunContainerBuilder.CreateContainer();
-
-            if (registerMocks != null)
-                registerMocks(container);
-
-            return (TestRunner)container.Resolve<ITestRunner>();
-        }
-
         public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager)

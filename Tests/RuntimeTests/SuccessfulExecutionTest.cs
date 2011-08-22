@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void FixtureSetup()
         {
-            var testRunner = TestRunner.CreateTestRunnerForCompatibility();
+            var testRunner = TestTestRunnerFactory.CreateTestRunner();
             testRunner.InitializeTestRunner(new Assembly[0]); // no bindings
 
             var testRunnerManagerStub = new Mock<ITestRunnerManager>();

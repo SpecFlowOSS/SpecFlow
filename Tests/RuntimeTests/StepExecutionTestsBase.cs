@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         protected TestRunner GetTestRunnerFor(Action<IObjectContainer> registerMocks, params Type[] bindingTypes)
         {
-            return TestRunner.CreateTestRunnerForCompatibility(
+            return TestTestRunnerFactory.CreateTestRunner(
                 container =>
                     {
                         container.RegisterTypeAs<DummyTestTracer, ITestTracer>();
