@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
-        public void Returns_a_zero_when_passed_an_invalid_uint()
+        public void Returns_a_zero_when_passed_an_invalid_unsigned_int()
         {
             var retriever = new UIntValueRetriever();
             retriever.GetValue("x").ShouldEqual<uint>(0);

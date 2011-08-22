@@ -21,6 +21,13 @@ namespace TechTalk.SpecFlow.Assist
                        : int.MinValue;
         }
 
+        public static long GetInt64(this TableRow row, string id)
+        {
+            return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
+                       ? Convert.ToInt64(row[id])
+                       : long.MinValue;
+        }
+
         public static decimal GetDecimal(this TableRow row, string id)
         {
             return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
@@ -52,11 +59,11 @@ namespace TechTalk.SpecFlow.Assist
                        : double.MinValue;
         }
 
-        public static Single GetSingle(this TableRow row, string id)
+        public static float GetSingle(this TableRow row, string id)
         {
             return AValueWithThisIdExists(row, id) && TheValueIsNotEmpty(row, id)
                 ? Convert.ToSingle(row[id])
-                : Single.MinValue;
+                : float.MinValue;
         }
 
         public static char GetChar(this TableRow row, string id)

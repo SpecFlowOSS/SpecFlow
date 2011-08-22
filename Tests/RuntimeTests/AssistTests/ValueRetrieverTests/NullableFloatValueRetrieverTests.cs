@@ -6,12 +6,12 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
     [TestFixture, SetCulture("en-US")]
-    public class NullableSingleValueRetrieverTests
+    public class NullableFloatValueRetrieverTests
     {
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableSingleValueRetriever(v => 3.01F);
+            var retriever = new NullableFloatValueRetriever(v => 3.01F);
             retriever.GetValue(null).ShouldBeNull();
         }
 
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                                                 return 0;
                                             };
 
-            var retriever = new NullableSingleValueRetriever(func);
+            var retriever = new NullableFloatValueRetriever(func);
             retriever.GetValue("value 1").ShouldEqual(1F);
             retriever.GetValue("value 2").ShouldEqual(2F);
         }
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableSingleValueRetriever(v => 99F);
+            var retriever = new NullableFloatValueRetriever(v => 99F);
             retriever.GetValue("").ShouldBeNull();
         }
     }
