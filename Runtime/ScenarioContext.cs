@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using MiniDi;
+using BoDi;
 using TechTalk.SpecFlow.Infrastructure;
 
 #if SILVERLIGHT

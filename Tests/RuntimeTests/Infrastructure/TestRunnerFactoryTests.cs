@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using MiniDi;
+using BoDi;
 using Moq;
 using NUnit.Framework;
 using Should;

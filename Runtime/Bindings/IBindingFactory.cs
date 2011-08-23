@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using MiniDi;
+using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 

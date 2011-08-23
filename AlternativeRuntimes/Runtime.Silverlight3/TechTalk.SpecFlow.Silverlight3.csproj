@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;MINIDI_LIMITEDRUNTIME</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;BODI_LIMITEDRUNTIME</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;BODI_LIMITEDRUNTIME</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -56,8 +56,8 @@
     <Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**">
       <Link>SharedRuntime\%(Filename)%(Extension)</Link>
     </Compile>
-    <Compile Include="..\..\lib\MiniDi\MiniDi.cs">
-      <Link>SharedRuntime\MiniDi.cs</Link>
+    <Compile Include="..\..\lib\BoDi\BoDi.cs">
+      <Link>SharedRuntime\BoDi.cs</Link>
     </Compile>
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>

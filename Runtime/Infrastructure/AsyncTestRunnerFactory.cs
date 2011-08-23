@@ -1,4 +1,4 @@
-﻿using MiniDi;
+﻿using BoDi;
 using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Configuration;
 

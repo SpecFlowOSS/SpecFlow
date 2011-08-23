@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MiniDi;
+using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         public static IObjectContainer CreateContainer()
         {
-            var container = new MiniDi.ObjectContainer();
+            var container = new BoDi.ObjectContainer();
 
             RegisterDefaults(container);
 
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
-        private static void RegisterDefaults(MiniDi.ObjectContainer container)
+        private static void RegisterDefaults(BoDi.ObjectContainer container)
         {
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();

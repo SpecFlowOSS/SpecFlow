@@ -1,10 +1,10 @@
 ﻿/**************************************************************************************
  * 
- * MiniDi: A very simple IoC container, easily embeddable also as a source code. 
+ * BoDi: A very simple IoC container, easily embeddable also as a source code. 
  * 
- * MiniDi was created to support SpecFlow (http://www.specflow.org) by Gaspar Nagy (http://gasparnagy.blogspot.com/)
+ * BoDi was created to support SpecFlow (http://www.specflow.org) by Gaspar Nagy (http://gasparnagy.blogspot.com/)
  * 
- * Project source & unit tests: http://github.com/gasparnagy/MiniDi
+ * Project source & unit tests: http://github.com/gasparnagy/BoDi
  * License: Simplified BSD License
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
@@ -22,9 +22,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace MiniDi
+namespace BoDi
 {
-#if !MINIDI_LIMITEDRUNTIME
+#if !BODI_LIMITEDRUNTIME
     [Serializable]
 #endif
     public class ObjectContainerException : Exception
@@ -33,7 +33,7 @@ namespace MiniDi
         {
         }
 
-#if !MINIDI_LIMITEDRUNTIME
+#if !BODI_LIMITEDRUNTIME
         protected ObjectContainerException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)
@@ -187,10 +187,10 @@ namespace MiniDi
             instanceRegistrations.Remove(interfaceType);
         }
 
-#if !MINIDI_LIMITEDRUNTIME
+#if !BODI_LIMITEDRUNTIME
         public void RegisterFromConfiguration()
         {
-            var section = (MiniDiConfigurationSection)ConfigurationManager.GetSection("miniDi");
+            var section = (BoDiConfigurationSection)ConfigurationManager.GetSection("boDi");
             if (section == null)
                 return;
 
@@ -392,9 +392,9 @@ namespace MiniDi
     }
 
     #region Configuration handling
-#if !MINIDI_LIMITEDRUNTIME
+#if !BODI_LIMITEDRUNTIME
 
-    public class MiniDiConfigurationSection : ConfigurationSection
+    public class BoDiConfigurationSection : ConfigurationSection
     {
         [ConfigurationProperty("", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
         [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]

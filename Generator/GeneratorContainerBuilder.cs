@@ -1,4 +1,4 @@
-﻿using MiniDi;
+﻿using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;

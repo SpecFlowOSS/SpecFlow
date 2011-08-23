@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using MiniDi;
+using BoDi;
 using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Infrastructure

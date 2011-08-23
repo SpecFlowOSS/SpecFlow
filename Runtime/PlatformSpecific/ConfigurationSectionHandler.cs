@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using MiniDi;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Configuration
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using MiniDi;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Async
 {
