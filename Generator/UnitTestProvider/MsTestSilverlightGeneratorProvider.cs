@@ -1,5 +1,4 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Async;
@@ -16,7 +15,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            generationContext.CustomData["featureCategories"] = featureCategories.ToArray();
+            var categories = featureCategories.ToArray();
+            CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, TAG_ATTR, categories);
         }
 
         public override void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
@@ -34,11 +34,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             base.SetTestMethod(generationContext, testMethod, scenarioTitle);
-            if (generationContext.CustomData.ContainsKey("featureCategories"))
-            {
-                var featureCategories = (string[]) generationContext.CustomData["featureCategories"];
-                CodeDomHelper.AddAttributeForEachValue(testMethod, TAG_ATTR, featureCategories);
-            }
 
             if (generationContext.GenerateAsynchTests)
                 SetupAsyncTest(testMethod);
