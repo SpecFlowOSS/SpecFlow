@@ -12,7 +12,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         [SetUp]
         public void Setup()
         {
-            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), null);
+            var testRunner = TestTestRunnerFactory.CreateTestRunner();
+            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), testRunner);
         }
 
         [Test]

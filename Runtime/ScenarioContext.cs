@@ -60,7 +60,9 @@ namespace TechTalk.SpecFlow
             PendingSteps = new List<string>();
             MissingSteps = new List<string>();
 
-            objectContainer = new ObjectContainer(((IContainedInstance)testRunner).Container);
+            objectContainer = testRunner is IContainedInstance ? 
+                new ObjectContainer(((IContainedInstance)testRunner).Container):
+                new ObjectContainer();
         }
 
         public void Pending()
