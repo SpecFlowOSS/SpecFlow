@@ -38,8 +38,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
-        private static void RegisterDefaults(BoDi.ObjectContainer container)
+        private static void RegisterDefaults(ObjectContainer container)
         {
+            container.RegisterTypeAs<DefaultRuntimeConfigurationProvider, IRuntimeConfigurationProvider>();
+
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();
 
