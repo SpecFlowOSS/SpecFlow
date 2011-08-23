@@ -118,7 +118,6 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
-    <Compile Include="Infrastructure\AsyncTestRunnerFactory.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
@@ -153,6 +152,7 @@
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepArgs.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilder.cs" />
+    <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />

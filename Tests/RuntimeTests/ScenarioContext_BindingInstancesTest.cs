@@ -15,8 +15,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerMocks = null)
         {
-            testRunner = TestTestRunnerFactory.CreateTestRunner(registerMocks);
-            return new ScenarioContext(new ScenarioInfo("sample scenario", new string[0]), testRunner);
+            IObjectContainer container;
+            testRunner = TestTestRunnerFactory.CreateTestRunner(out container, registerMocks);
+            return new ScenarioContext(new ScenarioInfo("sample scenario", new string[0]), testRunner, container);
         }
 
         [Test]

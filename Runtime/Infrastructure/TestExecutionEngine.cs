@@ -5,18 +5,16 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Infrastructure
 {
-    public class TestRunner : ITestRunner, IContainedInstance
+    public class TestExecutionEngine : ITestExecutionEngine
     {
         private readonly RuntimeConfiguration runtimeConfiguration;
         private readonly IErrorProvider errorProvider;
@@ -27,16 +25,14 @@ namespace TechTalk.SpecFlow
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
-        private readonly IObjectContainer parentContainer;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
-        public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
+        public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IObjectContainer parentContainer)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager)
         {
             this.errorProvider = errorProvider;
-            this.parentContainer = parentContainer;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -49,11 +45,6 @@ namespace TechTalk.SpecFlow
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
         }
 
-        IObjectContainer IContainedInstance.Container
-        {
-            get { return parentContainer; }
-        }
-
         public FeatureContext FeatureContext
         {
             get { return contextManager.FeatureContext; }
@@ -64,7 +55,7 @@ namespace TechTalk.SpecFlow
             get { return contextManager.ScenarioContext; }
         }
 
-        public virtual void InitializeTestRunner(Assembly[] bindingAssemblies)
+        public virtual void Initialize(Assembly[] bindingAssemblies)
         {
             foreach (Assembly assembly in bindingAssemblies)
             {
@@ -143,12 +134,11 @@ namespace TechTalk.SpecFlow
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            contextManager.InitializeScenarioContext(scenarioInfo, this);
+            contextManager.InitializeScenarioContext(scenarioInfo);
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 
-        //TODO: rename this method to OnAfterLastStep (breaking change in generation!)
-        public void CollectScenarioErrors()
+        public void OnAfterLastStep()
         {
             HandleBlockSwitch(ScenarioBlock.None);
 
@@ -508,31 +498,12 @@ namespace TechTalk.SpecFlow
             return new StepContext(contextManager.FeatureContext.FeatureInfo, contextManager.ScenarioContext.ScenarioInfo);
         }
 
-        public void Given(string text, string multilineTextArg, Table tableArg)
+        public void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg)
         {
-            ExecuteStep(new StepArgs(BindingType.Given, StepDefinitionKeyword.Given, text, multilineTextArg, tableArg, GetStepContext()));
-        }
-
-        public void When(string text, string multilineTextArg, Table tableArg)
-        {
-            ExecuteStep(new StepArgs(BindingType.When, StepDefinitionKeyword.When, text, multilineTextArg, tableArg, GetStepContext()));
-        }
-
-        public void Then(string text, string multilineTextArg, Table tableArg)
-        {
-            ExecuteStep(new StepArgs(BindingType.Then, StepDefinitionKeyword.Then, text, multilineTextArg, tableArg, GetStepContext()));
-        }
-
-        public void And(string text, string multilineTextArg, Table tableArg)
-        {
-            BindingType bindingType = GetCurrentBindingType();
-            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.And, text, multilineTextArg, tableArg, GetStepContext()));
-        }
-
-        public void But(string text, string multilineTextArg, Table tableArg)
-        {
-            BindingType bindingType = GetCurrentBindingType();
-            ExecuteStep(new StepArgs(bindingType, StepDefinitionKeyword.But, text, multilineTextArg, tableArg, GetStepContext()));
+            BindingType bindingType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
+                                          ? GetCurrentBindingType()
+                                          : (BindingType) keyword;
+            ExecuteStep(new StepArgs(bindingType, keyword, text, multilineTextArg, tableArg, GetStepContext()));
         }
 
         private BindingType GetCurrentBindingType()

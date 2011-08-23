@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
         void CleanupFeatureContext();
 
-        void InitializeScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner);
+        void InitializeScenarioContext(ScenarioInfo scenarioInfo);
         void CleanupScenarioContext();
     }
 
@@ -67,13 +67,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
+        private readonly IObjectContainer parentContainer;
         private readonly InternalContextManager<ScenarioContext> scenarioContext;
         private readonly InternalContextManager<FeatureContext> featureContext;
 
-        public ContextManager(ITestTracer testTracer)
+        public ContextManager(ITestTracer testTracer, IObjectContainer parentContainer)
         {
             featureContext = new InternalContextManager<FeatureContext>(testTracer);
             scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
+            this.parentContainer = parentContainer;
         }
 
         public FeatureContext FeatureContext
@@ -98,9 +100,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             featureContext.Cleanup();
         }
 
-        public void InitializeScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
+        public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var newContext = new ScenarioContext(scenarioInfo, testRunner);
+            var testRunner = parentContainer.Resolve<ITestRunner>(); // we need to delay-resolve the test runner to avoid circular dependencies
+            var newContext = new ScenarioContext(scenarioInfo, testRunner, parentContainer);
             scenarioContext.Init(newContext);
             ScenarioContext.Current = newContext;
         }

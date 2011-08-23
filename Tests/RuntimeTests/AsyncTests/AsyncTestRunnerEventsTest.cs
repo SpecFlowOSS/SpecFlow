@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 
             asyncTestRunner.OnFeatureStart(featureInfo);
 
-            mockTestRunner.Verify(m => m.OnFeatureStart(featureInfo));
+            testExecutionEngineStub.Verify(m => m.OnFeatureStart(featureInfo));
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.OnFeatureEnd();
 
-            mockTestRunner.Verify(m => m.OnFeatureEnd());
+            testExecutionEngineStub.Verify(m => m.OnFeatureEnd());
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
             var scenarioInfo = new ScenarioInfo("title");
             asyncTestRunner.OnScenarioStart(scenarioInfo);
 
-            mockTestRunner.Verify(m => m.OnScenarioStart(scenarioInfo));
+            testExecutionEngineStub.Verify(m => m.OnScenarioStart(scenarioInfo));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
             asyncTestRunner.RegisterAsyncTestExecutor(fakeAsyncTestExecutor);
             asyncTestRunner.OnScenarioEnd();
 
-            mockTestRunner.Verify(m => m.OnScenarioEnd());
+            testExecutionEngineStub.Verify(m => m.OnScenarioEnd());
         }
 
         [Test]

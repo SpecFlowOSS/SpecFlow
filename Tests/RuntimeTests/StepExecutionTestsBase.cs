@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using BoDi;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -94,9 +95,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             FeatureLanguage = GetFeatureLanguage();
             CultureInfo bindingCulture = GetBindingCulture();
 
-            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>());
+            var container = new ObjectContainer();
+            container.RegisterInstanceAs(new Mock<ITestRunner>().Object);
+            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), container);
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
-            ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"), null);
+            ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
 
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();
         }

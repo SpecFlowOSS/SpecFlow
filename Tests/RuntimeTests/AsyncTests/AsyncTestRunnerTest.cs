@@ -1,5 +1,6 @@
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 {
@@ -26,11 +27,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.Given(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Given(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.Given(Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -38,11 +39,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.When(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.When(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.When(Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -50,11 +51,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.Then(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.Then(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.Then(Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -62,11 +63,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.And(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.And(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.And(Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -74,11 +75,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.But(Text, MultilineTextArg, table);
 
-            mockTestRunner.Verify(m => m.But(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.But(Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -86,11 +87,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.Pending();
 
-            mockTestRunner.Verify(m => m.Pending(), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Pending(), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            mockTestRunner.Verify(m => m.Pending());
+            testExecutionEngineStub.Verify(m => m.Pending());
         }
 
         [Test]
@@ -98,11 +99,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.CollectScenarioErrors();
 
-            mockTestRunner.Verify(m => m.CollectScenarioErrors(), Times.Never());
+            testExecutionEngineStub.Verify(m => m.OnAfterLastStep(), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedCallback();
 
-            mockTestRunner.Verify(m => m.CollectScenarioErrors());
+            testExecutionEngineStub.Verify(m => m.OnAfterLastStep());
         }
 
         [Test]

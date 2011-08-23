@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
@@ -69,7 +70,7 @@ namespace TechTalk.SpecFlow
             if (key.Async)
             {
                 //TODO: better support this in the DI container
-                container.RegisterTypeAs<AsyncTestRunnerFactory, ITestRunnerFactory>();
+                container.RegisterTypeAs<AsyncTestRunner, ITestRunner>();
             }
             var factory = container.Resolve<ITestRunnerFactory>();
             return factory.Create(key.TestAssembly);

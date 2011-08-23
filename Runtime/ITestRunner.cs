@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
 {

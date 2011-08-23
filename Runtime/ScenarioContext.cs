@@ -41,14 +41,9 @@ namespace TechTalk.SpecFlow
 
         private readonly IObjectContainer objectContainer;
 
-        [Obsolete("eliminate this method when separating test runner from test execution engine")]
-        internal void SetTestRunnerUnchecked(ITestRunner newTestRunner)
+        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
         {
-            TestRunner = newTestRunner;
-        }
-
-        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
-        {
+            this.objectContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
             TestRunner = testRunner;
 
             Stopwatch = new Stopwatch();
@@ -59,10 +54,6 @@ namespace TechTalk.SpecFlow
             TestStatus = TestStatus.OK;
             PendingSteps = new List<string>();
             MissingSteps = new List<string>();
-
-            objectContainer = testRunner is IContainedInstance ? 
-                new ObjectContainer(((IContainedInstance)testRunner).Container):
-                new ObjectContainer();
         }
 
         public void Pending()
@@ -70,38 +61,14 @@ namespace TechTalk.SpecFlow
             TestRunner.Pending();
         }
 
-//        private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();
-
         public object GetBindingInstance(Type bindingType)
         {
             return objectContainer.Resolve(bindingType);
-/*
-
-            object value;
-            if (!bindingInstances.TryGetValue(bindingType, out value))
-            {
-                var ctors = bindingType.GetConstructors();
-                if (bindingType.IsClass && ctors.Length == 0)
-                    throw new MissingMethodException(String.Format("No public constructors found for type {0}", bindingType.FullName));
-
-                var parameters = new List<object>();
-                foreach (var param in ctors[0].GetParameters())
-                {
-                    parameters.Add(GetBindingInstance(param.ParameterType)); 
-                }
-
-                value = Activator.CreateInstance(bindingType, parameters.ToArray());
-                bindingInstances.Add(bindingType, value);
-            }
-
-            return value;
-*/
         }
 
         internal void SetBindingInstance(Type bindingType, object instance)
         {
             objectContainer.RegisterInstanceAs(instance, bindingType);
-            //bindingInstances[bindingType] = instance;
         }
 
         protected override void Dispose()
