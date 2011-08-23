@@ -1,4 +1,9 @@
-﻿1.7.1 - 2011/08/19
+﻿vNext - ???
+
+Fixed issues:
++ Error when opening feature file in VS2008 if VS2008 syntax coloring was enabled.
+
+1.7.1 - 2011/08/19
 
 Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)
