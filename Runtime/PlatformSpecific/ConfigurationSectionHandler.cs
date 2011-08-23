@@ -144,6 +144,14 @@ namespace TechTalk.SpecFlow.Configuration
 
     public class RuntimeConfigElement : ConfigurationElement
     {
+        [ConfigurationProperty("dependencies", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
+        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
+        public ContainerRegistrationCollection Dependencies
+        {
+            get { return (ContainerRegistrationCollection)this["dependencies"]; }
+            set { this["dependencies"] = value; }
+        }
+
         [ConfigurationProperty("detectAmbiguousMatches", DefaultValue = ConfigDefaults.DetectAmbiguousMatches, IsRequired = false)]
         public bool DetectAmbiguousMatches
         {

@@ -10,23 +10,23 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     internal class TestRunContainerBuilder
     {
-        public static IObjectContainer CreateContainer()
+        public static IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
-            var container = new BoDi.ObjectContainer();
+            var container = new ObjectContainer();
 
             RegisterDefaults(container);
 
-// TODO: do somethign like this
-//            var specFlowConfiguration = container.Resolve<ISpecFlowProjectConfigurationLoader>()
-//                .LoadConfiguration(configurationHolder);
-//
-//            if (specFlowConfiguration.GeneratorConfiguration.CustomDependencies != null)
-//                container.RegisterFromConfiguration(specFlowConfiguration.GeneratorConfiguration.CustomDependencies);
-//            container.RegisterInstanceAs(specFlowConfiguration);
-//            container.RegisterInstanceAs(specFlowConfiguration.GeneratorConfiguration);
-//            container.RegisterInstanceAs(specFlowConfiguration.RuntimeConfiguration);
+            if (configurationProvider != null)
+                container.RegisterInstanceAs(configurationProvider);
 
-            var runtimeConfiguration = RuntimeConfiguration.GetConfig();
+            configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
+            var runtimeConfiguration = configurationProvider.GetConfiguration();
+
+#if !BODI_LIMITEDRUNTIME
+            if (runtimeConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(runtimeConfiguration.CustomDependencies);
+#endif
+
             container.RegisterInstanceAs(runtimeConfiguration);
 
             if (runtimeConfiguration.TraceListenerType != null)

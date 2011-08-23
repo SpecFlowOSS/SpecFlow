@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using BoDi;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -14,7 +15,9 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class RuntimeConfiguration
     {
-        private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
+        public ContainerRegistrationCollection CustomDependencies { get; set; }
+
+        private readonly List<Assembly> additionalStepAssemblies = new List<Assembly>();
 
         //language settings
         public CultureInfo ToolLanguage { get; set; }
@@ -38,7 +41,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get
             {
-                return _additionalStepAssemblies;
+                return additionalStepAssemblies;
             }
         }
 
@@ -100,6 +103,11 @@ namespace TechTalk.SpecFlow.Configuration
                 config.DetectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
                 config.StopAtFirstError = configSection.Runtime.StopAtFirstError;
                 config.MissingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
+
+                if (configSection.Runtime.Dependencies != null)
+                {
+                    config.CustomDependencies = configSection.Runtime.Dependencies;
+                }
             }
 
             if (configSection.Trace != null)
@@ -115,7 +123,7 @@ namespace TechTalk.SpecFlow.Configuration
             foreach (var element in configSection.StepAssemblies)
             {
                 Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
-                config._additionalStepAssemblies.Add(stepAssembly);
+                config.additionalStepAssemblies.Add(stepAssembly);
             }
 
             return config;
