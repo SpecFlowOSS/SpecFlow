@@ -16,7 +16,7 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow
 {
-    public class TestRunner : ITestRunner
+    public class TestRunner : ITestRunner, IContainedInstance
     {
         private readonly RuntimeConfiguration runtimeConfiguration;
         private readonly IErrorProvider errorProvider;
@@ -27,14 +27,16 @@ namespace TechTalk.SpecFlow
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
+        private readonly IObjectContainer parentContainer;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestRunner(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IObjectContainer parentContainer)
         {
             this.errorProvider = errorProvider;
+            this.parentContainer = parentContainer;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -45,6 +47,11 @@ namespace TechTalk.SpecFlow
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
 
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
+        }
+
+        IObjectContainer IContainedInstance.Container
+        {
+            get { return parentContainer; }
         }
 
         public FeatureContext FeatureContext

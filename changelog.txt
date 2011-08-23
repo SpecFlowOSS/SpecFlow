@@ -1,4 +1,15 @@
-﻿1.7.1 - 2011/08/19
+﻿vNext - ???
+
+Breaking changes:
++ Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
+
+New features:
++ SpecFlow framework classes can be used as a dependency for context injection.
+
+Fixed issues:
++ Instances created for context injection are disposed after scenario execution (Issue 22)
+
+1.7.1 - 2011/08/19
 
 Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)

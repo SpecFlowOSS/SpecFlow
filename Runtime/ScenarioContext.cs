@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using MiniDi;
 using TechTalk.SpecFlow.Infrastructure;
 
 #if SILVERLIGHT
@@ -38,6 +39,8 @@ namespace TechTalk.SpecFlow
 
         internal ITestRunner TestRunner { get; private set; } //TODO: initialize
 
+        private readonly IObjectContainer objectContainer;
+
         [Obsolete("eliminate this method when separating test runner from test execution engine")]
         internal void SetTestRunnerUnchecked(ITestRunner newTestRunner)
         {
@@ -56,6 +59,8 @@ namespace TechTalk.SpecFlow
             TestStatus = TestStatus.OK;
             PendingSteps = new List<string>();
             MissingSteps = new List<string>();
+
+            objectContainer = new ObjectContainer(((IContainedInstance)testRunner).Container);
         }
 
         public void Pending()
@@ -63,10 +68,13 @@ namespace TechTalk.SpecFlow
             TestRunner.Pending();
         }
 
-        private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();
+//        private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();
 
         public object GetBindingInstance(Type bindingType)
         {
+            return objectContainer.Resolve(bindingType);
+/*
+
             object value;
             if (!bindingInstances.TryGetValue(bindingType, out value))
             {
@@ -85,13 +93,20 @@ namespace TechTalk.SpecFlow
             }
 
             return value;
+*/
         }
 
         internal void SetBindingInstance(Type bindingType, object instance)
         {
-            bindingInstances[bindingType] = instance;
+            objectContainer.RegisterInstanceAs(instance, bindingType);
+            //bindingInstances[bindingType] = instance;
         }
 
+        protected override void Dispose()
+        {
+            base.Dispose();
 
+            objectContainer.Dispose();
+        }
     }
 }

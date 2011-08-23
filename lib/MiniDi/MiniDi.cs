@@ -50,7 +50,7 @@ namespace MiniDi
         }
     }
 
-    public interface IObjectContainer
+    public interface IObjectContainer: IDisposable
     {
         /// <summary>
         /// Registeres a type as the desired implementation type of an interface.
@@ -63,7 +63,7 @@ namespace MiniDi
         /// </remarks>
         void RegisterTypeAs<TType, TInterface>() where TType : class, TInterface;
         /// <summary>
-        /// Registeres an instance 
+        /// Registers an instance 
         /// </summary>
         /// <typeparam name="TInterface">Interface will be resolved</typeparam>
         /// <param name="instance">The instance implements the interface.</param>
@@ -76,6 +76,19 @@ namespace MiniDi
         void RegisterInstanceAs<TInterface>(TInterface instance) where TInterface : class;
 
         /// <summary>
+        /// Registers an instance 
+        /// </summary>
+        /// <param name="instance">The instance implements the interface.</param>
+        /// <param name="interfaceType">Interface will be resolved</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="instance"/> is null.</exception>
+        /// <exception cref="ObjectContainerException">If there was already a resolve for the <paramref name="interfaceType"/>.</exception>
+        /// <remarks>
+        ///     <para>Previous registrations can be overriden before the first resolution for the <paramref name="interfaceType"/>.</para>
+        ///     <para>The instance will be registered in the object pool, so if a <see cref="Resolve{T}"/> (for another interface) would require an instance of the dynamic type of the <paramref name="instance"/>, the <paramref name="instance"/> will be returned.</para>
+        /// </remarks>
+        void RegisterInstanceAs(object instance, Type interfaceType);
+
+        /// <summary>
         /// Resolves an implementation object for an interface or type.
         /// </summary>
         /// <typeparam name="T">The interface or type.</typeparam>
@@ -84,10 +97,26 @@ namespace MiniDi
         ///     <para>The container pools the objects, so if the interface is resolved twice or the same type is registered for multiple interfaces, a single instance is created and returned.</para>
         /// </remarks>
         T Resolve<T>();
+
+        /// <summary>
+        /// Resolves an implementation object for an interface or type.
+        /// </summary>
+        /// <param name="typeToResolve">The interface or type.</param>
+        /// <returns>An object implementing <paramref name="typeToResolve"/>.</returns>
+        /// <remarks>
+        ///     <para>The container pools the objects, so if the interface is resolved twice or the same type is registered for multiple interfaces, a single instance is created and returned.</para>
+        /// </remarks>
+        object Resolve(Type typeToResolve);
+    }
+
+    public interface IContainedInstance
+    {
+        IObjectContainer Container { get; }
     }
 
     public class ObjectContainer : IObjectContainer
     {
+        private bool isDisposed = false;
         private readonly ObjectContainer baseContainer;
         private readonly Dictionary<Type, Type> typeRegistrations = new Dictionary<Type, Type>();
         private readonly Dictionary<Type, object> instanceRegistrations = new Dictionary<Type, object>();
@@ -99,9 +128,12 @@ namespace MiniDi
             RegisterInstanceAs<IObjectContainer>(this);
         }
 
-        public ObjectContainer(ObjectContainer baseContainer) : this()
+        public ObjectContainer(IObjectContainer baseContainer) : this()
         {
-            this.baseContainer = baseContainer;
+            if (baseContainer != null && !(baseContainer is ObjectContainer))
+                throw new ArgumentException("Base container must be an ObjectContainer", "baseContainer");
+
+            this.baseContainer = (ObjectContainer)baseContainer;
         }
 
         #region Registration
@@ -127,15 +159,20 @@ namespace MiniDi
             typeRegistrations[interfaceType] = implementationType;
         }
 
-        public void RegisterInstanceAs<TInterface>(TInterface instance) where TInterface : class
+        public void RegisterInstanceAs(object instance, Type interfaceType)
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");
-            AssertNotResolved(typeof(TInterface));
+            AssertNotResolved(interfaceType);
 
-            ClearRegistrations(typeof(TInterface));
-            instanceRegistrations[typeof(TInterface)] = instance;
+            ClearRegistrations(interfaceType);
+            instanceRegistrations[interfaceType] = instance;
             objectPool[instance.GetType()] = instance;
+        }
+
+        public void RegisterInstanceAs<TInterface>(TInterface instance) where TInterface : class
+        {
+            RegisterInstanceAs(instance, typeof(TInterface));
         }
 
         private void AssertNotResolved(Type interfaceType)
@@ -193,13 +230,15 @@ namespace MiniDi
             return (T)resolvedObject;
         }
 
-        private object Resolve(Type typeToResolve)
+        public object Resolve(Type typeToResolve)
         {
             return Resolve(typeToResolve, Enumerable.Empty<Type>());
         }
 
         private object Resolve(Type typeToResolve, IEnumerable<Type> resolutionPath)
         {
+            AssertNotDisposed();
+
             object resolvedObject;
             if (!resolvedObjects.TryGetValue(typeToResolve, out resolvedObject))
             {
@@ -299,23 +338,27 @@ namespace MiniDi
             if (ctors.Length == 0)
                 ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
 
-            object obj;
-            if (ctors.Length == 1)
+            if (ctors.Length == 0)
             {
-                ConstructorInfo ctor = ctors[0];
+                throw new ObjectContainerException("Class must have a constructor! " + type.FullName, resolutionPath);
+            }
+
+            int maxParamCount = ctors.Max(ctor => ctor.GetParameters().Length);
+            var maxParamCountCtors = ctors.Where(ctor => ctor.GetParameters().Length == maxParamCount).ToArray();
+
+            object obj;
+            if (maxParamCountCtors.Length == 1)
+            {
+                ConstructorInfo ctor = maxParamCountCtors[0];
                 if (resolutionPath.Contains(type))
                     throw new ObjectContainerException("Circular dependency found! " + type.FullName, resolutionPath);
 
                 var args = ResolveArguments(ctor.GetParameters(), resolutionPath.Concat(new[] { type }));
                 obj = ctor.Invoke(args);
             }
-            else if (ctors.Length == 0)
-            {
-                throw new ObjectContainerException("Class must have a constructor! " + type.FullName, resolutionPath);
-            }
             else
             {
-                throw new ObjectContainerException("Multiple public constructors are not supported! " + type.FullName, resolutionPath);
+                throw new ObjectContainerException("Multiple public constructors with same maximum parameter count are not supported! " + type.FullName, resolutionPath);
             }
 
             return obj;
@@ -327,6 +370,25 @@ namespace MiniDi
         }
 
         #endregion
+
+        private void AssertNotDisposed()
+        {
+            if (isDisposed)
+                throw new ObjectContainerException("Object container disposed", null);
+        }
+
+        public void Dispose()
+        {
+            isDisposed = true;
+
+            foreach (var obj in objectPool.Values.OfType<IDisposable>().Where(o => !ReferenceEquals(o, this)))
+                obj.Dispose();
+
+            objectPool.Clear();
+            instanceRegistrations.Clear();
+            typeRegistrations.Clear();
+            resolvedObjects.Clear();
+        }
     }
 
     #region Configuration handling

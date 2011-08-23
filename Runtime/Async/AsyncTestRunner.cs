@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using MiniDi;
 
 namespace TechTalk.SpecFlow.Async
 {
@@ -12,13 +13,18 @@ namespace TechTalk.SpecFlow.Async
     /// synchronous.
     /// </para>
     /// </remarks>
-    public class AsyncTestRunner : ITestRunner
+    public class AsyncTestRunner : ITestRunner, IContainedInstance
     {
         private readonly ITestRunner testRunner;
 
         public AsyncTestRunner(ITestRunner testRunner)
         {
             this.testRunner = testRunner;
+        }
+
+        IObjectContainer IContainedInstance.Container
+        {
+            get { return ((IContainedInstance)testRunner).Container; }
         }
 
         public FeatureContext FeatureContext
