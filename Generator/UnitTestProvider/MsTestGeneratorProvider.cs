@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
+        public virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
 
