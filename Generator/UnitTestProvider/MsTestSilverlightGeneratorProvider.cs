@@ -1,5 +1,4 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Async;
@@ -9,14 +8,23 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     public class MsTestSilverlightGeneratorProvider : MsTestGeneratorProvider
     {
         private const string TAG_ATTR = "Microsoft.Silverlight.Testing.TagAttribute";
-        private const string ASYNCTEST_BASE = "Microsoft.Silverlight.Testing.SilverlightTest";
+        private const string SILVERLIGHTTEST_BASE = "Microsoft.Silverlight.Testing.SilverlightTest";
         private const string ASYNCTEST_ATTR = "Microsoft.Silverlight.Testing.AsynchronousAttribute";
+        private const string ASYNCTEST_INTERFACE = "TechTalk.SpecFlow.Async.ISilverlightTestInstance";
 
         public override bool SupportsAsyncTests { get { return true; } }
 
+        public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
+        {
+            base.SetTestClass(generationContext, featureTitle, featureDescription);
+
+            generationContext.TestClass.BaseTypes.Add(new CodeTypeReference(SILVERLIGHTTEST_BASE));
+        }
+
         public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            generationContext.CustomData["featureCategories"] = featureCategories.ToArray();
+            var categories = featureCategories.ToArray();
+            CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, TAG_ATTR, categories);
         }
 
         public override void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
@@ -31,14 +39,24 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //nop; hopefully the issue is not present on Silverlight
         }
 
+        public override void SetTestInitializeMethod(TestClassGenerationContext generationContext)
+        {
+            base.SetTestInitializeMethod(generationContext);
+
+            // SenarioContext.Current.SetTestInstance(this);
+            var scenarioContext = new CodeTypeReferenceExpression("ScenarioContext");
+            var currentContext = new CodePropertyReferenceExpression(scenarioContext, "Current");
+            var scenarioContextExtensions = new CodeTypeReferenceExpression("ScenarioContextExtensions");
+            var setTestInstance = new CodeMethodInvokeExpression(scenarioContextExtensions, "SetTestInstance",
+                currentContext, new CodeThisReferenceExpression());
+
+            // Add it to ScenarioSetup
+            generationContext.ScenarioInitializeMethod.Statements.Add(new CodeExpressionStatement(setTestInstance));
+        }
+
         public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             base.SetTestMethod(generationContext, testMethod, scenarioTitle);
-            if (generationContext.CustomData.ContainsKey("featureCategories"))
-            {
-                var featureCategories = (string[]) generationContext.CustomData["featureCategories"];
-                CodeDomHelper.AddAttributeForEachValue(testMethod, TAG_ATTR, featureCategories);
-            }
 
             if (generationContext.GenerateAsynchTests)
                 SetupAsyncTest(testMethod);
@@ -59,8 +77,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         private void SetupAsyncTestClass(TestClassGenerationContext generationContext)
         {
-            generationContext.TestClass.BaseTypes.Add(new CodeTypeReference(ASYNCTEST_BASE));
-            generationContext.TestClass.BaseTypes.Add(new CodeTypeReference("TechTalk.SpecFlow.Async.ISilverlightTestInstance"));
+            generationContext.TestClass.BaseTypes.Add(new CodeTypeReference(ASYNCTEST_INTERFACE));
 
             //AsyncTestRunner.RegisterAsyncTestExecutor(testRunner, new TechTalk.SpecFlow.Async.SilverlightAsyncTestExecutor(this));
 
@@ -72,7 +89,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeVariableReferenceExpression("testRunner"),
                 nawSilverlightAsyncTestExecutorExpr);
 
-            generationContext.ScenarioInitializeMethod.Statements.Insert(0, new CodeExpressionStatement(registerAsyncExpression));
+            generationContext.TestInitializeMethod.Statements.Add(new CodeExpressionStatement(registerAsyncExpression));
         }
 
         private void SetupAsyncTest(CodeMemberMethod testMethod)
