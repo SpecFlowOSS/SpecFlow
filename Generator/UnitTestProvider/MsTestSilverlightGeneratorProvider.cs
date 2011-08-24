@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 new CodeVariableReferenceExpression("testRunner"),
                 nawSilverlightAsyncTestExecutorExpr);
 
-            generationContext.ScenarioInitializeMethod.Statements.Insert(0, new CodeExpressionStatement(registerAsyncExpression));
+            generationContext.TestInitializeMethod.Statements.Add(new CodeExpressionStatement(registerAsyncExpression));
         }
 
         private void SetupAsyncTest(CodeMemberMethod testMethod)
