@@ -126,6 +126,108 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreSame(expected, actual);
         }
 
+        [Test]
+        public void Can_retrieve_existing_value_with_try_get_value()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set(expected);
+
+            ScenarioTestClass actual;
+            var retrieved = scenarioContext.TryGetValue(out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Will_return_null_from_try_get_value_if_no_value_present()
+        {
+            var scenarioContext = CreateScenarioContext();
+
+            ScenarioTestClass actual;
+            var retrieved = scenarioContext.TryGetValue(out actual);
+
+            Assert.IsFalse(retrieved);
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void Can_retrieve_existing_value_with_try_get_value_and_generic_type()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set<IScenarioTestInterface>(expected);
+
+            IScenarioTestInterface actual;
+            var retrieved = scenarioContext.TryGetValue(out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Can_retrieve_existing_value_with_try_get_value_and_string()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set(expected, "test");
+
+            ScenarioTestClass actual;
+            var retrieved = scenarioContext.TryGetValue("test", out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Will_not_retrieve_existing_value_with_different_key_for_try_get_value()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set(expected, "test");
+
+            ScenarioTestClass actual;
+            var retrieved = scenarioContext.TryGetValue("different", out actual);
+
+            Assert.IsFalse(retrieved);
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void Will_call_factory_method_when_retrieving_with_try_get_value()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set(() => expected);
+
+            ScenarioTestClass actual;
+            var retrieved = scenarioContext.TryGetValue(out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Will_call_factory_method_when_retrieving_with_try_get_value_and_generic_type()
+        {
+            var scenarioContext = CreateScenarioContext();
+            var expected = new ScenarioTestClass();
+
+            scenarioContext.Set<IScenarioTestInterface>(() => expected);
+
+            IScenarioTestInterface actual;
+            var retrieved = scenarioContext.TryGetValue(out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreEqual(expected, actual);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
             return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null);
