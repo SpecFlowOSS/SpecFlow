@@ -116,10 +116,67 @@ namespace BoDi
 
     public class ObjectContainer : IObjectContainer
     {
+        private struct RegistrationKey
+        {
+            readonly Type Type;
+            readonly string Name;
+
+            public RegistrationKey(Type type, string name)
+            {
+                if (type == null) throw new ArgumentNullException("type");
+
+                Type = type;
+                Name = name;
+            }
+
+            bool Equals(RegistrationKey other)
+            {
+                return Equals(other.Type, Type) && Equals(other.Name, Name);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                if (obj.GetType() != typeof (RegistrationKey)) return false;
+                return Equals((RegistrationKey) obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (Type.GetHashCode()*397) ^ (Name != null ? Name.GetHashCode() : 0);
+                }
+            }
+        }
+        private interface IRegistration
+        {
+            
+        }
+
+        private class TypeRegistration : IRegistration
+        {
+            public readonly Type ImplementationType;
+
+            public TypeRegistration(Type implementationType)
+            {
+                ImplementationType = implementationType;
+            }
+        }
+
+        private class InstanceRegistration : IRegistration
+        {
+            public readonly object Instance;
+
+            public InstanceRegistration(object instance)
+            {
+                Instance = instance;
+            }
+        }
+
         private bool isDisposed = false;
         private readonly ObjectContainer baseContainer;
-        private readonly Dictionary<Type, Type> typeRegistrations = new Dictionary<Type, Type>();
-        private readonly Dictionary<Type, object> instanceRegistrations = new Dictionary<Type, object>();
+        private readonly Dictionary<RegistrationKey, IRegistration> registrations = new Dictionary<RegistrationKey, IRegistration>();
         private readonly Dictionary<Type, object> resolvedObjects = new Dictionary<Type, object>();
         private readonly Dictionary<Type, object> objectPool = new Dictionary<Type, object>();
 
@@ -156,7 +213,9 @@ namespace BoDi
             AssertNotResolved(interfaceType);
 
             ClearRegistrations(interfaceType);
-            typeRegistrations[interfaceType] = implementationType;
+
+            var key = new RegistrationKey(interfaceType, null);
+            registrations[key] = new TypeRegistration(implementationType);
         }
 
         public void RegisterInstanceAs(object instance, Type interfaceType)
@@ -166,7 +225,8 @@ namespace BoDi
             AssertNotResolved(interfaceType);
 
             ClearRegistrations(interfaceType);
-            instanceRegistrations[interfaceType] = instance;
+            var key = new RegistrationKey(interfaceType, null);
+            registrations[key] = new InstanceRegistration(instance);
             objectPool[instance.GetType()] = instance;
         }
 
@@ -183,8 +243,7 @@ namespace BoDi
 
         private void ClearRegistrations(Type interfaceType)
         {
-            typeRegistrations.Remove(interfaceType);
-            instanceRegistrations.Remove(interfaceType);
+            registrations.Remove(new RegistrationKey(interfaceType, null)); //TODO
         }
 
 #if !BODI_LIMITEDRUNTIME
@@ -257,31 +316,24 @@ namespace BoDi
             public bool IsTypeRegistration { get { return RegisteredType != null; } }
             public bool IsInstanceRegistration { get { return !IsTypeRegistration; } }
 
-            public RegistrationResult(object registeredInstance)
+            public RegistrationResult(IRegistration registration)
             {
-                RegisteredInstance = registeredInstance;
                 RegisteredType = null;
-            }
-
-            public RegistrationResult(Type registeredType)
-            {
-                RegisteredType = registeredType;
                 RegisteredInstance = null;
+                if (registration is TypeRegistration)
+                    RegisteredType = ((TypeRegistration) registration).ImplementationType;
+                else
+                    RegisteredInstance = ((InstanceRegistration)registration).Instance;
             }
         }
 
         private RegistrationResult GetRegistrationResult(Type typeToResolve)
         {
-            object obj;
-            if (instanceRegistrations.TryGetValue(typeToResolve, out obj))
+            var key = new RegistrationKey(typeToResolve, null);
+            IRegistration registration;
+            if (registrations.TryGetValue(key, out registration))
             {
-                return new RegistrationResult(obj);
-            }
-
-            Type registeredType;
-            if (typeRegistrations.TryGetValue(typeToResolve, out registeredType))
-            {
-                return new RegistrationResult(registeredType);
+                return new RegistrationResult(registration);
             }
 
             if (baseContainer != null)
@@ -385,8 +437,7 @@ namespace BoDi
                 obj.Dispose();
 
             objectPool.Clear();
-            instanceRegistrations.Clear();
-            typeRegistrations.Clear();
+            registrations.Clear();
             resolvedObjects.Clear();
         }
     }
