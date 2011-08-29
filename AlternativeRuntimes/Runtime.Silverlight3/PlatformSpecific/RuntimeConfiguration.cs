@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Configuration
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
-        public Type RuntimeUnitTestProviderType { get; set; }
+        public string RuntimeUnitTestProvider { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }
@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Configuration
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
-            SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+            RuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
 
             DetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
@@ -70,7 +70,9 @@ namespace TechTalk.SpecFlow.Configuration
 
             string providerName;
             if (QueryString.TryGetValue("unitTestProvider", out providerName))
-                SetUnitTestDefaultsByName(providerName);
+            {
+                RuntimeUnitTestProvider = providerName;
+            }
 
             DetectAmbiguousMatches = GetBoolFromQueryString("detectAmbiguousMatches", DetectAmbiguousMatches);
             StopAtFirstError = GetBoolFromQueryString("stopAtFirstError", StopAtFirstError);
@@ -139,22 +141,6 @@ namespace TechTalk.SpecFlow.Configuration
         protected static IDictionary<string, string> QueryString
         {
             get { return HtmlPage.Document.QueryString; }
-        }
-
-        private void SetUnitTestDefaultsByName(string name)
-        {
-            switch (name.ToLower())
-            {
-                case "mstest.silverlight":
-                case "mstest.silverlight3":
-                case "mstest.silverlight4":
-                    RuntimeUnitTestProviderType = typeof (MsTestSilverlightRuntimeProvider);
-                    break;
-
-                default:
-                    RuntimeUnitTestProviderType = null;
-                    break;
-            }
         }
     }
 }

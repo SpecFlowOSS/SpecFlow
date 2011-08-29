@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    internal class TestRunContainerBuilder
+    internal partial class TestRunContainerBuilder
     {
         public static IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
@@ -32,11 +32,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (runtimeConfiguration.TraceListenerType != null)
                 container.RegisterTypeAs<ITraceListener>(runtimeConfiguration.TraceListenerType);
 
-            if (runtimeConfiguration.RuntimeUnitTestProviderType != null)
-                container.RegisterTypeAs<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProviderType);
+            if (runtimeConfiguration.RuntimeUnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
 
             return container;
         }
+
+        static partial void RegisterUnitTestProviders(ObjectContainer container);
 
         private static void RegisterDefaults(ObjectContainer container)
         {
@@ -56,18 +58,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
 
-            container.RegisterTypeAs<NUnitRuntimeProvider, IUnitTestRuntimeProvider>();
-
             container.RegisterTypeAs<ContextManager, IContextManager>();
 
-            //this part will be changed for proper named registration support
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders =
-                new Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider>
-                    {
-                        { ProgrammingLanguage.CSharp, new StepDefinitionSkeletonProviderCS() },
-                        { ProgrammingLanguage.VB, new StepDefinitionSkeletonProviderVB() },
-                    };
-            container.RegisterInstanceAs(stepDefinitionSkeletonProviders);
+            container.RegisterTypeAs<StepDefinitionSkeletonProviderCS, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.CSharp.ToString());
+            container.RegisterTypeAs<StepDefinitionSkeletonProviderVB, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.VB.ToString());
+
+            RegisterUnitTestProviders(container);
         }
     }
 }

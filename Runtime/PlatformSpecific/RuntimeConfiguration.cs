@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Configuration
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
+        public string RuntimeUnitTestProvider { get; set; }
         public Type RuntimeUnitTestProviderType { get; set; }
 
         //runtime settings
@@ -50,7 +51,7 @@ namespace TechTalk.SpecFlow.Configuration
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
-            SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+            RuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
 
             DetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
@@ -88,16 +89,6 @@ namespace TechTalk.SpecFlow.Configuration
                 config.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
             }
 
-            if (configSection.UnitTestProvider != null)
-            {
-                config.SetUnitTestDefaultsByName(configSection.UnitTestProvider.Name);
-
-                if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
-                    config.RuntimeUnitTestProviderType = GetTypeConfig(configSection.UnitTestProvider.RuntimeProvider);
-
-                //TODO: config.CheckUnitTestConfig();
-            }
-
             if (configSection.Runtime != null)
             {
                 config.DetectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
@@ -107,6 +98,24 @@ namespace TechTalk.SpecFlow.Configuration
                 if (configSection.Runtime.Dependencies != null)
                 {
                     config.CustomDependencies = configSection.Runtime.Dependencies;
+                }
+            }
+
+            if (configSection.UnitTestProvider != null)
+            {
+                if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
+                {
+                    //compatibility mode, we simulate a custom dependency
+
+                    if (config.CustomDependencies == null)
+                        config.CustomDependencies = new ContainerRegistrationCollection();
+
+                    config.RuntimeUnitTestProvider = "custom";
+                    config.CustomDependencies.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, config.RuntimeUnitTestProvider);
+                }
+                else
+                {
+                    config.RuntimeUnitTestProvider = configSection.UnitTestProvider.Name;
                 }
             }
 

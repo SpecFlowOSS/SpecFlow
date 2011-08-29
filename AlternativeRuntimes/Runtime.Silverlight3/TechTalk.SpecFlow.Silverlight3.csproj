@@ -78,6 +78,7 @@
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
     <Compile Include="PlatformSpecific\ScenarioContextExtensions.cs" />
+    <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestProvider\MsTestSilverlightRuntimeProvider.cs" />
   </ItemGroup>

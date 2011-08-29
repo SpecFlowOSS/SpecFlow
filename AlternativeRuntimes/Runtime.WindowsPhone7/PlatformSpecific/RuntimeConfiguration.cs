@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Configuration
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
-        public Type RuntimeUnitTestProviderType { get; set; }
+        public string RuntimeUnitTestProvider { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Configuration
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
-            SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+            RuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
 
             DetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
@@ -75,19 +75,6 @@ namespace TechTalk.SpecFlow.Configuration
                 throw new ConfigurationErrorsException(
                     string.Format("Invalid type reference '{0}': {1}",
                         typeName, ex.Message), ex);
-            }
-        }
-
-        private void SetUnitTestDefaultsByName(string name)
-        {
-            switch (name.ToLower())
-            {
-                case "mstest.windowsphone7":
-                    RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
-                    break;
-                default:
-                    RuntimeUnitTestProviderType = null;
-                    break;
             }
         }
     }
