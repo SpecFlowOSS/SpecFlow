@@ -205,6 +205,11 @@ namespace BoDi
 
                 return obj;
             }
+
+            public override string ToString()
+            {
+                return "Type: " + ImplementationType.FullName;
+            }
         }
 
         private class InstanceRegistration : IRegistration
@@ -219,6 +224,11 @@ namespace BoDi
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, IEnumerable<Type> resolutionPath)
             {
                 return Instance;
+            }
+
+            public override string ToString()
+            {
+                return "Instance: " + Instance;
             }
         }
 
@@ -430,6 +440,11 @@ namespace BoDi
             {
                 var targetType = keyToResolve.Type.GetGenericArguments()[1];
                 return GetRegistrationResult(CreateNamedInstanceDictionaryKey(targetType));
+            }
+
+            if(IsNamedInstanceDictionaryKey(keyToResolve))
+            {
+                return new NamedInstanceDictionaryRegistration();
             }
 
             return null;

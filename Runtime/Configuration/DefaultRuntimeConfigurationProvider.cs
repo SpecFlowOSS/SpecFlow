@@ -1,10 +1,19 @@
-﻿namespace TechTalk.SpecFlow.Configuration
+﻿using System;
+using System.Collections.Generic;
+using TechTalk.SpecFlow.Infrastructure;
+
+namespace TechTalk.SpecFlow.Configuration
 {
     public class DefaultRuntimeConfigurationProvider : IRuntimeConfigurationProvider
     {
-        public RuntimeConfiguration GetConfiguration()
+        public void LoadConfiguration(RuntimeConfiguration defaultConfiguration)
         {
-            return RuntimeConfiguration.GetConfig();
+            defaultConfiguration.LoadConfiguration();
+        }
+
+        public IEnumerable<PluginDescriptor> GetPlugins()
+        {
+            return RuntimeConfiguration.GetPlugins();
         }
     }
 }

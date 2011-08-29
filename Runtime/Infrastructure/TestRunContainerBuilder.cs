@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BoDi;
-using TechTalk.SpecFlow.Bindings;
+using System.Linq;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    internal partial class TestRunContainerBuilder
+    internal class TestRunContainerBuilder
     {
+        internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+
         public static IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
@@ -20,7 +22,20 @@ namespace TechTalk.SpecFlow.Infrastructure
                 container.RegisterInstanceAs(configurationProvider);
 
             configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
-            var runtimeConfiguration = configurationProvider.GetConfiguration();
+
+            var pluginLoader = container.Resolve<IRuntimePluginLoader>();
+            var plugins = configurationProvider.GetPlugins().Select(pd => LoadPlugin(pluginLoader, pd)).ToArray();
+            foreach (var plugin in plugins)
+            {
+                plugin.RegisterDefaults(container);
+            }
+
+            RuntimeConfiguration runtimeConfiguration = new RuntimeConfiguration();
+            foreach (var defaultsProvider in container.Resolve<IDictionary<string, IRuntimeConfigurationDefaultsProvider>>().Values)
+            {
+                defaultsProvider.SetDefaultConfiguration(runtimeConfiguration);
+            }
+            configurationProvider.LoadConfiguration(runtimeConfiguration);
 
 #if !BODI_LIMITEDRUNTIME
             if (runtimeConfiguration.CustomDependencies != null)
@@ -35,35 +50,22 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (runtimeConfiguration.RuntimeUnitTestProvider != null)
                 container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
 
+            foreach (var plugin in plugins)
+            {
+                plugin.RegisterCustomizations(container, runtimeConfiguration);
+            }
+
             return container;
         }
 
-        static partial void RegisterUnitTestProviders(ObjectContainer container);
+        private static IRuntimePlugin LoadPlugin(IRuntimePluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
+        {
+            return pluginLoader.LoadRuntimePlugin(pluginDescriptor.Name);
+        }
 
         private static void RegisterDefaults(ObjectContainer container)
         {
-            container.RegisterTypeAs<DefaultRuntimeConfigurationProvider, IRuntimeConfigurationProvider>();
-
-            container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
-            container.RegisterTypeAs<TestRunner, ITestRunner>();
-            container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
-
-            container.RegisterTypeAs<StepFormatter, IStepFormatter>();
-            container.RegisterTypeAs<TestTracer, ITestTracer>();
-
-            container.RegisterTypeAs<DefaultListener, ITraceListener>();
-
-            container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
-            container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
-            container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
-            container.RegisterTypeAs<BindingFactory, IBindingFactory>();
-
-            container.RegisterTypeAs<ContextManager, IContextManager>();
-
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderCS, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.CSharp.ToString());
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderVB, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.VB.ToString());
-
-            RegisterUnitTestProviders(container);
+            DefaultDependencyProvider.RegisterDefaults(container);
         }
     }
 }

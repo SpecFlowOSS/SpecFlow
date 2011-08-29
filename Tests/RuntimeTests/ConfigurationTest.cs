@@ -13,8 +13,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void CanLoadConfigFromConfigFile()
         {
-            var runtimeConfig = RuntimeConfiguration.GetConfig();
-            Assert.IsNotNull(runtimeConfig);
+            var runtimeConfiguration = new RuntimeConfiguration();
+            runtimeConfiguration.LoadConfiguration();
         }
 
         [Test]
@@ -41,9 +41,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             //const string configString = ;
 
-            var runtimeConfig = RuntimeConfiguration.LoadFromConfigFile(
-                ConfigurationSectionHandler.CreateFromXml(configString));
-            Assert.IsNotNull(runtimeConfig);
+            var runtimeConfig = new RuntimeConfiguration();
+            runtimeConfig.LoadConfiguration(ConfigurationSectionHandler.CreateFromXml(configString));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Xml;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
 using Should;
@@ -32,29 +31,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public ITestRunner Create(Assembly testAssembly)
             {
                 throw new NotImplementedException();
-            }
-        }
-
-        private class StringConfigProvider : IRuntimeConfigurationProvider
-        {
-            private readonly string configFileContent;
-
-            public StringConfigProvider(string configContent)
-            {
-                this.configFileContent = configContent;
-            }
-
-            public RuntimeConfiguration GetConfiguration()
-            {
-                XmlDocument configDocument = new XmlDocument();
-                configDocument.LoadXml(configFileContent);
-
-                var specFlowNode = configDocument.SelectSingleNode("/configuration/specFlow");
-                if (specFlowNode == null)
-                    throw new InvalidOperationException("invalid config file content");
-
-                var section = ConfigurationSectionHandler.CreateFromXml(specFlowNode);
-                return RuntimeConfiguration.LoadFromConfigFile(section);
             }
         }
 

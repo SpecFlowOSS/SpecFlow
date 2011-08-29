@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using BoDi;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -63,79 +64,87 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-        public static RuntimeConfiguration GetConfig()
+        public static IEnumerable<PluginDescriptor> GetPlugins()
         {
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
-            if (section == null)
-                return new RuntimeConfiguration();
+            if (section == null || section.Plugins == null)
+                return Enumerable.Empty<PluginDescriptor>();
 
-            return LoadFromConfigFile(section);
+            return section.Plugins.Select(pce => new PluginDescriptor(pce.Name));
         }
 
-        public static RuntimeConfiguration LoadFromConfigFile(ConfigurationSectionHandler configSection)
+        public void LoadConfiguration()
+        {
+            var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
+            LoadConfiguration(section);
+        }
+
+        private bool IsSpecified(ConfigurationElement configurationElement)
+        {
+            return configurationElement != null && configurationElement.ElementInformation.IsPresent;
+        }
+
+        public void LoadConfiguration(ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException("configSection");
 
-            var config = new RuntimeConfiguration();
-            if (configSection.Language != null)
+            if (IsSpecified(configSection.Language))
             {
-                config.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
+                this.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
                     CultureInfo.GetCultureInfo(configSection.Language.Feature) :
                     CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
-            if (configSection.BindingCulture.ElementInformation.IsPresent)
+            if (IsSpecified(configSection.BindingCulture))
             {
-                config.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
+                this.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
             }
 
-            if (configSection.Runtime != null)
+            if (IsSpecified(configSection.Runtime))
             {
-                config.DetectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
-                config.StopAtFirstError = configSection.Runtime.StopAtFirstError;
-                config.MissingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
+                this.DetectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
+                this.StopAtFirstError = configSection.Runtime.StopAtFirstError;
+                this.MissingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
 
-                if (configSection.Runtime.Dependencies != null)
+                if (IsSpecified(configSection.Runtime.Dependencies))
                 {
-                    config.CustomDependencies = configSection.Runtime.Dependencies;
+                    this.CustomDependencies = configSection.Runtime.Dependencies;
                 }
             }
 
-            if (configSection.UnitTestProvider != null)
+            if (IsSpecified(configSection.UnitTestProvider))
             {
                 if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
                 {
                     //compatibility mode, we simulate a custom dependency
 
-                    if (config.CustomDependencies == null)
-                        config.CustomDependencies = new ContainerRegistrationCollection();
+                    if (this.CustomDependencies == null)
+                        this.CustomDependencies = new ContainerRegistrationCollection();
 
-                    config.RuntimeUnitTestProvider = "custom";
-                    config.CustomDependencies.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, config.RuntimeUnitTestProvider);
+                    this.RuntimeUnitTestProvider = "custom";
+                    this.CustomDependencies.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, this.RuntimeUnitTestProvider);
                 }
                 else
                 {
-                    config.RuntimeUnitTestProvider = configSection.UnitTestProvider.Name;
+                    this.RuntimeUnitTestProvider = configSection.UnitTestProvider.Name;
                 }
             }
 
-            if (configSection.Trace != null)
+            if (IsSpecified(configSection.Trace))
             {
                 if (!string.IsNullOrEmpty(configSection.Trace.Listener))
-                    config.TraceListenerType = GetTypeConfig(configSection.Trace.Listener);
+                    this.TraceListenerType = GetTypeConfig(configSection.Trace.Listener);
 
-                config.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
-                config.TraceTimings = configSection.Trace.TraceTimings;
-                config.MinTracedDuration = configSection.Trace.MinTracedDuration;
+                this.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
+                this.TraceTimings = configSection.Trace.TraceTimings;
+                this.MinTracedDuration = configSection.Trace.MinTracedDuration;
             }
 
             foreach (var element in configSection.StepAssemblies)
             {
                 Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
-                config.additionalStepAssemblies.Add(stepAssembly);
+                this.additionalStepAssemblies.Add(stepAssembly);
             }
-
-            return config;
         }
 
         private static Type GetTypeConfig(string typeName)
@@ -149,36 +158,6 @@ namespace TechTalk.SpecFlow.Configuration
                 throw new ConfigurationErrorsException(
                     string.Format("Invalid type reference '{0}': {1}",
                         typeName, ex.Message), ex);
-            }
-        }
-
-        private void SetUnitTestDefaultsByName(string name)
-        {
-            switch (name.ToLower())
-            {
-                case "nunit":
-                    RuntimeUnitTestProviderType = typeof(NUnitRuntimeProvider);
-                    break;
-                case "mbunit":
-                    RuntimeUnitTestProviderType = typeof(MbUnitRuntimeProvider);
-                    break;
-                case "xunit":
-                    RuntimeUnitTestProviderType = typeof(XUnitRuntimeProvider);
-                    break;
-                case "mstest":
-                    RuntimeUnitTestProviderType = typeof(MsTestRuntimeProvider);
-                    break;
-                case "mstest.2010":
-                    RuntimeUnitTestProviderType = typeof(MsTest2010RuntimeProvider);
-                    break;
-#if WINDOWS_PHONE
-                case "mstest.windowsphone7":
-                    RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
-                    break;
-#endif
-                default:
-                    RuntimeUnitTestProviderType = null;
-                    break;
             }
         }
     }
