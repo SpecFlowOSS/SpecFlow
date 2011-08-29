@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow
             object result;
             if (base.TryGetValue(key, out result))
             {
-                value = (TValue)result;
+                value = TheValueIsAFactoryMethod<TValue>(result) ? CallTheFactoryMethodToGetTheValue<TValue>(result) : (TValue)result;
                 return true;
             }
 
@@ -65,10 +65,9 @@ namespace TechTalk.SpecFlow
             return (T)value;
         }
 
-        private static object CallTheFactoryMethodToGetTheValue<T>(object value)
+        private static T CallTheFactoryMethodToGetTheValue<T>(object value)
         {
-            value = ((Func<T>) value)();
-            return value;
+            return ((Func<T>) value)();
         }
 
         private static bool TheValueIsAFactoryMethod<T>(object value)

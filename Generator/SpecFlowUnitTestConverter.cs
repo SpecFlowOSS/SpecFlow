@@ -51,6 +51,11 @@ namespace TechTalk.SpecFlow.Generator
             return method;
         }
 
+        private static bool HasFeatureBackground(Feature feature)
+        {
+            return feature.Background != null;
+        }
+
         private TestClassGenerationContext CreateTestClassStructure(CodeNamespace codeNamespace, string testClassName, Feature feature)
         {
             var testClass = codeDomHelper.CreateGeneratedTypeDeclaration(testClassName);
@@ -66,6 +71,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
+                HasFeatureBackground(feature) ? CreateMethod(testClass) : null,
                 generateRowTests: testGeneratorProvider.SupportsRowTests && generatorConfiguration.AllowRowTests,
                 generateAsynchTests: generatorConfiguration.GenerateAsyncTests && testGeneratorProvider.SupportsAsyncTests);
         }
@@ -92,8 +98,7 @@ namespace TechTalk.SpecFlow.Generator
             SetupTestClassCleanupMethod(generationContext);
 
             SetupScenarioInitializeMethod(generationContext);
-            if (feature.Background != null)
-                GenerateBackground(generationContext, feature.Background);
+            SetupFeatureBackground(generationContext);
             SetupScenarioCleanupMethod(generationContext);
 
             SetupTestInitializeMethod(generationContext);
@@ -297,9 +302,14 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeVariableReferenceExpression("scenarioInfo")));
         }
 
-        private void GenerateBackground(TestClassGenerationContext generationContext, Background background)
+        private void SetupFeatureBackground(TestClassGenerationContext generationContext)
         {
-            CodeMemberMethod backgroundMethod = CreateMethod(generationContext.TestClass);
+            if (!HasFeatureBackground(generationContext.Feature))
+                return;
+
+            var background = generationContext.Feature.Background;
+
+            CodeMemberMethod backgroundMethod = generationContext.FeatureBackgroundMethod;
 
             backgroundMethod.Attributes = MemberAttributes.Public;
             backgroundMethod.Name = BACKGROUND_NAME;
@@ -309,12 +319,7 @@ namespace TechTalk.SpecFlow.Generator
             foreach (var given in background.Steps)
                 GenerateStep(backgroundMethod, given, null);
 
-            AddLineDirectiveHidden(backgroundMethod.Statements);
-
-            generationContext.ScenarioInitializeMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    backgroundMethod.Name));
+			AddLineDirectiveHidden(backgroundMethod.Statements);
         }
 
         private class ParameterSubstitution : List<KeyValuePair<string, string>>
@@ -525,6 +530,15 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeThisReferenceExpression(),
                     generationContext.ScenarioInitializeMethod.Name,
                     new CodeVariableReferenceExpression("scenarioInfo")));
+
+            if (HasFeatureBackground(generationContext.Feature))
+            {
+                AddLineDirective(testMethod.Statements, generationContext.Feature.Background);
+                testMethod.Statements.Add(
+                    new CodeMethodInvokeExpression(
+                        new CodeThisReferenceExpression(),
+                        generationContext.FeatureBackgroundMethod.Name));
+            }
 
             foreach (var scenarioStep in scenario.Steps)
             {
