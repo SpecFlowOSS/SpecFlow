@@ -94,7 +94,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetIntegration", "IdeInte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.SharpDevelop4Integration", "IdeIntegration\SharpDevelop4Integration\TechTalk.SpecFlow.SharpDevelop4Integration.csproj", "{C091E608-2A76-40B2-9548-AB5A2A77BD78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs2010IntegrationTests", "Tests\Vs2010IntegrationTests\Vs2010IntegrationTests.csproj", "{79F3F567-1162-49A1-B040-BA5CC83CF6C2}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = TechTalk.SpecFlow.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -495,6 +500,21 @@ Global
 		{C091E608-2A76-40B2-9548-AB5A2A77BD78}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Debug|x86
 		{C091E608-2A76-40B2-9548-AB5A2A77BD78}.VS2010IntegrationTest|x86.ActiveCfg = Release|x86
 		{C091E608-2A76-40B2-9548-AB5A2A77BD78}.VS2010IntegrationTest|x86.Build.0 = Release|x86
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.VS2010IntegrationTest|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.VS2010IntegrationTest|Mixed Platforms.Build.0 = Release|Any CPU
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2}.VS2010IntegrationTest|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -513,6 +533,7 @@ Global
 		{AAB77D7A-20E0-4FA6-B139-BBCBB5215B80} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{69505BAC-12B9-4443-BB3B-A94E51EA5922} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{97C30FCC-3093-4430-93DC-D671C656C404} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{79F3F567-1162-49A1-B040-BA5CC83CF6C2} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{E00271E7-F422-42B9-89D0-E29C96C90CE2} = {01A98306-2E7F-42E5-A180-C31C4DC82C57}
 		{B93F95CF-BF89-4D92-BB0F-86885B9B6DCE} = {01A98306-2E7F-42E5-A180-C31C4DC82C57}
 		{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E} = {55E45533-9AAA-41AB-B44F-7530799C9337}

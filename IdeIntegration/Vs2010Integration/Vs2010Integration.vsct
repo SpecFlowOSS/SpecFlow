@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidSpecFlowPkgString">
+    <Groups>
+      <Group guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerateGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerate" priority="0x0100" type="Button">
+        <Parent guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerateGroup" />
+        <!-- <Icon guid="guidImages" id="bmpPic1" /> -->
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidGenerate</CommandName>
+          <ButtonText>Generate SpecFlow Step Definition File</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+  </Commands>
+  <Symbols>
+    <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
+    <GuidSymbol name="guidDynamicMenuDevelopmentGenerateOption" value="{9d9046da-94f8-4fd0-8a00-92bf4f6defa8}">
+      <IDSymbol name="cmdidGenerateGroup" value="0x1020"/>
+      <IDSymbol name="cmdidGenerate" value="0x1009"/>
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow.Tracing
+namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
 {
-    internal class StepDefinitionSkeletonProviderCS : StepDefinitionSkeletonProviderBase
+    public class StepDefinitionSkeletonProviderCS : StepDefinitionSkeletonProviderBase
     {
-        public override string GetStepDefinitionSkeleton(StepArgs stepArgs)
+        public override string GetStepDefinitionSkeleton(StepInstance stepArgs)
         {
             List<string> extraArgs = new List<string>();
 
@@ -30,7 +31,7 @@ public void {0}{2}({3})
 {{
     ScenarioContext.Current.Pending();
 }}",
-                stepArgs.Type,
+                stepArgs.BindingType,
                 stepText,
                 methodName,
                 string.Join(", ", extraArgs.ToArray()));
@@ -39,7 +40,7 @@ public void {0}{2}({3})
             return result.ToString();
         }
 
-        public override string GetBindingClassSkeleton(List<StepArgs> steps)
+        public override string GetBindingClassSkeleton(List<StepInstance> steps)
         {
             List<string> givens, whens, thens;
             GroupByBindingType(steps, out givens, out whens, out thens);
@@ -59,7 +60,7 @@ public class StepDefinitions
             return result.ToString();
         }
 
-        public override string GetFileSkeleton(List<StepArgs> steps, StepDefSkeletonInfo info)
+        public override string GetFileSkeleton(List<StepInstance> steps, StepDefSkeletonInfo info)
         {
             List<string> givens, whens, thens;
             GroupByBindingType(steps, out givens, out whens, out thens);
@@ -90,7 +91,7 @@ namespace {0}
             return result.ToString();
         }
 
-        public override string AddStepsToExistingFile(string file, List<StepArgs> steps)
+        public override string AddStepsToExistingFile(string file, List<StepInstance> steps)
         {
             //Seperates the steps into groups of skeletons according to their binding type
             List<string> givens, whens, thens;

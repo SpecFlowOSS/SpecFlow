@@ -1,33 +1,33 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow.Tracing
+namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
 {
-    internal class StepDefinitionSkeletonProviderVB : StepDefinitionSkeletonProviderBase
+    public class StepDefinitionSkeletonProviderVB : StepDefinitionSkeletonProviderBase
     {
-        public override string GetStepDefinitionSkeleton(StepArgs stepArgs)
+        public override string GetStepDefinitionSkeleton(StepInstance stepInfo)
         {
             List<string> extraArgs = new List<string>();
 
-            if (stepArgs.MultilineTextArgument != null)
+            if (stepInfo.MultilineTextArgument != null)
                 extraArgs.Add("ByVal multilineText As String");
-            if (stepArgs.TableArgument != null)
+            if (stepInfo.TableArgument != null)
                 extraArgs.Add("ByVal table As Table");
 
-            string stepText = EscapeRegexOutsideQuotes(stepArgs.Text);
+            string stepText = EscapeRegexOutsideQuotes(stepInfo.Text);
             extraArgs.AddRange(ParseArgsFromQuotes(ref stepText));
             //Adds parameters passed in via quotes to the args for the method
-            string methodName = Regex.Replace(EscapeRegex(stepArgs.Text), QuotesRegex, "").ToIdentifier();
-
+            string methodName = Regex.Replace(EscapeRegex(stepInfo.Text), QuotesRegex, "").ToIdentifier();
             StringBuilder result = new StringBuilder();
 
             // in VB "When" and "Then" are language keywords - use the fully qualified namespace
             string namespaceAddition = "TechTalk.SpecFlow.";
-            if (stepArgs.Type == BindingType.Given)
+            if (stepInfo.BindingType == BindingType.Given)
             {
                 namespaceAddition = "";
             }
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Tracing
 Public Sub {0}{2}({3})
 {5}ScenarioContext.Current.Pending()
 End Sub",
-                stepArgs.Type,
+                stepInfo.BindingType,
                 stepText,
                 methodName,
                 string.Join(", ", extraArgs.ToArray()),
@@ -49,7 +49,7 @@ End Sub",
             return result.ToString();
         }
 
-        public override string GetBindingClassSkeleton(List<StepArgs> steps)
+        public override string GetBindingClassSkeleton(List<StepInstance> steps)
         {
             string body = CombineMethods(GetCombinedMethodsSkeleton(steps));
 
@@ -58,7 +58,7 @@ End Sub",
 Public Class StepDefinitions
 {2}
 {1}End Class",
-                                GetAttributeName(typeof(BindingAttribute)),
+                                GetAttributeName(typeof (BindingAttribute)),
                                 body,
                                 CODEINDENT);
             result.AppendLine();
@@ -66,7 +66,7 @@ Public Class StepDefinitions
             return result.ToString();
         }
 
-        public override string GetFileSkeleton(List<StepArgs> steps, StepDefSkeletonInfo info)
+        public override string GetFileSkeleton(List<StepInstance> steps, StepDefSkeletonInfo info)
         {
             string body = CombineMethods(GetCombinedMethodsSkeleton(steps));
             StringBuilder result = new StringBuilder();
@@ -77,7 +77,7 @@ Public Class StepDefinitions
 Public Class {2}
 {3}
 {1}End Class",
-                                GetAttributeName(typeof(BindingAttribute)),
+                                GetAttributeName(typeof (BindingAttribute)),
                                 body,
                                 info.SuggestedStepDefName,
                                 CODEINDENT);
@@ -85,7 +85,7 @@ Public Class {2}
             return result.ToString();
         }
 
-        public override string AddStepsToExistingFile(string file, List<StepArgs> steps)
+        public override string AddStepsToExistingFile(string file, List<StepInstance> steps)
         {
             string body = CombineMethods(GetCombinedMethodsSkeleton(steps));
             if (!string.IsNullOrEmpty(body))

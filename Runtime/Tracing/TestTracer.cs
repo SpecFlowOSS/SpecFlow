@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)
         {
-            traceListener.WriteToolOutput("done: {0} ({1:F1}s)", 
+            traceListener.WriteToolOutput("done: {0} ({1:F1}s)",
                 stepFormatter.GetMatchText(match, arguments), duration.TotalSeconds);
         }
 
@@ -72,36 +72,30 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
         {
-//            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
-//            return new BindingException(
-//                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
-//                    stepDescription,
-//                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
-
+            //            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            //            return new BindingException(
+            //                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
+            //                    stepDescription,
+            //                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = ObjectContainer.StepDefinitionSkeletonProvider(targetLanguage);
 
             StringBuilder message = new StringBuilder();
             if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)
-                message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
+                message.AppendLine("No matching step definition found for the step. Use the suggested implementation of steps below.");
             else
             {
-                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.", 
+                string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.",
                     string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
                 traceListener.WriteToolOutput(preMessage);
-                message.AppendLine("Change the scope or use the following code to create a new step definition:");
+                message.AppendLine("Change the scope or use the suggested implementation of steps below.");
             }
-            message.Append(
-                stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
-                        .Indent(StepDefinitionSkeletonProviderBase.CODEINDENT));
-
             traceListener.WriteToolOutput(message.ToString());
         }
 
         public void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments)
         {
-            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", 
+            traceListener.WriteToolOutput("duration: {0}: {1:F1}s",
                 stepFormatter.GetMatchText(methodInfo, arguments), elapsed.TotalSeconds);
         }
 
@@ -109,5 +103,6 @@ namespace TechTalk.SpecFlow.Tracing
         {
             traceListener.WriteToolOutput("duration: {0}: {1:F1}s", text, elapsed.TotalSeconds);
         }
+
     }
 }

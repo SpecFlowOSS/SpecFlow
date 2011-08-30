@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Tracing;
 
-namespace TechTalk.SpecFlow.Tracing
+namespace TechTalk.SpecFlow.Vs2010Integration.AdvancedBindingSkeletons
 {
     public abstract class StepDefinitionSkeletonProviderBase : IStepDefinitionSkeletonProvider
     {
         public const string CODEINDENT = "    ";
         public const string QuotesRegex = "\"(\")+(.*?)\"(\")+";
-        public abstract string GetStepDefinitionSkeleton(StepArgs steps);
-        public abstract string GetBindingClassSkeleton(List<StepArgs> steps);
-        public abstract string GetFileSkeleton(List<StepArgs> steps, StepDefSkeletonInfo info);
-        public abstract string AddStepsToExistingFile(string file, List<StepArgs> steps);
+        public abstract string GetStepDefinitionSkeleton(StepInstance steps);
+        public abstract string GetBindingClassSkeleton(List<StepInstance> steps);
+        public abstract string GetFileSkeleton(List<StepInstance> steps, StepDefSkeletonInfo info);
+        public abstract string AddStepsToExistingFile(string file, List<StepInstance> steps);
 
         protected static string EscapeRegex(string text)
         {
@@ -44,17 +45,17 @@ namespace TechTalk.SpecFlow.Tracing
         /// <summary>
         /// Splits a list of steps into 3 seperate lists according to the binding type of each step.
         /// </summary>
-        protected void GroupByBindingType(IEnumerable<StepArgs> steps, out List<string> givens, out List<String> whens, out List<string> thens)
+        protected void GroupByBindingType(IEnumerable<StepInstance> steps, out List<string> givens, out List<String> whens, out List<string> thens)
         {
             givens = new List<string>();
             whens = new List<string>();
             thens = new List<string>();
 
             //Generate the steps skeletons and add them to the appropriate category
-            foreach (StepArgs stepArgs in steps)
+            foreach (StepInstance stepArgs in steps)
             {
                 string stepDefSkel = GetStepDefinitionSkeleton(stepArgs);
-                switch (stepArgs.Type)
+                switch (stepArgs.BindingType)
                 {
                     case BindingType.Given:
                         if (!givens.Contains(stepDefSkel))
@@ -73,7 +74,7 @@ namespace TechTalk.SpecFlow.Tracing
         }
 
         /// <summary>
-        /// Takes a list of method declarations and combines them to produce the body of a class
+        /// Takes a list of method declarations and combines them to produce the body of a class.
         /// </summary>
         protected string CombineMethods(IEnumerable<string> steps)
         {
@@ -86,9 +87,9 @@ namespace TechTalk.SpecFlow.Tracing
         }
 
         /// <summary>
-        /// Turns each step in the list into a string representing its suggested step definition
+        /// Turns each step in the list into a string representing its suggested step definition.
         /// </summary>
-        protected List<string> GetCombinedMethodsSkeleton(List<StepArgs> steps)
+        protected List<string> GetCombinedMethodsSkeleton(List<StepInstance> steps)
         {
             return steps.Select(GetStepDefinitionSkeleton).ToList();
         }

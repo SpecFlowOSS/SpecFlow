@@ -130,6 +130,7 @@
     <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
     <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="StepDefinitionSkeletonProviderTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />

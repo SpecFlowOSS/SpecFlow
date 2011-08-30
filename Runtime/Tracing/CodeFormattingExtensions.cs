@@ -198,4 +198,31 @@ namespace TechTalk.SpecFlow.Tracing
                });
         }
     }
+
+    public static class ParseExtensions
+    {
+        public static bool CanParseInt(this string text)
+        {
+            Int32 notUsed;
+            return Int32.TryParse(text, out notUsed);
+        }
+
+        public static bool CanParseDouble(this string text)
+        {
+            Double notUsed;
+            return Double.TryParse(text, out notUsed);
+        }
+
+        public static bool CanParseBool(this string text)
+        {
+            Boolean notUsed;
+            return Boolean.TryParse(text, out notUsed);
+        }
+
+        public static bool CanParseDateTime(this string text)
+        {
+            DateTime notUsed;
+            return DateTime.TryParse(text, out notUsed);
+        }
+    }
 }

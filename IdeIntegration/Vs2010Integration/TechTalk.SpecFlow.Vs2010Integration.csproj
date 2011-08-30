@@ -13,6 +13,12 @@
     <AssemblyName>TechTalk.SpecFlow.Vs2010Integration</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
     <DeployExtension>False</DeployExtension>
   </PropertyGroup>
+  <PropertyGroup>
+    <RegisterOutputPackage>true</RegisterOutputPackage>
+    <RegisterWithCodebase>true</RegisterWithCodebase>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
@@ -53,6 +63,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\lib\VS2010SDK\EnvDTE80.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\lib\VS2010SDK\v4.0\Microsoft.VisualStudio.ComponentModelHost.dll</HintPath>
     </Reference>
@@ -123,16 +134,13 @@
       <HintPath>..\..\lib\VS2010SDK\v2.0\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.CoreEx, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\RX\System.CoreEx.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -167,12 +175,23 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\..\Runtime\ProgrammingLanguage.cs">
+      <Link>BindingSkeletons\ProgrammingLanguage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Runtime\Table.cs">
+      <Link>Bindings\Table.cs</Link>
+    </Compile>
     <Compile Include="..\Vs2008Integration\BaseCodeGenerator.cs">
       <Link>SingleFileGenerator\BaseCodeGenerator.cs</Link>
     </Compile>
     <Compile Include="..\Vs2008Integration\BaseCodeGeneratorWithSite.cs">
       <Link>SingleFileGenerator\BaseCodeGeneratorWithSite.cs</Link>
     </Compile>
+    <Compile Include="AdvancedBindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
+    <Compile Include="AdvancedBindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
+    <Compile Include="AdvancedBindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
+    <Compile Include="AdvancedBindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="AdvancedBindingSkeletons\StepDefSkeletonInfo.cs" />
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
@@ -203,6 +222,14 @@
     <Compile Include="LanguageService\VsBindingMethod.cs" />
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
+    <Compile Include="SkeletonHelpers\AssemblyServices.cs" />
+    <Compile Include="SkeletonHelpers\BindingInfo.cs" />
+    <Compile Include="SkeletonHelpers\BindingsAnalyser.cs" />
+    <Compile Include="SkeletonHelpers\FileHandler.cs" />
+    <Compile Include="SkeletonHelpers\FileHandlerException.cs" />
+    <Compile Include="SkeletonHelpers\FileGeneratorException.cs" />
+    <Compile Include="SkeletonHelpers\IFileHandler.cs" />
+    <Compile Include="SkeletonHelpers\StepFileGenerator.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
@@ -243,11 +270,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Options\IntegrationOptionsProvider.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SpecFlowPackage.cs" />
     <Compile Include="Tracing\IVisualStudioTracer.cs" />
     <Compile Include="Tracing\OutputWindow\IOutputWindowDefinitionMetadata.cs" />
@@ -332,34 +354,39 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.resources</LogicalName>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <VSCTCompile Include="Vs2010Integration.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+  </ItemGroup>
   <PropertyGroup>
     <!-- VSSDK Settings -->
-    <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
+    <!--<VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
+    <VsSDKIncludes>C:\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Inc</VsSDKIncludes>
     <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
-    <UseCodebase>true</UseCodebase>
+    <UseCodebase>true</UseCodebase>-->
     <!--<BypassVsixValidation>true</BypassVsixValidation>-->
     <!--<CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>-->
     <!--<CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>-->
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />
+  <Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   -->
   <Target Name="AfterBuild">
-    <XmlPoke XmlInputPath="$(OutDir)\extension.vsixmanifest" Query="/vsx:Vsix/vsx:Identifier/vsx:InstalledByMsi" Value="true" Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010' /&gt;">
+    <XmlPoke XmlInputPath="$(OutDir)\extension.vsixmanifest" Query="/vsx:Vsix/vsx:Identifier/vsx:InstalledByMsi" Value="false" Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010' /&gt;">
     </XmlPoke>
   </Target>
 </Project>
