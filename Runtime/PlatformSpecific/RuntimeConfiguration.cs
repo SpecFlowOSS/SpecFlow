@@ -73,7 +73,8 @@ namespace TechTalk.SpecFlow.Configuration
         public void LoadConfiguration()
         {
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
-            LoadConfiguration(section);
+            if (section != null)
+                LoadConfiguration(section);
         }
 
         private bool IsSpecified(ConfigurationElement configurationElement)
