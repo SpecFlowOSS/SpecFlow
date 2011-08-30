@@ -184,7 +184,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingMatchService.cs" />
-    <Compile Include="Bindings\IBindingRegistry.cs" />
+    <Compile Include="Bindings\IBindingRegistryNew.cs" />
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
@@ -296,6 +296,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <VSCTCompile Include="Vs2010Integration.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
     <Resource Include="Resources\autocomplete-g-b.png" />
     <Resource Include="Resources\autocomplete-g-t.png" />
     <Resource Include="Resources\autocomplete-g.png" />
@@ -337,21 +341,34 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.resources</LogicalName>
+      <ManifestResourceName>VSPackage</ManifestResourceName> 
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <!-- VSSDK Settings -->
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
+    <VsctVerboseOutput>true</VsctVerboseOutput>
     <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
+    <!--<VsSDKIncludes>C:\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Inc</VsSDKIncludes>-->
     <UseCodebase>true</UseCodebase>
     <!--<BypassVsixValidation>true</BypassVsixValidation>-->
     <!--<CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>-->
     <!--<CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>-->
   </PropertyGroup>
+  <ItemGroup>
+    <VSCTIncludePath Include="$(VsSDKInstall)\VSCTInclude">
+      <Visible>false</Visible>
+    </VSCTIncludePath>
+    <VSCTIncludePath Include="$(VsSDKInstall)\VSCTInclude\office10">
+      <Visible>false</Visible>
+    </VSCTIncludePath>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--<Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />-->
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

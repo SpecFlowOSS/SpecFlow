@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Globalization;
@@ -29,6 +30,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [ProvideOptionPageAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true)]
     [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true, DescriptionResourceID = 121)]
     [Guid(GuidList.guidSpecFlowPkgString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
     public sealed class SpecFlowPackagePackage : Package
     {
         /// <summary>
@@ -52,6 +55,34 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
+            OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if (menuCommandService != null)
+            {
+                // Create the command to generate the missing steps skeleton
+                CommandID menuCommandID = new CommandID(GuidList.guidSpecFlowGenerateOption,
+                                                        (int)PkgCmdIDList.cmdidGenerate);
+
+                //Create a menu item corresponding to that command
+//                IFileHandler fileHandler = new FileHandler();
+//                StepFileGenerator stepFileGen = new StepFileGenerator(fileHandler);
+//                OleMenuCommand menuItem = new OleMenuCommand(stepFileGen.GenerateStepFileMenuItemCallback, menuCommandID);
+                OleMenuCommand menuItem = new OleMenuCommand(InvokeHandler, menuCommandID);
+
+                //Add an event handler to the menu item
+//                menuItem.BeforeQueryStatus += stepFileGen.QueryStatusMenuCommandBeforeQueryStatus;
+                menuItem.BeforeQueryStatus += (sender, args) =>
+                                                  {
+                                                      OleMenuCommand menuCommand = sender as OleMenuCommand;
+                                                      if (menuCommand != null)
+                                                          menuCommand.Visible = true;
+                                                  };
+                menuCommandService.AddCommand(menuItem);
+            }
+        }
+
+        private void InvokeHandler(object sender, EventArgs eventArgs)
+        {
+            System.Windows.MessageBox.Show("hehe");
         }
     }
 }

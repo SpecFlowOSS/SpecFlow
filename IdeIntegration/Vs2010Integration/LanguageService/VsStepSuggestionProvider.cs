@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistry
+    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistryNew
     {
         private bool featureFilesPopulated = false;
         private bool bindingsPopulated = false;
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return bindingsPopulated; }
         }
 
-        bool IBindingRegistry.Ready
+        bool IBindingRegistryNew.Ready
         {
             get { return BindingsPopulated; }
         }
