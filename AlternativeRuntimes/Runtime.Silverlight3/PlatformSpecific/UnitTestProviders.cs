@@ -7,9 +7,9 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    partial class TestRunContainerBuilder
+    partial class DefaultDependencyProvider
     {
-        static partial void RegisterUnitTestProviders(ObjectContainer container)
+        partial void RegisterUnitTestProviders(ObjectContainer container)
         {
             container.RegisterTypeAs<MsTestSilverlightRuntimeProvider, IUnitTestRuntimeProvider>("mstest.silverlight");
             container.RegisterTypeAs<MsTestSilverlightRuntimeProvider, IUnitTestRuntimeProvider>("mstest.silverlight3");

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -59,23 +60,13 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-        public static RuntimeConfiguration GetConfig()
+        public void LoadConfiguration()
         {
-            return new RuntimeConfiguration();
         }
 
-        private static Type GetTypeConfig(string typeName)
+        public static IEnumerable<PluginDescriptor> GetPlugins()
         {
-            try
-            {
-                return Type.GetType(typeName, true);
-            }
-            catch (Exception ex)
-            {
-                throw new ConfigurationErrorsException(
-                    string.Format("Invalid type reference '{0}': {1}",
-                        typeName, ex.Message), ex);
-            }
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using BoDi;
@@ -26,7 +24,6 @@ namespace TechTalk.SpecFlow.Configuration
 
         //unit test framework settings
         public string RuntimeUnitTestProvider { get; set; }
-        public Type RuntimeUnitTestProviderType { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }

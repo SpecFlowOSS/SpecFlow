@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Browser;
 
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -57,11 +59,14 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-        public static RuntimeConfiguration GetConfig()
+        public void LoadConfiguration()
         {
-            var configuration = new RuntimeConfiguration();
-            configuration.UpdateFromQueryString();
-            return configuration;
+            UpdateFromQueryString();
+        }
+
+        public static IEnumerable<PluginDescriptor> GetPlugins()
+        {
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
         }
 
         private void UpdateFromQueryString()
