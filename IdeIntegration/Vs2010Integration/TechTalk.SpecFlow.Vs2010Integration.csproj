@@ -194,6 +194,8 @@
     <Compile Include="Bindings\StepBinding.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Bindings\StepScope.cs" />
+    <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
+    <Compile Include="Commands\RegisterCommands.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
     <Compile Include="EditorCommands\EditorCommands.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
@@ -203,6 +205,8 @@
     <Compile Include="LanguageService\VsBindingMethod.cs" />
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
+    <Compile Include="Commands\MenuCommandHandler.cs" />
+    <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="LanguageService\GherkinBufferServiceManager.cs" />
@@ -343,7 +347,7 @@
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.resources</LogicalName>
-      <ManifestResourceName>VSPackage</ManifestResourceName> 
+      <ManifestResourceName>VSPackage</ManifestResourceName>
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -367,6 +371,7 @@
       <Visible>false</Visible>
     </VSCTIncludePath>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />-->
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />

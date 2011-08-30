@@ -8,19 +8,30 @@
 
   <Commands package="guidSpecFlowPkgString">
     <Groups>
-      <Group guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerateGroup" priority="0x0600">
+      <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerate" priority="0x0100" type="Button">
-        <Parent guid="guidDynamicMenuDevelopmentGenerateOption" id="cmdidGenerateGroup" />
-        <!-- <Icon guid="guidImages" id="bmpPic1" /> -->
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <CommandName>cmdidGenerate</CommandName>
-          <ButtonText>Generate SpecFlow Step Definition File</ButtonText>
+          <ButtonText>Generate Step Definition File</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Run Scenarios</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -28,9 +39,14 @@
   </Commands>
   <Symbols>
     <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
-    <GuidSymbol name="guidDynamicMenuDevelopmentGenerateOption" value="{9d9046da-94f8-4fd0-8a00-92bf4f6defa8}">
-      <IDSymbol name="cmdidGenerateGroup" value="0x1020"/>
-      <IDSymbol name="cmdidGenerate" value="0x1009"/>
+    
+    <GuidSymbol name="guidSpecFlowCmdSet" value="{8c202d78-762d-4079-ac0e-282ee24b44b0}">
+      <IDSymbol name="FileContextMenuGroup" value="0x1020"/>
+      <IDSymbol name="ProjectContextMenuGroup" value="0x1021"/>
+      <IDSymbol name="CodeWindowContextMenuGroup" value="0x1022"/>
+      
+      <IDSymbol name="cmdidGenerateStepDefinitionSkeleton" value="0x0100"/>
+      <IDSymbol name="cmdidRunScenarios" value="0x0101"/>
     </GuidSymbol>
   </Symbols>
 </CommandTable>
