@@ -9,5 +9,13 @@
         public bool EnableTableAutoFormat { get; set; }
         public bool EnableTracing { get; set; }
         public string TracingCategories { get; set; }
+        public TestRunnerTool TestRunnerTool { get; set; }
+    }
+
+    public enum TestRunnerTool
+    {
+        ReSharper,
+        MsTest,
+        SpecRun
     }
 }

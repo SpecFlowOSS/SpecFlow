@@ -9,8 +9,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         private readonly Action<OleMenuCommand, SelectedItems> invoke;
         private readonly Action<OleMenuCommand, SelectedItems> beforeQueryStatus;
 
-        public DelegateMenuCommandHandler(IServiceProvider serviceProvider, uint commandId, 
-                                          Action<OleMenuCommand, SelectedItems> invoke, Action<OleMenuCommand, SelectedItems> beforeQueryStatus = null) : base(serviceProvider, commandId)
+        public DelegateMenuCommandHandler(IServiceProvider serviceProvider, DTE dte, 
+                                          Action<OleMenuCommand, SelectedItems> invoke, Action<OleMenuCommand, SelectedItems> beforeQueryStatus = null) 
+            : base(serviceProvider, dte)
         {
             this.invoke = invoke;
             this.beforeQueryStatus = beforeQueryStatus;

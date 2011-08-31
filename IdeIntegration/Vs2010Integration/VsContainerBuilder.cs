@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using BoDi;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Options;
+using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
@@ -19,6 +28,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             RegisterDefaults(container);
 
+            BiDiContainerProvider.CurrentContainer = container; //TODO: avoid static field
+
             return container;
         }
 
@@ -32,9 +43,42 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     {
         static partial void RegisterCommands(IObjectContainer container);
 
-        public void RegisterDefaults(IObjectContainer container)
+        public virtual void RegisterDefaults(IObjectContainer container)
         {
+            var serviceProvider = container.Resolve<IServiceProvider>();
+            RegisterVsDependencies(container, serviceProvider);
+
+            container.RegisterTypeAs<IntegrationOptionsProvider, IIntegrationOptionsProvider>();
+            container.RegisterInstanceAs<IIdeTracer>(VsxHelper.ResolveMefDependency<IVisualStudioTracer>(serviceProvider));
+
+            container.RegisterTypeAs<TestRunnerEngine, ITestRunnerEngine>();
+            container.RegisterTypeAs<TestRunnerGatewayProvider, ITestRunnerGatewayProvider>();
+            container.RegisterTypeAs<MsTestRunnerGateway, ITestRunnerGateway>(TestRunnerTool.MsTest.ToString());
+
             RegisterCommands(container);
+        }
+
+        protected virtual void RegisterVsDependencies(IObjectContainer container, IServiceProvider serviceProvider)
+        {
+            var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
+            if (dte != null)
+                container.RegisterInstanceAs(dte);
+        }
+    }
+
+    public interface IBiDiContainerProvider
+    {
+        IObjectContainer ObjectContainer { get; }
+    }
+
+    [Export(typeof(IBiDiContainerProvider))]
+    internal class BiDiContainerProvider : IBiDiContainerProvider
+    {
+        public static IObjectContainer CurrentContainer { get; internal set; }
+
+        public IObjectContainer ObjectContainer
+        {
+            get { return CurrentContainer; }
         }
     }
 }

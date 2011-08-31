@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using BoDi;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
+using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
     internal class EditorCommands
     {
+        private readonly IObjectContainer container;
         private readonly GherkinLanguageService languageService;
         private readonly IWpfTextView textView;
 
-        public EditorCommands(GherkinLanguageService languageService, IWpfTextView textView)
+        public EditorCommands(IObjectContainer container, GherkinLanguageService languageService, IWpfTextView textView)
         {
+            this.container = container;
             this.languageService = languageService;
             this.textView = textView;
         }
@@ -227,6 +232,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             if (line.EndsWith("|"))
                 line = line.Substring(0, line.Length - 1);
             return line.Split('|');
+        }
+
+        public bool RunScenarios()
+        {
+            var engine = container.Resolve<ITestRunnerEngine>();
+            return engine.RunFromEditor(languageService);
         }
     }
 }

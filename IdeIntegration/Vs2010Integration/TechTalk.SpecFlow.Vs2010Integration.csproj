@@ -196,6 +196,7 @@
     <Compile Include="Bindings\StepScope.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
     <Compile Include="Commands\RegisterCommands.cs" />
+    <Compile Include="Commands\RunScenariosCommand.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
     <Compile Include="EditorCommands\EditorCommands.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
@@ -206,6 +207,10 @@
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
+    <Compile Include="TestRunner\ITestRunnerGateway.cs" />
+    <Compile Include="TestRunner\ITestRunnerGatewayProvider.cs" />
+    <Compile Include="TestRunner\MsTestRunnerGateway.cs" />
+    <Compile Include="TestRunner\TestRunnerEngine.cs" />
     <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Guids.cs" />

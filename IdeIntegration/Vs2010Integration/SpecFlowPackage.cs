@@ -64,9 +64,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (menuCommandService != null)
             {
-                foreach (var menuCommandHandler in Container.Resolve<IDictionary<string, MenuCommandHandler>>().Values)
+                foreach (var menuCommandHandler in Container.Resolve<IDictionary<SpecFlowCmdSet, MenuCommandHandler>>())
                 {
-                    menuCommandHandler.RegisterTo(menuCommandService);
+                    menuCommandHandler.Value.RegisterTo(menuCommandService, menuCommandHandler.Key);
                 }
             }
         }

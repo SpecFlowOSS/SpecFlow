@@ -178,11 +178,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             if (properties == null)
                 return defaultValue;
 
-            Property property = properties.Item(optionName);
-            if (property == null || !(property.Value is T))
+            try
+            {
+                Property property = properties.Item(optionName);
+                if (property == null || !(property.Value is T))
+                    return defaultValue;
+                return (T)property.Value;
+            }
+            catch(Exception)
+            {
                 return defaultValue;
-
-            return (T)property.Value;
+            }
         }
 
         public static bool IsPhysicalFile(ProjectItem projectItem)

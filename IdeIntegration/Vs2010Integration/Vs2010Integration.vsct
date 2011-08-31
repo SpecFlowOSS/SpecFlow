@@ -20,7 +20,7 @@
     </Groups>
 
     <Buttons>
-      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0101" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -37,6 +37,16 @@
     </Buttons>
 
   </Commands>
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+      <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
+    </CommandPlacement>
+  </CommandPlacements>
+
   <Symbols>
     <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
     

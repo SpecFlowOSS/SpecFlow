@@ -7,29 +7,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
     public abstract class MenuCommandHandler
     {
-        private readonly uint commandId;
-        private readonly IServiceProvider serviceProvider;
+        protected readonly IServiceProvider serviceProvider;
+        protected readonly DTE dte;
 
-        public IServiceProvider ServiceProvider
+        protected MenuCommandHandler(IServiceProvider serviceProvider, DTE dte)
         {
-            get { return serviceProvider; }
-        }
-
-        protected DTE Dte
-        {
-            get { return serviceProvider.GetService(typeof(DTE)) as DTE; }
-        }
-
-
-        protected MenuCommandHandler(IServiceProvider serviceProvider, uint commandId)
-        {
-            this.commandId = commandId;
             this.serviceProvider = serviceProvider;
+            this.dte = dte;
         }
 
-        public void RegisterTo(OleMenuCommandService menuCommandService)
+        public void RegisterTo(OleMenuCommandService menuCommandService, SpecFlowCmdSet commandId)
         {
-            CommandID menuCommandID = new CommandID(GuidList.guidSpecFlowCmdSet, (int)commandId);
+            CommandID menuCommandID = new CommandID(GuidList.guidSpecFlowCmdSet, (int)(uint)commandId);
             OleMenuCommand menuItem = new OleMenuCommand(InvokeHandler, menuCommandID);
             menuItem.BeforeQueryStatus += BeforeQueryStatusHandler;
             menuCommandService.AddCommand(menuItem);
@@ -41,20 +30,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             if (command == null)
                 return;
 
-            if (Dte == null)
+            if (dte == null)
             {
                 command.Visible = false;
                 return;
             }
 
-            SelectedItems selection = Dte.SelectedItems;
+            SelectedItems selection = dte.SelectedItems;
             if (selection == null)
             {
                 command.Visible = false;
                 return;
             }
             command.Visible = true;
-            command.Enabled = true;
+            command.Enabled = false;
 
             BeforeQueryStatus(command, selection);
         }
@@ -68,10 +57,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         {
             OleMenuCommand command = (OleMenuCommand)sender;
 
-            if (Dte == null)
+            if (dte == null)
                 return;
 
-            SelectedItems selection = Dte.SelectedItems;
+            SelectedItems selection = dte.SelectedItems;
             if (selection == null)
                 return;
 

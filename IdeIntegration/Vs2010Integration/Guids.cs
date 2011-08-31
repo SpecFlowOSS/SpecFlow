@@ -24,4 +24,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         public const uint cmdidGenerateStepDefinitionSkeleton = 0x0100;
         public const uint cmdidRunScenarios = 0x0101;
     };
+
+    public enum SpecFlowCmdSet : uint 
+    {
+        GenerateStepDefinitionSkeleton = PkgCmdIDList.cmdidGenerateStepDefinitionSkeleton,
+        RunScenarios = PkgCmdIDList.cmdidRunScenarios
+    }
 }

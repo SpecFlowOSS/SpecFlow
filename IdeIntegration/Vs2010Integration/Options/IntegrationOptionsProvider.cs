@@ -21,6 +21,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableTableAutoFormatDefaultValue = true;
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
+        public const TestRunnerTool TestRunnerProviderDefaultValue = TestRunnerTool.MsTest;
+
+        private DTE dte;
+
+        public IntegrationOptionsProvider()
+        {
+        }
+
+        public IntegrationOptionsProvider(DTE dte)
+        {
+            this.dte = dte;
+        }
 
         private static T GetGeneralOption<T>(DTE dte, string optionName, T defaultValue = default(T))
         {
@@ -31,23 +43,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         {
             IntegrationOptions options = new IntegrationOptions
                                           {
-                                              EnableSyntaxColoring = GetGeneralOption<bool>(dte, "EnableSyntaxColoring", EnableSyntaxColoringDefaultValue),
-                                              EnableOutlining = GetGeneralOption<bool>(dte, "EnableOutlining", EnableOutliningDefaultValue),
-                                              EnableIntelliSense = GetGeneralOption<bool>(dte, "EnableIntelliSense", EnableIntelliSenseDefaultValue),
-                                              EnableAnalysis = GetGeneralOption<bool>(dte, "EnableAnalysis", EnableAnalysisDefaultValue),
-                                              EnableTableAutoFormat = GetGeneralOption<bool>(dte, "EnableTableAutoFormat", EnableTableAutoFormatDefaultValue),
-                                              EnableTracing = GetGeneralOption<bool>(dte, "EnableTracing", EnableTracingDefaultValue),
-                                              TracingCategories = GetGeneralOption<string>(dte, "TracingCategories", TracingCategoriesDefaultValue),
+                                              EnableSyntaxColoring = GetGeneralOption(dte, "EnableSyntaxColoring", EnableSyntaxColoringDefaultValue),
+                                              EnableOutlining = GetGeneralOption(dte, "EnableOutlining", EnableOutliningDefaultValue),
+                                              EnableIntelliSense = GetGeneralOption(dte, "EnableIntelliSense", EnableIntelliSenseDefaultValue),
+                                              EnableAnalysis = GetGeneralOption(dte, "EnableAnalysis", EnableAnalysisDefaultValue),
+                                              EnableTableAutoFormat = GetGeneralOption(dte, "EnableTableAutoFormat", EnableTableAutoFormatDefaultValue),
+                                              EnableTracing = GetGeneralOption(dte, "EnableTracing", EnableTracingDefaultValue),
+                                              TracingCategories = GetGeneralOption(dte, "TracingCategories", TracingCategoriesDefaultValue),
+                                              TestRunnerTool = GetGeneralOption(dte, "TestRunnerProvider", TestRunnerProviderDefaultValue),
                                           };
             return options;
         }
 
         [Import]
-        internal SVsServiceProvider ServiceProvider = null;
+        internal SVsServiceProvider ServiceProvider
+        {
+            set { dte = VsxHelper.GetDte(value); }
+        }
 
         public IntegrationOptions GetOptions()
         {
-            var dte = VsxHelper.GetDte(ServiceProvider);
             return GetOptions(dte);
         }
     }
