@@ -135,6 +135,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         protected override bool IsFileNameMatching(ProjectItem projectItem, string itemName = null)
         {
             var projectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
+            if (projectRelativePath == null)
+                return false;
+
             if (itemName != null)
                 projectRelativePath = Path.Combine(Path.GetDirectoryName(projectRelativePath) ?? "", itemName);
 

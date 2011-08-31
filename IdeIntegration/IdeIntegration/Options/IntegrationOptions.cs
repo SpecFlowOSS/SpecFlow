@@ -14,8 +14,10 @@
 
     public enum TestRunnerTool
     {
-        ReSharper,
-        MsTest,
-        SpecRun
+        Auto = 0,
+        ReSharper = 1,
+        MsTest = 2,
+        SpecRun = 3,
+        TestDrivenDotNet = 4
     }
 }

@@ -12,6 +12,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow
 
         void Activate();
         void Hide();
+        void Clear();
         void Write(string text);
         void WriteLine(string text);
     }

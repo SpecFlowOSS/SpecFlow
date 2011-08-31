@@ -31,7 +31,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (dte.ActiveDocument == null || dte.ActiveDocument.ProjectItem == null)
                 return false;
 
-            var currentScenario = GetCurrentScenario(languageService, dte.ActiveDocument);
+            IGherkinFileScope fileScope;
+            var currentScenario = GetCurrentScenario(languageService, dte.ActiveDocument, out fileScope);
             if (currentScenario == null)
             {
                 // run for the entire file
@@ -42,7 +43,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (testRunnerGateway == null)
                 return false;
 
-            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario);
+            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario, fileScope);
         }
 
         public bool RunFromProjectItem(ProjectItem projectItem)
@@ -63,12 +64,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return testRunnerGateway.RunFeatures(project);
         }
 
-        private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, Document activeDocument)
+        private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, Document activeDocument, out IGherkinFileScope fileScope)
         {
             var currentTextDocument = ((TextDocument)activeDocument.Object("TextDocument"));
             var currentLine = currentTextDocument.Selection.ActivePoint.Line;
 
-            var fileScope = languageService.GetFileScope();
+            fileScope = languageService.GetFileScope();
             if (fileScope == null)
                 return null;
 

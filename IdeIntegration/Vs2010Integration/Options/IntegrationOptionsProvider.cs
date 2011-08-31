@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableTableAutoFormatDefaultValue = true;
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
-        public const TestRunnerTool TestRunnerProviderDefaultValue = TestRunnerTool.MsTest;
+        public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.MsTest;
 
         private DTE dte;
 
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
                                               EnableTableAutoFormat = GetGeneralOption(dte, "EnableTableAutoFormat", EnableTableAutoFormatDefaultValue),
                                               EnableTracing = GetGeneralOption(dte, "EnableTracing", EnableTracingDefaultValue),
                                               TracingCategories = GetGeneralOption(dte, "TracingCategories", TracingCategoriesDefaultValue),
-                                              TestRunnerTool = GetGeneralOption(dte, "TestRunnerProvider", TestRunnerProviderDefaultValue),
+                                              TestRunnerTool = GetGeneralOption(dte, "TestRunnerTool", TestRunnerToolDefaultValue),
                                           };
             return options;
         }

@@ -140,6 +140,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\RX\System.Reactive.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xaml" />
@@ -207,9 +208,12 @@
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
+    <Compile Include="TestRunner\CommandBasedTestRunnerGateway.cs" />
     <Compile Include="TestRunner\ITestRunnerGateway.cs" />
     <Compile Include="TestRunner\ITestRunnerGatewayProvider.cs" />
     <Compile Include="TestRunner\MsTestRunnerGateway.cs" />
+    <Compile Include="TestRunner\ReSharperTestRunnerGateway.cs" />
+    <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
     <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />

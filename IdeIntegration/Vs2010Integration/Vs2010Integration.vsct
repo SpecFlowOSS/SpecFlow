@@ -11,6 +11,9 @@
       <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
       </Group>
+      <Group guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
+      </Group>
       <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
       </Group>
@@ -43,6 +46,9 @@
       <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
     </CommandPlacement>
     <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+      <Parent guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
       <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
     </CommandPlacement>
   </CommandPlacements>
@@ -54,6 +60,7 @@
       <IDSymbol name="FileContextMenuGroup" value="0x1020"/>
       <IDSymbol name="ProjectContextMenuGroup" value="0x1021"/>
       <IDSymbol name="CodeWindowContextMenuGroup" value="0x1022"/>
+      <IDSymbol name="FolderContextMenuGroup" value="0x1023"/>
       
       <IDSymbol name="cmdidGenerateStepDefinitionSkeleton" value="0x0100"/>
       <IDSymbol name="cmdidRunScenarios" value="0x0101"/>

@@ -20,6 +20,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         public const uint FileContextMenuGroup = 0x1020;
         public const uint ProjectContextMenuGroup = 0x1021;
         public const uint CodeWindowContextMenuGroup = 0x1022;
+        public const uint FolderContextMenuGroup = 0x1023;
 
         public const uint cmdidGenerateStepDefinitionSkeleton = 0x0100;
         public const uint cmdidRunScenarios = 0x0101;

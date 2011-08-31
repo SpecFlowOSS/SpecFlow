@@ -3,6 +3,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.IdeIntegration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Options
 {
@@ -71,6 +72,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         [DefaultValue(IntegrationOptionsProvider.TracingCategoriesDefaultValue)]
         public string TracingCategories { get; set; }
 
+        [Category("Test Execution")]
+        [Description("Specifies the test runner tool to be used to execute the SpecFlow scenarios.")]
+        [DisplayName(@"Test Runner Tool")]
+        [DefaultValue(IntegrationOptionsProvider.TestRunnerToolDefaultValue)]
+        public TestRunnerTool TestRunnerTool { get; set; }
+
         public OptionsPageGeneral()
         {
             EnableAnalysis = IntegrationOptionsProvider.EnableAnalysisDefaultValue;
@@ -80,6 +87,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
             EnableTableAutoFormat = IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue;
             EnableTracing = IntegrationOptionsProvider.EnableTracingDefaultValue;
             TracingCategories = IntegrationOptionsProvider.TracingCategoriesDefaultValue;
+            TestRunnerTool = IntegrationOptionsProvider.TestRunnerToolDefaultValue;
         }
     }
 }

@@ -43,6 +43,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow
             ErrorHandler.ThrowOnFailure(this.pane.Hide());
         }
 
+        public void Clear()
+        {
+            ErrorHandler.ThrowOnFailure(this.pane.Clear());
+        }
+
         public void Write(string text)
         {
             if (text == null) throw new ArgumentNullException("text");

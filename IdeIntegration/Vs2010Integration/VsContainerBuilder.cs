@@ -8,9 +8,11 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
@@ -50,10 +52,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             container.RegisterTypeAs<IntegrationOptionsProvider, IIntegrationOptionsProvider>();
             container.RegisterInstanceAs<IIdeTracer>(VsxHelper.ResolveMefDependency<IVisualStudioTracer>(serviceProvider));
+            container.RegisterInstanceAs(VsxHelper.ResolveMefDependency<IProjectScopeFactory>(serviceProvider));
 
             container.RegisterTypeAs<TestRunnerEngine, ITestRunnerEngine>();
             container.RegisterTypeAs<TestRunnerGatewayProvider, ITestRunnerGatewayProvider>();
             container.RegisterTypeAs<MsTestRunnerGateway, ITestRunnerGateway>(TestRunnerTool.MsTest.ToString());
+            container.RegisterTypeAs<ReSharperTestRunnerGateway, ITestRunnerGateway>(TestRunnerTool.ReSharper.ToString());
+            container.RegisterTypeAs<SpecRunTestRunnerGateway, ITestRunnerGateway>(TestRunnerTool.SpecRun.ToString());
 
             RegisterCommands(container);
         }
@@ -63,6 +68,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
             if (dte != null)
                 container.RegisterInstanceAs(dte);
+
+            container.RegisterInstanceAs(VsxHelper.ResolveMefDependency<IOutputWindowService>(serviceProvider));
         }
     }
 
