@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         {
             EditPoint start = codeBehindDoc.StartPoint.CreateEditPoint();
             int lineCount = codeBehindDoc.EndPoint.Line;
-            while (start.Line <= lineCount)
+            while (start.Line <= lineCount - 1)
             {
                 start.LineDown();
                 string lineText = start.GetText(start.LineLength);
