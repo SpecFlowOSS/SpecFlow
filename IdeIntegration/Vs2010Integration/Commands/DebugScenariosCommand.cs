@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Linq;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
-    public class RunScenariosCommand : SpecFlowProjectSingleSelectionCommand
+    public class DebugScenariosCommand : SpecFlowProjectSingleSelectionCommand
     {
         private readonly ITestRunnerEngine testRunnerEngine;
 
-        public RunScenariosCommand(IServiceProvider serviceProvider, DTE dte, ITestRunnerEngine testRunnerEngine) : base(serviceProvider, dte)
+        public DebugScenariosCommand(IServiceProvider serviceProvider, DTE dte, ITestRunnerEngine testRunnerEngine) : base(serviceProvider, dte)
         {
             this.testRunnerEngine = testRunnerEngine;
         }
@@ -19,9 +18,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         {
             var selectedItem = selection.Item(1);
             if (selectedItem.ProjectItem != null)
-                testRunnerEngine.RunFromProjectItem(selectedItem.ProjectItem, false);
+                testRunnerEngine.RunFromProjectItem(selectedItem.ProjectItem, true);
             if (selectedItem.Project != null)
-                testRunnerEngine.RunFromProject(selectedItem.Project, false);
+                testRunnerEngine.RunFromProject(selectedItem.Project, true);
         }
     }
 }

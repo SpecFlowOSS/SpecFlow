@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using BoDi;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
@@ -67,7 +68,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         {
             var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
             if (dte != null)
+            {
                 container.RegisterInstanceAs(dte);
+                container.RegisterInstanceAs((DTE2)dte);
+            }
 
             container.RegisterInstanceAs(VsxHelper.ResolveMefDependency<IOutputWindowService>(serviceProvider));
         }

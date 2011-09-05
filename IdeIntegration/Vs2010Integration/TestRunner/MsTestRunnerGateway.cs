@@ -5,9 +5,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
     public class MsTestRunnerGateway : CommandBasedTestRunnerGateway
     {
-        protected override string RunInCurrentContextCommand
+        protected override string GetRunInCurrentContextCommand(bool debug)
         {
-            get { return "Test.RunTestsInCurrentContext"; }
+            if (debug)
+                return "Test.DebugTestsInCurrentContext";
+
+            return "Test.RunTestsInCurrentContext";
         }
 
         public MsTestRunnerGateway(DTE dte, IIdeTracer tracer) : base(dte, tracer)

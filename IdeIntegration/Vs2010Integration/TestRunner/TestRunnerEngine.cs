@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Linq;
 using EnvDTE;
-using EnvDTE80;
-using TechTalk.SpecFlow.IdeIntegration.Options;
-using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
     public interface ITestRunnerEngine
     {
-        bool RunFromEditor(GherkinLanguageService languageService);
-        bool RunFromProjectItem(ProjectItem projectItem);
-        bool RunFromProject(Project project);
+        bool RunFromEditor(GherkinLanguageService languageService, bool debug);
+        bool RunFromProjectItem(ProjectItem projectItem, bool debug);
+        bool RunFromProject(Project project, bool debug);
     }
 
     public class TestRunnerEngine : ITestRunnerEngine
@@ -26,7 +23,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             this.testRunnerGatewayProvider = testRunnerGatewayProvider;
         }
 
-        public bool RunFromEditor(GherkinLanguageService languageService)
+        public bool RunFromEditor(GherkinLanguageService languageService, bool debug)
         {
             if (dte.ActiveDocument == null || dte.ActiveDocument.ProjectItem == null)
                 return false;
@@ -36,32 +33,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (currentScenario == null)
             {
                 // run for the entire file
-                return RunFromProjectItem(dte.ActiveDocument.ProjectItem);
+                return RunFromProjectItem(dte.ActiveDocument.ProjectItem, debug);
             }
 
             var testRunnerGateway = testRunnerGatewayProvider.GetTestRunnerGateway();
             if (testRunnerGateway == null)
                 return false;
 
-            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario, fileScope);
+            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario, fileScope, debug);
         }
 
-        public bool RunFromProjectItem(ProjectItem projectItem)
+        public bool RunFromProjectItem(ProjectItem projectItem, bool debug)
         {
             var testRunnerGateway = testRunnerGatewayProvider.GetTestRunnerGateway();
             if (testRunnerGateway == null)
                 return false;
 
-            return testRunnerGateway.RunFeatures(projectItem);
+            return testRunnerGateway.RunFeatures(projectItem, debug);
         }
 
-        public bool RunFromProject(Project project)
+        public bool RunFromProject(Project project, bool debug)
         {
             var testRunnerGateway = testRunnerGatewayProvider.GetTestRunnerGateway();
             if (testRunnerGateway == null)
                 return false;
 
-            return testRunnerGateway.RunFeatures(project);
+            return testRunnerGateway.RunFeatures(project, debug);
         }
 
         private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, Document activeDocument, out IGherkinFileScope fileScope)

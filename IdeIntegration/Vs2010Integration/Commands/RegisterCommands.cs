@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             container.RegisterInstanceAs<MenuCommandHandler>(new DelegateMenuCommandHandler(serviceProvider, container.Resolve<DTE>(),
                     (_1, _2) => System.Windows.MessageBox.Show("generate skeleton")), SpecFlowCmdSet.GenerateStepDefinitionSkeleton.ToString());
             container.RegisterTypeAs<RunScenariosCommand, MenuCommandHandler>(SpecFlowCmdSet.RunScenarios.ToString());
+            container.RegisterTypeAs<DebugScenariosCommand, MenuCommandHandler>(SpecFlowCmdSet.DebugScenarios.ToString());
         }
     }
 }

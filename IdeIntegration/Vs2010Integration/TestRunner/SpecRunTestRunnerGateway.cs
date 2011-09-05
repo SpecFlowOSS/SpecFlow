@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Windows.Forms;
+using System.Windows.Threading;
 using EnvDTE;
+using EnvDTE80;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -18,22 +21,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         private readonly IOutputWindowService outputWindowService;
         private readonly IIdeTracer tracer;
         private readonly IProjectScopeFactory projectScopeFactory;
+        private readonly DTE2 dte;
 
-        public SpecRunTestRunnerGateway(IOutputWindowService outputWindowService, IIdeTracer tracer, IProjectScopeFactory projectScopeFactory)
+        public SpecRunTestRunnerGateway(IOutputWindowService outputWindowService, IIdeTracer tracer, IProjectScopeFactory projectScopeFactory, DTE2 dte)
         {
             this.outputWindowService = outputWindowService;
+            this.dte = dte;
             this.projectScopeFactory = projectScopeFactory;
             this.tracer = tracer;
         }
 
-        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope)
+        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
         {
             if (fileScope.HeaderBlock == null)
                 return false;
 
             //TODO: support scenario outline
             string path = string.Format("Feature:{0}/Scenario:{1}", Escape(fileScope.HeaderBlock.Title), Escape(currentScenario.Title));
-            return RunTests(projectItem.ContainingProject, "testpath:" + path);
+            return RunTests(projectItem.ContainingProject, "testpath:" + path, debug);
         }
 
         private string Escape(string title)
@@ -41,11 +46,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return HttpUtility.UrlEncode(title);
         }
 
-        public bool RunFeatures(ProjectItem projectItem)
+        public bool RunFeatures(ProjectItem projectItem, bool debug)
         {
             var projectScope = (VsProjectScope)projectScopeFactory.GetProjectScope(projectItem.ContainingProject);
             if (!projectScope.FeatureFilesTracker.IsInitialized)
             {
+                MessageBox.Show("The feature files are not analyzed yet. Please wait.",
+                                "SpecFlow",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                 tracer.Trace("Feature file tracker is not yet initialized.", GetType().Name);
                 return false;
             }
@@ -53,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             string filter = string.Join(" | ", CollectPaths(projectScope, projectItem));
             if (string.IsNullOrEmpty(filter))
                 return false;
-            return RunTests(projectItem.ContainingProject, filter);
+            return RunTests(projectItem.ContainingProject, filter, debug);
         }
 
         private IEnumerable<string> CollectPaths(VsProjectScope projectScope, ProjectItem projectItem)
@@ -95,9 +104,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return null;
         }
 
-        public bool RunFeatures(Project project)
+        public bool RunFeatures(Project project, bool debug)
         {
-            return RunTests(project, null);
+            return RunTests(project, null, debug);
         }
 
         private static readonly string[] probingPaths = new[]
@@ -111,32 +120,51 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 #endif
                                                             };
 
-        public bool RunTests(Project project, string filter)
+        private string FindConsolePath(Project project)
         {
             var specRunRef = VsxHelper.GetReference(project, "TechTalk.SpecRun");
             if (specRunRef == null)
-                return false;
+                return null;
 
             if (specRunRef.Path == null)
-                return false;
+                return null;
 
             string runtimeFolder = Path.GetDirectoryName(specRunRef.Path);
             if (runtimeFolder == null)
-                return false;
+                return null;
 
-            var consolePath = probingPaths.Select(probingPath => Path.GetFullPath(Path.Combine(runtimeFolder, probingPath)))
+            return probingPaths.Select(probingPath => Path.GetFullPath(Path.Combine(runtimeFolder, probingPath)))
                 .Select(GetConsolePath).FirstOrDefault(cp => cp != null);
+        }
 
+        public bool RunTests(Project project, string filter, bool debug)
+        {
+            if (!VsxHelper.Build(project))
+            {
+                MessageBox.Show("Build failed.",
+                                "SpecFlow",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return true;
+            }
+
+            var consolePath = FindConsolePath(project);
             if (consolePath == null)
-                return false;
+            {
+                MessageBox.Show("Unable to find SpecRun.exe.",
+                                "SpecFlow",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                return true;
+            }
 
             var args = BuildCommandArgs(new ConsoleOptions
                                             {
-                                                BaseFolder = VsxHelper.GetProjectFolder(project) + @"\bin\Debug",
+                                                BaseFolder = VsxHelper.GetProjectFolder(project) + @"\bin\Debug", //TODO
                                                 TestAssembly = VsxHelper.GetProjectAssemblyName(project) + ".dll",
                                                 Filter = filter
-                                            });
-            ExecuteTests(consolePath, args);
+                                            }, debug);
+            ExecuteTests(consolePath, args, debug);
             return true;
         }
 
@@ -158,7 +186,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             public string Filter { get; set; }
         }
 
-        public string BuildCommandArgs(ConsoleOptions consoleOptions)
+        public string BuildCommandArgs(ConsoleOptions consoleOptions, bool debug)
         {
             StringBuilder commandArgsBuilder = new StringBuilder();
             if (consoleOptions.ConfigFile != null)
@@ -174,18 +202,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (consoleOptions.Filter != null)
                 commandArgsBuilder.AppendFormat("\"/filter:{0}\" ", consoleOptions.Filter);
 
-            commandArgsBuilder.Append("/progress ");
+            commandArgsBuilder.AppendFormat("/toolIntegration:vs2010{0} ", debug ? "+debug" : "");
 
             return commandArgsBuilder.ToString();
         }
 
-        public void ExecuteTests(string consolePath, string commandArgs)
+        public void ExecuteTests(string consolePath, string commandArgs, bool debug)
         {
             string command = string.Format("{0} {1}", consolePath, commandArgs);
             tracer.Trace(command, GetType().Name);
 
             var pane = outputWindowService.TryGetPane(OutputWindowDefinitions.SpecRunOutputWindowName);
             var displayResult = pane != null;
+            var dispatcher = Dispatcher.CurrentDispatcher;
 
             var process = new System.Diagnostics.Process();
             process.StartInfo.FileName = consolePath;
@@ -197,24 +226,48 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (displayResult)
             {
                 pane.Clear();
+                pane.Activate();
+                dte.ToolWindows.OutputWindow.Parent.Activate();
                 pane.WriteLine(command);
                 process.OutputDataReceived += (sender, args) =>
                                                   {
                                                       if (args.Data != null)
                                                       {
-                                                          pane.WriteLine(args.Data);
+                                                          dispatcher.BeginInvoke(new Action(() => pane.WriteLine(args.Data)), DispatcherPriority.ContextIdle);
                                                       }
                                                   };
             }
 
             process.Start();
 
+            if (debug)
+                AttachToProcess(process.Id);
+
             if (displayResult)
             {
                 process.BeginOutputReadLine();
             }
 
-            process.WaitForExit();
+            // async execution: we do not call 'process.WaitForExit();'
+        }
+
+        private void AttachToProcess(int pid)
+        {
+            try
+            {
+                var processes = dte.Debugger.LocalProcesses;
+                foreach (Process process in processes)
+                    if (process.ProcessID == pid)
+                    {
+                        process.Attach();
+                        return;
+                    }
+                tracer.Trace("SpecRun process not found.", GetType().Name);
+            }
+            catch(Exception ex)
+            {
+                tracer.Trace("Error attaching to SpecRun process. " + ex, GetType().Name);
+            }
         }
     }
 }

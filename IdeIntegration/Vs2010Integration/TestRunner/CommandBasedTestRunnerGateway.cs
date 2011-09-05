@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         protected readonly DTE dte;
         protected readonly IIdeTracer tracer;
 
-        protected abstract string RunInCurrentContextCommand { get; }
+        protected abstract string GetRunInCurrentContextCommand(bool debug);
 
         protected CommandBasedTestRunnerGateway(DTE dte, IIdeTracer tracer)
         {
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             this.tracer = tracer;
         }
 
-        private bool RunFromCodeBehind(ProjectItem projectItem, Func<TextDocument, int> lineProvider)
+        private bool RunFromCodeBehind(ProjectItem projectItem, Func<TextDocument, int> lineProvider, bool debug)
         {
             var codeBehindItem = GetCodeBehindItem(projectItem);
             if (codeBehindItem == null)
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 navigatePoint.TryToShow();
                 navigatePoint.Parent.Selection.MoveToPoint(navigatePoint);
 
-                return RunInCurrentContext();
+                return RunInCurrentContext(debug);
             }
             finally
             {
@@ -59,11 +59,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             }
         }
 
-        private bool RunInCurrentContext()
+        private bool RunInCurrentContext(bool debug)
         {
             try
             {
-                dte.ExecuteCommand(RunInCurrentContextCommand);
+                dte.ExecuteCommand(GetRunInCurrentContextCommand(debug));
                 return true;
             }
             catch(Exception ex)
@@ -73,24 +73,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             }
         }
 
-        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope)
+        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
         {
             int sourceLine = currentScenario.KeywordLine + 1; // keywordline is zero-indexed
-            return RunFromCodeBehind(projectItem, codeBehindTextDocument => GetCodeBehindLine(codeBehindTextDocument, sourceLine));
+            return RunFromCodeBehind(projectItem, codeBehindTextDocument => GetCodeBehindLine(codeBehindTextDocument, sourceLine), debug);
         }
 
-        public bool RunFeatures(ProjectItem projectItem)
+        public bool RunFeatures(ProjectItem projectItem, bool debug)
         {
             var fileName = VsxHelper.GetFileName(projectItem);
             if (fileName != null && fileName.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase))
-                return RunFromCodeBehind(projectItem, _ => 1);
+                return RunFromCodeBehind(projectItem, _ => 1, debug);
 
-            return RunInCurrentContext();
+            return RunInCurrentContext(debug);
         }
 
-        public bool RunFeatures(Project project)
+        public bool RunFeatures(Project project, bool debug)
         {
-            return RunInCurrentContext();
+            return RunInCurrentContext(debug);
         }
 
         private int GetCodeBehindLine(TextDocument codeBehindDoc, int sourceLine)

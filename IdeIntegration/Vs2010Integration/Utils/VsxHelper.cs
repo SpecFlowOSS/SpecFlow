@@ -365,5 +365,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
             return vsProject.References.OfType<Reference>().FirstOrDefault(r => r.Name == assemblyName);
         }
+
+        public static bool Build(Project project)
+        {
+            var solutionBuild = project.DTE.Solution.SolutionBuild;
+
+            solutionBuild.BuildProject(solutionBuild.ActiveConfiguration.Name, project.FullName, true);
+
+            return solutionBuild.LastBuildInfo == 0;
+        }
     }
 }

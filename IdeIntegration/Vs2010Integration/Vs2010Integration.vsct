@@ -8,22 +8,22 @@
 
   <Commands package="guidSpecFlowPkgString">
     <Groups>
-      <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x0600">
+      <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x6F0">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
       </Group>
-      <Group guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" priority="0x0600">
+      <Group guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" priority="0x06F0">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
       </Group>
-      <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x0600">
+      <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x07A1">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
       </Group>
-      <Group guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" priority="0x0600">
+      <Group guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" priority="0x06F0">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0101" type="Button">
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -34,7 +34,14 @@
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Run Scenarios</ButtonText>
+          <ButtonText>Run SpecFlow Scenarios</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Debug SpecFlow Scenarios</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -42,13 +49,18 @@
   </Commands>
 
   <CommandPlacements>
-    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0200">
       <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
     </CommandPlacement>
-    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0300">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0100">
       <Parent guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" />
     </CommandPlacement>
-    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x100">
+    
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0100">
       <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
     </CommandPlacement>
   </CommandPlacements>
@@ -64,6 +76,7 @@
       
       <IDSymbol name="cmdidGenerateStepDefinitionSkeleton" value="0x0100"/>
       <IDSymbol name="cmdidRunScenarios" value="0x0101"/>
+      <IDSymbol name="cmdidDebugScenarios" value="0x0102"/>
     </GuidSymbol>
   </Symbols>
 </CommandTable>
