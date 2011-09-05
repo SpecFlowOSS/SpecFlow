@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingFactory
     {
-        EventBinding CreateEventBinding(string[] tags, MethodInfo methodInfo);
+        EventBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope);
         StepBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope);
         StepTransformationBinding CreateStepArgumentTransformation(string regexString, MethodInfo methodInfo);
     }
@@ -30,9 +30,9 @@ namespace TechTalk.SpecFlow.Bindings
             this.errorProvider = errorProvider;
         }
 
-        public EventBinding CreateEventBinding(string[] tags, MethodInfo methodInfo)
+        public EventBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope)
         {
-            return new EventBinding(runtimeConfiguration, errorProvider, tags, methodInfo);
+            return new EventBinding(runtimeConfiguration, errorProvider, methodInfo, bindingScope);
         }
 
         public StepBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)

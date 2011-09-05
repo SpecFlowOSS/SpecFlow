@@ -6,12 +6,13 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class EventBinding : MethodBinding
     {
-        public string[] Tags { get; private set; }
+        public BindingScope BindingScope { get; private set; }
+        public bool IsScoped { get { return BindingScope != null; } }
 
-        public EventBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, string[] tags, MethodInfo methodInfo)
+        public EventBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo methodInfo, BindingScope bindingScope)
             : base(runtimeConfiguration, errorProvider, methodInfo)
         {
-            Tags = tags;
+            BindingScope = bindingScope;
         }
     }
 }

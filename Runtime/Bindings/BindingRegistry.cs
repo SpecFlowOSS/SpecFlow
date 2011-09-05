@@ -103,9 +103,16 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckEventBindingMethod(bindingEventAttr.Event, method);
 
-            var eventBinding = bindingFactory.CreateEventBinding(bindingEventAttr.Tags, method);
-
-            GetEvents(bindingEventAttr.Event).Add(eventBinding);
+            ApplyForScope(method,
+                          scope =>
+                              {
+                                  var eventBinding = bindingFactory.CreateEventBinding(method, scope);
+                                  GetEvents(bindingEventAttr.Event).Add(eventBinding);
+                              },
+                          bindingEventAttr.Tags == null
+                              ? null
+                              : bindingEventAttr.Tags.Select(tag => new StepScopeAttribute {Tag = tag})
+                );
         }
 
         private void CheckEventBindingMethod(BindingEvent bindingEvent, MethodInfo method)
@@ -128,25 +135,32 @@ namespace TechTalk.SpecFlow.Bindings
                 bindingEvent == BindingEvent.StepEnd;
         }
 
-        private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)
+        private void ApplyForScope(MethodInfo method, Action<BindingScope> action, IEnumerable<StepScopeAttribute> additionalScopeAttrs = null)
         {
-            CheckStepBindingMethod(method);
-
-            var scopeAttrs = 
+            var scopeAttrs =
                 Attribute.GetCustomAttributes(method.ReflectedType, typeof(StepScopeAttribute)).Concat(
-                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute)));
+                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute))).Cast<StepScopeAttribute>();
+
+            if (additionalScopeAttrs != null)
+                scopeAttrs = scopeAttrs.Concat(additionalScopeAttrs);
 
             if (scopeAttrs.Any())
             {
-                foreach (StepScopeAttribute scopeAttr in scopeAttrs)
+                foreach (var scopeAttr in scopeAttrs)
                 {
-                    AddStepBinding(method, scenarioStepAttr, CreateScope(scopeAttr));
+                    action(CreateScope(scopeAttr));
                 }
             }
             else
             {
-                AddStepBinding(method, scenarioStepAttr, null);
+                action(null);
             }
+        }
+
+        private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)
+        {
+            CheckStepBindingMethod(method);
+            ApplyForScope(method, scope => AddStepBinding(method, scenarioStepAttr, scope));
         }
 
         private BindingScope CreateScope(StepScopeAttribute scopeAttr)

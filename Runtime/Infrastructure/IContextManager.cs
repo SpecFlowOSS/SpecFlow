@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using BoDi;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -18,6 +19,16 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         void InitializeScenarioContext(ScenarioInfo scenarioInfo);
         void CleanupScenarioContext();
+    }
+
+    internal static class ContextManagerExtensions
+    {
+        public static StepContext GetStepContext(this IContextManager contextManager)
+        {
+            return new StepContext(
+                contextManager.FeatureContext == null ? null : contextManager.FeatureContext.FeatureInfo,
+                contextManager.ScenarioContext == null ? null : contextManager.ScenarioContext.ScenarioInfo);
+        }
     }
 
     public class ContextManager : IContextManager, IDisposable

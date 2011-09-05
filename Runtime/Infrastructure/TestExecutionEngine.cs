@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void OnTestRunnerStart()
         {
-            FireEvents(BindingEvent.TestRunStart, null);
+            FireEvents(BindingEvent.TestRunStart);
         }
 
         private bool testRunnerEndExecuted = false;
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
 
             testRunnerEndExecuted = true;
-            FireEvents(BindingEvent.TestRunEnd, null);
+            FireEvents(BindingEvent.TestRunEnd);
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
             contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
-            FireEvents(BindingEvent.FeatureStart, contextManager.FeatureContext.FeatureInfo.Tags);
+            FireEvents(BindingEvent.FeatureStart);
         }
 
         public void OnFeatureEnd()
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.FeatureContext == null)
                 return;
                 
-            FireEvents(BindingEvent.FeatureEnd, contextManager.FeatureContext.FeatureInfo.Tags);
+            FireEvents(BindingEvent.FeatureEnd);
 
             if (runtimeConfiguration.TraceTimings)
             {
@@ -215,40 +215,23 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private readonly string[] emptyTagList = new string[0];
-
         private void FireScenarioEvents(BindingEvent bindingEvent)
         {
-            var tags = (contextManager.FeatureContext.FeatureInfo.Tags ?? emptyTagList).Concat(
-                contextManager.ScenarioContext.ScenarioInfo.Tags ?? emptyTagList);
-            FireEvents(bindingEvent, tags);
+            FireEvents(bindingEvent);
         }
 
-        private void FireEvents(BindingEvent bindingEvent, IEnumerable<string> tags)
+        private void FireEvents(BindingEvent bindingEvent)
         {
+            var stepContext = contextManager.GetStepContext();
+
             foreach (EventBinding eventBinding in bindingRegistry.GetEvents(bindingEvent))
             {
-                if (IsTagNeeded(eventBinding.Tags, tags))
-                {
-                    eventBinding.InvokeAction(contextManager, null, testTracer);
-                }
+                int scopeMatches;
+                if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
+                    continue;
+
+                eventBinding.InvokeAction(contextManager, null, testTracer);
             }
-        }
-
-        private bool IsEmptyTagList(IEnumerable<string> tags)
-        {
-            return tags == null || !tags.Any();
-        }
-
-        private bool IsTagNeeded(IEnumerable<string> filterTags, IEnumerable<string> currentTags)
-        {
-            if (IsEmptyTagList(filterTags))
-                return true;
-
-            if (currentTags == null)
-                return false;
-
-            return filterTags.Intersect(currentTags).Any();
         }
 
         private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)

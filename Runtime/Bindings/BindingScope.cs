@@ -18,13 +18,15 @@ namespace TechTalk.SpecFlow.Bindings
             ScenarioTitle = scenarioTitle;
         }
 
-        private readonly string[] emptyTagList = new string[0];
         public bool Match(StepContext stepContext, out int scopeMatches)
         {
             scopeMatches = 0;
 
-            var tags = (stepContext.FeatureInfo.Tags ?? emptyTagList).Concat(
-                stepContext.ScenarioInfo.Tags ?? emptyTagList);
+            var tags = Enumerable.Empty<string>();
+            if (stepContext.FeatureInfo != null && stepContext.FeatureInfo.Tags != null)
+                tags = tags.Concat(stepContext.FeatureInfo.Tags);
+            if (stepContext.ScenarioInfo != null && stepContext.ScenarioInfo.Tags != null)
+                tags = tags.Concat(stepContext.ScenarioInfo.Tags);
 
             if (Tag != null)
             {
@@ -33,14 +35,14 @@ namespace TechTalk.SpecFlow.Bindings
 
                 scopeMatches++;
             }
-            if (FeatureTitle != null)
+            if (FeatureTitle != null && stepContext.FeatureInfo != null)
             {
                 if (!string.Equals(FeatureTitle, stepContext.FeatureInfo.Title, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;
             }
-            if (ScenarioTitle != null)
+            if (ScenarioTitle != null && stepContext.ScenarioInfo != null)
             {
                 if (!string.Equals(ScenarioTitle, stepContext.ScenarioInfo.Title, StringComparison.CurrentCultureIgnoreCase))
                     return false;
