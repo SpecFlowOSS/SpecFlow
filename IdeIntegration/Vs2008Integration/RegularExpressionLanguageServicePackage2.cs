@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     // package needs to have a valid load key (it can be requested at 
     // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
     // package has a load key embedded in its resources.
-    [ProvideLoadKey("Standard", "1.0", "Regular Expression Language Service", "Microsoft Corporation", 1)]
+    [ProvideLoadKey("Standard", "1.0", "SpecFlow VS2008 Package", "TechTalk", 113)]
 
     // This attribute is used to associate the ".feature" file extension with a language service
     [ProvideLanguageExtension(typeof(RegularExpressionLanguageService2), ".feature")]
