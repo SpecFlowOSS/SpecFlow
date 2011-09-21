@@ -161,7 +161,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             var args = BuildCommandArgs(new ConsoleOptions
                                             {
                                                 BaseFolder = VsxHelper.GetProjectFolder(project) + @"\bin\Debug", //TODO
-                                                TestAssembly = VsxHelper.GetProjectAssemblyName(project) + ".dll",
+                                                Target = VsxHelper.GetProjectAssemblyName(project) + ".dll",
                                                 Filter = filter
                                             }, debug);
             ExecuteTests(consolePath, args, debug);
@@ -178,8 +178,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         public class ConsoleOptions
         {
-            public string ConfigFile { get; set; }
-            public string TestAssembly { get; set; }
+            public string Target { get; set; }
             public string LogFile { get; set; }
             public string ReportFileName { get; set; }
             public string BaseFolder { get; set; }
@@ -188,11 +187,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         public string BuildCommandArgs(ConsoleOptions consoleOptions, bool debug)
         {
-            StringBuilder commandArgsBuilder = new StringBuilder();
-            if (consoleOptions.ConfigFile != null)
-                commandArgsBuilder.AppendFormat("\"/configFile:{0}\" ", consoleOptions.ConfigFile);
-            if (consoleOptions.TestAssembly != null)
-                commandArgsBuilder.AppendFormat("\"/assembly:{0}\" ", consoleOptions.TestAssembly);
+            StringBuilder commandArgsBuilder = new StringBuilder("run ");
+            if (consoleOptions.Target == null)
+                throw new InvalidOperationException();
+            commandArgsBuilder.AppendFormat("\"{0}\" ", consoleOptions.Target);
             if (consoleOptions.LogFile != null)
                 commandArgsBuilder.AppendFormat("\"/logFile:{0}\" ", consoleOptions.LogFile);
             if (consoleOptions.BaseFolder != null)
@@ -202,7 +200,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (consoleOptions.Filter != null)
                 commandArgsBuilder.AppendFormat("\"/filter:{0}\" ", consoleOptions.Filter);
 
-            commandArgsBuilder.AppendFormat("/toolIntegration:vs2010{0} ", debug ? "+debug" : "");
+            commandArgsBuilder.Append("/toolIntegration:vs2010 ");
+            if (debug)
+                commandArgsBuilder.Append("/debug ");
 
             return commandArgsBuilder.ToString();
         }
