@@ -175,6 +175,7 @@
       <Link>SingleFileGenerator\BaseCodeGeneratorWithSite.cs</Link>
     </Compile>
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
+    <Compile Include="AutoComplete\CustomCompletionSet.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />

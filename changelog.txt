@@ -7,6 +7,8 @@ New features:
 + SpecFlow framework classes can be used as a dependency for context injection.
 + Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
 + Better customization possibilities with plugins.
++ Run & debug scenarios from the context menu in feature file and solution explorer nodes (feature file, folder, project).
++ Use infix word prefix matching for VS2010 step completion. 
 
 Fixed issues:
 + Instances created for context injection are disposed after scenario execution (Issue 22)

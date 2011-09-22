@@ -144,11 +144,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 }
             }
 
-            if (!currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected && ch == ' ')
+            if (!currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected && ch == ' ' && IsPrefixMatch(currentAutoCompleteSession.SelectedCompletionSet))
             {
                 currentAutoCompleteSession.Dismiss();
                 StartAutoCompleteSession(ch);
             }
+        }
+
+        private bool IsPrefixMatch(CompletionSet selectedCompletionSet)
+        {
+            return selectedCompletionSet is CustomCompletionSet &&
+                   ((CustomCompletionSet)selectedCompletionSet).PrefixMatch;
         }
 
         protected bool CommitAutoComplete(bool force)
