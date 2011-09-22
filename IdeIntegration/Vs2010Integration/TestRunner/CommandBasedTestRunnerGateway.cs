@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using EnvDTE;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
@@ -22,6 +23,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         private bool RunFromCodeBehind(ProjectItem projectItem, Func<TextDocument, int> lineProvider, bool debug)
         {
+            if (projectItem.IsDirty)
+            {
+                projectItem.Save();
+            }
+
             var codeBehindItem = GetCodeBehindItem(projectItem);
             if (codeBehindItem == null)
                 return false;
@@ -83,7 +89,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         {
             var fileName = VsxHelper.GetFileName(projectItem);
             if (fileName != null && fileName.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase))
-                return RunFromCodeBehind(projectItem, _ => 1, debug);
+                return RunFromCodeBehind(projectItem, GetFeatureCodeBehindLine, debug);
 
             return RunInCurrentContext(debug);
         }
@@ -93,7 +99,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return RunInCurrentContext(debug);
         }
 
-        private int GetCodeBehindLine(TextDocument codeBehindDoc, int sourceLine)
+        protected virtual int GetFeatureCodeBehindLine(TextDocument codeBehindDoc)
+        {
+            return 1;
+        }
+
+        private static readonly Regex linePragmaRe = new Regex(@"^((#line\s+(?<lineno>\d+))|(#ExternalSource\("".*"",(?<lineno>\d+)\)))\s*$");
+
+        protected int GetCodeBehindLine(TextDocument codeBehindDoc, int sourceLine)
         {
             EditPoint start = codeBehindDoc.StartPoint.CreateEditPoint();
             int lineCount = codeBehindDoc.EndPoint.Line;
@@ -102,10 +115,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 start.LineDown();
                 string lineText = start.GetText(start.LineLength);
                 //#line 8
-                if (lineText.StartsWith("#line "))
+                //#ExternalSource("SpecFlowFeature2.feature",8)
+                var match = linePragmaRe.Match(lineText);
+                if (match.Success)
                 {
                     int linePragmaValue;
-                    if (int.TryParse(lineText.Substring("#line ".Length), out linePragmaValue))
+                    if (int.TryParse(match.Groups["lineno"].Value, out linePragmaValue))
                     {
                         if (linePragmaValue >= sourceLine)
                         {

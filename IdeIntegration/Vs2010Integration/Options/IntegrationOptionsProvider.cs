@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableTableAutoFormatDefaultValue = true;
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
-        public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.MsTest;
+        public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.Auto;
 
         private DTE dte;
 

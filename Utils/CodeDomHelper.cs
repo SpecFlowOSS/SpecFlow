@@ -79,10 +79,20 @@ namespace TechTalk.SpecFlow.Utils
             }
         }
 
+        private bool isExternalSourceBlockOpen = false;
+        private string currentBoundSourceCodeFile = null;
+
         public void BindTypeToSourceFile(CodeTypeDeclaration typeDeclaration, string fileName)
         {
+            currentBoundSourceCodeFile = fileName;
+
             switch (TargetLanguage)
             {
+                case CodeDomProviderLanguage.VB:
+                    typeDeclaration.Members.Add(new CodeSnippetTypeMember(string.Format("#ExternalSource(\"{0}\",1)", fileName)));
+                    typeDeclaration.Members.Add(new CodeSnippetTypeMember("#End ExternalSource"));
+                    break;
+
                 case CodeDomProviderLanguage.CSharp:
                     typeDeclaration.Members.Add(new CodeSnippetTypeMember(string.Format("#line 1 \"{0}\"", fileName)));
                     typeDeclaration.Members.Add(new CodeSnippetTypeMember("#line hidden"));
@@ -92,8 +102,18 @@ namespace TechTalk.SpecFlow.Utils
 
         public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo)
         {
+            if (currentBoundSourceCodeFile == null)
+                throw new InvalidOperationException("The generated code was not bound to a file!");
+
             switch (TargetLanguage)
             {
+                case CodeDomProviderLanguage.VB:
+                    if (isExternalSourceBlockOpen)
+                        AddDisableSourceLinePragmaStatement(statements);
+                    statements.Add(new CodeSnippetStatement(string.Format("#ExternalSource(\"{0}\",{1})", currentBoundSourceCodeFile, lineNo)));
+                    isExternalSourceBlockOpen = true;
+                    AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
+                    break;
                 case CodeDomProviderLanguage.CSharp:
                     statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
                     AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
@@ -105,6 +125,10 @@ namespace TechTalk.SpecFlow.Utils
         {
             switch (TargetLanguage)
             {
+                case CodeDomProviderLanguage.VB:
+                    statements.Add(new CodeSnippetStatement("#End ExternalSource"));
+                    isExternalSourceBlockOpen = false;
+                    break;
                 case CodeDomProviderLanguage.CSharp:
                     statements.Add(new CodeSnippetStatement("#line hidden"));
                     break;
