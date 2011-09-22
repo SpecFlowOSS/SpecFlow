@@ -25,12 +25,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         public const uint cmdidGenerateStepDefinitionSkeleton = 0x0100;
         public const uint cmdidRunScenarios = 0x0101;
         public const uint cmdidDebugScenarios = 0x0102;
+        public const uint cmdidGoToStepDefinition = 0x0103;
+        public const uint cmdidReGenerateAll = 0x0104;
     };
 
     public enum SpecFlowCmdSet : uint 
     {
         GenerateStepDefinitionSkeleton = PkgCmdIDList.cmdidGenerateStepDefinitionSkeleton,
         RunScenarios = PkgCmdIDList.cmdidRunScenarios,
-        DebugScenarios = PkgCmdIDList.cmdidDebugScenarios
+        DebugScenarios = PkgCmdIDList.cmdidDebugScenarios,
+        GoToStepDefinition = PkgCmdIDList.cmdidGoToStepDefinition,
+        ReGenerateAll = PkgCmdIDList.cmdidReGenerateAll,
     }
 }

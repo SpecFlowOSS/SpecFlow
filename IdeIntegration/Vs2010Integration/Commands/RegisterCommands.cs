@@ -18,6 +18,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
                     (_1, _2) => System.Windows.MessageBox.Show("generate skeleton")), SpecFlowCmdSet.GenerateStepDefinitionSkeleton.ToString());
             container.RegisterTypeAs<RunScenariosCommand, MenuCommandHandler>(SpecFlowCmdSet.RunScenarios.ToString());
             container.RegisterTypeAs<DebugScenariosCommand, MenuCommandHandler>(SpecFlowCmdSet.DebugScenarios.ToString());
+            container.RegisterTypeAs<ReGenerateAllCommand, MenuCommandHandler>(SpecFlowCmdSet.ReGenerateAll.ToString());
         }
     }
 }

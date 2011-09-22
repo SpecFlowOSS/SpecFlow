@@ -83,6 +83,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     case SpecFlowCmdSet.RunScenarios:
                         handled = editorCommands.RunScenarios();
                         break;
+                    case SpecFlowCmdSet.DebugScenarios:
+                        handled = editorCommands.DebugScenarios();
+                        break;
+                    case SpecFlowCmdSet.GoToStepDefinition:
+                        handled = editorCommands.GoToDefinition();
+                        break;
                 }
             }
 
@@ -132,8 +138,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch ((SpecFlowCmdSet)prgCmds[0].cmdID)
                 {
                     case SpecFlowCmdSet.RunScenarios:
+                    case SpecFlowCmdSet.DebugScenarios:
                         prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         return VSConstants.S_OK;
+                    case SpecFlowCmdSet.GoToStepDefinition:
+                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        if (editorCommands.CanGoToDefinition())
+                            return VSConstants.S_OK;
+                        break;
                 }
             }
             return Next.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);

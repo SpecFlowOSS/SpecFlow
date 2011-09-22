@@ -239,5 +239,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             var engine = container.Resolve<ITestRunnerEngine>();
             return engine.RunFromEditor(languageService, false);
         }
+
+        public bool DebugScenarios()
+        {
+            var engine = container.Resolve<ITestRunnerEngine>();
+            return engine.RunFromEditor(languageService, true);
+        }
     }
 }
