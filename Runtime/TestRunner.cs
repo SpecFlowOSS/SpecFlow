@@ -112,8 +112,7 @@ namespace TechTalk.SpecFlow
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
-            if (ObjectContainer.ScenarioContext == null)
-                ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
+            ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
 
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }

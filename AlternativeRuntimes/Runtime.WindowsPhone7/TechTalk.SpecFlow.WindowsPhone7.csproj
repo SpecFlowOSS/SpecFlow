@@ -391,6 +391,9 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime.Silverlight3\PlatformSpecific\ScenarioContextExtensions.cs">
+      <Link>PlatformSpecific\ScenarioContextExtensions.cs</Link>
+    </Compile>
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
