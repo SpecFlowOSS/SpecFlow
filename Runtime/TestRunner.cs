@@ -113,6 +113,7 @@ namespace TechTalk.SpecFlow
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             ObjectContainer.ScenarioContext = new ScenarioContext(scenarioInfo, this);
+
             FireScenarioEvents(BindingEvent.ScenarioStart);
         }
 

@@ -98,7 +98,9 @@ namespace TechTalk.SpecFlow.Async
             // register the test executor in the scenario context to be able to used AOP style
             ObjectContainer.ScenarioContext.Set(asyncTestExecutor);
             ObjectContainer.ScenarioContext.SetTestRunnerUnchecked(this);
+
         }
+
 
         public void CollectScenarioErrors()
         {
