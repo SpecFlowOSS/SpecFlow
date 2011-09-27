@@ -367,6 +367,18 @@
     <Compile Include="..\..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
       <Link>SharedRuntime\XUnitRuntimeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Runtime.Silverlight3\Async\ISilverlightTestInstance.cs">
+      <Link>Async\ISilverlightTestInstance.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight3\Async\ReflectionHelper.cs">
+      <Link>Async\ReflectionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight3\Async\SilverlightAsyncTestExecutor.cs">
+      <Link>Async\SilverlightAsyncTestExecutor.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight3\Async\UnitTestingFrameworkHelper.cs">
+      <Link>Async\UnitTestingFrameworkHelper.cs</Link>
+    </Compile>
     <Compile Include="..\Runtime.Silverlight3\PlatformCompatibility\**">
       <Link>SharedSilverlightRuntime\%(Filename)%(Extension)</Link>
     </Compile>
@@ -378,6 +390,9 @@
     </Compile>
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Runtime.Silverlight3\PlatformSpecific\ScenarioContextExtensions.cs">
+      <Link>PlatformSpecific\ScenarioContextExtensions.cs</Link>
     </Compile>
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
