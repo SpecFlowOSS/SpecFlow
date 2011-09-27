@@ -13,17 +13,17 @@ namespace TechTalk.SpecFlow
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class ScenarioStepAttribute : Attribute
+    public abstract class StepDefinitionBaseAttribute : Attribute
     {
         internal BindingType[] Types { get; private set; }
         public string Regex { get; set; }
 
-        internal ScenarioStepAttribute(string regex, BindingType type)
+        internal StepDefinitionBaseAttribute(string regex, BindingType type)
             : this(regex, new[] { type })
         {
         }
 
-        protected ScenarioStepAttribute(string regex, BindingType[] types)
+        protected StepDefinitionBaseAttribute(string regex, BindingType[] types)
         {
             if (types == null) throw new ArgumentNullException("types");
             if (types.Length == 0) throw new ArgumentException("List cannot be empty", "types");
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow
     /// <summary>
     /// Specifies a 'Given' step definition that matches for the provided regular expression.
     /// </summary>
-    public class GivenAttribute : ScenarioStepAttribute
+    public class GivenAttribute : StepDefinitionBaseAttribute
     {
         public GivenAttribute(string regex)
             : base(regex, BindingType.Given)
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow
     /// <summary>
     /// Specifies a 'When' step definition that matches for the provided regular expression.
     /// </summary>
-    public class WhenAttribute : ScenarioStepAttribute
+    public class WhenAttribute : StepDefinitionBaseAttribute
     {
         public WhenAttribute(string regex)
             : base(regex, BindingType.When)
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow
     /// <summary>
     /// Specifies a 'Then' step definition that matches for the provided regular expression.
     /// </summary>
-    public class ThenAttribute : ScenarioStepAttribute
+    public class ThenAttribute : StepDefinitionBaseAttribute
     {
         public ThenAttribute(string regex)
             : base(regex, BindingType.Then)
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow
     /// <summary>
     /// Specifies a step definition that matches for the provided regular expression and any step kinds (given, when, then).
     /// </summary>
-    public class StepDefinitionAttribute : ScenarioStepAttribute
+    public class StepDefinitionAttribute : StepDefinitionBaseAttribute
     {
         public StepDefinitionAttribute(string regex) : base(regex, new[] { BindingType.Given, BindingType.When, BindingType.Then })
         {

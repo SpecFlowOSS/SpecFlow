@@ -59,9 +59,9 @@ namespace TechTalk.SpecFlow.Bindings
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(ScenarioStepAttribute));
+                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(StepDefinitionBaseAttribute));
                 if (scenarioStepAttrs != null)
-                    foreach (ScenarioStepAttribute scenarioStepAttr in scenarioStepAttrs)
+                    foreach (StepDefinitionBaseAttribute scenarioStepAttr in scenarioStepAttrs)
                     {
                         BuildStepBindingFromMethod(method, scenarioStepAttr);
                     }
@@ -157,10 +157,10 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)
+        private void BuildStepBindingFromMethod(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr)
         {
             CheckStepBindingMethod(method);
-            ApplyForScope(method, scope => AddStepBinding(method, scenarioStepAttr, scope));
+            ApplyForScope(method, scope => AddStepBinding(method, stepDefinitionBaseAttr, scope));
         }
 
         private BindingScope CreateScope(ScopeAttribute scopeAttr)
@@ -171,11 +171,11 @@ namespace TechTalk.SpecFlow.Bindings
             return new BindingScope(scopeAttr.Tag, scopeAttr.Feature, scopeAttr.Scenario);
         }
 
-        private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
+        private void AddStepBinding(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr, BindingScope stepScope)
         {
-            foreach (var bindingType in scenarioStepAttr.Types)
+            foreach (var bindingType in stepDefinitionBaseAttr.Types)
             {
-                var stepBinding = bindingFactory.CreateStepBinding(bindingType, scenarioStepAttr.Regex, method, stepScope);
+                var stepBinding = bindingFactory.CreateStepBinding(bindingType, stepDefinitionBaseAttr.Regex, method, stepScope);
                 stepBindings.Add(stepBinding);
             }
         }
