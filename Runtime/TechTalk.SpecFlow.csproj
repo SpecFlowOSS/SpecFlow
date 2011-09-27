@@ -154,6 +154,7 @@
     <Compile Include="Tracing\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="Tracing\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
+    <Compile Include="UnitTestProvider\MbUnitv3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestRuntimeProviderHelper.cs" />
