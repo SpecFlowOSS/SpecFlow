@@ -11,9 +11,17 @@ namespace TechTalk.SpecFlow.Bindings
 
         public BindingScopeNew(string tag, string featureTitle, string scenarioTitle)
         {
-            Tag = tag;
+            Tag = RemoveLeadingAt(tag);
             FeatureTitle = featureTitle;
             ScenarioTitle = scenarioTitle;
+        }
+
+        private string RemoveLeadingAt(string tag)
+        {
+            if (tag == null || !tag.StartsWith("@"))
+                return tag;
+
+            return tag.Substring(1); // remove leading "@"
         }
 
         public bool Match(StepScopeNew stepScope)
