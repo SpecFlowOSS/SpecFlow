@@ -184,7 +184,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingMatchService.cs" />
-    <Compile Include="Bindings\IBindingRegistry.cs" />
+    <Compile Include="Bindings\IBindingRegistryNew.cs" />
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
     <Compile Include="Bindings\BindingScope.cs" />

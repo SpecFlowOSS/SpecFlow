@@ -10,6 +10,7 @@ New features:
 + [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
 + Cucumber harmonization
 	+ Allow using [Before]/[After] attributes as synonyms of [BeforeScenario]/[AfterScenario]
+	+ Allow using [StepDefinition] attribute that matches to given, when or then steps
 
 Fixed issues:
 + Instances created for context injection are disposed after scenario execution (Issue 22)
