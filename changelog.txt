@@ -8,6 +8,8 @@ New features:
 + Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
 + Better customization possibilities with plugins.
 + [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
++ Cucumber harmonization
+	+ Allow using [Before]/[After] attributes as synonyms of [BeforeScenario]/[AfterScenario]
 
 Fixed issues:
 + Instances created for context injection are disposed after scenario execution (Issue 22)

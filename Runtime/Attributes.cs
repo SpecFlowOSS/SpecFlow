@@ -63,64 +63,86 @@ namespace TechTalk.SpecFlow
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class BindingEventAttribute : Attribute
+    public abstract class HookAttribute : Attribute
     {
         internal BindingEvent Event { get; private set; }
         public string[] Tags { get; private set; }
 
-        internal BindingEventAttribute(BindingEvent bindingEvent, string[] tags)
+        internal HookAttribute(BindingEvent bindingEvent, string[] tags)
         {
             Event = bindingEvent;
             Tags = tags;
         }
     }
 
-    public class BeforeTestRunAttribute : BindingEventAttribute
+    public class BeforeTestRunAttribute : HookAttribute
     {
         public BeforeTestRunAttribute() : base(BindingEvent.TestRunStart, null) {}
     }
 
-    public class AfterTestRunAttribute : BindingEventAttribute
+    public class AfterTestRunAttribute : HookAttribute
     {
         public AfterTestRunAttribute() : base(BindingEvent.TestRunEnd, null) { }
     }
 
-    public class BeforeFeatureAttribute : BindingEventAttribute
+    public class BeforeFeatureAttribute : HookAttribute
     {
         public BeforeFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureStart, tags) { }
     }
 
-    public class AfterFeatureAttribute : BindingEventAttribute
+    public class AfterFeatureAttribute : HookAttribute
     {
         public AfterFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureEnd, tags) { }
     }
 
-    public class BeforeScenarioAttribute : BindingEventAttribute
+    /// <summary>
+    /// Specifies a hook to be executed before each scenario.
+    /// </summary>
+    public class BeforeScenarioAttribute : HookAttribute
     {
         public BeforeScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioStart, tags) { }
     }
 
-    public class AfterScenarioAttribute : BindingEventAttribute
+    /// <summary>
+    /// Specifies a hook to be executed before each scenario. This attribute is a synonym to <see cref="BeforeScenarioAttribute"/>.
+    /// </summary>
+    public class BeforeAttribute : BeforeScenarioAttribute
+    {
+        public BeforeAttribute(params string[] tags) : base(tags) { }
+    }
+
+    /// <summary>
+    /// Specifies a hook to be executed after each scenario.
+    /// </summary>
+    public class AfterScenarioAttribute : HookAttribute
     {
         public AfterScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioEnd, tags) { }
     }
 
-    public class BeforeScenarioBlockAttribute : BindingEventAttribute
+    /// <summary>
+    /// Specifies a hook to be executed after each scenario. This attribute is a synonym to <see cref="AfterScenarioAttribute"/>.
+    /// </summary>
+    public class AfterAttribute : AfterScenarioAttribute
+    {
+        public AfterAttribute(params string[] tags) : base(tags) { }
+    }
+
+    public class BeforeScenarioBlockAttribute : HookAttribute
     {
         public BeforeScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockStart, tags) { }
     }
 
-    public class AfterScenarioBlockAttribute : BindingEventAttribute
+    public class AfterScenarioBlockAttribute : HookAttribute
     {
         public AfterScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockEnd, tags) { }
     }
 
-    public class BeforeStepAttribute : BindingEventAttribute
+    public class BeforeStepAttribute : HookAttribute
     {
         public BeforeStepAttribute(params string[] tags) : base(BindingEvent.StepStart, tags) { }
     }
 
-    public class AfterStepAttribute : BindingEventAttribute
+    public class AfterStepAttribute : HookAttribute
     {
         public AfterStepAttribute(params string[] tags) : base(BindingEvent.StepEnd, tags) { }
     }

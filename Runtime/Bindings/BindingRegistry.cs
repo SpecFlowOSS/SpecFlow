@@ -66,9 +66,9 @@ namespace TechTalk.SpecFlow.Bindings
                         BuildStepBindingFromMethod(method, scenarioStepAttr);
                     }
 
-                var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(BindingEventAttribute));
+                var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(HookAttribute));
                 if (bindingEventAttrs != null)
-                    foreach (BindingEventAttribute bindingEventAttr in bindingEventAttrs)
+                    foreach (HookAttribute bindingEventAttr in bindingEventAttrs)
                     {
                         BuildEventBindingFromMethod(method, bindingEventAttr);
                     }
@@ -99,19 +99,19 @@ namespace TechTalk.SpecFlow.Bindings
             get { return stepTransformations; }
         }
 
-        private void BuildEventBindingFromMethod(MethodInfo method, BindingEventAttribute bindingEventAttr)
+        private void BuildEventBindingFromMethod(MethodInfo method, HookAttribute hookAttr)
         {
-            CheckEventBindingMethod(bindingEventAttr.Event, method);
+            CheckEventBindingMethod(hookAttr.Event, method);
 
             ApplyForScope(method,
                           scope =>
                               {
                                   var eventBinding = bindingFactory.CreateEventBinding(method, scope);
-                                  GetEvents(bindingEventAttr.Event).Add(eventBinding);
+                                  GetEvents(hookAttr.Event).Add(eventBinding);
                               },
-                          bindingEventAttr.Tags == null
+                          hookAttr.Tags == null
                               ? null
-                              : bindingEventAttr.Tags.Select(tag => new StepScopeAttribute {Tag = tag})
+                              : hookAttr.Tags.Select(tag => new StepScopeAttribute {Tag = tag})
                 );
         }
 
