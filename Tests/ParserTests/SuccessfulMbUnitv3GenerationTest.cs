@@ -25,7 +25,7 @@ namespace ParserTests
 
         private void GenerateCodeFromFeature(Feature feature, TextWriter writer)
         {
-            var mbUnitTestGeneratorProvider = new MbUnitTestv3GeneratorProvider();
+            var mbUnitTestGeneratorProvider = new MbUnit3TestGeneratorProvider();
             var converter = FactoryMethods.CreateUnitTestConverter(mbUnitTestGeneratorProvider);
             CodeNamespace codeNamespace = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 

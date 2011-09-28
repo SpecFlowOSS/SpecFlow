@@ -2,6 +2,7 @@
 
 New features:
 + Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
++ Support for MbUnit v3. Use unit test provider name "mbunit.3". (Issue 133, by Raytheon)
 
 Fixed issues:
 + Error when opening feature file in VS2008 if VS2008 syntax coloring was enabled.

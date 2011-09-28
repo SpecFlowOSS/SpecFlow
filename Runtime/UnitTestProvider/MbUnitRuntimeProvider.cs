@@ -9,12 +9,12 @@ namespace TechTalk.SpecFlow.UnitTestProvider
 
         private Action<string, object[]> assertInconclusive;
 
-        public void TestPending(string message)
+        public virtual void TestPending(string message)
         {
             TestInconclusive(message);
         }
 
-        public void TestInconclusive(string message)
+        public virtual void TestInconclusive(string message)
         {
             if (assertInconclusive == null)
             {
@@ -25,12 +25,12 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             assertInconclusive("{0}", new object[] { message });
         }
 
-        public void TestIgnore(string message)
+        public virtual void TestIgnore(string message)
         {
             TestInconclusive(message); // there is no dynamic "Ignore" in mstest
         }
 
-        public bool DelayedFixtureTearDown
+        public virtual bool DelayedFixtureTearDown
         {
             get { return true; }
         }

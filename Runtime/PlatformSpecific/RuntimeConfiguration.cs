@@ -150,8 +150,8 @@ namespace TechTalk.SpecFlow.Configuration
                 case "mbunit":
                     RuntimeUnitTestProviderType = typeof(MbUnitRuntimeProvider);
                     break;
-                case "mbunitv3":
-                    RuntimeUnitTestProviderType = typeof(MbUnitv3RuntimeProvider);
+                case "mbunit.3":
+                    RuntimeUnitTestProviderType = typeof(MbUnit3RuntimeProvider);
                     break;
                 case "xunit":
                     RuntimeUnitTestProviderType = typeof(XUnitRuntimeProvider);
