@@ -2,6 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -106,7 +107,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -122,7 +123,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with single param");
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -138,7 +139,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multiple param");
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -155,7 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table param", null, table);
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -172,7 +173,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with multi-line string param", mlString, null);
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -190,7 +191,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with table and multi-line string param", mlString, table);
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -208,7 +209,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with mixed params", mlString, table);
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -222,7 +223,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step without param");
 
-            Assert.AreEqual(TestStatus.BindingError, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -238,7 +239,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param");
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -255,7 +256,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("Distinguish by table param", null, table);
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -269,7 +270,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with wrong param number");
 
-            Assert.AreEqual(TestStatus.BindingError, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 

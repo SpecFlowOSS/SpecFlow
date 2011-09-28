@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using BoDi;
+using TechTalk.SpecFlow.Infrastructure;
 
 #if SILVERLIGHT
 using TechTalk.SpecFlow.Compatibility;
@@ -9,20 +11,20 @@ using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow
 {
-    internal enum TestStatus
-    {
-        OK,
-        StepDefinitionPending,
-        MissingStepDefinition,
-        BindingError,
-        TestError
-    }
-
     public class ScenarioContext : SpecFlowContext
     {
-        static public ScenarioContext Current
+        private static ScenarioContext current;
+        public static ScenarioContext Current
         {
-            get { return ObjectContainer.ScenarioContext; }
+            get
+            {
+                if (current == null)
+                {
+                    Debug.WriteLine("Accessing NULL ScenarioContext");
+                }
+                return current;
+            }
+            internal set { current = value; }
         }
 
         public ScenarioInfo ScenarioInfo { get; private set; }
@@ -37,14 +39,11 @@ namespace TechTalk.SpecFlow
 
         internal ITestRunner TestRunner { get; private set; } //TODO: initialize
 
-        [Obsolete("eliminate this method when separating test runner from test execution engine")]
-        internal void SetTestRunnerUnchecked(ITestRunner newTestRunner)
-        {
-            TestRunner = newTestRunner;
-        }
+        private readonly IObjectContainer objectContainer;
 
-        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner)
+        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
         {
+            this.objectContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
             TestRunner = testRunner;
 
             Stopwatch = new Stopwatch();
@@ -62,35 +61,21 @@ namespace TechTalk.SpecFlow
             TestRunner.Pending();
         }
 
-        private Dictionary<Type, object> bindingInstances = new Dictionary<Type, object>();
-
         public object GetBindingInstance(Type bindingType)
         {
-            object value;
-            if (!bindingInstances.TryGetValue(bindingType, out value))
-            {
-                var ctors = bindingType.GetConstructors();
-                if (bindingType.IsClass && ctors.Length == 0)
-                    throw new MissingMethodException(String.Format("No public constructors found for type {0}", bindingType.FullName));
-
-                var parameters = new List<object>();
-                foreach (var param in ctors[0].GetParameters())
-                {
-                    parameters.Add(GetBindingInstance(param.ParameterType)); 
-                }
-
-                value = Activator.CreateInstance(bindingType, parameters.ToArray());
-                bindingInstances.Add(bindingType, value);
-            }
-
-            return value;
+            return objectContainer.Resolve(bindingType);
         }
 
         internal void SetBindingInstance(Type bindingType, object instance)
         {
-            bindingInstances[bindingType] = instance;
+            objectContainer.RegisterInstanceAs(instance, bindingType);
         }
 
+        protected override void Dispose()
+        {
+            base.Dispose();
 
+            objectContainer.Dispose();
+        }
     }
 }

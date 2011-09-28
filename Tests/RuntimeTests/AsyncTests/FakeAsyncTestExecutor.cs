@@ -3,7 +3,7 @@ using TechTalk.SpecFlow.Async;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 {
-    internal class FakeAsyncTestExecutor : IAsyncTestExecutor
+    public class FakeAsyncTestExecutor : IAsyncTestExecutor
     {
         public bool TestComplete;
         public Action EnqueuedWithNewContext;

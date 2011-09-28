@@ -14,6 +14,7 @@ Scenario: Feature with a single context
 Scenario: Feature with multiple contexts
 	Given a feature which requires multiple contexts
 	Then the contexts are set
+	And the contexts are the same
 
 Scenario: Feature with recursive contexts
 	Given a feature which requires a recursive context

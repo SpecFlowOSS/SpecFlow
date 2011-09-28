@@ -1,4 +1,5 @@
 using System;
+using BoDi;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Async;
 
@@ -12,7 +13,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         [SetUp]
         public void Setup()
         {
-            ObjectContainer.ScenarioContext = new ScenarioContext(new ScenarioInfo("sample scenario"), null);
+            IObjectContainer container;
+            var testRunner = TestTestRunnerFactory.CreateTestRunner(out container);
+            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), testRunner, container);
         }
 
         [Test]

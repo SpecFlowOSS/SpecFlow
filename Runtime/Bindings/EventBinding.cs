@@ -1,15 +1,18 @@
 using System.Reflection;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    internal class EventBinding : MethodBinding
+    public class EventBinding : MethodBinding
     {
-        public string[] Tags { get; private set; }
+        public BindingScope BindingScope { get; private set; }
+        public bool IsScoped { get { return BindingScope != null; } }
 
-        public EventBinding(string[] tags, MethodInfo methodInfo)
-            : base(methodInfo)
+        public EventBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo methodInfo, BindingScope bindingScope)
+            : base(runtimeConfiguration, errorProvider, methodInfo)
         {
-            Tags = tags;
+            BindingScope = bindingScope;
         }
     }
 }

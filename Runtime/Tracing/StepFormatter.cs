@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -56,7 +57,7 @@ namespace TechTalk.SpecFlow.Tracing
         {
             StringBuilder result = new StringBuilder();
             result.Append(stepArgs.OriginalStepKeyword ?? 
-                LanguageHelper.GetDefaultKeyword(FeatureContext.Current.FeatureInfo.Language, stepArgs.StepDefinitionKeyword));
+                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.FeatureInfo.Language, stepArgs.StepDefinitionKeyword));
             result.Append(" ");
             result.AppendLine(stepArgs.Text);
 

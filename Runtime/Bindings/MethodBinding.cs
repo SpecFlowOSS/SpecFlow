@@ -8,17 +8,20 @@ using System.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
     public abstract class MethodBinding
     {
-        private readonly ErrorProvider errorProvider;
+        private readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly IErrorProvider errorProvider;
 
-        protected MethodBinding(MethodInfo method)
+        protected MethodBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo method)
         {
-            errorProvider = ObjectContainer.ErrorProvider;
+            this.runtimeConfiguration = runtimeConfiguration;
+            this.errorProvider = errorProvider;
 
             BindingAction = CreateMethodDelegate(method);
             MethodInfo = method;
@@ -26,10 +29,6 @@ namespace TechTalk.SpecFlow.Bindings
             ReturnType = method.ReturnType;
         }
 
-#if WINDOWS_PHONE
-				//Windows Phone runtime does not allow getting private fields value by reflection
-				public Type bindingType;
-#endif
         public Delegate BindingAction { get; protected set; }
         public MethodInfo MethodInfo { get; private set; }
         public Type[] ParameterTypes { get; private set; }
@@ -37,121 +36,77 @@ namespace TechTalk.SpecFlow.Bindings
 
         protected Delegate CreateMethodDelegate(MethodInfo method)
         {
-            if (method.ReturnType == typeof (void))
-                return CreateActionDelegate(method);
-            else
-                return CreateFuncDelegate(method);
-        }
-
-        private Delegate CreateActionDelegate(MethodInfo method)
-        {
             List<ParameterExpression> parameters = new List<ParameterExpression>();
-            foreach (ParameterInfo parameterInfo in method.GetParameters())
-            {
-                parameters.Add(Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name));
-            }
+            parameters.Add(Expression.Parameter(typeof(IContextManager), "__contextManager"));
+            parameters.AddRange(method.GetParameters().Select(parameterInfo => Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name)));
+            var methodArguments = parameters.Skip(1).Cast<Expression>().ToArray();
+            var contextManagerArg = parameters[0];
 
             LambdaExpression lambda;
+
+            var delegateType = GetDelegateType(parameters.Select(p => p.Type).ToArray(), method.ReturnType);
 
             if (method.IsStatic)
             {
                 lambda = Expression.Lambda(
-                    GetActionType(parameters.Select(p => p.Type).ToArray()),
-                    Expression.Call(method, parameters.Cast<Expression>().ToArray()),
+                    delegateType,
+                    Expression.Call(method, methodArguments),
                     parameters.ToArray());
             }
             else
             {
-#if WINDOWS_PHONE
-                bindingType = method.ReflectedType;
-#else
-								Type bindingType = method.ReflectedType;
-#endif
-
-								Expression<Func<object>> getInstanceExpression =
-                    () => ScenarioContext.Current.GetBindingInstance(bindingType);
+                var getInstanceMethod = ExpressionMemberAccessor.GetMethodInfo((ScenarioContext sc) => sc.GetBindingInstance(null));
+                Debug.Assert(getInstanceMethod != null, "GetBindingInstance not found");
+                var scenarioContextProperty = ExpressionMemberAccessor.GetPropertyInfo((IContextManager cm) => cm.ScenarioContext);
+                Debug.Assert(scenarioContextProperty != null, "ScenarioContext not found");
 
                 lambda = Expression.Lambda(
-                    GetActionType(parameters.Select(p => p.Type).ToArray()),
+                    delegateType,
                     Expression.Call(
-                        Expression.Convert(getInstanceExpression.Body, bindingType),
-                        method,
-                        parameters.Cast<Expression>().ToArray()),
+                        Expression.Convert(
+                            Expression.Call(
+                                Expression.Property(
+                                    contextManagerArg,
+                                    scenarioContextProperty), 
+                                getInstanceMethod,
+                                Expression.Constant(method.ReflectedType)),
+                            method.ReflectedType), 
+                        method, 
+                        methodArguments),
                     parameters.ToArray());
             }
 
 #if WINDOWS_PHONE
-						return ExpressionCompiler.ExpressionCompiler.Compile(lambda);
+            return ExpressionCompiler.ExpressionCompiler.Compile(lambda);
 #else
             return lambda.Compile();
 #endif
         }
 
-        private Delegate CreateFuncDelegate(MethodInfo method)
-        {
-            List<ParameterExpression> parameters = new List<ParameterExpression>();
-            foreach (ParameterInfo parameterInfo in method.GetParameters())
-            {
-                parameters.Add(Expression.Parameter(parameterInfo.ParameterType, parameterInfo.Name));
-            }
-
-            LambdaExpression lambda;
-
-            if (method.IsStatic)
-            {
-                lambda = Expression.Lambda(
-                    GetFuncType(parameters.Select(p => p.Type).ToArray(), method.ReturnType),
-                    Expression.Call(method, parameters.Cast<Expression>().ToArray()),
-                    parameters.ToArray());
-            }
-            else
-            {
-#if WINDOWS_PHONE
-								bindingType = method.ReflectedType;
-#else
-								Type bindingType = method.ReflectedType;
-#endif
-
-								Expression<Func<object>> getInstanceExpression =
-                    () => ScenarioContext.Current.GetBindingInstance(bindingType);
-
-                lambda = Expression.Lambda(
-                    GetFuncType(parameters.Select(p => p.Type).ToArray(), method.ReturnType),
-                    Expression.Call(
-                        Expression.Convert(getInstanceExpression.Body, bindingType),
-                        method,
-                        parameters.Cast<Expression>().ToArray()),
-                    parameters.ToArray());
-            }
-
-
-#if WINDOWS_PHONE
-						return ExpressionCompiler.ExpressionCompiler.Compile(lambda);
-#else
-            return lambda.Compile();
-#endif
-				}
-
-        public object InvokeAction(object[] arguments, ITestTracer testTracer)
+        public object InvokeAction(IContextManager contextManager, object[] arguments, ITestTracer testTracer)
         {
             TimeSpan duration;
-            return InvokeAction(arguments, testTracer, out duration);
+            return InvokeAction(contextManager, arguments, testTracer, out duration);
         }
 
-        public object InvokeAction(object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        public object InvokeAction(IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
         {
             try
             {
                 object result;
                 Stopwatch stopwatch = new Stopwatch();
-                using (CreateCultureInfoScope())
+                using (CreateCultureInfoScope(contextManager))
                 {
                     stopwatch.Start();
-                    result = BindingAction.DynamicInvoke(arguments);
+                    object[] invokeArgs = new object[arguments == null ? 1 : arguments.Length + 1];
+                    if (arguments != null)
+                        Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
+                    invokeArgs[0] = contextManager;
+                    result = BindingAction.DynamicInvoke(invokeArgs);
                     stopwatch.Stop();
                 }
 
-                if (RuntimeConfiguration.Current.TraceTimings && stopwatch.Elapsed >= RuntimeConfiguration.Current.MinTracedDuration)
+                if (runtimeConfiguration.TraceTimings && stopwatch.Elapsed >= runtimeConfiguration.MinTracedDuration)
                 {
                     testTracer.TraceDuration(stopwatch.Elapsed, MethodInfo, arguments);
                 }
@@ -171,18 +126,18 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private CultureInfoScope CreateCultureInfoScope()
+        private CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
         {
             var cultureInfo = CultureInfo.CurrentCulture;
-            if (FeatureContext.Current != null)
+            if (contextManager.FeatureContext != null)
             {
-                cultureInfo = FeatureContext.Current.BindingCulture;
+                cultureInfo = contextManager.FeatureContext.BindingCulture;
             }
             return new CultureInfoScope(cultureInfo);
         }
 
         #region extended action types
-        static readonly Type[] actionTypes = new Type[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 
+        static readonly Type[] actionTypes = new[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 
                                                           typeof(ExtendedAction<,,,,>), typeof(ExtendedAction<,,,,,>), typeof(ExtendedAction<,,,,,,>), typeof(ExtendedAction<,,,,,,,>), typeof(ExtendedAction<,,,,,,,,>), typeof(ExtendedAction<,,,,,,,,,>)
                                                         };
 
@@ -208,7 +163,7 @@ namespace TechTalk.SpecFlow.Bindings
         #endregion   
         
         #region extended func types
-        static readonly Type[] funcTypes = new Type[] { typeof(Func<>), typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>), 
+        static readonly Type[] funcTypes = new[] { typeof(Func<>), typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>), 
                                                         typeof(Func<,,,,>), typeof(ExtendedFunc<,,,,,>), typeof(ExtendedFunc<,,,,,,>), typeof(ExtendedFunc<,,,,,,,>), typeof(ExtendedFunc<,,,,,,,,>), typeof(ExtendedFunc<,,,,,,,,,>)
                                                       };
 
@@ -229,9 +184,18 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 return funcTypes[0].MakeGenericType(resultType);
             }
-            var genericTypeArgs = typeArgs.Concat(new Type[] {resultType}).ToArray();
+            var genericTypeArgs = typeArgs.Concat(new[] {resultType}).ToArray();
             return funcTypes[typeArgs.Length].MakeGenericType(genericTypeArgs);
         }
+
+        private Type GetDelegateType(Type[] typeArgs, Type resultType)
+        {
+            if (resultType == typeof(void))
+                return GetActionType(typeArgs);
+
+            return GetFuncType(typeArgs, resultType);
+        }
+
         #endregion
     }
 }

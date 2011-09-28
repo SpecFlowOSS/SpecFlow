@@ -7,26 +7,22 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    internal class RuntimeConfiguration
+    public class RuntimeConfiguration
     {
         private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
-
-        static public RuntimeConfiguration Current
-        {
-            get { return ObjectContainer.Configuration; }
-        }
 
         //language settings
         public CultureInfo ToolLanguage { get; set; }
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
-        public Type RuntimeUnitTestProviderType { get; set; }
+        public string RuntimeUnitTestProvider { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }
@@ -52,7 +48,7 @@ namespace TechTalk.SpecFlow.Configuration
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
-            SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+            RuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
 
             DetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
@@ -64,36 +60,13 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-        public static RuntimeConfiguration GetConfig()
+        public void LoadConfiguration()
         {
-            return new RuntimeConfiguration();
         }
 
-        private static Type GetTypeConfig(string typeName)
+        public static IEnumerable<PluginDescriptor> GetPlugins()
         {
-            try
-            {
-                return Type.GetType(typeName, true);
-            }
-            catch (Exception ex)
-            {
-                throw new ConfigurationErrorsException(
-                    string.Format("Invalid type reference '{0}': {1}",
-                        typeName, ex.Message), ex);
-            }
-        }
-
-        private void SetUnitTestDefaultsByName(string name)
-        {
-            switch (name.ToLower())
-            {
-                case "mstest.windowsphone7":
-                    RuntimeUnitTestProviderType = typeof(MsTestWP7RuntimeProvider);
-                    break;
-                default:
-                    RuntimeUnitTestProviderType = null;
-                    break;
-            }
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
         }
     }
 }

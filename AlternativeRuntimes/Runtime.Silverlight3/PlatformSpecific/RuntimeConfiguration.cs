@@ -1,30 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Browser;
 
 using TechTalk.SpecFlow.Compatibility;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    internal class RuntimeConfiguration
+    public class RuntimeConfiguration
     {
         private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
-
-        static public RuntimeConfiguration Current
-        {
-            get { return ObjectContainer.Configuration; }
-        }
 
         //language settings
         public CultureInfo ToolLanguage { get; set; }
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
-        public Type RuntimeUnitTestProviderType { get; set; }
+        public string RuntimeUnitTestProvider { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }
@@ -50,7 +47,7 @@ namespace TechTalk.SpecFlow.Configuration
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
-            SetUnitTestDefaultsByName(ConfigDefaults.UnitTestProviderName);
+            RuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
 
             DetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
@@ -62,11 +59,14 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
         }
 
-        public static RuntimeConfiguration GetConfig()
+        public void LoadConfiguration()
         {
-            var configuration = new RuntimeConfiguration();
-            configuration.UpdateFromQueryString();
-            return configuration;
+            UpdateFromQueryString();
+        }
+
+        public static IEnumerable<PluginDescriptor> GetPlugins()
+        {
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
         }
 
         private void UpdateFromQueryString()
@@ -75,7 +75,9 @@ namespace TechTalk.SpecFlow.Configuration
 
             string providerName;
             if (QueryString.TryGetValue("unitTestProvider", out providerName))
-                SetUnitTestDefaultsByName(providerName);
+            {
+                RuntimeUnitTestProvider = providerName;
+            }
 
             DetectAmbiguousMatches = GetBoolFromQueryString("detectAmbiguousMatches", DetectAmbiguousMatches);
             StopAtFirstError = GetBoolFromQueryString("stopAtFirstError", StopAtFirstError);
@@ -144,22 +146,6 @@ namespace TechTalk.SpecFlow.Configuration
         protected static IDictionary<string, string> QueryString
         {
             get { return HtmlPage.Document.QueryString; }
-        }
-
-        private void SetUnitTestDefaultsByName(string name)
-        {
-            switch (name.ToLower())
-            {
-                case "mstest.silverlight":
-                case "mstest.silverlight3":
-                case "mstest.silverlight4":
-                    RuntimeUnitTestProviderType = typeof (MsTestSilverlightRuntimeProvider);
-                    break;
-
-                default:
-                    RuntimeUnitTestProviderType = null;
-                    break;
-            }
         }
     }
 }

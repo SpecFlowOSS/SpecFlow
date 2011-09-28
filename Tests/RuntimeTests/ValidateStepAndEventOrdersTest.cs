@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using ParserTests;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using Is=Rhino.Mocks.Constraints.Is;
+using MockRepository = Rhino.Mocks.MockRepository;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -17,6 +20,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void CanValidateStepAndEventOrdersForFile(string fileName)
         {
             ExecuteForFile(fileName);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            TestRunnerManager.Reset();
         }
 
         protected override void ExecuteTests(object test, Feature feature)
@@ -41,7 +50,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private void SetupTestRunnerMock(MockRepository mockRepository, Feature feature)
         {
             var testRunnerMock = mockRepository.StrictMock<ITestRunner>();
-            ObjectContainer.SyncTestRunner = testRunnerMock;
+
+            var testRunnerManagerStub = new Mock<ITestRunnerManager>();
+            testRunnerManagerStub.Setup(trm => trm.GetTestRunner(It.IsAny<Assembly>(), It.IsAny<bool>())).Returns(testRunnerMock);
+
+            TestRunnerManager.Instance = testRunnerManagerStub.Object;
+
             using (mockRepository.Ordered())
             {
                 testRunnerMock.Expect(tr => tr.OnFeatureStart(null)).IgnoreArguments();

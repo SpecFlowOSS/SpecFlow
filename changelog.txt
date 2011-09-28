@@ -1,10 +1,18 @@
 ﻿vNext - ???
 
+Breaking changes:
++ Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
+
 New features:
 + Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
 + Support for MbUnit v3. Use unit test provider name "mbunit.3". (Issue 133, by Raytheon)
++ SpecFlow framework classes can be used as a dependency for context injection.
++ Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
++ Better customization possibilities with plugins.
++ [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
 
 Fixed issues:
++ Instances created for context injection are disposed after scenario execution (Issue 22)
 + Error when opening feature file in VS2008 if VS2008 syntax coloring was enabled.
 + Silverlight: make possible to access SilverlightTest instance (Issue 126, by Matt Ellis)
 + Silverlight: apply feature tags to the test class instead of the methods (Issue 126, by Matt Ellis)

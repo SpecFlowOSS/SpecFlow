@@ -30,7 +30,6 @@ namespace TechTalk.SpecFlow.Async
         /// </summary>
         public static AsyncContext Current
         {
-            //get { return ObjectContainer.AsyncContext; }
             get
             {
                 AsyncContext current;

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Async
 {
@@ -14,11 +16,21 @@ namespace TechTalk.SpecFlow.Async
     /// </remarks>
     public class AsyncTestRunner : ITestRunner
     {
-        private readonly ITestRunner testRunner;
+        private readonly ITestExecutionEngine testExecutionEngine;
 
-        public AsyncTestRunner(ITestRunner testRunner)
+        public AsyncTestRunner(ITestExecutionEngine testExecutionEngine)
         {
-            this.testRunner = testRunner;
+            this.testExecutionEngine = testExecutionEngine;
+        }
+
+        public FeatureContext FeatureContext
+        {
+            get { return testExecutionEngine.FeatureContext; }
+        }
+
+        public ScenarioContext ScenarioContext
+        {
+            get { return testExecutionEngine.ScenarioContext; }
         }
 
         private IAsyncTestExecutor asyncTestExecutor;
@@ -66,7 +78,7 @@ namespace TechTalk.SpecFlow.Async
             // No enqueueing
             // I don't like the idea of enqueueing async steps in a BeforeFeature. Feels like code/test smell
             // Also, feature setup/teardown is static, so there will be no context
-            testRunner.OnFeatureStart(featureInfo);
+            testExecutionEngine.OnFeatureStart(featureInfo);
         }
 
         public void OnFeatureEnd()
@@ -74,7 +86,7 @@ namespace TechTalk.SpecFlow.Async
             // No enqueueing
             // We're at the end of the async task list, so again, feels like a smell to try and enqueue something
             // And again, static method, so no context
-            testRunner.OnFeatureEnd();
+            testExecutionEngine.OnFeatureEnd();
         }
 
         public void OnTestRunEnd()
@@ -82,7 +94,7 @@ namespace TechTalk.SpecFlow.Async
             // No enqueueing
             // We're at the end of the async task list, so again, feels like a smell to try and enqueue something
             // And again, static method, so no context
-            testRunner.OnTestRunEnd();
+            testExecutionEngine.OnTestRunEnd();
         }
 
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
@@ -93,11 +105,10 @@ namespace TechTalk.SpecFlow.Async
             // No enqueueing
             // The queue is logically empty at this point (we're the first thing to run in a scenario)
             // and enqueueing right now will just add to an empty list
-            testRunner.OnScenarioStart(scenarioInfo);
+            testExecutionEngine.OnScenarioStart(scenarioInfo);
 
             // register the test executor in the scenario context to be able to used AOP style
-            ObjectContainer.ScenarioContext.Set(asyncTestExecutor);
-            ObjectContainer.ScenarioContext.SetTestRunnerUnchecked(this);
+            ScenarioContext.Set(asyncTestExecutor);
 
         }
 
@@ -105,7 +116,7 @@ namespace TechTalk.SpecFlow.Async
         public void CollectScenarioErrors()
         {
             // Make sure these commands run after all other steps
-            AsyncTestExecutor.EnqueueCallback(() => testRunner.CollectScenarioErrors());
+            AsyncTestExecutor.EnqueueCallback(() => testExecutionEngine.OnAfterLastStep());
             AsyncTestExecutor.EnqueueTestComplete();
         }
 
@@ -113,39 +124,39 @@ namespace TechTalk.SpecFlow.Async
         {
             // No enqueueing
             // The test framework should ensure that we're called after the test completes
-            testRunner.OnScenarioEnd();
+            testExecutionEngine.OnScenarioEnd();
 
             UnregisterAsyncTestExecutor();
         }
 
         public void Given(string text, string multilineTextArg, Table tableArg)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.Given(text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Given, text, multilineTextArg, tableArg));
         }
 
         public void When(string text, string multilineTextArg, Table tableArg)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.When(text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.When, text, multilineTextArg, tableArg));
         }
 
         public void Then(string text, string multilineTextArg, Table tableArg)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.Then(text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Then, text, multilineTextArg, tableArg));
         }
 
         public void And(string text, string multilineTextArg, Table tableArg)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.And(text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.And, text, multilineTextArg, tableArg));
         }
 
         public void But(string text, string multilineTextArg, Table tableArg)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.But(text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.But, text, multilineTextArg, tableArg));
         }
 
         public void Pending()
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testRunner.Pending());
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Pending());
         }
     }
 }

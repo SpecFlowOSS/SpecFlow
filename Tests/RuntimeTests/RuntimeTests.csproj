@@ -128,8 +128,14 @@
     <Compile Include="AsyncTests\AsyncContextTest.cs" />
     <Compile Include="AsyncTests\AsyncTestRunnerTest.cs" />
     <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
+    <Compile Include="AsyncTests\AsyncTestRunnerTestBase.cs" />
     <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
     <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="Infrastructure\PluginTests.cs" />
+    <Compile Include="Infrastructure\RuntimeConfigurationExtensions.cs" />
+    <Compile Include="Infrastructure\StringConfigProvider.cs" />
+    <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
+    <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
@@ -149,6 +155,7 @@
     <Compile Include="SuccessfulExecutionTest.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestRunnerTest.cs" />
+    <Compile Include="TestTestRunnerFactory.cs" />
     <Compile Include="ValidateStepAndEventOrdersTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +183,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <Compile Include="ScenarioContext_BindingInstancesTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

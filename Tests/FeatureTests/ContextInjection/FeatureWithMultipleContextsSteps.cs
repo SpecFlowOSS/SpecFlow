@@ -30,5 +30,11 @@ namespace FeatureTests.ContextInjection
             Assert.That(_context1, Is.Not.Null);
             Assert.That(_context2, Is.Not.Null);
         }
+
+        [Then("the contexts are the same")]
+        public void ThenTheContextsAreTheSame()
+        {
+            Assert.AreEqual(_context1, _context2);
+        }
     }
 }

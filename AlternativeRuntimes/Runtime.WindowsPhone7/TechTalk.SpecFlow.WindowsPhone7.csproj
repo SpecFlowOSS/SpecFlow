@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;BODI_LIMITEDRUNTIME</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;BODI_LIMITEDRUNTIME</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -49,323 +49,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Runtime\Assist\EnumerableProjection.cs">
-      <Link>SharedRuntime\EnumerableProjection.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\InstanceComparisonExtensionMethods.cs">
-      <Link>SharedRuntime\InstanceComparisonExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\IValueComparer.cs">
-      <Link>SharedRuntime\IValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\PivotTable.cs">
-      <Link>SharedRuntime\PivotTable.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ProjectionExtensionMethods.cs">
-      <Link>SharedRuntime\ProjectionExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\PropertyExtensionMethods.cs">
-      <Link>SharedRuntime\PropertyExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\RowExtensionMethods.cs">
-      <Link>SharedRuntime\RowExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\SetComparisonExtensionMethods.cs">
-      <Link>SharedRuntime\SetComparisonExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\TableExtensionMethods.cs">
-      <Link>SharedRuntime\TableExtensionMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\TEHelpers.cs">
-      <Link>SharedRuntime\TEHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\BoolValueComparer.cs">
-      <Link>SharedRuntime\BoolValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\DateTimeValueComparer.cs">
-      <Link>SharedRuntime\DateTimeValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\DecimalValueComparer.cs">
-      <Link>SharedRuntime\DecimalValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\DefaultValueComparer.cs">
-      <Link>SharedRuntime\DefaultValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\DoubleValueComparer.cs">
-      <Link>SharedRuntime\DoubleValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\FloatValueComparer.cs">
-      <Link>SharedRuntime\FloatValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueComparers\GuidValueComparer.cs">
-      <Link>SharedRuntime\GuidValueComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\BoolValueRetriever.cs">
-      <Link>SharedRuntime\BoolValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\ByteValueRetriever.cs">
-      <Link>SharedRuntime\ByteValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\CharValueRetriever.cs">
-      <Link>SharedRuntime\CharValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\DateTimeValueRetriever.cs">
-      <Link>SharedRuntime\DateTimeValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\DecimalValueRetriever.cs">
-      <Link>SharedRuntime\DecimalValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\DoubleValueRetriever.cs">
-      <Link>SharedRuntime\DoubleValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\EnumValueRetriever.cs">
-      <Link>SharedRuntime\EnumValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\FloatValueRetriever.cs">
-      <Link>SharedRuntime\FloatValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\GuidValueRetriever.cs">
-      <Link>SharedRuntime\GuidValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\IntValueRetriever.cs">
-      <Link>SharedRuntime\IntValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\LongValueRetriever.cs">
-      <Link>SharedRuntime\LongValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableBoolValueRetriever.cs">
-      <Link>SharedRuntime\NullableBoolValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableByteValueRetriever.cs">
-      <Link>SharedRuntime\NullableByteValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableCharValueRetriever.cs">
-      <Link>SharedRuntime\NullableCharValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableDateTimeValueRetriever.cs">
-      <Link>SharedRuntime\NullableDateTimeValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableDecimalValueRetriever.cs">
-      <Link>SharedRuntime\NullableDecimalValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableDoubleValueRetriever.cs">
-      <Link>SharedRuntime\NullableDoubleValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableFloatValueRetriever.cs">
-      <Link>SharedRuntime\NullableFloatValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableGuidValueRetriever.cs">
-      <Link>SharedRuntime\NullableGuidValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableIntValueRetriever.cs">
-      <Link>SharedRuntime\NullableIntValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableLongValueRetriever.cs">
-      <Link>SharedRuntime\NullableLongValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableSByteValueRetriever.cs">
-      <Link>SharedRuntime\NullableSByteValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableShortValueRetriever.cs">
-      <Link>SharedRuntime\NullableShortValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableUIntValueRetriever.cs">
-      <Link>SharedRuntime\NullableUIntValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableULongValueRetriever.cs">
-      <Link>SharedRuntime\NullableULongValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\NullableUShortValueRetriever.cs">
-      <Link>SharedRuntime\NullableUShortValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\SByteValueRetriever.cs">
-      <Link>SharedRuntime\SByteValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\ShortValueRetriever.cs">
-      <Link>SharedRuntime\ShortValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\StringValueRetriever.cs">
-      <Link>SharedRuntime\StringValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\UIntValueRetriever.cs">
-      <Link>SharedRuntime\UIntValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\ULongValueRetriever.cs">
-      <Link>SharedRuntime\ULongValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Assist\ValueRetrievers\UShortValueRetriever.cs">
-      <Link>SharedRuntime\UShortValueRetriever.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Async\AsyncContext.cs">
-      <Link>SharedRuntime\AsyncContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Async\AsyncSteps.cs">
-      <Link>SharedRuntime\AsyncSteps.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Async\AsyncTestRunner.cs">
-      <Link>SharedRuntime\AsyncTestRunner.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Async\IAsyncTestExecutor.cs">
-      <Link>SharedRuntime\IAsyncTestExecutor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Attributes.cs">
-      <Link>SharedRuntime\Attributes.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\BindingMatch.cs">
-      <Link>SharedRuntime\BindingMatch.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\BindingRegistry.cs">
-      <Link>SharedRuntime\BindingRegistry.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\BindingScope.cs">
-      <Link>SharedRuntime\BindingScope.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\BindingType.cs">
-      <Link>SharedRuntime\BindingType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\EventBinding.cs">
-      <Link>SharedRuntime\EventBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepArgs.cs">
-      <Link>SharedRuntime\StepArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepArgumentTypeConverter.cs">
-      <Link>SharedRuntime\StepArgumentTypeConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepBinding.cs">
-      <Link>SharedRuntime\StepBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepContext.cs">
-      <Link>SharedRuntime\StepContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepDefinitionKeyword.cs">
-      <Link>SharedRuntime\StepDefinitionKeyword.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepMethodBinding.cs">
-      <Link>SharedRuntime\StepMethodBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Bindings\StepTransformationBinding.cs">
-      <Link>SharedRuntime\StepTransformationBinding.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Configuration\ConfigurationServices.cs">
-      <Link>SharedRuntime\ConfigurationServices.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Configuration\MissingOrPendingStepsOutcome.cs">
-      <Link>SharedRuntime\MissingOrPendingStepsOutcome.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\CultureInfoScope.cs">
-      <Link>SharedRuntime\CultureInfoScope.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\DictionaryHelpers.cs">
-      <Link>SharedRuntime\DictionaryHelpers.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ErrorHandling\BindingException.cs">
-      <Link>SharedRuntime\BindingException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ErrorHandling\ErrorProvider.cs">
-      <Link>SharedRuntime\ErrorProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ErrorHandling\MissingStepDefinitionException.cs">
-      <Link>SharedRuntime\MissingStepDefinitionException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ErrorHandling\PendingStepException.cs">
-      <Link>SharedRuntime\PendingStepException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ErrorHandling\SpecFlowException.cs">
-      <Link>SharedRuntime\SpecFlowException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\FeatureContext.cs">
-      <Link>SharedRuntime\FeatureContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\FeatureInfo.cs">
-      <Link>SharedRuntime\FeatureInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ITestRunner.cs">
-      <Link>SharedRuntime\ITestRunner.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ObjectContainer.cs">
-      <Link>SharedRuntime\ObjectContainer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ProgrammingLanguage.cs">
-      <Link>SharedRuntime\ProgrammingLanguage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ScenarioBlock.cs">
-      <Link>SharedRuntime\ScenarioBlock.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ScenarioContext.cs">
-      <Link>SharedRuntime\ScenarioContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\ScenarioInfo.cs">
-      <Link>SharedRuntime\ScenarioInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\SpecFlowContext.cs">
-      <Link>SharedRuntime\SpecFlowContext.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Steps.cs">
-      <Link>SharedRuntime\Steps.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Table.cs">
-      <Link>SharedRuntime\Table.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\TestRunner.cs">
-      <Link>SharedRuntime\TestRunner.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\TestRunnerManager.cs">
-      <Link>SharedRuntime\TestRunnerManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\CodeFormattingExtensions.cs">
-      <Link>SharedRuntime\CodeFormattingExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\DefaultListener.cs">
-      <Link>SharedRuntime\DefaultListener.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\IStepDefinitionSkeletonProvider.cs">
-      <Link>SharedRuntime\IStepDefinitionSkeletonProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\ITraceListener.cs">
-      <Link>SharedRuntime\ITraceListener.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\LanguageHelper.cs">
-      <Link>SharedRuntime\LanguageHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\NullListener.cs">
-      <Link>SharedRuntime\NullListener.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderBase.cs">
-      <Link>SharedRuntime\StepDefinitionSkeletonProviderBase.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderCS.cs">
-      <Link>SharedRuntime\StepDefinitionSkeletonProviderCS.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\StepDefinitionSkeletonProviderVB.cs">
-      <Link>SharedRuntime\StepDefinitionSkeletonProviderVB.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\StepFormatter.cs">
-      <Link>SharedRuntime\StepFormatter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\Tracing\TestTracer.cs">
-      <Link>SharedRuntime\TestTracer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\IUnitTestRuntimeProvider.cs">
-      <Link>SharedRuntime\IUnitTestRuntimeProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\MbUnitRuntimeProvider.cs">
-      <Link>SharedRuntime\MbUnitRuntimeProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\MsTest2010RuntimeProvider.cs">
-      <Link>SharedRuntime\MsTest2010RuntimeProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\MsTestRuntimeProvider.cs">
-      <Link>SharedRuntime\MsTestRuntimeProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\NUnitRuntimeProvider.cs">
-      <Link>SharedRuntime\NUnitRuntimeProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\UnitTestRuntimeProviderHelper.cs">
-      <Link>SharedRuntime\UnitTestRuntimeProviderHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Runtime\UnitTestProvider\XUnitRuntimeProvider.cs">
-      <Link>SharedRuntime\XUnitRuntimeProvider.cs</Link>
+    <Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**">
+      <Link>SharedRuntime\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\..\lib\BoDi\BoDi.cs">
+      <Link>SharedRuntime\BoDi.cs</Link>
     </Compile>
     <Compile Include="..\Runtime.Silverlight3\Async\ISilverlightTestInstance.cs">
       <Link>Async\ISilverlightTestInstance.cs</Link>
@@ -396,6 +84,7 @@
     </Compile>
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
+    <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestProvider\MsTestWP7RuntimeProvider.cs" />
   </ItemGroup>

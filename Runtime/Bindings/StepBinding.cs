@@ -1,5 +1,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -17,8 +19,8 @@ namespace TechTalk.SpecFlow.Bindings
         private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
 #endif
 
-        public StepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
-            : base(methodInfo)
+        public StepBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
+            : base(runtimeConfiguration, errorProvider, methodInfo)
         {
             Type = type;
             Regex regex = new Regex("^" + regexString + "$", RegexOptions);

@@ -1,0 +1,36 @@
+﻿using System.Collections.Generic;
+using System.Reflection;
+using BoDi;
+using TechTalk.SpecFlow.Configuration;
+
+namespace TechTalk.SpecFlow.Infrastructure
+{
+    internal class TestRunnerFactory : ITestRunnerFactory
+    {
+        protected readonly IObjectContainer objectContainer;
+        protected readonly RuntimeConfiguration runtimeConfiguration;
+
+        public TestRunnerFactory(IObjectContainer objectContainer, RuntimeConfiguration runtimeConfiguration)
+        {
+            this.objectContainer = objectContainer;
+            this.runtimeConfiguration = runtimeConfiguration;
+        }
+
+        public ITestRunner Create(Assembly testAssembly)
+        {
+            var testRunner = CreateTestRunnerInstance();
+
+            var bindingAssemblies = new List<Assembly> { testAssembly };
+            bindingAssemblies.AddRange(runtimeConfiguration.AdditionalStepAssemblies);
+
+            testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
+
+            return testRunner;
+        }
+
+        protected virtual ITestRunner CreateTestRunnerInstance()
+        {
+            return objectContainer.Resolve<ITestRunner>();
+        }
+    }
+}

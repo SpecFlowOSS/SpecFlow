@@ -110,6 +110,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("a feature which requires multiple contexts");
 #line 16
  testRunner.Then("the contexts are set");
+#line 17
+ testRunner.And("the contexts are the same");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -119,13 +121,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FeatureWithRecursiveContexts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature with recursive contexts", ((string[])(null)));
-#line 18
-this.ScenarioSetup(scenarioInfo);
 #line 19
- testRunner.Given("a feature which requires a recursive context");
+this.ScenarioSetup(scenarioInfo);
 #line 20
- testRunner.Then("the context is set");
+ testRunner.Given("a feature which requires a recursive context");
 #line 21
+ testRunner.Then("the context is set");
+#line 22
  testRunner.And("its sub-context is set");
 #line hidden
             this.ScenarioCleanup();
@@ -136,13 +138,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FeatureWithADependentContext()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature with a dependent context", ((string[])(null)));
-#line 23
-this.ScenarioSetup(scenarioInfo);
 #line 24
- testRunner.Given("a feature which requires a single context");
+this.ScenarioSetup(scenarioInfo);
 #line 25
- testRunner.Then("the context is set");
+ testRunner.Given("a feature which requires a single context");
 #line 26
+ testRunner.Then("the context is set");
+#line 27
  testRunner.And("the context was created by the feature with a single context scenario");
 #line hidden
             this.ScenarioCleanup();

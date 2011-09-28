@@ -7,7 +7,7 @@ using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    internal enum BindingEvent
+    public enum BindingEvent
     {
         TestRunStart,
         TestRunEnd,
@@ -21,17 +21,26 @@ namespace TechTalk.SpecFlow.Bindings
         StepEnd
     }
 
-    internal class BindingRegistry : IEnumerable<StepBinding>
+    public interface IBindingRegistry : IEnumerable<StepBinding>
     {
-        private readonly ErrorProvider errorProvider;
+        void BuildBindingsFromAssembly(Assembly assembly);
+        List<EventBinding> GetEvents(BindingEvent bindingEvent);
+        ICollection<StepTransformationBinding> StepTransformations { get; }
+    }
+
+    internal class BindingRegistry : IBindingRegistry
+    {
+        private readonly IErrorProvider errorProvider;
+        private readonly IBindingFactory bindingFactory;
 
         private readonly List<StepBinding> stepBindings = new List<StepBinding>();
         private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
 
-        public BindingRegistry()
+        public BindingRegistry(IErrorProvider errorProvider, IBindingFactory bindingFactory)
         {
-            this.errorProvider = ObjectContainer.ErrorProvider;
+            this.errorProvider = errorProvider;
+            this.bindingFactory = bindingFactory;
         }
 
         public void BuildBindingsFromAssembly(Assembly assembly)
@@ -94,9 +103,16 @@ namespace TechTalk.SpecFlow.Bindings
         {
             CheckEventBindingMethod(bindingEventAttr.Event, method);
 
-            var eventBinding = new EventBinding(bindingEventAttr.Tags, method);
-
-            GetEvents(bindingEventAttr.Event).Add(eventBinding);
+            ApplyForScope(method,
+                          scope =>
+                              {
+                                  var eventBinding = bindingFactory.CreateEventBinding(method, scope);
+                                  GetEvents(bindingEventAttr.Event).Add(eventBinding);
+                              },
+                          bindingEventAttr.Tags == null
+                              ? null
+                              : bindingEventAttr.Tags.Select(tag => new StepScopeAttribute {Tag = tag})
+                );
         }
 
         private void CheckEventBindingMethod(BindingEvent bindingEvent, MethodInfo method)
@@ -119,25 +135,32 @@ namespace TechTalk.SpecFlow.Bindings
                 bindingEvent == BindingEvent.StepEnd;
         }
 
-        private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)
+        private void ApplyForScope(MethodInfo method, Action<BindingScope> action, IEnumerable<StepScopeAttribute> additionalScopeAttrs = null)
         {
-            CheckStepBindingMethod(method);
-
-            var scopeAttrs = 
+            var scopeAttrs =
                 Attribute.GetCustomAttributes(method.ReflectedType, typeof(StepScopeAttribute)).Concat(
-                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute)));
+                Attribute.GetCustomAttributes(method, typeof(StepScopeAttribute))).Cast<StepScopeAttribute>();
+
+            if (additionalScopeAttrs != null)
+                scopeAttrs = scopeAttrs.Concat(additionalScopeAttrs);
 
             if (scopeAttrs.Any())
             {
-                foreach (StepScopeAttribute scopeAttr in scopeAttrs)
+                foreach (var scopeAttr in scopeAttrs)
                 {
-                    AddStepBinding(method, scenarioStepAttr, CreateScope(scopeAttr));
+                    action(CreateScope(scopeAttr));
                 }
             }
             else
             {
-                AddStepBinding(method, scenarioStepAttr, null);
+                action(null);
             }
+        }
+
+        private void BuildStepBindingFromMethod(MethodInfo method, ScenarioStepAttribute scenarioStepAttr)
+        {
+            CheckStepBindingMethod(method);
+            ApplyForScope(method, scope => AddStepBinding(method, scenarioStepAttr, scope));
         }
 
         private BindingScope CreateScope(StepScopeAttribute scopeAttr)
@@ -150,13 +173,13 @@ namespace TechTalk.SpecFlow.Bindings
 
         private void AddStepBinding(MethodInfo method, ScenarioStepAttribute scenarioStepAttr, BindingScope stepScope)
         {
-            StepBinding stepBinding = new StepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
+            var stepBinding = bindingFactory.CreateStepBinding(scenarioStepAttr.Type, scenarioStepAttr.Regex, method, stepScope);
             stepBindings.Add(stepBinding);
         }
 
         private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
         {
-            StepTransformationBinding stepTransformationBinding = new StepTransformationBinding(argumentTransformationAttribute.Regex, method);
+            var stepTransformationBinding = bindingFactory.CreateStepArgumentTransformation(argumentTransformationAttribute.Regex, method);
 
             stepTransformations.Add(stepTransformationBinding);
         }

@@ -1,10 +1,14 @@
 using System;
 using System.Reflection;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
 {
     public interface ITestRunner
     {
+        FeatureContext FeatureContext { get; }
+        ScenarioContext ScenarioContext { get; }
+
         void InitializeTestRunner(Assembly[] bindingAssemblies);
 
         void OnFeatureStart(FeatureInfo featureInfo);

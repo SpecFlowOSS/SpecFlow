@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
 using Rhino.Mocks;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -40,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("sample step with simple convert param: 1.23"); // German uses ',' as decimal separator, but BindingCulture is english
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
 
@@ -53,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunner.Given("argument 1.23 should be able to convert to 1.23 even though it has english localization"); // German uses ',' as decimal separator, but BindingCulture is english
 
-            Assert.AreEqual(TestStatus.OK, ObjectContainer.ScenarioContext.TestStatus);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
     }

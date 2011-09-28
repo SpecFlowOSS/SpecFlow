@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using MiniDi;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Configuration
 {
     public class ConfigurationSectionHandler : ConfigurationSection
     {
-        [ConfigurationProperty("language", IsRequired = false)]
+        [ConfigurationProperty("language", IsRequired = false, DefaultValue = null)]
         public LanguageConfigElement Language
         {
             get { return (LanguageConfigElement)this["language"]; }
@@ -58,6 +59,14 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (StepAssemblyCollection)this["stepAssemblies"]; }
             set { this["stepAssemblies"] = value; }
+        }
+
+        [ConfigurationProperty("plugins", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(PluginCollection), AddItemName = "add")]
+        public PluginCollection Plugins
+        {
+            get { return (PluginCollection)this["plugins"]; }
+            set { this["plugins"] = value; }
         }
 
         static public ConfigurationSectionHandler CreateFromXml(string xmlContent)
@@ -144,6 +153,14 @@ namespace TechTalk.SpecFlow.Configuration
 
     public class RuntimeConfigElement : ConfigurationElement
     {
+        [ConfigurationProperty("dependencies", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
+        [ConfigurationCollection(typeof(ContainerRegistrationCollection), AddItemName = "register")]
+        public ContainerRegistrationCollection Dependencies
+        {
+            get { return (ContainerRegistrationCollection)this["dependencies"]; }
+            set { this["dependencies"] = value; }
+        }
+
         [ConfigurationProperty("detectAmbiguousMatches", DefaultValue = ConfigDefaults.DetectAmbiguousMatches, IsRequired = false)]
         public bool DetectAmbiguousMatches
         {
@@ -251,11 +268,42 @@ namespace TechTalk.SpecFlow.Configuration
 
     public class StepAssemblyConfigElement : ConfigurationElement
     {
-        [ConfigurationProperty("assembly", DefaultValue = null, IsRequired = false)]
+        [ConfigurationProperty("assembly", IsRequired = true)]
         public string Assembly
         {
             get { return (string)this["assembly"]; }
             set { this["assembly"] = value; }
+        }
+    }
+
+    public class PluginCollection : ConfigurationElementCollection, IEnumerable<PluginConfigElement>
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new PluginConfigElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((PluginConfigElement)element).Name;
+        }
+
+        IEnumerator<PluginConfigElement> IEnumerable<PluginConfigElement>.GetEnumerator()
+        {
+            foreach (var item in this)
+            {
+                yield return (PluginConfigElement)item;
+            }
+        }
+    }
+
+    public class PluginConfigElement : ConfigurationElement
+    {
+        [ConfigurationProperty("name", IsRequired = true)]
+        public string Name
+        {
+            get { return (string)this["name"]; }
+            set { this["name"] = value; }
         }
     }
 }

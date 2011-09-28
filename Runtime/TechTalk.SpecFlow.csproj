@@ -48,11 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\lib\MiniDi\MiniDi.cs">
-      <Link>MiniDi\MiniDi.cs</Link>
-    </Compile>
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\lib\BoDi\BoDi.cs">
+      <Link>BoDi\BoDi.cs</Link>
     </Compile>
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
@@ -111,9 +111,21 @@
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
+    <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
+    <Compile Include="Bindings\IBindingFactory.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
-    <Compile Include="Bindings\StepMethodBinding.cs" />
+    <Compile Include="Bindings\MethodBinding.cs" />
+    <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
+    <Compile Include="Configuration\IRuntimeConfigurationDefaultsProvider.cs" />
+    <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
+    <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
+    <Compile Include="Infrastructure\IContextManager.cs" />
+    <Compile Include="Infrastructure\IRuntimePlugin.cs" />
+    <Compile Include="Infrastructure\IRuntimePluginLoader.cs" />
+    <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
+    <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
     <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />
@@ -123,6 +135,7 @@
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="DictionaryHelpers.cs" />
+    <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepTransformationBinding.cs" />
@@ -143,7 +156,10 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepArgs.cs" />
+    <Compile Include="Infrastructure\TestRunContainerBuilder.cs" />
+    <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
+    <Compile Include="Infrastructure\TestStatus.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
@@ -166,9 +182,8 @@
     <Compile Include="ScenarioInfo.cs" />
     <Compile Include="Bindings\StepBinding.cs" />
     <Compile Include="Table.cs" />
-    <Compile Include="TestRunner.cs" />
+    <Compile Include="Infrastructure\TestExecutionEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ObjectContainer.cs" />
     <Compile Include="Tracing\TestTracer.cs" />
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />

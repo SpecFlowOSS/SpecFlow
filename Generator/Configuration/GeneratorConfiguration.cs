@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using MiniDi;
+using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 
