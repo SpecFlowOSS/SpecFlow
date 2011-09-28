@@ -10,6 +10,10 @@ New features:
 + Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
 + Better customization possibilities with plugins.
 + [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
++ VS2010: Run & debug scenarios from the feature file context menu and solution explorer nodes (feature file, folder, project).
++ VS2010: Use infix word prefix matching for step completion. 
++ VS2010: Regenerate feature files from project context menu.
++ VS2010: Go to step definition command in feature file context menu. 
 
 Fixed issues:
 + Instances created for context injection are disposed after scenario execution (Issue 22)

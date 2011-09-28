@@ -52,8 +52,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static IEnumerable<ProjectItem> GetAllProjectItem(Project project)
         {
+            return GetAllProjectItem(project.ProjectItems);
+        }
+
+        public static IEnumerable<ProjectItem> GetAllSubProjectItem(ProjectItem projectItem)
+        {
+            if (projectItem.ProjectItems == null)
+                Enumerable.Empty<ProjectItem>();
+
+            return GetAllProjectItem(projectItem.ProjectItems);
+        }
+
+        private static IEnumerable<ProjectItem> GetAllProjectItem(ProjectItems projectItems)
+        {
             Queue<ProjectItem> items = new Queue<ProjectItem>();
-            foreach (ProjectItem item in project.ProjectItems)
+            foreach (ProjectItem item in projectItems)
                 items.Enqueue(item);
             while (items.Count != 0)
             {
@@ -178,11 +191,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             if (properties == null)
                 return defaultValue;
 
-            Property property = properties.Item(optionName);
-            if (property == null || !(property.Value is T))
+            try
+            {
+                Property property = properties.Item(optionName);
+                if (property == null)
+                    return defaultValue;
+                var value = property.Value;
+                if (typeof(T).IsEnum && value is int)
+                    value = Enum.ToObject(typeof(T), (int)value);
+                if (!(value is T))
+                    return defaultValue;
+                return (T)value;
+            }
+            catch(Exception)
+            {
                 return defaultValue;
-
-            return (T)property.Value;
+            }
         }
 
         public static bool IsPhysicalFile(ProjectItem projectItem)
@@ -340,6 +364,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 return null;
 
             return vsProject.References.OfType<Reference>().FirstOrDefault(r => r.Name == assemblyName);
+        }
+
+        public static bool Build(Project project)
+        {
+            var solutionBuild = project.DTE.Solution.SolutionBuild;
+
+            solutionBuild.BuildProject(solutionBuild.ActiveConfiguration.Name, project.FullName, true);
+
+            return solutionBuild.LastBuildInfo == 0;
         }
     }
 }

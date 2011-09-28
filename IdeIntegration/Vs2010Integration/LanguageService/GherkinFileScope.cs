@@ -48,17 +48,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public int KeywordLine { get; private set; }
         public int BlockRelativeStartLine { get; private set; }
         public int BlockRelativeEndLine { get; private set; }
+        public int BlockRelativeContentEndLine { get; private set; }
         public IEnumerable<ClassificationSpan> ClassificationSpans { get; private set; }
         public IEnumerable<ITagSpan<IOutliningRegionTag>> OutliningRegions { get; private set; }
         public IEnumerable<ErrorInfo> Errors { get; private set; }
 
-        protected GherkinFileBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
+        protected GherkinFileBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
         {
             Keyword = keyword;
             Title = title;
             KeywordLine = keywordLine;
             BlockRelativeStartLine = blockRelativeStartLine;
             BlockRelativeEndLine = blockRelativeEndLine;
+            BlockRelativeContentEndLine = blockRelativeContentEndLine;
             ClassificationSpans = classificationSpans;
             OutliningRegions = outliningRegions;
             Errors = errors;
@@ -69,8 +71,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public IEnumerable<string> Tags { get; private set; }
 
-        public HeaderBlock(string keyword, string title, int keywordLine, IEnumerable<string> tags, int blockRelativeStartLine, int blockRelativeEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
-            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors)
+        public HeaderBlock(string keyword, string title, int keywordLine, IEnumerable<string> tags, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors)
+            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors)
         {
             Tags = tags;
         }
@@ -79,13 +81,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     internal class InvalidFileBlock : GherkinFileBlock, IInvalidFileBlock
     {
         public InvalidFileBlock(int startLine, int endLine, params ErrorInfo[] errorInfos)
-            : this(startLine, endLine - startLine, new ClassificationSpan[0], new ITagSpan<IOutliningRegionTag>[0], errorInfos ?? new ErrorInfo[0])
+            : this(startLine, endLine - startLine, endLine - startLine, new ClassificationSpan[0], new ITagSpan<IOutliningRegionTag>[0], errorInfos ?? new ErrorInfo[0])
         {
             
         }
 
-        public InvalidFileBlock(int startLine, int endLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors) 
-            : base(null, null, startLine, 0, endLine - startLine, classificationSpans, outliningRegions, errors)
+        public InvalidFileBlock(int startLine, int endLine, int blockRelativeContentEndLine, IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors) 
+            : base(null, null, startLine, 0, endLine - startLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors)
         {
         }
     }
@@ -93,10 +95,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     internal abstract class GherkinFileBlockWithSteps : GherkinFileBlock
     {
         public IEnumerable<GherkinStep> Steps { get; private set; }
-        
-        protected GherkinFileBlockWithSteps(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, 
+
+        protected GherkinFileBlockWithSteps(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, 
             IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors, IEnumerable<GherkinStep> steps)
-            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors)
+            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors)
         {
             Steps = steps;
         }
@@ -104,18 +106,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal class BackgroundBlock : GherkinFileBlockWithSteps, IBackgroundBlock
     {
-        public BackgroundBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, 
+        public BackgroundBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, 
             IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors, IEnumerable<GherkinStep> steps) 
-            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors, steps)
+            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors, steps)
         {
         }
     }
 
     internal class ScenarioBlock : GherkinFileBlockWithSteps, IScenarioBlock
     {
-        public ScenarioBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, 
+        public ScenarioBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, 
             IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors, IEnumerable<GherkinStep> steps)
-            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors, steps)
+            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors, steps)
         {
         }
     }
@@ -124,9 +126,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public IEnumerable<IScenarioOutlineExampleSet> ExampleSets { get; private set; }
 
-        public ScenarioOutlineBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, 
+        public ScenarioOutlineBlock(string keyword, string title, int keywordLine, int blockRelativeStartLine, int blockRelativeEndLine, int blockRelativeContentEndLine, 
             IEnumerable<ClassificationSpan> classificationSpans, IEnumerable<ITagSpan<IOutliningRegionTag>> outliningRegions, IEnumerable<ErrorInfo> errors, IEnumerable<GherkinStep> steps, IEnumerable<IScenarioOutlineExampleSet> exampleSets) 
-            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, classificationSpans, outliningRegions, errors, steps)
+            : base(keyword, title, keywordLine, blockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, classificationSpans, outliningRegions, errors, steps)
         {
             ExampleSets = exampleSets;
         }

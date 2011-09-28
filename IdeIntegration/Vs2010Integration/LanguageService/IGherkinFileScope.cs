@@ -57,9 +57,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         int BlockRelativeStartLine { get; }
 
         /// <summary>
-        /// A line number relative to <see cref="KeywordLine"/> specifying the lase line of the block (can be zero).
+        /// A line number relative to <see cref="KeywordLine"/> specifying the last line of the block (can be zero).
         /// </summary>
         int BlockRelativeEndLine { get; }
+
+        /// <summary>
+        /// A line number relative to <see cref="KeywordLine"/> specifying the last line of the block containing important (non-comment) content (can be zero).
+        /// </summary>
+        int BlockRelativeContentEndLine { get; }
 
         /// <summary>
         /// The coloring information for this block (null, if no coloring).

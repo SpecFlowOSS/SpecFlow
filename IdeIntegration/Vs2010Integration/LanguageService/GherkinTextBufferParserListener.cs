@@ -153,6 +153,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return regionEndLine;
         }
 
+        private int CalculateContentEndLine(int editorLine)
+        {
+            var contentEndLine = editorLine - 1;
+            // skip comments & whitespaces before next scenario start
+            while (contentEndLine > gherkinBuffer.LineOffset &&
+                (gherkinBuffer.GetMatchForLine(commentRe, contentEndLine) != null || gherkinBuffer.GetMatchForLine(whitespaceOnlyRe, contentEndLine) != null))
+                contentEndLine--;
+            return contentEndLine;
+        }
+
         private Action<int> CloseLevel2Outlinings = null;
 
         private void OnCloseLevel2Outlinings(int regionEndLine)
@@ -168,6 +178,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             var regionStartLine = CurrentFileBlockBuilder.KeywordLine;
             int regionEndLine = CalculateRegionEndLine(editorLine);
+            int contentEndLine = CalculateContentEndLine(editorLine);
 
             OnCloseLevel2Outlinings(regionEndLine);
 
@@ -180,13 +191,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         CurrentFileBlockBuilder.FullTitle);
             }
 
-            BuildBlock(CurrentFileBlockBuilder, editorLine - 1);
+            BuildBlock(CurrentFileBlockBuilder, editorLine - 1, contentEndLine);
             CurrentFileBlockBuilder = null;
         }
 
-        protected virtual void BuildBlock(GherkinFileBlockBuilder blockBuilder, int lastLine)
+        protected virtual void BuildBlock(GherkinFileBlockBuilder blockBuilder, int lastLine, int contentEndLine)
         {
-            blockBuilder.Build(gherkinFileScope, lastLine);
+            blockBuilder.Build(gherkinFileScope, lastLine, contentEndLine);
         }
 
         private void CreateBlock(int editorLine)

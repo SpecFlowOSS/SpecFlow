@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidSpecFlowPkgString">
+    <Groups>
+      <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x6F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" priority="0x06F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x07A1">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" priority="0x06F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidReGenerateAll" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Regenerate Feature Files</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Generate Step Definition File</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGoToStepDefinition" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Go To Step Definition</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Run SpecFlow Scenarios</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0111" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Debug SpecFlow Scenarios</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+  </Commands>
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0111">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" />
+    </CommandPlacement>
+    
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
+    </CommandPlacement>
+  </CommandPlacements>
+
+  <Symbols>
+    <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
+    
+    <GuidSymbol name="guidSpecFlowCmdSet" value="{8c202d78-762d-4079-ac0e-282ee24b44b0}">
+      <IDSymbol name="FileContextMenuGroup" value="0x1020"/>
+      <IDSymbol name="ProjectContextMenuGroup" value="0x1021"/>
+      <IDSymbol name="CodeWindowContextMenuGroup" value="0x1022"/>
+      <IDSymbol name="FolderContextMenuGroup" value="0x1023"/>
+      
+      <IDSymbol name="cmdidGenerateStepDefinitionSkeleton" value="0x0100"/>
+      <IDSymbol name="cmdidRunScenarios" value="0x0101"/>
+      <IDSymbol name="cmdidDebugScenarios" value="0x0102"/>
+      <IDSymbol name="cmdidGoToStepDefinition" value="0x0103"/>
+      <IDSymbol name="cmdidReGenerateAll" value="0x0104"/>
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

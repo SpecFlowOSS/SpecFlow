@@ -17,11 +17,11 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class BindingMatchService : IBindingMatchService
     {
-        private readonly IBindingRegistry bindingRegistry;
+        private readonly IBindingRegistryNew bindingRegistry;
 
         public bool Ready { get { return bindingRegistry.Ready; } }
 
-        public BindingMatchService(IBindingRegistry bindingRegistry)
+        public BindingMatchService(IBindingRegistryNew bindingRegistry)
         {
             this.bindingRegistry = bindingRegistry;
         }

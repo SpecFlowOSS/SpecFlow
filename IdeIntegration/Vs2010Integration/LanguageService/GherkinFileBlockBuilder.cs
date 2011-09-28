@@ -67,40 +67,41 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             StartLine = startLine;
         }
 
-        public void Build(GherkinFileScope gherkinFileEditorInfo, int endLine)
+        public void Build(GherkinFileScope gherkinFileEditorInfo, int endLine, int contentEndLine)
         {
             VisualStudioTracer.Assert(IsComplete, "The block builder is not complete");
             int blockRelativeEndLine = endLine - KeywordLine;
+            int blockRelativeContentEndLine = contentEndLine - KeywordLine;
 
             if (BlockType == typeof(IInvalidFileBlock))
             {
                 VisualStudioTracer.Assert(gherkinFileEditorInfo.InvalidFileEndingBlock == null, "no invalid file block");
                 if (gherkinFileEditorInfo.InvalidFileEndingBlock == null)
                     gherkinFileEditorInfo.InvalidFileEndingBlock =
-                        new InvalidFileBlock(StartLine, endLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                        new InvalidFileBlock(StartLine, endLine, blockRelativeContentEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IHeaderBlock))
             {
                 VisualStudioTracer.Assert(gherkinFileEditorInfo.HeaderBlock == null, "no header block");
                 if (gherkinFileEditorInfo.HeaderBlock == null)
                     gherkinFileEditorInfo.HeaderBlock =
-                        new HeaderBlock(Keyword, Title, KeywordLine, Tags.ToArray(), BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
+                        new HeaderBlock(Keyword, Title, KeywordLine, Tags.ToArray(), BlockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray());
             }
             else if (BlockType == typeof(IBackgroundBlock))
             {
                 VisualStudioTracer.Assert(gherkinFileEditorInfo.BackgroundBlock == null, "no background block");
                 if (gherkinFileEditorInfo.BackgroundBlock == null)
                     gherkinFileEditorInfo.BackgroundBlock =
-                        new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
+                        new BackgroundBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
             }
             else if (BlockType == typeof(IScenarioBlock))
             {
-                var scenarioBlock = new ScenarioBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
+                var scenarioBlock = new ScenarioBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray());
                 gherkinFileEditorInfo.ScenarioBlocks.Add(scenarioBlock);
             }
             else if (BlockType == typeof(IScenarioOutlineBlock))
             {
-                var scenarioBlock = new ScenarioOutlineBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray(), ExampleSets.ToArray());
+                var scenarioBlock = new ScenarioOutlineBlock(Keyword, Title, KeywordLine, BlockRelativeStartLine, blockRelativeEndLine, blockRelativeContentEndLine, ClassificationSpans.ToArray(), OutliningRegions.ToArray(), Errors.ToArray(), Steps.ToArray(), ExampleSets.ToArray());
                 gherkinFileEditorInfo.ScenarioBlocks.Add(scenarioBlock);
             }
             else

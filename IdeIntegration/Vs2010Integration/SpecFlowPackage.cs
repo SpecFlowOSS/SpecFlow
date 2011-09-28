@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using BoDi;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
@@ -29,8 +32,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [ProvideOptionPageAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true)]
     [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true, DescriptionResourceID = 121)]
     [Guid(GuidList.guidSpecFlowPkgString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
     public sealed class SpecFlowPackagePackage : Package
     {
+        public IObjectContainer Container { get; private set; }
+
         /// <summary>
         /// Default constructor of the package.
         /// Inside this method you can place any initialization code that does not require 
@@ -52,6 +59,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
+            Container = VsContainerBuilder.CreateContainer(this);
+
+            OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if (menuCommandService != null)
+            {
+                foreach (var menuCommandHandler in Container.Resolve<IDictionary<SpecFlowCmdSet, MenuCommandHandler>>())
+                {
+                    menuCommandHandler.Value.RegisterTo(menuCommandService, menuCommandHandler.Key);
+                }
+            }
         }
     }
 }

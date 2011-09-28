@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BoDi;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -24,6 +25,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
+        [Import]
+        IBiDiContainerProvider ContainerProvider = null;
+
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
@@ -33,7 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
             var languageService = GherkinLanguageServiceFactory.GetLanguageService(view.TextBuffer);
 
-            var commandFilter = new EditorCommandFilter(view, languageService);
+            var commandFilter = new EditorCommandFilter(ContainerProvider.ObjectContainer, view, languageService);
 
             IOleCommandTarget next;
             textViewAdapter.AddCommandFilter(commandFilter, out next);
@@ -47,9 +51,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         public IOleCommandTarget Next { get; set; }
 
-        public EditorCommandFilter(IWpfTextView textView, GherkinLanguageService languageService)
+        public EditorCommandFilter(IObjectContainer container, IWpfTextView textView, GherkinLanguageService languageService)
         {
-            editorCommands = new EditorCommands(languageService, textView);
+            editorCommands = new EditorCommands(container, languageService, textView);
         }
 
         private char GetTypeChar(IntPtr pvaIn)
@@ -68,6 +72,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch ((VSConstants.VSStd97CmdID)nCmdID)
                 {
                     case VSConstants.VSStd97CmdID.GotoDefn:
+                        handled = editorCommands.GoToDefinition();
+                        break;
+                }
+            }
+            if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)
+            {
+                switch ((SpecFlowCmdSet)nCmdID)
+                {
+                    case SpecFlowCmdSet.RunScenarios:
+                        handled = editorCommands.RunScenarios();
+                        break;
+                    case SpecFlowCmdSet.DebugScenarios:
+                        handled = editorCommands.DebugScenarios();
+                        break;
+                    case SpecFlowCmdSet.GoToStepDefinition:
                         handled = editorCommands.GoToDefinition();
                         break;
                 }
@@ -108,6 +127,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch ((VSConstants.VSStd97CmdID)prgCmds[0].cmdID)
                 {
                     case VSConstants.VSStd97CmdID.GotoDefn:
+                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        if (editorCommands.CanGoToDefinition())
+                            return VSConstants.S_OK;
+                        break;
+                }
+            }
+            if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)
+            {
+                switch ((SpecFlowCmdSet)prgCmds[0].cmdID)
+                {
+                    case SpecFlowCmdSet.RunScenarios:
+                    case SpecFlowCmdSet.DebugScenarios:
+                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return VSConstants.S_OK;
+                    case SpecFlowCmdSet.GoToStepDefinition:
                         prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         if (editorCommands.CanGoToDefinition())
                             return VSConstants.S_OK;

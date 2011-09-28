@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IBindingRegistry
+    public interface IBindingRegistryNew
     {
         bool Ready { get; }
         IEnumerable<StepBindingNew> GetConsideredBindings(string stepText);

@@ -106,6 +106,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return baseBlock.BlockRelativeEndLine; }
         }
 
+        public int BlockRelativeContentEndLine
+        {
+            get { return baseBlock.BlockRelativeContentEndLine; }
+        }
+
         public IEnumerable<ClassificationSpan> ClassificationSpans
         {
             get { return baseBlock.ClassificationSpans; }
