@@ -1,5 +1,8 @@
 ﻿vNext - ???
 
+New features:
++ Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
+
 Fixed issues:
 + Error when opening feature file in VS2008 if VS2008 syntax coloring was enabled.
 + Silverlight: make possible to access SilverlightTest instance (Issue 126, by Matt Ellis)
