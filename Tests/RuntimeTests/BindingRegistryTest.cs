@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public class ScopedStepTransformationExample
         {
             [Then("SpecificBindingRegistryTests")]
-            [StepScope(Feature = "SomeFeature")]
+            [Scope(Feature = "SomeFeature")]
             public int Transform(string val)
             {
                 return 42;
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public class ScopedStepTransformationExampleTheOther
         {
             [Then("SpecificBindingRegistryTests")]
-            [StepScope(Feature = "AnotherFeature")]
+            [Scope(Feature = "AnotherFeature")]
             public int Transform(string val)
             {
                 return 24;

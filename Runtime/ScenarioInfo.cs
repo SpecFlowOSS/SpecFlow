@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow
         public ScenarioInfo(string title, params string[] tags)
         {
             Title = title;
-            Tags = tags;
+            Tags = tags ?? new string[0];
         }
     }
 }

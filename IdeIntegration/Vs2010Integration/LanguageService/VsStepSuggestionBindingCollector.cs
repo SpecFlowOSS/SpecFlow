@@ -61,9 +61,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private IEnumerable<StepBindingNew> GetSuggestionsFromCodeFunctionForScope(CodeFunction codeFunction, BindingScopeNew bindingScope)
         {
             return codeFunction.Attributes.Cast<CodeAttribute2>()
-                .Select(codeAttribute => GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Given, bindingScope) ??
-                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.When, bindingScope) ??
-                                         GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Then, bindingScope))
+                .SelectMany(codeAttribute => GetStepDefinitionsFromAttribute(codeAttribute, codeFunction, bindingScope))
                 .Where(binding => binding != null);
         }
 
@@ -80,7 +78,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             try
             {
-                if (codeAttribute.FullName.Equals(typeof(StepScopeAttribute).FullName))
+                if (IsScopeAttribute(codeAttribute))
                 {
                     var tag = GetStringArgumentValue(codeAttribute, "Tag");
                     string feature = GetStringArgumentValue(codeAttribute, "Feature");
@@ -99,6 +97,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        private bool IsScopeAttribute(CodeAttribute2 codeAttribute)
+        {
+            return 
+                codeAttribute.FullName.Equals(typeof(ScopeAttribute).FullName) ||
+#pragma warning disable 612,618
+                codeAttribute.FullName.Equals(typeof(StepScopeAttribute).FullName);
+#pragma warning restore 612,618
+        }
+
+        private IEnumerable<StepBindingNew> GetStepDefinitionsFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingScopeNew bindingScope)
+        {
+            var normalStepDefinition =
+                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Given, bindingScope) ??
+                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.When, bindingScope) ??
+                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Then, bindingScope);
+            if (normalStepDefinition != null)
+            {
+                yield return normalStepDefinition;
+                yield break;
+            }
+
+            if (IsGeneralStepDefinition(codeAttribute))
+            {
+                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.Given, bindingScope);
+                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.When, bindingScope);
+                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.Then, bindingScope);
+            }
+        }
+
         private StepBindingNew GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingType bindingType, BindingScopeNew bindingScope)
         {
             try
@@ -110,6 +137,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             catch(Exception)
             {
                 return null;
+            }
+        }
+
+        private bool IsGeneralStepDefinition(CodeAttribute2 codeAttribute)
+        {
+            try
+            {
+                return codeAttribute.FullName.Equals(typeof (StepDefinitionAttribute).FullName);
+            }
+            catch(Exception)
+            {
+                return false;
             }
         }
 

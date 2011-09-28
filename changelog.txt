@@ -10,10 +10,15 @@ New features:
 + Custom extensions for the runtime can be specified in the config file (specflow/runtime/dependencies).
 + Better customization possibilities with plugins.
 + [StepScope] attribute can also scope hooks (event bindings) (Issue 95)
++ [StepScope] has been renamed to [Scope]. [StepScope] is kept with obsolete warning.
 + VS2010: Run & debug scenarios from the feature file context menu and solution explorer nodes (feature file, folder, project).
 + VS2010: Use infix word prefix matching for step completion. 
 + VS2010: Regenerate feature files from project context menu.
 + VS2010: Go to step definition command in feature file context menu. 
++ Cucumber harmonization
+	+ Allow using [Before]/[After] attributes as synonyms of [BeforeScenario]/[AfterScenario]
+	+ Allow using [StepDefinition] attribute that matches to given, when or then steps
+	+ Leading '@' sign can be specified for hooks and [Scope] attribute
 
 Fixed issues:
 + Instances created for context injection are disposed after scenario execution (Issue 22)
