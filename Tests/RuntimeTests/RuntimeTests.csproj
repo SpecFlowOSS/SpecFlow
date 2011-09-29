@@ -154,7 +154,6 @@
     <Compile Include="SuccessfulCompilationTest.cs" />
     <Compile Include="SuccessfulExecutionTest.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
-    <Compile Include="TestRunnerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
     <Compile Include="ValidateStepAndEventOrdersTest.cs" />
   </ItemGroup>
