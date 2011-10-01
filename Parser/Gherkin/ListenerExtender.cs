@@ -171,7 +171,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                     lastScenarioBlock = ScenarioBlock.When;
                     break;
                 case StepKeyword.Then:
-                case StepKeyword.But:
                     lastScenarioBlock = ScenarioBlock.Then;
                     break;
                 default:
