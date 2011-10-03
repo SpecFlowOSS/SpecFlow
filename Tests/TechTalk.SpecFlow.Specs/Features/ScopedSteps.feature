@@ -23,11 +23,11 @@ Scenario: Scoping step definitions to tags
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Tag = "mytag")]
-			void WhenIDoSomethingWithMyTag()
+			public void WhenIDoSomethingWithMyTag()
 			{}
 
 			[When("I do something"), Scope(Tag = "othertag")]
-			void WhenIDoSomethingWithOtherTag()
+			public void WhenIDoSomethingWithOtherTag()
 			{}
 		 """
 	When I execute the tests
@@ -43,11 +43,11 @@ Scenario: Scoping step definitions to features
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature")]
-			void WhenIDoSomethingInSimpleFeature()
+			public void WhenIDoSomethingInSimpleFeature()
 			{}
 
 			[When("I do something"), Scope(Feature = "Other Feature")]
-			void WhenIDoSomethingInOtherFeature()
+			public void WhenIDoSomethingInOtherFeature()
 			{}
 		 """
 	When I execute the tests
@@ -65,11 +65,11 @@ Scenario: Scoping step definitions to scenarios
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Scenario = "Simple Scenario")]
-			void WhenIDoSomethingInSimpleScenario()
+			public void WhenIDoSomethingInSimpleScenario()
 			{}
 
 			[When("I do something"), Scope(Scenario = "Other Scenario")]
-			void WhenIDoSomethingInOtherScenario()
+			public void WhenIDoSomethingInOtherScenario()
 			{}
 		 """
 	When I execute the tests
@@ -86,7 +86,7 @@ Scenario: Scopes can be conbined with AND
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			void WhenIDoSomethingInSimpleFeatureAndMyTag()
+			public void WhenIDoSomethingInSimpleFeatureAndMyTag()
 			{}
 		 """
 	When I execute the tests
@@ -106,7 +106,7 @@ Scenario: Scopes can be conbined with OR
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Scenario = "Other Scenario"), Scope(Tag = "mytag")]
-			void WhenIDoSomethingInOtherScenarioOrMyTag()
+			public void WhenIDoSomethingInOtherScenarioOrMyTag()
 			{}
 		 """
 	When I execute the tests
@@ -125,11 +125,11 @@ Scenario: Scoped matches have higher precedency
 	And the following step definitions
 		 """
 			[When("I do something"), Scope(Tag = "mytag")]
-			void WhenIDoSomethingWithMyTag()
+			public void WhenIDoSomethingWithMyTag()
 			{}
 
 			[When("I do something")]
-			void WhenIDoSomethingNonScoped()
+			public void WhenIDoSomethingNonScoped()
 			{}
 		 """
 	When I execute the tests
@@ -151,7 +151,7 @@ Scenario: Scoping step definitions of a binding class
 		 public class ScopedSteps
 		 {
 			[When("I do something")]
-			void WhenIDoSomethingWithMyTag()
+			public void WhenIDoSomethingWithMyTag()
 			{}
 		 }
 		 """
@@ -170,7 +170,7 @@ Scenario: No ambiguouity if the same method matches with multiple scopes
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Scenario = "Simple Scenario"), Scope(Tag = "mytag")]
-			void WhenIDoSomethingInOtherScenarioOrMyTag()
+			public void WhenIDoSomethingInOtherScenarioOrMyTag()
 			{}
 		 """
 	When I execute the tests
@@ -188,10 +188,10 @@ Scenario: More scope matches have higher precedency
 	And the following step definition
 		 """
 			[When("I do something"), Scope(Feature = "Simple Feature", Tag = "mytag")]
-			void WhenIDoSomethingInSimpleFeatureAndMyTag()
+			public void WhenIDoSomethingInSimpleFeatureAndMyTag()
 			{}
 			[When("I do something"), Scope(Tag = "mytag")]
-			void WhenIDoSomethingWithMyTag()
+			public void WhenIDoSomethingWithMyTag()
 			{}
 		 """
 	When I execute the tests

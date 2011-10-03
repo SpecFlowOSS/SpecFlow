@@ -86,9 +86,9 @@ this.ScenarioSetup(scenarioInfo);
                     "", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 23
- testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Tag = \"mytag\")]\r\nvoid WhenIDoSomethingWithMyTag()\r" +
-                    "\n{}\r\n\r\n[When(\"I do something\"), Scope(Tag = \"othertag\")]\r\nvoid WhenIDoSomethingW" +
-                    "ithOtherTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Tag = \"mytag\")]\r\npublic void WhenIDoSomethingWithM" +
+                    "yTag()\r\n{}\r\n\r\n[When(\"I do something\"), Scope(Tag = \"othertag\")]\r\npublic void Whe" +
+                    "nIDoSomethingWithOtherTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 33
  testRunner.When("I execute the tests");
 #line 34
@@ -109,9 +109,9 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\r\nScenario: Simple Scenario\r\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 43
- testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\")]\r\nvoid WhenIDoSomethin" +
-                    "gInSimpleFeature()\r\n{}\r\n\r\n[When(\"I do something\"), Scope(Feature = \"Other Featur" +
-                    "e\")]\r\nvoid WhenIDoSomethingInOtherFeature()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\")]\r\npublic void WhenIDoS" +
+                    "omethingInSimpleFeature()\r\n{}\r\n\r\n[When(\"I do something\"), Scope(Feature = \"Other" +
+                    " Feature\")]\r\npublic void WhenIDoSomethingInOtherFeature()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 53
  testRunner.When("I execute the tests");
 #line 54
@@ -132,9 +132,9 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\r\n\r\nScenario: Simple Scenario\r\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 65
- testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Scenario = \"Simple Scenario\")]\r\nvoid WhenIDoSometh" +
-                    "ingInSimpleScenario()\r\n{}\r\n\r\n[When(\"I do something\"), Scope(Scenario = \"Other Sc" +
-                    "enario\")]\r\nvoid WhenIDoSomethingInOtherScenario()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Scenario = \"Simple Scenario\")]\r\npublic void WhenID" +
+                    "oSomethingInSimpleScenario()\r\n{}\r\n\r\n[When(\"I do something\"), Scope(Scenario = \"O" +
+                    "ther Scenario\")]\r\npublic void WhenIDoSomethingInOtherScenario()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 75
  testRunner.When("I execute the tests");
 #line 76
@@ -155,8 +155,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\r\n@mytag\r\nScenario: Simple Scenario\r\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 86
- testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\", Tag = \"mytag\")]\r\nvoid " +
-                    "WhenIDoSomethingInSimpleFeatureAndMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\", Tag = \"mytag\")]\r\npubli" +
+                    "c void WhenIDoSomethingInSimpleFeatureAndMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 92
  testRunner.When("I execute the tests");
 #line 93
@@ -179,7 +179,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 106
  testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Scenario = \"Other Scenario\"), Scope(Tag = \"mytag\")" +
-                    "]\r\nvoid WhenIDoSomethingInOtherScenarioOrMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+                    "]\r\npublic void WhenIDoSomethingInOtherScenarioOrMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 112
  testRunner.When("I execute the tests");
 #line 113
@@ -201,8 +201,9 @@ this.ScenarioSetup(scenarioInfo);
                     "", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 125
- testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Tag = \"mytag\")]\r\nvoid WhenIDoSomethingWithMyTag()\r" +
-                    "\n{}\r\n\r\n[When(\"I do something\")]\r\nvoid WhenIDoSomethingNonScoped()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definitions", "[When(\"I do something\"), Scope(Tag = \"mytag\")]\r\npublic void WhenIDoSomethingWithM" +
+                    "yTag()\r\n{}\r\n\r\n[When(\"I do something\")]\r\npublic void WhenIDoSomethingNonScoped()\r" +
+                    "\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 135
  testRunner.When("I execute the tests");
 #line 136
@@ -225,7 +226,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 148
  testRunner.And("the following binding class", "[Binding, Scope(Tag = \"mytag\")]\r\npublic class ScopedSteps\r\n{\r\n[When(\"I do somethi" +
-                    "ng\")]\r\nvoid WhenIDoSomethingWithMyTag()\r\n{}\r\n}", ((TechTalk.SpecFlow.Table)(null)));
+                    "ng\")]\r\npublic void WhenIDoSomethingWithMyTag()\r\n{}\r\n}", ((TechTalk.SpecFlow.Table)(null)));
 #line 158
  testRunner.When("I execute the tests");
 #line 159
@@ -247,7 +248,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 170
  testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Scenario = \"Simple Scenario\"), Scope(Tag = \"mytag\"" +
-                    ")]\r\nvoid WhenIDoSomethingInOtherScenarioOrMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+                    ")]\r\npublic void WhenIDoSomethingInOtherScenarioOrMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 176
  testRunner.When("I execute the tests");
 #line 177
@@ -268,9 +269,9 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\r\n@mytag\r\nScenario: Simple Scenario\r\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 188
- testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\", Tag = \"mytag\")]\r\nvoid " +
-                    "WhenIDoSomethingInSimpleFeatureAndMyTag()\r\n{}\r\n[When(\"I do something\"), Scope(Ta" +
-                    "g = \"mytag\")]\r\nvoid WhenIDoSomethingWithMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definition", "[When(\"I do something\"), Scope(Feature = \"Simple Feature\", Tag = \"mytag\")]\r\npubli" +
+                    "c void WhenIDoSomethingInSimpleFeatureAndMyTag()\r\n{}\r\n[When(\"I do something\"), S" +
+                    "cope(Tag = \"mytag\")]\r\npublic void WhenIDoSomethingWithMyTag()\r\n{}", ((TechTalk.SpecFlow.Table)(null)));
 #line 197
  testRunner.When("I execute the tests");
 #line 198

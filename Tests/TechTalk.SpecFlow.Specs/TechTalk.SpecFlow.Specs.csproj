@@ -81,6 +81,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\ContextInjection.feature.cs">
+      <DependentUpon>ContextInjection.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\HookSupport.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -157,6 +162,10 @@
     <None Include="Features\CallingStepsFromStepDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CallingStepsFromStepDefinition.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ContextInjection.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\HookSupport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

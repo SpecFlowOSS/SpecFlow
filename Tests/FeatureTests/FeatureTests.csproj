@@ -50,18 +50,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextInjection\ContextInjection.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ContextInjection.feature</DependentUpon>
-    </Compile>
-    <Compile Include="ContextInjection\FeatureWithADependentContextSteps.cs" />
-    <Compile Include="ContextInjection\FeatureWithARecursiveContextSteps.cs" />
-    <Compile Include="ContextInjection\FeatureWithMultipleContextsSteps.cs" />
-    <Compile Include="ContextInjection\FeatureWithNoContextSteps.cs" />
-    <Compile Include="ContextInjection\FeatureWithASingleContextSteps.cs" />
-    <Compile Include="ContextInjection\NestedContext.cs" />
-    <Compile Include="ContextInjection\SingleContext.cs" />
     <Compile Include="ExternalSteps\ExternalSteps.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -86,10 +74,6 @@
   <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="ContextInjection\ContextInjection.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
     </None>
     <None Include="ExternalSteps\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
