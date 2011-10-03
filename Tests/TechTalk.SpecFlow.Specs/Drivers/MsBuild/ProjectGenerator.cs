@@ -148,6 +148,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                                                                                         { "ProjectName", inputProjectDriver.ProjectName },
                                                                                     });
 
+            inputProjectDriver.ProjectFilePath = projectFileName;
+
             ProjectCollection.GlobalProjectCollection.UnloadAllProjects();
             return new Project(projectFileName);
         }

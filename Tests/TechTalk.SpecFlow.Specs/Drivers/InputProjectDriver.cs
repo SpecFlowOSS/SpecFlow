@@ -37,6 +37,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         {
             get { return Path.Combine(compilationFolder, "bin", "Debug"); }
         }
+        public string ProjectFilePath { get; set; }
 
         public InputProjectDriver(SpecFlowConfigurationDriver configurationDriver)
         {

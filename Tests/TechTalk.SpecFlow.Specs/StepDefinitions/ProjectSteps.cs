@@ -1,4 +1,6 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers;
+﻿using System.Linq;
+using System.Text;
+using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -29,13 +31,24 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.ProjectName = projectName;
         }
 
+        private bool isCompiled = false;
+
         [BeforeScenarioBlock]
         public void CompileProject()
         {
-            if (ScenarioContext.Current.CurrentScenarioBlock == ScenarioBlock.When)
+            if ((ScenarioContext.Current.CurrentScenarioBlock == ScenarioBlock.When))
+            {
+                EnsureCompiled();
+            }
+        }
+
+        public void EnsureCompiled()
+        {
+            if (!isCompiled)
             {
                 var project = projectGenerator.GenerateProject(inputProjectDriver);
                 projectCompiler.Compile(project);
+                isCompiled = true;
             }
         }
     }

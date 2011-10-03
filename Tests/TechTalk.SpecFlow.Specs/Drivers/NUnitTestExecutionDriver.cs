@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,21 +30,15 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         {
             var nunitConsolePath = Path.Combine(GetAssemblyFolder(), @"NUnit\tools\nunit-console-x86.exe");
 
-            string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
+            string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
+            string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
-            ProcessStartInfo psi = new ProcessStartInfo(nunitConsolePath, string.Format("\"{0}\" \"/xml:{1}\"", 
-                inputProjectDriver.CompiledAssemblyPath, logFilePath));
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            var p = Process.Start(psi);
+            var provessHelper = new ProcessHelper();
 
-            Console.WriteLine(p.StandardOutput.ReadToEnd());
+            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" ", 
+                inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath);
 
-            p.WaitForExit();
-
-            XDocument logFile = XDocument.Load(logFilePath);
+            XDocument resultFileXml = XDocument.Load(resultFilePath);
 
             TestRunSummary summary = new TestRunSummary();
 
@@ -53,11 +46,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 //            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(nameTable);
 //            namespaceManager.AddNamespace("nunit", "");
 //
-            summary.Total = logFile.XPathSelectElements("//test-case").Count();
-            summary.Succeeded = logFile.XPathSelectElements("//test-case[@executed = 'True' and @success='True']").Count();
-            summary.Failed = logFile.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and failure]").Count();
-            summary.Pending = logFile.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and not(failure)]").Count();
-            summary.Ignored = logFile.XPathSelectElements("//test-case[@executed = 'False']").Count();
+            summary.Total = resultFileXml.XPathSelectElements("//test-case").Count();
+            summary.Succeeded = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='True']").Count();
+            summary.Failed = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and failure]").Count();
+            summary.Pending = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and not(failure)]").Count();
+            summary.Ignored = resultFileXml.XPathSelectElements("//test-case[@executed = 'False']").Count();
 
             testExecutionResult.LastExecutionSummary = summary;
 

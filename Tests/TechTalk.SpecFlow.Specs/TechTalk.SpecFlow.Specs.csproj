@@ -60,15 +60,34 @@
   <ItemGroup>
     <Compile Include="Drivers\BindingClassInput.cs" />
     <Compile Include="Drivers\ContentFileInput.cs" />
+    <Compile Include="Drivers\MsTestTestExecutionDriver.cs" />
     <Compile Include="Drivers\FeatureFileInput.cs" />
     <Compile Include="Drivers\FileInput.cs" />
     <Compile Include="Drivers\InputProjectDriver.cs" />
     <Compile Include="Drivers\MsBuild\ProjectCompiler.cs" />
     <Compile Include="Drivers\MsBuild\ProjectGenerator.cs" />
     <Compile Include="Drivers\NUnitTestExecutionDriver.cs" />
+    <Compile Include="Drivers\ProcessHelper.cs" />
     <Compile Include="Drivers\SpecFlowConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
+    <Compile Include="Features\NUnitProvider.feature.cs">
+      <DependentUpon>NUnitProvider.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\Reports\CustomXsltTemplate.feature.cs">
+      <DependentUpon>CustomXsltTemplate.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\Reports\ExecutionReport.feature.cs">
+      <DependentUpon>ExecutionReport.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
+    <Compile Include="Drivers\ReportInfo.cs" />
+    <Compile Include="StepDefinitions\ReportingSteps.cs" />
     <Compile Include="StepDefinitions\SpecFlowConfigurationSteps.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <Compile Include="Drivers\Templates\TemplateManager.cs" />
@@ -79,8 +98,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BasicExecution.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\NUnitProvider.feature.cs">
-      <DependentUpon>NUnitProvider.feature</DependentUpon>
+    <Compile Include="Features\MsTestProvider.feature.cs">
+      <DependentUpon>MsTestProvider.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -89,7 +108,6 @@
     <Compile Include="StepDefinitions\ExecutionResultSteps.cs" />
     <Compile Include="StepDefinitions\ExecutionSteps.cs" />
     <Compile Include="StepDefinitions\FeatureFileSteps.cs" />
-    <Compile Include="StepDefinitions\NUnitExecutionSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -103,6 +121,18 @@
     <None Include="Features\NUnitProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>NUnitProvider.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MsTestProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MsTestProvider.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Reports\CustomXsltTemplate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CustomXsltTemplate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Reports\ExecutionReport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExecutionReport.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -125,7 +155,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
-xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y</PostBuildEvent>
+xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

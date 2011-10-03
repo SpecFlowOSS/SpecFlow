@@ -12,10 +12,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly SpecFlowConfigurationDriver configurationDriver;
         private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
+        private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver)
+        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver)
         {
             this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
+            this.msTestTestExecutionDriver = msTestTestExecutionDriver;
             this.configurationDriver = configurationDriver;
         }
 
@@ -24,6 +26,22 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             configurationDriver.UnitTestProviderName.ShouldEqual("NUnit");
             nUnitTestExecutionDriver.Execute();
+        }
+
+        [When(@"I execute the tests with (.*)")]
+        public void WhenIExecuteTheTestsWith(string unitTestProvider)
+        {
+            switch (unitTestProvider)
+            {
+                case "NUnit":
+                    nUnitTestExecutionDriver.Execute();
+                    break;
+                case "MsTest":
+                    msTestTestExecutionDriver.Execute();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }
