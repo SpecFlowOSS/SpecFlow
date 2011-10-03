@@ -56,12 +56,6 @@
       <DependentUpon>BeforeAfterHooks.feature</DependentUpon>
     </Compile>
     <Compile Include="BeforeAfterHooks\BeforeAfterHooksSteps.cs" />
-    <Compile Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinition.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CallingStepsFromStepDefinition.feature</DependentUpon>
-    </Compile>
-    <Compile Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinitionSteps.cs" />
     <Compile Include="ContextInjection\ContextInjection.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,10 +96,6 @@
     <None Include="BeforeAfterHooks\BeforeAfterHooks.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BeforeAfterHooks.feature.cs</LastGenOutput>
-    </None>
-    <None Include="CallingStepsFromStepDefinitions\CallingStepsFromStepDefinition.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CallingStepsFromStepDefinition.feature.cs</LastGenOutput>
     </None>
     <None Include="ContextInjection\ContextInjection.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
