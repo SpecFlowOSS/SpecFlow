@@ -61,6 +61,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return string.Format("Feature{0}.feature", FeatureFiles.Count + 1);
         }
 
+        private string GetBindingFileName()
+        {
+            return string.Format("Binding{0}.cs", BindingClasses.Count + 1);
+        }
+
         public void AddFeatureFile(string featureFileText)
         {
             var featureFile = new FeatureFileInput(GetFeatureFileName(), featureFileText);
@@ -101,6 +106,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                 eventType == "AfterFeature" ||
                 eventType == "BeforeTestRun" ||
                 eventType == "AfterTestRun";
+        }
+
+        public void AddRawBindingClass(string rawBindingClass)
+        {
+            BindingClasses.Add(new BindingClassInput(GetBindingFileName(), rawBindingClass, "."));
         }
     }
 }

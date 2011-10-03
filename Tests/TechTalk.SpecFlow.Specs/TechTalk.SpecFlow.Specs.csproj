@@ -70,6 +70,7 @@
     <Compile Include="Drivers\ProcessHelper.cs" />
     <Compile Include="Drivers\SpecFlowConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
+    <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <Compile Include="Features\NUnitProvider.feature.cs">
       <DependentUpon>NUnitProvider.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -85,6 +86,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\ScopedSteps.feature.cs">
+      <DependentUpon>ScopedSteps.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\TaggedExamples.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -94,7 +100,8 @@
     <Compile Include="Drivers\ReportInfo.cs" />
     <Compile Include="StepDefinitions\ReportingSteps.cs" />
     <Compile Include="StepDefinitions\SpecFlowConfigurationSteps.cs" />
-    <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
+    <Compile Include="StepDefinitions\StepArgumentTransformations.cs" />
+    <EmbeddedResource Include="Drivers\Templates\Bindings.cs" />
     <Compile Include="Drivers\Templates\TemplateManager.cs" />
     <Compile Include="Drivers\TestExecutionResult.cs" />
     <Compile Include="Drivers\TestRunSummary.cs" />
@@ -138,6 +145,10 @@
     <None Include="Features\Reports\ExecutionReport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExecutionReport.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ScopedSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ScopedSteps.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\TaggedExamples.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

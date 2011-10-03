@@ -52,6 +52,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             summary.Ignored = resultFileXml.XPathSelectElements("//test-case[@executed = 'False']").Count();
 
             testExecutionResult.LastExecutionSummary = summary;
+            testExecutionResult.ExecutionLog = File.ReadAllText(logFilePath);
 
             return summary;
         }

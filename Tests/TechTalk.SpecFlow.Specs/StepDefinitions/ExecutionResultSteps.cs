@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
 using Should;
@@ -28,6 +29,25 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             testExecutionResult.LastExecutionSummary.ShouldNotBeNull();
             expectedSummary.CompareToInstance(testExecutionResult.LastExecutionSummary);
+        }
+
+        [Then(@"the binding method '(.*)' is executed")]
+        public void ThenTheBindingMethodIsExecuted(string methodName)
+        {
+            ThenTheBindingMethodIsExecuted(methodName, int.MaxValue);
+        }
+
+        [Then(@"the binding method '(.*)' is executed (.*)")]
+        public void ThenTheBindingMethodIsExecuted(string methodName, int times)
+        {
+            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+
+            var regex = new Regex(@"-> done: \S+\." + methodName);
+            if (times > 0)
+                regex.Match(testExecutionResult.ExecutionLog).Success.ShouldBeTrue("method " + methodName + " was not executed.");
+
+            if (times != int.MaxValue)
+                regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
         }
     }
 }

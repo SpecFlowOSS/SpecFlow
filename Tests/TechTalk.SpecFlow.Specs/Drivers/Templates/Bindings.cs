@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
-{AdditionalUsings}
 
 namespace SpecFlow.TestProject
 {
-    {BindingClass}
+    [Binding]
+    public class {ClassName}
+    {
+        {Bindings}
+    }
 }

@@ -79,11 +79,22 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void AddBindingClass(InputProjectDriver inputProjectDriver, Project project, BindingClassInput bindingClassInput)
         {
-            SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass.cs", bindingClassInput.FileName, new Dictionary<string, string>
+            if (bindingClassInput.RawClass != null)
+            {
+                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass.cs", bindingClassInput.FileName, new Dictionary<string, string>
+                                                                                    {
+                                                                                        { "AdditionalUsings", "" },
+                                                                                        { "BindingClass", bindingClassInput.RawClass },
+                                                                                    });
+            }
+            else
+            {
+                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "Bindings.cs", bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
                                                                                         { "ClassName", bindingClassInput.Name },
                                                                                         { "Bindings", GetBindingsCode(bindingClassInput) },
                                                                                     });
+            }
             project.AddItem("Compile", bindingClassInput.ProjectRelativePath);
         }
 

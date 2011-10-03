@@ -53,5 +53,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             inputProjectDriver.AddEventBinding(eventType, code: "//pass");
         }
+
+        [Given(@"the following binding class")]
+        public void GivenTheFollowingBindingClass(string rawBindingClass)
+        {
+            inputProjectDriver.AddRawBindingClass(rawBindingClass);
+        }
     }
 }
