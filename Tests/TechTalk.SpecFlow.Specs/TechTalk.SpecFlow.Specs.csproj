@@ -86,6 +86,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\ExternalSteps.feature.cs">
+      <DependentUpon>ExternalSteps.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\HookSupport.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -121,6 +126,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TaggedExamples.feature</DependentUpon>
     </Compile>
+    <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
     <Compile Include="Drivers\ReportInfo.cs" />
     <Compile Include="StepDefinitions\ReportingSteps.cs" />
@@ -166,6 +172,10 @@
     <None Include="Features\ContextInjection.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ContextInjection.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ExternalSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\HookSupport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
