@@ -49,5 +49,18 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             if (times != int.MaxValue)
                 regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
         }
+
+        [Then(@"the hook '(.*)' is executed (.*)")]
+        public void ThenTheHookIsExecuted(string methodName, int times)
+        {
+            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+
+            var regex = new Regex(@"-> hook: " + methodName);
+            if (times > 0)
+                regex.Match(testExecutionResult.ExecutionLog).Success.ShouldBeTrue("method " + methodName + " was not executed.");
+
+            if (times != int.MaxValue)
+                regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
+        }
     }
 }

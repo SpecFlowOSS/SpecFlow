@@ -81,6 +81,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\HookSupport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HookSupport.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\NUnitProvider.feature.cs">
       <DependentUpon>NUnitProvider.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -152,6 +157,10 @@
     <None Include="Features\CallingStepsFromStepDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CallingStepsFromStepDefinition.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\HookSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HookSupport.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\NUnitProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

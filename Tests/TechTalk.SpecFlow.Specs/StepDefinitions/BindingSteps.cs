@@ -49,10 +49,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.AddBindingCode(bindingCode);
         }
 
-        [Given(@"a hook for '(.*)'")]
-        public void GivenAnEventBindingFor(string eventType)
+        [Given(@"a hook '(.*)' for '(.*)'")]
+        public void GivenAnEventBindingFor(string methodName, string eventType)
         {
-            inputProjectDriver.AddEventBinding(eventType, code: "//pass");
+            inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName);
         }
 
         [Given(@"the following binding class")]

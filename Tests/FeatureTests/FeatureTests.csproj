@@ -50,12 +50,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeforeAfterHooks\BeforeAfterHooks.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BeforeAfterHooks.feature</DependentUpon>
-    </Compile>
-    <Compile Include="BeforeAfterHooks\BeforeAfterHooksSteps.cs" />
     <Compile Include="ContextInjection\ContextInjection.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,10 +86,6 @@
   <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="BeforeAfterHooks\BeforeAfterHooks.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BeforeAfterHooks.feature.cs</LastGenOutput>
     </None>
     <None Include="ContextInjection\ContextInjection.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
