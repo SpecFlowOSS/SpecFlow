@@ -221,9 +221,7 @@
       <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntegrationTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj" />
   </ItemGroup>

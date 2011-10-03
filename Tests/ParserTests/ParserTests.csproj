@@ -68,7 +68,6 @@
     <Compile Include="SuccessfulMbUnitGenerationTest.cs" />
     <Compile Include="SuccessfulXUnitGenerationTest.cs" />
     <Compile Include="SuccessfulGenerationTest.cs" />
-    <Compile Include="SuccessfulParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestFileHelper.cs" />
     <Compile Include="Utf8StringWriter.cs" />
