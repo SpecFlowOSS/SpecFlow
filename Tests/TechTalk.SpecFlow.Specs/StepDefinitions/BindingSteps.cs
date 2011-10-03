@@ -42,6 +42,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         [Given(@"the following hooks?")]
         [Given(@"the following step definitions?")]
+        [Given(@"the following step argument transformations?")]
         [Given(@"the following binding methods?")]
         public void GivenTheFollowingBindings(string bindingCode)
         {
@@ -55,6 +56,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [Given(@"the following binding class")]
+        [Given(@"the following class")]
         public void GivenTheFollowingBindingClass(string rawBindingClass)
         {
             inputProjectDriver.AddRawBindingClass(rawBindingClass);

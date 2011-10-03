@@ -80,17 +80,6 @@
       <DependentUpon>ExternalSteps.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StepArgumentTransfomation\StepArgumentTransformation.feature.cs">
-      <DependentUpon>StepArgumentTransformation.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="StepArgumentTransfomation\StepArgumentTransformationGermanFeatureEnglishBinding.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StepArgumentTransformationGermanFeatureEnglishBinding.feature</DependentUpon>
-    </Compile>
-    <Compile Include="StepArgumentTransfomation\StepArgumentTransformationSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
@@ -125,14 +114,6 @@
     <None Include="ExternalSteps\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
-    </None>
-    <None Include="StepArgumentTransfomation\StepArgumentTransformationGermanFeatureEnglishBinding.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StepArgumentTransformationGermanFeatureEnglishBinding.feature.cs</LastGenOutput>
-    </None>
-    <None Include="StepArgumentTransfomation\StepArgumentTransformation.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>StepArgumentTransformation.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup />
