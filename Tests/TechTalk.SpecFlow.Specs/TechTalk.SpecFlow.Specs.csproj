@@ -85,6 +85,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\TaggedExamples.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaggedExamples.feature</DependentUpon>
+    </Compile>
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
     <Compile Include="Drivers\ReportInfo.cs" />
     <Compile Include="StepDefinitions\ReportingSteps.cs" />
@@ -133,6 +138,10 @@
     <None Include="Features\Reports\ExecutionReport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExecutionReport.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\TaggedExamples.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>TaggedExamples.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

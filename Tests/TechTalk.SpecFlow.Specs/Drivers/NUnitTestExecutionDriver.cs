@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,6 +20,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             this.testExecutionResult = testExecutionResult;
         }
 
+        public string Include { get; set; }
+
         private string GetAssemblyFolder()
         {
             var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -35,17 +38,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
             var provessHelper = new ProcessHelper();
 
-            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" ", 
-                inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath);
+            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" {3}", 
+                inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
 
             XDocument resultFileXml = XDocument.Load(resultFilePath);
 
             TestRunSummary summary = new TestRunSummary();
 
-//            XmlNameTable nameTable = new NameTable();
-//            XmlNamespaceManager namespaceManager = new XmlNamespaceManager(nameTable);
-//            namespaceManager.AddNamespace("nunit", "");
-//
             summary.Total = resultFileXml.XPathSelectElements("//test-case").Count();
             summary.Succeeded = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='True']").Count();
             summary.Failed = resultFileXml.XPathSelectElements("//test-case[@executed = 'True' and @success='False' and failure]").Count();
@@ -55,6 +54,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             testExecutionResult.LastExecutionSummary = summary;
 
             return summary;
+        }
+
+        private string GetIncludeExclude()
+        {
+            if (Include == null)
+                return string.Empty;
+
+            return string.Format(" \"/include:{0}\"", Include);
         }
     }
 }

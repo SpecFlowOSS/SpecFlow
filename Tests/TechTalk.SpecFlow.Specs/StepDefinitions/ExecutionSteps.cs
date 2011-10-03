@@ -28,6 +28,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             nUnitTestExecutionDriver.Execute();
         }
 
+        [When(@"I execute the tests tagged with '@(.+)'")]
+        public void WhenIExecuteTheTestsTaggedWithTag(string tag)
+        {
+            nUnitTestExecutionDriver.Include = tag;
+            WhenIExecuteTheTests();
+        }
+
         [When(@"I execute the tests with (.*)")]
         public void WhenIExecuteTheTestsWith(string unitTestProvider)
         {
