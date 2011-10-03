@@ -26,6 +26,7 @@ Fixed issues:
 + Silverlight: make possible to access SilverlightTest instance (Issue 126, by Matt Ellis)
 + Silverlight: apply feature tags to the test class instead of the methods (Issue 126, by Matt Ellis)
 + SpecFlowContext.TryGetValue does not evaluate Func<T> factory methods (Issue 127, by Matt Ellis)
++ StepArgumentTransformation cannot be used recursively
 
 1.7.1 - 2011/08/19
 
