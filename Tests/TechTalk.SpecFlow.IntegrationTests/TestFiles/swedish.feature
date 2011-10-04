@@ -1,5 +1,5 @@
 ﻿# language: sv
-Egenskap: Summering
+Egenskap: Swedish
   För att slippa att göra dumma fel
   Som räknare
   Vill jag kunna lägga samman

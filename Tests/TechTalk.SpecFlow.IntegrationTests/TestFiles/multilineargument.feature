@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Multiline step arguments
 
 Scenario: a scenario with a multiline argument
  Given there is a multiline text argument

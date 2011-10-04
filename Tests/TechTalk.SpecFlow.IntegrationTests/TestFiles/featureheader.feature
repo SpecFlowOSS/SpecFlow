@@ -1,6 +1,6 @@
 ﻿
 
-Feature: a very simple feature
+Feature: Feature header
 
 but it has also a description...
 A long long description

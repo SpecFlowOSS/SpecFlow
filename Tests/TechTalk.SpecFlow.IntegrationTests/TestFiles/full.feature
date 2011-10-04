@@ -1,4 +1,5 @@
-﻿Feature: TODO: a complex test file should come here
+﻿Feature: Full
+#TODO: a complex test file should come here
 
 Scenario: a simple scenario
 Given some precondition

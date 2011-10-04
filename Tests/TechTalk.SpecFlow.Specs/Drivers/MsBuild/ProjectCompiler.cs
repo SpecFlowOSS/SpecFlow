@@ -7,9 +7,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 {
     public class ProjectCompiler
     {
-        public void Compile(Project project)
+        public string LastCompilationOutput { get; private set; }
+
+        public void Compile(Project project, string target = null)
         {
-            CompileOutProc(project);
+            CompileOutProc(project, target);
             //CompileInProc(project);
         }
 
@@ -40,23 +42,16 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                 throw new Exception("Build failed");
         }
 
-        private void CompileOutProc(Project project)
+        private void CompileOutProc(Project project, string target = null)
         {
             string msBuildPath = Environment.ExpandEnvironmentVariables(string.Format(@"%WinDir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe"));
             Console.WriteLine("Invoke MsBuild from {0}", msBuildPath);
-            ProcessStartInfo psi = new ProcessStartInfo(msBuildPath, string.Format("/nologo /v:m \"{0}\"",
-                                                                                   project.FullPath));
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            var p = Process.Start(psi);
 
-            Console.WriteLine(p.StandardOutput.ReadToEnd());
-
-            p.WaitForExit();
-
-            if (p.ExitCode > 0)
+            ProcessHelper processHelper = new ProcessHelper();
+            string targetArg = target == null ? "" : " /target:" + target;
+            int exitCode = processHelper.RunProcess(msBuildPath, "/nologo /v:m \"{0}\" {1}", project.FullPath, targetArg);
+            LastCompilationOutput = processHelper.ConsoleOutput;
+            if (exitCode > 0)
                 throw new Exception("Build failed");
         }
     }

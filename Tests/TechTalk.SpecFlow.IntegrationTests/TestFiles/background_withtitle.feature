@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Background with Title
 
 Background: these preconditions should be applied always
 	Given some precondition

@@ -1,4 +1,4 @@
-﻿Feature: a feature with a scenario outline
+﻿Feature: Tagged examples
 
 Scenario Outline: a simple scenario outline
 #comment here

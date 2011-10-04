@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Asterisks
 
 Scenario: a simple scenario
 Given some precondition

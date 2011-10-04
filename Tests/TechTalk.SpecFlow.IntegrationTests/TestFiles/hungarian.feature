@@ -1,5 +1,5 @@
 ﻿# language: hu-HU
-Jellemző: Összeadás
+Jellemző: Hungarian
   Azért, hogy elkerüljem a buta hibákat
   amit diszkalkúliásként elkövethetek,
   két szám összegét szeretném kiszámoltatni.

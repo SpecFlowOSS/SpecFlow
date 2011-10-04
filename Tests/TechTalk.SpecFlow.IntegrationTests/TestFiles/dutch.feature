@@ -1,5 +1,5 @@
 ﻿# language: nl-NL
-Functionaliteit: Optelling
+Functionaliteit: Dutch
   Om domme fouten te vermijden
   wil ik als nul in wiskunde
   de som van twee getallen te weten komen

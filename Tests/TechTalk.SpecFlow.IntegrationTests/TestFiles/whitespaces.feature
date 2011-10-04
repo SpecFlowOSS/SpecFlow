@@ -1,5 +1,5 @@
 ﻿
-	Feature: a very simple feature
+	Feature: Whitespaces
 
 	Scenario: a simple scenario
   Given some precondition

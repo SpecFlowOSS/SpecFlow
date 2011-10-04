@@ -10,7 +10,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 #region Designer generated code
-namespace TechTalk.SpecFlow.IntegrationTests.Parser
+namespace TechTalk.SpecFlow.IntegrationTests.Features
 {
     using TechTalk.SpecFlow;
     

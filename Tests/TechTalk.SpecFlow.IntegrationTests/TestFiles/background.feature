@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Background
 
 Background:
 	Given some precondition

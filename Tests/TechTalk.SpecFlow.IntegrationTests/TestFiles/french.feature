@@ -1,5 +1,5 @@
 ﻿# language: fr-FR
-Fonctionnalité: Addition
+Fonctionnalité: French
   Afin de gagner du temps lors du calcul de la facture
   En tant que commerçant
   Je souhaite pouvoir faire une addition

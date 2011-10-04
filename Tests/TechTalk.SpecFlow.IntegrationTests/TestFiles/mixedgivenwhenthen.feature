@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature with mixed given/when/then
+﻿Feature: Mixed given/when/then
 
 Scenario: a simple scenario
 Given some precondition

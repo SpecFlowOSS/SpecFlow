@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Given, When, Then duplications
 
 Scenario: a simple scenario with duplicated keywords
 Given some precondition

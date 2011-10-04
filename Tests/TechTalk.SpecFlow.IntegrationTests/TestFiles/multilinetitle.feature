@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Scenario and Background description
 
 Background: some background
   with multi-line title

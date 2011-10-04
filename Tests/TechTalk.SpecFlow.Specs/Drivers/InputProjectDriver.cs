@@ -66,9 +66,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return string.Format("Binding{0}.cs", BindingClasses.Count + 1);
         }
 
-        public void AddFeatureFile(string featureFileText)
+        public void AddFeatureFile(string featureFileText, string featureFileName = null)
         {
-            var featureFile = new FeatureFileInput(GetFeatureFileName(), featureFileText);
+            featureFileName = featureFileName ?? GetFeatureFileName();
+            var featureFile = new FeatureFileInput(featureFileName, featureFileText);
             FeatureFiles.Add(featureFile);
             CurrentFeatureFile = featureFile;
         }

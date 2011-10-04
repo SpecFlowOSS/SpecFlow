@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build" />
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
@@ -56,19 +57,80 @@
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\..\packages\SpecFlow.1.7.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
+    <Reference Include="xunit">
+      <HintPath>..\..\packages\xunit.1.8.0.1549\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\..\packages\xunit.extensions.1.8.0.1549\lib\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser\ParserSmokeTests.feature.cs">
+    <Compile Include="Features\MbUnit3SmokeTests1.feature.cs">
+      <DependentUpon>MbUnit3SmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MbUnitSmokeTests1.feature.cs">
+      <DependentUpon>MbUnitSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\XUnitSmokeTests.feature.cs">
+      <DependentUpon>XUnitSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MsTest2010SmokeTests.feature.cs">
+      <DependentUpon>MsTest2010SmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MsTestSmokeTests.feature.cs">
+      <DependentUpon>MsTestSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\NUnitSmokeTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NUnitSmokeTests.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ParserSmokeTests.feature.cs">
       <DependentUpon>ParserSmokeTests.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepDefinitions\GeneratorSteps.cs" />
     <Compile Include="StepDefinitions\TestFileSteps.cs" />
     <Compile Include="TestFiles\TestFileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Features\MbUnit3SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MbUnit3SmokeTests1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MbUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MbUnitSmokeTests1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnitSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MsTest2010SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MsTest2010SmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MsTestSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MsTestSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\NUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NUnitSmokeTests.feature.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="TestFiles\asterisks.feature">
       <LastGenOutput>asterisks.feature.cs</LastGenOutput>
@@ -94,7 +156,7 @@
     <EmbeddedResource Include="TestFiles\taggedexamples.feature" />
     <EmbeddedResource Include="TestFiles\tags.feature" />
     <EmbeddedResource Include="TestFiles\whitespaces.feature" />
-    <None Include="Parser\ParserSmokeTests.feature">
+    <None Include="Features\ParserSmokeTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ParserSmokeTests.feature.cs</LastGenOutput>
     </None>
@@ -179,6 +241,13 @@
     <Folder Include="Drivers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y
+xcopy $(SolutionDir)packages\xunit.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
+xcopy $(SolutionDir)packages\xunit.extensions.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

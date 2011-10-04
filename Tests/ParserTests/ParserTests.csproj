@@ -53,18 +53,7 @@
   <ItemGroup>
     <Compile Include="SuccessfulMbUnitv3GenerationTest.cs" />
     <Compile Include="FactoryMethods.cs" />
-    <Compile Include="HandlingParserErrors.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
-    </Compile>
-    <Compile Include="ParsingErrors.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParsingErrors.feature</DependentUpon>
-    </Compile>
     <Compile Include="SimpleTestGeneratorProviderTest.cs" />
-    <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="SuccessfulMbUnitGenerationTest.cs" />
     <Compile Include="SuccessfulXUnitGenerationTest.cs" />
     <Compile Include="SuccessfulGenerationTest.cs" />
@@ -73,15 +62,6 @@
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HandlingParserErrors.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
-    </None>
-    <None Include="ParsingErrors.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ParsingErrors.feature.cs</LastGenOutput>
-    </None>
-    <None Include="TestFilesForErrors\simple.feature" />
     <None Include="TestFiles\asterisks.feature">
       <LastGenOutput>asterisks.feature.cs</LastGenOutput>
     </None>

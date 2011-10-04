@@ -1,4 +1,4 @@
-﻿Feature: a very simple feature
+﻿Feature: Table argument
 
 Scenario: a scenario with a table argument
   Given there is a table argument

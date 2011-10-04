@@ -1,4 +1,4 @@
-﻿Feature: a feature with a scenario outline
+﻿Feature: Scenario outline
 
 Scenario Outline: a simple scenario outline
 Given some <templated> precondition

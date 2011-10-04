@@ -17,5 +17,14 @@ namespace TechTalk.SpecFlow.IntegrationTests.TestFiles
             string fileContent = new StreamReader(projectTemplateStream).ReadToEnd();
             return fileContent;
         }
+
+        public IEnumerable<string> GetTestFeatureFiles()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            string prefixToRemove = GetType().Namespace + ".";
+            return assembly.GetManifestResourceNames()
+                .Where(rn => rn.EndsWith(".feature") && rn.StartsWith(prefixToRemove))
+                .Select(rn => rn.Substring(prefixToRemove.Length));
+        }
     }
 }

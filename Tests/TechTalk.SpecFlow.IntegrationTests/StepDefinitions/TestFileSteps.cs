@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.IntegrationTests.TestFiles;
 using Should;
 using TechTalk.SpecFlow.Assist;
 using System.Linq;
+using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
@@ -14,12 +15,14 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
     [Binding]
     public class TestFileSteps
     {
+        private readonly InputProjectDriver inputProjectDriver;
         private readonly TestFileManager testFileManager;
         private readonly ParserDriver parserDriver;
         
-        public TestFileSteps(TestFileManager testFileManager, ParserDriver parserDriver)
+        public TestFileSteps(TestFileManager testFileManager, ParserDriver parserDriver, InputProjectDriver inputProjectDriver)
         {
             this.testFileManager = testFileManager;
+            this.inputProjectDriver = inputProjectDriver;
             this.parserDriver = parserDriver;
         }
 
@@ -52,5 +55,15 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
             string expected = testFileManager.GetTestFileContent(parsedFileName);
             parserDriver.AssertParsedFeatureEqualTo(expected);
         }
+
+        [Given(@"all test files are inluded in the project")]
+        public void GivenAllTestFilesAreInludedInTheProject()
+        {
+            foreach (var testFile in testFileManager.GetTestFeatureFiles())
+            {
+                inputProjectDriver.AddFeatureFile(testFileManager.GetTestFileContent(testFile), testFile);
+            }
+        }
+
     }
 }

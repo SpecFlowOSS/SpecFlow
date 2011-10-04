@@ -15,6 +15,8 @@ namespace TechTalk.SpecFlow.Generator
         private readonly ITraceListener traceListener;
         private readonly ITestGeneratorFactory testGeneratorFactory;
 
+        public event Action<FeatureFileInput, TestGeneratorResult> OnError;
+
         public BatchGenerator(ITraceListener traceListener, ITestGeneratorFactory testGeneratorFactory)
         {
             this.traceListener = traceListener;
@@ -26,10 +28,12 @@ namespace TechTalk.SpecFlow.Generator
             return testGeneratorFactory.CreateGenerator(specFlowProject.ProjectSettings);
         }
 
-        public void ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
+        public bool ProcessProject(SpecFlowProject specFlowProject, bool forceGenerate)
         {
             traceListener.WriteToolOutput("Processing project: " + specFlowProject.ProjectSettings.ProjectName);
             GenerationSettings generationSettings = GetGenerationSettings(forceGenerate);
+
+            bool success = true;
 
             using (var generator = CreateGenerator(specFlowProject))
             {
@@ -41,6 +45,9 @@ namespace TechTalk.SpecFlow.Generator
                     if (!generationResult.Success)
                     {
                         traceListener.WriteToolOutput("{0} -> test generation failed", featureFile.ProjectRelativePath);
+                        success = false;
+                        if (OnError != null)
+                            OnError(featureFile, generationResult);
                     }
                     else if (generationResult.IsUpToDate)
                     {
@@ -52,6 +59,8 @@ namespace TechTalk.SpecFlow.Generator
                     }
                 }
             }
+
+            return success;
         }
 
         protected virtual GenerationSettings GetGenerationSettings(bool forceGenerate)

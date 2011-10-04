@@ -1,5 +1,5 @@
 ﻿# no tags
-Feature: a very simple feature
+Feature: Comments
 
 # no scenario tags
    # still nothing

@@ -1,5 +1,5 @@
 ﻿# language: de-DE
-Funktionalität: Addition
+Funktionalität: German
   Um dumme Fehler zu vermeiden
   möchte ich als Matheidiot
   die Summe zweier Zahlen gesagt bekommen

@@ -7,6 +7,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 {
     public class ProcessHelper
     {
+        public string ConsoleOutput { get; private set; }
+
         public string GetCurrentAssemblyFolder()
         {
             var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -23,7 +25,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             psi.CreateNoWindow = true;
             var p = Process.Start(psi);
 
-            Console.WriteLine(p.StandardOutput.ReadToEnd());
+            ConsoleOutput = p.StandardOutput.ReadToEnd();
+            Console.WriteLine(ConsoleOutput);
 
             p.WaitForExit();
 

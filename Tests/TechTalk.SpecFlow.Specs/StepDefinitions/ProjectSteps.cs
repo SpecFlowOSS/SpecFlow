@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
+using Should;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -32,6 +34,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         private bool isCompiled = false;
+        private Exception CompilationError;
 
 //        [BeforeScenarioBlock]
 //        public void CompileProject()
@@ -46,10 +49,41 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             if (!isCompiled)
             {
-                var project = projectGenerator.GenerateProject(inputProjectDriver);
-                projectCompiler.Compile(project);
-                isCompiled = true;
+                try
+                {
+                    CompileInternal();
+                }
+                finally
+                {
+                    isCompiled = true;
+                }
             }
+        }
+
+        private void CompileInternal()
+        {
+            var project = projectGenerator.GenerateProject(inputProjectDriver);
+            projectCompiler.Compile(project);
+        }
+
+        [When(@"the project is compiled")]
+        public void WhenTheProjectIsCompiled()
+        {
+            try
+            {
+                CompilationError = null;
+                CompileInternal();
+            }
+            catch (Exception ex)
+            {
+                CompilationError = ex;
+            }
+        }
+
+        [Then(@"no compilation errors are reported")]
+        public void ThenNoCompilationErrorsAreReported()
+        {
+            CompilationError.ShouldBeNull();
         }
     }
 }
