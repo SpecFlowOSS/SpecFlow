@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -195,6 +196,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             people.First().MiddleInitial.ShouldEqual('O');
             people.First().NullableChar.ShouldEqual('K');
+        }
+
+        [Test]
+        public void Calls_the_post_creation_action_for_each_row()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("John");
+            table.AddRow("Howard");
+
+            var peopleList = new List<Person>();
+            var people = table.CreateSet<Person>(peopleList.Add).ToList();
+            for (var i = 0; i < people.Count; i++)
+                people[i].ShouldBeSameAs(peopleList[i]);
         }
     }
 }
