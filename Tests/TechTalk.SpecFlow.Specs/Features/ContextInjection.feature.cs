@@ -75,9 +75,11 @@ namespace TechTalk.SpecFlow.Specs.Features
  testRunner.Given("the following binding class", @"public class SingleContext
 {
 public static int InstanceCount = 0;
+public string ScenarioTitle;
 
 public SingleContext()
 {
+ScenarioTitle = ScenarioContext.Current.ScenarioInfo.Title;
 InstanceCount++;
 }
 }
@@ -95,7 +97,7 @@ this.SingleContext = singleContext;
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 32
+#line 34
  testRunner.And("the following step definition", @"[Then(@""the instance count of SingleContext should be (\d+)"")]
 public void ThenTheInstanceCountShouldBe(int expectedCount)
 {
@@ -109,10 +111,10 @@ if (SingleContext.InstanceCount != expectedCount) throw new Exception(""Instance
         public virtual void BindingClassCanDependOnASingleContext()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Binding class can depend on a single context", ((string[])(null)));
-#line 41
+#line 43
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 42
+#line 44
  testRunner.Given("the following binding class", @"[Binding]
 public class StepsWithSingleContext
 {
@@ -130,16 +132,16 @@ public void WhenIDoSomething()
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 61
+#line 63
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something\r\nThen the instance count of SingleContext should be 1", ((TechTalk.SpecFlow.Table)(null)));
-#line 66
+#line 68
  testRunner.When("I execute the tests");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table1.AddRow(new string[] {
                         "1"});
-#line 67
+#line 69
  testRunner.Then("the execution summary should contain", ((string)(null)), table1);
 #line hidden
             this.ScenarioCleanup();
@@ -150,10 +152,10 @@ public void WhenIDoSomething()
         public virtual void BindingClassCanDependOnMultipleContexts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Binding class can depend on multiple contexts", ((string[])(null)));
-#line 71
+#line 73
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 72
+#line 74
  testRunner.Given("the following binding class", @"[Binding]
 public class StepsWithMultipleContexts
 {
@@ -169,16 +171,16 @@ public void WhenIDoSomething()
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 89
+#line 91
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something\r\nThen the instance count of SingleContext should be 1", ((TechTalk.SpecFlow.Table)(null)));
-#line 94
+#line 96
  testRunner.When("I execute the tests");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table2.AddRow(new string[] {
                         "1"});
-#line 95
+#line 97
  testRunner.Then("the execution summary should contain", ((string)(null)), table2);
 #line hidden
             this.ScenarioCleanup();
@@ -189,10 +191,10 @@ public void WhenIDoSomething()
         public virtual void ContextClassesCanDependOnOtherContextClassesRecursively()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes can depend on other context classes recursively", ((string[])(null)));
-#line 99
+#line 101
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 100
+#line 102
  testRunner.Given("the following binding class", @"[Binding]
 public class StepsWithNestedContext
 {
@@ -208,16 +210,16 @@ public void WhenIDoSomething()
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 117
+#line 119
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something\r\nThen the instance count of SingleContext should be 1", ((TechTalk.SpecFlow.Table)(null)));
-#line 122
+#line 124
  testRunner.When("I execute the tests");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table3.AddRow(new string[] {
                         "1"});
-#line 123
+#line 125
  testRunner.Then("the execution summary should contain", ((string)(null)), table3);
 #line hidden
             this.ScenarioCleanup();
@@ -228,10 +230,10 @@ public void WhenIDoSomething()
         public virtual void ContextClassesAreSharedAcrossBindingClasses()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes are shared across binding classes", ((string[])(null)));
-#line 127
+#line 129
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 128
+#line 130
  testRunner.Given("the following binding class", @"[Binding]
 public class StepsWithSingleContext
 {
@@ -246,7 +248,7 @@ public void WhenIDoSomething()
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 144
+#line 146
  testRunner.Given("the following binding class", @"[Binding]
 public class OtherStepsWithSingleContext
 {
@@ -261,17 +263,17 @@ public void WhenIDoSomethingElse()
 }
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 160
+#line 162
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something\r\nAnd I do something else\r\nThen the instance count of SingleCo" +
                     "ntext should be 1", ((TechTalk.SpecFlow.Table)(null)));
-#line 166
+#line 168
  testRunner.When("I execute the tests");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table4.AddRow(new string[] {
                         "1"});
-#line 167
+#line 169
  testRunner.Then("the execution summary should contain", ((string)(null)), table4);
 #line hidden
             this.ScenarioCleanup();
@@ -282,37 +284,49 @@ public void WhenIDoSomethingElse()
         public virtual void ContextClassesAreRecreatedForEveryScenario()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes are recreated for every scenario", ((string[])(null)));
-#line 171
+#line 173
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 172
+#line 174
  testRunner.Given("the following binding class", @"[Binding]
 public class StepsWithSingleContext
 {
+private SingleContext singleContext;
+
 public StepsWithSingleContext(SingleContext singleContext)
 {
 if (singleContext == null) throw new ArgumentNullException(""singleContext"");
+this.singleContext = singleContext;
 }
 
 [When(@""I do something"")]
 public void WhenIDoSomething()
 {
 }
+
+
+[Then(@""the SingleContext instance was created in scenario '(.+)'"")]
+public void ThenTheInstanceCountShouldBe(string title)
+{
+if (singleContext.ScenarioTitle != title) throw new Exception(""Instance count should be created in "" + title + "" but was "" + singleContext.ScenarioTitle);
+}
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 188
- testRunner.And("a scenario \'A: Simple Scenario\' as", "When I do something\r\nThen the instance count of SingleContext should be 1", ((TechTalk.SpecFlow.Table)(null)));
+#line 200
+ testRunner.And("a scenario \'Simple Scenario\' as", "When I do something\r\nThen the SingleContext instance was created in scenario \'Sim" +
+                    "ple Scenario\'", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 193
- testRunner.And("a scenario \'B: Other Scenario\' as", "When I do something\r\nThen the instance count of SingleContext should be 2", ((TechTalk.SpecFlow.Table)(null)));
-#line 198
+#line 205
+ testRunner.And("a scenario \'Other Scenario\' as", "When I do something\r\nThen the SingleContext instance was created in scenario \'Oth" +
+                    "er Scenario\'", ((TechTalk.SpecFlow.Table)(null)));
+#line 210
  testRunner.When("I execute the tests");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table5.AddRow(new string[] {
                         "2"});
-#line 199
+#line 211
  testRunner.Then("the execution summary should contain", ((string)(null)), table5);
 #line hidden
             this.ScenarioCleanup();

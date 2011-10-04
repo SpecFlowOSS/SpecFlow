@@ -9,9 +9,11 @@ Background:
 		public class SingleContext
 		{
 			public static int InstanceCount = 0;
+			public string ScenarioTitle;
 
 			public SingleContext()
 			{
+				ScenarioTitle = ScenarioContext.Current.ScenarioInfo.Title;
 				InstanceCount++;
 			}
 		}
@@ -174,26 +176,36 @@ Scenario: Context classes are recreated for every scenario
 		[Binding]
 		public class StepsWithSingleContext
 		{
+			private SingleContext singleContext;
+
 			public StepsWithSingleContext(SingleContext singleContext)
 			{
 				if (singleContext == null) throw new ArgumentNullException("singleContext");
+				this.singleContext = singleContext;
 			}
 
 			[When(@"I do something")]
 			public void WhenIDoSomething()
 			{
 			}
+
+
+			[Then(@"the SingleContext instance was created in scenario '(.+)'")]
+			public void ThenTheInstanceCountShouldBe(string title)
+			{
+				if (singleContext.ScenarioTitle != title) throw new Exception("Instance count should be created in " + title + " but was " + singleContext.ScenarioTitle);
+			}
 		}
         """
-	And a scenario 'A: Simple Scenario' as
+	And a scenario 'Simple Scenario' as
          """
          When I do something
-		 Then the instance count of SingleContext should be 1
+		 Then the SingleContext instance was created in scenario 'Simple Scenario'
          """
-	And a scenario 'B: Other Scenario' as
+	And a scenario 'Other Scenario' as
          """
          When I do something
-		 Then the instance count of SingleContext should be 2
+		 Then the SingleContext instance was created in scenario 'Other Scenario'
          """
 	When I execute the tests
 	Then the execution summary should contain
