@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
+using Should;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 using ObjectAssertExtensions = Should.ObjectAssertExtensions;
@@ -70,6 +71,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             ObjectAssertExtensions.ShouldEqual(people.First().FirstName, "John");
             ObjectAssertExtensions.ShouldEqual(people.Last().FirstName, "Howard");
+        }
+
+        [Test]
+        public void Calls_the_post_creation_action_for_each_row()
+        {
+            var table = new Table("FirstName");
+            table.AddRow("John");
+            table.AddRow("Howard");
+
+            var peopleList = new List<Person>();
+            var people = table.CreateSet<Person>(peopleList.Add).ToList();
+            for (var i = 0; i < people.Count; i++)
+                people[i].ShouldBeSameAs(peopleList[i]);
         }
     }
 }

@@ -29,12 +29,18 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
+            return CreateSet<T>(table, (Action<T>)null);
+        }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table, Action<T> postCreationAction)
+        {
             var list = new List<T>();
 
             var pivotTable = new PivotTable(table);
             for (var index = 0; index < table.Rows.Count(); index++)
             {
                 var instance = pivotTable.GetInstanceTable(index).CreateInstance<T>();
+                if (postCreationAction != null) postCreationAction(instance);
                 list.Add(instance);
             }
 
@@ -43,6 +49,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)
         {
+            return CreateSet<T>(table, methodToCreateEachInstance, null);
+        }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance, Action<T> postCreationAction)
+        {
             var list = new List<T>();
 
             var pivotTable = new PivotTable(table);
@@ -50,6 +61,7 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var instance = methodToCreateEachInstance();
                 pivotTable.GetInstanceTable(index).FillInstance(instance);
+                if (postCreationAction != null) postCreationAction(instance);
                 list.Add(instance);
             }
 

@@ -423,6 +423,9 @@
     <ScenarioOutline>Esquema do Cenario</ScenarioOutline>
     <Examples>Exemplos</Examples>
     <Given>Dado</Given>
+    <Given>Dados</Given>
+    <Given>Dada</Given>
+    <Given>Dadas</Given>
     <When>Quando</When>
     <Then>Então</Then>
     <Then>Entao</Then>
