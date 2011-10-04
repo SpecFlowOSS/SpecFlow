@@ -18,20 +18,20 @@ namespace TechTalk.SpecFlow.IntegrationTests.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.7.1.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("MbUnit v2 Smoke Tests")]
-    public partial class MbUnitV2SmokeTestsFeature
+    [NUnit.Framework.DescriptionAttribute("Execution Smoke Tests")]
+    public partial class ExecutionSmokeTestsFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "MbUnitSmokeTests.feature"
+#line 1 "ExecutionSmokeTests.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MbUnit v2 Smoke Tests", "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Execution Smoke Tests", "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -56,7 +56,6 @@ namespace TechTalk.SpecFlow.IntegrationTests.Features
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
-            this.FeatureBackground();
         }
         
         public virtual void ScenarioCleanup()
@@ -64,45 +63,30 @@ namespace TechTalk.SpecFlow.IntegrationTests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Scenarios in the test file can be executed")]
+        public virtual void ScenariosInTheTestFileCanBeExecuted()
         {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scenarios in the test file can be executed", ((string[])(null)));
 #line 3
+this.ScenarioSetup(scenarioInfo);
 #line 4
  testRunner.Given("there is a SpecFlow project");
 #line 5
- testRunner.And("the project is configured to use the MbUnit provider");
-#line 6
  testRunner.And("all test files are inluded in the project");
+#line 6
+ testRunner.And("all steps are bound and pass");
+#line 7
+ testRunner.When("I execute the tests");
 #line hidden
-        }
-        
-        public virtual void TestFilesCanBeGenerated(string @case, string rowTest, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test files can be generated", exampleTags);
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Failed"});
+            table1.AddRow(new string[] {
+                        "0"});
 #line 8
-this.ScenarioSetup(scenarioInfo);
-#line 9
- testRunner.Given(string.Format("row testing is {0}", rowTest));
-#line 10
- testRunner.When("the feature files in the project are generated");
-#line 11
- testRunner.Then("no generation error is reported");
+ testRunner.Then("the execution summary should contain", ((string)(null)), table1);
 #line hidden
             this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Test files can be generated")]
-        public virtual void TestFilesCanBeGenerated_NormalTesting()
-        {
-            this.TestFilesCanBeGenerated("Normal testing", "disabled", ((string[])(null)));
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Test files can be generated")]
-        public virtual void TestFilesCanBeGenerated_RowTesting()
-        {
-            this.TestFilesCanBeGenerated("Row testing", "enabled", ((string[])(null)));
         }
     }
 }

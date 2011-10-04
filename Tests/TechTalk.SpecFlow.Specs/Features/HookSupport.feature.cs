@@ -146,6 +146,110 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.ShouldExecuteSpecFlowEvents("BeforeTestRun", ((string[])(null)));
         }
+        
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics(string @event, string count, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should execute the hooks according to their semantics", exampleTags);
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 31
+ testRunner.Given("there is a feature file in the project as", @"Feature: Feature 1
+
+Scenario: Scenario 1
+Given there is something
+Given there is something
+When I do something
+When I do something
+Then something should happen
+Then something should happen
+
+Scenario: Scenario 2
+Given there is something
+Given there is something
+When I do something
+When I do something
+Then something should happen
+Then something should happen", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 51
+ testRunner.Given("there is a feature file in the project as", "Feature: Feature 2\r\n\r\nScenario: Scenario 3\r\nGiven there is something\r\nGiven there" +
+                    " is something\r\nWhen I do something\r\nWhen I do something\r\nThen something should h" +
+                    "appen\r\nThen something should happen", ((TechTalk.SpecFlow.Table)(null)));
+#line 63
+ testRunner.And(string.Format("a hook \'HookFor{0}\' for \'{0}\'", @event));
+#line 64
+ testRunner.And("all steps are bound and pass");
+#line 65
+ testRunner.When("I execute the tests");
+#line 66
+ testRunner.Then(string.Format("the hook \'HookFor{0}\' is executed {1} times", @event, count));
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_BeforeStep()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("BeforeStep", "18", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_AfterStep()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("AfterStep", "18", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_BeforeScenarioBlock()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("BeforeScenarioBlock", "9", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_AfterScenarioBlock()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("AfterScenarioBlock", "9", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_BeforeScenario()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("BeforeScenario", "3", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_AfterScenario()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("AfterScenario", "3", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_BeforeFeature()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("BeforeFeature", "2", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_AfterFeature()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("AfterFeature", "2", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute the hooks according to their semantics")]
+        public virtual void ShouldExecuteTheHooksAccordingToTheirSemantics_BeforeTestRun()
+        {
+            this.ShouldExecuteTheHooksAccordingToTheirSemantics("BeforeTestRun", "1", ((string[])(null)));
+        }
     }
 }
 #endregion

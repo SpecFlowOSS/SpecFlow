@@ -2,7 +2,7 @@
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Language>fr-FR</Language>
   <Keyword>Fonctionnalité</Keyword>
-  <Title>Addition</Title>
+  <Title>French</Title>
   <Description>Afin de gagner du temps lors du calcul de la facture
 En tant que commerçant
 Je souhaite pouvoir faire une addition</Description>

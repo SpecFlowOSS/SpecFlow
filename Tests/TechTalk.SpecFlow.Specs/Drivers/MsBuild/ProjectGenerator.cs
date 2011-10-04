@@ -106,9 +106,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
             foreach (var stepBindingInput in bindingClassInput.StepBindings)
             {
-                result.AppendFormat(@"[{2}(@""{3}"")]public void sb{0}() {{ 
+                result.AppendFormat(@"[{2}(@""{3}"")]public void sb{0}({4}) {{ 
                                         {1}
-                                      }}", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex);
+                                      }}", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex, stepBindingInput.Parameters);
                 result.AppendLine();
             }
 

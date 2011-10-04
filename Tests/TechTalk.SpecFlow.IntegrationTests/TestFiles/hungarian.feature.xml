@@ -2,7 +2,7 @@
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Language>hu-HU</Language>
   <Keyword>Jellemző</Keyword>
-  <Title>Összeadás</Title>
+  <Title>Hungarian</Title>
   <Description>Azért, hogy elkerüljem a buta hibákat
 amit diszkalkúliásként elkövethetek,
 két szám összegét szeretném kiszámoltatni.</Description>

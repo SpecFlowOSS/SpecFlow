@@ -2,7 +2,7 @@
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Language>en-US</Language>
   <Keyword>Feature</Keyword>
-  <Title>a very simple feature with mixed given/when/then</Title>
+  <Title>Mixed given/when/then</Title>
   <Description />
   <FilePosition line="1" column="1" />
   <Scenarios>

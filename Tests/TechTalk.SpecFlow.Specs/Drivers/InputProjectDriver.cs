@@ -84,6 +84,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public void AddStepBinding(ScenarioBlock scenarioBlock, string regex, string code = "//nop")
         {
             DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code));
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code) { Parameters = "Table tableArg"});
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code) { Parameters = "string mlStringArg"});
         }
 
         public void AddBindingCode(string bindingCode)

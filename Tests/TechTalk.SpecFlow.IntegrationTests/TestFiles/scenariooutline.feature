@@ -1,28 +1,52 @@
 ﻿Feature: Scenario outline
 
-Scenario Outline: a simple scenario outline
-Given some <templated> precondition
-	| code	| rate	| date	 		| error code  |
-	| USD	| 1.2	| <date1>	| OK          |
-	| EUR	| 1.2	| <date2>	| OK          |
-When I do something
-Then something <templated> happens
+Scenario Outline: Simple Scenario Outline
+	Given there is something
+	When I do <what>
+	Then something should happen
+Examples: 
+	| what           |
+	| something      |
+	| somethign else |
 
-Examples: first examples set
-	| templated	| date1	     | date2      |
-	| one       | 2009/09/14 | 2009/09/14 |
-	| two       | 2009/09/15 | 2009/09/15 |
+Scenario Outline: Scenario Outline with multiple examples block
+	Given there is something
+	When I do <what>
+	Then something should happen
 
-Scenarios: second example set
-	| templated	| date1	     | date2      |
-	| three     | 2009/09/14 | 2009/09/14 |
+Examples: first set
+	| what           |
+	| something      |
+	| somethign else |
+
+Examples: second set
+	| what                |
+	| somethign different |
 
 #third example set without a name
-Scenarios:
-	| templated	| date1	     | date2      |
-	| four      | 2009/09/14 | 2009/09/14 |
+Examples: 
+	| what                        |
+	| somethign totally different |
 
-Examples: last example set with non-unique first column
-	| templated	| date1	     | date2      |
-	| five      | 2009/09/14 | 2009/09/14 |
-	| five      | 2009/09/15 | 2009/09/15 |
+Scenario Outline: Scenario Outline with table arguments
+	Given there is something
+		| foo    | bar |
+		| <what> | xyz |
+	When I do <what>
+	Then something should happen
+Examples: 
+	| what           |
+	| something      |
+	| somethign else |
+
+Scenario Outline: Scenario Outline with multiline string arguments
+	Given there is something
+		"""
+			long text <what>
+		"""
+	When I do <what>
+	Then something should happen
+Examples: 
+	| what           |
+	| something      |
+	| somethign else |

@@ -107,20 +107,14 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void GeneratedClassesFromTestFilesCanBeCompiled(string @case, string rowTest, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignored"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generated classes from test files can be compiled", @__tags);
-#line 19
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generated classes from test files can be compiled", exampleTags);
+#line 18
 this.ScenarioSetup(scenarioInfo);
-#line 20
+#line 19
  testRunner.Given(string.Format("row testing is {0}", rowTest));
-#line 21
+#line 20
  testRunner.When("the project is compiled");
-#line 22
+#line 21
  testRunner.Then("no compilation errors are reported");
 #line hidden
             this.ScenarioCleanup();
@@ -128,7 +122,6 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Generated classes from test files can be compiled")]
-        [NUnit.Framework.CategoryAttribute("ignored")]
         public virtual void GeneratedClassesFromTestFilesCanBeCompiled_NormalTesting()
         {
             this.GeneratedClassesFromTestFilesCanBeCompiled("Normal testing", "disabled", ((string[])(null)));
@@ -136,7 +129,6 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Generated classes from test files can be compiled")]
-        [NUnit.Framework.CategoryAttribute("ignored")]
         public virtual void GeneratedClassesFromTestFilesCanBeCompiled_RowTesting()
         {
             this.GeneratedClassesFromTestFilesCanBeCompiled("Row testing", "enabled", ((string[])(null)));

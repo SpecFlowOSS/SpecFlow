@@ -148,14 +148,10 @@
     <Compile Include="StepTransformationTests.cs" />
     <Compile Include="StepArgumentTypeConverterTest.cs" />
     <Compile Include="ConfigurationTest.cs" />
-    <Compile Include="ExecutionTestBase.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SuccessfulCompilationTest.cs" />
-    <Compile Include="SuccessfulExecutionTest.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
-    <Compile Include="ValidateStepAndEventOrdersTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

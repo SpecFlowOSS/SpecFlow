@@ -2,7 +2,7 @@
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Language>en-US</Language>
   <Keyword>Feature</Keyword>
-  <Title>a very simple feature</Title>
+  <Title>Whitespaces</Title>
   <Description />
   <FilePosition line="2" column="2" />
   <Scenarios>

@@ -57,12 +57,16 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public IEnumerable<string> GetAdditionalReferences()
         {
-            switch (UnitTestProviderName)
+            switch (UnitTestProviderName.ToLower())
             {
-                case "NUnit":
+                case "nunit":
                     yield return @"NUnit\lib\nunit.framework.dll";
                     break;
-                case "xUnit":
+                case "mbunit.3":
+                    yield return @"mbUnit3\mbUnit.dll";
+                    yield return @"mbUnit3\gallio.dll";
+                    break;
+                case "xunit":
                     yield return @"xUnit\lib\xUnit.dll";
                     yield return @"xUnit\lib\xunit.extensions.dll";
                     break;

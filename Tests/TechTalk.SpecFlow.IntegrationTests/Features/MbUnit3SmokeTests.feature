@@ -15,7 +15,6 @@ Examples:
 	| Normal testing | disabled |
 	| Row testing    | enabled  |
 
-@ignored
 Scenario Outline: Generated classes from test files can be compiled
 	Given row testing is <row test>
 	When the project is compiled

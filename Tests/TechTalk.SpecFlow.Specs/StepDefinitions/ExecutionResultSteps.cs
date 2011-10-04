@@ -50,7 +50,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                 regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
         }
 
-        [Then(@"the hook '(.*)' is executed (.*)")]
+        [Then(@"the hook '(.*)' is executed (\D.*)")]
+        [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
             testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
