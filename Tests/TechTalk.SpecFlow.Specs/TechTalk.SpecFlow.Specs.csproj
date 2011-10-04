@@ -56,6 +56,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow, Version=1.7.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecFlow.1.7.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\BindingClassInput.cs" />
@@ -67,6 +70,8 @@
     <Compile Include="Drivers\MsBuild\ProjectCompiler.cs" />
     <Compile Include="Drivers\MsBuild\ProjectGenerator.cs" />
     <Compile Include="Drivers\NUnitTestExecutionDriver.cs" />
+    <Compile Include="Drivers\Parser\ParserDriver.cs" />
+    <Compile Include="Drivers\Parser\Utf8StringWriter.cs" />
     <Compile Include="Drivers\ProcessHelper.cs" />
     <Compile Include="Drivers\SpecFlowConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
@@ -101,6 +106,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\Parser\HandlingParserErrors.feature.cs">
+      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\Parser\ParsingErrors.feature.cs">
+      <DependentUpon>ParsingErrors.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\Reports\CustomXsltTemplate.feature.cs">
       <DependentUpon>CustomXsltTemplate.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -127,6 +142,7 @@
       <DependentUpon>TaggedExamples.feature</DependentUpon>
     </Compile>
     <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
+    <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
     <Compile Include="Drivers\ReportInfo.cs" />
     <Compile Include="StepDefinitions\ReportingSteps.cs" />
@@ -189,6 +205,14 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MsTestProvider.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\Parser\HandlingParserErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Parser\ParsingErrors.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ParsingErrors.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\Reports\CustomXsltTemplate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CustomXsltTemplate.feature.cs</LastGenOutput>
@@ -216,9 +240,9 @@
       <Project>{27B6695E-7049-4C1B-8820-812722128D9E}</Project>
       <Name>SpecFlowBinPackage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
-      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
-      <Name>TechTalk.SpecFlow</Name>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

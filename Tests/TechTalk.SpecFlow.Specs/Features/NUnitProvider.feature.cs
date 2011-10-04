@@ -63,10 +63,6 @@ namespace TechTalk.SpecFlow.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
-        [NUnit.Framework.TestCaseAttribute("Succeeded", "pass", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Failed", "fail", new string[0])]
         public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults(string result, string stepDefinitionStatus, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to execute scenarios with basic results", exampleTags);
@@ -97,9 +93,19 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Should handle scenario outlines")]
-        [NUnit.Framework.TestCaseAttribute("Normal testing", "disabled", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Row testing", "enabled", new string[0])]
+        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
+        public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults_Succeeded()
+        {
+            this.ShouldBeAbleToExecuteScenariosWithBasicResults("Succeeded", "pass", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
+        public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults_Failed()
+        {
+            this.ShouldBeAbleToExecuteScenariosWithBasicResults("Failed", "fail", ((string[])(null)));
+        }
+        
         public virtual void ShouldHandleScenarioOutlines(string @case, string rowTest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should handle scenario outlines", exampleTags);
@@ -129,6 +135,20 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the execution summary should contain", ((string)(null)), table2);
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should handle scenario outlines")]
+        public virtual void ShouldHandleScenarioOutlines_NormalTesting()
+        {
+            this.ShouldHandleScenarioOutlines("Normal testing", "disabled", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should handle scenario outlines")]
+        public virtual void ShouldHandleScenarioOutlines_RowTesting()
+        {
+            this.ShouldHandleScenarioOutlines("Row testing", "enabled", ((string[])(null)));
         }
         
         [NUnit.Framework.TestAttribute()]

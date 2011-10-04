@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
-namespace TechTalk.SpecFlow.IntegrationTests.Drivers
+namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 {
     public class ParserDriver
     {

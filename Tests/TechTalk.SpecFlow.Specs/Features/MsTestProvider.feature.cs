@@ -65,10 +65,6 @@ namespace TechTalk.SpecFlow.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
-        [NUnit.Framework.TestCaseAttribute("Succeeded", "pass", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Failed", "fail", new string[0])]
         public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults(string result, string stepDefinitionStatus, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to execute scenarios with basic results", exampleTags);
@@ -96,6 +92,20 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("the execution summary should contain", ((string)(null)), table1);
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
+        public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults_Succeeded()
+        {
+            this.ShouldBeAbleToExecuteScenariosWithBasicResults("Succeeded", "pass", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should be able to execute scenarios with basic results")]
+        public virtual void ShouldBeAbleToExecuteScenariosWithBasicResults_Failed()
+        {
+            this.ShouldBeAbleToExecuteScenariosWithBasicResults("Failed", "fail", ((string[])(null)));
         }
         
         [NUnit.Framework.TestAttribute()]

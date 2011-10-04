@@ -59,6 +59,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            this.FeatureBackground();
         }
         
         public virtual void ScenarioCleanup()
@@ -110,8 +111,6 @@ if (SingleContext.InstanceCount != expectedCount) throw new Exception(""Instance
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Binding class can depend on a single context", ((string[])(null)));
 #line 41
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
 #line 42
  testRunner.Given("the following binding class", @"[Binding]
@@ -153,8 +152,6 @@ public void WhenIDoSomething()
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Binding class can depend on multiple contexts", ((string[])(null)));
 #line 71
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
 #line 72
  testRunner.Given("the following binding class", @"[Binding]
@@ -194,8 +191,6 @@ public void WhenIDoSomething()
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes can depend on other context classes recursively", ((string[])(null)));
 #line 99
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
 #line 100
  testRunner.Given("the following binding class", @"[Binding]
@@ -235,8 +230,6 @@ public void WhenIDoSomething()
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes are shared across binding classes", ((string[])(null)));
 #line 127
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
 #line 128
  testRunner.Given("the following binding class", @"[Binding]
@@ -291,8 +284,6 @@ public void WhenIDoSomethingElse()
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Context classes are recreated for every scenario", ((string[])(null)));
 #line 171
 this.ScenarioSetup(scenarioInfo);
-#line 6
-this.FeatureBackground();
 #line hidden
 #line 172
  testRunner.Given("the following binding class", @"[Binding]

@@ -58,15 +58,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Drivers\ParserDriver.cs" />
-    <Compile Include="Drivers\Utf8StringWriter.cs" />
     <Compile Include="Parser\ParserSmokeTests.feature.cs">
       <DependentUpon>ParserSmokeTests.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
+    <Compile Include="StepDefinitions\TestFileSteps.cs" />
     <Compile Include="TestFiles\TestFileManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +170,13 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj">
+      <Project>{ADED3F39-1742-42E2-A55A-3043AC84BDAD}</Project>
+      <Name>TechTalk.SpecFlow.Specs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Drivers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

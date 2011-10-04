@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 
-namespace TechTalk.SpecFlow.IntegrationTests.Drivers
+namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 {
     internal class Utf8StringWriter : StringWriter
     {

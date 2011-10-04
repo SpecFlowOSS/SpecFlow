@@ -10,13 +10,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class ExecutionSteps
     {
+        private readonly ProjectSteps projectSteps;
         private readonly SpecFlowConfigurationDriver configurationDriver;
         private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver)
+        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver, ProjectSteps projectSteps)
         {
             this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
+            this.projectSteps = projectSteps;
             this.msTestTestExecutionDriver = msTestTestExecutionDriver;
             this.configurationDriver = configurationDriver;
         }
@@ -25,6 +27,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         public void WhenIExecuteTheTests()
         {
             configurationDriver.UnitTestProviderName.ShouldEqual("NUnit");
+
+            projectSteps.EnsureCompiled();
             nUnitTestExecutionDriver.Execute();
         }
 
@@ -38,6 +42,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests with (.*)")]
         public void WhenIExecuteTheTestsWith(string unitTestProvider)
         {
+            projectSteps.EnsureCompiled();
+
             switch (unitTestProvider)
             {
                 case "NUnit":

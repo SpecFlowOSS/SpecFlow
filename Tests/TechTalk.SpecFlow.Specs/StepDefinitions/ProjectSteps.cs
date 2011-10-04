@@ -33,15 +33,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
         private bool isCompiled = false;
 
-        [BeforeScenarioBlock]
-        public void CompileProject()
-        {
-            if ((ScenarioContext.Current.CurrentScenarioBlock == ScenarioBlock.When))
-            {
-                EnsureCompiled();
-            }
-        }
-
+//        [BeforeScenarioBlock]
+//        public void CompileProject()
+//        {
+//            if ((ScenarioContext.Current.CurrentScenarioBlock == ScenarioBlock.When))
+//            {
+//                EnsureCompiled();
+//            }
+//        }
+//
         public void EnsureCompiled()
         {
             if (!isCompiled)

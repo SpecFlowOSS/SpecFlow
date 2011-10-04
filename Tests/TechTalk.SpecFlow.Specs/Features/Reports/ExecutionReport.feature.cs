@@ -56,6 +56,7 @@ namespace TechTalk.SpecFlow.Specs.Features.Reports
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            this.FeatureBackground();
         }
         
         public virtual void ScenarioCleanup()
@@ -82,8 +83,6 @@ namespace TechTalk.SpecFlow.Specs.Features.Reports
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Summary is included in the HTML result (NUnit)", ((string[])(null)));
 #line 8
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 9
  testRunner.Given("there are NUnit test execution results for the project");
 #line 10
@@ -103,8 +102,6 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Summary is included in the HTML result (MsTest)", ((string[])(null)));
 #line 18
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 19
  testRunner.Given("there are MsTest test execution results for the project");
 #line 20
@@ -124,8 +121,6 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature summary is included in the HTML result (NUnit)", ((string[])(null)));
 #line 28
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 29
  testRunner.Given("there are NUnit test execution results for the project");
 #line 30
@@ -146,8 +141,6 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Feature summary is included in the HTML result (MsTest)", ((string[])(null)));
 #line 39
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 40
  testRunner.Given("there are MsTest test execution results for the project");
 #line 41
@@ -161,17 +154,11 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
-        [NUnit.Framework.TestCaseAttribute("NUnit", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MsTest", new string[0])]
         public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful test output is included in the HTML result", exampleTags);
 #line 50
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 51
  testRunner.Given(string.Format("there are {0} test execution results for the project", unittest));
 #line 52
@@ -184,16 +171,24 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
-        [NUnit.Framework.TestCaseAttribute("NUnit", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MsTest", new string[0])]
+        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
+        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.SuccessfulTestOutputIsIncludedInTheHTMLResult("NUnit", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
+        public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.SuccessfulTestOutputIsIncludedInTheHTMLResult("MsTest", ((string[])(null)));
+        }
+        
         public virtual void PendingTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pending test output is included in the HTML result", exampleTags);
 #line 63
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 64
  testRunner.Given(string.Format("there are {0} test execution results for the project", unittest));
 #line 65
@@ -211,16 +206,24 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
-        [NUnit.Framework.TestCaseAttribute("NUnit", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MsTest", new string[0])]
+        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
+        public virtual void PendingTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.PendingTestOutputIsIncludedInTheHTMLResult("NUnit", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
+        public virtual void PendingTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.PendingTestOutputIsIncludedInTheHTMLResult("MsTest", ((string[])(null)));
+        }
+        
         public virtual void FailingTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test output is included in the HTML result", exampleTags);
 #line 84
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 85
  testRunner.Given(string.Format("there are {0} test execution results for the project", unittest));
 #line 86
@@ -236,16 +239,24 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
-        [NUnit.Framework.TestCaseAttribute("NUnit", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("MsTest", new string[0])]
+        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
+        public virtual void FailingTestOutputIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.FailingTestOutputIsIncludedInTheHTMLResult("NUnit", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
+        public virtual void FailingTestOutputIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.FailingTestOutputIsIncludedInTheHTMLResult("MsTest", ((string[])(null)));
+        }
+        
         public virtual void FailingTestExceptionIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test exception is included in the HTML result", exampleTags);
 #line 101
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 102
  testRunner.Given(string.Format("there are {0} test execution results for the project", unittest));
 #line 103
@@ -258,6 +269,20 @@ this.FeatureBackground();
  testRunner.And("the generated report contains", "\tsimulated failure", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
+        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult_NUnit()
+        {
+            this.FailingTestExceptionIsIncludedInTheHTMLResult("NUnit", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
+        public virtual void FailingTestExceptionIsIncludedInTheHTMLResult_MsTest()
+        {
+            this.FailingTestExceptionIsIncludedInTheHTMLResult("MsTest", ((string[])(null)));
         }
     }
 }

@@ -64,11 +64,6 @@ namespace TechTalk.SpecFlow.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Other step definition can be called when derive from Steps base class")]
-        [NUnit.Framework.TestCaseAttribute("Given", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("When", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("Then", new string[0])]
         public virtual void OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass(string stepType, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Other step definition can be called when derive from Steps base class", exampleTags);
@@ -106,6 +101,27 @@ public void GivenIHaveEntered(int n1, int n2)
  testRunner.Then("the execution summary should contain", ((string)(null)), table1);
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Other step definition can be called when derive from Steps base class")]
+        public virtual void OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass_Given()
+        {
+            this.OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass("Given", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Other step definition can be called when derive from Steps base class")]
+        public virtual void OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass_When()
+        {
+            this.OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass("When", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Other step definition can be called when derive from Steps base class")]
+        public virtual void OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass_Then()
+        {
+            this.OtherStepDefinitionCanBeCalledWhenDeriveFromStepsBaseClass("Then", ((string[])(null)));
         }
     }
 }

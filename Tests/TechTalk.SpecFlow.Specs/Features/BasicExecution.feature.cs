@@ -56,6 +56,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            this.FeatureBackground();
         }
         
         public virtual void ScenarioCleanup()
@@ -80,8 +81,6 @@ namespace TechTalk.SpecFlow.Specs.Features
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to execute a simple passing scenario", ((string[])(null)));
 #line 13
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 14
  testRunner.Given("all steps are bound and pass");
 #line 15
@@ -106,8 +105,6 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to execute a simple failing scenario", ((string[])(null)));
 #line 21
 this.ScenarioSetup(scenarioInfo);
-#line 3
-this.FeatureBackground();
 #line 22
  testRunner.Given("all steps are bound and fail");
 #line 23

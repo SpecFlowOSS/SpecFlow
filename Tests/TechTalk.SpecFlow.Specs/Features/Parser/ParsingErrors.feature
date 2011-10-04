@@ -8,8 +8,8 @@ Scenario: Wrongly spelled feature keyword
 	"""
 		FeaturX: wrong feature
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error							|
 		| 1		| Parsing error near 'FeaturX	|
 
@@ -22,8 +22,8 @@ Scenario: Wrongly spelled step keyword
 			Given something
 			WhenX something is misspelled
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error						|
 		| 5		| Parsing error near 'WhenX	|
 
@@ -39,8 +39,8 @@ Scenario: Wrongly spelled scenario outline
 		Examples:
 			| something |
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error									|
 		| 4		| Parsing error near 'Scenario OutlinX	|
 
@@ -54,8 +54,8 @@ Scenario: Table cell count mismatch
 				| h1 | h2 |
 				| c1 | c2 | c3 |
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error																			|
 		| 6		| Number of cells in the row does not match the number of cells in the header	|
 
@@ -70,8 +70,8 @@ Scenario: Scenario outline without examples
 		Scenario: proper scenario
 			Given something
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error														|
 		| 3		| There are no examples defined for the scenario outline	|
 
@@ -85,8 +85,8 @@ Scenario: Empty example set
 
 		Examples: 
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error			|
 		| 7		| Parsing error	|
 
@@ -96,8 +96,8 @@ Scenario: Language not supported
 		#language: invalid-lang
 		Feature: Invalid language
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error																|
 		| 1		| The specified feature file language ('invalid') is not supported.	|
 
@@ -112,8 +112,8 @@ Scenario: Duplicated scenario name
 		Scenario: Duplicated scenario 
 			Given something
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error																		|
 		| 6		| Feature file already contains a scenario with name 'Duplicated scenario'	|
 
@@ -131,8 +131,8 @@ Scenario: Duplicated example set name
 		Examples: duplicated example set
 			| something |
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error																				|
 		| 9		| Scenario outline already contains an example set name 'duplicated example set'	|
 
@@ -147,8 +147,8 @@ Scenario: Duplicated background
 		Background: 
 			Given something else
 	"""
-	When I parse the file
-	Then the the following errors are provided
+	When the file is parsed
+	Then the following errors are provided
 		| line	| error													|
 		| 6		| Feature file already contains a background section.	|
 

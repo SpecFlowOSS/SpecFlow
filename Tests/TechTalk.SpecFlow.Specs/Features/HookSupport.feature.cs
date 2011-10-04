@@ -64,17 +64,6 @@ namespace TechTalk.SpecFlow.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
-        [NUnit.Framework.TestCaseAttribute("BeforeScenario", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("AfterScenario", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("BeforeFeature", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("AfterFeature", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("BeforeStep", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("AfterStep", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("BeforeScenarioBlock", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("AfterScenarioBlock", new string[0])]
-        [NUnit.Framework.TestCaseAttribute("BeforeTestRun", new string[0])]
         public virtual void ShouldExecuteSpecFlowEvents(string @event, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should execute SpecFlow events", exampleTags);
@@ -93,6 +82,69 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then(string.Format("the hook \'HookFor{0}\' is executed once", @event));
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_BeforeScenario()
+        {
+            this.ShouldExecuteSpecFlowEvents("BeforeScenario", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_AfterScenario()
+        {
+            this.ShouldExecuteSpecFlowEvents("AfterScenario", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_BeforeFeature()
+        {
+            this.ShouldExecuteSpecFlowEvents("BeforeFeature", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_AfterFeature()
+        {
+            this.ShouldExecuteSpecFlowEvents("AfterFeature", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_BeforeStep()
+        {
+            this.ShouldExecuteSpecFlowEvents("BeforeStep", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_AfterStep()
+        {
+            this.ShouldExecuteSpecFlowEvents("AfterStep", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_BeforeScenarioBlock()
+        {
+            this.ShouldExecuteSpecFlowEvents("BeforeScenarioBlock", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_AfterScenarioBlock()
+        {
+            this.ShouldExecuteSpecFlowEvents("AfterScenarioBlock", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should execute SpecFlow events")]
+        public virtual void ShouldExecuteSpecFlowEvents_BeforeTestRun()
+        {
+            this.ShouldExecuteSpecFlowEvents("BeforeTestRun", ((string[])(null)));
         }
     }
 }
