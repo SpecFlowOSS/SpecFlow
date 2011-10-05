@@ -49,5 +49,41 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("").ShouldEqual(new Guid());
             retriever.GetValue("xxxxx").ShouldEqual(new Guid());
         }
+
+        [Test]
+        public void Adds_trailing_zeroes_when_passed_one_valid_guid_character()
+        {
+            var retriever = new GuidValueRetriever();
+            retriever.GetValue("1")
+                .ShouldEqual(new Guid("10000000-0000-0000-0000-000000000000"));
+            retriever.GetValue("2")
+                .ShouldEqual(new Guid("20000000-0000-0000-0000-000000000000"));
+            retriever.GetValue("F")
+                .ShouldEqual(new Guid("F0000000-0000-0000-0000-000000000000"));
+        }
+
+        [Test]
+        public void Adds_trailing_zeroes_when_passed_two_valid_guid_character()
+        {
+            var retriever = new GuidValueRetriever();
+            retriever.GetValue("12")
+                .ShouldEqual(new Guid("12000000-0000-0000-0000-000000000000"));
+            retriever.GetValue("23")
+                .ShouldEqual(new Guid("23000000-0000-0000-0000-000000000000"));
+            retriever.GetValue("DF")
+                .ShouldEqual(new Guid("DF000000-0000-0000-0000-000000000000"));
+        }
+
+        [Test]
+        public void Adds_trailing_zeroes_when_passed_32_valid_guid_character()
+        {
+            var retriever = new GuidValueRetriever();
+            retriever.GetValue("12000000-0000-0000-0000-00000000001")
+                .ShouldEqual(new Guid("12000000-0000-0000-0000-000000000010"));
+            retriever.GetValue("23000000-0000-0000-0000-00000000009")
+                .ShouldEqual(new Guid("23000000-0000-0000-0000-000000000090"));
+            retriever.GetValue("DF000000-0000-0000-0000-00000000007")
+                .ShouldEqual(new Guid("DF000000-0000-0000-0000-000000000070"));
+        }
     }
 }
