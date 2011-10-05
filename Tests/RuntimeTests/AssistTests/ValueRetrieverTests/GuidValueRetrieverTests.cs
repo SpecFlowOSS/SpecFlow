@@ -85,5 +85,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("DF000000-0000-0000-0000-00000000007")
                 .ShouldEqual(new Guid("DF000000-0000-0000-0000-000000000070"));
         }
+
+        [Test]
+        public void Adds_trailing_zeroes_when_passed_32_valid_guid_characters_with_no_dashes()
+        {
+            var retriever = new GuidValueRetriever();
+            retriever.GetValue("1200000000000000000000000000001")
+                .ShouldEqual(new Guid("12000000-0000-0000-0000-000000000010"));
+            retriever.GetValue("2300000000000000000000000000009")
+                .ShouldEqual(new Guid("23000000-0000-0000-0000-000000000090"));
+            retriever.GetValue("DF00000000000000000000000000007")
+                .ShouldEqual(new Guid("DF000000-0000-0000-0000-000000000070"));
+        }
+
+        [Test]
+        public void Adds_trailing_zeroes_when_passed_9_valid_guid_characters_with_no_dashes()
+        {
+            var retriever = new GuidValueRetriever();
+            retriever.GetValue("123456789")
+                .ShouldEqual(new Guid("12345678-9000-0000-0000-000000000000"));
+            retriever.GetValue("121212123")
+                .ShouldEqual(new Guid("12121212-3000-0000-0000-000000000000"));
+        }
     }
 }

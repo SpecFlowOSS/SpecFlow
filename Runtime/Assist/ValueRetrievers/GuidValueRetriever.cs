@@ -16,7 +16,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             {
                 try
                 {
-                    value = value + "00000000-0000-0000-0000-000000000000".Substring(value.Length);
+                    value = value.Replace("-", "");
+                    value = value + "00000000000000000000000000000000".Substring(value.Length);
+
                     return new Guid(value);
                 }
                 catch
