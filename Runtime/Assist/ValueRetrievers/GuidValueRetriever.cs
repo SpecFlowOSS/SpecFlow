@@ -6,8 +6,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual Guid GetValue(string value)
         {
-            if (string.IsNullOrEmpty(value))
-                return new Guid();
             try
             {
                 return new Guid(value);
@@ -16,16 +14,26 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             {
                 try
                 {
-                    value = value.Replace("-", "");
-                    value = value + "00000000000000000000000000000000".Substring(value.Length);
-
-                    return new Guid(value);
+                    return AttemptToBuildAGuidByAddingTrailingZeroes(value);
                 }
                 catch
                 {
-                    return new Guid();
+                    return FailedConversion();
                 }
             }
+        }
+
+        private static Guid FailedConversion()
+        {
+            return new Guid();
+        }
+
+        private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
+        {
+            value = value.Replace("-", "");
+            value = value + "00000000000000000000000000000000".Substring(value.Length);
+
+            return new Guid(value);
         }
     }
 }
