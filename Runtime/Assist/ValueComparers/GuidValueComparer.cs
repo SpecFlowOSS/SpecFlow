@@ -1,9 +1,17 @@
 ﻿using System;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
     internal class GuidValueComparer : IValueComparer
     {
+        private readonly GuidValueRetriever guidValueRetriever;
+
+        public GuidValueComparer(GuidValueRetriever guidValueRetriever)
+        {
+            this.guidValueRetriever = guidValueRetriever;
+        }
+
         public bool CanCompare(object actualValue)
         {
             return actualValue != null && actualValue.GetType() == typeof (Guid);
@@ -11,14 +19,15 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            expectedValue = AppendTrailingZeroesIfThisIsOnlyTheFirstEightCharactersOfAGuid(expectedValue);
             try
             {
                 return new Guid(expectedValue) == (Guid) actualValue;
             }
             catch
             {
-                return false;
+                var guid = guidValueRetriever.GetValue(expectedValue);
+                if (guid == new Guid()) return false;
+                return guid == (Guid)actualValue;
             }
         }
 
