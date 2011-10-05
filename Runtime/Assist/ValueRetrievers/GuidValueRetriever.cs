@@ -18,14 +18,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 }
                 catch
                 {
-                    return FailedConversion();
+                    return new Guid();
                 }
             }
-        }
-
-        private static Guid FailedConversion()
-        {
-            return new Guid();
         }
 
         private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
