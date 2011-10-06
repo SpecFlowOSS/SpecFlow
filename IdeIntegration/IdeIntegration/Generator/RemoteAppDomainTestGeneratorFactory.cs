@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
@@ -16,11 +17,14 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         private ITestGeneratorFactory remoteTestGeneratorFactory = null;
         private UsageCounter usageCounter;
         private readonly string remoteGeneratorAssemblyName;
+        public Timer cleanupTimer;
 
         private class UsageCounter
         {
             private int counter = 0;
             private readonly Action cleanup;
+
+            public bool HasRefernece { get { return counter > 0; } }
 
             public UsageCounter(Action cleanup)
             {
@@ -48,6 +52,8 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         {
             this.tracer = tracer;
             this.remoteGeneratorAssemblyName = typeof(ITestGeneratorFactory).Assembly.GetName().Name;
+
+            this.cleanupTimer = new Timer(CleanupTimerElapsed, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         public void Setup(string newGeneratorFolder)
@@ -85,7 +91,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             if (remoteTestGeneratorFactory == null)
                 throw new InvalidOperationException("Could not load test generator factory.");
 
-            usageCounter = new UsageCounter(Cleanup);
+            usageCounter = new UsageCounter(LoseReferences);
             tracer.Trace("AppDomain for generator created", "RemoteAppDomainTestGeneratorFactory");
         }
 
@@ -167,6 +173,17 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         public void Dispose()
         {
             Cleanup();
+        }
+
+        private void LoseReferences()
+        {
+            cleanupTimer.Change(TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(-1));
+        }
+
+        private void CleanupTimerElapsed(object state)
+        {
+            if (!usageCounter.HasRefernece)
+                Cleanup();
         }
 
         public void Cleanup()
