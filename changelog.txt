@@ -27,6 +27,7 @@ Fixed issues:
 + Silverlight: apply feature tags to the test class instead of the methods (Issue 126, by Matt Ellis)
 + SpecFlowContext.TryGetValue does not evaluate Func<T> factory methods (Issue 127, by Matt Ellis)
 + StepArgumentTransformation cannot be used recursively
++ VS2010 locks generator folder
 
 1.7.1 - 2011/08/19
 

@@ -71,6 +71,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
                 throw new InvalidOperationException("The RemoteAppDomainTestGeneratorFactory has to be configured with the Setup() method before initialization.");
 
             AppDomainSetup appDomainSetup = new AppDomainSetup { ApplicationBase = generatorFolder };
+            appDomainSetup.ShadowCopyFiles = "true";
             appDomain = AppDomain.CreateDomain("AppDomainForTestGeneration", null, appDomainSetup);
 
             var testGeneratorFactoryTypeFullName = typeof(TestGeneratorFactory).FullName;
