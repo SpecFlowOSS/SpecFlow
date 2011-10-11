@@ -6,6 +6,5 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         string Name { get; }
         string FullName { get; }
-        bool IsAssignableTo(Type type);
     }
 }

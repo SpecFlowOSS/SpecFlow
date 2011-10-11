@@ -7,6 +7,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             {
                 if (candidatingBindings.Any())
                 {
-                    string bindingsText = string.Join(Environment.NewLine, candidatingBindings.Select(b => b.Method.ShortDisplayText));
+                    string bindingsText = string.Join(Environment.NewLine, candidatingBindings.Select(b => b.Method.GetShortDisplayText()));
                     MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
                         + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
                     binding = candidatingBindings.First();

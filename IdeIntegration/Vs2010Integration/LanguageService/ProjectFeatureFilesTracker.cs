@@ -8,6 +8,7 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using VSLangProj;
 
@@ -142,6 +143,37 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             vsProjectScope.GherkinDialectServicesChanged -= OnGherkinDialectServicesChanged;
             DisposeFilesTracker(filesTracker);
+        }
+
+        public void SaveToStepMap(StepMap stepMap)
+        {
+            stepMap.FeatureSteps = new List<FeatureSteps>();
+            foreach (var featureFileInfo in Files.Where(f => f.ParsedFeature != null))
+            {
+                stepMap.FeatureSteps.Add(new FeatureSteps { FileName = featureFileInfo.ProjectRelativePath, Feature = featureFileInfo.ParsedFeature });
+            }
+        }
+
+        public void LoadFromStepMap(StepMap stepMap)
+        {
+            DoTaskAsynch(() => LoadFromStepMapInternal(stepMap));
+        }
+
+        private void LoadFromStepMapInternal(StepMap stepMap)
+        {
+            if (stepMap.FeatureSteps == null)
+                return;
+
+            foreach (var featureSteps in stepMap.FeatureSteps)
+            {
+                var featureFileInfo = FindFileInfo(featureSteps.FileName);
+                if (featureFileInfo == null)
+                    continue;
+
+                featureFileInfo.ParsedFeature = featureSteps.Feature;
+                //TODO: featureFileInfo.GeneratorVersion = 
+                featureFileInfo.IsAnalyzed = true;
+            }
         }
     }
 }

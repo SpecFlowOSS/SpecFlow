@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
@@ -10,6 +11,7 @@ using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -172,6 +174,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 stepSuggestionProvider.Initialize();
                 bindingFilesTracker.Initialize();
                 featureFilesTracker.Initialize();
+
+                LoadStepMap();
+
                 bindingFilesTracker.Run();
                 featureFilesTracker.Run();
             }
@@ -292,6 +297,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Dispose()
         {
+            SaveStepMap();
+
+
             GherkinProcessingScheduler.Dispose();
             if (appConfigTracker != null)
             {
@@ -313,6 +321,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 //                bindingFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
                 bindingFilesTracker.Dispose();
             }
+        }
+
+        private string stepMapFileName;
+
+        private string GetStepMapFileName()
+        {
+            if (stepMapFileName == null)
+                stepMapFileName = string.Format(@"C:\Temp\sm-{0}.txt", VsxHelper.GetProjectUniqueId(project));
+            return stepMapFileName;
+        }
+
+        private void SaveStepMap()
+        {
+            var stepMap = new StepMap();
+            featureFilesTracker.SaveToStepMap(stepMap);
+            bindingFilesTracker.SaveToStepMap(stepMap);
+
+            stepMap.SaveToFile(GetStepMapFileName(), visualStudioTracer);
+        }
+
+        private void LoadStepMap()
+        {
+            var fileName = GetStepMapFileName();
+            if (!File.Exists(fileName))
+                return;
+
+            var stepMap = StepMap.LoadFromFile(fileName, visualStudioTracer);
+            featureFilesTracker.LoadFromStepMap(stepMap);
+            bindingFilesTracker.LoadFromStepMap(stepMap);
         }
 
         public static bool IsProjectSupported(Project project)

@@ -12,6 +12,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class VsStepSuggestionBindingCollector
     {
+        private readonly VsBindingReflectionFactory bindingReflectionFactory = new VsBindingReflectionFactory();
+
         public IEnumerable<StepBindingNew> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
             return VsxHelper.GetClasses(projectItem).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
@@ -156,7 +158,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             try
             {
-                IBindingMethod bindingMethod = new VsBindingMethod(codeFunction);
+                IBindingMethod bindingMethod = bindingReflectionFactory.CreateBindingMethod(codeFunction);
 
                 var regexArg = attr.Arguments.Cast<CodeAttributeArgument>().FirstOrDefault();
                 if (regexArg == null)
@@ -205,7 +207,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             return VsxHelper.GetClasses(project).Where(IsBindingClass).Where(c => c.FullName == bindingMethod.Type.FullName)
                 .SelectMany(c => c.GetFunctions()).FirstOrDefault(
-                    f => f.Name == bindingMethod.Name && BindingReflectionExtensions.MethodEquals(bindingMethod, new VsBindingMethod(f)));
+                    f => f.Name == bindingMethod.Name && BindingReflectionExtensions.MethodEquals(bindingMethod, bindingReflectionFactory.CreateBindingMethod(f)));
         }
     }
 }

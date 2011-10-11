@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private TFileInfo FindFileInfo(string projectRelativePath)
+        protected TFileInfo FindFileInfo(string projectRelativePath)
         {
             return Files.FirstOrDefault(ffi => string.Equals(ffi.ProjectRelativePath, projectRelativePath, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker.Dispose();
         }
 
-        private void DoTaskAsynch(Action action)
+        protected void DoTaskAsynch(Action action)
         {
             vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.VisualStudioTracer));
         }

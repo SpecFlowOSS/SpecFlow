@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -117,6 +118,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        public void SaveToStepMap(StepMap stepMap)
+        {
+            stepMap.ProjectStepDefinitions = new List<ProjectStepDefinitions>();
+            var projectStepDefinitions = new ProjectStepDefinitions();
+            projectStepDefinitions.FileStepDefinitions = new List<FileStepDefinitions>();
+            stepMap.ProjectStepDefinitions.Add(projectStepDefinitions);
+            foreach (var bindingFileInfo in Files.Where(f => f.IsAnalyzed))
+            {
+                var fileStepDefinitions = new FileStepDefinitions {FileName = bindingFileInfo.ProjectRelativePath};
+
+                fileStepDefinitions.StepDefinitions = new List<StepBindingNew>();
+                fileStepDefinitions.StepDefinitions.AddRange(bindingFileInfo.StepBindings);
+                projectStepDefinitions.FileStepDefinitions.Add(fileStepDefinitions);
+            }
+        }
+
         public void Dispose()
         {
             if (filesTracker != null)
@@ -124,6 +141,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (var vsProjectFilesTracker in filesTracker.Values.Where(t => t != null))
                     DisposeFilesTracker(vsProjectFilesTracker);
                 filesTracker.Clear();
+            }
+        }
+
+        public void LoadFromStepMap(StepMap stepMap)
+        {
+            DoTaskAsynch(() => LoadFromStepMapInternal(stepMap));
+        }
+
+        private void LoadFromStepMapInternal(StepMap stepMap)
+        {
+            if (stepMap.ProjectStepDefinitions == null || stepMap.ProjectStepDefinitions.Count == 0)
+                return;
+
+            var projectStepDefitions = stepMap.ProjectStepDefinitions[0];
+
+            foreach (var fileStepDefinitions in projectStepDefitions.FileStepDefinitions)
+            {
+                var fileInfo = FindFileInfo(fileStepDefinitions.FileName);
+                if (fileInfo == null)
+                    continue;
+
+                fileInfo.StepBindings = fileStepDefinitions.StepDefinitions;
+                fileInfo.IsAnalyzed = true;
             }
         }
     }
