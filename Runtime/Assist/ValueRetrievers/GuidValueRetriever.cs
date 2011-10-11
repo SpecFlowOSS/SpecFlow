@@ -30,5 +30,26 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
             return new Guid(value);
         }
+
+        public bool IsAValidGuid(string value)
+        {
+            try
+            {
+                new Guid(value);
+                return true;
+            }
+            catch
+            {
+                try
+                {
+                    AttemptToBuildAGuidByAddingTrailingZeroes(value);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

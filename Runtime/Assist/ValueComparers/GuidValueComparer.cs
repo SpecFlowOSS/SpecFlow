@@ -25,17 +25,11 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             }
             catch
             {
+                if (guidValueRetriever.IsAValidGuid(expectedValue) == false) return false;
                 var guid = guidValueRetriever.GetValue(expectedValue);
-                if (guid == new Guid()) return false;
+                if (guid == new Guid()) return true;
                 return guid == (Guid)actualValue;
             }
-        }
-
-        private static string AppendTrailingZeroesIfThisIsOnlyTheFirstEightCharactersOfAGuid(string expectedValue)
-        {
-            if (expectedValue.Length == 8)
-                expectedValue += "-0000-0000-0000-000000000000";
-            return expectedValue;
         }
     }
 }

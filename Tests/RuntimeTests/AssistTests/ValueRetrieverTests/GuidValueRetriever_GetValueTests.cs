@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
     [TestFixture]
-    public class GuidValueRetrieverTests
+    public class GuidValueRetriever_GetValueTests
     {
         [Test]
         public void Returns_a_guid_when_passed_a_valid_guid_string()
