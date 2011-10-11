@@ -33,6 +33,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public bool IsAValidGuid(string value)
         {
+            if (string.IsNullOrEmpty(value)) return false;
             try
             {
                 new Guid(value);

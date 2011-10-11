@@ -24,5 +24,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.IsAValidGuid("0").ShouldBeTrue();
             retriever.IsAValidGuid("{47B864A3-DEB9-4222-B7F8-F176F2E2CEFF}").ShouldBeTrue();
         }
+
+        [Test]
+        public void Returns_false_when_the_guid_is_null()
+        {
+            var retriever = new GuidValueRetriever();
+
+            retriever.IsAValidGuid(null).ShouldBeFalse();
+        }
+
+        [Test]
+        public void Returns_false_when_the_guid_is_empty()
+        {
+            var retriever = new GuidValueRetriever();
+
+            retriever.IsAValidGuid(string.Empty).ShouldBeFalse();
+        }
     }
 }
