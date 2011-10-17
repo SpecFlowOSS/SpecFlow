@@ -15,6 +15,9 @@ New features:
 + VS2010: Use infix word prefix matching for step completion. 
 + VS2010: Regenerate feature files from project context menu.
 + VS2010: Go to step definition command in feature file context menu. 
++ MsBuild generator can output generated file paths (GeneratedFiles property). The file list is populated to the MsBuild item 
+  @(SpecFlowGeneratedFiles) by the TechTalk.SpecFlow.targets.
++ MsBuild: TechTalk.SpecFlow.targets provides overrideable BeforeUpdateFeatureFilesInProject and AfterUpdateFeatureFilesInProject targets.
 + Cucumber harmonization
 	+ Allow using [Before]/[After] attributes as synonyms of [BeforeScenario]/[AfterScenario]
 	+ Allow using [StepDefinition] attribute that matches to given, when or then steps
