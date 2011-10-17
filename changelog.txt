@@ -33,6 +33,7 @@ Fixed issues:
 + StepArgumentTransformation cannot be used recursively
 + VS2010 locks generator folder
 + After step hook is not invoked when step definition failed.
++ Missing XML comment warnings caused by the generated test class (Issue 121)
 
 1.7.1 - 2011/08/19
 
