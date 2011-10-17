@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
                                 featureFileInput.GetFullPath(specFlowProject.ProjectSettings), testGenerationError.Line, testGenerationError.LinePosition);
                         }
                     };
-            batchGenerator.OnGenerated +=
+            batchGenerator.OnSuccess +=
                 (featureFileInput, result) => generatedFiles.Add(
                     new TaskItem(featureFileInput.GetGeneratedTestFullPath(specFlowProject.ProjectSettings)));
 
