@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .ShouldBeFalse();
         }
 
-        [Test]
+        [Test, Ignore]
         public void Returns_true_when_the_string_and_values_match_exactly()
         {
             var comparer = new DateTimeValueComparer();
