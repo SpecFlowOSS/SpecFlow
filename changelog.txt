@@ -1,4 +1,4 @@
-﻿vNext - ???
+﻿1.8.0 - 2011/10/17
 
 Breaking changes:
 + Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
@@ -36,6 +36,9 @@ Fixed issues:
 + Missing XML comment warnings caused by the generated test class (Issue 121)
 + VS2010: Goto step definition misdiagnoses Given-But as a Then-But (Issue 134, by Raytheon)
 + VS2010: 'Go To Definition' does not work with partial classes. (Issue 53, by Raytheon)
++ AfterTestRun-Hook does not trigger when running in NUnitGui or NUnitConsole. To fix this, you need to add the NUnit addin from 
+  https://raw.github.com/techtalk/SpecFlow/master/Installer/NUnitNuGetPackage/SpecFlowNUnitExtension.cs to the project, or use
+  the SpecFlow.NUnit combined NuGet package that does this automatically.
 
 1.7.1 - 2011/08/19
 
