@@ -73,6 +73,11 @@ namespace TechTalk.SpecFlow.Infrastructure
                     {
                         OnTestRunEnd();
                     };
+            AppDomain.CurrentDomain.ProcessExit += 
+                delegate
+                    {
+                        OnTestRunEnd();
+                    };
             //TODO: Siverlight
 #endif
         }
