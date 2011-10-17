@@ -334,6 +334,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void SaveStepMap()
         {
+            if (!featureFilesTracker.IsInitialized ||
+                !bindingFilesTracker.IsInitialized)
+                return;
+
             var stepMap = new StepMap();
             featureFilesTracker.SaveToStepMap(stepMap);
             bindingFilesTracker.SaveToStepMap(stepMap);
@@ -348,8 +352,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return;
 
             var stepMap = StepMap.LoadFromFile(fileName, visualStudioTracer);
-            featureFilesTracker.LoadFromStepMap(stepMap);
-            bindingFilesTracker.LoadFromStepMap(stepMap);
+            if (stepMap != null)
+            {
+                featureFilesTracker.LoadFromStepMap(stepMap);
+                bindingFilesTracker.LoadFromStepMap(stepMap);
+            }
         }
 
         public static bool IsProjectSupported(Project project)

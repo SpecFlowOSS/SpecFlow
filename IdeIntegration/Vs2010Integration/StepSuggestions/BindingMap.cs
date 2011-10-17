@@ -50,32 +50,47 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public void SaveToFile(string fileName, IIdeTracer tracer)
         {
-            var serializer = CreateSerializer();
-
-            string tempFileName = fileName + "new";
-
-            using (var writer = new StreamWriter(tempFileName, false, Encoding.UTF8))
+            try
             {
-                serializer.Serialize(writer, this);
+                var serializer = CreateSerializer();
+
+                string tempFileName = fileName + "new";
+
+                using (var writer = new StreamWriter(tempFileName, false, Encoding.UTF8))
+                {
+                    serializer.Serialize(writer, this);
+                }
+
+                File.Copy(tempFileName, fileName, true);
+                File.Delete(tempFileName);
+
+                tracer.Trace(string.Format("StepMap with {0} feature files and {1} step definitions saved", FeatureFileCount, StepDefinitionCount), GetType().Name);
             }
-
-            File.Copy(tempFileName, fileName, true);
-            File.Delete(tempFileName);
-
-            tracer.Trace(string.Format("StepMap with {0} feature files and {1} step definitions saved", FeatureFileCount, StepDefinitionCount), GetType().Name);
+            catch (Exception saveException)
+            {
+                tracer.Trace(string.Format("StepMap saving error: {0}", saveException), typeof(StepMap).Name);
+            }
         }
 
         public static StepMap LoadFromFile(string fileName, IIdeTracer tracer)
         {
-            var serializer = CreateSerializer();
-
-            using(var reader = new StreamReader(fileName, Encoding.UTF8))
+            try
             {
-                var stepMap = (StepMap)serializer.Deserialize(reader, typeof (StepMap));
+                var serializer = CreateSerializer();
 
-                tracer.Trace(string.Format("StepMap with {0} feature files and {1} step definitions loaded", stepMap.FeatureFileCount, stepMap.StepDefinitionCount), typeof(StepMap).Name);
+                using (var reader = new StreamReader(fileName, Encoding.UTF8))
+                {
+                    var stepMap = (StepMap)serializer.Deserialize(reader, typeof(StepMap));
 
-                return stepMap;
+                    tracer.Trace(string.Format("StepMap with {0} feature files and {1} step definitions loaded", stepMap.FeatureFileCount, stepMap.StepDefinitionCount), typeof(StepMap).Name);
+
+                    return stepMap;
+                }
+            }
+            catch(Exception loadException)
+            {
+                tracer.Trace(string.Format("StepMap loading error: {0}", loadException), typeof(StepMap).Name);
+                return null;
             }
         }
 
