@@ -134,6 +134,7 @@
     <Compile Include="Infrastructure\PluginTests.cs" />
     <Compile Include="Infrastructure\RuntimeConfigurationExtensions.cs" />
     <Compile Include="Infrastructure\StringConfigProvider.cs" />
+    <Compile Include="Infrastructure\TestExecutionEngineTests.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
     <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
     <Compile Include="StepsTest.cs" />

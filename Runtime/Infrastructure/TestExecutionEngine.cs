@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
@@ -25,14 +24,16 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
+        private readonly IStepDefinitionMatcher stepDefinitionMatcher;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher)
         {
             this.errorProvider = errorProvider;
+            this.stepDefinitionMatcher = stepDefinitionMatcher;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -224,70 +225,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (EventBinding eventBinding in bindingRegistry.GetEvents(bindingEvent))
+            foreach (IHookBinding eventBinding in bindingRegistry.GetEvents(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                eventBinding.InvokeAction(contextManager, null, testTracer);
+                eventBinding.Invoke(contextManager, testTracer);
             }
-        }
-
-        private BindingMatch Match(StepBinding stepBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)
-        {
-            Match match = stepBinding.Regex.Match(stepArgs.Text);
-
-            // Check if regexp is a match
-            if (!match.Success)
-                return null;
-
-            int scopeMatches = 0;
-            if (useScopeMatching && stepBinding.IsScoped)
-            {
-                if (!stepBinding.BindingScope.Match(stepArgs.StepContext, out scopeMatches))
-                    return null;
-            }
-
-            var bindingMatch = new BindingMatch(stepBinding, match, CalculateExtraArgs(stepArgs), stepArgs, scopeMatches);
-
-            if (useParamMatching)
-            {
-                // check if the regex + extra arguments match to the binding method parameters
-                if (bindingMatch.Arguments.Length != stepBinding.ParameterTypes.Length)
-                    return null;
-
-                // Check if regex & extra arguments can be converted to the method parameters
-                if (bindingMatch.Arguments.Where(
-                    (arg, argIndex) => !CanConvertArg(arg, stepBinding.ParameterTypes[argIndex])).Any())
-                    return null;
-            }
-            return bindingMatch;
-        }
-
-        private bool CanConvertArg(object value, Type typeToConvertTo)
-        {
-            Debug.Assert(value != null);
-            Debug.Assert(typeToConvertTo != null);
-
-            if (value.GetType().IsAssignableFrom(typeToConvertTo))
-                return true;
-
-            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, FeatureContext.BindingCulture);
-        }
-
-        private static readonly object[] emptyExtraArgs = new object[0];
-        private object[] CalculateExtraArgs(StepArgs stepArgs)
-        {
-            if (stepArgs.MultilineTextArgument == null && stepArgs.TableArgument == null)
-                return emptyExtraArgs;
-
-            var extraArgsList = new List<object>();
-            if (stepArgs.MultilineTextArgument != null)
-                extraArgsList.Add(stepArgs.MultilineTextArgument);
-            if (stepArgs.TableArgument != null)
-                extraArgsList.Add(stepArgs.TableArgument);
-            return extraArgsList.ToArray();
         }
 
         private void ExecuteStep(StepArgs stepArgs)
@@ -296,6 +241,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             testTracer.TraceStep(stepArgs, true);
 
+            bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
+
             BindingMatch match = null;
             object[] arguments = null;
             try
@@ -303,15 +250,16 @@ namespace TechTalk.SpecFlow.Infrastructure
                 match = GetStepMatch(stepArgs);
                 arguments = GetExecuteArguments(match);
 
-                if (contextManager.ScenarioContext.TestStatus == TestStatus.OK)
+                if (isStepSkipped)
                 {
-                    TimeSpan duration = ExecuteStepMatch(match, arguments);
-                    if (runtimeConfiguration.TraceSuccessfulSteps) 
-                        testTracer.TraceStepDone(match, arguments, duration);
+                    testTracer.TraceStepSkipped();
                 }
                 else
                 {
-                    testTracer.TraceStepSkipped();
+                    OnStepStart();
+                    TimeSpan duration = ExecuteStepMatch(match, arguments);
+                    if (runtimeConfiguration.TraceSuccessfulSteps)
+                        testTracer.TraceStepDone(match, arguments, duration);
                 }
             }
             catch(PendingStepException)
@@ -352,28 +300,16 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (runtimeConfiguration.StopAtFirstError)
                     throw;
             }
+            finally
+            {
+                if (!isStepSkipped)
+                    OnStepEnd();
+            }
         }
 
         private BindingMatch GetStepMatch(StepArgs stepArgs)
         {
-            List<BindingMatch> matches = bindingRegistry
-                .Where(b => b.Type == stepArgs.Type)
-                .Select(binding => Match(binding, stepArgs, true, true))
-                .Where(match => match != null)
-                .ToList();
-
-            if (matches.Count > 1)
-            {
-                // if there are both scoped and non-scoped matches, we take the ones with the higher degree of scope matches
-                int maxScopeMatches = matches.Max(m => m.ScopeMatches);
-                matches.RemoveAll(m => m.ScopeMatches < maxScopeMatches);
-            }
-
-            if (matches.Count > 1)
-            {
-                // we remove duplicate maches for the same method (take the first from each)
-                matches = matches.GroupBy(m => m.StepBinding.MethodInfo, (methodInfo, methodMatches) => methodMatches.First()).ToList();
-            }
+            List<BindingMatch> matches = stepDefinitionMatcher.GetMatches(stepArgs);
 
             if (matches.Count == 0)
             {
@@ -381,16 +317,11 @@ namespace TechTalk.SpecFlow.Infrastructure
                 // to provide better error message for the param matching error, we re-run 
                 // the matching without param check
 
-                List<BindingMatch> matchesWithoutScopeCheck = GetMatchesWithoutScopeCheck(stepArgs);
-//                if (matchesWithoutScopeCheck.Count > 0)
-//                {
-                    // no match, because of scope filter
-//                    throw errorProvider.GetNoMatchBecauseOfScopeFilterError(matchesWithoutScopeCheck, stepArgs);
-//                }
+                List<BindingMatch> matchesWithoutScopeCheck = stepDefinitionMatcher.GetMatchesWithoutScopeCheck(stepArgs);
 
                 if (matchesWithoutScopeCheck.Count == 0)
                 {
-                    List<BindingMatch> matchesWithoutParamCheck = GetMatchesWithoutParamCheck(stepArgs);
+                    List<BindingMatch> matchesWithoutParamCheck = stepDefinitionMatcher.GetMatchesWithoutParamCheck(stepArgs);
                     if (matchesWithoutParamCheck.Count == 1)
                     {
                         // no ambiguouity, but param error -> execute will find it out
@@ -416,23 +347,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             return matches[0];
         }
 
-        private List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
-        {
-            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
-        }
-
-        private List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
-        {
-            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
-        }
-
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
-            OnStepStart();
             TimeSpan duration;
-            match.StepBinding.InvokeAction(contextManager, arguments, testTracer, out duration);
-            OnStepEnd();
-
+            match.StepBinding.Invoke(contextManager, testTracer, arguments, out duration);
             return duration;
         }
 

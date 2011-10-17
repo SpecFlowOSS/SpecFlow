@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();
             container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+            container.RegisterTypeAs<StepDefinitionMatcher, IStepDefinitionMatcher>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>();

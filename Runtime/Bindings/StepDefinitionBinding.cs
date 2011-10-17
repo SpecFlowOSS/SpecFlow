@@ -1,11 +1,14 @@
+using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class StepBinding : MethodBinding
+    public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
     {
         public BindingType Type { get; private set; }
         public Regex Regex { get; private set; }
@@ -19,13 +22,18 @@ namespace TechTalk.SpecFlow.Bindings
         private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
 #endif
 
-        public StepBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
+        public StepDefinitionBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
             : base(runtimeConfiguration, errorProvider, methodInfo)
         {
             Type = type;
             Regex regex = new Regex("^" + regexString + "$", RegexOptions);
             Regex = regex;
             this.BindingScope = bindingScope;
+        }
+
+        public void Invoke(IContextManager contextManager, ITestTracer testTracer, object[] arguments, out TimeSpan duration)
+        {
+            InvokeAction(contextManager, arguments, testTracer, out duration);
         }
     }
 }

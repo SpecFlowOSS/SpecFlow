@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace TechTalk.SpecFlow.Compatibility
+namespace System.Collections.Generic
 {
     public static class ListHelper
     {

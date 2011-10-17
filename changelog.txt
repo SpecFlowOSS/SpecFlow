@@ -2,6 +2,7 @@
 
 Breaking changes:
 + Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
++ After step hook is was not invoked when step definition failed so far. Now it is invoked even in case of a failure.
 
 New features:
 + Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
@@ -31,6 +32,7 @@ Fixed issues:
 + SpecFlowContext.TryGetValue does not evaluate Func<T> factory methods (Issue 127, by Matt Ellis)
 + StepArgumentTransformation cannot be used recursively
 + VS2010 locks generator folder
++ After step hook is not invoked when step definition failed.
 
 1.7.1 - 2011/08/19
 
