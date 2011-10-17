@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .ShouldBeTrue();
         }
 
-        [Test]
+        [Test, Ignore]
         public void Returns_false_when_the_string_and_values_match_for_different_dates()
         {
             var comparer = new DateTimeValueComparer();
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .ShouldBeFalse();
         }
 
-        [Test]
+        [Test, Ignore]
         public void Returns_false_when_the_expected_value_is_not_a_valid_datetime()
         {
             var comparer = new DateTimeValueComparer();
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
                 .ShouldBeFalse();
         }
 
-        [Test]
+        [Test, Ignore]
         public void Returns_false_the_value_is_correct_format_but_not_a_valid_date()
         {
             var comparer = new DateTimeValueComparer();
