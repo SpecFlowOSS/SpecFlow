@@ -126,6 +126,7 @@
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
     <Compile Include="Infrastructure\IRuntimePluginLoader.cs" />
+    <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatcher.cs" />

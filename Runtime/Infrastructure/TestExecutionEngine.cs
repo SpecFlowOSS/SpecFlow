@@ -25,12 +25,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
         private readonly IStepDefinitionMatcher stepDefinitionMatcher;
+        private readonly IStepErrorHandler[] stepErrorHandlers;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers)
         {
             this.errorProvider = errorProvider;
             this.stepDefinitionMatcher = stepDefinitionMatcher;
@@ -42,6 +44,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.testTracer = testTracer;
             this.stepFormatter = stepFormatter;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
+            this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
 
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
         }
@@ -349,8 +352,26 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
-            TimeSpan duration;
-            match.StepBinding.Invoke(contextManager, testTracer, arguments, out duration);
+            TimeSpan duration = TimeSpan.Zero;
+            try
+            {
+                match.StepBinding.Invoke(contextManager, testTracer, arguments, out duration);
+            }
+            catch(Exception ex)
+            {
+                if (stepErrorHandlers != null)
+                {
+                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepArgs.StepContext, ex);
+                    foreach (var stepErrorHandler in stepErrorHandlers)
+                    {
+                        stepErrorHandler.OnStepFailure(this, stepFailureEventArgs);
+                    }
+                    if (stepFailureEventArgs.IsHandled)
+                        return duration;
+                }
+
+                throw;
+            }
             return duration;
         }
 
@@ -394,17 +415,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         #endregion
 
         #region Given-When-Then
-        public StepContext GetStepContext()
-        {
-            return new StepContext(contextManager.FeatureContext.FeatureInfo, contextManager.ScenarioContext.ScenarioInfo);
-        }
-
         public void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg)
         {
             BindingType bindingType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
                                           : (BindingType) keyword;
-            ExecuteStep(new StepArgs(bindingType, keyword, text, multilineTextArg, tableArg, GetStepContext()));
+            ExecuteStep(new StepArgs(bindingType, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
         }
 
         private BindingType GetCurrentBindingType()

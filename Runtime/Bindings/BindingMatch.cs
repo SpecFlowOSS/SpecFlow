@@ -7,12 +7,14 @@ namespace TechTalk.SpecFlow.Bindings
     public class BindingMatch
     {
         public IStepDefinitionBinding StepBinding { get; private set; }
-        public object[] ExtraArguments { get; private set; }
         public StepArgs StepArgs { get; private set; }
+
+        public string[] RegexArguments { get; private set; }
+        public object[] ExtraArguments { get; private set; }
+
         public int ScopeMatches { get; set; }
         public bool IsScoped { get { return ScopeMatches > 0; } }
 
-        public string[] RegexArguments { get; private set; }
         public object[] Arguments  { get; private set; }
 
         public BindingMatch(IStepDefinitionBinding stepDefinitionBinding, StepArgs stepArgs, string[] regexArguments, object[] extraArguments, int scopeMatches)
