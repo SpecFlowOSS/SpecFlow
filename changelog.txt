@@ -34,6 +34,8 @@ Fixed issues:
 + VS2010 locks generator folder
 + After step hook is not invoked when step definition failed.
 + Missing XML comment warnings caused by the generated test class (Issue 121)
++ VS2010: Goto step definition misdiagnoses Given-But as a Then-But (Issue 134, by Raytheon)
++ VS2010: 'Go To Definition' does not work with partial classes. (Issue 53, by Raytheon)
 
 1.7.1 - 2011/08/19
 
