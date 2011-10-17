@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             reportInfo.FilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "executionreport.html");
 
             processHelper.RunProcess(
-                Path.Combine(processHelper.GetCurrentAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
+                Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
                 "nunitexecutionreport \"{0}\" \"/xmlTestResult:{1}\" \"/testOutput:{2}\" \"/out:{3}\" {4}", inputProjectDriver.ProjectFilePath,
                 Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml"), Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt"),
                 reportInfo.FilePath, GetCustomXsltArgument());
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             reportInfo.FilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "executionreport.html");
 
             processHelper.RunProcess(
-                Path.Combine(processHelper.GetCurrentAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
+                Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
                 "mstestexecutionreport \"{0}\" \"/testResult:{1}\" \"/out:{2}\" {3}", inputProjectDriver.ProjectFilePath,
                 Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx"), reportInfo.FilePath, GetCustomXsltArgument());
         }

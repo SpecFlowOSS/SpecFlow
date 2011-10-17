@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drivers\AssemblyFolderHelper.cs" />
     <Compile Include="Drivers\BindingClassInput.cs" />
     <Compile Include="Drivers\ContentFileInput.cs" />
     <Compile Include="Drivers\MsTestTestExecutionDriver.cs" />
