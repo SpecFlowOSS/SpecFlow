@@ -94,10 +94,16 @@ namespace TechTalk.SpecFlow.Assist
 
         private void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
         {
-            var tableString = table.ToString();
+            var realData = GetTheTableDiffExceptionMessage(listOfMissingItems, actualItems, table);
+            throw new ComparisonException("\r\n" + realData);
+        }
+
+        private string GetTheTableDiffExceptionMessage(IEnumerable<int> listOfMissingItems, IEnumerable<T> itemsThatWereNotFoundInTheTable, Table table)
+        {
             var realData = new StringBuilder();
             var index = 0;
-            foreach (var line in tableString.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+            var everyLineInTheTable = table.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in everyLineInTheTable)
             {
                 var prefix = "  ";
                 if (listOfMissingItems.Contains(index))
@@ -105,10 +111,9 @@ namespace TechTalk.SpecFlow.Assist
                 realData.AppendLine(prefix + line);
                 index++;
             }
-            if (actualItems != null)
-                foreach (var item in actualItems)
-                    realData.AppendLine(string.Format("+ | {0} |", ((item.GetPropertyValue("StringProperty") as string) ?? "").PadRight(14)));
-            throw new ComparisonException("\r\n" + realData);
+            foreach (var item in itemsThatWereNotFoundInTheTable)
+                realData.AppendLine(string.Format("+ | {0} |", ((item.GetPropertyValue("StringProperty") as string) ?? "").PadRight(14)));
+            return realData.ToString();
         }
 
         private static bool ExpectedItemsCouldNotBeFound(IEnumerable<int> listOfMissingItems)
