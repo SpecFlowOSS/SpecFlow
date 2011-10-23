@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var builder = new TableDiffExceptionBuilder<TestObject>();
 
-            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, new TestObject[] { });
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, new TestObject[] {});
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.ShouldEqual(@"  | One   | Two | Three |
@@ -40,6 +40,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 - | testb | 2   | X     |
 - | testc | 3   | Y     |
   | testd | 4   | Z     |
+");
+        }
+
+        [Test]
+        public void Appends_remaining_items_to_the_bottom_of_the_table_with_plus_prefix()
+        {
+            var table = new Table("One", "Two", "Three");
+            table.AddRow("testa", "1", "W");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {One = "A", Two = 1, Three = "Z"},
+                                         new TestObject {One = "B1", Two = 1234567, Three = "ZYXW"}
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.ShouldEqual(@"  | One   | Two | Three |
+  | testa | 1   | W     |
++ | A | 1 | Z |
++ | B1 | 1234567 | ZYXW |
 ");
         }
 

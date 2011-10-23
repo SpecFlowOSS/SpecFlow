@@ -19,8 +19,15 @@ namespace TechTalk.SpecFlow.Assist
                 realData.AppendLine(prefix + line);
                 index++;
             }
-            //foreach (var item in itemsThatWereNotFoundInTheTable)
-            //    realData.AppendLine(string.Format("+ | {0} |", ((item.GetPropertyValue("StringProperty") as string) ?? "").PadRight(14)));
+
+            foreach(var item in  tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
+            {
+                var line = "+ |";
+                foreach (var header in tableDifferenceResults.Table.Header)
+                    line += string.Format(" {0} |", item.GetPropertyValue(header));
+                realData.AppendLine(line);
+            }
+
             return realData.ToString();
         }
     }
