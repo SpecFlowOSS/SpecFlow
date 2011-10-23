@@ -70,6 +70,7 @@ AnotherFieldThatDoesNotExist");
 @"
   | StringProperty |
 - | orange         |
++ | apple          |
 ");
         }
 

@@ -18,6 +18,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
+        private List<T> actualItems;
 
         public SetComparer(Table table)
         {
@@ -74,7 +75,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFound(IEnumerable<T> set)
         {
-            var actualItems = GetTheActualItems(set);
+            actualItems = GetTheActualItems(set);
 
             var listOfMissingItems = new List<int>();
 
@@ -107,6 +108,8 @@ namespace TechTalk.SpecFlow.Assist
                 realData.AppendLine(prefix + line);
                 index++;
             }
+            foreach (var item in actualItems)
+                realData.AppendLine(string.Format("+ | {0} |", (item.GetPropertyValue("StringProperty") as string).PadRight(14)));
             throw new ComparisonException("\r\n" + realData);
         }
 
