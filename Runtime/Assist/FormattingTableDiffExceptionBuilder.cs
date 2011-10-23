@@ -20,9 +20,18 @@ namespace TechTalk.SpecFlow.Assist
 
             if (string.IsNullOrEmpty(message)) return message;
 
-            var stringBuilder = new StringBuilder();
+            var dictionary = GetTheMaximumLengthsOfEachColumn(message);
 
-            var lines = message.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(x => x.Split('|').ToArray());
+            var stringBuilder = new StringBuilder();
+            foreach (var line in GetLines(message))
+                stringBuilder.AppendLine(ReformatLineUsingTheseColumnLengths(dictionary, line));
+
+            return stringBuilder.ToString();
+        }
+
+        private Dictionary<int, int> GetTheMaximumLengthsOfEachColumn(string message)
+        {
+            var lines = GetLines(message).Select(x => x.Split('|'));
 
             var dictionary = new Dictionary<int, int>();
             foreach (var line in lines)
@@ -37,22 +46,18 @@ namespace TechTalk.SpecFlow.Assist
             }
 
             dictionary[0] = 2;
-
-            foreach (var line in GetLines(message))
-                stringBuilder.AppendLine(ReformatLineUsingTheseColumnLengths(dictionary, line));
-
-            return stringBuilder.ToString();
+            return dictionary;
         }
 
-        private static string ReformatLineUsingTheseColumnLengths(Dictionary<int, int> dictionary, string line)
+        private static string ReformatLineUsingTheseColumnLengths(IDictionary<int, int> dictionary, string line)
         {
-            var eachColumn = line.Split('|').ToArray().Select((value, index) => new {value, index}).ToArray();
-            var eachColumnPaddedToTheRightLength = eachColumn.Select(x => x.value.PadRight(dictionary[x.index])).ToArray();
-            var newLine = string.Join("|", eachColumnPaddedToTheRightLength);
+            var eachColumn = line.Split('|').Select((value, index) => new {value, index});
+            var eachColumnPaddedToTheRightLength = eachColumn.Select(x => x.value.PadRight(dictionary[x.index]));
+            var newLine = string.Join("|", eachColumnPaddedToTheRightLength.ToArray());
             return newLine.TrimEnd();
         }
 
-        private static string[] GetLines(string message)
+        private static IEnumerable<string> GetLines(string message)
         {
             return message.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         }
