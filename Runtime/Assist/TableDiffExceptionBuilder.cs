@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Assist
                 index++;
             }
 
-            foreach(var item in  tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
+            foreach (var item in  tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)

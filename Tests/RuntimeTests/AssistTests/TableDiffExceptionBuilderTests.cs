@@ -66,11 +66,56 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ");
         }
 
+        [Test]
+        public void Can_append_lines_that_contain_nulls()
+        {
+            var table = new Table("One", "Two", "Three");
+            table.AddRow("testa", "1", "W");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {One = "A", Two = 1, Three = "Z"},
+                                         new TestObject {One = null, Two = null, Three = null}
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] { }, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.ShouldEqual(@"  | One   | Two | Three |
+  | testa | 1   | W     |
++ | A | 1 | Z |
++ |  |  |  |
+");
+        }
+
+        [Test]
+        public void Uses_smart_matching_on_column_names()
+        {
+            var table = new Table("one", "TWO", "The fourth property");
+            table.AddRow("testa", "1", "W");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {One = "A", Two = 1, TheFourthProperty = "Z"},
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] { }, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.ShouldEqual(@"  | one   | TWO | The fourth property |
+  | testa | 1   | W                   |
++ | A | 1 | Z |
+");
+        }
+
         public class TestObject
         {
             public string One { get; set; }
-            public int Two { get; set; }
+            public int? Two { get; set; }
             public string Three { get; set; }
+            public string TheFourthProperty { get; set; }
         }
     }
 }
