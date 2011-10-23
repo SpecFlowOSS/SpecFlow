@@ -68,6 +68,7 @@
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
+    <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperStandardTypesTests.cs" />
