@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist
         private const int MatchNotFound = -1;
         private readonly Table table;
         private List<T> actualItems;
-        private readonly TableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
+        private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
 
         public SetComparer(Table table)
         {
