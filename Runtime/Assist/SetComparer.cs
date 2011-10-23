@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist
         public SetComparer(Table table)
         {
             this.table = table;
-            tableDiffExceptionBuilder = new TableDiffExceptionBuilder<T>();
+            tableDiffExceptionBuilder = new FormattingTableDiffExceptionBuilder<T>(new TableDiffExceptionBuilder<T>());
         }
 
         public void CompareToSet(IEnumerable<T> set)
