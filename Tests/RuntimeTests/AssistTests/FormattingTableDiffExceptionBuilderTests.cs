@@ -37,14 +37,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = GetATestDiffResult();
 
             var builder = GetABuilderThatReturnsThisString(@"| One | Two | Three |
-| 1234567 | 1 | 1234567890 |
-| 1| 2 | 3 |", tableDifferenceResults);
+  | 1234567 | 1 | 1234567890 |
++ | 1| 2 | 3 |", tableDifferenceResults);
 
             var result = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             result.ShouldEqual(@"  | One     | Two | Three      |
   | 1234567 | 1   | 1234567890 |
-  | 1       | 2   | 3          |
++ | 1       | 2   | 3          |
 ");
         }
 
