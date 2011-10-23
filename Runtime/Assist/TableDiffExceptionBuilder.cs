@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TechTalk.SpecFlow.Assist
+﻿namespace TechTalk.SpecFlow.Assist
 {
     public class TableDiffExceptionBuilder<T>
     {
-        public string GetTheTableDiffExceptionMessage(IEnumerable<int> listOfMissingItems, IEnumerable<T> itemsThatWereNotFoundInTheTable, Table table)
+        public string GetTheTableDiffExceptionMessage(TableDifferenceResults<T> tableDifferenceResults)
         {
-            return "  " + table;
+            return "  " + tableDifferenceResults.Table;
             //var realData = new StringBuilder();
             //var index = 0;
             //var everyLineInTheTable = table.ToString().Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);

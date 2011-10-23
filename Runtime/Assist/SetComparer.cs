@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
         {
-            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(listOfMissingItems, actualItems, table);
+            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<T>(table, listOfMissingItems, actualItems));
             throw new ComparisonException("\r\n" + message);
         }
 

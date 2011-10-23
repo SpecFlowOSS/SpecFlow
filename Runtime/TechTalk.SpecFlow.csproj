@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\SetComparer.cs" />
+    <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\TEHelpers.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />

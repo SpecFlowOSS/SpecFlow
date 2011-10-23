@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var builder = new TableDiffExceptionBuilder<TestObject>();
 
-            var message = builder.GetTheTableDiffExceptionMessage(new int[] {}, new TestObject[] {}, table);
+            var message = builder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<TestObject>(table, new int[] {}, new TestObject[] {}));
 
             message.ShouldEqual(@"  | One | Two | Three |
 ");
