@@ -31,22 +31,26 @@ namespace TechTalk.SpecFlow.Assist
 
         private Dictionary<int, int> GetTheMaximumLengthsOfEachColumn(string message)
         {
-            var lines = GetLines(message).Select(x => x.Split('|'));
+            var lines = GetLines(message);
 
             var dictionary = new Dictionary<int, int>();
-            foreach (var line in lines)
-            {
-                var index = 0;
-                foreach (var block in line.Select(x => (x ?? string.Empty).Trim()))
-                {
-                    if (dictionary.ContainsKey(index) == false) dictionary[index] = 0;
-                    dictionary[index] = dictionary[index] > block.Length ? dictionary[index] : block.Length + 2;
-                    index++;
-                }
-            }
+            foreach (var block in GetIndexedColumns(lines))
+                SetMaximumLengthForThisColumn(dictionary, block.index, block.value.Length);
 
-            dictionary[0] = 2;
             return dictionary;
+        }
+
+        private static void SetMaximumLengthForThisColumn(IDictionary<int, int> dictionary, int index, int length)
+        {
+            if (dictionary.ContainsKey(index) == false) dictionary[index] = 2;
+            dictionary[index] = dictionary[index] > length ? dictionary[index] : length + 2;
+        }
+
+        private static IEnumerable<IndexedColumn> GetIndexedColumns(IEnumerable<string> lines)
+        {
+            return lines.Select(x => x.Split('|'))
+                .SelectMany(column => column.Select(x => (x ?? string.Empty).Trim()).ToArray()
+                                          .Select((value, index) => new IndexedColumn {value = value, index = index}));
         }
 
         private static string ReformatLineUsingTheseColumnLengths(IDictionary<int, int> dictionary, string line)
@@ -60,6 +64,12 @@ namespace TechTalk.SpecFlow.Assist
         private static IEnumerable<string> GetLines(string message)
         {
             return message.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private class IndexedColumn
+        {
+            public int index { get; set; }
+            public string value { get; set; }
         }
     }
 }
