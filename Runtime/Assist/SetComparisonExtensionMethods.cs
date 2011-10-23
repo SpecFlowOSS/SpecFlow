@@ -37,14 +37,14 @@ namespace TechTalk.SpecFlow.Assist
 
             AssertThatTheItemsMatchTheExpectedResults(set);
 
-            AssertThatNoExtraRowsExist(set);
+            AssertThatNoExtraRowsExist(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
         }
 
-        private void AssertThatNoExtraRowsExist(IEnumerable<T> set)
+        private void AssertThatNoExtraRowsExist(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
         {
-            if (set.Count() != table.Rows.Count())
-                throw new ComparisonException(string.Format(@"Expected {0} result{2}, but found {1}.",
-                                                            table.Rows.Count(), set.Count(), table.Rows.Count() == 1 ? "" : "s"));
+            if (set.Count() == table.Rows.Count()) return;
+
+            ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
         private static void ThrowAnExpectedNoResultsError(IEnumerable<T> set)

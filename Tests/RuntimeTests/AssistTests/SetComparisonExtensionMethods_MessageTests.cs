@@ -119,7 +119,7 @@ AnotherFieldThatDoesNotExist");
 - | orange         |
 - | apple          |
 + | rotten orange  |
-+ | rotten apple   | 
++ | rotten apple   |
 ");
         }
 
