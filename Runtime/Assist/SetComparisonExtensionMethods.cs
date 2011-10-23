@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Assist
             throw new ComparisonException("\r\n" + realData);
         }
 
-        private string GetTheTableDiffExceptionMessage(IEnumerable<int> listOfMissingItems, IEnumerable<T> itemsThatWereNotFoundInTheTable, Table table)
+        private static string GetTheTableDiffExceptionMessage(IEnumerable<int> listOfMissingItems, IEnumerable<T> itemsThatWereNotFoundInTheTable, Table table)
         {
             var realData = new StringBuilder();
             var index = 0;
