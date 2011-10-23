@@ -43,14 +43,12 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var data = "";
 
-                var blocks = line.Split('|');
+                var blocks = line.Split('|').ToArray();
 
-                var index = 0;
                 var precedingCharacter = "";
-                foreach (var block in blocks)
+                foreach (var block in blocks.Select((value, index) => new {value, index}))
                 {
-                    data += string.Format("{1}{0}", block.PadRight(dictionary[index]), precedingCharacter);
-                    index++;
+                    data += string.Format("{1}{0}", block.value.PadRight(dictionary[block.index]), precedingCharacter);
                     precedingCharacter = "|";
                 }
 
