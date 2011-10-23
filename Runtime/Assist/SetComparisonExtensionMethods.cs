@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Assist
                 return;
 
             if (ThereAreResultsWhenThereShouldBeNone(set))
-                ThrowAnExpectedNoResultsError(set);
+                ThrowAnExpectedNoResultsError(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
 
             AssertThatTheItemsMatchTheExpectedResults(set);
 
@@ -47,12 +47,9 @@ namespace TechTalk.SpecFlow.Assist
             ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
-        private static void ThrowAnExpectedNoResultsError(IEnumerable<T> set)
+        private void ThrowAnExpectedNoResultsError(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
         {
-            throw new ComparisonException(string.Format("There {0} {1} result{2} when expecting no results.",
-                                                        set.Count() == 1 ? "was" : "were",
-                                                        set.Count(),
-                                                        set.Count() == 1 ? "" : "s"));
+            ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
         private bool ThereAreResultsWhenThereShouldBeNone(IEnumerable<T> set)
@@ -108,8 +105,9 @@ namespace TechTalk.SpecFlow.Assist
                 realData.AppendLine(prefix + line);
                 index++;
             }
-            foreach (var item in actualItems)
-                realData.AppendLine(string.Format("+ | {0} |", (item.GetPropertyValue("StringProperty") as string).PadRight(14)));
+            if (actualItems != null)
+                foreach (var item in actualItems)
+                    realData.AppendLine(string.Format("+ | {0} |", ((item.GetPropertyValue("StringProperty") as string) ?? "").PadRight(14)));
             throw new ComparisonException("\r\n" + realData);
         }
 

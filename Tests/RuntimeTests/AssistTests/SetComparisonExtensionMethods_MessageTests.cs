@@ -52,7 +52,7 @@ AnotherFieldThatDoesNotExist");
                 @"
   | StringProperty |
 + |                |
-+ |                | 
++ |                |
 ");
         }
 
