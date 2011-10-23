@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.Assist
             var tableString = table.ToString();
             var realData = new StringBuilder();
             var index = 0;
-            foreach (var line in tableString.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+            foreach (var line in tableString.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
             {
                 var prefix = "  ";
                 if (listOfMissingItems.Contains(index))
