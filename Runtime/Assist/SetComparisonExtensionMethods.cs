@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -93,12 +94,20 @@ namespace TechTalk.SpecFlow.Assist
             return listOfMissingItems;
         }
 
-        private static void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
+        private void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
         {
-            throw new ComparisonException(
-                listOfMissingItems.Aggregate(
-                    @"The expected items at the following line numbers could not be matched:",
-                    (running, next) => running + Environment.NewLine + next));
+            var tableString = table.ToString();
+            var realData = new StringBuilder();
+            var index = 0;
+            foreach (var line in tableString.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+            {
+                var prefix = "  ";
+                if (listOfMissingItems.Contains(index))
+                    prefix = "- ";
+                realData.AppendLine(prefix + line);
+                index++;
+            }
+            throw new ComparisonException("\r\n" + realData);
         }
 
         private static bool ExpectedItemsCouldNotBeFound(IEnumerable<int> listOfMissingItems)
