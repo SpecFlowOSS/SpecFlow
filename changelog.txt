@@ -2,7 +2,8 @@
 
 Fixed issues:
 + Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
-+ VS2010 Intellisense: New steps form external project are not found unless IDE is restarted (Issue 88, by Stanislaw Wozniak)
++ VS2010 step autocomplete: New steps form external project are not found unless IDE is restarted (Issue 88, by Stanislaw Wozniak)
++ VS2010 step autocomplete: Duplicated steps
 
 1.8.0 - 2011/10/17
 

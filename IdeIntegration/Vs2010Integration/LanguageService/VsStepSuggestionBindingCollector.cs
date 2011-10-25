@@ -16,19 +16,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             foreach (CodeClass bindingClassWithBindingAttribute in VsxHelper.GetClasses(projectItem).Where(IsBindingClass))
             {
-                CodeClass2 bindingClassIncludingParts = bindingClassWithBindingAttribute as CodeClass2;
-
                 BindingScopeNew[] bindingScopes = GetClassScopes(bindingClassWithBindingAttribute);
-                foreach (StepBindingNew currrentFoundStep in GetStepsFromClass(bindingClassWithBindingAttribute, bindingScopes))
-                {
-                    yield return currrentFoundStep;
-                }
 
-                foreach (CodeClass2 currentBindingPartialClass in bindingClassIncludingParts.Parts)
+                CodeClass2 bindingClassIncludingParts = bindingClassWithBindingAttribute as CodeClass2;
+                if (bindingClassIncludingParts == null)
                 {
-                    foreach (StepBindingNew currentPartialClassStep in GetStepsFromClass(currentBindingPartialClass as CodeClass, bindingScopes))
+                    foreach (StepBindingNew currrentFoundStep in GetStepsFromClass(bindingClassWithBindingAttribute, bindingScopes))
                     {
-                        yield return currentPartialClassStep;
+                        yield return currrentFoundStep;
+                    }
+                }
+                else
+                {
+                    foreach (CodeClass2 currentBindingPartialClass in bindingClassIncludingParts.Parts)
+                    {
+                        foreach (StepBindingNew currentPartialClassStep in GetStepsFromClass(currentBindingPartialClass as CodeClass, bindingScopes))
+                        {
+                            yield return currentPartialClassStep;
+                        }
                     }
                 }
             }
