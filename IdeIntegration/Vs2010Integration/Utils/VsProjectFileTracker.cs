@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private bool IsItemRelevant(ProjectItem projectItem, string itemName = null)
         {
-            return projectItem != null && projectItem.ContainingProject == project && IsFileNameMatching(projectItem, itemName);
+            return projectItem != null && projectItem.ContainingProject.UniqueName.Equals(project.UniqueName) && IsFileNameMatching(projectItem, itemName);
         }
 
         protected abstract bool IsFileNameMatching(ProjectItem projectItem, string itemName = null);
