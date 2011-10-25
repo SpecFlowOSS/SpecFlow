@@ -18,6 +18,7 @@
         ReSharper = 1,
         MsTest = 2,
         SpecRun = 3,
-        TestDrivenDotNet = 4
+        TestDrivenDotNet = 4,
+        ReSharper5 = 5,
     }
 }

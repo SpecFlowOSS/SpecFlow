@@ -1,4 +1,10 @@
-﻿1.8.0 - 2011/10/17
+﻿1.8.1 - 20111/10/25
+
+Fixed issues:
++ Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
+
+
+1.8.0 - 2011/10/17
 
 Breaking changes:
 + Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).

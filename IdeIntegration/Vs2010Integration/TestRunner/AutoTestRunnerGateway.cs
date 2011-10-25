@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
     public class AutoTestRunnerGateway : ITestRunnerGateway
     {
-        private IObjectContainer container;
+        private readonly IObjectContainer container;
 
         public AutoTestRunnerGateway(IObjectContainer container)
         {
@@ -23,8 +23,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (VsxHelper.GetReference(project, "TechTalk.SpecRun") != null)
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.SpecRun.ToString());
 
-            if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetName().Name == "JetBrains.ReSharper.UnitTestFramework"))
+            var reSharperAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "JetBrains.ReSharper.UnitTestFramework");
+
+            if (reSharperAssembly != null)
+            {
+                if (reSharperAssembly.GetName().Version.Major <= 5)
+                    return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper5.ToString());
+
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper.ToString());
+            }
 
             if (VsxHelper.GetReference(project, "Microsoft.VisualStudio.QualityTools.UnitTestFramework") != null)
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.MsTest.ToString());
