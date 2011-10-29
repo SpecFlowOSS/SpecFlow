@@ -76,6 +76,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                         break;
                 }
             }
+            else if (pguidCmdGroup == VSConstants.VSStd2K)
+            {
+                switch ((VSConstants.VSStd2KCmdID)nCmdID)
+                {
+                    case VSConstants.VSStd2KCmdID.COMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
+                        handled = editorCommands.CommentOrUncommentSelection(true);
+                        break;
+                    case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
+                        handled = editorCommands.CommentOrUncommentSelection(false);
+                        break;
+                }
+            }
+            
             if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)
             {
                 switch ((SpecFlowCmdSet)nCmdID)
@@ -131,6 +146,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                         if (editorCommands.CanGoToDefinition())
                             return VSConstants.S_OK;
                         break;
+                }
+            }
+            else if (pguidCmdGroup == VSConstants.VSStd2K)
+            {
+                switch ((VSConstants.VSStd2KCmdID)prgCmds[0].cmdID)
+                {
+                    case VSConstants.VSStd2KCmdID.COMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
+                    case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
+                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return VSConstants.S_OK;
                 }
             }
             if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)

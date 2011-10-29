@@ -141,11 +141,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             var stepArgStartPoint = textView.TextSnapshot.GetLineFromLineNumber(stepBlock.KeywordLine + step.BlockRelativeLine + 1).Start;
             var stepArgsEndPoint = caret.GetContainingLine().End;
 
+            // Determine what line the table starts on
             var startLine = caret.GetContainingLine().LineNumber;
-            while (startLine > 0 && IsTableOrComment(caret.Snapshot.GetLineFromLineNumber(startLine - 1).GetText()))
+            var previousLineText = caret.Snapshot.GetLineFromLineNumber(startLine - 1).GetText();
+            while (startLine > 0 && (IsTable(previousLineText) || IsComment(previousLineText)))
             {
-                startLine--;
+                previousLineText = caret.Snapshot.GetLineFromLineNumber(--startLine - 1).GetText();
             }
+
             var start = caret.Snapshot.GetLineFromLineNumber(startLine).Start;
             var span = new SnapshotSpan(start, caret);
             string oldTable = span.GetText();
@@ -158,10 +161,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             return true;
         }
 
-        private bool IsTableOrComment(string text)
+        private bool IsTable(string text)
         {
             var trimmedLine = text.TrimStart();
-            return trimmedLine.StartsWith("#") || trimmedLine.StartsWith("|");
+            return trimmedLine.StartsWith("|");
+        }
+
+        private bool IsComment(string text)
+        {
+            var trimmedLine = text.TrimStart();
+
+            // TODO: Where is a good place to store the comment character as a const?  GherkinLanguageService?
+            return trimmedLine.StartsWith("#");
         }
 
         private string FormatTableString(string oldTable)
@@ -244,6 +255,54 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
         {
             var engine = container.Resolve<ITestRunnerEngine>();
             return engine.RunFromEditor(languageService, true);
+        }
+
+        /// <summary>
+        /// Handle the Comment Selection and Uncomment Selection editor commands.  These commands comment/uncomment
+        /// the currently selected lines.
+        /// </summary>
+        /// <param name="isComment">The requested command is Comment Selection, otherwise Uncomment Selection</param>
+        /// <returns>True if the operation succeeds to comment/uncomment the selected lines, false otherwise</returns>
+        public bool CommentOrUncommentSelection(bool isComment)
+        {
+            var selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
+            var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+
+            if (!isComment)
+            {
+                UncommentSelection(selectionStartLine, selectionEndLine);
+            }
+            else
+            {
+                // Comment selection
+            }
+
+            // Select the entirety of the lines that were commented/uncommented
+
+            return true;
+        }
+
+        private void UncommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)
+        {
+            // Uncomment selection
+            using (var textEdit = startLine.Snapshot.TextBuffer.CreateEdit())
+            {
+                for (int i = startLine.LineNumber; i <= endLine.LineNumber; i++)
+                {
+                    var curLine = startLine.Snapshot.GetLineFromLineNumber(i);
+                    int commentCharPosition = curLine.GetTextIncludingLineBreak().IndexOf('#');
+                    if (commentCharPosition != -1)
+                    {
+                        textEdit.Delete(curLine.Start.Position + commentCharPosition, 1);
+                    }
+                }
+
+                textEdit.Apply();
+            }
+        }
+
+        private void CommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)
+        {
         }
     }
 }
