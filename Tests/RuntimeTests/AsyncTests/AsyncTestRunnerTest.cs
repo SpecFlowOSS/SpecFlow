@@ -23,7 +23,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void GivenEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void InitializeDefersToExecutionEngine()
+        {
+            var assemblies = new[] { GetType().Assembly };
+            asyncTestRunner.InitializeTestRunner(assemblies);
+
+            testExecutionEngineStub.Verify(m => m.Initialize(assemblies));
+        }
+
+        [Test]
+        public void GivenEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.Given(Text, MultilineTextArg, table);
 
@@ -35,7 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void WhenEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void WhenEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.When(Text, MultilineTextArg, table);
 
@@ -47,7 +56,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void ThenEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void ThenEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.Then(Text, MultilineTextArg, table);
 
@@ -59,7 +68,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void AndEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void AndEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.And(Text, MultilineTextArg, table);
 
@@ -71,7 +80,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void ButEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void ButEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.But(Text, MultilineTextArg, table);
 
@@ -83,7 +92,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void PendingEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void PendingEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.Pending();
 
@@ -95,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         }
 
         [Test]
-        public void CollectScenarioErrorsEnqueuesInnerSynchronousTestRunnerWithNewContext()
+        public void CollectScenarioErrorsEnqueuesExecutionEngineWithNewContext()
         {
             asyncTestRunner.CollectScenarioErrors();
 
