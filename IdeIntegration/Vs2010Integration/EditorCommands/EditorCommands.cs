@@ -261,38 +261,41 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
         /// Handle the Comment Selection and Uncomment Selection editor commands.  These commands comment/uncomment
         /// the currently selected lines.
         /// </summary>
-        /// <param name="isComment">The requested command is Comment Selection, otherwise Uncomment Selection</param>
+        /// <param name="isCommentSelection">The requested command is Comment Selection, otherwise Uncomment Selection</param>
         /// <returns>True if the operation succeeds to comment/uncomment the selected lines, false otherwise</returns>
-        public bool CommentOrUncommentSelection(bool isComment)
+        public bool CommentOrUncommentSelection(bool isCommentSelection)
         {
             var selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
             var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
 
-            if (!isComment)
+            if (isCommentSelection)
             {
-                UncommentSelection(selectionStartLine, selectionEndLine);
+                CommentSelection(selectionStartLine, selectionEndLine);
             }
             else
             {
-                // Comment selection
+                UncommentSelection(selectionStartLine, selectionEndLine);
             }
 
-            // Select the entirety of the lines that were commented/uncommented
+            // Select the entirety of the lines that were just commented or uncommented, have to update start/end lines due to snapshot changes
+            selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
+            selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            textView.Selection.Select(new SnapshotSpan(selectionStartLine.Start, selectionEndLine.End), false);
 
             return true;
         }
 
         private void UncommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)
         {
-            // Uncomment selection
             using (var textEdit = startLine.Snapshot.TextBuffer.CreateEdit())
             {
                 for (int i = startLine.LineNumber; i <= endLine.LineNumber; i++)
                 {
                     var curLine = startLine.Snapshot.GetLineFromLineNumber(i);
-                    int commentCharPosition = curLine.GetTextIncludingLineBreak().IndexOf('#');
-                    if (commentCharPosition != -1)
+                    string curLineText = curLine.GetTextIncludingLineBreak();
+                    if(IsComment(curLineText))
                     {
+                        int commentCharPosition = curLineText.IndexOf('#');
                         textEdit.Delete(curLine.Start.Position + commentCharPosition, 1);
                     }
                 }
@@ -303,6 +306,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         private void CommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)
         {
+            List<ITextSnapshotLine> lines = new List<ITextSnapshotLine>();
+            int commentCharPosition = int.MaxValue;
+
+            // Build up the line collection and determine the position that the comment char will be inserted into
+            for (int i = startLine.LineNumber; i <= endLine.LineNumber; i++)
+            {
+                var curLine = startLine.Snapshot.GetLineFromLineNumber(i);
+                string curLineText = curLine.GetText();
+                int firstCharPosition = curLineText.Length - curLineText.TrimStart().Length;
+                if (firstCharPosition < commentCharPosition)
+                {
+                    commentCharPosition = firstCharPosition;
+                }
+
+                lines.Add(curLine);
+            }
+
+            // Add the comment char to each line at commentCharPosition
+            using (var textEdit = startLine.Snapshot.TextBuffer.CreateEdit())
+            {
+                foreach (var line in lines)
+                {
+                    textEdit.Insert(line.Start.Position + commentCharPosition, "#");
+                }
+
+                textEdit.Apply();
+            }
         }
     }
 }

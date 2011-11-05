@@ -1,4 +1,9 @@
-﻿1.8.1 - 20111/10/25
+vNext - ???
+
+New features:
++ VS2010: Comment and uncomment selection
+
+1.8.1 - 2011/10/25
 
 Fixed issues:
 + Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
