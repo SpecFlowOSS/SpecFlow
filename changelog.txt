@@ -1,4 +1,9 @@
-﻿1.8.1 - 20111/10/25
+﻿vNext - ???
+
+Fixed issues:
++  ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
+
+1.8.1 - 2011/10/25
 
 Fixed issues:
 + Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
