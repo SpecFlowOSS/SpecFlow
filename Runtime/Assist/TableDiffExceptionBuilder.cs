@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal interface ITableDiffExceptionBuilder<T>
+    public interface ITableDiffExceptionBuilder<T>
     {
         string GetTheTableDiffExceptionMessage(TableDifferenceResults<T> tableDifferenceResults);
     }
