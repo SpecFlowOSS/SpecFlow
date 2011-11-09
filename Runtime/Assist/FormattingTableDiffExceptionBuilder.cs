@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class FormattingTableDiffExceptionBuilder<T> : ITableDiffExceptionBuilder<T>
+    internal class FormattingTableDiffExceptionBuilder<T> : ITableDiffExceptionBuilder<T>
     {
         private readonly ITableDiffExceptionBuilder<T> parent;
 

@@ -4,12 +4,12 @@ using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public interface ITableDiffExceptionBuilder<T>
+    internal interface ITableDiffExceptionBuilder<T>
     {
         string GetTheTableDiffExceptionMessage(TableDifferenceResults<T> tableDifferenceResults);
     }
 
-    public class TableDiffExceptionBuilder<T> : ITableDiffExceptionBuilder<T>
+    internal class TableDiffExceptionBuilder<T> : ITableDiffExceptionBuilder<T>
     {
         public string GetTheTableDiffExceptionMessage(TableDifferenceResults<T> tableDifferenceResults)
         {
