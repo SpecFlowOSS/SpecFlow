@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -26,18 +27,20 @@ namespace TechTalk.SpecFlow.Bindings
             Regex = regexString == null ? null : new Regex("^" + regexString + "$", RegexOptions);
         }
 
-        private object[] GetStepTransformationArgumentsFromRegex(string stepSnippet)
+        private object[] GetStepTransformationArgumentsFromRegex(string stepSnippet, IStepArgumentTypeConverter stepArgumentTypeConverter, CultureInfo cultureInfo)
         {
             var match = Regex.Match(stepSnippet);
-            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).ToArray();
-            return argumentStrings;
+            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            return argumentStrings
+                .Select((arg, argIndex) => stepArgumentTypeConverter.Convert(arg, ParameterTypes[argIndex], cultureInfo))
+                .ToArray();
         }
 
-        public object Transform(IContextManager contextManager, object value, ITestTracer testTracer)
+        public object Transform(IContextManager contextManager, object value, ITestTracer testTracer, IStepArgumentTypeConverter stepArgumentTypeConverter, CultureInfo cultureInfo)
         {
             object[] arguments;
             if (Regex != null && value is string)
-                arguments = GetStepTransformationArgumentsFromRegex((string)value);
+                arguments = GetStepTransformationArgumentsFromRegex((string)value, stepArgumentTypeConverter, cultureInfo);
             else
                 arguments = new object[] {value};
 

@@ -191,10 +191,12 @@ namespace TechTalk.SpecFlow.Generator
             }
 
             codeProvider.GenerateCodeFromStatement(codeDomHelper.GetStartRegionStatement("Designer generated code"), outputWriter, null);
+            codeProvider.GenerateCodeFromStatement(codeDomHelper.GetDisableWarningsPragma(), outputWriter, null);
         }
 
         private void AddSpecFlowFooter(CodeDomProvider codeProvider, TextWriter outputWriter, CodeDomHelper codeDomHelper)
         {
+            codeProvider.GenerateCodeFromStatement(codeDomHelper.GetEnableWarningsPragma(), outputWriter, null);
             codeProvider.GenerateCodeFromStatement(codeDomHelper.GetEndRegionStatement(), outputWriter, null);
         }
 

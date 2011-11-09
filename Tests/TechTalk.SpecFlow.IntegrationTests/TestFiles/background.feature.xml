@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Background</Title>
+  <Description />
+  <FilePosition line="1" column="1" />
+  <Background>
+    <Keyword>Background</Keyword>
+    <Title />
+    <Description />
+    <Steps>
+      <ScenarioStep xsi:type="Given">
+        <ScenarioBlock>Given</ScenarioBlock>
+        <StepKeyword>Given</StepKeyword>
+        <Keyword>Given </Keyword>
+        <Text>some precondition</Text>
+        <FilePosition line="4" column="2" />
+      </ScenarioStep>
+      <ScenarioStep xsi:type="And">
+        <ScenarioBlock>Given</ScenarioBlock>
+        <StepKeyword>And</StepKeyword>
+        <Keyword>And </Keyword>
+        <Text>some other</Text>
+        <FilePosition line="5" column="2" />
+      </ScenarioStep>
+    </Steps>
+    <FilePosition line="3" column="1" />
+  </Background>
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>a simple scenario</Title>
+      <Description />
+      <FilePosition line="7" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>some precondition</Text>
+          <FilePosition line="8" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do something</Text>
+          <FilePosition line="9" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something happens</Text>
+          <FilePosition line="10" column="1" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

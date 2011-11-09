@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>de-DE</Language>
+  <Keyword>Funktionalität</Keyword>
+  <Title>German</Title>
+  <Description>Um dumme Fehler zu vermeiden
+möchte ich als Matheidiot
+die Summe zweier Zahlen gesagt bekommen</Description>
+  <FilePosition line="2" column="1" />
+  <Scenarios>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Szenariogrundriss</Keyword>
+      <Title>Zwei Zahlen hinzufügen</Title>
+      <Description />
+      <FilePosition line="7" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Gegeben sei </Keyword>
+          <Text>ich habe &lt;Eingabe_1&gt; in den Taschenrechner eingegeben</Text>
+          <FilePosition line="8" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Und </Keyword>
+          <Text>ich habe &lt;Eingabe_2&gt; in den Taschenrechner eingegeben</Text>
+          <FilePosition line="9" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>Wenn </Keyword>
+          <Text>ich &lt;Knopf&gt; drücke</Text>
+          <FilePosition line="10" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Dann </Keyword>
+          <Text>sollte das Ergebniss auf dem Bildschirm &lt;Ausgabe&gt; sein</Text>
+          <FilePosition line="11" column="5" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Beispiele</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>Eingabe_1</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>Eingabe_2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>Knopf</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>Ausgabe</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="14" column="5" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>20</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>30</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>add</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>50</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="15" column="5" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>5</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>add</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>7</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="16" column="5" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>0</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>40</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>add</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>40</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="17" column="5" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

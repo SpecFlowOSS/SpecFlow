@@ -113,6 +113,9 @@
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
     <Compile Include="Bindings\IBindingFactory.cs" />
+    <Compile Include="Bindings\IHookBinding.cs" />
+    <Compile Include="Bindings\IScopedBinding.cs" />
+    <Compile Include="Bindings\IStepDefinitionBinding.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\MethodBinding.cs" />
@@ -123,8 +126,10 @@
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
     <Compile Include="Infrastructure\IRuntimePluginLoader.cs" />
+    <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\StepDefinitionMatcher.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
@@ -150,7 +155,7 @@
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />
     <Compile Include="ErrorHandling\SpecFlowException.cs" />
-    <Compile Include="Bindings\EventBinding.cs" />
+    <Compile Include="Bindings\HookBinding.cs" />
     <Compile Include="FeatureContext.cs" />
     <Compile Include="FeatureInfo.cs" />
     <Compile Include="ITestRunner.cs" />
@@ -180,7 +185,7 @@
     <Compile Include="ScenarioContext.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="ScenarioInfo.cs" />
-    <Compile Include="Bindings\StepBinding.cs" />
+    <Compile Include="Bindings\StepDefinitionBinding.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="Infrastructure\TestExecutionEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

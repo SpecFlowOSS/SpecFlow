@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -26,7 +27,7 @@ namespace IdeIntegrationTests
         [SetUp]
         public void Setup()
         {
-            currentGeneratorFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            currentGeneratorFolder = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             tracerStub = new Mock<IIdeTracer>();
         }
 
@@ -171,14 +172,30 @@ namespace IdeIntegrationTests
         }
 
         [Test]
-        public void Should_cleanup_after_generator_disposed()
+        public void Should_cleanup_after_generator_disposed_when_timeout_ellapses()
+        {
+            using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
+            {
+                remoteFactory.AppDomainCleanupTime = TimeSpan.FromSeconds(1);
+
+                var generator = remoteFactory.CreateGenerator(new ProjectSettings());
+                generator.Dispose();
+
+                Thread.Sleep(TimeSpan.FromSeconds(1.1));
+
+                remoteFactory.IsRunning.ShouldBeFalse();
+            }
+        }
+
+        [Test]
+        public void Should_not_cleanup_after_generator_disposed_immediately()
         {
             using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
                 var generator = remoteFactory.CreateGenerator(new ProjectSettings());
                 generator.Dispose();
 
-                remoteFactory.IsRunning.ShouldBeFalse();
+                remoteFactory.IsRunning.ShouldBeTrue();
             }
         }
 
@@ -200,10 +217,14 @@ namespace IdeIntegrationTests
         {
             using (var remoteFactory = CreateRemoteAppDomainTestGeneratorFactory())
             {
+                remoteFactory.AppDomainCleanupTime = TimeSpan.FromSeconds(1);
+
                 var generator1 = remoteFactory.CreateGenerator(new ProjectSettings());
                 var generator2 = remoteFactory.CreateGenerator(new ProjectSettings());
                 generator1.Dispose();
                 generator2.Dispose();
+
+                Thread.Sleep(TimeSpan.FromSeconds(1.1));
 
                 remoteFactory.IsRunning.ShouldBeFalse();
             }

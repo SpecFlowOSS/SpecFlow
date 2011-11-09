@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Multiline step arguments</Title>
+  <Description />
+  <FilePosition line="1" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>a scenario with a multiline argument</Title>
+      <Description />
+      <FilePosition line="3" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.</MultiLineTextArgument>
+          <FilePosition line="4" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.</MultiLineTextArgument>
+          <FilePosition line="11" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>there is a multiline text argument</Text>
+          <MultiLineTextArgument>Some Title, Eh?
+==============
+Here is the first paragraph of my blog post. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit.</MultiLineTextArgument>
+          <FilePosition line="18" column="2" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

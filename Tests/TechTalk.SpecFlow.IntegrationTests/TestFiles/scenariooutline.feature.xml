@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Scenario outline</Title>
+  <Description />
+  <FilePosition line="1" column="1" />
+  <Scenarios>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
+      <Title>Simple Scenario Outline</Title>
+      <Description />
+      <FilePosition line="3" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is something</Text>
+          <FilePosition line="4" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do &lt;what&gt;</Text>
+          <FilePosition line="5" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something should happen</Text>
+          <FilePosition line="6" column="2" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="8" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>something</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="9" column="2" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign else</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="10" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
+      <Title>Scenario Outline with multiple examples block</Title>
+      <Description />
+      <FilePosition line="12" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is something</Text>
+          <FilePosition line="13" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do &lt;what&gt;</Text>
+          <FilePosition line="14" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something should happen</Text>
+          <FilePosition line="15" column="2" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title>first set</Title>
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="18" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>something</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="19" column="2" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign else</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="20" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title>second set</Title>
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="23" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign different</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="24" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="28" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign totally different</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="29" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
+      <Title>Scenario Outline with table arguments</Title>
+      <Description />
+      <FilePosition line="31" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is something</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>foo</Value>
+                </Cell>
+                <Cell>
+                  <Value>bar</Value>
+                </Cell>
+              </Cells>
+              <FilePosition line="33" column="3" />
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>&lt;what&gt;</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>xyz</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="34" column="3" />
+              </Row>
+            </Body>
+          </TableArg>
+          <FilePosition line="32" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do &lt;what&gt;</Text>
+          <FilePosition line="35" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something should happen</Text>
+          <FilePosition line="36" column="2" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="38" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>something</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="39" column="2" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign else</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="40" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
+      <Title>Scenario Outline with multiline string arguments</Title>
+      <Description />
+      <FilePosition line="42" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is something</Text>
+          <MultiLineTextArgument>	long text &lt;what&gt;</MultiLineTextArgument>
+          <FilePosition line="43" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do &lt;what&gt;</Text>
+          <FilePosition line="47" column="2" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something should happen</Text>
+          <FilePosition line="48" column="2" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Examples</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>what</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="50" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>something</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="51" column="2" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>somethign else</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="52" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+  </Scenarios>
+  <Comments>
+    <Comment>
+      <Text>third example set without a name</Text>
+      <FilePosition line="26" column="2" />
+    </Comment>
+  </Comments>
+</Feature>

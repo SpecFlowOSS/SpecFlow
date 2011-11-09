@@ -21,10 +21,10 @@ namespace TechTalk.SpecFlow.Bindings
         StepEnd
     }
 
-    public interface IBindingRegistry : IEnumerable<StepBinding>
+    public interface IBindingRegistry : IEnumerable<StepDefinitionBinding>
     {
         void BuildBindingsFromAssembly(Assembly assembly);
-        List<EventBinding> GetEvents(BindingEvent bindingEvent);
+        List<IHookBinding> GetEvents(BindingEvent bindingEvent);
         ICollection<StepTransformationBinding> StepTransformations { get; }
     }
 
@@ -33,9 +33,9 @@ namespace TechTalk.SpecFlow.Bindings
         private readonly IErrorProvider errorProvider;
         private readonly IBindingFactory bindingFactory;
 
-        private readonly List<StepBinding> stepBindings = new List<StepBinding>();
+        private readonly List<StepDefinitionBinding> stepBindings = new List<StepDefinitionBinding>();
         private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
-        private readonly Dictionary<BindingEvent, List<EventBinding>> eventBindings = new Dictionary<BindingEvent, List<EventBinding>>();
+        private readonly Dictionary<BindingEvent, List<IHookBinding>> eventBindings = new Dictionary<BindingEvent, List<IHookBinding>>();
 
         public BindingRegistry(IErrorProvider errorProvider, IBindingFactory bindingFactory)
         {
@@ -82,12 +82,12 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        public List<EventBinding> GetEvents(BindingEvent bindingEvent)
+        public List<IHookBinding> GetEvents(BindingEvent bindingEvent)
         {
-            List<EventBinding> list;
+            List<IHookBinding> list;
             if (!eventBindings.TryGetValue(bindingEvent, out list))
             {
-                list = new List<EventBinding>();
+                list = new List<IHookBinding>();
                 eventBindings.Add(bindingEvent, list);
             }
 
@@ -192,7 +192,7 @@ namespace TechTalk.SpecFlow.Bindings
             //TODO: check parameters, etc.
         }
 
-        public IEnumerator<StepBinding> GetEnumerator()
+        public IEnumerator<StepDefinitionBinding> GetEnumerator()
         {
             return stepBindings.GetEnumerator();
         }

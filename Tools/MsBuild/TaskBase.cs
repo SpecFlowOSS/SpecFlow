@@ -56,6 +56,11 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             Errors.Add(new CompilerError(String.Empty, 0, 0, null, message));
         }
 
+        public void RecordError(string message, string fileName, int lineNumber, int columnNumber)
+        {
+            Errors.Add(new CompilerError(fileName, lineNumber, columnNumber, null, message));
+        }
+
         protected void OutputError(string outString, string message, string fileName, int lineNumber, int columnNumber)
         {
             message = message.TrimEnd('\n', '\r');

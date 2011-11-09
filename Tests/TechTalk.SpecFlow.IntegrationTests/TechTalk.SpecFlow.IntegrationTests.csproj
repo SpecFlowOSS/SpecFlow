@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33B3107E-666D-4C31-96C0-745697E51973}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TechTalk.SpecFlow.IntegrationTests</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework, Version=1.0.4109.34242, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Should">
+      <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\..\packages\SpecFlow.1.7.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit">
+      <HintPath>..\..\packages\xunit.1.8.0.1549\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\..\packages\xunit.extensions.1.8.0.1549\lib\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Features\ExecutionSmokeTests.feature.cs">
+      <DependentUpon>ExecutionSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MbUnit3SmokeTests1.feature.cs">
+      <DependentUpon>MbUnit3SmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MbUnitSmokeTests1.feature.cs">
+      <DependentUpon>MbUnitSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\XUnitSmokeTests.feature.cs">
+      <DependentUpon>XUnitSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MsTest2010SmokeTests.feature.cs">
+      <DependentUpon>MsTest2010SmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\MsTestSmokeTests.feature.cs">
+      <DependentUpon>MsTestSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\NUnitSmokeTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NUnitSmokeTests.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\ParserSmokeTests.feature.cs">
+      <DependentUpon>ParserSmokeTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepDefinitions\GeneratorSteps.cs" />
+    <Compile Include="StepDefinitions\TestFileSteps.cs" />
+    <Compile Include="TestFiles\TestFileManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Features\ExecutionSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExecutionSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MbUnit3SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MbUnit3SmokeTests1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MbUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MbUnitSmokeTests1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnitSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MsTest2010SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MsTest2010SmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\MsTestSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>MsTestSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\NUnitSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NUnitSmokeTests.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <EmbeddedResource Include="TestFiles\asterisks.feature">
+      <LastGenOutput>asterisks.feature.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestFiles\background.feature" />
+    <EmbeddedResource Include="TestFiles\background_withtitle.feature" />
+    <EmbeddedResource Include="TestFiles\but.feature" />
+    <EmbeddedResource Include="TestFiles\comments.feature" />
+    <EmbeddedResource Include="TestFiles\dutch.feature" />
+    <EmbeddedResource Include="TestFiles\featureheader.feature" />
+    <EmbeddedResource Include="TestFiles\french.feature" />
+    <EmbeddedResource Include="TestFiles\full.feature" />
+    <EmbeddedResource Include="TestFiles\german.feature" />
+    <EmbeddedResource Include="TestFiles\givenwhenthenduplication.feature" />
+    <EmbeddedResource Include="TestFiles\hungarian.feature" />
+    <EmbeddedResource Include="TestFiles\mixedgivenwhenthen.feature" />
+    <EmbeddedResource Include="TestFiles\multilineargument.feature" />
+    <EmbeddedResource Include="TestFiles\multilinetitle.feature" />
+    <EmbeddedResource Include="TestFiles\scenariooutline.feature" />
+    <EmbeddedResource Include="TestFiles\simple.feature" />
+    <EmbeddedResource Include="TestFiles\swedish.feature" />
+    <EmbeddedResource Include="TestFiles\tableargument.feature" />
+    <EmbeddedResource Include="TestFiles\taggedexamples.feature" />
+    <EmbeddedResource Include="TestFiles\tags.feature" />
+    <EmbeddedResource Include="TestFiles\whitespaces.feature" />
+    <None Include="Features\ParserSmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ParserSmokeTests.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\asterisks.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\background.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\background_withtitle.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\but.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\comments.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\dutch.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\featureheader.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\french.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\full.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\german.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\givenwhenthenduplication.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\hungarian.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\mixedgivenwhenthen.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\multilineargument.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\multilinetitle.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\scenariooutline.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\simple.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\swedish.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\tableargument.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\taggedexamples.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\tags.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\whitespaces.feature.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj">
+      <Project>{ADED3F39-1742-42E2-A55A-3043AC84BDAD}</Project>
+      <Name>TechTalk.SpecFlow.Specs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Drivers\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y
+xcopy $(SolutionDir)packages\xunit.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
+xcopy $(SolutionDir)packages\xunit.extensions.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
+xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

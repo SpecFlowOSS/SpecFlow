@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Tagged examples</Title>
+  <Description />
+  <FilePosition line="1" column="1" />
+  <Scenarios>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Scenario Outline</Keyword>
+      <Title>a simple scenario outline</Title>
+      <Description />
+      <FilePosition line="3" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>some &lt;templated&gt; precondition</Text>
+          <FilePosition line="5" column="1" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Tags>
+              <Tag>
+                <Name>tag_on_examples</Name>
+              </Tag>
+            </Tags>
+            <Keyword>Examples</Keyword>
+            <Title>examples set</Title>
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>templated</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>date1</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>date2</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="9" column="2" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>one</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2009/09/14</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2009/09/14</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="10" column="2" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>two</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2009/09/15</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2009/09/15</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="11" column="2" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+    <Scenario>
+      <Tags>
+        <Tag>
+          <Name>another_tag</Name>
+        </Tag>
+      </Tags>
+      <Keyword>Scenario</Keyword>
+      <Title>another scenario</Title>
+      <Description />
+      <FilePosition line="15" column="1" />
+      <Steps />
+    </Scenario>
+  </Scenarios>
+  <Comments>
+    <Comment>
+      <Text>comment here</Text>
+      <FilePosition line="4" column="2" />
+    </Comment>
+    <Comment>
+      <Text>comment</Text>
+      <FilePosition line="14" column="2" />
+    </Comment>
+  </Comments>
+</Feature>

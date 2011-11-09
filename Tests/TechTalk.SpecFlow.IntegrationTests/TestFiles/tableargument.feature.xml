@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Table argument</Title>
+  <Description />
+  <FilePosition line="1" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>a scenario with a table argument</Title>
+      <Description />
+      <FilePosition line="3" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>there is a table argument</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+              <FilePosition line="5" column="2" />
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="6" column="2" />
+              </Row>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>EUR</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="7" column="2" />
+              </Row>
+            </Body>
+          </TableArg>
+          <FilePosition line="4" column="3" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>there is a table argument</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+              <FilePosition line="9" column="2" />
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="10" column="2" />
+              </Row>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>EUR</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="11" column="2" />
+              </Row>
+            </Body>
+          </TableArg>
+          <FilePosition line="8" column="3" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>there is a table argument</Text>
+          <TableArg>
+            <Header>
+              <Cells>
+                <Cell>
+                  <Value>code</Value>
+                </Cell>
+                <Cell>
+                  <Value>rate</Value>
+                </Cell>
+                <Cell>
+                  <Value>date</Value>
+                </Cell>
+                <Cell>
+                  <Value>error code</Value>
+                </Cell>
+              </Cells>
+              <FilePosition line="13" column="2" />
+            </Header>
+            <Body>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>USD</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="14" column="2" />
+              </Row>
+              <Row>
+                <Cells>
+                  <Cell>
+                    <Value>EUR</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>1.2</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>2009/09/14</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>OK</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="15" column="2" />
+              </Row>
+            </Body>
+          </TableArg>
+          <FilePosition line="12" column="3" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

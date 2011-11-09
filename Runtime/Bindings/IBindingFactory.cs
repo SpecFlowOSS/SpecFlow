@@ -8,8 +8,8 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingFactory
     {
-        EventBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope);
-        StepBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope);
+        IHookBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope);
+        StepDefinitionBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope);
         StepTransformationBinding CreateStepArgumentTransformation(string regexString, MethodInfo methodInfo);
     }
 
@@ -30,14 +30,14 @@ namespace TechTalk.SpecFlow.Bindings
             this.errorProvider = errorProvider;
         }
 
-        public EventBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope)
+        public IHookBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope)
         {
-            return new EventBinding(runtimeConfiguration, errorProvider, methodInfo, bindingScope);
+            return new HookBinding(runtimeConfiguration, errorProvider, methodInfo, bindingScope);
         }
 
-        public StepBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
+        public StepDefinitionBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
         {
-            return new StepBinding(runtimeConfiguration, errorProvider, type, regexString, methodInfo, bindingScope);
+            return new StepDefinitionBinding(runtimeConfiguration, errorProvider, type, regexString, methodInfo, bindingScope);
         }
 
         public StepTransformationBinding CreateStepArgumentTransformation(string regexString, MethodInfo methodInfo)
