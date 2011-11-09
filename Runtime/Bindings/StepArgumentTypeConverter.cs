@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Bindings
 
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
-                return stepTransformation.Transform(contextManager, value, testTracer);
+                return stepTransformation.Transform(contextManager, value, testTracer, this, cultureInfo);
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }

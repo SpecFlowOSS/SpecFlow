@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Comments</Title>
+  <Description />
+  <FilePosition line="2" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>a simple scenario</Title>
+      <Description />
+      <FilePosition line="6" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>some precondition</Text>
+          <FilePosition line="7" column="1" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments>
+    <Comment>
+      <Text>no tags</Text>
+      <FilePosition line="1" column="3" />
+    </Comment>
+    <Comment>
+      <Text>no scenario tags</Text>
+      <FilePosition line="4" column="3" />
+    </Comment>
+    <Comment>
+      <Text>still nothing</Text>
+      <FilePosition line="5" column="6" />
+    </Comment>
+    <Comment>
+      <Text>When commented out</Text>
+      <FilePosition line="8" column="2" />
+    </Comment>
+    <Comment>
+      <Text>Then commented out</Text>
+      <FilePosition line="9" column="3" />
+    </Comment>
+    <Comment>
+      <Text>empty comment comes:</Text>
+      <FilePosition line="11" column="3" />
+    </Comment>
+    <Comment>
+      <Text>comment at EOF</Text>
+      <FilePosition line="14" column="2" />
+    </Comment>
+  </Comments>
+</Feature>

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Tags>
+    <Tag>
+      <Name>ftag1</Name>
+    </Tag>
+    <Tag>
+      <Name>ftag2</Name>
+    </Tag>
+    <Tag>
+      <Name>ftag3</Name>
+    </Tag>
+  </Tags>
+  <Keyword>Feature</Keyword>
+  <Title>Tags</Title>
+  <Description />
+  <FilePosition line="4" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Tags>
+        <Tag>
+          <Name>ftag1</Name>
+        </Tag>
+        <Tag>
+          <Name>ftag2</Name>
+        </Tag>
+        <Tag>
+          <Name>ftag3</Name>
+        </Tag>
+      </Tags>
+      <Keyword>Scenario</Keyword>
+      <Title>a simple scenario</Title>
+      <Description />
+      <FilePosition line="9" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>some precondition</Text>
+          <FilePosition line="10" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do something</Text>
+          <FilePosition line="11" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something happens</Text>
+          <FilePosition line="12" column="1" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

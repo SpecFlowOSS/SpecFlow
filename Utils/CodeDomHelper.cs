@@ -159,6 +159,31 @@ namespace TechTalk.SpecFlow.Utils
             return new CodeCommentStatement("#endregion");
         }
 
+
+        public CodeStatement GetDisableWarningsPragma()
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.CSharp:
+                    return new CodeSnippetStatement("#pragma warning disable");
+                case CodeDomProviderLanguage.VB:
+                    return new CodeCommentStatement("#pragma warning disable"); //not supported in VB
+            }
+            return new CodeCommentStatement("#pragma warning disable");
+        }
+
+        public CodeStatement GetEnableWarningsPragma()
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.CSharp:
+                    return new CodeSnippetStatement("#pragma warning restore");
+                case CodeDomProviderLanguage.VB:
+                    return new CodeCommentStatement("#pragma warning restore"); //not supported in VB
+            }
+            return new CodeCommentStatement("#pragma warning restore");
+        }
+
         private Version GetCurrentSpecFlowVersion()
         {
             return Assembly.GetExecutingAssembly().GetName().Version;

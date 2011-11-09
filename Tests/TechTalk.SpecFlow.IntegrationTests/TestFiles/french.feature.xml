@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>fr-FR</Language>
+  <Keyword>Fonctionnalité</Keyword>
+  <Title>French</Title>
+  <Description>Afin de gagner du temps lors du calcul de la facture
+En tant que commerçant
+Je souhaite pouvoir faire une addition</Description>
+  <FilePosition line="2" column="1" />
+  <Scenarios>
+    <Scenario xsi:type="ScenarioOutline">
+      <Keyword>Plan du Scénario</Keyword>
+      <Title>Addition de deux nombres</Title>
+      <Description />
+      <FilePosition line="7" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Soit </Keyword>
+          <Text>une calculatrice</Text>
+          <FilePosition line="8" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Et </Keyword>
+          <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
+          <FilePosition line="9" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Et </Keyword>
+          <Text>que je tape sur la touche "+"</Text>
+          <FilePosition line="10" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Et </Keyword>
+          <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
+          <FilePosition line="11" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>Lorsque </Keyword>
+          <Text>je tape sur la touche "="</Text>
+          <FilePosition line="12" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Alors </Keyword>
+          <Text>le résultat affiché doit être &lt;somme&gt;</Text>
+          <FilePosition line="13" column="5" />
+        </ScenarioStep>
+      </Steps>
+      <Examples>
+        <ExampleSets>
+          <ExampleSet>
+            <Keyword>Exemples</Keyword>
+            <Title />
+            <Description />
+            <Table>
+              <Header>
+                <Cells>
+                  <Cell>
+                    <Value>a</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>b</Value>
+                  </Cell>
+                  <Cell>
+                    <Value>somme</Value>
+                  </Cell>
+                </Cells>
+                <FilePosition line="16" column="7" />
+              </Header>
+              <Body>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>4</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="17" column="7" />
+                </Row>
+                <Row>
+                  <Cells>
+                    <Cell>
+                      <Value>2</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>3</Value>
+                    </Cell>
+                    <Cell>
+                      <Value>5</Value>
+                    </Cell>
+                  </Cells>
+                  <FilePosition line="18" column="7" />
+                </Row>
+              </Body>
+            </Table>
+          </ExampleSet>
+        </ExampleSets>
+      </Examples>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

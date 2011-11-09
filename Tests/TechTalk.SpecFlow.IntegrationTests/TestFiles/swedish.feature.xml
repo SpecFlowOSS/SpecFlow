@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>sv-SE</Language>
+  <Keyword>Egenskap</Keyword>
+  <Title>Swedish</Title>
+  <Description>För att slippa att göra dumma fel
+Som räknare
+Vill jag kunna lägga samman</Description>
+  <FilePosition line="2" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>två tal</Title>
+      <Description />
+      <FilePosition line="7" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Givet </Keyword>
+          <Text>att jag har knappat in 5</Text>
+          <FilePosition line="8" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Och </Keyword>
+          <Text>att jag har knappat in 7</Text>
+          <FilePosition line="9" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>När </Keyword>
+          <Text>jag summerar</Text>
+          <FilePosition line="10" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Så </Keyword>
+          <Text>ska resultatet vara 12</Text>
+          <FilePosition line="11" column="5" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>tre tal</Title>
+      <Description />
+      <FilePosition line="13" column="3" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Givet </Keyword>
+          <Text>att jag har knappat in 5</Text>
+          <FilePosition line="14" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Och </Keyword>
+          <Text>att jag har knappat in 4</Text>
+          <FilePosition line="15" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="And">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>And</StepKeyword>
+          <Keyword>Och </Keyword>
+          <Text>att jag har knappat in 3</Text>
+          <FilePosition line="16" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>När </Keyword>
+          <Text>jag summerar</Text>
+          <FilePosition line="17" column="5" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Så </Keyword>
+          <Text>ska resultatet vara 12</Text>
+          <FilePosition line="18" column="5" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

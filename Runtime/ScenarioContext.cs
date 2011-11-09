@@ -28,16 +28,15 @@ namespace TechTalk.SpecFlow
         }
 
         public ScenarioInfo ScenarioInfo { get; private set; }
-
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
+        public Exception TestError { get; internal set; }
 
         internal TestStatus TestStatus { get; set; }
-        public Exception TestError { get; internal set; }
         internal List<string> PendingSteps { get; private set; }
         internal List<string> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
-        internal ITestRunner TestRunner { get; private set; } //TODO: initialize
+        internal ITestRunner TestRunner { get; private set; } 
 
         private readonly IObjectContainer objectContainer;
 

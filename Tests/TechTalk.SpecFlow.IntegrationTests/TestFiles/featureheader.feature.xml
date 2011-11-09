@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Language>en-US</Language>
+  <Keyword>Feature</Keyword>
+  <Title>Feature header</Title>
+  <Description>
+but it has also a description...
+A long long description
+
+with new lines included</Description>
+  <FilePosition line="3" column="1" />
+  <Scenarios>
+    <Scenario>
+      <Keyword>Scenario</Keyword>
+      <Title>a simple scenario</Title>
+      <Description />
+      <FilePosition line="10" column="1" />
+      <Steps>
+        <ScenarioStep xsi:type="Given">
+          <ScenarioBlock>Given</ScenarioBlock>
+          <StepKeyword>Given</StepKeyword>
+          <Keyword>Given </Keyword>
+          <Text>some precondition</Text>
+          <FilePosition line="11" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="When">
+          <ScenarioBlock>When</ScenarioBlock>
+          <StepKeyword>When</StepKeyword>
+          <Keyword>When </Keyword>
+          <Text>I do something</Text>
+          <FilePosition line="12" column="1" />
+        </ScenarioStep>
+        <ScenarioStep xsi:type="Then">
+          <ScenarioBlock>Then</ScenarioBlock>
+          <StepKeyword>Then</StepKeyword>
+          <Keyword>Then </Keyword>
+          <Text>something happens</Text>
+          <FilePosition line="13" column="1" />
+        </ScenarioStep>
+      </Steps>
+    </Scenario>
+  </Scenarios>
+  <Comments />
+</Feature>

@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow
             Title = title;
             Description = description;
             GenerationTargetLanguage = programmingLanguage;
-            Tags = tags;
+            Tags = tags ?? new string[0];
         }
     }
 }

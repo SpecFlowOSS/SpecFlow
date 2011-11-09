@@ -59,8 +59,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldNotBeNull();
-                    result.Value.ShouldBeTrue();
+                    result.ShouldEqual(true);
                 }
             }
         }
@@ -85,8 +84,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldNotBeNull();
-                    result.Value.ShouldBeFalse();
+                    result.ShouldEqual(false);
                 }
             }
         }
@@ -102,8 +100,7 @@ namespace GeneratorTests
                 var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                     tempFile.FileName + ".cs", UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                result.ShouldNotBeNull();
-                result.Value.ShouldBeFalse();
+                result.ShouldEqual(false);
             }
         }
 
@@ -130,8 +127,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldNotBeNull();
-                    result.Value.ShouldBeFalse();
+                    result.ShouldEqual(false);
                 }
             }
         }

@@ -1,7 +1,20 @@
 ﻿vNext - ???
 
+Fixed issues:
++  ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
+
+1.8.1 - 2011/10/25
+
+Fixed issues:
++ Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
++ VS2010 step autocomplete: New steps form external project are not found unless IDE is restarted (Issue 88, by Stanislaw Wozniak)
++ VS2010 step autocomplete: Duplicated steps
+
+1.8.0 - 2011/10/17
+
 Breaking changes:
 + Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
++ After step hook is was not invoked when step definition failed so far. Now it is invoked even in case of a failure.
 
 New features:
 + Async testing support for Windows Phone 7 (Issue 132, by Jeff Simons)
@@ -15,6 +28,9 @@ New features:
 + VS2010: Use infix word prefix matching for step completion. 
 + VS2010: Regenerate feature files from project context menu.
 + VS2010: Go to step definition command in feature file context menu. 
++ MsBuild generator can output generated file paths (GeneratedFiles property). The file list is populated to the MsBuild item 
+  @(SpecFlowGeneratedFiles) by the TechTalk.SpecFlow.targets.
++ MsBuild: TechTalk.SpecFlow.targets provides overrideable BeforeUpdateFeatureFilesInProject and AfterUpdateFeatureFilesInProject targets.
 + Cucumber harmonization
 	+ Allow using [Before]/[After] attributes as synonyms of [BeforeScenario]/[AfterScenario]
 	+ Allow using [StepDefinition] attribute that matches to given, when or then steps
@@ -26,6 +42,15 @@ Fixed issues:
 + Silverlight: make possible to access SilverlightTest instance (Issue 126, by Matt Ellis)
 + Silverlight: apply feature tags to the test class instead of the methods (Issue 126, by Matt Ellis)
 + SpecFlowContext.TryGetValue does not evaluate Func<T> factory methods (Issue 127, by Matt Ellis)
++ StepArgumentTransformation cannot be used recursively
++ VS2010 locks generator folder
++ After step hook is not invoked when step definition failed.
++ Missing XML comment warnings caused by the generated test class (Issue 121)
++ VS2010: Goto step definition misdiagnoses Given-But as a Then-But (Issue 134, by Raytheon)
++ VS2010: 'Go To Definition' does not work with partial classes. (Issue 53, by Raytheon)
++ AfterTestRun-Hook does not trigger when running in NUnitGui or NUnitConsole. To fix this, you need to add the NUnit addin from 
+  https://raw.github.com/techtalk/SpecFlow/master/Installer/NUnitNuGetPackage/SpecFlowNUnitExtension.cs to the project, or use
+  the SpecFlow.NUnit combined NuGet package that does this automatically.
 
 1.7.1 - 2011/08/19
 
