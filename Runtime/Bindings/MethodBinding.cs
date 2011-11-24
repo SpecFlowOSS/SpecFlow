@@ -137,16 +137,29 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         #region extended action types
-        static readonly Type[] actionTypes = new[] { typeof(Action), typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>), 
-                                                          typeof(ExtendedAction<,,,,>), typeof(ExtendedAction<,,,,,>), typeof(ExtendedAction<,,,,,,>), typeof(ExtendedAction<,,,,,,,>), typeof(ExtendedAction<,,,,,,,,>), typeof(ExtendedAction<,,,,,,,,,>)
-                                                        };
+        static readonly Type[] actionTypes = new[] { typeof(Action), 
+                                                     typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(ExtendedAction<,,,,>), 
+                                                     typeof(ExtendedAction<,,,,,>),             typeof(ExtendedAction<,,,,,,>),             typeof(ExtendedAction<,,,,,,,>),            typeof(ExtendedAction<,,,,,,,,>),               typeof(ExtendedAction<,,,,,,,,,>),
+                                                     typeof(ExtendedAction<,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,,>),       typeof(ExtendedAction<,,,,,,,,,,,,,>),          typeof(ExtendedAction<,,,,,,,,,,,,,,>),
+                                                     typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
+                                                   };
 
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
-        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5>                                                                         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6>                                                                     (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7>                                                                 (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8>                                                             (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9>                                                         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>                                                    (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>                                               (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>                                          (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>                                     (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>                                (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>                      (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>                 (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>            (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>       (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19);
+        public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>  (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19, T20 arg20);
 
         private Type GetActionType(Type[] typeArgs)
         {
@@ -163,16 +176,29 @@ namespace TechTalk.SpecFlow.Bindings
         #endregion   
         
         #region extended func types
-        static readonly Type[] funcTypes = new[] { typeof(Func<>), typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>), 
-                                                        typeof(Func<,,,,>), typeof(ExtendedFunc<,,,,,>), typeof(ExtendedFunc<,,,,,,>), typeof(ExtendedFunc<,,,,,,,>), typeof(ExtendedFunc<,,,,,,,,>), typeof(ExtendedFunc<,,,,,,,,,>)
-                                                      };
+        static readonly Type[] funcTypes = new[] { typeof(Func<>), 
+                                                   typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(ExtendedFunc<,,,,,>), 
+                                                   typeof(ExtendedFunc<,,,,,,>),            typeof(ExtendedFunc<,,,,,,,>),              typeof(ExtendedFunc<,,,,,,,,>),             typeof(ExtendedFunc<,,,,,,,,,>),            typeof(ExtendedFunc<,,,,,,,,,,>),
+                                                   typeof(ExtendedFunc<,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,>),         typeof(ExtendedFunc<,,,,,,,,,,,,,>),        typeof(ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,,,,>),
+                                                   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
+                                                 };
 
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
-        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, TResult>                                                                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, TResult>                                                                       (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, TResult>                                                                   (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, TResult>                                                               (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>                                                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>                                                      (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, TResult>                                                 (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, TResult>                                            (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, TResult>                                       (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, TResult>                                  (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, TResult>                             (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, TResult>                        (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, TResult>                   (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, TResult>              (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, TResult>         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19);
+        public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, TResult>    (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19, T20 arg20);
 
         private Type GetFuncType(Type[] typeArgs, Type resultType)
         {

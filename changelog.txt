@@ -1,7 +1,8 @@
 ﻿vNext - ???
 
 Fixed issues:
-+  ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
++ ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
++ Step definition with more than 10 parameters causing BindingException (extended now to 20)
 
 1.8.1 - 2011/10/25
 
