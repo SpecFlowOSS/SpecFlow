@@ -238,6 +238,11 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             //nop
         }
 
+        public void docString(string str1, string str2, int i)
+        {
+            // not implemented
+        }
+
         public void feature(string keyword, string name, string description, int line)
         {
             FlushDelayedCalls();
