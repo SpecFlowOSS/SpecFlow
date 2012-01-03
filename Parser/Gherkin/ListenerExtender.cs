@@ -238,6 +238,18 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             //nop
         }
 
+        public void docString(string doctype, string text, int line)
+        {
+            FlushDelayedCalls();
+
+            var editorLine = GetEditorLine(line);
+            GherkinBufferSpan textSpan = GetMultilineTextSpan(editorLine, text);
+
+            UpdateLastProcessedEditorLine(textSpan.EndPosition.Line);
+
+            gherkinListener.MultilineText(text, textSpan);
+        }
+
         public void feature(string keyword, string name, string description, int line)
         {
             FlushDelayedCalls();
@@ -345,18 +357,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             {
                 gherkinListener.TableRow(cells, rowSpan, cellSpans);
             }
-        }
-
-        public void pyString(string text, int line)
-        {
-            FlushDelayedCalls();
-
-            var editorLine = GetEditorLine(line);
-            GherkinBufferSpan textSpan = GetMultilineTextSpan(editorLine, text);
-
-            UpdateLastProcessedEditorLine(textSpan.EndPosition.Line);
-
-            gherkinListener.MultilineText(text, textSpan);
         }
 
         public void eof()
