@@ -1,5 +1,8 @@
 ﻿vNext - ???
 
+New Features:
++ Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
+
 Fixed issues:
 + ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
 + Step definition with more than 10 parameters causing BindingException (extended now to 20)

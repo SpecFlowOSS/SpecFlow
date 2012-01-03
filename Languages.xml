@@ -180,6 +180,9 @@
     <ScenarioOutline>Esquema del escenario</ScenarioOutline>
     <Examples>Ejemplos</Examples>
     <Given>Dado</Given>
+    <Given>Dada</Given>
+    <Given>Dados</Given>
+    <Given>Dadas</Given>
     <When>Cuando</When>
     <Then>Entonces</Then>
     <And>Y</And>
@@ -218,6 +221,13 @@
     <Examples>Exemples</Examples>
     <Given>Soit</Given>
     <Given>Etant donné</Given>
+    <Given>Etant donnée</Given>
+    <Given>Etant donnés</Given>
+    <Given>Etant données</Given>
+    <Given>Étant donné</Given>
+    <Given>Étant donnée</Given>
+    <Given>Étant donnés</Given>
+    <Given>Étant données</Given>
     <When>Quand</When>
     <When>Lorsque</When>
     <When>Lorsqu'</When>
@@ -284,6 +294,20 @@
     <And>Dan</And>
     <But>Tapi</But>
   </Language>
+  <Language code="is" cultureInfo="is" defaultSpecificCulture="is-IS" englishName="Icelandic">
+    <Feature>Eiginleiki</Feature>
+    <Background>Bakgrunnur</Background>
+    <Scenario>Atburðarás</Scenario>
+    <ScenarioOutline>Lýsing Atburðarásar</ScenarioOutline>
+    <ScenarioOutline>Lýsing Dæma</ScenarioOutline>
+    <Examples>Dæmi</Examples>
+    <Examples>Atburðarásir</Examples>
+    <Given>Ef</Given>
+    <When>Þegar</When>
+    <Then>Þá</Then>
+    <And>Og</And>
+    <But>En</But>
+  </Language>
   <Language code="it" cultureInfo="it" defaultSpecificCulture="it-IT" englishName="Italian">
     <Feature>Funzionalità</Feature>
     <Background>Contesto</Background>
@@ -291,6 +315,9 @@
     <ScenarioOutline>Schema dello scenario</ScenarioOutline>
     <Examples>Esempi</Examples>
     <Given>Dato</Given>
+    <Given>Data</Given>
+    <Given>Dati</Given>
+    <Given>Date</Given>
     <When>Quando</When>
     <Then>Allora</Then>
     <And>E</And>
@@ -423,6 +450,9 @@
     <ScenarioOutline>Esquema do Cenario</ScenarioOutline>
     <Examples>Exemplos</Examples>
     <Given>Dado</Given>
+    <Given>Dada</Given>
+    <Given>Dados</Given>
+    <Given>Dadas</Given>
     <When>Quando</When>
     <Then>Então</Then>
     <Then>Entao</Then>
