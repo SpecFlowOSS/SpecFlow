@@ -1,4 +1,5 @@
 ﻿vNext - ???
++ Guids can now be used as arguments to step definitions.
 
 New Features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5

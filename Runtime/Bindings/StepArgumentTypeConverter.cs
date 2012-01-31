@@ -81,6 +81,12 @@ namespace TechTalk.SpecFlow.Bindings
             if (typeToConvertTo.IsEnum && value is string)
                 return Enum.Parse(typeToConvertTo, (string)value, true);
 
+            if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))
+                return null;
+
+            if (typeToConvertTo == typeof (Guid) || typeToConvertTo == typeof(Guid?))
+                return new Guid(value as string);
+
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }
 
