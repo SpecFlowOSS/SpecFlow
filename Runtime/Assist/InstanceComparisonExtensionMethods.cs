@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Assist.ValueComparers;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -73,7 +74,7 @@ namespace TechTalk.SpecFlow.Assist
                                      {
                                          new DateTimeValueComparer(),
                                          new BoolValueComparer(),
-                                         new GuidValueComparer(),
+                                         new GuidValueComparer(new GuidValueRetriever()),
                                          new DecimalValueComparer(),
                                          new DoubleValueComparer(),
                                          new FloatValueComparer(),

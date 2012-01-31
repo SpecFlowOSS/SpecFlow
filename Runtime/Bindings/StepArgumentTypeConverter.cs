@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
@@ -84,8 +85,8 @@ namespace TechTalk.SpecFlow.Bindings
             if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))
                 return null;
 
-            if (typeToConvertTo == typeof (Guid) || typeToConvertTo == typeof(Guid?))
-                return new Guid(value as string);
+            if (typeToConvertTo == typeof(Guid) || typeToConvertTo == typeof(Guid?))
+                return new GuidValueRetriever().GetValue(value as string);
 
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }

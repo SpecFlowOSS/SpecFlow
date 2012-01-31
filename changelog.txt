@@ -2,6 +2,7 @@ vNext - ???
 
 New Features:
 + Guids can now be used as arguments to step definitions.
++ Any missing characters on a guid in tables or step arguments will be filled with trailing zeroes. ("7" => 70000000-0000-0000-0000-000000000000)
 + Better comparison exceptions when comparing tables to sets.
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
 + VS2010: Comment and uncomment selection
