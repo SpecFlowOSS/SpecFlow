@@ -55,9 +55,11 @@ namespace TechTalk.SpecFlow.Async
             }
         }
 
+        // This method is called from the generated code so that it can register the IAsyncTestExecutor, which
+        // is the abstraction between us and the actual implementation of the async enqueueing stuff
         static public void RegisterAsyncTestExecutor(ITestRunner testRunner, IAsyncTestExecutor newAsyncTestExecutor)
         {
-            AsyncTestRunner asyncTestRunner = testRunner as AsyncTestRunner;
+            var asyncTestRunner = testRunner as AsyncTestRunner;
             if (asyncTestRunner != null)
                 asyncTestRunner.RegisterAsyncTestExecutor(newAsyncTestExecutor);
         }
@@ -70,7 +72,7 @@ namespace TechTalk.SpecFlow.Async
 
         public void InitializeTestRunner(Assembly[] bindingAssemblies)
         {
-            // Don't do anything. We assume the inner testRunner has already been initialised
+            testExecutionEngine.Initialize(bindingAssemblies);
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)
@@ -109,9 +111,7 @@ namespace TechTalk.SpecFlow.Async
 
             // register the test executor in the scenario context to be able to used AOP style
             ScenarioContext.Set(asyncTestExecutor);
-
         }
-
 
         public void CollectScenarioErrors()
         {
