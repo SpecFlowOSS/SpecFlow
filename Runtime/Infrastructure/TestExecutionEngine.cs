@@ -183,7 +183,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                     Environment.NewLine));
                 return;
             }
-
             if (contextManager.ScenarioContext.TestError == null)
                 throw new InvalidOperationException("test failed with an unknown error");
 
