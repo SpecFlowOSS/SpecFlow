@@ -1,4 +1,5 @@
 ﻿vNext - ???
++ Better comparison exceptions when comparing tables to sets.
 
 New Features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
