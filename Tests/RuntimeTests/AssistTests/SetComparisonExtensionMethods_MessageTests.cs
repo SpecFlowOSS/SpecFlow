@@ -33,7 +33,10 @@ AnotherFieldThatDoesNotExist");
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
             exception.Message.ShouldEqual(
-                @"There was 1 result when expecting no results.");
+                @"
+  | StringProperty |
++ |                |
+");
         }
 
         [Test]
@@ -46,7 +49,11 @@ AnotherFieldThatDoesNotExist");
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
             exception.Message.ShouldEqual(
-                @"There were 2 results when expecting no results.");
+                @"
+  | StringProperty |
++ |                |
++ |                |
+");
         }
 
         [Test]
@@ -60,8 +67,11 @@ AnotherFieldThatDoesNotExist");
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
             exception.Message.ShouldEqual(
-                @"The expected items at the following line numbers could not be matched:
-1");
+@"
+  | StringProperty |
+- | orange         |
++ | apple          |
+");
         }
 
         [Test]
@@ -80,8 +90,12 @@ AnotherFieldThatDoesNotExist");
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
             exception.Message.ShouldEqual(
-                @"The expected items at the following line numbers could not be matched:
-2");
+                @"
+  | StringProperty |
+  | orange         |
+- | apple          |
++ | rotten apple   |
+");
         }
 
         [Test]
@@ -100,9 +114,13 @@ AnotherFieldThatDoesNotExist");
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
             exception.Message.ShouldEqual(
-                @"The expected items at the following line numbers could not be matched:
-1
-2");
+                @"
+  | StringProperty |
+- | orange         |
+- | apple          |
++ | rotten orange  |
++ | rotten apple   |
+");
         }
 
         [Test]
@@ -116,12 +134,17 @@ AnotherFieldThatDoesNotExist");
                             {
                                 new SetComparisonTestObject {StringProperty = "orange"},
                                 new SetComparisonTestObject {StringProperty = "apple"},
-                                new SetComparisonTestObject {StringProperty = "this is an extra row"}
+                                new SetComparisonTestObject {StringProperty = "extra row"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(@"Expected 2 results, but found 3.");
+            exception.Message.ShouldEqual(@"
+  | StringProperty |
+  | orange         |
+  | apple          |
++ | extra row      |
+");
         }
 
         [Test]
@@ -134,12 +157,17 @@ AnotherFieldThatDoesNotExist");
                             {
                                 new SetComparisonTestObject {StringProperty = "orange"},
                                 new SetComparisonTestObject {StringProperty = "apple"},
-                                new SetComparisonTestObject {StringProperty = "this is an extra row"}
+                                new SetComparisonTestObject {StringProperty = "banana"}
                             };
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(@"Expected 1 result, but found 3.");
+            exception.Message.ShouldEqual(@"
+  | StringProperty |
+  | orange         |
++ | apple          |
++ | banana         |
+");
         }
 
         private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
