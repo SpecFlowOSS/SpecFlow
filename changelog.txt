@@ -1,8 +1,11 @@
-﻿vNext - ???
-+ Better comparison exceptions when comparing tables to sets.
+vNext - ???
 
 New Features:
++ Better comparison exceptions when comparing tables to sets.
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
++ VS2010: Comment and uncomment selection
+
+1.8.1 - 2011/10/25
 
 Fixed issues:
 + ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
