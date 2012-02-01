@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueComparers;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Can_compare_if_the_value_is_a_guid()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.CanCompare(new Guid()).ShouldBeTrue();
             valueComparer.CanCompare(new Guid("{6EFE6DA0-A8B4-4E71-8329-49819C409227}"))
                 .ShouldBeTrue();
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Cannot_compare_if_the_value_is_null()
         {
-            new GuidValueComparer()
+            CreateComparer()
                 .CanCompare(null)
                 .ShouldBeFalse();
         }
@@ -28,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Cannot_compare_if_the_value_is_not_a_guid()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.CanCompare("John Galt").ShouldBeFalse();
             valueComparer.CanCompare(1).ShouldBeFalse();
             valueComparer.CanCompare(3.14).ShouldBeFalse();
@@ -37,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Returns_true_when_the_value_and_the_string_match()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("A5C82A02-4A2F-4DEE-AB4A-E829E7B476B3",
                                                 new Guid("A5C82A02-4A2F-4DEE-AB4A-E829E7B476B3"))
                 .ShouldBeTrue();
@@ -49,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Returns_false_when_the_value_and_the_string_do_not_match()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("B5C82A02-4A2F-4DEE-AB4A-E829E7B476B3",
                                                 new Guid("A5C82A02-4A2F-4DEE-AB4A-E829E7B476B3"))
                 .ShouldBeFalse();
@@ -61,7 +62,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Returns_true_even_if_the_expected_value_is_wrapped_in_curly_braces()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("{5C50F10A-87C7-4A6E-B772-8055317A39B8}",
                                                 new Guid("{5C50F10A-87C7-4A6E-B772-8055317A39B8}"))
                 .ShouldBeTrue();
@@ -73,17 +74,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Returns_false_if_the_expected_value_is_not_a_valid_guid()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("x", new Guid())
                 .ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("1234", new Guid("{4CD16C19-9A8A-4B2B-BA8C-2D3985EBD292}"))
+            valueComparer.TheseValuesAreTheSame("g234", new Guid("{4CD16C19-9A8A-4B2B-BA8C-2D3985EBD292}"))
                 .ShouldBeFalse();
+        }
+
+        [Test]
+        public void Returns_true_if_the_expected_value_is_0_and_the_expected_is_an_empty_guid()
+        {
+            var valueComparer = CreateComparer();
+            valueComparer.TheseValuesAreTheSame("0", new Guid())
+                .ShouldBeTrue();
         }
 
         [Test]
         public void Matches_regardless_of_casing()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("{767c5221-ed1e-4e6b-9028-6b77b5195d56}",
                                                 new Guid("{767C5221-ED1E-4E6B-9028-6B77B5195D56}"))
                 .ShouldBeTrue();
@@ -95,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         [Test]
         public void Matches_based_on_the_first_eight_digits_when_the_rest_are_zeroes()
         {
-            var valueComparer = new GuidValueComparer();
+            var valueComparer = CreateComparer();
             valueComparer.TheseValuesAreTheSame("B6F8CA06",
                                                 new Guid("B6F8CA06-0000-0000-0000-000000000000"))
                 .ShouldBeTrue();
@@ -103,6 +112,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
             valueComparer.TheseValuesAreTheSame("35E9525C",
                                                 new Guid("35E9525C-0000-0000-0000-000000000000"))
                 .ShouldBeTrue();
+        }
+
+        [Test]
+        public void Matches_based_on_the_first_nine_digits_when_the_rest_are_zeroes()
+        {
+            var valueComparer = CreateComparer();
+            valueComparer.TheseValuesAreTheSame("B6F8CA067",
+                                                new Guid("B6F8CA06-7000-0000-0000-000000000000"))
+                .ShouldBeTrue();
+
+            valueComparer.TheseValuesAreTheSame("35E9525CA",
+                                                new Guid("35E9525C-A000-0000-0000-000000000000"))
+                .ShouldBeTrue();
+        }
+
+        private static GuidValueComparer CreateComparer()
+        {
+            return new GuidValueComparer(new GuidValueRetriever());
         }
     }
 }

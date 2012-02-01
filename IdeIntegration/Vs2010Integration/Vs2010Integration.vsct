@@ -31,13 +31,13 @@
         </Strings>
       </Button>
 
-      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+      <!--<Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Generate Step Definition File</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
 
       <Button guid="guidSpecFlowCmdSet" id="cmdidGoToStepDefinition" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />

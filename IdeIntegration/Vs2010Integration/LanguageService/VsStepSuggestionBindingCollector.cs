@@ -16,12 +16,38 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IEnumerable<StepBindingNew> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
-            return VsxHelper.GetClasses(projectItem).Where(IsBindingClass).SelectMany(GetCompletitionsFromBindingClass);
+            foreach (CodeClass bindingClassWithBindingAttribute in VsxHelper.GetClasses(projectItem).Where(IsBindingClass))
+            {
+                BindingScopeNew[] bindingScopes = GetClassScopes(bindingClassWithBindingAttribute);
+
+                CodeClass2 bindingClassIncludingParts = bindingClassWithBindingAttribute as CodeClass2;
+                if (bindingClassIncludingParts == null)
+                {
+                    foreach (StepBindingNew currrentFoundStep in GetStepsFromClass(bindingClassWithBindingAttribute, bindingScopes))
+                    {
+                        yield return currrentFoundStep;
+                    }
+                }
+                else
+                {
+                    foreach (CodeClass2 currentBindingPartialClass in bindingClassIncludingParts.Parts)
+                    {
+                        foreach (StepBindingNew currentPartialClassStep in GetStepsFromClass(currentBindingPartialClass as CodeClass, bindingScopes))
+                        {
+                            yield return currentPartialClassStep;
+                        }
+                    }
+                }
+            }
         }
 
-        private IEnumerable<StepBindingNew> GetCompletitionsFromBindingClass(CodeClass codeClass)
+        private BindingScopeNew[] GetClassScopes(CodeClass codeClass)
         {
-            var classScopes = codeClass.Attributes.Cast<CodeAttribute2>().Select(GetBingingScopeFromAttribute).Where(s => s != null).ToArray();
+            return codeClass.Attributes.Cast<CodeAttribute2>().Select(GetBingingScopeFromAttribute).Where(s => s != null).ToArray();
+        }
+
+        private IEnumerable<StepBindingNew> GetStepsFromClass(CodeClass codeClass, BindingScopeNew[] classScopes)
+        {
             return codeClass.Children.OfType<CodeFunction>().SelectMany(codeFunction => GetSuggestionsFromCodeFunction(codeFunction, classScopes));
         }
 
@@ -205,9 +231,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private CodeFunction FindCodeFunction(Project project, IBindingMethod bindingMethod)
         {
-            return VsxHelper.GetClasses(project).Where(IsBindingClass).Where(c => c.FullName == bindingMethod.Type.FullName)
+            return GetBindingClassesIncludingPartialClasses(project)
+                .Where(c => c.FullName == bindingMethod.Type.FullName)
                 .SelectMany(c => c.GetFunctions()).FirstOrDefault(
                     f => f.Name == bindingMethod.Name && BindingReflectionExtensions.MethodEquals(bindingMethod, bindingReflectionFactory.CreateBindingMethod(f)));
+        }
+
+        private IEnumerable<CodeClass> GetBindingClassesIncludingPartialClasses(Project project)
+        {
+            foreach (CodeClass bindingClassWithBindingAttribute in VsxHelper.GetClasses(project).Where(IsBindingClass))
+            {
+                yield return bindingClassWithBindingAttribute;
+
+                CodeClass2 bindingClassIncludingParts = bindingClassWithBindingAttribute as CodeClass2;
+                foreach (CodeClass2 currentBindingPartialClass in bindingClassIncludingParts.Parts)
+                {
+                    yield return currentBindingPartialClass as CodeClass;
+                }
+            }
         }
     }
 }

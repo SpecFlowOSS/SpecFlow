@@ -225,7 +225,8 @@
     <Compile Include="TestRunner\ITestRunnerGateway.cs" />
     <Compile Include="TestRunner\ITestRunnerGatewayProvider.cs" />
     <Compile Include="TestRunner\MsTestRunnerGateway.cs" />
-    <Compile Include="TestRunner\ReSharperTestRunnerGateway.cs" />
+    <Compile Include="TestRunner\ReSharper5TestRunnerGateway.cs" />
+    <Compile Include="TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
     <Compile Include="VsContainerBuilder.cs" />

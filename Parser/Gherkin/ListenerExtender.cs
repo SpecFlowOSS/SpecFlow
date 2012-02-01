@@ -171,7 +171,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                     lastScenarioBlock = ScenarioBlock.When;
                     break;
                 case StepKeyword.Then:
-                case StepKeyword.But:
                     lastScenarioBlock = ScenarioBlock.Then;
                     break;
                 default:
@@ -237,6 +236,18 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         public void location(string uri, int offset)
         {
             //nop
+        }
+
+        public void docString(string doctype, string text, int line)
+        {
+            FlushDelayedCalls();
+
+            var editorLine = GetEditorLine(line);
+            GherkinBufferSpan textSpan = GetMultilineTextSpan(editorLine, text);
+
+            UpdateLastProcessedEditorLine(textSpan.EndPosition.Line);
+
+            gherkinListener.MultilineText(text, textSpan);
         }
 
         public void feature(string keyword, string name, string description, int line)
@@ -346,18 +357,6 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             {
                 gherkinListener.TableRow(cells, rowSpan, cellSpans);
             }
-        }
-
-        public void pyString(string text, int line)
-        {
-            FlushDelayedCalls();
-
-            var editorLine = GetEditorLine(line);
-            GherkinBufferSpan textSpan = GetMultilineTextSpan(editorLine, text);
-
-            UpdateLastProcessedEditorLine(textSpan.EndPosition.Line);
-
-            gherkinListener.MultilineText(text, textSpan);
         }
 
         public void eof()

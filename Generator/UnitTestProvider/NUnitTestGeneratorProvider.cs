@@ -95,9 +95,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var args = arguments.Select(
               arg => new CodeAttributeArgument(new CodePrimitiveExpression(arg))).ToList();
 
-            args.Add(
-                new CodeAttributeArgument(
-                    new CodeArrayCreateExpression(typeof(string[]), tags.Select(t => new CodePrimitiveExpression(t)).ToArray())));
+            // addressing ReSharper bug: TestCase attribute with empty string[] param causes inconclusive result - https://github.com/techtalk/SpecFlow/issues/116
+            var exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t)).ToArray();
+            CodeExpression exampleTagsExpression = exampleTagExpressionList.Length == 0 ?
+                (CodeExpression)new CodePrimitiveExpression(null) :
+                new CodeArrayCreateExpression(typeof(string[]), exampleTagExpressionList);
+            args.Add(new CodeAttributeArgument(exampleTagsExpression));
 
             if (isIgnored)
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));

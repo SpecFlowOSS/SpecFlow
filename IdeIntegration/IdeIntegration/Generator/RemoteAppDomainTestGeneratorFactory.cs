@@ -10,6 +10,8 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 {
     public class RemoteAppDomainTestGeneratorFactory : IRemoteAppDomainTestGeneratorFactory
     {
+        private const int APPDOMAIN_CLEANUP_SECONDS = 10;
+
         private readonly IIdeTracer tracer;
 
         private string generatorFolder;
@@ -48,11 +50,14 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             get { return appDomain != null; }
         }
 
+        public TimeSpan AppDomainCleanupTime { get; set; }
+
         public RemoteAppDomainTestGeneratorFactory(IIdeTracer tracer)
         {
             this.tracer = tracer;
             this.remoteGeneratorAssemblyName = typeof(ITestGeneratorFactory).Assembly.GetName().Name;
 
+            this.AppDomainCleanupTime = TimeSpan.FromSeconds(APPDOMAIN_CLEANUP_SECONDS);
             this.cleanupTimer = new Timer(CleanupTimerElapsed, null, Timeout.Infinite, Timeout.Infinite);
         }
 
@@ -177,7 +182,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
 
         private void LoseReferences()
         {
-            cleanupTimer.Change(TimeSpan.FromSeconds(10), TimeSpan.FromMilliseconds(-1));
+            cleanupTimer.Change(AppDomainCleanupTime, TimeSpan.FromMilliseconds(-1));
         }
 
         private void CleanupTimerElapsed(object state)

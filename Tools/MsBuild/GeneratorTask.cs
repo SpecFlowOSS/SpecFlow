@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -20,6 +21,13 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
         [Required]
         public string ProjectPath { get; set; }
 
+        private readonly List<ITaskItem> generatedFiles = new List<ITaskItem>();
+        [Output]
+        public ITaskItem[] GeneratedFiles
+        {
+            get { return generatedFiles.ToArray(); }
+        }
+
         protected override void DoExecute()
         {
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(ProjectPath);
@@ -35,6 +43,10 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
                                 featureFileInput.GetFullPath(specFlowProject.ProjectSettings), testGenerationError.Line, testGenerationError.LinePosition);
                         }
                     };
+            batchGenerator.OnSuccess +=
+                (featureFileInput, result) => generatedFiles.Add(
+                    new TaskItem(featureFileInput.GetGeneratedTestFullPath(specFlowProject.ProjectSettings)));
+
             batchGenerator.ProcessProject(specFlowProject, ForceGeneration);
         }
     }

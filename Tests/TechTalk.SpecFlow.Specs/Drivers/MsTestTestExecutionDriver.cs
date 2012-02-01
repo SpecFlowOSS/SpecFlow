@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -20,17 +18,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             this.testExecutionResult = testExecutionResult;
         }
 
-        private string GetAssemblyFolder()
-        {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Debug.Assert(assemblyFolder != null);
-            return assemblyFolder;
-        }
-
         public TestRunSummary Execute()
         {
             string vsFolder = Environment.Is64BitProcess ? @"%ProgramFiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE" : @"%ProgramFiles%\Microsoft Visual Studio 10.0\Common7\IDE";
-            var nunitConsolePath = Path.Combine(GetAssemblyFolder(),
+            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(),
                 Environment.ExpandEnvironmentVariables(vsFolder + @"\MsTest.exe"));
 
             string resultsFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx");

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Microsoft.Build.Evaluation;
 using TechTalk.SpecFlow.Specs.Drivers.Templates;
@@ -67,7 +66,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void AddReference(InputProjectDriver inputProjectDriver, Project project, string reference)
         {
-            string referenceFullPath = Path.GetFullPath(Path.Combine(GetAssemblyFolder(), reference));
+            string referenceFullPath = Path.GetFullPath(Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), reference));
             string assemblyName = Path.GetFileNameWithoutExtension(referenceFullPath);
             Debug.Assert(assemblyName != null);
 
@@ -131,20 +130,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             if (replacements == null)
                 replacements = new Dictionary<string, string>();
 
-            replacements.Add("SpecFlowRoot", Path.Combine(GetAssemblyFolder(), "SpecFlow"));
+            replacements.Add("SpecFlowRoot", Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), "SpecFlow"));
 
             string fileContent = templateManager.LoadTemplate(templateName, replacements);
 
             string outputPath = Path.Combine(compilationFolder, outputFileName);
             File.WriteAllText(outputPath, fileContent, Encoding.UTF8);
             return outputPath;
-        }
-
-        private string GetAssemblyFolder()
-        {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Debug.Assert(assemblyFolder != null);
-            return assemblyFolder;
         }
 
         private Project CreateProject(InputProjectDriver inputProjectDriver, string outputFileName)

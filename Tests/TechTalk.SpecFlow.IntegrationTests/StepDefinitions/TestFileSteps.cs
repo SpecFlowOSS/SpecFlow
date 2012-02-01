@@ -34,17 +34,10 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
             parserDriver.ParseFile();
         }
 
-        private string GetAssemblyFolder()
-        {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Debug.Assert(assemblyFolder != null);
-            return assemblyFolder;
-        }
-
         [When(@"the parsed result is saved to '(.*)'")]
         public void WhenTheParsedResultIsSavedTo(string parsedFileName)
         {
-            var assemblyFolder = GetAssemblyFolder();
+            var assemblyFolder = AssemblyFolderHelper.GetTestAssemblyFolder();
             assemblyFolder.EndsWith(@"\bin\Debug").ShouldBeTrue("parsed file saving can only be done from a development environment");
             parserDriver.SaveSerializedFeatureTo(Path.Combine(assemblyFolder, @"..\..\TestFiles", parsedFileName));
         }

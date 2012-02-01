@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -22,16 +19,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public string Include { get; set; }
 
-        private string GetAssemblyFolder()
-        {
-            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Debug.Assert(assemblyFolder != null);
-            return assemblyFolder;
-        }
-
         public TestRunSummary Execute()
         {
-            var nunitConsolePath = Path.Combine(GetAssemblyFolder(), @"NUnit\tools\nunit-console-x86.exe");
+            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"NUnit\tools\nunit-console-x86.exe");
 
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");

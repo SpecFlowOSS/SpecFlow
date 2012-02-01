@@ -15,6 +15,8 @@ namespace TechTalk.SpecFlow.Generator
         private readonly ITraceListener traceListener;
         private readonly ITestGeneratorFactory testGeneratorFactory;
 
+        public event Action<FeatureFileInput, TestGeneratorResult> OnSuccess;
+        public event Action<FeatureFileInput, TestGeneratorResult> OnGenerated;
         public event Action<FeatureFileInput, TestGeneratorResult> OnError;
 
         public BatchGenerator(ITraceListener traceListener, ITestGeneratorFactory testGeneratorFactory)
@@ -56,6 +58,14 @@ namespace TechTalk.SpecFlow.Generator
                     else
                     {
                         traceListener.WriteToolOutput("{0} -> test updated", featureFile.ProjectRelativePath);
+                        if (OnGenerated != null)
+                            OnGenerated(featureFile, generationResult);
+                    }
+
+                    if (generationResult.Success)
+                    {
+                        if (OnSuccess != null)
+                            OnSuccess(featureFile, generationResult);
                     }
                 }
             }
