@@ -1,4 +1,5 @@
-﻿Feature: Asynchronous steps
+﻿#TODO: generate async test from this file only
+Feature: Asynchronous steps
 	In order to test asynchronous processes
 	As a developer
 	I want to be able to run steps in an asynchronous manner

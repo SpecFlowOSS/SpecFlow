@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Async;
 
-namespace RuntimeTests.Silverlight.Async
+namespace TechTalk.SpecFlow.Specs.Silverlight.StepDefinitions
 {
     [Binding]
-    public class StepDefinitions : Steps
+    public class AsyncStepDefinitions : AsyncSteps
     {
         public bool AsyncProcessStarted;
         public bool AsyncProcessComplete;

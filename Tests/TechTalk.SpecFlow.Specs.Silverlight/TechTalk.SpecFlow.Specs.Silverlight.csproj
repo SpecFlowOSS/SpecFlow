@@ -91,6 +91,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\AsyncSteps.feature.cs">
+      <DependentUpon>AsyncSteps.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Features\BasicFeature.feature.cs">
       <AutoGen>True</AutoGen>
@@ -98,6 +103,7 @@
       <DependentUpon>BasicFeature.feature</DependentUpon>
     </Compile>
     <Compile Include="StepDefinitions\BasicSteps.cs" />
+    <Compile Include="StepDefinitions\AsyncStepDefinitions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -107,6 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Features\AsyncSteps.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AsyncSteps.feature.cs</LastGenOutput>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Features\BasicFeature.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
