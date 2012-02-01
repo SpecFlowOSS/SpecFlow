@@ -91,9 +91,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Integrati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitNuGetPackage", "Installer\NUnitNuGetPackage\NUnitNuGetPackage.csproj", "{169828BD-9732-4606-8728-9B1657B771BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.Silverlight", "Tests\TechTalk.SpecFlow.Specs.Silverlight\TechTalk.SpecFlow.Specs.Silverlight.csproj", "{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.Silverlight4", "Tests\TechTalk.SpecFlow.Specs.Silverlight4\TechTalk.SpecFlow.Specs.Silverlight4.csproj", "{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{27B6695E-7049-4C1B-8820-812722128D9E} = {27B6695E-7049-4C1B-8820-812722128D9E}
+	EndProjectSection
 EndProject
-Project("{00000000-0000-0000-0000-000000000000}") = "TechTalk.SpecFlow.Specs.Silverlight.Web", "Tests\TechTalk.SpecFlow.Specs.Silverlight.Web\TechTalk.SpecFlow.Specs.Silverlight.Web.csproj", "{11197943-7A9A-4D93-A5F1-2344E0F993DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.Silverlight4.Web", "Tests\TechTalk.SpecFlow.Specs.Silverlight4.Web\TechTalk.SpecFlow.Specs.Silverlight4.Web.csproj", "{11197943-7A9A-4D93-A5F1-2344E0F993DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7} = {ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

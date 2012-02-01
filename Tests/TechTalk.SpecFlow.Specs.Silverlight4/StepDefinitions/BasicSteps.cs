@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.Specs.Silverlight.StepDefinitions
+namespace TechTalk.SpecFlow.Specs.Silverlight4.StepDefinitions
 {
     [Binding]
     public class BasicSteps

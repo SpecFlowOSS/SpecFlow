@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>TechTalk.SpecFlow.Specs.Silverlight</title>
+    <title>TechTalk.SpecFlow.Specs.Silverlight4</title>
     <style type="text/css">
     html, body {
 	    height: 100%;
@@ -60,7 +60,7 @@
     <form id="form1" runat="server" style="height:100%">
     <div id="silverlightControlHost">
         <object data="data:application/x-silverlight-2," type="application/x-silverlight-2" width="100%" height="100%">
-		  <param name="source" value="ClientBin/TechTalk.SpecFlow.Specs.Silverlight.xap"/>
+		  <param name="source" value="ClientBin/TechTalk.SpecFlow.Specs.Silverlight4.xap"/>
 		  <param name="onError" value="onSilverlightError" />
 		  <param name="background" value="white" />
 		  <param name="minRuntimeVersion" value="4.0.50826.0" />

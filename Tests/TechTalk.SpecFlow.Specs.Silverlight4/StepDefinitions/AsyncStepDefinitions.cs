@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Async;
 
-namespace TechTalk.SpecFlow.Specs.Silverlight.StepDefinitions
+namespace TechTalk.SpecFlow.Specs.Silverlight4.StepDefinitions
 {
     [Binding]
     public class AsyncStepDefinitions : AsyncSteps

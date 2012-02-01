@@ -2,7 +2,7 @@
 using System.Windows;
 using Microsoft.Silverlight.Testing;
 
-namespace TechTalk.SpecFlow.Specs.Silverlight
+namespace TechTalk.SpecFlow.Specs.Silverlight4
 {
     public partial class App : Application
     {

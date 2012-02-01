@@ -14,7 +14,7 @@
     <AssemblyName>TechTalk.SpecFlow.Specs.Silverlight.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
-    <SilverlightApplicationList>{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}|..\TechTalk.SpecFlow.Specs.Silverlight\TechTalk.SpecFlow.Specs.Silverlight.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}|..\TechTalk.SpecFlow.Specs.Silverlight4\TechTalk.SpecFlow.Specs.Silverlight4.csproj|ClientBin|False</SilverlightApplicationList>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,7 +52,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientBin\TechTalk.SpecFlow.Specs.Silverlight.xap" />
+    <Content Include="ClientBin\TechTalk.SpecFlow.Specs.Silverlight4.xap" />
     <Content Include="Silverlight.js" />
     <Content Include="TechTalk.SpecFlow.Specs.SilverlightTestPage.aspx" />
     <Content Include="TechTalk.SpecFlow.Specs.SilverlightTestPage.html" />

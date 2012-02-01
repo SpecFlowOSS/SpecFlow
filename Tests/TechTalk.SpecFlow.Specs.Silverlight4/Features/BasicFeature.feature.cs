@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace TechTalk.SpecFlow.Specs.Silverlight.Features
+namespace TechTalk.SpecFlow.Specs.Silverlight4.Features
 {
     using TechTalk.SpecFlow;
     
