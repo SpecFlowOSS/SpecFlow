@@ -184,7 +184,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         {
             this.visualStudioTracer.Trace("Build Done.", "VsProjectFileTracker");
             ProjectItem item = VsxHelper.FindProjectItemByProjectRelativePath(project, fileName);
-            var newChangeDate = GetLastChangeDate(item);
+            var newChangeDate = VsxHelper.GetLastChangeDate(item);
             if (newChangeDate != LastChangeDate)
                 OnFileChanged(item);
         }
@@ -209,20 +209,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return string.Equals(fileName, projectRelativePath, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private DateTime? GetLastChangeDate(ProjectItem projectItem)
-        {
-            string filePath;
-            if (projectItem == null || !File.Exists(filePath = VsxHelper.GetFileName(projectItem)))
-            {
-                return null;
-            }
-
-            return File.GetLastWriteTime(filePath);
-        }
-
         private void SetLastChangeDate(ProjectItem projectItem)
         {
-            LastChangeDate = GetLastChangeDate(projectItem);
+            LastChangeDate = VsxHelper.GetLastChangeDate(projectItem);
         }
 
         protected override void OnFileChanged(ProjectItem projectItem)

@@ -7,14 +7,24 @@ using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public interface IFileInfo
+    public abstract class FileInfo
     {
-        bool IsAnalyzed { get; set; }
-        string ProjectRelativePath { get; }
-        void Rename(string newProjectRelativePath);
+        public bool IsAnalyzed { get; set; }
+        public DateTime LastChangeDate { get; set; }
+        public string ProjectRelativePath { get; set; }
+
+        public virtual void Rename(string newProjectRelativePath)
+        {
+            ProjectRelativePath = newProjectRelativePath;
+        }
+
+        public bool IsDirty(DateTime timeStamp)
+        {
+            return LastChangeDate > timeStamp.AddMilliseconds(0.5);
+        }
     }
 
-    internal abstract class ProjectFilesTracker<TFileInfo> where TFileInfo : class, IFileInfo 
+    internal abstract class ProjectFilesTracker<TFileInfo> where TFileInfo : FileInfo 
     {
         protected readonly VsProjectScope vsProjectScope;
         protected List<TFileInfo> files;

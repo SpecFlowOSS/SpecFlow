@@ -165,6 +165,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 bindingFilesTracker = new BindingFilesTracker(this);
 
                 stepSuggestionProvider = new VsStepSuggestionProvider(this);
+                stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
                 bindingMatchService = new BindingMatchService(stepSuggestionProvider);
             }
             initialized = true;
@@ -295,6 +296,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        private void StepSuggestionProviderOnReady()
+        {
+            SaveStepMap();
+        }
+
         public void Dispose()
         {
             SaveStepMap();
@@ -318,7 +324,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             if (bindingFilesTracker != null)
             {
-//                bindingFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
                 bindingFilesTracker.Dispose();
             }
         }
@@ -328,7 +333,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private string GetStepMapFileName()
         {
             if (stepMapFileName == null)
-                stepMapFileName = string.Format(@"C:\Temp\sm-{0}.txt", VsxHelper.GetProjectUniqueId(project));
+                stepMapFileName = string.Format(@"C:\Temp\sm\sm-{0}.txt", VsxHelper.GetProjectUniqueId(project));
             return stepMapFileName;
         }
 
@@ -338,7 +343,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 !bindingFilesTracker.IsInitialized)
                 return;
 
-            var stepMap = new StepMap();
+            var stepMap = StepMap.CreateStepMap(GherkinDialectServices.DefaultLanguage);
             featureFilesTracker.SaveToStepMap(stepMap);
             bindingFilesTracker.SaveToStepMap(stepMap);
 
@@ -354,7 +359,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var stepMap = StepMap.LoadFromFile(fileName, visualStudioTracer);
             if (stepMap != null)
             {
-                featureFilesTracker.LoadFromStepMap(stepMap);
+                if (stepMap.DefaultLanguage.Equals(GherkinDialectServices.DefaultLanguage.Name)) // if default language changed in config => ignore cache
+                    featureFilesTracker.LoadFromStepMap(stepMap);
                 bindingFilesTracker.LoadFromStepMap(stepMap);
             }
         }

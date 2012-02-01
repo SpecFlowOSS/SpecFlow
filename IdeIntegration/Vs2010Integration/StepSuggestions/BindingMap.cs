@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,17 +25,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     public class FileStepDefinitions
     {
         public string FileName { get; set; }
+        public DateTime TimeStamp { get; set; }
         public List<StepBindingNew> StepDefinitions { get; set; }
     }
 
     public class FeatureSteps
     {
         public string FileName { get; set; }
+        public DateTime TimeStamp { get; set; }
         public Feature Feature { get; set; }
+        public Version GeneratorVersion { get; set; }
     }
 
     public class StepMap
     {
+        public const int CURRENT_VERSION = 2;
+
+        public static StepMap CreateStepMap(CultureInfo defaultLanguage)
+        {
+            return new StepMap()
+                       {
+                           FileVersion = CURRENT_VERSION,
+                           DefaultLanguage = defaultLanguage.Name
+                       };
+        }
+
+        public int FileVersion { get; set; }
+        public string DefaultLanguage { get; set; }
         public List<ProjectStepDefinitions> ProjectStepDefinitions { get; set; }
         public List<FeatureSteps> FeatureSteps { get; set; }
 
@@ -81,6 +98,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                 using (var reader = new StreamReader(fileName, Encoding.UTF8))
                 {
                     var stepMap = (StepMap)serializer.Deserialize(reader, typeof(StepMap));
+
+                    if (stepMap.FileVersion != CURRENT_VERSION)
+                    {
+                        tracer.Trace(string.Format("StepMap has wrong file version"), typeof(StepMap).Name);
+                        return null;
+                    }
 
                     tracer.Trace(string.Format("StepMap with {0} feature files and {1} step definitions loaded", stepMap.FeatureFileCount, stepMap.StepDefinitionCount), typeof(StepMap).Name);
 

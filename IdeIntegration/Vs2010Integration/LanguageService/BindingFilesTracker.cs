@@ -38,20 +38,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class BindingFileInfo : IFileInfo
+    public class BindingFileInfo : FileInfo
     {
-        public string ProjectRelativePath { get; private set; }
-        public bool IsAnalyzed { get; set; }
         public IEnumerable<StepBindingNew> StepBindings { get; set; }
 
         public BindingFileInfo(ProjectItem projectItem)
         {
             ProjectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
-        }
-
-        public void Rename(string newProjectRelativePath)
-        {
-            ProjectRelativePath = newProjectRelativePath;
+            LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
     }
 
@@ -126,7 +120,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             stepMap.ProjectStepDefinitions.Add(projectStepDefinitions);
             foreach (var bindingFileInfo in Files.Where(f => f.IsAnalyzed))
             {
-                var fileStepDefinitions = new FileStepDefinitions {FileName = bindingFileInfo.ProjectRelativePath};
+                var fileStepDefinitions = new FileStepDefinitions
+                                              {
+                                                  FileName = bindingFileInfo.ProjectRelativePath, 
+                                                  TimeStamp = bindingFileInfo.LastChangeDate
+                                              };
 
                 fileStepDefinitions.StepDefinitions = new List<StepBindingNew>();
                 fileStepDefinitions.StepDefinitions.AddRange(bindingFileInfo.StepBindings);
@@ -162,9 +160,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (fileInfo == null)
                     continue;
 
+                if (fileInfo.IsDirty(fileStepDefinitions.TimeStamp))
+                    continue;
+
                 fileInfo.StepBindings = fileStepDefinitions.StepDefinitions;
                 fileInfo.IsAnalyzed = true;
             }
+
+            vsProjectScope.VisualStudioTracer.Trace("Applied loaded bindings", "BindingFilesTracker");
         }
     }
 }

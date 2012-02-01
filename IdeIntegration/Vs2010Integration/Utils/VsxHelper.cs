@@ -374,5 +374,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
             return solutionBuild.LastBuildInfo == 0;
         }
+
+        public static DateTime? GetLastChangeDate(ProjectItem projectItem)
+        {
+            string filePath;
+            if (projectItem == null || !File.Exists(filePath = GetFileName(projectItem)))
+            {
+                return null;
+            }
+
+            return File.GetLastWriteTime(filePath);
+        }
     }
 }

@@ -14,21 +14,15 @@ using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public class FeatureFileInfo : IFileInfo
+    public class FeatureFileInfo : FileInfo
     {
-        public string ProjectRelativePath { get; private set; }
-        public bool IsAnalyzed { get; set; }
         public Version GeneratorVersion { get; set; }
         public Feature ParsedFeature { get; set; }
 
         public FeatureFileInfo(ProjectItem projectItem)
         {
             ProjectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
-        }
-
-        public void Rename(string newProjectRelativePath)
-        {
-            ProjectRelativePath = newProjectRelativePath;
+            LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
     }
 
@@ -150,7 +144,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             stepMap.FeatureSteps = new List<FeatureSteps>();
             foreach (var featureFileInfo in Files.Where(f => f.ParsedFeature != null))
             {
-                stepMap.FeatureSteps.Add(new FeatureSteps { FileName = featureFileInfo.ProjectRelativePath, Feature = featureFileInfo.ParsedFeature });
+                stepMap.FeatureSteps.Add(new FeatureSteps
+                                             {
+                                                 FileName = featureFileInfo.ProjectRelativePath, 
+                                                 TimeStamp = featureFileInfo.LastChangeDate,
+                                                 Feature = featureFileInfo.ParsedFeature,
+                                                 GeneratorVersion = featureFileInfo.GeneratorVersion
+                                             });
             }
         }
 
@@ -170,10 +170,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (featureFileInfo == null)
                     continue;
 
+                if (featureFileInfo.IsDirty(featureSteps.TimeStamp))
+                    continue;
+
                 featureFileInfo.ParsedFeature = featureSteps.Feature;
-                //TODO: featureFileInfo.GeneratorVersion = 
+                featureFileInfo.GeneratorVersion = featureSteps.GeneratorVersion;
                 featureFileInfo.IsAnalyzed = true;
             }
+
+            vsProjectScope.VisualStudioTracer.Trace("Applied loaded fieature file steps", "ProjectFeatureFilesTracker");
         }
     }
 }
