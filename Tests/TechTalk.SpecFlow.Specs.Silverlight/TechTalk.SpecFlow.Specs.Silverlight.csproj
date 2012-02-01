@@ -121,6 +121,10 @@
   </ItemGroup>
   <PropertyGroup>
     <SilverlightBuildResources>..\..\lib\Silverlight\v4.0</SilverlightBuildResources>
+    <TargetFrameworkDirectory>$(SilverlightBuildResources)\Reference Assemblies</TargetFrameworkDirectory>
+    <TargetFrameworkSDKDirectory>$(SilverlightBuildResources)\Libraries</TargetFrameworkSDKDirectory>
+    <_FullFrameworkReferenceAssemblyPaths>$(SilverlightBuildResources)\Reference Assemblies</_FullFrameworkReferenceAssemblyPaths>
+    <SilverlightRuntimeVersion>4.0</SilverlightRuntimeVersion>
   </PropertyGroup>
   <Import Project="$(SilverlightBuildResources)\MSBuild\Microsoft.Silverlight.CSharp.targets" />
   <!--<Import Condition="$(SilverlightVersion)=='v3.0'" Project="$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SilverlightToolkit\Tools\v3.0)Microsoft.Silverlight.Toolkit.Build.targets" />
