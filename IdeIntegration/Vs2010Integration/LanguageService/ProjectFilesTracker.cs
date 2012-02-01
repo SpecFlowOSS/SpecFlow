@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using EnvDTE;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -36,6 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IEnumerable<TFileInfo> Files { get { return files; } }
         public bool IsInitialized { get { return files != null; } }
+        public bool IsStepMapDirty { get; private set; }
 
         protected ProjectFilesTracker(VsProjectScope vsProjectScope)
         {
@@ -43,6 +45,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 throw new ArgumentException("GherkinProcessingScheduler is null", "vsProjectScope");
 
             this.vsProjectScope = vsProjectScope;
+            this.IsStepMapDirty = true;
         }
 
         private void FilesTrackerOnFileOutOfScope(ProjectItem projectItem, string projectRelativePath)
@@ -189,6 +192,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             finally
             {
+                IsStepMapDirty = true;
                 fileInfo.IsAnalyzed = true;
             }
         }
@@ -250,5 +254,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             // upadate caches?
         }
 
+        public void LoadFromStepMap(StepMap stepMap)
+        {
+            DoTaskAsynch(() =>
+                             {
+                                 LoadFromStepMapInternal(stepMap);
+                                 IsStepMapDirty = false;
+                             });
+        }
+
+        public void SaveToStepMap(StepMap stepMap)
+        {
+            SaveToStepMapInternal(stepMap);
+            IsStepMapDirty = false;
+        }
+
+        protected abstract void LoadFromStepMapInternal(StepMap stepMap);
+        protected abstract void SaveToStepMapInternal(StepMap stepMap);
     }
 }

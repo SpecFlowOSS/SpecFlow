@@ -63,6 +63,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             var fileContent = VsxHelper.GetFileContent(projectItem, loadLastSaved: true);
             featureFileInfo.ParsedFeature = ParseGherkinFile(fileContent, featureFileInfo.ProjectRelativePath, vsProjectScope.GherkinDialectServices.DefaultLanguage);
+            featureFileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
 
         public Feature ParseGherkinFile(string fileContent, string sourceFileName, CultureInfo defaultLanguage)
@@ -139,7 +140,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             DisposeFilesTracker(filesTracker);
         }
 
-        public void SaveToStepMap(StepMap stepMap)
+        protected override void SaveToStepMapInternal(StepMap stepMap)
         {
             stepMap.FeatureSteps = new List<FeatureSteps>();
             foreach (var featureFileInfo in Files.Where(f => f.ParsedFeature != null))
@@ -154,12 +155,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public void LoadFromStepMap(StepMap stepMap)
-        {
-            DoTaskAsynch(() => LoadFromStepMapInternal(stepMap));
-        }
-
-        private void LoadFromStepMapInternal(StepMap stepMap)
+        protected override void LoadFromStepMapInternal(StepMap stepMap)
         {
             if (stepMap.FeatureSteps == null)
                 return;

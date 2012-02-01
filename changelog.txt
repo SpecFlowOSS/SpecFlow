@@ -6,6 +6,7 @@ New Features:
 + Better comparison exceptions when comparing tables to sets.
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
 + VS2010: Comment and uncomment selection
++ VS2010: Cache analysis result for faster solution startup
 
 1.8.1 - 2011/10/25
 

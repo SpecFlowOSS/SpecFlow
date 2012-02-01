@@ -83,6 +83,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             vsProjectScope.VisualStudioTracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
             fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem).ToArray();
+            fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
 
         protected override BindingFileInfo CreateFileInfo(ProjectItem projectItem)
@@ -112,7 +113,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public void SaveToStepMap(StepMap stepMap)
+        protected override void SaveToStepMapInternal(StepMap stepMap)
         {
             stepMap.ProjectStepDefinitions = new List<ProjectStepDefinitions>();
             var projectStepDefinitions = new ProjectStepDefinitions();
@@ -142,12 +143,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public void LoadFromStepMap(StepMap stepMap)
-        {
-            DoTaskAsynch(() => LoadFromStepMapInternal(stepMap));
-        }
-
-        private void LoadFromStepMapInternal(StepMap stepMap)
+        protected override void LoadFromStepMapInternal(StepMap stepMap)
         {
             if (stepMap.ProjectStepDefinitions == null || stepMap.ProjectStepDefinitions.Count == 0)
                 return;

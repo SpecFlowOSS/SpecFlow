@@ -220,6 +220,7 @@
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
     <Compile Include="StepSuggestions\BindingMap.cs" />
+    <Compile Include="StepSuggestions\StepMapSetializer.cs" />
     <Compile Include="TestRunner\AutoTestRunnerGateway.cs" />
     <Compile Include="TestRunner\CommandBasedTestRunnerGateway.cs" />
     <Compile Include="TestRunner\ITestRunnerGateway.cs" />

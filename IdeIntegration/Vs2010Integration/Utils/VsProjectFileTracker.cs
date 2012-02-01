@@ -177,7 +177,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         protected override void UnsubscribeFromDteEvents()
         {
             base.UnsubscribeFromDteEvents();
-            dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+            dteWithEvents.BuildEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
         }
 
         private void BuildEventsOnOnBuildDone(vsBuildScope scope, vsBuildAction action)
