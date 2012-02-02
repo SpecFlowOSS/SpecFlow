@@ -24,6 +24,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         //unit test framework settings
         public string RuntimeUnitTestProvider { get; set; }
+        public bool PendingStepsFailTest { get; set; }
 
         //runtime settings
         public bool DetectAmbiguousMatches { get; set; }
@@ -126,6 +127,8 @@ namespace TechTalk.SpecFlow.Configuration
                 {
                     this.RuntimeUnitTestProvider = configSection.UnitTestProvider.Name;
                 }
+
+                this.PendingStepsFailTest = configSection.UnitTestProvider.PendingStepsFailTest;
             }
 
             if (IsSpecified(configSection.Trace))

@@ -149,6 +149,13 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (string)this["runtimeProvider"]; }
             set { this["runtimeProvider"] = value; }
         }
+
+        [ConfigurationProperty("pendingStepsFailTest", DefaultValue = false, IsRequired = false)]
+        public bool PendingStepsFailTest
+        {
+            get { return (bool)this["pendingStepsFailTest"]; }
+            set { this["pendingStepsFailTest"] = value; }
+        }
     }
 
     public class RuntimeConfigElement : ConfigurationElement
