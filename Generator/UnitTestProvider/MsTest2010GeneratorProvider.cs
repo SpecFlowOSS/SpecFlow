@@ -1,9 +1,7 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System;
-using System.Diagnostics;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
