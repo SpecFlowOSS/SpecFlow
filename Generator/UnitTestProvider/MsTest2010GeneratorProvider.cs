@@ -9,8 +9,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 	{
 		private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 		private const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
+		private const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
 
 		private const string OWNER_TAG = "owner=";
+		private const string WORKITEM_TAG = "workitem=";
 
 		public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
 		{
@@ -20,6 +22,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 			if(ownerTags.Count() > 0)
 			{
 				generationContext.CustomData[OWNER_TAG] = ownerTags.Select(t => t.Substring(OWNER_TAG.Length).Trim('\"')).FirstOrDefault();
+			}
+
+			IEnumerable<string> workitemTags = featureCategories.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+			if(workitemTags.Count() > 0)
+			{
+				int temp;
+				IEnumerable<string> workitemsAsStrings = workitemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
+				if(workitemsAsStrings.Count() > 0)
+				{
+					generationContext.CustomData[WORKITEM_TAG] = workitemsAsStrings.Where(t => int.TryParse(t, out temp)).Select(t => int.Parse(t));
+				}
 			}
 		}
 
@@ -40,6 +53,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 					CodeDomHelper.AddAttribute(testMethod, OWNER_ATTR, ownerName);
 				}
 			}
+
+			if(generationContext.CustomData.ContainsKey(WORKITEM_TAG))
+			{
+				IEnumerable<int> workitems = generationContext.CustomData[WORKITEM_TAG] as IEnumerable<int>;
+				foreach(int workitem in workitems)
+				{
+					CodeDomHelper.AddAttribute(testMethod, WORKITEM_ATTR, workitem);
+				}
+			}
 		}
 
 		public override void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
@@ -56,13 +78,26 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 				}
 			}
 
+			IEnumerable<string> workitemTags = tags.Where(t => t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+			if(workitemTags.Count() > 0)
+			{
+				int temp;
+				IEnumerable<string> workitemsAsStrings = workitemTags.Select(t => t.Substring(WORKITEM_TAG.Length).Trim('\"'));
+				IEnumerable<int> workitems = workitemsAsStrings.Where(t => int.TryParse(t, out temp)).Select(t => int.Parse(t));
+				foreach(int workitem in workitems)
+				{
+					CodeDomHelper.AddAttribute(testMethod, WORKITEM_ATTR, workitem);
+				}
+			}
+
 			CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, GetNonMSTestSpecificTags(tags));
 		}
 
 		private IEnumerable<string> GetNonMSTestSpecificTags(IEnumerable<string> tags)
 		{
 			return tags == null ? new string[0] : tags.Where(t =>
-				(!t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase)))
+				(!t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase))
+				&& (!t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)))
 				.Select(t => t);
 		}
 	}
