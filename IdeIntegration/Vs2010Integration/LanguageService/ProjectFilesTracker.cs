@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using EnvDTE;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public interface IFileInfo
+    public abstract class FileInfo
     {
-        bool IsAnalyzed { get; set; }
-        string ProjectRelativePath { get; }
-        void Rename(string newProjectRelativePath);
+        public bool IsAnalyzed { get; set; }
+        public DateTime LastChangeDate { get; set; }
+        public string ProjectRelativePath { get; set; }
+
+        public virtual void Rename(string newProjectRelativePath)
+        {
+            ProjectRelativePath = newProjectRelativePath;
+        }
+
+        public bool IsDirty(DateTime timeStamp)
+        {
+            return LastChangeDate > timeStamp.AddMilliseconds(0.5);
+        }
     }
 
-    internal abstract class ProjectFilesTracker<TFileInfo> where TFileInfo : class, IFileInfo 
+    internal abstract class ProjectFilesTracker<TFileInfo> where TFileInfo : FileInfo 
     {
         protected readonly VsProjectScope vsProjectScope;
         protected List<TFileInfo> files;
@@ -26,6 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public IEnumerable<TFileInfo> Files { get { return files; } }
         public bool IsInitialized { get { return files != null; } }
+        public bool IsStepMapDirty { get; private set; }
 
         protected ProjectFilesTracker(VsProjectScope vsProjectScope)
         {
@@ -33,6 +45,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 throw new ArgumentException("GherkinProcessingScheduler is null", "vsProjectScope");
 
             this.vsProjectScope = vsProjectScope;
+            this.IsStepMapDirty = true;
         }
 
         private void FilesTrackerOnFileOutOfScope(ProjectItem projectItem, string projectRelativePath)
@@ -83,7 +96,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private TFileInfo FindFileInfo(string projectRelativePath)
+        protected TFileInfo FindFileInfo(string projectRelativePath)
         {
             return Files.FirstOrDefault(ffi => string.Equals(ffi.ProjectRelativePath, projectRelativePath, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -105,7 +118,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker.Dispose();
         }
 
-        private void DoTaskAsynch(Action action)
+        protected void DoTaskAsynch(Action action)
         {
             vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.VisualStudioTracer));
         }
@@ -179,6 +192,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             finally
             {
+                IsStepMapDirty = true;
                 fileInfo.IsAnalyzed = true;
             }
         }
@@ -240,5 +254,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             // upadate caches?
         }
 
+        public void LoadFromStepMap(StepMap stepMap)
+        {
+            DoTaskAsynch(() =>
+                             {
+                                 LoadFromStepMapInternal(stepMap);
+                                 IsStepMapDirty = false;
+                             });
+        }
+
+        public void SaveToStepMap(StepMap stepMap)
+        {
+            SaveToStepMapInternal(stepMap);
+            IsStepMapDirty = false;
+        }
+
+        protected abstract void LoadFromStepMapInternal(StepMap stepMap);
+        protected abstract void SaveToStepMapInternal(StepMap stepMap);
     }
 }

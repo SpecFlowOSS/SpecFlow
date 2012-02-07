@@ -6,6 +6,22 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 {
     public static class BindingReflectionExtensions
     {
+        public static string GetShortDisplayText(this IBindingMethod bindingMethod)
+        {
+            return string.Format("{2}.{0}({1})", bindingMethod.Name, string.Join(", ", bindingMethod.Parameters.Select(p => p.Type.Name)), bindingMethod.Type.Name);
+        }
+
+        public static bool IsAssignableTo(this IBindingType baseType, Type type)
+        {
+            if (type.FullName == baseType.FullName)
+                return true;
+
+            if (type.BaseType != null && IsAssignableTo(baseType, type.BaseType))
+                return true;
+
+            return type.GetInterfaces().Any(_if => IsAssignableTo(baseType, _if));
+        }
+
         public static bool MethodEquals(this IBindingMethod method1, IBindingMethod method2)
         {
             if (ReferenceEquals(method1, method2))

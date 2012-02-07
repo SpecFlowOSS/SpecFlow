@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Bindings;
 
@@ -45,7 +46,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             string suggestionTextBase = stepBinding.Regex == null ? "[...]" :
                 "[" + RegexSampler.GetRegexSample(stepBinding.Regex.ToString(), stepBinding.Method.Parameters.Select(p => p.ParameterName).ToArray()) + "]";
 
-            return string.Format("{0} -> {1}", suggestionTextBase, stepBinding.Method.ShortDisplayText);
+            return string.Format("{0} -> {1}", suggestionTextBase, stepBinding.Method.GetShortDisplayText());
         }
 
         private string GetInsertionText(StepBindingNew stepBinding)

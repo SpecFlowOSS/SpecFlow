@@ -76,6 +76,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool bindingsPopulated = false;
         private readonly VsProjectScope vsProjectScope;
 
+        private bool readyInvoked = false;
+        public event Action Ready;
+
         private readonly Dictionary<BindingFileInfo, List<StepBindingNew>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBindingNew>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
@@ -181,6 +184,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             featureFilesPopulated = true;
             vsProjectScope.VisualStudioTracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
+
+            FireReady();
+        }
+
+        private void FireReady()
+        {
+            if (Populated && !readyInvoked && Ready != null)
+            {
+                bool doReady;
+                lock(this)
+                {
+                    doReady = !readyInvoked;
+                }
+
+                if (doReady)
+                    Ready();
+            }
         }
 
         private void BindingFilesTrackerOnReady()

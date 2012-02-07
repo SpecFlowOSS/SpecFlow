@@ -65,9 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
+    <Compile Include="AssistTests\SafetyTableDiffExceptionBuilderTests.cs" />
+    <Compile Include="AssistTests\TableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTestBase.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperMethodTests_WithFunc.cs" />
     <Compile Include="AssistTests\TableHelperExtensionMethods\CreateInstanceHelperStandardTypesTests.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_IsAValidGuidTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\LongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableFloatValueRetrieverTests.cs" />
@@ -111,7 +115,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\ShortValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\EnumValueRetrieverTests.cs" />
-    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_GetValueTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableCharValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableDoubleValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\DoubleValueRetreiverTests.cs" />

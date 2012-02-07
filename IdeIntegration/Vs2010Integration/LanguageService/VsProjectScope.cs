@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
@@ -10,6 +11,7 @@ using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Generator;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -163,6 +165,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 bindingFilesTracker = new BindingFilesTracker(this);
 
                 stepSuggestionProvider = new VsStepSuggestionProvider(this);
+                stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
                 bindingMatchService = new BindingMatchService(stepSuggestionProvider);
             }
             initialized = true;
@@ -172,8 +175,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 stepSuggestionProvider.Initialize();
                 bindingFilesTracker.Initialize();
                 featureFilesTracker.Initialize();
+
+                LoadStepMap();
+
                 bindingFilesTracker.Run();
                 featureFilesTracker.Run();
+
+                dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
             }
         }
 
@@ -290,8 +298,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        private void StepSuggestionProviderOnReady()
+        {
+            SaveStepMap();
+        }
+
         public void Dispose()
         {
+            dteWithEvents.BuildEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
+            SaveStepMap();
+
             GherkinProcessingScheduler.Dispose();
             if (appConfigTracker != null)
             {
@@ -310,8 +326,54 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             if (bindingFilesTracker != null)
             {
-//                bindingFilesTracker.Initialized -= FeatureFilesTrackerOnInitialized;
                 bindingFilesTracker.Dispose();
+            }
+        }
+
+        private string stepMapFileName;
+
+        private string GetStepMapFileName()
+        {
+            return stepMapFileName ?? (stepMapFileName = Path.Combine(Path.GetTempPath(), 
+                string.Format(@"specflow-stepmap-{1}-{2}-{0}.cache", VsxHelper.GetProjectUniqueId(project), project.Name, Math.Abs(VsxHelper.GetProjectFolder(project).GetHashCode()))));
+        }
+
+        private void BuildEventsOnOnBuildDone(vsBuildScope scope, vsBuildAction action)
+        {
+            SaveStepMap();
+        }
+
+        private void SaveStepMap()
+        {
+            if (!featureFilesTracker.IsInitialized ||
+                !bindingFilesTracker.IsInitialized)
+                return;
+
+            if (!featureFilesTracker.IsStepMapDirty && !bindingFilesTracker.IsStepMapDirty)
+            {
+                visualStudioTracer.Trace("Step map up-to-date", typeof(StepMap).Name);
+                return;
+            }
+
+            var stepMap = StepMap.CreateStepMap(GherkinDialectServices.DefaultLanguage);
+            featureFilesTracker.SaveToStepMap(stepMap);
+            bindingFilesTracker.SaveToStepMap(stepMap);
+
+            stepMap.SaveToFile(GetStepMapFileName(), visualStudioTracer);
+        }
+
+        private void LoadStepMap()
+        {
+            var fileName = GetStepMapFileName();
+            if (!File.Exists(fileName))
+                return;
+
+            var stepMap = StepMap.LoadFromFile(fileName, visualStudioTracer);
+            if (stepMap != null)
+            {
+                if (stepMap.DefaultLanguage.Equals(GherkinDialectServices.DefaultLanguage)) // if default language changed in config => ignore cache
+                    featureFilesTracker.LoadFromStepMap(stepMap);
+                bindingFilesTracker.LoadFromStepMap(stepMap);
             }
         }
 

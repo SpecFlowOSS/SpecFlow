@@ -8,26 +8,21 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public class FeatureFileInfo : IFileInfo
+    public class FeatureFileInfo : FileInfo
     {
-        public string ProjectRelativePath { get; private set; }
-        public bool IsAnalyzed { get; set; }
         public Version GeneratorVersion { get; set; }
         public Feature ParsedFeature { get; set; }
 
         public FeatureFileInfo(ProjectItem projectItem)
         {
             ProjectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
-        }
-
-        public void Rename(string newProjectRelativePath)
-        {
-            ProjectRelativePath = newProjectRelativePath;
+            LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
     }
 
@@ -68,6 +63,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             var fileContent = VsxHelper.GetFileContent(projectItem, loadLastSaved: true);
             featureFileInfo.ParsedFeature = ParseGherkinFile(fileContent, featureFileInfo.ProjectRelativePath, vsProjectScope.GherkinDialectServices.DefaultLanguage);
+            featureFileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
 
         public Feature ParseGherkinFile(string fileContent, string sourceFileName, CultureInfo defaultLanguage)
@@ -142,6 +138,43 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             vsProjectScope.GherkinDialectServicesChanged -= OnGherkinDialectServicesChanged;
             DisposeFilesTracker(filesTracker);
+        }
+
+        protected override void SaveToStepMapInternal(StepMap stepMap)
+        {
+            stepMap.FeatureSteps = new List<FeatureSteps>();
+            foreach (var featureFileInfo in Files.Where(f => f.ParsedFeature != null))
+            {
+                stepMap.FeatureSteps.Add(new FeatureSteps
+                                             {
+                                                 FileName = featureFileInfo.ProjectRelativePath, 
+                                                 TimeStamp = featureFileInfo.LastChangeDate,
+                                                 Feature = featureFileInfo.ParsedFeature,
+                                                 GeneratorVersion = featureFileInfo.GeneratorVersion
+                                             });
+            }
+        }
+
+        protected override void LoadFromStepMapInternal(StepMap stepMap)
+        {
+            if (stepMap.FeatureSteps == null)
+                return;
+
+            foreach (var featureSteps in stepMap.FeatureSteps)
+            {
+                var featureFileInfo = FindFileInfo(featureSteps.FileName);
+                if (featureFileInfo == null)
+                    continue;
+
+                if (featureFileInfo.IsDirty(featureSteps.TimeStamp))
+                    continue;
+
+                featureFileInfo.ParsedFeature = featureSteps.Feature;
+                featureFileInfo.GeneratorVersion = featureSteps.GeneratorVersion;
+                featureFileInfo.IsAnalyzed = true;
+            }
+
+            vsProjectScope.VisualStudioTracer.Trace("Applied loaded fieature file steps", "ProjectFeatureFilesTracker");
         }
     }
 }

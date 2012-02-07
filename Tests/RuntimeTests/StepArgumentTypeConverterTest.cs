@@ -72,5 +72,33 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var result = _stepArgumentTypeConverter.Convert("vALUE1", typeof(TestEnumeration), _enUSCulture);
             Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
         }
+
+        [Test]
+        public void ShouldConvertGuidToGuidType()
+        {
+            var result = _stepArgumentTypeConverter.Convert("{EF338B79-FD29-488F-8CA7-39C67C2B8874}", typeof (Guid), _enUSCulture);
+            Assert.That(result, Is.EqualTo(new Guid("{EF338B79-FD29-488F-8CA7-39C67C2B8874}")));
+        }
+
+        [Test]
+        public void ShouldConvertNullableGuidToGuidType()
+        {
+            var result = _stepArgumentTypeConverter.Convert("{1081CFD1-F31F-420F-9360-40590ABEF887}", typeof(Guid?), _enUSCulture);
+            Assert.That(result, Is.EqualTo(new Guid("{1081CFD1-F31F-420F-9360-40590ABEF887}")));
+        }
+
+        [Test]
+        public void ShouldConvertNullableGuidWithEmptyValueToNull()
+        {
+            var result = _stepArgumentTypeConverter.Convert("", typeof(Guid?), _enUSCulture);
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void ShouldConvertLooseGuids()
+        {
+            var result = _stepArgumentTypeConverter.Convert("1", typeof (Guid), _enUSCulture);
+            Assert.That(result, Is.EqualTo(new Guid("10000000-0000-0000-0000-000000000000")));
+        }
     }
 }

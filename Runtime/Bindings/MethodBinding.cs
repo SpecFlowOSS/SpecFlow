@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Bindings
                                     contextManagerArg,
                                     scenarioContextProperty), 
                                 getInstanceMethod,
-                                Expression.Constant(method.ReflectedType)),
+                                Expression.Constant(method.ReflectedType, typeof(Type))),
                             method.ReflectedType), 
                         method, 
                         methodArguments),

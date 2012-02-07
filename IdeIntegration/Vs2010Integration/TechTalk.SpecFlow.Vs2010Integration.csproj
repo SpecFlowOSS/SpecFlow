@@ -122,6 +122,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\VS2010SDK\v2.0\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.3.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -187,9 +191,12 @@
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingMatchService.cs" />
     <Compile Include="Bindings\IBindingRegistryNew.cs" />
+    <Compile Include="Bindings\Reflection\BindingMethod.cs" />
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
+    <Compile Include="Bindings\Reflection\BindingParameter.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
+    <Compile Include="Bindings\Reflection\BindingType.cs" />
     <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
     <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
     <Compile Include="Bindings\Reflection\IBindingType.cs" />
@@ -208,10 +215,12 @@
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFilesTracker.cs" />
-    <Compile Include="LanguageService\VsBindingMethod.cs" />
+    <Compile Include="LanguageService\VsBindingReflectionFactory.cs" />
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
+    <Compile Include="StepSuggestions\BindingMap.cs" />
+    <Compile Include="StepSuggestions\StepMapSetializer.cs" />
     <Compile Include="TestRunner\AutoTestRunnerGateway.cs" />
     <Compile Include="TestRunner\CommandBasedTestRunnerGateway.cs" />
     <Compile Include="TestRunner\ITestRunnerGateway.cs" />
@@ -295,6 +304,7 @@
     <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\AutoCompleteIcons.psd" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
