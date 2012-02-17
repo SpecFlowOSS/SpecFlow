@@ -11,8 +11,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 		private const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
 		private const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
 
-		private const string OWNER_TAG = "owner=";
-		private const string WORKITEM_TAG = "workitem=";
+		private const string OWNER_TAG = "owner:";
+		private const string WORKITEM_TAG = "workitem:";
 
 		public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
 		{
