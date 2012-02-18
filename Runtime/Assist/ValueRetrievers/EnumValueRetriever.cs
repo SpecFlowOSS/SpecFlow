@@ -13,13 +13,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
         {
-            return Enum.Parse(enumType, ParseTheValue(value), true);
+            return Enum.Parse(enumType.GetGenericArguments()[0], ParseTheValue(value), true);
         }
 
         private void CheckThatTheValueIsAnEnum(string value, Type enumType)
         {
-            if (value == null)
-                throw GetInvalidOperationException("{null}");
+  
             if (value == string.Empty)
                 throw GetInvalidOperationException("{empty}");
 
