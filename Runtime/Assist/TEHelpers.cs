@@ -81,12 +81,21 @@ namespace TechTalk.SpecFlow.Assist
         {
             var handlers = GetTypeHandlersForFieldValuePairs<T>();
 
-            return from property in typeof(T).GetProperties()
+            return from property in typeof (T).GetProperties()
                    from key in handlers.Keys
                    from row in table.Rows
-                   where key.IsAssignableFrom(property.PropertyType)
+                   where ThisPropertyMatchesTheType(property, key) 
                          && IsPropertyMatchingToColumnName(property, row.Id())
-                   select new PropertyHandler { Row = row, PropertyName = property.Name, Handler = handlers[key] };
+                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+        }
+
+        private static bool ThisPropertyMatchesTheType(PropertyInfo property, Type key)
+        {
+            if (key.IsAssignableFrom(property.PropertyType))
+                return true;
+            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
+            return false;
         }
 
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
