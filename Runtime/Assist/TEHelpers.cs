@@ -74,28 +74,28 @@ namespace TechTalk.SpecFlow.Assist
             var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
 
             propertiesThatNeedToBeSet.ToList()
-                .ForEach(x => 
-                    instance.SetPropertyValue(x.PropertyName, x.Handler(x.Row))
-                    );
+                .ForEach(x => instance.SetPropertyValue(x.PropertyName, x.Handler(x.Row)));
         }
 
         internal static IEnumerable<PropertyHandler> GetPropertiesThatNeedToBeSet<T>(Table table)
         {
             var handlers = GetTypeHandlersForFieldValuePairs<T>();
 
-            var propertyInfos = typeof (T).GetProperties();
-            var keyCollection = handlers.Keys;
+            return from property in typeof (T).GetProperties()
+                   from key in handlers.Keys
+                   from row in table.Rows
+                   where ThisPropertyMatchesTheType(property, key) 
+                         && IsPropertyMatchingToColumnName(property, row.Id())
+                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+        }
 
-            //propertyInfos.First().PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)
-            //propertyInfos.First().PropertyType.GetGenericArguments()[0]
-
-            var propertiesThatNeedToBeSet = from property in propertyInfos
-                                            from key in keyCollection
-                                            from row in table.Rows
-                                            where (key.IsAssignableFrom(property.PropertyType) || key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0])) 
-                                                   && IsPropertyMatchingToColumnName(property, row.Id())
-                                            select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
-            return propertiesThatNeedToBeSet;
+        private static bool ThisPropertyMatchesTheType(PropertyInfo property, Type key)
+        {
+            if (key.IsAssignableFrom(property.PropertyType))
+                return true;
+            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
+            return false;
         }
 
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
