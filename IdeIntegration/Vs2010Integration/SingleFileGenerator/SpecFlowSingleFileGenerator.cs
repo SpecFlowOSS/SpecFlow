@@ -17,9 +17,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 {
     [ComVisible(true)]
     [Guid("44F8C2E2-18A9-4B97-B830-6BCD0CAA161C")]
-    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "C# SpecFlow Generator", vsContextGuids.vsContextGuidVCSProject, GeneratesDesignTimeSource = true, FileExtension = ".feature")]
-    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "VB.NET SpecFlow Generator", vsContextGuids.vsContextGuidVBProject, GeneratesDesignTimeSource = true, FileExtension = ".feature")]
-    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "Silverlight SpecFlow Generator", GuidList.vsContextGuidSilverlightProject, GeneratesDesignTimeSource = true, FileExtension = ".feature")]
+    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "C# SpecFlow Generator", vsContextGuids.vsContextGuidVCSProject, GeneratesDesignTimeSource = true, FileExtension = ".sfeature")]
+    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "VB.NET SpecFlow Generator", vsContextGuids.vsContextGuidVBProject, GeneratesDesignTimeSource = true, FileExtension = ".sfeature")]
+    [CodeGeneratorRegistration(typeof(SpecFlowSingleFileGenerator), "Silverlight SpecFlow Generator", GuidList.vsContextGuidSilverlightProject, GeneratesDesignTimeSource = true, FileExtension = ".sfeature")]
     [ProvideObject(typeof(SpecFlowSingleFileGenerator))]
     public class SpecFlowSingleFileGenerator : BaseCodeGeneratorWithSite
     {
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         {
             CodeDomProvider provider = GetCodeProvider();
 
-            return ".feature." + provider.FileExtension;
+            return ".sfeature." + provider.FileExtension;
         }
 
         protected override void RefreshMsTestWindow()

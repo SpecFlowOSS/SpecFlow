@@ -1,6 +1,6 @@
 <VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
   <TemplateData>
-    <DefaultName>SpecFlowFeature.feature</DefaultName>
+    <DefaultName>SpecFlowFeature.sfeature</DefaultName>
     <Name>SpecFlow Feature File</Name>
     <Description>SpecFlow Feature</Description>
     <ProjectType>CSharp</ProjectType>
@@ -8,6 +8,6 @@
     <Icon>SpecFlowFeatureIcon.ico</Icon>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem SubType="" TargetFileName="$fileinputname$.feature" ReplaceParameters="false">SpecFlowFeature1.feature</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$.sfeature" ReplaceParameters="false">SpecFlowFeature1.sfeature</ProjectItem>
   </TemplateContent>
 </VSTemplate>

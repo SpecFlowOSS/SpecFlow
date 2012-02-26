@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "BindingCulture.feature"
+#line 1 "BindingCulture.sfeature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

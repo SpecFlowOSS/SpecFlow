@@ -241,7 +241,7 @@ namespace IdeIntegrationTests
                                                                       ProjectFolder = Path.GetTempPath()
                                                                   });
 
-                FeatureFileInput featureFileInput = new FeatureFileInput("Test.feature")
+                FeatureFileInput featureFileInput = new FeatureFileInput("Test.sfeature")
                                                         {
                                                             FeatureFileContent = @"
 Feature: Addition
@@ -272,7 +272,7 @@ Scenario: Add two numbers
                                                                       ProjectFolder = Path.GetTempPath()
                                                                   });
 
-                FeatureFileInput featureFileInput = new FeatureFileInput("Test.feature")
+                FeatureFileInput featureFileInput = new FeatureFileInput("Test.sfeature")
                                                         {
                                                             FeatureFileContent = @"
 Feature: Addition

@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "CallingStepsFromStepDefinition.feature"
+#line 1 "CallingStepsFromStepDefinition.sfeature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

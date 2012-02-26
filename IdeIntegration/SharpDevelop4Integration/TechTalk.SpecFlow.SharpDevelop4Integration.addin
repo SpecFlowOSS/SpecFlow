@@ -16,13 +16,13 @@
 	<Path name = "/SharpDevelop/Workbench/FileFilter">
 		<FileFilter id = "SpecFlow Features"
 		            insertbefore="AllFiles"
-		            name = "SpecFlow Feature (*.feature)"
-		            extensions = "*.feature"/>
+		            name = "SpecFlow Feature (*.sfeature)"
+		            extensions = "*.sfeature"/>
 	</Path>
 
 	<Path name = "/SharpDevelop/CustomTools">
 		<CustomTool id    = "SpecFlowSingleFileGenerator"
 		            class = "TechTalk.SpecFlow.SharpDevelop4Integration.SpecFlowSingleFileGenerator"
-		            fileNamePattern = "\.feature$"/>
+		            fileNamePattern = "\.sfeature$"/>
 	</Path>
 </AddIn>

@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [BaseDefinition("text")]
         internal static ContentTypeDefinition diffContentTypeDefinition = null;
 
-        // export a file extension for the 'gherkin' format: .feature
+        // export a file extension for the 'gherkin' format: .sfeature
         [Export]
-        [FileExtension(".feature")]
+        [FileExtension(".sfeature")]
         [ContentType("gherkin")]
         internal static FileExtensionToContentTypeDefinition patchFileExtensionDefinition = null;
 

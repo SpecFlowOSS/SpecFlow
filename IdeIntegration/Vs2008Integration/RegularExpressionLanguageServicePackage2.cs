@@ -40,8 +40,8 @@ namespace TechTalk.SpecFlow.Vs2008Integration
     // package has a load key embedded in its resources.
     [ProvideLoadKey("Standard", "1.0", "SpecFlow VS2008 Package", "TechTalk", 113)]
 
-    // This attribute is used to associate the ".feature" file extension with a language service
-    [ProvideLanguageExtension(typeof(RegularExpressionLanguageService2), ".feature")]
+    // This attribute is used to associate the ".sfeature" file extension with a language service
+    [ProvideLanguageExtension(typeof(RegularExpressionLanguageService2), ".sfeature")]
 
     // This attribute is needed to indicate that the type proffers a service
     [ProvideService(typeof(RegularExpressionLanguageService2))]

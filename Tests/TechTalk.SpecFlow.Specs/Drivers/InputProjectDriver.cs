@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         private string GetFeatureFileName()
         {
-            return string.Format("Feature{0}.feature", FeatureFiles.Count + 1);
+            return string.Format("Feature{0}.sfeature", FeatureFiles.Count + 1);
         }
 
         private string GetBindingFileName()

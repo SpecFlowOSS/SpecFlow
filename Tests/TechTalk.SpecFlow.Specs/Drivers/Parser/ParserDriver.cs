@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
             try
             {
-                ParsedFeature = parser.Parse(contentReader, "sample.feature");
+                ParsedFeature = parser.Parse(contentReader, "sample.sfeature");
                 Assert.IsNotNull(ParsedFeature);
                 ParsedFeature.SourceFile = null;
             }

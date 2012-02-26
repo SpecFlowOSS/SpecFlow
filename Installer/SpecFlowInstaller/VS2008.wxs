@@ -74,7 +74,7 @@
         </RegistryKey>
 
         <!-- VB.NET registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.VBLangId)\.feature" Action="createAndRemoveOnUninstall">
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.VBLangId)\.sfeature" Action="createAndRemoveOnUninstall">
           <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
         </RegistryKey>
         <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.VBLangId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
@@ -84,7 +84,7 @@
         </RegistryKey>
 
         <!-- C# registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.CSharpLangId)\.feature" Action="createAndRemoveOnUninstall">
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.CSharpLangId)\.sfeature" Action="createAndRemoveOnUninstall">
           <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
         </RegistryKey>
         <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.CSharpLangId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
@@ -94,7 +94,7 @@
         </RegistryKey>
 
         <!-- Silverlight registration -->
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.SilverlightPackageId)\.feature" Action="createAndRemoveOnUninstall">
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.SilverlightPackageId)\.sfeature" Action="createAndRemoveOnUninstall">
           <RegistryValue Value="SpecFlowSingleFileGenerator" Type="string" />
         </RegistryKey>
         <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Generators\$(var.SilverlightPackageId)\SpecFlowSingleFileGenerator" Action="createAndRemoveOnUninstall">
@@ -126,7 +126,7 @@
           <RegistryValue Name="CompanyName" Value="TechTalk" Type="string" />
         </RegistryKey>
 
-        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Languages\File Extensions\.feature" Action="createAndRemoveOnUninstall">
+        <RegistryKey Root="HKLM" Key="$(var.Vs2008RegPath)\Languages\File Extensions\.sfeature" Action="createAndRemoveOnUninstall">
           <RegistryValue  Value="$(var.CLSID_SpecFlowColorHighligher)" Type="string" />
         </RegistryKey>
 

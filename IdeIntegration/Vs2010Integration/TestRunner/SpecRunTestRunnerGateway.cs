@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         private string GetPath(VsProjectScope projectScope, ProjectItem projectItem)
         {
             var projectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
-            if (projectRelativePath != null && projectRelativePath.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase))
+            if (projectRelativePath != null && projectRelativePath.EndsWith(".sfeature", StringComparison.InvariantCultureIgnoreCase))
             {
                 var featureFileInfo = projectScope.FeatureFilesTracker.Files.FirstOrDefault(ffi => ffi.ProjectRelativePath == projectRelativePath);
                 if (featureFileInfo == null)

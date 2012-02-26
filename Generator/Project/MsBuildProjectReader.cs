@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             foreach (BuildItem item in items)
             {
                 var extension = Path.GetExtension(item.FinalItemSpec);
-                if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
+                if (extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var featureFile = new FeatureFileInput(item.FinalItemSpec);
                     var ns = item.GetEvaluatedMetadata("CustomToolNamespace");

@@ -26,7 +26,7 @@
         <File Id="gherkin.ico_VS2010" Name="gherkin.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
         <RegistryValue Root="HKLM" Key="SOFTWARE\Classes\SpecFlow.GherkinFile" Name="FriendlyTypeName" Value="Gherkin Specification File for SpecFlow" Type="string" />
         <ProgId Id="SpecFlow.GherkinFile" Description="Gherkin Specification File for SpecFlow" Icon="gherkin.ico_VS2010">
-          <Extension Id="feature" ContentType='application/text'>
+          <Extension Id="sfeature" ContentType='application/text'>
             <Verb Id="open" TargetProperty="VS2010DEVENV" Command="Open" Argument='/edit "%1"' />
           </Extension>
         </ProgId>

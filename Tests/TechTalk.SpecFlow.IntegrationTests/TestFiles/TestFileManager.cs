@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.IntegrationTests.TestFiles
             var assembly = Assembly.GetExecutingAssembly();
             string prefixToRemove = GetType().Namespace + ".";
             return assembly.GetManifestResourceNames()
-                .Where(rn => rn.EndsWith(".feature") && rn.StartsWith(prefixToRemove))
+                .Where(rn => rn.EndsWith(".sfeature") && rn.StartsWith(prefixToRemove))
                 .Select(rn => rn.Substring(prefixToRemove.Length));
         }
     }

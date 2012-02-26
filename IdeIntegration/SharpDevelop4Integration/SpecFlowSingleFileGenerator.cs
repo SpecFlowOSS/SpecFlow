@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.SharpDevelop4Integration
 	{
 		public bool IsFeatureFile(string fileName)
 		{
-			return String.Compare(Path.GetExtension(fileName), ".feature", true) == 0;
+			return String.Compare(Path.GetExtension(fileName), ".sfeature", true) == 0;
 		}
 		
 		public void GenerateCode(FileProjectItem item, CustomToolContext context)
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.SharpDevelop4Integration
 					SpecFlowProject specFlowProject = CreateSpecFlowProjectFrom(projectNode);
 					var specFlowGenerator = new SpecFlowGenerator(specFlowProject);
 					
-					string outputFile = context.GetOutputFileName(item, ".feature");
+					string outputFile = context.GetOutputFileName(item, ".sfeature");
 					
 					var specFlowFeatureFile = specFlowProject.GetOrCreateFeatureFile(fileName);
 					
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.SharpDevelop4Integration
 			foreach (var projectFile in project.Items.OfType<FileProjectItem>().Where(IsFeatureOrAppConfigFile))
 			{
 				string extension = Path.GetExtension(projectFile.FileName);
-				if (extension != null && extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
+				if (extension != null && extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase))
 				{
 					string fileName = FileUtilities.GetRelativePath(projectFile.FileName, project.Directory);
                     var featureFile = new FeatureFileInput(fileName);
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.SharpDevelop4Integration
             if (extension == null || fileName == null)
                 return false;
 
-            return extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase)
+            return extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase)
 				|| fileName.Equals("app.config", StringComparison.InvariantCultureIgnoreCase);
 		}
 	}
