@@ -2,6 +2,7 @@ This fork of SpecFlow was done to make it compatible with the SharePoint feature
 
 In order to resolve this conflict, I simply changed the gherkin feature file extension from .feature to .sfeature.
 
+
 = SpecFlow
 
 SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to many development tools 
