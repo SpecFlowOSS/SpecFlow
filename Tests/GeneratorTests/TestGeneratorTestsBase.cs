@@ -60,7 +60,7 @@ Scenario: Add two numbers
 
         protected FeatureFileInput CreateSimpleFeatureFileInput(string featureFileContent)
         {
-            return new FeatureFileInput(@"Dummy.feature") {FeatureFileContent = featureFileContent};
+            return new FeatureFileInput(@"Dummy.sfeature") {FeatureFileContent = featureFileContent};
         }
 
         protected FeatureFileInput CreateSimpleInvalidFeatureFileInput()

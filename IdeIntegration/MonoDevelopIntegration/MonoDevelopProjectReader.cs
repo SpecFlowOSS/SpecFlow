@@ -34,7 +34,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 			{
 				string extension = Path.GetExtension(projectFile.Name);
 				
-				if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
+				if (extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase))
 				{
 					string fileName = projectFile.FilePath.ToRelative(project.BaseDirectory);
                     var featureFile = new FeatureFileInput(fileName);
@@ -59,7 +59,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 		private static bool IsFeatureOrAppConfigFile(ProjectFile projectFile)
         {
 			string extension = Path.GetExtension(projectFile.Name);
-            return extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase) 
+            return extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase) 
 				|| projectFile.Name.Equals("app.config", StringComparison.InvariantCultureIgnoreCase);
         }
 	}

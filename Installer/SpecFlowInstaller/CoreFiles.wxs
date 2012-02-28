@@ -27,7 +27,7 @@
         <Condition>!Feature_VS2010 = 3</Condition>
         <File Name="featurefile.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
         <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="featurefile.ico">
-          <Extension Id="feature" ContentType='application/text' />
+          <Extension Id="sfeature" ContentType='application/text' />
         </ProgId>
       </Component>
     </DirectoryRef>

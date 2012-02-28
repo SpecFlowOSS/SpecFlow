@@ -159,7 +159,7 @@ Fixed issues:
 + Scenario with only "*" steps fails with "System.ArgumentException: Unable to convert block to binding type"
 + Binding is reported as invalid if there is a matching step definition with different scope
 + Support for datetime comparisons that ignore 12:00:00 AM (issue 52)
-+ Fix NUnit execution report to properly select features when .features is solely comprised Scenario Outlines. 
++ Fix NUnit execution report to properly select features when .sfeatures is solely comprised Scenario Outlines. 
   (by Jon Archer)
 + Tags applied at the feature level are now applied as Silverlight TagAttributes on the class. (by Matt Ellis, citizenmatt)
 + Rethrowing exceptions caught during steps would lose the call stack on Silverlight. (by Matt Ellis, citizenmatt)
@@ -210,7 +210,7 @@ Breaking changes:
 New features:
 + Scoped Step Definitions: you can scope step definitions (bindings) to tags, features and scenarios. Scope filter 
   can be applied to a class or a method with the [StepScope] attribute.
-  See examples in Tests/FeatureTests/ScopedSteps/ScopedSteps.feature and Tests/FeatureTests/ScopedSteps/ScopedStepsBindings.cs
+  See examples in Tests/FeatureTests/ScopedSteps/ScopedSteps.sfeature and Tests/FeatureTests/ScopedSteps/ScopedStepsBindings.cs
   (Thanks to Jose Simas for the contribution.)
 + Adding binding-culture to App.config. If set, this culture is used during execution of steps.
 + VB-Step-Definition Skeleton Provider: For VB-projects, the suggested step skeletons are generated in VB.
@@ -288,7 +288,7 @@ Fixed issues:
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.0.1
 + Custom XSLT can be specified for generating reports. 
-  See examples in Tests/ReportingTests/CustomXsltTemplate.feature
+  See examples in Tests/ReportingTests/CustomXsltTemplate.sfeature
 + The test error can be accessed through ScenarioContext.Current.TestError 
   (e.g. in an AfterScenario event).
 + [StepTransformation] attribute has been renamed to [StepArgumentTransformation]

@@ -5,7 +5,7 @@
 		  name        = "SpecFlow Feature"
 		  icon        = "res:SpecFlowFeatureIcon.ico"
 		  category    = "SpecFlow"
-		  defaultname = "Feature${Number}.feature"/>
+		  defaultname = "Feature${Number}.sfeature"/>
 	 
 	<Description>Creates a SpecFlow Feature template.</Description>
 	

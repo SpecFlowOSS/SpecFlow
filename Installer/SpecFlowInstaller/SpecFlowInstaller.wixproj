@@ -42,13 +42,6 @@
       <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
       <RefTargetDir>INSTALLLOCATION</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\AlternativeRuntimes\Runtime.WindowsPhone7\TechTalk.SpecFlow.WindowsPhone7.csproj">
-      <Name>TechTalk.SpecFlow.WindowsPhone7</Name>
-      <Project>{e00271e7-f422-42b9-89d0-e29c96c90ce2}</Project>
-      <Private>True</Private>
-      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLLOCATION</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Name>TechTalk.SpecFlow.Generator</Name>
       <Project>{453d8014-b6cd-4e86-80a8-d59f59092334}</Project>

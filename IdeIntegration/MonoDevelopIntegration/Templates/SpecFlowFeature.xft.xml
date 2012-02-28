@@ -12,7 +12,7 @@
 	
 	<!-- Template Content -->
 	<TemplateFiles>
-		<File name="${Name}.feature" CustomTool="SpecFlowSingleFileGenerator">
+		<File name="${Name}.sfeature" CustomTool="SpecFlowSingleFileGenerator">
 		<![CDATA[Feature: Addition
 	In order to avoid silly mistakes
 	As a math idiot

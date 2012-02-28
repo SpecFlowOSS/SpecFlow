@@ -166,10 +166,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeature1.feature" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeature1.sfeature" />
   </ItemGroup>
   <ItemGroup>
-    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature1.feature" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature1.sfeature" />
   </ItemGroup>
   <PropertyGroup>
     <!--

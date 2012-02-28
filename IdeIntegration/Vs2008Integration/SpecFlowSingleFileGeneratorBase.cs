@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
         {
             CodeDomProvider provider = GetCodeProvider();
 
-            return ".feature." + provider.FileExtension;
+            return ".sfeature." + provider.FileExtension;
         }
 
         protected override string GenerateCode(string inputFileContent)
@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                 var fileName = GetRelativePath(GetFileName(projectItem), projectFolder);
 
                 var extension = Path.GetExtension(fileName);
-                if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
+                if (extension.Equals(".sfeature", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var featureFile = new FeatureFileInput(fileName);
                     var ns = projectItem.Properties.Item("CustomToolNamespace").Value as string;

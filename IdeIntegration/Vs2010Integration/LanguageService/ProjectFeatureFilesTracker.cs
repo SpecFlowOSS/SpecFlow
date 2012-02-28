@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
-            filesTracker = CreateFilesTracker(this.vsProjectScope.Project, @"\.feature$");
+            filesTracker = CreateFilesTracker(this.vsProjectScope.Project, @"\.sfeature$");
         }
 
         protected override FeatureFileInfo CreateFileInfo(ProjectItem projectItem)
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override bool IsMatchingProjectItem(ProjectItem projectItem)
         {
-            return ".feature".Equals(Path.GetExtension(projectItem.Name), StringComparison.InvariantCultureIgnoreCase);
+            return ".sfeature".Equals(Path.GetExtension(projectItem.Name), StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected override void AnalyzeInitially()

@@ -1,3 +1,8 @@
+This fork of SpecFlow was done to make it compatible with the SharePoint feature files.  Since SpecFlow uses the file extension .feature for the gherkin feature files, it conflicts with the SharePoint feature files, which use the same fiel extension.
+
+In order to resolve this conflict, I simply changed the gherkin feature file extension from .feature to .sfeature.
+
+
 = SpecFlow
 
 SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification language and integrates to many development tools 
@@ -6,10 +11,6 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 - Project website: http://www.specflow.org
 - Documentation: https://github.com/techtalk/SpecFlow/wiki/Documentation
 - Discussion group: http://groups.google.com/group/SpecFlow
-
-== Contributing
-
-If you are interested in contributing, there are some useful information on this page: https://github.com/techtalk/SpecFlow/wiki/Contributing.
 
 == Copyright
 

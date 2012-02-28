@@ -88,7 +88,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         public bool RunFeatures(ProjectItem projectItem, bool debug)
         {
             var fileName = VsxHelper.GetFileName(projectItem);
-            if (fileName != null && fileName.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase))
+            if (fileName != null && fileName.EndsWith(".sfeature", StringComparison.InvariantCultureIgnoreCase))
                 return RunFromCodeBehind(projectItem, GetFeatureCodeBehindLine, debug);
 
             return RunInCurrentContext(debug);
@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 start.LineDown();
                 string lineText = start.GetText(start.LineLength);
                 //#line 8
-                //#ExternalSource("SpecFlowFeature2.feature",8)
+                //#ExternalSource("SpecFlowFeature2.sfeature",8)
                 var match = linePragmaRe.Match(lineText);
                 if (match.Success)
                 {

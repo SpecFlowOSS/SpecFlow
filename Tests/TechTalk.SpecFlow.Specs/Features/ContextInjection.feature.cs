@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "ContextInjection.feature"
+#line 1 "ContextInjection.sfeature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

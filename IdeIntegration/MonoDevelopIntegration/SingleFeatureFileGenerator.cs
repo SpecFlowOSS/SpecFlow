@@ -23,7 +23,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 		{
 			return new ThreadAsyncOperation(() => {
 				
-				FilePath codeFilePath = file.FilePath.ChangeExtension(".feature.cs");
+				FilePath codeFilePath = file.FilePath.ChangeExtension(".sfeature.cs");
 				
 				try
 				{
@@ -43,7 +43,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
 		{
 			// TODO: We only support C# for now, later we'll add support to grab the provider based on the project
 			CodeDomProvider codeProvider = new CSharpCodeProvider();
-			FilePath outputFile = featureFile.FilePath.ChangeExtension(".feature." + codeProvider.FileExtension);
+			FilePath outputFile = featureFile.FilePath.ChangeExtension(".sfeature." + codeProvider.FileExtension);
 			SpecFlowProject specFlowProject = MonoDevelopProjectReader.CreateSpecFlowProjectFrom(featureFile.Project);
 			var specFlowGenerator = new SpecFlowGenerator(specFlowProject);
 			

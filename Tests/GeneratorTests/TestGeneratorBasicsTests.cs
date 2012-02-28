@@ -65,7 +65,7 @@ namespace GeneratorTests
         [Test]
         public void Should_generate_test_from_feature_file_specified_by_path()
         {
-            using (var tempFile = new TempFile(".feature"))
+            using (var tempFile = new TempFile(".sfeature"))
             {
                 tempFile.SetContent(CreateSimpleValidFeatureFileInput().FeatureFileContent);
 
