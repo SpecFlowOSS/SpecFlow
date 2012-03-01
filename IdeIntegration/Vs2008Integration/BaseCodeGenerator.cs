@@ -57,11 +57,6 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                                             IVsGeneratorProgress pGenerateProgress)
         {
             string trimmedInputFileContents = bstrInputFileContents.Trim();
-            if (IsSharePointFeature(trimmedInputFileContents))
-            {
-                pcbOutput = 0;
-                return VSConstants.S_OK;
-            }
             codeFilePath = wszInputFilePath;
             codeFileNameSpace = wszDefaultNamespace;
             codeGeneratorProgress = pGenerateProgress;
@@ -69,7 +64,18 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             try
             {
                 BeforeCodeGenerated();
-                var generatedCode = GenerateCode(bstrInputFileContents);
+                string generatedCode = null;
+                if (IsSharePointFeature(trimmedInputFileContents))
+                {
+                    StringBuilder sharePointFeatureComment = new StringBuilder();
+                    sharePointFeatureComment.AppendFormat("/*SpecFlow tried to generate a test class file, but {0} appears to be a SharePoint feature.", wszInputFilePath);
+                    sharePointFeatureComment.AppendLine("  The SpecFlow test class was not be generated in order to avoid errors in the SharePoint proejct*/");
+                    generatedCode = sharePointFeatureComment.ToString();
+                }
+                else
+                {
+                    generatedCode = GenerateCode(bstrInputFileContents);
+                }
                 if (generatedCode == null)
                 {
                     bytes = GetBytesForError(pGenerateProgress, null);
