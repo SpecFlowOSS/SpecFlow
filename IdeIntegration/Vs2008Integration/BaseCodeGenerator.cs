@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
         private bool IsSharePointFeature(string trimmedInputFileContents)
         {
             return trimmedInputFileContents.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>") &&
-                   trimmedInputFileContents.EndsWith("</feature>") &&
+                   trimmedInputFileContents.Contains("<feature ") &&
                    trimmedInputFileContents.Contains("$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$");
         }
 
