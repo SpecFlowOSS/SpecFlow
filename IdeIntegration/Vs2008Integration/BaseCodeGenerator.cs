@@ -56,6 +56,12 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                                             out uint pcbOutput,
                                             IVsGeneratorProgress pGenerateProgress)
         {
+            string trimmedInputFileContents = bstrInputFileContents.Trim();
+            if (IsSharePointFeature(trimmedInputFileContents))
+            {
+                pcbOutput = 0;
+                return VSConstants.S_OK;
+            }
             codeFilePath = wszInputFilePath;
             codeFileNameSpace = wszDefaultNamespace;
             codeGeneratorProgress = pGenerateProgress;
@@ -91,6 +97,13 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             RefreshMsTestWindow();
 
             return VSConstants.S_OK;
+        }
+
+        private bool IsSharePointFeature(string trimmedInputFileContents)
+        {
+            return trimmedInputFileContents.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>") &&
+                   trimmedInputFileContents.EndsWith("</feature>") &&
+                   trimmedInputFileContents.Contains("$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$");
         }
 
         private byte[] GetBytesForError(IVsGeneratorProgress pGenerateProgress, Exception ex)
