@@ -7,6 +7,11 @@ New Features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.6.5
 + VS2010: Comment and uncomment selection
 + VS2010: Cache analysis result for faster solution startup
++ VS2010: It can now be installed on machines used for SharePoint development
+
+1.8.1 - 2012/3/1
+Fixed issue:
++ SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml.
 
 1.8.1 - 2011/10/25
 
