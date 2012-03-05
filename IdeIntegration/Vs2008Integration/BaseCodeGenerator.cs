@@ -56,6 +56,7 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
                                             out uint pcbOutput,
                                             IVsGeneratorProgress pGenerateProgress)
         {
+            string trimmedInputFileContents = bstrInputFileContents.Trim();
             codeFilePath = wszInputFilePath;
             codeFileNameSpace = wszDefaultNamespace;
             codeGeneratorProgress = pGenerateProgress;
@@ -63,7 +64,18 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             try
             {
                 BeforeCodeGenerated();
-                var generatedCode = GenerateCode(bstrInputFileContents);
+                string generatedCode = null;
+                if (IsSharePointFeature(trimmedInputFileContents))
+                {
+                    StringBuilder sharePointFeatureComment = new StringBuilder();
+                    sharePointFeatureComment.AppendFormat("/*SpecFlow tried to generate a test class file, but {0} appears to be a SharePoint feature.", wszInputFilePath);
+                    sharePointFeatureComment.AppendLine("  The SpecFlow test class was not be generated in order to avoid errors in the SharePoint proejct*/");
+                    generatedCode = sharePointFeatureComment.ToString();
+                }
+                else
+                {
+                    generatedCode = GenerateCode(bstrInputFileContents);
+                }
                 if (generatedCode == null)
                 {
                     bytes = GetBytesForError(pGenerateProgress, null);
@@ -91,6 +103,13 @@ namespace TechTalk.SpecFlow.VsIntegration.Common
             RefreshMsTestWindow();
 
             return VSConstants.S_OK;
+        }
+
+        private bool IsSharePointFeature(string trimmedInputFileContents)
+        {
+            return trimmedInputFileContents.StartsWith("<?xml version=\"1.0\" encoding=\"utf-8\"?>") &&
+                   trimmedInputFileContents.Contains("<feature ") &&
+                   trimmedInputFileContents.Contains("$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$");
         }
 
         private byte[] GetBytesForError(IVsGeneratorProgress pGenerateProgress, Exception ex)

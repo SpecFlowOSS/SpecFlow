@@ -15,6 +15,7 @@ _ReSharper*/
 *.resharper
 *.cache
 *.gpState
+*.dotCover
 test-results
 
 *.docstates
