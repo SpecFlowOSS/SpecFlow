@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-	public class MsTest2010GeneratorProvider : MsTestGeneratorProvider
+    public class MsTest2010GeneratorProvider : MsTestGeneratorProvider
 	{
 		private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 		private const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
