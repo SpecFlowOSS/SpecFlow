@@ -16,14 +16,14 @@ namespace GeneratorTests
         [Test]
         public void Should_create_a_container()
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder());
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
             container.ShouldNotBeNull();
         }
 
         [Test]
         public void Should_register_generator_configuration_with_default_config()
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder());
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
             container.Resolve<GeneratorConfiguration>().ShouldNotBeNull();
         }
 
@@ -33,7 +33,7 @@ namespace GeneratorTests
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(@"
                 <specFlow>
                   <generator allowDebugGeneratedFiles=""true"" /><!-- default is false -->
-                </specFlow>"));
+                </specFlow>"), new ProjectSettings());
             container.Resolve<GeneratorConfiguration>().AllowDebugGeneratedFiles.ShouldBeTrue();
         }
     }

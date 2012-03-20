@@ -21,7 +21,7 @@ namespace IdeIntegrationTests
             this.getGeneratorInfo = getGeneratorInfo;
         }
 
-        protected override ProjectSettings GetProjectSettings()
+        protected override ProjectSettings LoadProjectSettings()
         {
             return new ProjectSettings();
         }

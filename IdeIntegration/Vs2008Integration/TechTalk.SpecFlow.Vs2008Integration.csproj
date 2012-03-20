@@ -96,10 +96,20 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="BaseCodeGenerator.cs" />
-    <Compile Include="BaseCodeGeneratorWithSite.cs" />
-    <Compile Include="CodeGeneratorRegistrationAttribute.cs" />
+    <Compile Include="..\Vs2010Integration\SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs">
+      <Link>Common\CodeGeneratorRegistrationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Vs2010Integration\SingleFileGenerator\SingleFileGeneratorBase.cs">
+      <Link>Common\SingleFileGeneratorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Vs2010Integration\SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs">
+      <Link>Common\SingleFileGeneratorSupportRegistrationAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Vs2010Integration\SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs">
+      <Link>Common\SpecFlowSingleFileGeneratorBase.cs</Link>
+    </Compile>
     <Compile Include="Guids.cs" />
+    <Compile Include="Vs2008GeneratorServices.cs" />
     <Compile Include="RegExLangServ.cs" />
     <Compile Include="RegExScanner.cs" />
     <Compile Include="VSPackage.Designer.cs">
@@ -108,19 +118,19 @@
       <DependentUpon>VSPackage.resx</DependentUpon>
     </Compile>
     <Compile Include="RegularExpressionLanguageServicePackage2.cs" />
+    <Compile Include="Vs2008SpecFlowConfigurationReader.cs" />
+    <Compile Include="VsxHelper.cs" />
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition\SpecFlowStepDefinition1.cs" />
     <ZipItem Include="ItemTemplates\SpecFlowEventDefinition\SpecFlowEventDefinition1.cs" />
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition1.vb" />
     <ZipItem Include="ItemTemplates\SpecFlowEventDefinition_VB\SpecFlowEventDefinition1.vb" />
     <Compile Include="SpecFlowSingleFileGenerator.cs" />
-    <Compile Include="SpecFlowSingleFileGeneratorBase.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="SingleFileGeneratorSupportRegistrationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +173,10 @@
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
+      <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
+      <Name>TechTalk.SpecFlow.IdeIntegration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

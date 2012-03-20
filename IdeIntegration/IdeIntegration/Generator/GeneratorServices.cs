@@ -23,17 +23,22 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             projectSettings = null;
         }
 
-        protected abstract ProjectSettings GetProjectSettings();
+        public ProjectSettings GetProjectSettings()
+        {
+            return GetProjectSettingsCached();
+        }
+
+        protected abstract ProjectSettings LoadProjectSettings();
 
         private ProjectSettings GetProjectSettingsCached()
         {
             if (!enableSettingsCache)
-                return GetProjectSettings();
+                return LoadProjectSettings();
 
             var result = projectSettings;
 
             if (result == null)
-                projectSettings = result = GetProjectSettings();
+                projectSettings = result = LoadProjectSettings();
 
             return result;
         }

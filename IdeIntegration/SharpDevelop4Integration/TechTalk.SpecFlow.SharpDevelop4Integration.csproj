@@ -88,6 +88,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="SharpDevelop4GeneratorServices.cs" />
+    <Compile Include="SharpDevelop4SpecFlowConfigurationReader.cs" />
     <Compile Include="SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +100,14 @@
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
+      <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
+      <Name>TechTalk.SpecFlow.IdeIntegration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

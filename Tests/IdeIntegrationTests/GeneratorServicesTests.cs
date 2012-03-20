@@ -22,7 +22,7 @@ namespace IdeIntegrationTests
             this.getProjectSettings = getProjectSettings;
         }
 
-        protected override ProjectSettings GetProjectSettings()
+        protected override ProjectSettings LoadProjectSettings()
         {
             if (getProjectSettings == null)
                 return new ProjectSettings();

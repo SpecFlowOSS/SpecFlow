@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 return;
 
             var section = ConfigurationSectionHandler.CreateFromXml(specFlowNode);
-            generatorConfiguration.UpdateFromConfigFile(section, true);
+            generatorConfiguration.UpdateFromConfigFile(section);
         }
     }
 }

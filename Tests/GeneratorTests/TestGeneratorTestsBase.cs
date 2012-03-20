@@ -5,6 +5,8 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Utils;
 
 namespace GeneratorTests
 {
@@ -80,7 +82,10 @@ Scenario: Add two numbers
 
         protected TestGenerator CreateTestGenerator(ProjectSettings projectSettings)
         {
-            return new TestGenerator(new GeneratorConfiguration(), projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object);
+            GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
+            CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
+            SpecFlowUnitTestConverter specFlowUnitTestConverter = new SpecFlowUnitTestConverter(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration);
+            return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, specFlowUnitTestConverter, codeDomHelper);
         }
     }
 }

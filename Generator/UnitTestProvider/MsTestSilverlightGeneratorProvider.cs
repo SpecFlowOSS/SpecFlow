@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Async;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -13,6 +14,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string ASYNCTEST_INTERFACE = "TechTalk.SpecFlow.Async.ISilverlightTestInstance";
 
         public override bool SupportsAsyncTests { get { return true; } }
+
+        public MsTestSilverlightGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
+        {
+        }
 
         public override void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription)
         {

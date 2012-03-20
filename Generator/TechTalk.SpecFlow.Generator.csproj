@@ -62,6 +62,7 @@
     <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="Configuration\SpecFlowProjectConfigurationLoaderWithoutPlugins.cs" />
+    <Compile Include="DefaultDependencyProvider.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
@@ -97,10 +98,10 @@
     <Compile Include="Tracing\TextWriterTraceListener.cs" />
     <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecFlowGenerator.cs" />
     <Compile Include="SpecFlowUnitTestConverter.cs" />
     <Compile Include="TestGenerator.cs" />
     <Compile Include="TestGeneratorFactory.cs" />
+    <Compile Include="UnitTestProvider\UnitTestGeneratorProviders.cs" />
     <Compile Include="UnitTestProvider\MbUnit3TestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestSilverlightGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitTestGeneratorProvider.cs" />

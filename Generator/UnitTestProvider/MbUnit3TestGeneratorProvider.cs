@@ -8,6 +8,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class MbUnit3TestGeneratorProvider : MbUnitTestGeneratorProvider
     {
+        public MbUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
+        {
+        }
+
         public override void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);

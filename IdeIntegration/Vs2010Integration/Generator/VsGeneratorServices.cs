@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
             this.configurationReader = configurationReader;
         }
 
-        protected override ProjectSettings GetProjectSettings()
+        protected override ProjectSettings LoadProjectSettings()
         {
             tracer.Trace("Discover project settings", "VsGeneratorServices");
 

@@ -172,12 +172,6 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Vs2008Integration\BaseCodeGenerator.cs">
-      <Link>SingleFileGenerator\BaseCodeGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Vs2008Integration\BaseCodeGeneratorWithSite.cs">
-      <Link>SingleFileGenerator\BaseCodeGeneratorWithSite.cs</Link>
-    </Compile>
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\CustomCompletionSet.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
@@ -219,6 +213,11 @@
     <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
+    <Compile Include="SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs" />
+    <Compile Include="SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs" />
+    <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
+    <Compile Include="SingleFileGenerator\SpecFlowSingleFileGeneratorBase.cs" />
+    <Compile Include="SingleFileGenerator\SingleFileGeneratorBase.cs" />
     <Compile Include="StepSuggestions\BindingMap.cs" />
     <Compile Include="StepSuggestions\StepMapSetializer.cs" />
     <Compile Include="TestRunner\AutoTestRunnerGateway.cs" />
@@ -289,19 +288,12 @@
     <Compile Include="Tracing\OutputWindow\VsOutputWindowPaneAdapter.cs" />
     <Compile Include="Tracing\VisualStudioTracer.cs" />
     <Compile Include="Utils\VsxHelper.cs" />
-    <Compile Include="..\Vs2008Integration\CodeGeneratorRegistrationAttribute.cs">
-      <Link>SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs</Link>
-    </Compile>
-    <None Include="..\Vs2008Integration\SingleFileGeneratorSupportRegistrationAttribute.cs">
-      <Link>SingleFileGenerator\SingleFileGeneratorSupportRegistrationAttribute.cs</Link>
-    </None>
     <Compile Include="GherkinFileEditor\GherkinFileClassifierFormats.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassificationDefinition.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileClassifier.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileEditorClassifications.cs" />
     <Compile Include="GherkinFileEditor\GherkinFileOutliningTagger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleFileGenerator\SpecFlowSingleFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

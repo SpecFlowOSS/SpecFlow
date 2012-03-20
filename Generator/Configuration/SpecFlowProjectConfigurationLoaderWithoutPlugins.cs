@@ -6,7 +6,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
     {
         internal override void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection, false);
+            //TODO: check usages of loading config without plugins
+            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection);
         }
     }
 }

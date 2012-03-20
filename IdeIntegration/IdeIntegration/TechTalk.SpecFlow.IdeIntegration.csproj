@@ -47,7 +47,9 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Generator\FileBasedSpecFlowConfigurationReader.cs" />
     <Compile Include="Generator\GeneratorServices.cs" />
+    <Compile Include="Generator\IdeSingleFileGenerator.cs" />
     <Compile Include="Generator\IGeneratorServices.cs" />
     <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Options\IIntegrationOptionsProvider.cs" />
@@ -56,11 +58,16 @@
     <Compile Include="Generator\RemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Generator\RemoteGeneratorServices.cs" />
     <Compile Include="Tracing\IIdeTracer.cs" />
+    <Compile Include="Tracing\NullIdeTracer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

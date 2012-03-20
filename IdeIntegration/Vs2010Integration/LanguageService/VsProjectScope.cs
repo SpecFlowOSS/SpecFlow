@@ -345,8 +345,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void SaveStepMap()
         {
-            if (!featureFilesTracker.IsInitialized ||
-                !bindingFilesTracker.IsInitialized)
+            if (featureFilesTracker == null || !featureFilesTracker.IsInitialized ||
+                bindingFilesTracker == null || !bindingFilesTracker.IsInitialized)
                 return;
 
             if (!featureFilesTracker.IsStepMapDirty && !bindingFilesTracker.IsStepMapDirty)

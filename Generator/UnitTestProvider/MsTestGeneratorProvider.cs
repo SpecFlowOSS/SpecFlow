@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
-    public class MsTestGeneratorProvider : IUnitTestGeneratorProvider, ICodeDomHelperRequired
+    public class MsTestGeneratorProvider : IUnitTestGeneratorProvider
     {
         protected const string TESTFIXTURE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute";
         protected const string TEST_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute";
@@ -22,10 +22,15 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected const string TESTCONTEXT_TYPE = "Microsoft.VisualStudio.TestTools.UnitTesting.TestContext";
 
-        public CodeDomHelper CodeDomHelper { get; set; }
+        protected CodeDomHelper CodeDomHelper { get; set; }
 
         public virtual bool SupportsRowTests { get { return false; } }
         public virtual bool SupportsAsyncTests { get { return false; } }
+
+        public MsTestGeneratorProvider(CodeDomHelper codeDomHelper)
+        {
+            CodeDomHelper = codeDomHelper;
+        }
 
         private void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
         {

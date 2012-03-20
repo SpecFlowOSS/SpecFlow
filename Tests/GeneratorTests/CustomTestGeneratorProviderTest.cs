@@ -62,7 +62,7 @@ namespace GeneratorTests
                 Feature feature = parser.Parse(reader, null);                    
                 Assert.IsNotNull(feature);
 
-                var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider();
+                var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
                 CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
 
@@ -90,6 +90,10 @@ namespace GeneratorTests
         /// </summary>
         class SimpleTestGeneratorProvider : MsTestGeneratorProvider
         {
+            public SimpleTestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
+            {
+            }
+
             public static string DefaultNameSpace
             {
                 get

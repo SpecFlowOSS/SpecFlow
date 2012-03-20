@@ -6,14 +6,11 @@ using System.CodeDom.Compiler;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Microsoft.CSharp;
+using Microsoft.VisualBasic;
 
 namespace TechTalk.SpecFlow.Utils
 {
-    public interface ICodeDomHelperRequired
-    {
-        CodeDomHelper CodeDomHelper { get; set; }
-    }
-
     public class CodeDomHelper
     {
         public CodeDomProviderLanguage TargetLanguage { get; private set; }
@@ -57,13 +54,6 @@ namespace TechTalk.SpecFlow.Utils
 
                 isInterfaceField.SetValue(typeReference, true);
             }
-        }
-
-        public void InjectIfRequired(object target)
-        {
-            ICodeDomHelperRequired codeDomHelperRequired = target as ICodeDomHelperRequired;
-            if (codeDomHelperRequired != null)
-                codeDomHelperRequired.CodeDomHelper = this;
         }
 
         public void AddCommentStatement(CodeStatementCollection statements, string comment)
@@ -241,6 +231,19 @@ namespace TechTalk.SpecFlow.Utils
         {
             foreach (var attrValue in attrValues)
                 AddAttribute(codeTypeMember, attrType, attrValue);
+        }
+
+        public CodeDomProvider CreateCodeDomProvider()
+        {
+            switch (TargetLanguage)
+            {
+                case CodeDomProviderLanguage.CSharp:
+                    return new CSharpCodeProvider();
+                case CodeDomProviderLanguage.VB:
+                    return new VBCodeProvider();
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }

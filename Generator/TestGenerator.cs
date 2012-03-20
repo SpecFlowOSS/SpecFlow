@@ -5,13 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.CSharp;
-using Microsoft.VisualBasic;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Tracing;
@@ -25,36 +21,23 @@ namespace TechTalk.SpecFlow.Generator
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
+        protected readonly ISpecFlowUnitTestConverter unitTestConverter;
+        protected readonly CodeDomHelper codeDomHelper;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker)
+        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, ISpecFlowUnitTestConverter unitTestConverter, CodeDomHelper codeDomHelper)
         {
             if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");
             if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
             if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
+            if (unitTestConverter == null) throw new ArgumentNullException("unitTestConverter");
 
             this.generatorConfiguration = generatorConfiguration;
             this.testUpToDateChecker = testUpToDateChecker;
+            this.unitTestConverter = unitTestConverter;
+            this.codeDomHelper = codeDomHelper;
             this.testHeaderWriter = testHeaderWriter;
             this.projectSettings = projectSettings;
-        }
-
-        protected virtual CodeDomProvider CreateCodeDomProvider(ProjectPlatformSettings settings)
-        {
-            switch (settings.Language)
-            {
-                case GenerationTargetLanguage.CSharp:
-                    return new CSharpCodeProvider();
-                case GenerationTargetLanguage.VB:
-                    return new VBCodeProvider();
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
-        protected virtual CodeDomHelper CreateCodeDomHelper(CodeDomProvider codeDomProvider, GenerationSettings settings)
-        {
-            return new CodeDomHelper(codeDomProvider);
         }
 
         protected override TestGeneratorResult GenerateTestFileWithExceptions(FeatureFileInput featureFileInput, GenerationSettings settings)
@@ -71,7 +54,7 @@ namespace TechTalk.SpecFlow.Generator
                     return new TestGeneratorResult(null, true);
             }
 
-            string generatedTestCode = GetGeneratedTestCode(featureFileInput, settings);
+            string generatedTestCode = GetGeneratedTestCode(featureFileInput);
 
             if (settings.CheckUpToDate && preliminaryUpToDateCheckResult != false)
             {
@@ -88,29 +71,27 @@ namespace TechTalk.SpecFlow.Generator
             return new TestGeneratorResult(generatedTestCode, false);
         }
 
-        private string GetGeneratedTestCode(FeatureFileInput featureFileInput, GenerationSettings settings)
+        private string GetGeneratedTestCode(FeatureFileInput featureFileInput)
         {
             using (var outputWriter = new IndentProcessingWriter(new StringWriter()))
             {
-                var codeProvider = CreateCodeDomProvider(projectSettings.ProjectPlatformSettings);
-                CodeDomHelper codeDomHelper = CreateCodeDomHelper(codeProvider, settings);
-
-                var codeNamespace = GenerateTestFileCode(featureFileInput, codeDomHelper);
+                var codeProvider = codeDomHelper.CreateCodeDomProvider();
+                var codeNamespace = GenerateTestFileCode(featureFileInput);
                 var options = new CodeGeneratorOptions
                                   {
                                       BracingStyle = "C"
                                   };
 
-                AddSpecFlowHeader(codeProvider, outputWriter, codeDomHelper);
+                AddSpecFlowHeader(codeProvider, outputWriter);
                 codeProvider.GenerateCodeFromNamespace(codeNamespace, outputWriter, options);
-                AddSpecFlowFooter(codeProvider, outputWriter, codeDomHelper);
+                AddSpecFlowFooter(codeProvider, outputWriter);
 
                 outputWriter.Flush();
                 return outputWriter.ToString();
             }
         }
 
-        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput, CodeDomHelper codeDomHelper)
+        private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput)
         {
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
@@ -121,12 +102,7 @@ namespace TechTalk.SpecFlow.Generator
                 feature = parser.Parse(contentReader, featureFileInput.GetFullPath(projectSettings));
             }
 
-            IUnitTestGeneratorProvider generatorProvider = ConfigurationServices.CreateInstance<IUnitTestGeneratorProvider>(generatorConfiguration.GeneratorUnitTestProviderType);
-            codeDomHelper.InjectIfRequired(generatorProvider);
-
-            ISpecFlowUnitTestConverter testConverter = new SpecFlowUnitTestConverter(generatorProvider, codeDomHelper, generatorConfiguration);
-
-            var codeNamespace = testConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
+            var codeNamespace = unitTestConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;
         }
 
@@ -164,7 +140,7 @@ namespace TechTalk.SpecFlow.Generator
             return testHeaderWriter.DetectGeneratedTestVersion(featureFileInput.GetGeneratedTestContent(generatedTestFullPath));
         }
 
-        private void AddSpecFlowHeader(CodeDomProvider codeProvider, TextWriter outputWriter, CodeDomHelper codeDomHelper)
+        private void AddSpecFlowHeader(CodeDomProvider codeProvider, TextWriter outputWriter)
         {
             const string specFlowHeaderTemplate = @"------------------------------------------------------------------------------
  <auto-generated>
@@ -194,7 +170,7 @@ namespace TechTalk.SpecFlow.Generator
             codeProvider.GenerateCodeFromStatement(codeDomHelper.GetDisableWarningsPragma(), outputWriter, null);
         }
 
-        private void AddSpecFlowFooter(CodeDomProvider codeProvider, TextWriter outputWriter, CodeDomHelper codeDomHelper)
+        private void AddSpecFlowFooter(CodeDomProvider codeProvider, TextWriter outputWriter)
         {
             codeProvider.GenerateCodeFromStatement(codeDomHelper.GetEnableWarningsPragma(), outputWriter, null);
             codeProvider.GenerateCodeFromStatement(codeDomHelper.GetEndRegionStatement(), outputWriter, null);

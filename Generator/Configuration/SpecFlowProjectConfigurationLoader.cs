@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection, true);
+            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection);
         }
     }
 }

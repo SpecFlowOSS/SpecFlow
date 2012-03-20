@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 using EnvDTE;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
-using TechTalk.SpecFlow.Generator.Project;
-using TechTalk.SpecFlow.VsIntegration.Common;
+using TechTalk.SpecFlow.Generator.Configuration;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2008Integration
 {
@@ -74,8 +74,12 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         /// <returns>Returns a RegularExpressionScanner object</returns>
         public override IScanner GetScanner(IVsTextLines buffer)
         {
-            SpecFlowProject specFlowProject = DteProjectReader.LoadSpecFlowProjectFromDteProject(CurrentProject);
-            scanner = new RegularExpressionScanner(specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
+            var configurationReader = new Vs2008SpecFlowConfigurationReader(CurrentProject, NullIdeTracer.Instance);
+            var configurationHolder = configurationReader.ReadConfiguration();
+            var config = new SpecFlowProjectConfigurationLoaderWithoutPlugins().LoadConfiguration(configurationHolder) ??
+                         new SpecFlowProjectConfiguration();
+
+            scanner = new RegularExpressionScanner(config.GeneratorConfiguration.FeatureLanguage);
 
             return scanner;
         }

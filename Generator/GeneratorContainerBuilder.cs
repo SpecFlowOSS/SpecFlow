@@ -3,12 +3,16 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
     public class GeneratorContainerBuilder
     {
-        public static IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder)
+        internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+
+        public static IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings)
         {
             var container = new ObjectContainer();
 
@@ -27,16 +31,19 @@ namespace TechTalk.SpecFlow.Generator
             var generatorInfo = container.Resolve<IGeneratorInfoProvider>().GetGeneratorInfo();
             container.RegisterInstanceAs(generatorInfo);
 
+            container.RegisterInstanceAs(projectSettings);
+
+            container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
+
+            if (specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider));
+
             return container;
         }
 
         private static void RegisterDefaults(ObjectContainer container)
         {
-            container.RegisterTypeAs<SpecFlowProjectConfigurationLoader, ISpecFlowProjectConfigurationLoader>();
-            container.RegisterTypeAs<InProcGeneratorInfoProvider, IGeneratorInfoProvider>();
-            container.RegisterTypeAs<TestGenerator, ITestGenerator>();
-            container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
-            container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
+            DefaultDependencyProvider.RegisterDefaults(container);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
@@ -14,7 +15,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 		private const string OWNER_TAG = "owner:";
 		private const string WORKITEM_TAG = "workitem:";
 
-		public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
+	    public MsTest2010GeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
+	    {
+	    }
+
+	    public override void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
 		{
 			generationContext.CustomData["featureCategories"] = GetNonMSTestSpecificTags(featureCategories).ToArray();
 
