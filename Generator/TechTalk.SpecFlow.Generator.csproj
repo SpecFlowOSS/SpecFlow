@@ -96,11 +96,15 @@
     <Compile Include="TestHeaderWriter.cs" />
     <Compile Include="TestUpToDateChecker.cs" />
     <Compile Include="Tracing\TextWriterTraceListener.cs" />
+    <Compile Include="UnitTestConverter\FeatureGeneratorRegistry.cs" />
     <Compile Include="UnitTestConverter\IFeatureGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FeatureGenerator.cs" />
+    <Compile Include="UnitTestConverter\IFeatureGeneratorRegistry.cs" />
+    <Compile Include="UnitTestConverter\UnitTestFeatureGeneratorProvider.cs" />
+    <Compile Include="UnitTestFeatureGenerator.cs" />
     <Compile Include="TestGenerator.cs" />
     <Compile Include="TestGeneratorFactory.cs" />
+    <Compile Include="UnitTestConverter\IFeatureGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestGeneratorProviders.cs" />
     <Compile Include="UnitTestProvider\MbUnit3TestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestSilverlightGeneratorProvider.cs" />

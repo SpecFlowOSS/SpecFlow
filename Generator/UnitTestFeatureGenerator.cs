@@ -15,7 +15,7 @@ using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
-    public class FeatureGenerator : IFeatureGenerator
+    public class UnitTestFeatureGenerator : IFeatureGenerator
     {
         private const string DEFAULT_NAMESPACE = "SpecFlowTests";
         const string TESTCLASS_NAME_FORMAT = "{0}Feature";
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Generator
         private readonly CodeDomHelper codeDomHelper;
         private readonly GeneratorConfiguration generatorConfiguration;
 
-        public FeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, GeneratorConfiguration generatorConfiguration)
+        public UnitTestFeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, GeneratorConfiguration generatorConfiguration)
         {
             this.testGeneratorProvider = testGeneratorProvider;
             this.codeDomHelper = codeDomHelper;

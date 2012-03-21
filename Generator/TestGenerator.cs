@@ -21,20 +21,20 @@ namespace TechTalk.SpecFlow.Generator
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
-        protected readonly IFeatureGenerator unitTestConverter;
+        private readonly IFeatureGeneratorRegistry featureGeneratorRegistry;
         protected readonly CodeDomHelper codeDomHelper;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGenerator unitTestConverter, CodeDomHelper codeDomHelper)
+        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
         {
             if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");
             if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
             if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
-            if (unitTestConverter == null) throw new ArgumentNullException("unitTestConverter");
+            if (featureGeneratorRegistry == null) throw new ArgumentNullException("featureGeneratorRegistry");
 
             this.generatorConfiguration = generatorConfiguration;
             this.testUpToDateChecker = testUpToDateChecker;
-            this.unitTestConverter = unitTestConverter;
+            this.featureGeneratorRegistry = featureGeneratorRegistry;
             this.codeDomHelper = codeDomHelper;
             this.testHeaderWriter = testHeaderWriter;
             this.projectSettings = projectSettings;
@@ -102,7 +102,9 @@ namespace TechTalk.SpecFlow.Generator
                 feature = parser.Parse(contentReader, featureFileInput.GetFullPath(projectSettings));
             }
 
-            var codeNamespace = unitTestConverter.GenerateUnitTestFixture(feature, null, targetNamespace);
+            var featureGenerator = featureGeneratorRegistry.CreateGenerator(feature);
+
+            var codeNamespace = featureGenerator.GenerateUnitTestFixture(feature, null, targetNamespace);
             return codeNamespace;
         }
 
