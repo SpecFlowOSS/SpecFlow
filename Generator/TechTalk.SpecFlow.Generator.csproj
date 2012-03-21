@@ -96,9 +96,9 @@
     <Compile Include="TestHeaderWriter.cs" />
     <Compile Include="TestUpToDateChecker.cs" />
     <Compile Include="Tracing\TextWriterTraceListener.cs" />
-    <Compile Include="UnitTestConverter\ISpecFlowUnitTestConverter.cs" />
+    <Compile Include="UnitTestConverter\IFeatureGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecFlowUnitTestConverter.cs" />
+    <Compile Include="FeatureGenerator.cs" />
     <Compile Include="TestGenerator.cs" />
     <Compile Include="TestGeneratorFactory.cs" />
     <Compile Include="UnitTestProvider\UnitTestGeneratorProviders.cs" />

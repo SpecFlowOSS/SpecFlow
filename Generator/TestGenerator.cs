@@ -21,10 +21,10 @@ namespace TechTalk.SpecFlow.Generator
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
-        protected readonly ISpecFlowUnitTestConverter unitTestConverter;
+        protected readonly IFeatureGenerator unitTestConverter;
         protected readonly CodeDomHelper codeDomHelper;
 
-        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, ISpecFlowUnitTestConverter unitTestConverter, CodeDomHelper codeDomHelper)
+        public TestGenerator(GeneratorConfiguration generatorConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGenerator unitTestConverter, CodeDomHelper codeDomHelper)
         {
             if (generatorConfiguration == null) throw new ArgumentNullException("generatorConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");

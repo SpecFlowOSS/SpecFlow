@@ -43,10 +43,10 @@ namespace GeneratorTests
 				| somethign else |
 ";
 
-        public static SpecFlowUnitTestConverter CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
+        public static FeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
         {
             var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            return new SpecFlowUnitTestConverter(testGeneratorProvider, codeDomHelper,
+            return new FeatureGenerator(testGeneratorProvider, codeDomHelper,
                                                  new GeneratorConfiguration { AllowRowTests = true, AllowDebugGeneratedFiles = true });
         }
 

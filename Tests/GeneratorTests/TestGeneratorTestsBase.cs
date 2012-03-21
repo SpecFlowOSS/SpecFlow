@@ -84,8 +84,8 @@ Scenario: Add two numbers
         {
             GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            SpecFlowUnitTestConverter specFlowUnitTestConverter = new SpecFlowUnitTestConverter(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration);
-            return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, specFlowUnitTestConverter, codeDomHelper);
+            FeatureGenerator featureGenerator = new FeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration);
+            return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, featureGenerator, codeDomHelper);
         }
     }
 }

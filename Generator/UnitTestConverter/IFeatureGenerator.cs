@@ -4,7 +4,7 @@ using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
-    public interface ISpecFlowUnitTestConverter
+    public interface IFeatureGenerator
     {
         CodeNamespace GenerateUnitTestFixture(Feature feature, string testClassName, string targetNamespace);
     }

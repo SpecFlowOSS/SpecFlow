@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
 
-            container.RegisterTypeAs<SpecFlowUnitTestConverter, ISpecFlowUnitTestConverter>();
+            container.RegisterTypeAs<FeatureGenerator, IFeatureGenerator>();
 
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp);
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB);
