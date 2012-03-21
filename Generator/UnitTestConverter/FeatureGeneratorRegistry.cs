@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         private IFeatureGeneratorProvider FindProvider(Feature feature)
         {
-            return providers.First(item => item.Value.CanGenerate(feature)).Value;
+            return providers.First(item => item.Value.CanGenerate(feature, item.Key)).Value;
         }
     }
 }

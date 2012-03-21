@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             get { return int.MaxValue; }
         }
 
-        public bool CanGenerate(Feature feature)
+        public bool CanGenerate(Feature feature, string registeredName)
         {
             return true;
         }

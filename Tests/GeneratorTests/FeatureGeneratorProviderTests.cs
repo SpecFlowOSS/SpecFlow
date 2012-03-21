@@ -37,7 +37,7 @@ namespace GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            generatorProvider.CanGenerate(anyFeature).Should().Be(true);
+            generatorProvider.CanGenerate(anyFeature, "default").Should().Be(true);
         }
 
         [Test]

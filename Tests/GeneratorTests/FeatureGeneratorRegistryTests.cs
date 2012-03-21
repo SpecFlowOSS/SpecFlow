@@ -45,7 +45,7 @@ namespace GeneratorTests
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
             genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -65,7 +65,7 @@ namespace GeneratorTests
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
             genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -87,7 +87,7 @@ namespace GeneratorTests
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
             genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature)).Returns(false); // not applicable for aFeature
+            genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature, It.IsAny<string>())).Returns(false); // not applicable for aFeature
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -107,6 +107,76 @@ namespace GeneratorTests
             var registry = testContainer.Resolve<IFeatureGeneratorRegistry>();
 
             registry.Should().BeOfType<FeatureGeneratorRegistry>();
+        }
+
+        private class TestTagFilteredFeatureGeneratorProvider : TagFilteredFeatureGeneratorProvider
+        {
+            static public IFeatureGenerator DummyGenerator = new Mock<IFeatureGenerator>().Object;
+
+            public override IFeatureGenerator CreateGenerator(Feature feature)
+            {
+                return DummyGenerator;
+            }
+        }
+
+        [Test]
+        public void Should_TagFilteredFeatureGeneratorProvider_applied_for_registered_tag_name()
+        {
+            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("mytag"));
+
+            var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
+
+            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+
+            generator.Should().Be(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
+        }
+
+        [Test]
+        public void Should_TagFilteredFeatureGeneratorProvider_applied_for_registered_tag_name_with_at()
+        {
+            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "@mytag");
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("mytag"));
+
+            var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
+
+            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+
+            generator.Should().Be(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
+        }
+
+        [Test]
+        public void Should_TagFilteredFeatureGeneratorProvider_not_be_applied_for_feature_with_other_tgas()
+        {
+            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("othertag"));
+
+            var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
+
+            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+
+            generator.Should().NotBe(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
+        }
+
+        [Test]
+        public void Should_TagFilteredFeatureGeneratorProvider_not_be_applied_for_feature_with_no_tgas()
+        {
+            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags();
+
+            var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
+
+            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+
+            generator.Should().NotBe(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
         }
     }
 }
