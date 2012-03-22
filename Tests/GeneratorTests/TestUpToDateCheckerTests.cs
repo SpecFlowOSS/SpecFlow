@@ -10,7 +10,7 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Utils;
-using Should;
+using FluentAssertions;
 
 namespace GeneratorTests
 {
@@ -59,7 +59,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldEqual(true);
+                    result.Should().Be(true);
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldEqual(false);
+                    result.Should().Be(false);
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace GeneratorTests
                 var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                     tempFile.FileName + ".cs", UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                result.ShouldEqual(false);
+                result.Should().Be(false);
             }
         }
 
@@ -127,7 +127,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.ModificationTimeAndGeneratorVersion);
 
-                    result.ShouldEqual(false);
+                    result.Should().Be(false);
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDatePreliminary(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, UpToDateCheckingMethod.FileContent);
 
-                    result.ShouldBeNull();
+                    result.Should().NotHaveValue();
                 }
             }
         }
@@ -175,7 +175,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDate(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, "any_code", UpToDateCheckingMethod.FileContent);
 
-                    result.ShouldBeTrue();
+                    result.Should().Be(true);
                 }
             }
         }
@@ -199,7 +199,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDate(new FeatureFileInput(tempFile.FileName) { GeneratedTestFileContent = "any_code" },
                         tempTestFile.FullPath, "any_code", UpToDateCheckingMethod.FileContent);
 
-                    result.ShouldBeTrue();
+                    result.Should().Be(true);
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace GeneratorTests
                     var result = testUpToDateChecker.IsUpToDate(new FeatureFileInput(tempFile.FileName),
                         tempTestFile.FullPath, "new_code", UpToDateCheckingMethod.FileContent);
 
-                    result.ShouldBeFalse();
+                    result.Should().Be(false);
                 }
             }
         }

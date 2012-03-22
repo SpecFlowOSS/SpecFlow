@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
-using Should;
+using FluentAssertions;
 
 namespace GeneratorTests
 {
@@ -36,8 +36,8 @@ namespace Bowling.Specflow
 #endregion
 ");
 
-            result.ShouldNotBeNull();
-            result.ToString().ShouldEqual("1.3.0.0");
+            result.Should().NotBeNull();
+            result.ToString().Should().Be("1.3.0.0");
         }
 
         [Test]
@@ -57,8 +57,8 @@ namespace Bowling.Specflow
 '------------------------------------------------------------------------------
 ");
 
-            result.ShouldNotBeNull();
-            result.ToString().ShouldEqual("1.4.0.0");
+            result.Should().NotBeNull();
+            result.ToString().Should().Be("1.4.0.0");
         }
 
         [Test]
@@ -82,8 +82,8 @@ namespace Bowling.Specflow
 #endregion
 ");
 
-            result.ShouldNotBeNull();
-            result.ToString().ShouldEqual("1.5.0.0");
+            result.Should().NotBeNull();
+            result.ToString().Should().Be("1.5.0.0");
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Bowling.Specflow
             var testHeaderWriter = CreateTestHeaderWriter();
             var result = testHeaderWriter.DetectGeneratedTestVersion(@"not-a-generated-file");
 
-            result.ShouldBeNull();
+            result.Should().BeNull();
         }
     }
 }

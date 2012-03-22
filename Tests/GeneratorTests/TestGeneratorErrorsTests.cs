@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
-using Should;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
@@ -18,7 +18,7 @@ namespace GeneratorTests
             var testGenerator = CreateTestGenerator(net35CSProjectSettings);
 
             var result = testGenerator.GenerateTestFile(CreateSimpleInvalidFeatureFileInput(), defaultSettings);
-            result.Success.ShouldBeFalse();
+            result.Success.Should().Be(false);
         }
 
         [Test]
@@ -27,8 +27,8 @@ namespace GeneratorTests
             var testGenerator = CreateTestGenerator(net35CSProjectSettings);
 
             var result = testGenerator.GenerateTestFile(CreateSimpleInvalidFeatureFileInput(), defaultSettings);
-            result.Errors.ShouldNotBeNull();
-            result.Errors.ShouldNotBeEmpty();
+            result.Errors.Should().NotBeNull();
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Test]
@@ -42,8 +42,8 @@ namespace GeneratorTests
 	                Given I have entered 50 into the calculator
                     AndXXX the keyword is misspelled
                     AndYYY this keyword is also misspelled"), defaultSettings);
-            result.Errors.ShouldNotBeNull();
-            result.Errors.Count().ShouldEqual(2);
+            result.Errors.Should().NotBeNull();
+            result.Errors.Count().Should().Be(2);
         }
 
         [Test]
@@ -53,8 +53,8 @@ namespace GeneratorTests
             var testGenerator = CreateTestGenerator(invalidLangSettings); 
 
             var result = testGenerator.GenerateTestFile(CreateSimpleValidFeatureFileInput(), defaultSettings);
-            result.Errors.ShouldNotBeNull();
-            result.Errors.ShouldNotBeEmpty();
+            result.Errors.Should().NotBeNull();
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Test]
@@ -66,10 +66,10 @@ namespace GeneratorTests
                 Feature: Addition
                 Scenario:
 	                Given I have entered 50 into the calculator"), defaultSettings);
-            result.Errors.ShouldNotBeNull();
-            result.Errors.Count().ShouldEqual(1);
-            result.Errors.First().Message.ShouldContain("scenario", StringComparison.InvariantCultureIgnoreCase);
-            result.Errors.First().Message.ShouldContain("title", StringComparison.InvariantCultureIgnoreCase);
+            result.Errors.Should().NotBeNull();
+            result.Errors.Count().Should().Be(1);
+            result.Errors.First().Message.Should().ContainEquivalentOf("scenario");
+            result.Errors.First().Message.Should().ContainEquivalentOf("title");
         }
     }
 }

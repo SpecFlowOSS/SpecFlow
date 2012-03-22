@@ -8,10 +8,12 @@
     <ProjectGuid>{97C30FCC-3093-4430-93DC-D671C656C404}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeneratorTests</RootNamespace>
-    <AssemblyName>GeneratorTests</AssemblyName>
+    <RootNamespace>TechTalk.SpecFlow.GeneratorTests</RootNamespace>
+    <AssemblyName>TechTalk.SpecFlow.GeneratorTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,9 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,6 +63,7 @@
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
+    <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
     <Compile Include="GeneratorContainerBuilderTests.cs" />

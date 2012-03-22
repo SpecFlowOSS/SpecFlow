@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
-using Should;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
 namespace GeneratorTests
@@ -22,13 +22,13 @@ namespace GeneratorTests
         [Test]
         public void GetGeneratorVersion_should_return_a_version()
         {
-            factory.GetGeneratorVersion().ShouldNotBeNull();
+            factory.GetGeneratorVersion().Should().NotBeNull();
         }
 
         [Test]
         public void Should_be_able_to_create_generator_with_default_config()
         {
-            factory.CreateGenerator(net35CSProjectSettings).ShouldNotBeNull();
+            factory.CreateGenerator(net35CSProjectSettings).Should().NotBeNull();
         }
 
         private class DummyGenerator : ITestGenerator
@@ -71,7 +71,7 @@ namespace GeneratorTests
             var projectSettings = net35CSProjectSettings;
             projectSettings.ConfigurationHolder = configurationHolder;
             var generator = factory.CreateGenerator(projectSettings);
-            generator.ShouldBeType(typeof(DummyGenerator));
+            generator.Should().BeOfType<DummyGenerator>();
         }
     }
 }
