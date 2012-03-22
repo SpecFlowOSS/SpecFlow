@@ -125,7 +125,7 @@ namespace GeneratorTests
             featureFileInput.GeneratedTestFileContent = "any";
             var result = testGenerator.DetectGeneratedTestVersion(featureFileInput);
 
-            result.Should().BeNull();
+            result.Should().Be(null);
         }
 
         [Test]

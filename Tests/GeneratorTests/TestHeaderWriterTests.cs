@@ -92,7 +92,7 @@ namespace Bowling.Specflow
             var testHeaderWriter = CreateTestHeaderWriter();
             var result = testHeaderWriter.DetectGeneratedTestVersion(@"not-a-generated-file");
 
-            result.Should().BeNull();
+            result.Should().Be(null);
         }
     }
 }
