@@ -15,10 +15,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag"));
+            var tags = new string[] {"mytag"};
 
-            matcher.Match("mytag", theFeature).Should().BeTrue();
+            matcher.Match("mytag", tags).Should().BeTrue();
+        }
+
+        [Test]
+        public void Should_match_tag_case_insensitive()
+        {
+            var matcher = new TagFilterMatcher();
+
+            var tags = new string[] {"MyTag"};
+
+            matcher.Match("mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -26,10 +35,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("othertag"));
+            var tags = new string[] {"othertag"};
 
-            matcher.Match("mytag", theFeature).Should().BeFalse();
+            matcher.Match("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -37,10 +45,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags();
+            var tags = new string[0];
 
-            matcher.Match("mytag", theFeature).Should().BeFalse();
+            matcher.Match("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -48,10 +55,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = null;
+            string[] tags = null;
 
-            matcher.Match("mytag", theFeature).Should().BeFalse();
+            matcher.Match("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -59,10 +65,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag"));
+            var tags = new string[] {"mytag"};
 
-            matcher.Match("@mytag", theFeature).Should().BeTrue();
+            matcher.Match("@mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -70,10 +75,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag:foo"));
+            var tags = new string[] {"mytag:foo"};
 
-            matcher.Match("mytag", theFeature).Should().BeTrue();
+            matcher.Match("mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -81,10 +85,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag:foo"));
+            var tags = new string[] {"mytag:foo"};
 
-            matcher.Match("@mytag", theFeature).Should().BeTrue();
+            matcher.Match("@mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -92,11 +95,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag:foo"));
+            var tags = new string[] {"mytag:foo"};
 
             string value;
-            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(true);
+            matcher.GetTagValue("@mytag", tags, out value).Should().Be(true);
             value.Should().Be("foo");
         }
 
@@ -105,11 +107,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = null;
+            string[] tags = null;
 
             string value;
-            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(false);
+            matcher.GetTagValue("@mytag", tags, out value).Should().Be(false);
         }
 
         [Test]
@@ -117,11 +118,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("bar"));;
+            var tags = new string[] {"othertag"};
 
             string value;
-            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(false);
+            matcher.GetTagValue("@mytag", tags, out value).Should().Be(false);
         }
 
         [Test]
@@ -129,12 +129,47 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var matcher = new TagFilterMatcher();
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag"));;
+            var tags = new string[] {"mytag"};
 
             string value;
-            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(true);
+            matcher.GetTagValue("@mytag", tags, out value).Should().Be(true);
             value.Should().Be("");
         }
+
+        [Test]
+        public void Should_GetTagValues_returns_prefixed_values()
+        {
+            var matcher = new TagFilterMatcher();
+
+            var tags = new string[] {"mytag:foo", "mytag:bar"};
+
+            var values = matcher.GetTagValues("mytag", tags);
+            values.Should().Contain("foo");
+            values.Should().Contain("bar");
+        }
+
+        [Test]
+        public void Should_GetTagValues_returns_empty_list_when_no_match()
+        {
+            var matcher = new TagFilterMatcher();
+
+            var tags = new string[] {"othertag"};
+
+            var values = matcher.GetTagValues("mytag", tags);
+            values.Should().BeEmpty();
+        }
+
+        [Test]
+        public void Should_GetTagValues_returns_list_with_empty_string_for_exact_mathces()
+        {
+            var matcher = new TagFilterMatcher();
+
+            var tags = new string[] {"mytag:foo", "mytag"};
+
+            var values = matcher.GetTagValues("mytag", tags);
+            values.Should().Contain("foo");
+            values.Should().Contain("");
+        }
+
     }
 }

@@ -1,30 +1,26 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
-    public interface ITagFilterMatcher
-    {
-        bool Match(string tagFilter, Feature feature);
-    }
-
     internal class TagFilterMatcher : ITagFilterMatcher
     {
         private const string TAG_PREFIX_SEPARATOR = ":";
+        private const StringComparison tagComparison = StringComparison.InvariantCultureIgnoreCase;
 
         private string GetExpectedTagName(string tagFilter)
         {
             return tagFilter.StartsWith("@") ? tagFilter.Substring(1) : tagFilter;
         }
 
-        public bool Match(string tagFilter, Feature feature)
+        public bool Match(string tagFilter, IEnumerable<string> tagNames)
         {
             string expectedTagName = GetExpectedTagName(tagFilter);
             string expectedTagPrefix = GetExpectedTagPrefix(expectedTagName); // we precalculate it to speed up comparison
 
-            return feature.Tags != null &&
-                   feature.Tags.Any(t => MatchTag(t, expectedTagName, expectedTagPrefix));
+            return tagNames != null &&
+                   tagNames.Any(t => MatchTag(t, expectedTagName, expectedTagPrefix));
         }
 
         private static string GetExpectedTagPrefix(string expectedTagName)
@@ -32,36 +28,52 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return expectedTagName + TAG_PREFIX_SEPARATOR;
         }
 
-        private bool MatchTag(Tag tag, string expectedTagName, string expectedTagPrefix)
+        private bool MatchTag(string tagName, string expectedTagName, string expectedTagPrefix)
         {
             return
-                (tag.Name != null && tag.Name.Equals(expectedTagName, StringComparison.InvariantCultureIgnoreCase)) ||
-                MatchTagPrefix(tag, expectedTagPrefix);
+                MatchExactTag(tagName, expectedTagName) ||
+                MatchTagPrefix(tagName, expectedTagPrefix);
         }
 
-        private bool MatchTagPrefix(Tag tag, string expectedTagPrefix)
+        private bool MatchExactTag(string tagName, string expectedTagName)
         {
-            return
-                tag.Name != null &&
-                tag.Name.StartsWith(expectedTagPrefix, StringComparison.InvariantCultureIgnoreCase);
+            return tagName != null &&
+                   tagName.Equals(expectedTagName, tagComparison);
         }
 
-        public bool GetTagValue(string tagFilter, Feature feature, out string value)
+        private bool MatchTagPrefix(string tagName, string expectedTagPrefix)
         {
-            value = null;
+            return tagName != null &&
+                   tagName.StartsWith(expectedTagPrefix, tagComparison);
+        }
 
+        private IEnumerable<string> GetTagValuesInternal(string tagFilter, IEnumerable<string> tagNames)
+        {
             string expectedTagName = GetExpectedTagName(tagFilter);
             string expectedTagPrefix = GetExpectedTagPrefix(expectedTagName); // we precalculate it to speed up comparison
 
-            if (feature.Tags == null)
-                return false;
+            if (tagNames == null)
+                return Enumerable.Empty<string>();
 
-            var tagWithValue = feature.Tags.FirstOrDefault(t => MatchTag(t, expectedTagName, expectedTagPrefix));
-            if (tagWithValue == null)
-                return false;
+            var tagsWithValue = tagNames.Where(t => MatchTag(t, expectedTagName, expectedTagPrefix));
 
-            value = MatchTagPrefix(tagWithValue, expectedTagPrefix) ? tagWithValue.Name.Substring(expectedTagPrefix.Length) : "";
-            return true;
+            return tagsWithValue.Select(tagWithValue => MatchTagPrefix(tagWithValue, expectedTagPrefix) ? GetValue(expectedTagPrefix, tagWithValue) : "");
+        }
+
+        private string GetValue(string expectedTagPrefix, string tagWithValue)
+        {
+            return tagWithValue.Substring(expectedTagPrefix.Length);
+        }
+
+        public bool GetTagValue(string tagFilter, IEnumerable<string> tagNames, out string value)
+        {
+            value = GetTagValuesInternal(tagFilter, tagNames).FirstOrDefault();
+            return value != null;
+        }
+
+        public string[] GetTagValues(string tagFilter, IEnumerable<string> tagNames)
+        {
+            return GetTagValuesInternal(tagFilter, tagNames).ToArray();
         }
     }
 }
