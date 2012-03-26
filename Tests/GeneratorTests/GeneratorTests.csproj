@@ -63,6 +63,7 @@
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
+    <Compile Include="IgnoredTestGeneratorTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
