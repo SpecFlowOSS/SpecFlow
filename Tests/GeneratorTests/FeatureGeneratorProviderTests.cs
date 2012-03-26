@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -11,7 +9,7 @@ using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Utils;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class FeatureGeneratorProviderTests
@@ -45,7 +43,7 @@ namespace GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            var generator = generatorProvider.CreateGenerator(anyFeature);
+            var generator = generatorProvider.CreateGenerator(anyFeature, "default");
 
             generator.Should().NotBeNull();
         }
@@ -55,7 +53,7 @@ namespace GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            var generator = generatorProvider.CreateGenerator(anyFeature);
+            var generator = generatorProvider.CreateGenerator(anyFeature, "default");
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();
         }

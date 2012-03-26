@@ -11,7 +11,7 @@ using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Utils;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     /// <summary>
     /// A test for testing cusomterized test generator provider

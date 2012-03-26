@@ -16,13 +16,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public IFeatureGenerator CreateGenerator(Feature feature)
         {
-            var featureGeneratorProvider = FindProvider(feature);
-            return featureGeneratorProvider.CreateGenerator(feature);
+            var providerItem = FindProvider(feature);
+            return providerItem.Value.CreateGenerator(feature, providerItem.Key);
         }
 
-        private IFeatureGeneratorProvider FindProvider(Feature feature)
+        private KeyValuePair<string, IFeatureGeneratorProvider> FindProvider(Feature feature)
         {
-            return providers.First(item => item.Value.CanGenerate(feature, item.Key)).Value;
+            return providers.First(item => item.Value.CanGenerate(feature, item.Key));
         }
     }
 }

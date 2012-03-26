@@ -3,11 +3,9 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TechTalk.SpecFlow.Generator;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class TestGeneratorErrorsTests : TestGeneratorTestsBase

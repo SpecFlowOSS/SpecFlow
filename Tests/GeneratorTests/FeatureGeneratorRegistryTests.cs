@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class FeatureGeneratorRegistryTests
@@ -44,7 +44,7 @@ namespace GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
             genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
@@ -64,7 +64,7 @@ namespace GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
             genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
@@ -75,7 +75,7 @@ namespace GeneratorTests
             Feature theFeature = new Feature();
             featureGeneratorRegistry.CreateGenerator(theFeature);
 
-            genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature), Times.Once());
+            genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature, "custom"), Times.Once());
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace GeneratorTests
             Feature theFeature = new Feature();
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
             genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature, It.IsAny<string>())).Returns(false); // not applicable for aFeature
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
@@ -113,7 +113,7 @@ namespace GeneratorTests
         {
             static public IFeatureGenerator DummyGenerator = new Mock<IFeatureGenerator>().Object;
 
-            public override IFeatureGenerator CreateGenerator(Feature feature)
+            public override IFeatureGenerator CreateGenerator(Feature feature, string registeredName)
             {
                 return DummyGenerator;
             }

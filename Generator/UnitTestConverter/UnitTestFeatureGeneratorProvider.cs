@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return true;
         }
 
-        public IFeatureGenerator CreateGenerator(Feature feature)
+        public IFeatureGenerator CreateGenerator(Feature feature, string registeredName)
         {
             return unitTestFeatureGenerator;
         }

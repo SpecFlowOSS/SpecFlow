@@ -86,5 +86,55 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             matcher.Match("@mytag", theFeature).Should().BeTrue();
         }
+
+        [Test]
+        public void Should_GetTagValue_return_prefixed_value()
+        {
+            var matcher = new TagFilterMatcher();
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("mytag:foo"));
+
+            string value;
+            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(true);
+            value.Should().Be("foo");
+        }
+
+        [Test]
+        public void Should_GetTagValue_returns_false_when_null_tag_list()
+        {
+            var matcher = new TagFilterMatcher();
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = null;
+
+            string value;
+            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(false);
+        }
+
+        [Test]
+        public void Should_GetTagValue_returns_false_when_no_match()
+        {
+            var matcher = new TagFilterMatcher();
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("bar"));;
+
+            string value;
+            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(false);
+        }
+
+        [Test]
+        public void Should_GetTagValue_returns_empty_when_exact_match()
+        {
+            var matcher = new TagFilterMatcher();
+
+            Feature theFeature = new Feature();
+            theFeature.Tags = new Tags(new Tag("mytag"));;
+
+            string value;
+            matcher.GetTagValue("@mytag", theFeature, out value).Should().Be(true);
+            value.Should().Be("");
+        }
     }
 }

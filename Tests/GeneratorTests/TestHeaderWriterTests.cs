@@ -4,7 +4,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using FluentAssertions;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class TestHeaderWriterTests : TestGeneratorTestsBase

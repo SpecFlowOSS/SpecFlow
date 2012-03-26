@@ -9,6 +9,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
     {
         int Priority { get; }
         bool CanGenerate(Feature feature, string registeredName);
-        IFeatureGenerator CreateGenerator(Feature feature);
+        IFeatureGenerator CreateGenerator(Feature feature, string registeredName);
     }
 }

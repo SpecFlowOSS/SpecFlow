@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
@@ -12,7 +10,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Utils;
 using FluentAssertions;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class TestUpToDateCheckerTests

@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
-using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Utils;
 
-namespace GeneratorTests
+namespace TechTalk.SpecFlow.GeneratorTests
 {
     [TestFixture]
     public class TestGeneratorBasicsTests : TestGeneratorTestsBase

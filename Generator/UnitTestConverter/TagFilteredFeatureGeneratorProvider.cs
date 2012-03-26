@@ -24,6 +24,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return tagFilterMatcher.Match(registeredName, feature);
         }
 
-        public abstract IFeatureGenerator CreateGenerator(Feature feature);
+        public abstract IFeatureGenerator CreateGenerator(Feature feature, string registeredName);
     }
 }
