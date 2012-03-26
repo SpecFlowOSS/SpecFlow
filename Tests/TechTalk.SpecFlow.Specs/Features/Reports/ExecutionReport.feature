@@ -15,6 +15,7 @@ Scenario: Summary is included in the HTML result (NUnit)
 		2 features	40%				5			2			1		1			1 
 	"""
 
+@mstest
 Scenario: Summary is included in the HTML result (MsTest)
 	Given there are MsTest test execution results for the project
 	When I generate SpecFlow MsTest execution report
@@ -36,6 +37,7 @@ Scenario: Feature summary is included in the HTML result (NUnit)
 		Feature with successful scenarios	100%			2			2			0		0			0
 	"""
 
+@mstest
 Scenario: Feature summary is included in the HTML result (MsTest)
 	Given there are MsTest test execution results for the project
 	When I generate SpecFlow MsTest execution report
@@ -58,6 +60,9 @@ Scenario Outline: Successful test output is included in the HTML result
 Examples:
 	| unittest	|
 	| NUnit		|
+@mstest
+Examples: MsTest
+	| unittest	|
 	| MsTest	|
 
 Scenario Outline: Pending test output is included in the HTML result
@@ -79,6 +84,9 @@ Scenario Outline: Pending test output is included in the HTML result
 Examples:
 	| unittest	|
 	| NUnit		|
+@mstest
+Examples: MsTest
+	| unittest	|
 	| MsTest	|
 
 Scenario Outline: Failing test output is included in the HTML result
@@ -96,6 +104,9 @@ Scenario Outline: Failing test output is included in the HTML result
 Examples:
 	| unittest	|
 	| NUnit		|
+@mstest
+Examples: MsTest
+	| unittest	|
 	| MsTest	|
 
 Scenario Outline: Failing test exception is included in the HTML result
@@ -112,5 +123,8 @@ Scenario Outline: Failing test exception is included in the HTML result
 Examples:
 	| unittest	|
 	| NUnit		|
+@mstest
+Examples: MsTest
+	| unittest	|
 	| MsTest	|
 
