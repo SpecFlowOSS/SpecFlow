@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public int Priority
         {
-            get { return int.MaxValue; }
+            get { return PriorityValues.Lowest; }
         }
 
         public bool CanGenerate(Feature feature, string registeredName)

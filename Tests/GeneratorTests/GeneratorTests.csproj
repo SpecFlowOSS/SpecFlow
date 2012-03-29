@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
+    <Compile Include="DecoratorRegistryTests.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="TestGeneratorBasicsTests.cs" />
     <Compile Include="TestGeneratorTestsBase.cs" />
     <Compile Include="TestUpToDateCheckerTests.cs" />
+    <Compile Include="UnitTestFeatureGeneratorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
     {
         protected readonly ITagFilterMatcher tagFilterMatcher;
 
-        public virtual int Priority { get { return 1000; } }
+        public virtual int Priority { get { return PriorityValues.Low; } }
 
         protected TagFilteredFeatureGeneratorProvider(ITagFilterMatcher tagFilterMatcher)
         {
@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public bool CanGenerate(Feature feature, string registeredName)
         {
-            return tagFilterMatcher.Match(registeredName, feature);
+            return tagFilterMatcher.MatchPrefix(registeredName, feature);
         }
 
         public abstract IFeatureGenerator CreateGenerator(Feature feature, string registeredName);

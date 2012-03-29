@@ -17,6 +17,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         public bool Match(string tagFilter, IEnumerable<string> tagNames)
         {
             string expectedTagName = GetExpectedTagName(tagFilter);
+
+            return tagNames != null &&
+                   tagNames.Any(t => MatchExactTag(t, expectedTagName));
+        }
+
+        public bool MatchPrefix(string tagFilter, IEnumerable<string> tagNames)
+        {
+            string expectedTagName = GetExpectedTagName(tagFilter);
             string expectedTagPrefix = GetExpectedTagPrefix(expectedTagName); // we precalculate it to speed up comparison
 
             return tagNames != null &&

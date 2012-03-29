@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"mytag"};
 
-            matcher.Match("mytag", tags).Should().BeTrue();
+            matcher.MatchPrefix("mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"MyTag"};
 
-            matcher.Match("mytag", tags).Should().BeTrue();
+            matcher.MatchPrefix("mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"othertag"};
 
-            matcher.Match("mytag", tags).Should().BeFalse();
+            matcher.MatchPrefix("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[0];
 
-            matcher.Match("mytag", tags).Should().BeFalse();
+            matcher.MatchPrefix("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             string[] tags = null;
 
-            matcher.Match("mytag", tags).Should().BeFalse();
+            matcher.MatchPrefix("mytag", tags).Should().BeFalse();
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"mytag"};
 
-            matcher.Match("@mytag", tags).Should().BeTrue();
+            matcher.MatchPrefix("@mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"mytag:foo"};
 
-            matcher.Match("mytag", tags).Should().BeTrue();
+            matcher.MatchPrefix("mytag", tags).Should().BeTrue();
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var tags = new string[] {"mytag:foo"};
 
-            matcher.Match("@mytag", tags).Should().BeTrue();
+            matcher.MatchPrefix("@mytag", tags).Should().BeTrue();
         }
 
         [Test]

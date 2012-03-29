@@ -35,12 +35,14 @@ namespace TechTalk.SpecFlow.Generator
         private readonly IUnitTestGeneratorProvider testGeneratorProvider;
         private readonly CodeDomHelper codeDomHelper;
         private readonly GeneratorConfiguration generatorConfiguration;
+        private readonly IDecoratorRegistry decoratorRegistry;
 
-        public UnitTestFeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, GeneratorConfiguration generatorConfiguration)
+        public UnitTestFeatureGenerator(IUnitTestGeneratorProvider testGeneratorProvider, CodeDomHelper codeDomHelper, GeneratorConfiguration generatorConfiguration, IDecoratorRegistry decoratorRegistry)
         {
             this.testGeneratorProvider = testGeneratorProvider;
             this.codeDomHelper = codeDomHelper;
             this.generatorConfiguration = generatorConfiguration;
+            this.decoratorRegistry = decoratorRegistry;
         }
 
         private CodeMemberMethod CreateMethod(CodeTypeDeclaration type)
@@ -61,6 +63,7 @@ namespace TechTalk.SpecFlow.Generator
             codeNamespace.Types.Add(testClass);
 
             return new TestClassGenerationContext(
+                testGeneratorProvider,
                 feature,
                 codeNamespace, 
                 testClass,
@@ -145,12 +148,12 @@ namespace TechTalk.SpecFlow.Generator
             AddLinePragmaInitial(generationContext.TestClass, generationContext.Feature.SourceFile);
 
             testGeneratorProvider.SetTestClass(generationContext, generationContext.Feature.Title, generationContext.Feature.Description);
-            if (generationContext.Feature.Tags != null)
-            {
-                testGeneratorProvider.SetTestClassCategories(generationContext, GetNonIgnoreTags(generationContext.Feature.Tags));
-                if (HasIgnoreTag(generationContext.Feature.Tags))
-                    testGeneratorProvider.SetTestClassIgnore(generationContext);
-            }
+
+            List<string> featureCategories;
+            decoratorRegistry.DecorateTestClass(generationContext, out featureCategories);
+
+            if (featureCategories.Any())
+                testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
 
             DeclareTestRunnerMember(generationContext);
         }
@@ -572,17 +575,16 @@ namespace TechTalk.SpecFlow.Generator
             else
                 testGeneratorProvider.SetTestMethod(generationContext, testMethod, scenario.Title);
 
-            if (scenario.Tags != null)
-                SetCategoriesFromTags(generationContext, testMethod, scenario.Tags);
-            if (additionalTags != null)
-                SetCategoriesFromTags(generationContext, testMethod, additionalTags);
+            List<string> scenarioCategories;
+            decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenario.Tags, additionalTags), out scenarioCategories);
+
+            if (scenarioCategories.Any())
+                testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
         }
 
-        private void SetCategoriesFromTags(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, Tags tags)
+        private IEnumerable<Tag> ConcatTags(params Tags[] tagLists)
         {
-            testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, GetNonIgnoreTags(tags));
-            if (HasIgnoreTag(tags))
-                testGeneratorProvider.SetTestMethodIgnore(generationContext, testMethod);
+            return tagLists.Where(tagList => tagList != null).SelectMany(tagList => tagList);
         }
 
         private CodeExpression GetSubstitutedString(string text, ParameterSubstitution paramToIdentifier)

@@ -86,7 +86,7 @@ Scenario: Add two numbers
         {
             GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration);
+            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
 
             var generatorRegistryStub = new Mock<IFeatureGeneratorRegistry>();
             generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<Feature>())).Returns(unitTestFeatureGenerator);

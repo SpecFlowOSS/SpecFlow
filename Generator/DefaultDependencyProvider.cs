@@ -23,6 +23,10 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<UnitTestFeatureGeneratorProvider, IFeatureGeneratorProvider>("default");
             container.RegisterTypeAs<TagFilterMatcher, ITagFilterMatcher>();
 
+            container.RegisterTypeAs<DecoratorRegistry, IDecoratorRegistry>();
+            container.RegisterTypeAs<IgnoreDecorator, ITestClassDecorator>("ignore");
+            container.RegisterTypeAs<IgnoreDecorator, ITestMethodDecorator>("ignore");
+
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp);
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB);
 

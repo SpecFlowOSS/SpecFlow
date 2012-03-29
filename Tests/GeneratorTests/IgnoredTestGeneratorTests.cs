@@ -109,7 +109,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] {"ignore"});
+            Feature theFeature = CreateFeature(new string[] {"ignore", "other"});
 
             generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
 
@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var generator = CreateUnitTestFeatureGenerator();
 
             Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("ignore"));
+            theFeature.Scenarios[0].Tags = new Tags(new Tag("ignore"), new Tag("other"));
 
             generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
 

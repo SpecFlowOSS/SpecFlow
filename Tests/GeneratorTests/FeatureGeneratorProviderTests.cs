@@ -18,7 +18,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             GeneratorConfiguration generatorConfiguration = new GeneratorConfiguration();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration);
+            UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(
+                new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
 
             return new UnitTestFeatureGeneratorProvider(unitTestFeatureGenerator);
         }

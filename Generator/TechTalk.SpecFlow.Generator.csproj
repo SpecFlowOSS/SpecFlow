@@ -96,10 +96,14 @@
     <Compile Include="TestHeaderWriter.cs" />
     <Compile Include="TestUpToDateChecker.cs" />
     <Compile Include="Tracing\TextWriterTraceListener.cs" />
+    <Compile Include="UnitTestConverter\DecoratorRegistry.cs" />
     <Compile Include="UnitTestConverter\FeatureGeneratorRegistry.cs" />
+    <Compile Include="UnitTestConverter\IgnoreDecorator.cs" />
+    <Compile Include="UnitTestConverter\ITestClassDecorator.cs" />
     <Compile Include="UnitTestConverter\IFeatureGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestConverter\IFeatureGeneratorRegistry.cs" />
+    <Compile Include="UnitTestConverter\PriorityValues.cs" />
     <Compile Include="UnitTestConverter\TagFilteredFeatureGeneratorProvider.cs" />
     <Compile Include="UnitTestConverter\ITagFilterMatcher.cs" />
     <Compile Include="UnitTestConverter\TagFilterMatcher.cs" />
