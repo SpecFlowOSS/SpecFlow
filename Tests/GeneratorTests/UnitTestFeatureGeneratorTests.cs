@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_not_pass_decorated_feature_tag_as_test_class_category()
         {
-            var decoratorMock = DecoratorRegistryTests.CreateTestClassDecoratorMock("decorated");
+            var decoratorMock = DecoratorRegistryTests.CreateTestClassTagDecoratorMock("decorated");
             container.RegisterInstanceAs(decoratorMock.Object, "decorated");
 
             var generator = CreateUnitTestFeatureGenerator();
@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_not_pass_decorated_scenario_tag_as_test_method_category()
         {
-            var decoratorMock = DecoratorRegistryTests.CreateTestMethodDecoratorMock("decorated");
+            var decoratorMock = DecoratorRegistryTests.CreateTestMethodTagDecoratorMock("decorated");
             container.RegisterInstanceAs(decoratorMock.Object, "decorated");
 
             var generator = CreateUnitTestFeatureGenerator();
