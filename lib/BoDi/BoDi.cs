@@ -134,6 +134,8 @@ namespace BoDi
 
     public class ObjectContainer : IObjectContainer
     {
+        private const string REGISTERED_NAME_PARAMETER_NAME = "registeredName";
+
         private struct RegistrationKey
         {
             public readonly Type Type;
@@ -199,7 +201,7 @@ namespace BoDi
                     if (ImplementationType.IsInterface)
                         throw new ObjectContainerException("Interface cannot be resolved: " + keyToResolve, resolutionPath);
 
-                    obj = container.CreateObject(ImplementationType, resolutionPath);
+                    obj = container.CreateObject(ImplementationType, resolutionPath, keyToResolve);
                     container.objectPool.Add(ImplementationType, obj);
                 }
 
@@ -483,7 +485,7 @@ namespace BoDi
             return registrationResult.Resolve(this, keyToResolve, resolutionPath);
         }
 
-        private object CreateObject(Type type, IEnumerable<Type> resolutionPath)
+        private object CreateObject(Type type, IEnumerable<Type> resolutionPath, RegistrationKey keyToResolve)
         {
             var ctors = type.GetConstructors();
             if (ctors.Length == 0)
@@ -504,7 +506,7 @@ namespace BoDi
                 if (resolutionPath.Contains(type))
                     throw new ObjectContainerException("Circular dependency found! " + type.FullName, resolutionPath);
 
-                var args = ResolveArguments(ctor.GetParameters(), resolutionPath.Concat(new[] { type }));
+                var args = ResolveArguments(ctor.GetParameters(), keyToResolve, resolutionPath.Concat(new[] { type }));
                 obj = ctor.Invoke(args);
             }
             else
@@ -515,9 +517,20 @@ namespace BoDi
             return obj;
         }
 
-        private object[] ResolveArguments(IEnumerable<ParameterInfo> parameters, IEnumerable<Type> resolutionPath)
+        private object[] ResolveArguments(IEnumerable<ParameterInfo> parameters, RegistrationKey keyToResolve, IEnumerable<Type> resolutionPath)
         {
-            return parameters.Select(p => Resolve(p.ParameterType, resolutionPath, null)).ToArray();
+            return parameters.Select(p => IsRegisteredNameParameter(p) ? ResolveRegisteredName(keyToResolve) : Resolve(p.ParameterType, resolutionPath, null)).ToArray();
+        }
+
+        private object ResolveRegisteredName(RegistrationKey keyToResolve)
+        {
+            return keyToResolve.Name;
+        }
+
+        private bool IsRegisteredNameParameter(ParameterInfo parameterInfo)
+        {
+            return parameterInfo.ParameterType == typeof (string) &&
+                   parameterInfo.Name.Equals(REGISTERED_NAME_PARAMETER_NAME);
         }
 
         #endregion

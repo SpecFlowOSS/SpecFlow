@@ -42,14 +42,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
                 get { return testClassDecorator.ApplyOtherDecoratorsForProcessedTags; }
             }
 
-            public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName)
+            public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
             {
-                return testClassDecorator.CanDecorateFrom(tagName, generationContext, registeredName);
+                return testClassDecorator.CanDecorateFrom(tagName, generationContext);
             }
 
-            public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName)
+            public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
             {
-                testClassDecorator.DecorateFrom(tagName, generationContext, registeredName);
+                testClassDecorator.DecorateFrom(tagName, generationContext);
             }
         }
 
@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
                     bool removeProcessedTag = false;
                     foreach (var decoratorItem in FindDecorators(decorators, tagName, generationContext, null))
                     {
-                        decoratorItem.Value.DecorateFrom(tagName, generationContext, testMethod, decoratorItem.Key);
+                        decoratorItem.Value.DecorateFrom(tagName, generationContext, testMethod);
                         removeProcessedTag |= decoratorItem.Value.RemoveProcessedTags;
                         if (!decoratorItem.Value.ApplyOtherDecoratorsForProcessedTags)
                             break;
@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         private IEnumerable<KeyValuePair<string, ITestMethodDecorator>> FindDecorators(List<KeyValuePair<string, ITestMethodDecorator>> decorators, string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
-            return decorators.Where(item => item.Value.CanDecorateFrom(tagName, generationContext, testMethod, item.Key));
+            return decorators.Where(item => item.Value.CanDecorateFrom(tagName, generationContext, testMethod));
         }
     }
 }

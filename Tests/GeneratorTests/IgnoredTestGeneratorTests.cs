@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private IFeatureGenerator CreateUnitTestFeatureGenerator()
         {
-            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(new Feature(), "default");
+            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(new Feature());
         }
 
         private Feature CreateFeature(string[] tags = null)

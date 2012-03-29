@@ -32,22 +32,22 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return tagFilterMatcher.Match(IGNORE_TAG, tagName);
         }
 
-        public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName)
+        public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             return CanDecorateFrom(tagName);
         }
 
-        public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName)
+        public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             generationContext.UnitTestGeneratorProvider.SetTestMethodIgnore(generationContext, testMethod);
         }
 
-        public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, string registeredName)
+        public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
             return CanDecorateFrom(tagName);
         }
 
-        public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, string registeredName)
+        public void DecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
             generationContext.UnitTestGeneratorProvider.SetTestClassIgnore(generationContext);
         }

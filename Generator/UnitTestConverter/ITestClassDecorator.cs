@@ -10,8 +10,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         bool RemoveProcessedTags { get; }
         bool ApplyOtherDecoratorsForProcessedTags { get; }
 
-        bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, string registeredName);
-        void DecorateFrom(string tagName, TestClassGenerationContext generationContext, string registeredName);
+        bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext);
+        void DecorateFrom(string tagName, TestClassGenerationContext generationContext);
     }
 
     public interface ITestMethodDecorator
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         bool RemoveProcessedTags { get; }
         bool ApplyOtherDecoratorsForProcessedTags { get; }
 
-        bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName);
-        void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string registeredName);
+        bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod);
+        void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod);
     }
 }

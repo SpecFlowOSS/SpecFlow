@@ -16,12 +16,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             get { return PriorityValues.Lowest; }
         }
 
-        public bool CanGenerate(Feature feature, string registeredName)
+        public bool CanGenerate(Feature feature)
         {
             return true;
         }
 
-        public IFeatureGenerator CreateGenerator(Feature feature, string registeredName)
+        public IFeatureGenerator CreateGenerator(Feature feature)
         {
             return unitTestFeatureGenerator;
         }

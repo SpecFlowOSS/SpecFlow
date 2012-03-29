@@ -30,9 +30,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             testClassDecoratorMock.Setup(d => d.RemoveProcessedTags).Returns(true);
             testClassDecoratorMock.Setup(d => d.Priority).Returns(PriorityValues.Normal);
             if (expectedTag == null)
-                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>())).Returns(true);
+                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>())).Returns(true);
             else
-                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(expectedTag, It.IsAny<TestClassGenerationContext>(), It.IsAny<string>())).Returns(true);
+                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(expectedTag, It.IsAny<TestClassGenerationContext>())).Returns(true);
             return testClassDecoratorMock;
         }
 
@@ -43,9 +43,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             testClassDecoratorMock.Setup(d => d.RemoveProcessedTags).Returns(true);
             testClassDecoratorMock.Setup(d => d.Priority).Returns(PriorityValues.Normal);
             if (expectedTag == null)
-                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<string>())).Returns(true);
+                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>())).Returns(true);
             else
-                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(expectedTag, It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<string>())).Returns(true);
+                testClassDecoratorMock.Setup(d => d.CanDecorateFrom(expectedTag, It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>())).Returns(true);
             return testClassDecoratorMock;
         }
 
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<string> unprocessedTags;
             registry.DecorateTestClass(CreateGenerationContext("foo"), out unprocessedTags);
 
-            testClassDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>()));
+            testClassDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>()));
         }
 
         [Test]
@@ -118,8 +118,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<string> unprocessedTags;
             registry.DecorateTestClass(CreateGenerationContext("foo"), out unprocessedTags);
 
-            testClassDecoratorMock1.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>()));
-            testClassDecoratorMock2.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>()));
+            testClassDecoratorMock1.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>()));
+            testClassDecoratorMock2.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>()));
         }
 
         [Test]
@@ -129,16 +129,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var testClassDecoratorMock1 = CreateTestClassDecoratorMock();
             testClassDecoratorMock1.Setup(d => d.ApplyOtherDecoratorsForProcessedTags).Returns(true);
-            testClassDecoratorMock1.Setup(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>()))
-                .Callback((string t, TestClassGenerationContext c, string regName) => executionOrder.Add(regName));
+            testClassDecoratorMock1.Setup(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>()))
+                .Callback((string t, TestClassGenerationContext c) => executionOrder.Add("foo1"));
 
             container.RegisterInstanceAs(testClassDecoratorMock1.Object, "foo1");
 
             var testClassDecoratorMock2 = CreateTestClassDecoratorMock();
             testClassDecoratorMock2.Setup(d => d.ApplyOtherDecoratorsForProcessedTags).Returns(true);
             testClassDecoratorMock2.Setup(d => d.Priority).Returns(PriorityValues.High);
-            testClassDecoratorMock2.Setup(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<string>()))
-                .Callback((string t, TestClassGenerationContext c, string regName) => executionOrder.Add(regName));
+            testClassDecoratorMock2.Setup(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>()))
+                .Callback((string t, TestClassGenerationContext c) => executionOrder.Add("foo2"));
             
             container.RegisterInstanceAs(testClassDecoratorMock2.Object, "foo2");
 
@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<string> unprocessedTags;
             registry.DecorateTestMethod(CreateGenerationContext("foo"), null, new Tag[] { }, out unprocessedTags);
 
-            testMethodDecoratorMock.Verify(d => d.DecorateFrom("foo", It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<string>()), Times.Never());
+            testMethodDecoratorMock.Verify(d => d.DecorateFrom("foo", It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()), Times.Never());
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             List<string> unprocessedTags;
             registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, new Tag[] { new Tag("foo") }, out unprocessedTags);
 
-            testMethodDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<string>()));
+            testMethodDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
     }
 

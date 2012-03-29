@@ -44,8 +44,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -64,8 +64,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>(), It.IsAny<string>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             Feature theFeature = new Feature();
             featureGeneratorRegistry.CreateGenerator(theFeature);
 
-            genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature, "custom"), Times.Once());
+            genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature), Times.Once());
         }
 
         [Test]
@@ -86,8 +86,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             Feature theFeature = new Feature();
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>(), It.IsAny<string>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature, It.IsAny<string>())).Returns(false); // not applicable for aFeature
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature)).Returns(false); // not applicable for aFeature
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
@@ -113,7 +113,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             static public IFeatureGenerator DummyGenerator = new Mock<IFeatureGenerator>().Object;
 
-            public override IFeatureGenerator CreateGenerator(Feature feature, string registeredName)
+            public TestTagFilteredFeatureGeneratorProvider(ITagFilterMatcher tagFilterMatcher, string registeredName) : base(tagFilterMatcher, registeredName)
+            {
+            }
+
+            public override IFeatureGenerator CreateGenerator(Feature feature)
             {
                 return DummyGenerator;
             }
@@ -122,7 +126,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_TagFilteredFeatureGeneratorProvider_applied_for_registered_tag_name()
         {
-            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+            container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
             Feature theFeature = new Feature();
             theFeature.Tags = new Tags(new Tag("mytag"));
@@ -137,7 +141,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_TagFilteredFeatureGeneratorProvider_applied_for_registered_tag_name_with_at()
         {
-            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "@mytag");
+            container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("@mytag");
 
             Feature theFeature = new Feature();
             theFeature.Tags = new Tags(new Tag("mytag"));
@@ -152,7 +156,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_TagFilteredFeatureGeneratorProvider_not_be_applied_for_feature_with_other_tgas()
         {
-            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+            container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
             Feature theFeature = new Feature();
             theFeature.Tags = new Tags(new Tag("othertag"));
@@ -167,7 +171,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_TagFilteredFeatureGeneratorProvider_not_be_applied_for_feature_with_no_tgas()
         {
-            container.RegisterInstanceAs<IFeatureGeneratorProvider>(new TestTagFilteredFeatureGeneratorProvider(), "mytag");
+            container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
             Feature theFeature = new Feature();
             theFeature.Tags = new Tags();

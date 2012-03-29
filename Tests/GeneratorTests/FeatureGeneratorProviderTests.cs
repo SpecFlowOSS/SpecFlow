@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            generatorProvider.CanGenerate(anyFeature, "default").Should().Be(true);
+            generatorProvider.CanGenerate(anyFeature).Should().Be(true);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            var generator = generatorProvider.CreateGenerator(anyFeature, "default");
+            var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().NotBeNull();
         }
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
             Feature anyFeature = new Feature();
-            var generator = generatorProvider.CreateGenerator(anyFeature, "default");
+            var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();
         }
