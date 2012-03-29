@@ -23,9 +23,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             container = new ObjectContainer();
         }
 
-        internal static Mock<ITestClassDecorator> CreateTestClassDecoratorMock(string expectedTag = null)
+        internal static Mock<ITestClassTagDecorator> CreateTestClassDecoratorMock(string expectedTag = null)
         {
-            var testClassDecoratorMock = new Mock<ITestClassDecorator>();
+            var testClassDecoratorMock = new Mock<ITestClassTagDecorator>();
             testClassDecoratorMock.Setup(d => d.ApplyOtherDecoratorsForProcessedTags).Returns(false);
             testClassDecoratorMock.Setup(d => d.RemoveProcessedTags).Returns(true);
             testClassDecoratorMock.Setup(d => d.Priority).Returns(PriorityValues.Normal);
@@ -36,9 +36,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             return testClassDecoratorMock;
         }
 
-        internal static Mock<ITestMethodDecorator> CreateTestMethodDecoratorMock(string expectedTag = null)
+        internal static Mock<ITestMethodTagDecorator> CreateTestMethodDecoratorMock(string expectedTag = null)
         {
-            var testClassDecoratorMock = new Mock<ITestMethodDecorator>();
+            var testClassDecoratorMock = new Mock<ITestMethodTagDecorator>();
             testClassDecoratorMock.Setup(d => d.ApplyOtherDecoratorsForProcessedTags).Returns(false);
             testClassDecoratorMock.Setup(d => d.RemoveProcessedTags).Returns(true);
             testClassDecoratorMock.Setup(d => d.Priority).Returns(PriorityValues.Normal);

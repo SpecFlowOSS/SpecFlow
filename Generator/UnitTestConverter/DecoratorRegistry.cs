@@ -15,41 +15,41 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
     public class DecoratorRegistry : IDecoratorRegistry
     {
-        private readonly List<KeyValuePair<string, ITestMethodDecorator>> testClassDecorators;
-        private readonly List<KeyValuePair<string, ITestMethodDecorator>> testMethodDecorators;
+        private readonly List<ITestMethodTagDecorator> testClassTagDecorators;
+        private readonly List<ITestMethodTagDecorator> testMethodTagDecorators;
 
-        private class TestMethodClassDecoratorWrapper : ITestMethodDecorator
+        private class TestMethodClassDecoratorWrapper : ITestMethodTagDecorator
         {
-            private readonly ITestClassDecorator testClassDecorator;
+            private readonly ITestClassTagDecorator testClassTagDecorator;
 
-            public TestMethodClassDecoratorWrapper(ITestClassDecorator testClassDecorator)
+            public TestMethodClassDecoratorWrapper(ITestClassTagDecorator testClassTagDecorator)
             {
-                this.testClassDecorator = testClassDecorator;
+                this.testClassTagDecorator = testClassTagDecorator;
             }
 
             public int Priority
             {
-                get { return testClassDecorator.Priority; }
+                get { return testClassTagDecorator.Priority; }
             }
 
             public bool RemoveProcessedTags
             {
-                get { return testClassDecorator.RemoveProcessedTags; }
+                get { return testClassTagDecorator.RemoveProcessedTags; }
             }
 
             public bool ApplyOtherDecoratorsForProcessedTags
             {
-                get { return testClassDecorator.ApplyOtherDecoratorsForProcessedTags; }
+                get { return testClassTagDecorator.ApplyOtherDecoratorsForProcessedTags; }
             }
 
             public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
             {
-                return testClassDecorator.CanDecorateFrom(tagName, generationContext);
+                return testClassTagDecorator.CanDecorateFrom(tagName, generationContext);
             }
 
             public void DecorateFrom(string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
             {
-                testClassDecorator.DecorateFrom(tagName, generationContext);
+                testClassTagDecorator.DecorateFrom(tagName, generationContext);
             }
         }
 
@@ -57,22 +57,26 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         {
             if (objectContainer == null) throw new ArgumentNullException("objectContainer");
 
-            testClassDecorators = objectContainer.Resolve<IDictionary<string, ITestClassDecorator>>().OrderBy(item => item.Value.Priority)
-                .Select(item => new KeyValuePair<string, ITestMethodDecorator>(item.Key, new TestMethodClassDecoratorWrapper(item.Value))).ToList();
-            testMethodDecorators = objectContainer.Resolve<IDictionary<string, ITestMethodDecorator>>().OrderBy(item => item.Value.Priority).ToList();
+            testClassTagDecorators = ResolveDecorators<ITestClassTagDecorator>(objectContainer, d => new TestMethodClassDecoratorWrapper(d));
+            testMethodTagDecorators = ResolveDecorators<ITestMethodTagDecorator>(objectContainer, d => d);
+        }
+
+        private List<ITestMethodTagDecorator> ResolveDecorators<TDecorator>(IObjectContainer objectContainer, Func<TDecorator, ITestMethodTagDecorator> selector)
+        {
+            return objectContainer.Resolve<IDictionary<string, TDecorator>>().Select(item => selector(item.Value)).OrderBy(d => d.Priority).ToList();
         }
 
         public void DecorateTestClass(TestClassGenerationContext generationContext, out List<string> unprocessedTags)
         {
-            Decorate(testClassDecorators, generationContext, null, generationContext.Feature.Tags == null ? Enumerable.Empty<Tag>() : generationContext.Feature.Tags, out unprocessedTags);
+            Decorate(testClassTagDecorators, generationContext, null, generationContext.Feature.Tags == null ? Enumerable.Empty<Tag>() : generationContext.Feature.Tags, out unprocessedTags);
         }
 
         public void DecorateTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<Tag> tags, out List<string> unprocessedTags)
         {
-            Decorate(testMethodDecorators, generationContext, testMethod, tags, out unprocessedTags);
+            Decorate(testMethodTagDecorators, generationContext, testMethod, tags, out unprocessedTags);
         }
 
-        private void Decorate(List<KeyValuePair<string, ITestMethodDecorator>> decorators, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<Tag> tags, out List<string> unprocessedTags)
+        private void Decorate(List<ITestMethodTagDecorator> decorators, TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<Tag> tags, out List<string> unprocessedTags)
         {
             List<string> featureCategories = new List<string>();
 
@@ -81,11 +85,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
                 foreach (var tagName in tags.Select(t => t.Name))
                 {
                     bool removeProcessedTag = false;
-                    foreach (var decoratorItem in FindDecorators(decorators, tagName, generationContext, null))
+                    foreach (var decorator in FindDecorators(decorators, tagName, generationContext, null))
                     {
-                        decoratorItem.Value.DecorateFrom(tagName, generationContext, testMethod);
-                        removeProcessedTag |= decoratorItem.Value.RemoveProcessedTags;
-                        if (!decoratorItem.Value.ApplyOtherDecoratorsForProcessedTags)
+                        decorator.DecorateFrom(tagName, generationContext, testMethod);
+                        removeProcessedTag |= decorator.RemoveProcessedTags;
+                        if (!decorator.ApplyOtherDecoratorsForProcessedTags)
                             break;
                     }
 
@@ -97,9 +101,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             unprocessedTags = featureCategories;
         }
 
-        private IEnumerable<KeyValuePair<string, ITestMethodDecorator>> FindDecorators(List<KeyValuePair<string, ITestMethodDecorator>> decorators, string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        private IEnumerable<ITestMethodTagDecorator> FindDecorators(List<ITestMethodTagDecorator> decorators, string tagName, TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
-            return decorators.Where(item => item.Value.CanDecorateFrom(tagName, generationContext, testMethod));
+            return decorators.Where(decorator => decorator.CanDecorateFrom(tagName, generationContext, testMethod));
         }
     }
 }

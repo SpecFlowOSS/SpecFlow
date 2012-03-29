@@ -2,7 +2,7 @@ using System.CodeDom;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
-    public class IgnoreDecorator : ITestClassDecorator, ITestMethodDecorator
+    public class IgnoreDecorator : ITestClassTagDecorator, ITestMethodTagDecorator
     {
         private const string IGNORE_TAG = "ignore";
         private readonly ITagFilterMatcher tagFilterMatcher;
