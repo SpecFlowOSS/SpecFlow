@@ -52,6 +52,7 @@
     <Compile Include="Generator\IdeSingleFileGenerator.cs" />
     <Compile Include="Generator\IGeneratorServices.cs" />
     <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
+    <Compile Include="Install\FileAssociationDetector.cs" />
     <Compile Include="Options\IIntegrationOptionsProvider.cs" />
     <Compile Include="Options\IntegrationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
