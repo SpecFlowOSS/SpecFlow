@@ -114,7 +114,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             if (!(task is PingTask))
                 visualStudioTracer.Trace("Applying task on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
-            task.Apply();
+
+            try
+            {
+                task.Apply();
+            }
+            catch(Exception exception)
+            {
+                visualStudioTracer.Trace("Exception: " + exception, "GherkinProcessingScheduler");
+            }
         }
 
         private void ApplyTask(IEnumerable<IGherkinProcessingTask> tasks)

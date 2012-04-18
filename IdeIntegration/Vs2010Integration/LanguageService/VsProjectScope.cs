@@ -149,39 +149,56 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void Initialize()
         {
-            specFlowProjectConfiguration = LoadConfiguration();
-            gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
-
-            appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
-            appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
-            appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
-
-            var enableAnalysis = integrationOptionsProvider.GetOptions().EnableAnalysis;
-            if (enableAnalysis)
+            visualStudioTracer.Trace("Initializing...", "VsProjectScope");
+            try
             {
-                featureFilesTracker = new ProjectFeatureFilesTracker(this);
-                featureFilesTracker.Ready += FeatureFilesTrackerOnReady;
+                specFlowProjectConfiguration = LoadConfiguration();
+                gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
 
-                bindingFilesTracker = new BindingFilesTracker(this);
+                appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
+                appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
+                appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
-                stepSuggestionProvider = new VsStepSuggestionProvider(this);
-                stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
-                bindingMatchService = new BindingMatchService(stepSuggestionProvider);
+                var enableAnalysis = integrationOptionsProvider.GetOptions().EnableAnalysis;
+                if (enableAnalysis)
+                {
+                    featureFilesTracker = new ProjectFeatureFilesTracker(this);
+                    featureFilesTracker.Ready += FeatureFilesTrackerOnReady;
+
+                    bindingFilesTracker = new BindingFilesTracker(this);
+
+                    stepSuggestionProvider = new VsStepSuggestionProvider(this);
+                    stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
+                    bindingMatchService = new BindingMatchService(stepSuggestionProvider);
+                }
+                visualStudioTracer.Trace("Initialized", "VsProjectScope");
+                initialized = true;
+
+                if (enableAnalysis)
+                {
+                    visualStudioTracer.Trace("Starting analysis services...", "VsProjectScope");
+
+                    stepSuggestionProvider.Initialize();
+                    bindingFilesTracker.Initialize();
+                    featureFilesTracker.Initialize();
+
+                    LoadStepMap();
+
+                    bindingFilesTracker.Run();
+                    featureFilesTracker.Run();
+
+                    dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+
+                    visualStudioTracer.Trace("Analysis services started", "VsProjectScope");
+                }
+                else
+                {
+                    visualStudioTracer.Trace("Analysis services disabled", "VsProjectScope");
+                }
             }
-            initialized = true;
-
-            if (enableAnalysis)
+            catch(Exception exception)
             {
-                stepSuggestionProvider.Initialize();
-                bindingFilesTracker.Initialize();
-                featureFilesTracker.Initialize();
-
-                LoadStepMap();
-
-                bindingFilesTracker.Run();
-                featureFilesTracker.Run();
-
-                dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+                visualStudioTracer.Trace("Exception: " + exception, "VsProjectScope");
             }
         }
 
