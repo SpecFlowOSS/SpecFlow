@@ -187,12 +187,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static T GetOption<T>(DTE dte, string categoryName, string pageName, string optionName, T defaultValue = default(T))
         {
-            Properties properties = dte.Properties[categoryName, pageName];
-            if (properties == null)
-                return defaultValue;
-
             try
             {
+                Properties properties = dte.Properties[categoryName, pageName];
+                if (properties == null)
+                    return defaultValue;
+
                 Property property = properties.Item(optionName);
                 if (property == null)
                     return defaultValue;
