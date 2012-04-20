@@ -168,7 +168,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static string GetAssemblyName(this Project project)
         {
-            Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
+            var properties = project.Properties;
+            if (properties == null)
+                return null;
+            Property prop = properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
             return prop != null && prop.Value != null ? prop.Value.ToString() : null;
         }
 

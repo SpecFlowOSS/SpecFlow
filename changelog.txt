@@ -10,6 +10,9 @@ New Features:
 + VS2010: Cache analysis result for faster solution startup
 + VS2010: It can now be installed on machines used for SharePoint development
 
+Fixed issues:
++ VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely
+
 1.8.1 - 2012/3/1
 Fixed issue:
 + SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml.
