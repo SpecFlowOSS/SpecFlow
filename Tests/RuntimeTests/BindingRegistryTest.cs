@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private BindingRegistry CreateBindingRegistry()
         {
-            return new BindingRegistry(new Mock<IErrorProvider>().Object, new BindingFactory(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object));
+            return new BindingRegistry(new Mock<IErrorProvider>().Object, new BindingFactory(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object, new Mock<IStepDefinitionRegexCalculator>().Object));
         }
 
         /*        Steps that are feature scoped               */

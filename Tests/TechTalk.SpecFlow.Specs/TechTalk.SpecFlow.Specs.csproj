@@ -137,6 +137,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StepArgumentTransformations.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\StepDefinitionsWithoutRegex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepDefinitionsWithoutRegex.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\TaggedExamples.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -229,6 +234,10 @@
     <None Include="Features\StepArgumentTransformations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StepArgumentTransformations.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\StepDefinitionsWithoutRegex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepDefinitionsWithoutRegex.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\TaggedExamples.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

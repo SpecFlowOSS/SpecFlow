@@ -3,6 +3,7 @@ using System.Reflection;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -17,17 +18,13 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly RuntimeConfiguration runtimeConfiguration;
         private readonly IErrorProvider errorProvider;
+        private readonly IStepDefinitionRegexCalculator stepDefinitionRegexCalculator;
 
-        public BindingFactory(IObjectContainer container)
-        {
-            this.runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
-            this.errorProvider = container.Resolve<IErrorProvider>();
-        }
-
-        internal BindingFactory(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider)
+        internal BindingFactory(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, IStepDefinitionRegexCalculator stepDefinitionRegexCalculator)
         {
             this.runtimeConfiguration = runtimeConfiguration;
             this.errorProvider = errorProvider;
+            this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
         }
 
         public IHookBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope)
@@ -37,6 +34,8 @@ namespace TechTalk.SpecFlow.Bindings
 
         public StepDefinitionBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
         {
+            if (regexString == null)
+                regexString = stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, methodInfo);
             return new StepDefinitionBinding(runtimeConfiguration, errorProvider, type, regexString, methodInfo, bindingScope);
         }
 
