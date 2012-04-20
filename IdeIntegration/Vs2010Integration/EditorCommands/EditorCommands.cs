@@ -267,7 +267,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
         public bool CommentOrUncommentSelection(bool isCommentSelection)
         {
             var selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
-            var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            var selectionEndLine = GetSelectionEndLine(selectionStartLine);
 
             if (isCommentSelection)
             {
@@ -280,10 +280,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
             // Select the entirety of the lines that were just commented or uncommented, have to update start/end lines due to snapshot changes
             selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
-            selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            selectionEndLine = GetSelectionEndLine(selectionStartLine);
             textView.Selection.Select(new SnapshotSpan(selectionStartLine.Start, selectionEndLine.End), false);
 
             return true;
+        }
+
+        private ITextSnapshotLine GetSelectionEndLine(ITextSnapshotLine selectionStartLine)
+        {
+            var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            // if the selection ends exactly at the beginning of a new line (ie line select), we do not comment out the last line
+            if (!selectionStartLine.Equals(selectionEndLine) && selectionEndLine.Start.Equals(textView.Selection.End.Position))
+            {
+                selectionEndLine = selectionEndLine.Snapshot.GetLineFromLineNumber(selectionEndLine.LineNumber - 1);
+            }
+            return selectionEndLine;
         }
 
         private void UncommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)
