@@ -51,6 +51,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal class BindingFilesTracker : ProjectFilesTracker<BindingFileInfo>, IDisposable
     {
+        private static readonly string[] bindingFileExtensions = new[] {"cs", "vb" };
+
         private Dictionary<BindingAssemblyInfo, VsProjectFilesTracker> filesTracker;
         private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
 
@@ -76,7 +78,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private VsProjectFilesTracker CreateFilesTracker(BindingAssemblyInfo ai)
         {
-            return CreateFilesTracker(ai.Project, @"\.(cs|vb)$");
+            return CreateFilesTracker(ai.Project, @"\.(" + string.Join("|", bindingFileExtensions) + @")$");
         }
 
         protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
@@ -101,8 +103,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             try
             {
                 var extension = Path.GetExtension(projectItem.Name);
-                if (!".cs".Equals(extension, StringComparison.InvariantCultureIgnoreCase) &&
-                    !".vb".Equals(extension, StringComparison.InvariantCultureIgnoreCase))
+                if (!bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase)))
                     return false;
 
                 return VsxHelper.GetClasses(projectItem).Any(VsStepSuggestionBindingCollector.IsBindingClass);
