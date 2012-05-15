@@ -24,6 +24,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             return table.CreateInstance<TestRunSummary>();
         }
 
+        [Then(@"all tests should pass")]
+        public void ThenAllTestsShouldPass()
+        {
+            testExecutionResult.LastExecutionSummary.ShouldNotBeNull();
+            testExecutionResult.LastExecutionSummary.Succeeded.ShouldEqual(testExecutionResult.LastExecutionSummary.Total);
+        }
+
         [Then(@"the execution summary should contain")]
         public void ThenTheExecutionSummaryShouldContain(Table expectedSummary)
         {

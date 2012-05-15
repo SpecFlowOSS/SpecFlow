@@ -297,6 +297,61 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        public virtual void FMethodNameCanBeUsedAsARegex(string @case, string method, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("F# method name can be used as a regex", exampleTags);
+#line 142
+this.ScenarioSetup(scenarioInfo);
+#line 143
+ testRunner.Given("there is an external F# class library project \'ExternalSteps_FSharp\'");
+#line hidden
+#line 144
+ testRunner.And("the following step definition in the external library", string.Format("let [<When>] {0} = ()", method), ((TechTalk.SpecFlow.Table)(null)));
+#line 148
+ testRunner.And("there is a SpecFlow project with a reference to the external library");
+#line hidden
+#line 149
+ testRunner.And("a scenario \'Simple Scenario\' as", "When I do something really important", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 153
+ testRunner.And("the specflow configuration is", "<specFlow>\r\n<stepAssemblies>\r\n<stepAssembly assembly=\"ExternalSteps_FSharp\" />\r\n<" +
+                    "/stepAssemblies>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
+#line 161
+ testRunner.When("I execute the tests");
+#line 162
+ testRunner.Then("all tests should pass");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        public virtual void FMethodNameCanBeUsedAsARegex_Simple()
+        {
+            this.FMethodNameCanBeUsedAsARegex("simple", "``I do something really important``()", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        public virtual void FMethodNameCanBeUsedAsARegex_BasicRegexOps()
+        {
+            this.FMethodNameCanBeUsedAsARegex("basic regex ops", "``I do something .* important``()", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        public virtual void FMethodNameCanBeUsedAsARegex_Parameter()
+        {
+            this.FMethodNameCanBeUsedAsARegex("parameter", "``I do something (.*) important``(howMuch: string)", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        public virtual void FMethodNameCanBeUsedAsARegex_Non_RegexMethodName()
+        {
+            this.FMethodNameCanBeUsedAsARegex("non-regex method name", "When_I_do_something_really_important()", ((string[])(null)));
+        }
     }
 }
 #endregion

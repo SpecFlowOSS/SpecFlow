@@ -138,3 +138,32 @@ Scenario: Underscore in parameter name
 		 """
 	When I execute the tests
 	Then the binding method 'When_W_H_O_does_something' is executed
+
+Scenario Outline: F# method name can be used as a regex
+	Given there is an external F# class library project 'ExternalSteps_FSharp'
+	And the following step definition in the external library
+        """
+		let [<When>] <method> = ()
+        """
+	And there is a SpecFlow project with a reference to the external library
+	And a scenario 'Simple Scenario' as
+         """
+         When I do something really important
+         """
+	And the specflow configuration is
+        """
+		<specFlow>
+			<stepAssemblies>
+				<stepAssembly assembly="ExternalSteps_FSharp" />
+			</stepAssemblies>
+		</specFlow>
+        """
+	When I execute the tests
+	Then all tests should pass
+
+Examples: 
+	| case                  | method                                             |
+	| simple                | ``I do something really important``()              |
+	| basic regex ops       | ``I do something .* important``()                  |
+	| parameter             | ``I do something (.*) important``(howMuch: string) |
+	| non-regex method name | When_I_do_something_really_important()             |

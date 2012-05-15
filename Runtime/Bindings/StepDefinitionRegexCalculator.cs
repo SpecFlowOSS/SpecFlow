@@ -13,8 +13,16 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
     {
+        static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
+
         public string CalculateRegexFromMethod(BindingType bindingType, MethodInfo methodInfo)
         {
+            // if method name seems to contain regex, we use it as-is
+            if (nonIdentifierRe.Match(methodInfo.Name).Success)
+            {
+                return methodInfo.Name;
+            }
+
             string prefixToRemove = bindingType.ToString();
             string stepText = methodInfo.Name;
             if (stepText.StartsWith(prefixToRemove, StringComparison.CurrentCultureIgnoreCase))

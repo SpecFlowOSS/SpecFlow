@@ -77,6 +77,8 @@
     <Compile Include="Drivers\SpecFlowConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
+    <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
+    <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,7 +257,9 @@
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.fsproj" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj" />
   </ItemGroup>

@@ -44,6 +44,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             testExecutionResult.LastExecutionSummary = summary;
             testExecutionResult.ExecutionLog = File.ReadAllText(logFilePath);
 
+            Console.WriteLine(testExecutionResult.ExecutionLog);
+
             return summary;
         }
 
