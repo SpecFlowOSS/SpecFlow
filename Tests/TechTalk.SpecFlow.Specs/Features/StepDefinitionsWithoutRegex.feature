@@ -167,3 +167,38 @@ Examples:
 	| basic regex ops       | ``I do something .* important``()                  |
 	| parameter             | ``I do something (.*) important``(howMuch: string) |
 	| non-regex method name | When_I_do_something_really_important()             |
+
+Scenario Outline: Non-English keywords
+	The the localized prefixes are detected if the feature language or the binding culture is set in the config. 
+	In any case, the English prefixes and the prefix-less method names will always work.
+	Given there is a feature file in the project as
+		"""
+			Funktionalität: German
+			Szenario: Zwei Zahlen hinzufügen
+				<keyword> ich Knopf drücke
+		"""
+	And the following step definitions
+		 """
+			[Given]
+			public void <method prefix>ich_Knopf_drücke()
+			{}
+		 """
+	And the specflow configuration is
+         """
+		<specFlow>
+			<!-- the localized prefixes are detected if the 
+				 feature language or the binding culture is set in the config -->
+			<language feature="de-DE" /> 
+			<!--<bindingCulture name="de-DE" />-->
+		</specFlow>
+         """
+	When I execute the tests
+	Then the binding method '<method prefix>ich_Knopf_drücke' is executed
+
+Examples: 
+	| case                           | keyword     | method prefix |
+	| No prefix                      | Angenommen  |               |
+	| English prefix                 | Angenommen  | Given_        |
+	| Single word licalized prefix   | Angenommen  | Angenommen_   |
+	| Multiple word licalized prefix | Gegeben sei | Gegeben_sei_  |
+	| Mixed keyword variants         | Gegeben sei | Angenommen_   |

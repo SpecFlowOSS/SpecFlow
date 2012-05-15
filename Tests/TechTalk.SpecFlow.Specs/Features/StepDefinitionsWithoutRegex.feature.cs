@@ -352,6 +352,66 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.FMethodNameCanBeUsedAsARegex("non-regex method name", "When_I_do_something_really_important()", ((string[])(null)));
         }
+        
+        public virtual void Non_EnglishKeywords(string @case, string keyword, string methodPrefix, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-English keywords", exampleTags);
+#line 171
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 174
+ testRunner.Given("there is a feature file in the project as", string.Format("\tFunktionalität: German\r\n\tSzenario: Zwei Zahlen hinzufügen\r\n\t\t{0} ich Knopf drück" +
+                        "e", keyword), ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 180
+ testRunner.And("the following step definitions", string.Format("[Given]\r\npublic void {0}ich_Knopf_drücke()\r\n{{}}", methodPrefix), ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 186
+ testRunner.And("the specflow configuration is", "<specFlow>\r\n<!-- the localized prefixes are detected if the \r\nfeature language or" +
+                    " the binding culture is set in the config -->\r\n<language feature=\"de-DE\" /> \r\n<!" +
+                    "--<bindingCulture name=\"de-DE\" />-->\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
+#line 195
+ testRunner.When("I execute the tests");
+#line 196
+ testRunner.Then(string.Format("the binding method \'{0}ich_Knopf_drücke\' is executed", methodPrefix));
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Non-English keywords")]
+        public virtual void Non_EnglishKeywords_NoPrefix()
+        {
+            this.Non_EnglishKeywords("No prefix", "Angenommen", "", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Non-English keywords")]
+        public virtual void Non_EnglishKeywords_EnglishPrefix()
+        {
+            this.Non_EnglishKeywords("English prefix", "Angenommen", "Given_", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Non-English keywords")]
+        public virtual void Non_EnglishKeywords_SingleWordLicalizedPrefix()
+        {
+            this.Non_EnglishKeywords("Single word licalized prefix", "Angenommen", "Angenommen_", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Non-English keywords")]
+        public virtual void Non_EnglishKeywords_MultipleWordLicalizedPrefix()
+        {
+            this.Non_EnglishKeywords("Multiple word licalized prefix", "Gegeben sei", "Gegeben_sei_", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Non-English keywords")]
+        public virtual void Non_EnglishKeywords_MixedKeywordVariants()
+        {
+            this.Non_EnglishKeywords("Mixed keyword variants", "Gegeben sei", "Angenommen_", ((string[])(null)));
+        }
     }
 }
 #endregion

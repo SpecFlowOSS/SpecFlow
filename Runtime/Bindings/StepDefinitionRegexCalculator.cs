@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -13,8 +16,14 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
     {
-        static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
+        private readonly RuntimeConfiguration runtimeConfiguration;
 
+        public StepDefinitionRegexCalculator(RuntimeConfiguration runtimeConfiguration)
+        {
+            this.runtimeConfiguration = runtimeConfiguration;
+        }
+
+        static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
         public string CalculateRegexFromMethod(BindingType bindingType, MethodInfo methodInfo)
         {
             // if method name seems to contain regex, we use it as-is
@@ -23,10 +32,8 @@ namespace TechTalk.SpecFlow.Bindings
                 return methodInfo.Name;
             }
 
-            string prefixToRemove = bindingType.ToString();
             string stepText = methodInfo.Name;
-            if (stepText.StartsWith(prefixToRemove, StringComparison.CurrentCultureIgnoreCase))
-                stepText = stepText.Substring(prefixToRemove.Length).TrimStart('_', ' ');
+            stepText = RemoveStepPrefix(bindingType, stepText);
 
             var parameters = methodInfo.GetParameters();
 
@@ -45,9 +52,41 @@ namespace TechTalk.SpecFlow.Bindings
             reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, stepText.Length - processedPosition)));
             reBuilder.Append(@"\W*");
 
-//            throw new Exception("XXX" + reBuilder);
-
             return reBuilder.ToString();
+        }
+
+        private string RemoveStepPrefix(BindingType bindingType, string stepText)
+        {
+            var prefixesToRemove = GetPrefixesToRemove(bindingType);
+            foreach (var prefixToRemove in prefixesToRemove)
+            {
+                if (stepText.StartsWith(prefixToRemove, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    stepText = stepText.Substring(prefixToRemove.Length).TrimStart('_', ' ');
+                    break; // we only stip one prefix
+                }
+            }
+            return stepText;
+        }
+
+        private IEnumerable<string> GetPrefixesToRemove(BindingType bindingType)
+        {
+            yield return bindingType.ToString();
+
+            var cultureToSearch = runtimeConfiguration.BindingCulture ?? runtimeConfiguration.FeatureLanguage;
+
+            foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, bindingType))
+            {
+                if (keyword.Contains(' '))
+                {
+                    yield return keyword.Replace(" ", "_");
+                    yield return keyword.Replace(" ", "");
+                }
+                else
+                {
+                    yield return keyword;
+                }
+            }
         }
 
         private string CalculateParamRegex(ParameterInfo parameterInfo)

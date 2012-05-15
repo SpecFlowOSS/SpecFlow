@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Configuration
         private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
 
         //language settings
+        public CultureInfo FeatureLanguage { get; set; }
         public CultureInfo ToolLanguage { get; set; }
         public CultureInfo BindingCulture { get; set; }
 
@@ -44,6 +45,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public RuntimeConfiguration()
         {
+            FeatureLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
@@ -71,6 +73,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         private void UpdateFromQueryString()
         {
+            FeatureLanguage = GetCultureInfoFromQueryString("featureLanguage", FeatureLanguage);
             ToolLanguage = GetCultureInfoFromQueryString("toolLanguage", ToolLanguage);
 
             string providerName;
