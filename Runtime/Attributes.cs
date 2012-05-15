@@ -38,6 +38,11 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class GivenAttribute : StepDefinitionBaseAttribute
     {
+        public GivenAttribute() : this(null)
+        {
+        }
+
+
         public GivenAttribute(string regex)
             : base(regex, BindingType.Given)
         {
@@ -49,6 +54,10 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class WhenAttribute : StepDefinitionBaseAttribute
     {
+        public WhenAttribute() : this(null)
+        {
+        }
+
         public WhenAttribute(string regex)
             : base(regex, BindingType.When)
         {
@@ -60,6 +69,10 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class ThenAttribute : StepDefinitionBaseAttribute
     {
+        public ThenAttribute() : this(null)
+        {
+        }
+
         public ThenAttribute(string regex)
             : base(regex, BindingType.Then)
         {
@@ -71,6 +84,10 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class StepDefinitionAttribute : StepDefinitionBaseAttribute
     {
+        public StepDefinitionAttribute() : this(null)
+        {
+        }
+
         public StepDefinitionAttribute(string regex) : base(regex, new[] { BindingType.Given, BindingType.When, BindingType.Then })
         {
         }

@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
+            container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
 
             container.RegisterTypeAs<ContextManager, IContextManager>();
 

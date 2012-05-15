@@ -25,7 +25,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is an external class library project '(.*)'")]
         public void GivenThereIsAnExternalClassLibraryProject(string libraryName)
         {
+            GivenThereIsAnExternalClassLibraryProject("C#", libraryName);
+        }
+
+        [Given(@"there is an external (.+) class library project '(.*)'")]
+        public void GivenThereIsAnExternalClassLibraryProject(string language, string libraryName)
+        {
             inputProjectDriver.ProjectName = libraryName;
+            inputProjectDriver.Language = language;
         }
 
         [Given(@"the following step definition in the external library")]
@@ -34,8 +41,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             Given("the following step definition", stepDefinition);
         }
 
-        [Given(@"there is a SpecFlow project with a reference to the external library")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary()
+        [Given(@"there is a (.+) SpecFlow project with a reference to the external library")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string language)
         {
             var project = projectGenerator.GenerateProject(inputProjectDriver);
             projectCompiler.Compile(project);
@@ -44,10 +51,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             var savedLibPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(libName));
             File.Copy(libName, savedLibPath, true);
 
-            inputProjectDriver.DefaultBindingClass.OtherBindings.Clear();
-            inputProjectDriver.DefaultBindingClass.StepBindings.Clear();
+            inputProjectDriver.Reset();
             inputProjectDriver.ProjectName = "SpecFlow.TestProject";
+            inputProjectDriver.Language = language;
             inputProjectDriver.References.Add(savedLibPath);
+        }
+
+        [Given(@"there is a SpecFlow project with a reference to the external library")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary()
+        {
+            GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary("C#");
         }
     }
 }
