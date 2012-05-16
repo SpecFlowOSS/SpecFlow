@@ -144,6 +144,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                 replacements = new Dictionary<string, string>();
 
             replacements.Add("SpecFlowRoot", Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), "SpecFlow"));
+            replacements.Add("LibRoot", AssemblyFolderHelper.GetTestAssemblyFolder());
 
             string fileContent = templateManager.LoadTemplate(templateName, replacements);
 

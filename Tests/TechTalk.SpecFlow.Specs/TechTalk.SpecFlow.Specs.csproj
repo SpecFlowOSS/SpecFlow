@@ -267,6 +267,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
 xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y
+xcopy "$(SolutionDir)lib\Microsoft F#\*.*" $(TargetDir)FSharp\ /s /y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
