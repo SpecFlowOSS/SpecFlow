@@ -49,7 +49,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)lib\NuGet\NuGet.exe" pack "$(ProjectDir)specflow.nuspec" -o "$(TargetDir)"</PostBuildEvent>
+    <NuGetVersionSpec Condition="'$(SpecFlowPackageVersion)' != ''">-Version $(SpecFlowPackageVersion)</NuGetVersionSpec>
+    <PostBuildEvent>"$(SolutionDir)packages\NuGet.CommandLine.1.7.0\tools\NuGet.exe" pack "$(ProjectDir)specflow.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

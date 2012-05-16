@@ -89,7 +89,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)packages\NuGet.CommandLine.1.5.21005.9019\tools\NuGet.exe" pack "$(ProjectPath)" -Exclude "*to_be_removed.*" -Verbose -NoDefaultExcludes</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)packages\NuGet.CommandLine.1.7.0\tools\NuGet.exe" pack "$(ProjectPath)" -Exclude "*to_be_removed.*" -Verbose -NoDefaultExcludes</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>SpecFlow</id>
-    <version>1.8.1</version>
+    <version>1.0.0-alpha</version>
     <title>SpecFlow</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
@@ -15,9 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow bdd gherkin cucumber</tags>
   </metadata>
-  <!-- http://nuget.codeplex.com/wikipage?title=File%20Element%20Specification -->
   <files>
-
     <!-- common reference files -->
     <file src="..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net35" />
 
@@ -33,6 +31,5 @@
 
     <!-- license & version information -->
     <file src="..\..\Installer\SpecFlowBinPackage\bin\package\*.txt" target="" />
-
   </files>
 </package>

@@ -101,6 +101,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs.Sil
 		{ED351C5B-57FF-48C1-A7CB-D59C8B4469D7} = {ED351C5B-57FF-48C1-A7CB-D59C8B4469D7}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C4BDE8C-3363-4575-AAA4-E6D7AAA51C5B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
