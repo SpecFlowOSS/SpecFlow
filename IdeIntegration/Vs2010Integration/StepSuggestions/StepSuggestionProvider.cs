@@ -10,13 +10,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     {
         protected readonly INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory;
         protected readonly RegexDictionary<BoundStepSuggestions<TNativeSuggestionItem>> boundStepSuggestions;
-        private readonly Dictionary<BindingType, BoundStepSuggestions<TNativeSuggestionItem>> notMatchingSteps;
+        private readonly Dictionary<StepDefinitionType, BoundStepSuggestions<TNativeSuggestionItem>> notMatchingSteps;
 
         protected abstract IBindingMatchService BindingMatchService { get; }
 
-        public IEnumerable<TNativeSuggestionItem> GetNativeSuggestionItems(BindingType bindingType)
+        public IEnumerable<TNativeSuggestionItem> GetNativeSuggestionItems(StepDefinitionType stepDefinitionType)
         {
-            var suggestions = boundStepSuggestions.Where(s => s.BindingType == bindingType).Append(notMatchingSteps[bindingType]);
+            var suggestions = boundStepSuggestions.Where(s => s.StepDefinitionType == stepDefinitionType).Append(notMatchingSteps[stepDefinitionType]);
             return GetNativeSuggestionItems(suggestions);
         }
 
@@ -43,11 +43,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepSuggestionProvider(INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             boundStepSuggestions = new RegexDictionary<BoundStepSuggestions<TNativeSuggestionItem>>(item => item.StepBinding == null ? null : item.StepBinding.Regex);
-            notMatchingSteps = new Dictionary<BindingType, BoundStepSuggestions<TNativeSuggestionItem>>()
+            notMatchingSteps = new Dictionary<StepDefinitionType, BoundStepSuggestions<TNativeSuggestionItem>>()
                                     {
-                                        {BindingType.Given, new BoundStepSuggestions<TNativeSuggestionItem>(BindingType.Given, nativeSuggestionItemFactory)},
-                                        {BindingType.When, new BoundStepSuggestions<TNativeSuggestionItem>(BindingType.When, nativeSuggestionItemFactory)},
-                                        {BindingType.Then, new BoundStepSuggestions<TNativeSuggestionItem>(BindingType.Then, nativeSuggestionItemFactory)}
+                                        {StepDefinitionType.Given, new BoundStepSuggestions<TNativeSuggestionItem>(StepDefinitionType.Given, nativeSuggestionItemFactory)},
+                                        {StepDefinitionType.When, new BoundStepSuggestions<TNativeSuggestionItem>(StepDefinitionType.When, nativeSuggestionItemFactory)},
+                                        {StepDefinitionType.Then, new BoundStepSuggestions<TNativeSuggestionItem>(StepDefinitionType.Then, nativeSuggestionItemFactory)}
                                     };
             this.nativeSuggestionItemFactory = nativeSuggestionItemFactory;
         }
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
             var affectedSuggestions = new List<IBoundStepSuggestion<TNativeSuggestionItem>>(
                 boundStepSuggestions.GetRelatedItems(stepBinding.Regex).SelectMany(relatedItem => relatedItem.Suggestions).Where(s => s.Match(stepBinding, true, BindingMatchService)));
-            affectedSuggestions.AddRange(notMatchingSteps[item.BindingType].Suggestions.Where(s => s.Match(stepBinding, true, BindingMatchService)));
+            affectedSuggestions.AddRange(notMatchingSteps[item.StepDefinitionType].Suggestions.Where(s => s.Match(stepBinding, true, BindingMatchService)));
 
             foreach (var affectedSuggestion in affectedSuggestions)
                 RemoveBoundStepSuggestion(affectedSuggestion);
@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                 item.RemoveSuggestion(stepSuggestion);
                 if (!stepSuggestion.MatchGroups.Any())
                 {
-                    notMatchingSteps[item.BindingType].AddSuggestion(stepSuggestion);
+                    notMatchingSteps[item.StepDefinitionType].AddSuggestion(stepSuggestion);
                 }
             }
 
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public void AddStepInstance(StepInstance<TNativeSuggestionItem> stepInstance)
         {
             var matchingItems = GetMatchingBoundStepSuggestions(stepInstance);
-            AddStepSuggestionToMatchingItems(stepInstance.BindingType, matchingItems, item => item.AddSuggestion(stepInstance));
+            AddStepSuggestionToMatchingItems(stepInstance.StepDefinitionType, matchingItems, item => item.AddSuggestion(stepInstance));
         }
 
         private IEnumerable<BoundStepSuggestions<TNativeSuggestionItem>> GetMatchingBoundStepSuggestions(StepInstance stepInstance)
@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public void AddStepInstanceTemplate(StepInstanceTemplate<TNativeSuggestionItem> stepInstanceTemplate)
         {
             var matchingItems = GetMatchingBindings(stepInstanceTemplate); 
-            AddStepSuggestionToMatchingItems(stepInstanceTemplate.BindingType, matchingItems, 
+            AddStepSuggestionToMatchingItems(stepInstanceTemplate.StepDefinitionType, matchingItems, 
                 item => item.AddSuggestion(
                     new BoundInstanceTemplate<TNativeSuggestionItem>(
                         stepInstanceTemplate, 
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         private void RemoveStepInstanceTemplate(StepInstanceTemplate<TNativeSuggestionItem> stepInstanceTemplate)
         {
-            var matchingItems = GetMatchingBindings(stepInstanceTemplate).Append(notMatchingSteps[stepInstanceTemplate.BindingType]); 
+            var matchingItems = GetMatchingBindings(stepInstanceTemplate).Append(notMatchingSteps[stepInstanceTemplate.StepDefinitionType]); 
 
             var boundInstanceTemplates = matchingItems.SelectMany(item => item.Suggestions)
                 .OfType<BoundInstanceTemplate<TNativeSuggestionItem>>()
@@ -151,7 +151,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return boundStepSuggestions.GetPotentialItemsByPrefix(stepInstanceTemplate.StepPrefix).Where(it => stepInstanceTemplate.Match(it.StepBinding, true, BindingMatchService)); 
         }
 
-        private void AddStepSuggestionToMatchingItems(BindingType bindingType, IEnumerable<BoundStepSuggestions<TNativeSuggestionItem>> matchingItems, 
+        private void AddStepSuggestionToMatchingItems(StepDefinitionType stepDefinitionType, IEnumerable<BoundStepSuggestions<TNativeSuggestionItem>> matchingItems, 
             Action<BoundStepSuggestions<TNativeSuggestionItem>> addAction)
         {
             bool wasMatching = false;
@@ -163,7 +163,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
             if (!wasMatching)
             {
-                addAction(notMatchingSteps[bindingType]);
+                addAction(notMatchingSteps[stepDefinitionType]);
             }
         }
 

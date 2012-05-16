@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         public static string GetShortDisplayText(this IBindingMethod bindingMethod)
         {
-            return string.Format("{2}.{0}({1})", bindingMethod.Name, string.Join(", ", bindingMethod.Parameters.Select(p => p.Type.Name)), bindingMethod.Type.Name);
+            return string.Format("{2}.{0}({1})", bindingMethod.Name, string.Join(", ", bindingMethod.Parameters.Select(p => p.Type.Name).ToArray()), bindingMethod.Type.Name);
         }
 
         public static bool IsAssignableTo(this IBindingType baseType, Type type)
@@ -65,7 +65,8 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             if (params1 == null || params2 == null || params1.Count() != params2.Count())
                 return false;
 
-            return params1.Zip(params2, (p1, p2) => p1.ParamEquals(p2)).All(eq => eq);
+            return !params1.Where((t, i) => !t.ParamEquals(params2.ElementAt(i))).Any();
+            //TODO: use this in .NET4: return params1.Zip(params2, (p1, p2) => p1.ParamEquals(p2)).All(eq => eq);
         }
     }
 }

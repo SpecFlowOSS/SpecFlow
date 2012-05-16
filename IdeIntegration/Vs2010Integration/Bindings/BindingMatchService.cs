@@ -35,11 +35,11 @@ namespace TechTalk.SpecFlow.Bindings
             if (useRegexMatching && stepBinding.Regex != null && !(match = stepBinding.Regex.Match(stepInstance.Text)).Success)
                 return BindingMatchNew.NonMatching;
 
-            if (stepBinding.BindingType != stepInstance.BindingType)
+            if (stepBinding.StepDefinitionType != stepInstance.StepDefinitionType)
                 return BindingMatchNew.NonMatching;
 
             int scopeMatches = 0;
-            if (useScopeMatching && stepBinding.IsScoped && stepInstance.StepScope != null && !stepBinding.BindingScope.Match(stepInstance.StepScope, out scopeMatches))
+            if (useScopeMatching && stepBinding.IsScoped && stepInstance.StepContext != null && !stepBinding.BindingScope.Match(stepInstance.StepContext, out scopeMatches))
                 return BindingMatchNew.NonMatching;
 
             if (useParamMatching)

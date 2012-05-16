@@ -15,10 +15,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
-        public StepInstance(ScenarioStep step, StepScopeNew stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
-            : base((BindingType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepScope)
+        public StepInstance(ScenarioStep step, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
+            : base((StepDefinitionType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepContext)
         {
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, BindingType.ToString().Substring(0, 1), this);
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, StepDefinitionType.ToString().Substring(0, 1), this);
         }
 
         private const string stepParamIndent = "         ";

@@ -121,6 +121,14 @@
     <Compile Include="Bindings\IHookBinding.cs" />
     <Compile Include="Bindings\IScopedBinding.cs" />
     <Compile Include="Bindings\IStepDefinitionBinding.cs" />
+    <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
+    <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
+    <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
+    <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
+    <Compile Include="Bindings\Reflection\IBindingType.cs" />
+    <Compile Include="Bindings\Reflection\ReflectionBindingMethod.cs" />
+    <Compile Include="Bindings\Reflection\ReflectionBindingParameter.cs" />
+    <Compile Include="Bindings\Reflection\ReflectionBindingType.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\MethodBinding.cs" />
@@ -155,7 +163,7 @@
     <Compile Include="ErrorHandling\BindingException.cs" />
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingRegistry.cs" />
-    <Compile Include="Bindings\BindingType.cs" />
+    <Compile Include="Bindings\StepDefinitionType.cs" />
     <Compile Include="PlatformSpecific\ConfigurationSectionHandler.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />

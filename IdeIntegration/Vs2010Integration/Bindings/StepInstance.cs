@@ -7,21 +7,21 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class StepInstance
     {
-        public BindingType BindingType { get; private set; }
+        public StepDefinitionType StepDefinitionType { get; private set; }
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }
         public string Keyword { get; private set; }
         public string Text { get; private set; }
-        public StepScopeNew StepScope { get; private set; }
+        public StepContext StepContext { get; private set; }
         public string MultilineTextArgument { get; set; }
         public Table TableArgument { get; set; }
 
-        public StepInstance(BindingType bindingType, StepDefinitionKeyword stepDefinitionKeyword, string keyword, string stepText, StepScopeNew stepScope)
+        public StepInstance(StepDefinitionType stepDefinitionType, StepDefinitionKeyword stepDefinitionKeyword, string keyword, string stepText, StepContext stepContext)
         {
-            BindingType = bindingType;
+            StepDefinitionType = stepDefinitionType;
             StepDefinitionKeyword = stepDefinitionKeyword;
             Keyword = keyword;
             Text = stepText;
-            StepScope = stepScope;
+            StepContext = stepContext;
         }
     }
 }

@@ -24,17 +24,17 @@ namespace TechTalk.SpecFlow.Bindings
             return tag.Substring(1); // remove leading "@"
         }
 
-        public bool Match(StepScopeNew stepScope)
+        public bool Match(StepContext stepContext)
         {
             int dummy;
-            return Match(stepScope, out dummy);
+            return Match(stepContext, out dummy);
         }
 
         private readonly string[] emptyTagList = new string[0];
-        public bool Match(StepScopeNew stepScope, out int scopeMatches)
+        public bool Match(StepContext stepContext, out int scopeMatches)
         {
             scopeMatches = 0;
-            var tags = stepScope.Tags ?? emptyTagList;
+            var tags = stepContext.Tags ?? emptyTagList;
             if (Tag != null)
             {
                 if (!tags.Contains(Tag))
@@ -44,14 +44,14 @@ namespace TechTalk.SpecFlow.Bindings
             }
             if (FeatureTitle != null)
             {
-                if (!string.Equals(FeatureTitle, stepScope.FeatureTitle, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(FeatureTitle, stepContext.FeatureTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;
             }
             if (ScenarioTitle != null)
             {
-                if (!string.Equals(ScenarioTitle, stepScope.ScenarioTitle, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(ScenarioTitle, stepContext.ScenarioTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;

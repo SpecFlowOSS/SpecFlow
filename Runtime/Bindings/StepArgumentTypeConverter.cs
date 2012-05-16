@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         private bool CanConvert(StepTransformationBinding stepTransformationBinding, object value, Type typeToConvertTo)
         {
-            if (stepTransformationBinding.ReturnType != typeToConvertTo)
+            if (stepTransformationBinding.ReflectionReturnType != typeToConvertTo)
                 return false;
 
             if (stepTransformationBinding.Regex != null && value is string)

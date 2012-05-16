@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
@@ -59,6 +60,8 @@ namespace TechTalk.SpecFlow.Bindings
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
+                var bindingMethod = new ReflectionBindingMethod(method);
+
                 var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(StepDefinitionBaseAttribute));
                 if (scenarioStepAttrs != null)
                     foreach (StepDefinitionBaseAttribute scenarioStepAttr in scenarioStepAttrs)
@@ -106,7 +109,7 @@ namespace TechTalk.SpecFlow.Bindings
             ApplyForScope(method,
                           scope =>
                               {
-                                  var eventBinding = bindingFactory.CreateEventBinding(method, scope);
+                                  var eventBinding = bindingFactory.CreateEventBinding(new ReflectionBindingMethod(method), scope);
                                   GetEvents(hookAttr.Event).Add(eventBinding);
                               },
                           hookAttr.Tags == null
@@ -160,7 +163,7 @@ namespace TechTalk.SpecFlow.Bindings
         private void BuildStepBindingFromMethod(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr)
         {
             CheckStepBindingMethod(method);
-            ApplyForScope(method, scope => AddStepBinding(method, stepDefinitionBaseAttr, scope));
+            ApplyForScope(method, scope => AddStepBinding(new ReflectionBindingMethod(method), stepDefinitionBaseAttr, scope));
         }
 
         private BindingScope CreateScope(ScopeAttribute scopeAttr)
@@ -171,18 +174,18 @@ namespace TechTalk.SpecFlow.Bindings
             return new BindingScope(scopeAttr.Tag, scopeAttr.Feature, scopeAttr.Scenario);
         }
 
-        private void AddStepBinding(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr, BindingScope stepScope)
+        private void AddStepBinding(IBindingMethod bindingMethod, StepDefinitionBaseAttribute stepDefinitionBaseAttr, BindingScope stepScope)
         {
             foreach (var bindingType in stepDefinitionBaseAttr.Types)
             {
-                var stepBinding = bindingFactory.CreateStepBinding(bindingType, stepDefinitionBaseAttr.Regex, method, stepScope);
+                var stepBinding = bindingFactory.CreateStepBinding(bindingType, stepDefinitionBaseAttr.Regex, bindingMethod, stepScope);
                 stepBindings.Add(stepBinding);
             }
         }
 
         private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
         {
-            var stepTransformationBinding = bindingFactory.CreateStepArgumentTransformation(argumentTransformationAttribute.Regex, method);
+            var stepTransformationBinding = bindingFactory.CreateStepArgumentTransformation(argumentTransformationAttribute.Regex, new ReflectionBindingMethod(method));
 
             stepTransformations.Add(stepTransformationBinding);
         }

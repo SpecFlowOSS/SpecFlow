@@ -5,6 +5,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
@@ -53,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
         {
-            return new StepTransformationBinding(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object, regexString, transformMethod);
+            return new StepTransformationBinding(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object, regexString, new ReflectionBindingMethod(transformMethod));
         }
 
         [Test]
@@ -65,7 +66,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
-            var result = stepTransformationBinding.BindingAction.DynamicInvoke(contextManagerStub.Object, "xyz");
+            //var result = stepTransformationBinding.BindingAction.DynamicInvoke(contextManagerStub.Object, "xyz");
+            var result = stepTransformationBinding.InvokeAction(contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object);
             Assert.NotNull(result);
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));

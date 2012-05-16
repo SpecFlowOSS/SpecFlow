@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Media;
@@ -136,20 +137,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
 
-        private static StepScopeNew CreateStepScope(Feature feature, Scenario scenario)
+        private StepContext CreateStepScope(Feature feature, Scenario scenario)
         {
             var tags =
                 (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Concat(scenario.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScopeNew(feature.Title, scenario.Title, tags.ToArray());
+            return new StepContext(feature.Title, scenario.Title, tags.ToArray(), GetLanguage(feature));
         }
 
-        private static StepScopeNew CreateStepScope(Feature feature)
+        private StepContext CreateStepScope(Feature feature)
         {
             var tags = (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScopeNew(feature.Title, null, tags.ToArray());
+            return new StepContext(feature.Title, null, tags.ToArray(), GetLanguage(feature));
+        }
+
+        private CultureInfo GetLanguage(Feature feature)
+        {
+            var language = this.vsProjectScope.GherkinDialectServices.GetGherkinDialect(feature).CultureInfo;
+            return language;
         }
 
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)

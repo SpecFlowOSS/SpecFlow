@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -18,21 +19,35 @@ namespace TechTalk.SpecFlow.Bindings
         private readonly RuntimeConfiguration runtimeConfiguration;
         private readonly IErrorProvider errorProvider;
 
-        protected MethodBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo method)
+        protected MethodBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, IBindingMethod bindingMethod)
         {
             this.runtimeConfiguration = runtimeConfiguration;
             this.errorProvider = errorProvider;
 
-            BindingAction = CreateMethodDelegate(method);
-            MethodInfo = method;
-            ParameterTypes = method.GetParameters().Select(pi => pi.ParameterType).ToArray();
-            ReturnType = method.ReturnType;
+            BindingMethod = bindingMethod;
         }
 
-        public Delegate BindingAction { get; protected set; }
-        public MethodInfo MethodInfo { get; private set; }
-        public Type[] ParameterTypes { get; private set; }
-        public Type ReturnType { get; private set; }
+        private Delegate bindingAction;
+
+        public IBindingMethod BindingMethod { get; private set; }
+        public Type[] ParameterTypes { get { return AssertMethodInfo().GetParameters().Select(pi => pi.ParameterType).ToArray(); } }
+        public Type ReflectionReturnType { get { return AssertMethodInfo().ReturnType; } }
+
+        protected MethodInfo AssertMethodInfo()
+        {
+            var reflectionBindingMethod = BindingMethod as ReflectionBindingMethod;
+            if (reflectionBindingMethod == null)
+                throw new SpecFlowException("The binding method cannot be used for reflection: " + BindingMethod);
+            return reflectionBindingMethod.MethodInfo;
+        }
+
+        private void EnsureBindingAction()
+        {
+            if (bindingAction != null)
+                return;
+
+            bindingAction = CreateMethodDelegate(AssertMethodInfo());
+        }
 
         protected Delegate CreateMethodDelegate(MethodInfo method)
         {
@@ -91,6 +106,9 @@ namespace TechTalk.SpecFlow.Bindings
 
         public object InvokeAction(IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
         {
+            EnsureBindingAction();
+            var methofInfo = AssertMethodInfo();
+
             try
             {
                 object result;
@@ -102,13 +120,13 @@ namespace TechTalk.SpecFlow.Bindings
                     if (arguments != null)
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
-                    result = BindingAction.DynamicInvoke(invokeArgs);
+                    result = bindingAction.DynamicInvoke(invokeArgs);
                     stopwatch.Stop();
                 }
 
                 if (runtimeConfiguration.TraceTimings && stopwatch.Elapsed >= runtimeConfiguration.MinTracedDuration)
                 {
-                    testTracer.TraceDuration(stopwatch.Elapsed, MethodInfo, arguments);
+                    testTracer.TraceDuration(stopwatch.Elapsed, methofInfo, arguments);
                 }
 
                 duration = stopwatch.Elapsed;
@@ -116,12 +134,12 @@ namespace TechTalk.SpecFlow.Bindings
             }
             catch (ArgumentException ex)
             {
-                throw errorProvider.GetCallError(MethodInfo, ex);
+                throw errorProvider.GetCallError(methofInfo, ex);
             }
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(MethodInfo));
+                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(methofInfo));
                 throw ex;
             }
         }

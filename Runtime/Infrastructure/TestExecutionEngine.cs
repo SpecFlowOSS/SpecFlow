@@ -421,16 +421,16 @@ namespace TechTalk.SpecFlow.Infrastructure
         #region Given-When-Then
         public void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
+            StepDefinitionType stepDefinitionType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
-                                          : (BindingType) keyword;
-            ExecuteStep(new StepArgs(bindingType, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                                          : (StepDefinitionType) keyword;
+            ExecuteStep(new StepArgs(stepDefinitionType, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
         }
 
-        private BindingType GetCurrentBindingType()
+        private StepDefinitionType GetCurrentBindingType()
         {
             ScenarioBlock currentScenarioBlock = contextManager.ScenarioContext.CurrentScenarioBlock;
-            return currentScenarioBlock == ScenarioBlock.None ? BindingType.Given : currentScenarioBlock.ToBindingType();
+            return currentScenarioBlock == ScenarioBlock.None ? StepDefinitionType.Given : currentScenarioBlock.ToBindingType();
         }
 
         #endregion

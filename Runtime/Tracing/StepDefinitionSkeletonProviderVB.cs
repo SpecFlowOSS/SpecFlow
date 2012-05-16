@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Tracing
 
             // in VB "When" and "Then" are language keywords - use the fully qualified namespace
             string namespaceAddition = "TechTalk.SpecFlow.";
-            if (stepArgs.Type == BindingType.Given)
+            if (stepArgs.Type == StepDefinitionType.Given)
             {
                 namespaceAddition = "";
             }
@@ -29,7 +29,7 @@ Public Sub {1}{3}({4})
     ScenarioContext.Current.Pending()
 End Sub",
                 stepArgs.Type,
-                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.FeatureInfo.Language, stepArgs.Type).ToIdentifier(),
+                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.Type).ToIdentifier(),
                 EscapeRegex(stepArgs.Text),
                 stepArgs.Text.ToIdentifier(),
                 string.Join(", ", extraArgs.ToArray()),

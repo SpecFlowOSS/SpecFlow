@@ -34,14 +34,14 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static readonly Dictionary<CultureInfo, KeywordTranslation> translationCache = new Dictionary<CultureInfo, KeywordTranslation>();
 
-        public static string GetDefaultKeyword(CultureInfo language, BindingType bindingType)
+        public static string GetDefaultKeyword(CultureInfo language, StepDefinitionType stepDefinitionType)
         {
-            return GetDefaultKeyword(language, bindingType.ToStepDefinitionKeyword());
+            return GetDefaultKeyword(language, stepDefinitionType.ToStepDefinitionKeyword());
         }
 
-        public static string[] GetKeywords(CultureInfo language, BindingType bindingType)
+        public static string[] GetKeywords(CultureInfo language, StepDefinitionType stepDefinitionType)
         {
-            return GetKeywords(language, bindingType.ToStepDefinitionKeyword());
+            return GetKeywords(language, stepDefinitionType.ToStepDefinitionKeyword());
         }
 
         public static string[] GetKeywords(CultureInfo language, StepDefinitionKeyword keyword)

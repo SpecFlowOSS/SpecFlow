@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
@@ -12,8 +13,8 @@ namespace TechTalk.SpecFlow.Bindings
         public BindingScope BindingScope { get; private set; }
         public bool IsScoped { get { return BindingScope != null; } }
 
-        public HookBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, MethodInfo methodInfo, BindingScope bindingScope)
-            : base(runtimeConfiguration, errorProvider, methodInfo)
+        public HookBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : base(runtimeConfiguration, errorProvider, bindingMethod)
         {
             BindingScope = bindingScope;
         }

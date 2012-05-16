@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     public interface IStepSuggestion<out TNativeSuggestionItem>
     {
         TNativeSuggestionItem NativeSuggestionItem { get; }
-        BindingType BindingType { get; }
+        StepDefinitionType StepDefinitionType { get; }
     }
 
     public interface IBoundStepSuggestion<TNativeSuggestionItem> : IStepSuggestion<TNativeSuggestionItem>

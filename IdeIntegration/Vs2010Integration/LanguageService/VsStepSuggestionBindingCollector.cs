@@ -137,9 +137,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private IEnumerable<StepBindingNew> GetStepDefinitionsFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingScopeNew bindingScope)
         {
             var normalStepDefinition =
-                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Given, bindingScope) ??
-                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.When, bindingScope) ??
-                GetBingingFromAttribute(codeAttribute, codeFunction, BindingType.Then, bindingScope);
+                GetBingingFromAttribute(codeAttribute, codeFunction, StepDefinitionType.Given, bindingScope) ??
+                GetBingingFromAttribute(codeAttribute, codeFunction, StepDefinitionType.When, bindingScope) ??
+                GetBingingFromAttribute(codeAttribute, codeFunction, StepDefinitionType.Then, bindingScope);
             if (normalStepDefinition != null)
             {
                 yield return normalStepDefinition;
@@ -148,18 +148,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (IsGeneralStepDefinition(codeAttribute))
             {
-                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.Given, bindingScope);
-                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.When, bindingScope);
-                yield return CreateStepBinding(codeAttribute, codeFunction, BindingType.Then, bindingScope);
+                yield return CreateStepBinding(codeAttribute, codeFunction, StepDefinitionType.Given, bindingScope);
+                yield return CreateStepBinding(codeAttribute, codeFunction, StepDefinitionType.When, bindingScope);
+                yield return CreateStepBinding(codeAttribute, codeFunction, StepDefinitionType.Then, bindingScope);
             }
         }
 
-        private StepBindingNew GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, BindingType bindingType, BindingScopeNew bindingScope)
+        private StepBindingNew GetBingingFromAttribute(CodeAttribute2 codeAttribute, CodeFunction codeFunction, StepDefinitionType stepDefinitionType, BindingScopeNew bindingScope)
         {
             try
             {
-                if (codeAttribute.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", bindingType)))
-                    return CreateStepBinding(codeAttribute, codeFunction, bindingType, bindingScope);
+                if (codeAttribute.FullName.Equals(string.Format("TechTalk.SpecFlow.{0}Attribute", stepDefinitionType)))
+                    return CreateStepBinding(codeAttribute, codeFunction, stepDefinitionType, bindingScope);
                 return null;
             }
             catch(Exception)
@@ -180,7 +180,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private StepBindingNew CreateStepBinding(CodeAttribute2 attr, CodeFunction codeFunction, BindingType bindingType, BindingScopeNew bindingScope)
+        private StepBindingNew CreateStepBinding(CodeAttribute2 attr, CodeFunction codeFunction, StepDefinitionType stepDefinitionType, BindingScopeNew bindingScope)
         {
             try
             {
@@ -193,7 +193,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 var regexString = VsxHelper.ParseCodeStringValue(regexArg.Value, regexArg.Language);
                 var regex = new Regex("^" + regexString + "$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-                return new StepBindingNew(bindingMethod, bindingType, regex, bindingScope);
+                return new StepBindingNew(bindingMethod, stepDefinitionType, regex, bindingScope);
             }
             catch(Exception)
             {

@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Tracing
         {
             StringBuilder result = new StringBuilder();
             result.Append(stepArgs.OriginalStepKeyword ?? 
-                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.FeatureInfo.Language, stepArgs.StepDefinitionKeyword));
+                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionKeyword));
             result.Append(" ");
             result.AppendLine(stepArgs.Text);
 
