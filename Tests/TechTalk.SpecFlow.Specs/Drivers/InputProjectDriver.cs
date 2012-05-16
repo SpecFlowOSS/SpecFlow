@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -64,6 +65,19 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                         return "fs";
                     default:
                         throw new NotSupportedException("Language not supported: " + Language);
+                }
+            }
+        }
+
+        public IEnumerable<string> FrameworkAssembliesToCopy
+        {
+            get
+            {
+                switch (Language.ToLower())
+                {
+                    case "f#":
+                        yield return "FSharp.Core.dll";
+                        break;
                 }
             }
         }
