@@ -39,14 +39,14 @@ namespace TechTalk.SpecFlow.Bindings
 
                 scopeMatches++;
             }
-            if (FeatureTitle != null && stepContext.FeatureTitle != null)
+            if (FeatureTitle != null)
             {
                 if (!string.Equals(FeatureTitle, stepContext.FeatureTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;
             }
-            if (ScenarioTitle != null && stepContext.ScenarioTitle != null)
+            if (ScenarioTitle != null)
             {
                 if (!string.Equals(ScenarioTitle, stepContext.ScenarioTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;

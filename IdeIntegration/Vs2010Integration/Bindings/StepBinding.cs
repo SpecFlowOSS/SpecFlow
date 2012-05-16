@@ -11,10 +11,10 @@ namespace TechTalk.SpecFlow.Bindings
         public StepDefinitionType StepDefinitionType { get; private set; }
         public Regex Regex { get; private set; }
 
-        public BindingScopeNew BindingScope { get; private set; }
+        public BindingScope BindingScope { get; private set; }
         public bool IsScoped { get { return BindingScope != null; } }
 
-        public StepBindingNew(IBindingMethod method, StepDefinitionType stepDefinitionType, Regex regex, BindingScopeNew bindingScope)
+        public StepBindingNew(IBindingMethod method, StepDefinitionType stepDefinitionType, Regex regex, BindingScope bindingScope)
         {
             Method = method;
             StepDefinitionType = stepDefinitionType;
