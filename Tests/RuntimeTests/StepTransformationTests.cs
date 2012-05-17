@@ -54,6 +54,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
         }
 
+        private StepTransformationBinding CreateStepTransformationBinding(string regexString, IBindingMethod transformMethod)
+        {
+            return new StepTransformationBinding(regexString, transformMethod);
+        }
+
         private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
         {
             return new StepTransformationBinding(regexString, new ReflectionBindingMethod(transformMethod));
@@ -81,14 +86,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
             UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"user (\w+)", transformMethod));
+            var transformMethod = new ReflectionBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
+            var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
+            bindingRegistryStub.Object.StepTransformations.Add(stepTransformationBinding);
+            TimeSpan duration;
+            var resultUser = new User();
+            methodBindingInvokerStub.Setup(i => i.InvokeBinding(stepTransformationBinding, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration))
+                .Returns(resultUser);
 
             var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
 
             var result = stepArgumentTypeConverter.Convert("user xyz", typeof(User), new CultureInfo("en-US"));
-            Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
-            Assert.That(((User)result).Name, Is.EqualTo("xyz"));
+            Assert.That(result, Is.EqualTo(resultUser));
         }
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
@@ -99,22 +108,27 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldUseStepArgumentTransformationToConvertTable()
         {
-            UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUsers");
-            bindingRegistryStub.Object.StepTransformations.Add(CreateStepTransformationBinding(@"", transformMethod));
-
-            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
-
             var table = new Table("Name");
             table.AddRow("Tom");
             table.AddRow("Dick");
             table.AddRow("Harry");
+            
+            UserCreator stepTransformationInstance = new UserCreator();
+            var transformMethod = new ReflectionBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
+            var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+            bindingRegistryStub.Object.StepTransformations.Add(stepTransformationBinding);
+            TimeSpan duration;
+            var resultUsers = new User[3];
+            methodBindingInvokerStub.Setup(i => i.InvokeBinding(stepTransformationBinding, It.IsAny<IContextManager>(), new object[] { table }, It.IsAny<ITestTracer>(), out duration))
+                .Returns(resultUsers);
+
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+
 
             var result = stepArgumentTypeConverter.Convert(table, typeof(IEnumerable<User>), new CultureInfo("en-US"));
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<IEnumerable<User>>());
-            Assert.That(((IEnumerable<User>)result).Count(), Is.EqualTo(3));
+            Assert.That(result, Is.EqualTo(resultUsers));
         }
 
 
