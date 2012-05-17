@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.textView = textView;
         }
 
-        private IBindingMatchService GetBindingMatchService()
+        private IStepDefinitionMatchService GetBindingMatchService()
         {
             var bindingMatchService = languageService.ProjectScope.BindingMatchService;
             if (bindingMatchService == null)
@@ -68,17 +68,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 return true;
             }
 
-            IEnumerable<IStepDefinitionBinding> candidatingBindings;
-            var binding = bindingMatchService.GetBestMatchingBinding(step, out candidatingBindings);
+            List<BindingMatch> candidatingMatches;
+            StepDefinitionAmbiguityReason ambiguityReason;
+            var match = bindingMatchService.GetBestMatch(step, out ambiguityReason, out candidatingMatches);
+            var binding = match.StepBinding;
 
-            if (binding == null)
+            if (!match.Success)
             {
-                if (candidatingBindings.Any())
+                if (candidatingMatches.Any())
                 {
-                    string bindingsText = string.Join(Environment.NewLine, candidatingBindings.Select(b => b.Method.GetShortDisplayText()));
+                    string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.StepBinding.Method.GetShortDisplayText()));
                     MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
                         + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
-                    binding = candidatingBindings.First();
+                    binding = candidatingMatches.First().StepBinding;
                 }
                 else
                 {

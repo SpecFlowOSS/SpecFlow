@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Bindings;
 
@@ -62,9 +63,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
-            return bindingMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
+            return stepDefinitionMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
         private Mock<ITestTracer> testTracerStub;
-        private Mock<IStepDefinitionMatcher> stepDefinitionMatcherStub;
+        private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
         private Mock<IBindingInvoker> methodBindingInvokerMock;
         private Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> skeletonProviders;
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
-            stepDefinitionMatcherStub = new Mock<IStepDefinitionMatcher>();
+            stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
             methodBindingInvokerMock = new Mock<IBindingInvoker>();
 
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
@@ -88,8 +88,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var stepDefStub = new Mock<IStepDefinitionBinding>();
             stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
 
-            stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepInstance>())).Returns((StepInstance sa) =>
-                      new List<BindingMatch> { new BindingMatch(stepDefStub.Object, 0, new string[0], sa.StepContext) });
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), out ambiguityReason, out candidatingMatches))
+                //.GetMatches(It.IsAny<StepInstance>()))
+                .Returns(//(StepInstance sa) => 
+                    new BindingMatch(stepDefStub.Object, 0, new string[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
 
             return stepDefStub;
         }

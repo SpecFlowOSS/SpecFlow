@@ -11,29 +11,8 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IStepArgumentTypeConverter
     {
-        object Convert(object value, Type typeToConvertTo, CultureInfo cultureInfo);
-        bool CanConvert(object value, Type typeToConvertTo, CultureInfo cultureInfo);
-    }
-
-    public static class StepArgumentTypeConverterExtensions
-    {
-        //TODO: this method can be eliminated once IStepArgumentTypeConverter switches to IBindingType
-        public static bool CanConvert(this IStepArgumentTypeConverter converter, object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
-        {
-            if (!(typeToConvertTo is RuntimeBindingType))
-                throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
-
-            return converter.CanConvert(value, ((RuntimeBindingType)typeToConvertTo).Type, cultureInfo);
-        }
-
-        //TODO: this method can be eliminated once IStepArgumentTypeConverter switches to IBindingType
-        public static object Convert(this IStepArgumentTypeConverter converter, object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
-        {
-            if (!(typeToConvertTo is RuntimeBindingType))
-                throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
-
-            return converter.Convert(value, ((RuntimeBindingType)typeToConvertTo).Type, cultureInfo);
-        }
+        object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
+        bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
     }
 
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
@@ -51,7 +30,7 @@ namespace TechTalk.SpecFlow.Bindings
             this.bindingInvoker = bindingInvoker;
         }
 
-        private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, Type typeToConvertTo, bool traceWarning)
+        private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, IBindingType typeToConvertTo, bool traceWarning)
         {
             var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
             if (stepTransformations.Length > 1 && traceWarning)
@@ -62,7 +41,7 @@ namespace TechTalk.SpecFlow.Bindings
             return stepTransformations.Length > 0 ? stepTransformations[0] : null;
         }
 
-        public object Convert(object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (value == null) throw new ArgumentNullException("value");
 
@@ -98,7 +77,7 @@ namespace TechTalk.SpecFlow.Bindings
                 .ToArray();
         }
 
-        public bool CanConvert(object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (value == null) throw new ArgumentNullException("value");
 
@@ -112,7 +91,7 @@ namespace TechTalk.SpecFlow.Bindings
             return CanConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
-        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, Type typeToConvertTo)
+        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, IBindingType typeToConvertTo)
         {
             if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
                 return false;
@@ -120,6 +99,14 @@ namespace TechTalk.SpecFlow.Bindings
             if (stepTransformationBinding.Regex != null && value is string)
                 return stepTransformationBinding.Regex.IsMatch((string) value);
             return true;
+        }
+
+        private object ConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
+        {
+            if (!(typeToConvertTo is RuntimeBindingType))
+                throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
+
+            return ConvertSimple(((RuntimeBindingType) typeToConvertTo).Type, value, cultureInfo);
         }
 
         private object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
@@ -136,7 +123,7 @@ namespace TechTalk.SpecFlow.Bindings
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }
 
-        public bool CanConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
+        public bool CanConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             try
             {

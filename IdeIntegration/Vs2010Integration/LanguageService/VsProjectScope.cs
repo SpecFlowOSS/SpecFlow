@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Generator;
@@ -39,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private ProjectFeatureFilesTracker featureFilesTracker = null;
         private BindingFilesTracker bindingFilesTracker = null;
         private VsStepSuggestionProvider stepSuggestionProvider = null;
-        private IBindingMatchService bindingMatchService = null;
+        private IStepDefinitionMatchService stepDefinitionMatchService = null;
 
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration
         {
@@ -86,12 +87,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public IBindingMatchService BindingMatchService
+        public IStepDefinitionMatchService BindingMatchService
         {
             get
             {
                 EnsureInitialized();
-                return bindingMatchService;
+                return stepDefinitionMatchService;
             }
         }
 
@@ -169,7 +170,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                     stepSuggestionProvider = new VsStepSuggestionProvider(this);
                     stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
-                    bindingMatchService = new BindingMatchService(stepSuggestionProvider);
+                    stepDefinitionMatchService = new BindingMatchService(stepSuggestionProvider);
                 }
                 visualStudioTracer.Trace("Initialized", "VsProjectScope");
                 initialized = true;

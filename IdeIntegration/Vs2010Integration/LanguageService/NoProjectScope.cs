@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
@@ -34,7 +35,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return null; }
         }
 
-        public IBindingMatchService BindingMatchService
+        public IStepDefinitionMatchService BindingMatchService
         {
             get { return null; }
         }

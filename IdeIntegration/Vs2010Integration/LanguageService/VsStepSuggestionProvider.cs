@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.VisualStudio.Language.Intellisense;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
@@ -104,7 +105,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             set { /*nop*/ }
         }
 
-        protected override IBindingMatchService BindingMatchService
+        protected override IStepDefinitionMatchService BindingMatchService
         {
             get { return vsProjectScope.BindingMatchService; }
         }

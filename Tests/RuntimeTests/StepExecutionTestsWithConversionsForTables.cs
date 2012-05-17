@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -40,9 +41,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var user = new User();
 
             // return false unless its a User
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
-            StepArgumentTypeConverterStub.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
 
             bindingInstance.Expect(b => b.SingleTable(user));
             MockRepository.ReplayAll();
@@ -63,9 +64,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var user = new User();
 
             // return false unless its a User
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
-            StepArgumentTypeConverterStub.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
 
             var multiLineArg = "multi-line arg";
             bindingInstance.Expect(b => b.MultilineArgumentAndTable(multiLineArg, user));
@@ -89,9 +90,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // return false unless its a User
             // must also stub CanConvert & Convert for the string argument as we've introduced a parameter
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert(table, typeof(User), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter(table, typeof(User))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
-            StepArgumentTypeConverterStub.Stub(c => c.Convert(table, typeof(User), FeatureLanguage)).Return(user);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter(table, typeof(User))).Return(user);
 
             var multiLineArg = "multi-line arg";
             bindingInstance.Expect(b => b.ParameterMultilineArgumentAndTable(argumentValue, multiLineArg, user));

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Bindings;
 
@@ -27,7 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
         }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -35,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (suggestions.Count == 0)
                 return false;
 
-            return suggestions.Any(i => i.Match(binding, true, bindingMatchService));
+            return suggestions.Any(i => i.Match(binding, true, stepDefinitionMatchService));
         }
     }
 
@@ -49,7 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepDefinitionType StepDefinitionType { get; private set; }
         internal string StepPrefix { get; private set; }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -57,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (instances.Count == 0)
                 return false;
 
-            return instances.Any(i => i.Match(binding, true, bindingMatchService));
+            return instances.Any(i => i.Match(binding, true, stepDefinitionMatchService));
         }
 
         static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");

@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         GherkinProcessingScheduler GherkinProcessingScheduler { get; }
         SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; }
         VsStepSuggestionProvider StepSuggestionProvider { get; }
-        IBindingMatchService BindingMatchService { get; }
+        IStepDefinitionMatchService BindingMatchService { get; }
         IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider { get; }
         IIntegrationOptionsProvider IntegrationOptionsProvider { get; }
         IGeneratorServices GeneratorServices { get; }

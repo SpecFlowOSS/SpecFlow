@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         protected readonly RegexDictionary<BoundStepSuggestions<TNativeSuggestionItem>> boundStepSuggestions;
         private readonly Dictionary<StepDefinitionType, BoundStepSuggestions<TNativeSuggestionItem>> notMatchingSteps;
 
-        protected abstract IBindingMatchService BindingMatchService { get; }
+        protected abstract IStepDefinitionMatchService BindingMatchService { get; }
 
         public IEnumerable<TNativeSuggestionItem> GetNativeSuggestionItems(StepDefinitionType stepDefinitionType)
         {

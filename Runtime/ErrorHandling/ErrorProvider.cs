@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
         string GetMethodText(IBindingMethod method);
         Exception GetCallError(IBindingMethod method, Exception ex);
         Exception GetParameterCountError(BindingMatch match, int expectedParameterCount);
-        Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepInstance stepInstance);
+        Exception GetAmbiguousMatchError(List<BindingMatch> matches, StepInstance stepInstance);
         Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepInstance stepInstance);
         Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance);
         MissingStepDefinitionException GetMissingStepDefinitionError();
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     GetMethodText(match.StepBinding.Method), expectedParameterCount));
         }
 
-        public Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepInstance stepInstance)
+        public Exception GetAmbiguousMatchError(List<BindingMatch> matches, StepInstance stepInstance)
         {
             string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(

@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
-        private readonly IStepDefinitionMatcher stepDefinitionMatcher;
+        private readonly IStepDefinitionMatchService stepDefinitionMatchService;
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
         private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
@@ -34,11 +34,11 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher,
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.errorProvider = errorProvider;
-            this.stepDefinitionMatcher = stepDefinitionMatcher;
+            //this.stepDefinitionMatcher = stepDefinitionMatcher;
             this.bindingInvoker = bindingInvoker;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.contextManager = contextManager;
@@ -52,6 +52,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
 
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
+
+            this.stepDefinitionMatchService = stepDefinitionMatchService;
         }
 
         public FeatureContext FeatureContext
@@ -322,42 +324,26 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private BindingMatch GetStepMatch(StepInstance stepInstance)
         {
-            List<BindingMatch> matches = stepDefinitionMatcher.GetMatches(stepInstance);
+            List<BindingMatch> candidatingMatches;
+            StepDefinitionAmbiguityReason ambiguityReason;
+            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, out ambiguityReason, out candidatingMatches);
 
-            if (matches.Count == 0)
+            if (match.Success)
+                return match;
+
+            if (candidatingMatches.Any())
             {
-                // there were either no regex match or it was filtered out by the param/scope matching
-                // to provide better error message for the param matching error, we re-run 
-                // the matching without param check
-
-                List<BindingMatch> matchesWithoutScopeCheck = stepDefinitionMatcher.GetMatchesWithoutScopeCheck(stepInstance);
-
-                if (matchesWithoutScopeCheck.Count == 0)
-                {
-                    List<BindingMatch> matchesWithoutParamCheck = stepDefinitionMatcher.GetMatchesWithoutParamCheck(stepInstance);
-                    if (matchesWithoutParamCheck.Count == 1)
-                    {
-                        // no ambiguouity, but param error -> execute will find it out
-                        return matchesWithoutParamCheck[0];
-                    }
-                    if (matchesWithoutParamCheck.Count > 1)
-                    {
-                        // ambiguouity, because of param error
-                        throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepInstance);
-                    }
-                }
-
-                testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
-                contextManager.ScenarioContext.MissingSteps.Add(
-                    currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance));
-                throw errorProvider.GetMissingStepDefinitionError();
+                if (ambiguityReason == StepDefinitionAmbiguityReason.AmbiguousSteps)
+                    throw errorProvider.GetAmbiguousMatchError(candidatingMatches, stepInstance);
+                
+                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguouity, because of param error
+                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
-            if (matches.Count > 1)
-            {
-                if (runtimeConfiguration.DetectAmbiguousMatches)
-                    throw errorProvider.GetAmbiguousMatchError(matches, stepInstance);
-            }
-            return matches[0];
+
+            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, candidatingMatches);
+            contextManager.ScenarioContext.MissingSteps.Add(
+                currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance));
+            throw errorProvider.GetMissingStepDefinitionError();
         }
 
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
