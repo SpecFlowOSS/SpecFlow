@@ -167,9 +167,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public IEnumerable<StepDefinitionBinding> GetConsideredBindings(string stepText)
+        public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null)
         {
-            return boundStepSuggestions.GetMatchingItems(stepText).Select(it => it.StepBinding);
+            return boundStepSuggestions.GetMatchingItems(stepText).Select(it => it.StepBinding).Where(sd => sd.StepDefinitionType == stepDefinitionType);
         }
     }
 }

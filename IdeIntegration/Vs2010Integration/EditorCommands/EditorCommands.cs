@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 return true;
             }
 
-            IEnumerable<StepDefinitionBinding> candidatingBindings;
+            IEnumerable<IStepDefinitionBinding> candidatingBindings;
             var binding = bindingMatchService.GetBestMatchingBinding(step, out candidatingBindings);
 
             if (binding == null)

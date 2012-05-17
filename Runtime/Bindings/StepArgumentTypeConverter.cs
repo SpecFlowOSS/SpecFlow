@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -40,22 +39,21 @@ namespace TechTalk.SpecFlow.Bindings
     public class StepArgumentTypeConverter : IStepArgumentTypeConverter
     {
         private readonly ITestTracer testTracer;
+        private readonly IBindingRegistry bindingRegistry;
         private readonly IContextManager contextManager;
         private readonly IBindingInvoker bindingInvoker;
 
         public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IBindingInvoker bindingInvoker)
         {
             this.testTracer = testTracer;
+            this.bindingRegistry = bindingRegistry;
             this.contextManager = contextManager;
             this.bindingInvoker = bindingInvoker;
-            StepTransformations = bindingRegistry.StepTransformations ?? new List<IStepArgumentTransformationBinding>();
         }
-
-        public ICollection<IStepArgumentTransformationBinding> StepTransformations { get; private set; }
 
         private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, Type typeToConvertTo, bool traceWarning)
         {
-            var stepTransformations = StepTransformations.Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
+            var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
             if (stepTransformations.Length > 1 && traceWarning)
             {
                 testTracer.TraceWarning(string.Format("Multiple step transformation matches to the input ({0}, target type: {1}). We use the first.", value, typeToConvertTo));

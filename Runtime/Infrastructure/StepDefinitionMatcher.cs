@@ -30,8 +30,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public List<BindingMatch> GetMatches(StepArgs stepArgs)
         {
-            var matches = bindingRegistry
-                .Where(b => b.StepDefinitionType == stepArgs.Type)
+            var matches = bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text)
                 .Select(binding => Match(binding, stepArgs, true, true))
                 .Where(match => match != null)
                 .ToList();
@@ -54,26 +53,24 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.Where(b => b.StepDefinitionType == stepArgs.Type).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
         }
 
         public List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.Where(b => b.StepDefinitionType == stepArgs.Type).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
         }
 
-        private static readonly object[] emptyExtraArgs = new object[0];
-        private object[] CalculateExtraArgs(StepArgs stepArgs)
+        private object[] CalculateArguments(Match match, StepArgs stepArgs)
         {
-            if (stepArgs.MultilineTextArgument == null && stepArgs.TableArgument == null)
-                return emptyExtraArgs;
-
-            var extraArgsList = new List<object>();
+            var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            var arguments = regexArgs.Cast<object>().ToList();
             if (stepArgs.MultilineTextArgument != null)
-                extraArgsList.Add(stepArgs.MultilineTextArgument);
+                arguments.Add(stepArgs.MultilineTextArgument);
             if (stepArgs.TableArgument != null)
-                extraArgsList.Add(stepArgs.TableArgument);
-            return extraArgsList.ToArray();
+                arguments.Add(stepArgs.TableArgument);
+
+            return arguments.ToArray();
         }
 
         private bool CanConvertArg(object value, IBindingType typeToConvertTo)
@@ -99,19 +96,21 @@ namespace TechTalk.SpecFlow.Infrastructure
                     return null;
             }
 
-            var bindingMatch = new BindingMatch(stepDefinitionBinding, match, CalculateExtraArgs(stepArgs), stepArgs, scopeMatches);
+            var bindingMatch = new BindingMatch(stepDefinitionBinding, scopeMatches, CalculateArguments(match, stepArgs), stepArgs.StepContext);
 
             if (useParamMatching)
             {
-                // check if the regex + extra arguments match to the binding method parameters
+                var arguments = bindingMatch.Arguments;
                 var bindingParameters = stepDefinitionBinding.Method.Parameters.ToArray();
-                if (bindingMatch.Arguments.Length != bindingParameters.Length)
-                    return null;
+
+                // check if the regex + extra arguments match to the binding method parameters
+                if (arguments.Length != bindingParameters.Length)
+                    return null;//BindingMatch.NonMatching;
 
                 // Check if regex & extra arguments can be converted to the method parameters
-                if (bindingMatch.Arguments.Where(
-                    (arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type)).Any())
-                    return null;
+                //if (arguments.Zip(bindingParameters, (arg, parameter) => CanConvertArg(arg, parameter.Type)).Any(canConvert => !canConvert))
+                if (arguments.Where((arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type)).Any())
+                    return null;//BindingMatch.NonMatching;
             }
             return bindingMatch;
         }

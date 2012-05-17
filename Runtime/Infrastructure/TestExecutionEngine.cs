@@ -28,17 +28,19 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepDefinitionMatcher stepDefinitionMatcher;
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
+        private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker)
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.errorProvider = errorProvider;
             this.stepDefinitionMatcher = stepDefinitionMatcher;
             this.bindingInvoker = bindingInvoker;
+            this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -66,8 +68,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             foreach (Assembly assembly in bindingAssemblies)
             {
-                bindingRegistry.BuildBindingsFromAssembly(assembly);
+                bindingRegistryBuilder.BuildBindingsFromAssembly(bindingRegistry, assembly);
             }
+            bindingRegistry.Ready = true;
 
             OnTestRunnerStart();
 #if !SILVERLIGHT
@@ -235,7 +238,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in bindingRegistry.GetEvents(bindingEvent))
+            foreach (IHookBinding eventBinding in bindingRegistry.GetHooks(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
@@ -368,7 +371,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 if (stepErrorHandlers != null)
                 {
-                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepArgs.StepContext, ex);
+                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepContext, ex);
                     foreach (var stepErrorHandler in stepErrorHandlers)
                     {
                         stepErrorHandler.OnStepFailure(this, stepFailureEventArgs);

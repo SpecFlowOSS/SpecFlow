@@ -26,9 +26,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void ShouldFindExampleConverter()
         {
             BindingRegistry registry = CreateBindingRegistry();
-            registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            registry.BuildBindingsFromAssembly(registry, Assembly.GetExecutingAssembly());
+            registry.Ready = true;
 
-            Assert.AreEqual(1, registry.StepTransformations.Where(s => s.Regex != null && s.Regex.Match("BindingRegistryTests").Success && s.Regex.Match("").Success == false).Count());
+            Assert.AreEqual(1, registry.GetStepTransformations().Where(s => s.Regex != null && s.Regex.Match("BindingRegistryTests").Success && s.Regex.Match("").Success == false).Count());
         }
 
         private BindingRegistry CreateBindingRegistry()
@@ -64,13 +65,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void ShouldFindScopedExampleConverter()
         {
             BindingRegistry registry = CreateBindingRegistry();
-            registry.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            registry.BuildBindingsFromAssembly(registry, Assembly.GetExecutingAssembly());
+            registry.Ready = true;
 
             Assert.AreEqual(2,
-                registry.Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped).Count());
+                registry.GetConsideredStepDefinitions(StepDefinitionType.Then, null).Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped).Count());
 
             Assert.AreEqual(0,
-                registry.Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped == false).Count());
+                registry.GetConsideredStepDefinitions(StepDefinitionType.Then, null).Where(s => s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped == false).Count());
         }
     }
 }

@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistryNew
+    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistry
     {
         private bool featureFilesPopulated = false;
         private bool bindingsPopulated = false;
@@ -98,9 +98,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return bindingsPopulated; }
         }
 
-        bool IBindingRegistryNew.Ready
+        bool IBindingRegistry.Ready
         {
             get { return BindingsPopulated; }
+            set { /*nop*/ }
         }
 
         protected override IBindingMatchService BindingMatchService
@@ -203,6 +204,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 lock(this)
                 {
                     doReady = !readyInvoked;
+                    readyInvoked = true;
                 }
 
                 if (doReady)
@@ -276,6 +278,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
             }
+        }
+
+        public IEnumerable<IHookBinding> GetHooks(BindingEvent bindingEvent)
+        {
+            return Enumerable.Empty<IHookBinding>(); //not used in VS
+        }
+
+        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
+        {
+            return Enumerable.Empty<IStepArgumentTransformationBinding>(); //not used in VS
         }
 
         public void Dispose()

@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -22,21 +22,30 @@ namespace TechTalk.SpecFlow.Bindings
         StepEnd
     }
 
-    public interface IBindingRegistry : IEnumerable<IStepDefinitionBinding>
+    public interface IRuntimeBindingRegistryBuilder
     {
-        void BuildBindingsFromAssembly(Assembly assembly);
-        List<IHookBinding> GetEvents(BindingEvent bindingEvent);
-        ICollection<IStepArgumentTransformationBinding> StepTransformations { get; }
+        void BuildBindingsFromAssembly(IBindingRegistry bindingRegistry, Assembly assembly);
     }
 
-    internal class BindingRegistry : IBindingRegistry
+    public interface IBindingRegistry
+    {
+        bool Ready { get; set; }
+
+        IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null);
+        IEnumerable<IHookBinding> GetHooks(BindingEvent bindingEvent);
+        IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations();
+    }
+
+    internal class BindingRegistry : IBindingRegistry, IRuntimeBindingRegistryBuilder
     {
         private readonly IErrorProvider errorProvider;
         private readonly IBindingFactory bindingFactory;
 
-        private readonly List<IStepDefinitionBinding> stepBindings = new List<IStepDefinitionBinding>();
+        private readonly List<IStepDefinitionBinding> stepDefinitions = new List<IStepDefinitionBinding>();
         private readonly List<IStepArgumentTransformationBinding> stepTransformations = new List<IStepArgumentTransformationBinding>();
         private readonly Dictionary<BindingEvent, List<IHookBinding>> eventBindings = new Dictionary<BindingEvent, List<IHookBinding>>();
+
+        public bool Ready { get; set; }
 
         public BindingRegistry(IErrorProvider errorProvider, IBindingFactory bindingFactory)
         {
@@ -44,8 +53,10 @@ namespace TechTalk.SpecFlow.Bindings
             this.bindingFactory = bindingFactory;
         }
 
-        public void BuildBindingsFromAssembly(Assembly assembly)
+        public void BuildBindingsFromAssembly(IBindingRegistry bindingRegistry, Assembly assembly)
         {
+            Debug.Assert(bindingRegistry == this);
+
             foreach (Type type in assembly.GetTypes())
             {
                 BindingAttribute bindingAttr = (BindingAttribute)Attribute.GetCustomAttribute(type, typeof (BindingAttribute));
@@ -54,6 +65,12 @@ namespace TechTalk.SpecFlow.Bindings
 
                 BuildBindingsFromType(type);
             }
+        }
+
+        public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText)
+        {
+            //TODO: later optimize to return step definitions that has a chance to match to stepText
+            return stepDefinitions.Where(sd => sd.StepDefinitionType == stepDefinitionType);
         }
 
         internal void BuildBindingsFromType(Type type)
@@ -83,7 +100,7 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        public List<IHookBinding> GetEvents(BindingEvent bindingEvent)
+        private List<IHookBinding> GetHookList(BindingEvent bindingEvent)
         {
             List<IHookBinding> list;
             if (!eventBindings.TryGetValue(bindingEvent, out list))
@@ -95,9 +112,14 @@ namespace TechTalk.SpecFlow.Bindings
             return list;
         }
 
-        public ICollection<IStepArgumentTransformationBinding> StepTransformations 
-        { 
-            get { return stepTransformations; }
+        public IEnumerable<IHookBinding> GetHooks(BindingEvent bindingEvent)
+        {
+            return GetHookList(bindingEvent);
+        }
+
+        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
+        {
+            return stepTransformations;
         }
 
         private void BuildEventBindingFromMethod(MethodInfo method, HookAttribute hookAttr)
@@ -108,7 +130,7 @@ namespace TechTalk.SpecFlow.Bindings
                           scope =>
                               {
                                   var eventBinding = bindingFactory.CreateEventBinding(new RuntimeBindingMethod(method), scope);
-                                  GetEvents(hookAttr.Event).Add(eventBinding);
+                                  GetHookList(hookAttr.Event).Add(eventBinding);
                               },
                           hookAttr.Tags == null
                               ? null
@@ -177,7 +199,7 @@ namespace TechTalk.SpecFlow.Bindings
             foreach (var bindingType in stepDefinitionBaseAttr.Types)
             {
                 var stepBinding = bindingFactory.CreateStepBinding(bindingType, stepDefinitionBaseAttr.Regex, bindingMethod, stepScope);
-                stepBindings.Add(stepBinding);
+                stepDefinitions.Add(stepBinding);
             }
         }
 
@@ -191,16 +213,6 @@ namespace TechTalk.SpecFlow.Bindings
         private void CheckStepBindingMethod(MethodInfo method)
         {
             //TODO: check parameters, etc.
-        }
-
-        public IEnumerator<IStepDefinitionBinding> GetEnumerator()
-        {
-            return stepBindings.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ScenarioContext scenarioContext;
         private RuntimeConfiguration runtimeConfiguration;
         private Mock<IBindingRegistry> bindingRegistryStub;
+        private Mock<IRuntimeBindingRegistryBuilder> runtimeBindingRegistryBuilderStub;
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
         private Mock<ITestTracer> testTracerStub;
@@ -46,11 +47,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
 
+            runtimeBindingRegistryBuilderStub = new Mock<IRuntimeBindingRegistryBuilder>();
+
             bindingRegistryStub = new Mock<IBindingRegistry>();
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.StepStart)).Returns(beforeStepEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.StepEnd)).Returns(afterStepEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.BlockStart)).Returns(beforeScenarioBlockEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.BlockEnd)).Returns(afterScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.StepStart)).Returns(beforeStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.StepEnd)).Returns(afterStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.BlockStart)).Returns(beforeScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.BlockEnd)).Returns(afterScenarioBlockEvents);
 
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();
@@ -75,7 +78,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
-                methodBindingInvokerMock.Object);
+                methodBindingInvokerMock.Object, 
+                runtimeBindingRegistryBuilderStub.Object);
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
@@ -85,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
 
             stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepArgs>())).Returns((StepArgs sa) =>
-                      new List<BindingMatch> { new BindingMatch(stepDefStub.Object, sa, new string[0], new string[0], 0) });
+                      new List<BindingMatch> { new BindingMatch(stepDefStub.Object, 0, new string[0], sa.StepContext) });
 
             return stepDefStub;
         }
