@@ -2,13 +2,13 @@ using System.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
-    public class ReflectionBindingParameter : IBindingParameter
+    public class RuntimeBindingParameter : IBindingParameter
     {
         private readonly ParameterInfo parameterInfo;
 
         public IBindingType Type
         {
-            get { return new ReflectionBindingType(parameterInfo.ParameterType); }
+            get { return new RuntimeBindingType(parameterInfo.ParameterType); }
         }
 
         public string ParameterName
@@ -16,9 +16,14 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             get { return parameterInfo.Name; }
         }
 
-        public ReflectionBindingParameter(ParameterInfo parameterInfo)
+        public RuntimeBindingParameter(ParameterInfo parameterInfo)
         {
             this.parameterInfo = parameterInfo;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", ParameterName, Type);
         }
     }
 }

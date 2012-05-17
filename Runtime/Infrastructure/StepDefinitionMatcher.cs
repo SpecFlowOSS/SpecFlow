@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -45,7 +46,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (matches.Count > 1)
             {
                 // we remove duplicate maches for the same method (take the first from each)
-                matches = matches.GroupBy(m => m.StepBinding.MethodInfo, (methodInfo, methodMatches) => methodMatches.First()).ToList();
+                matches = matches.GroupBy(m => m.StepBinding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance).ToList();
             }
 
             return matches;
@@ -75,18 +76,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             return extraArgsList.ToArray();
         }
 
-        private bool CanConvertArg(object value, Type typeToConvertTo)
+        private bool CanConvertArg(object value, IBindingType typeToConvertTo)
         {
-            Debug.Assert(value != null);
-            Debug.Assert(typeToConvertTo != null);
-
-            if (value.GetType().IsAssignableFrom(typeToConvertTo))
+            if (typeToConvertTo.IsAssignableTo(value.GetType()))
                 return true;
 
             return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, contextManager.FeatureContext.BindingCulture);
         }
 
-        private BindingMatch Match(StepDefinitionBinding stepDefinitionBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)
+        private BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)
         {
             Match match = stepDefinitionBinding.Regex.Match(stepArgs.Text);
 
@@ -106,12 +104,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (useParamMatching)
             {
                 // check if the regex + extra arguments match to the binding method parameters
-                if (bindingMatch.Arguments.Length != stepDefinitionBinding.ParameterTypes.Length)
+                var bindingParameters = stepDefinitionBinding.Method.Parameters.ToArray();
+                if (bindingMatch.Arguments.Length != bindingParameters.Length)
                     return null;
 
                 // Check if regex & extra arguments can be converted to the method parameters
                 if (bindingMatch.Arguments.Where(
-                    (arg, argIndex) => !CanConvertArg(arg, stepDefinitionBinding.ParameterTypes[argIndex])).Any())
+                    (arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type)).Any())
                     return null;
             }
             return bindingMatch;

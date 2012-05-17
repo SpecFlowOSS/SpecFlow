@@ -13,12 +13,6 @@ namespace TechTalk.SpecFlow.Bindings
         public BindingScope BindingScope { get; private set; }
         public bool IsScoped { get { return BindingScope != null; } }
 
-#if SILVERLIGHT
-        private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
-#else
-        private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
-#endif
-
         public StepDefinitionBinding(StepDefinitionType stepDefinitionType, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
             : base(bindingMethod)
         {
@@ -28,13 +22,8 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         public StepDefinitionBinding(StepDefinitionType stepDefinitionType, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
-            : this(stepDefinitionType, new Regex("^" + regexString + "$", RegexOptions), bindingMethod, bindingScope)
+            : this(stepDefinitionType, RegexFactory.Create(regexString), bindingMethod, bindingScope)
         {
-        }
-
-        public MethodInfo MethodInfo
-        {
-            get { return AssertMethodInfo(); }
         }
     }
 }

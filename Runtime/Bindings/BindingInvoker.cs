@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -81,7 +82,7 @@ namespace TechTalk.SpecFlow.Bindings
             if (methodBinding == null)
                 throw new SpecFlowException("The binding method cannot be used for reflection: " + binding);
 
-            methodInfo = methodBinding.AssertMethodInfo();
+            methodInfo = methodBinding.Method.AssertMethodInfo();
 
             if (methodBinding.cachedBindingDelegate == null)
             {

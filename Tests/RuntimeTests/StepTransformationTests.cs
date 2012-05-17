@@ -50,18 +50,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var scenarioContext = new ScenarioContext(null, null, null);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
 
-            List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
+            List<IStepArgumentTransformationBinding> stepTransformations = new List<IStepArgumentTransformationBinding>();
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
         }
 
-        private StepTransformationBinding CreateStepTransformationBinding(string regexString, IBindingMethod transformMethod)
+        private IStepArgumentTransformationBinding CreateStepTransformationBinding(string regexString, IBindingMethod transformMethod)
         {
-            return new StepTransformationBinding(regexString, transformMethod);
+            return new StepArgumentTransformationBinding(regexString, transformMethod);
         }
 
-        private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
+        private IStepArgumentTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
         {
-            return new StepTransformationBinding(regexString, new ReflectionBindingMethod(transformMethod));
+            return new StepArgumentTransformationBinding(regexString, new RuntimeBindingMethod(transformMethod));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
-            StepTransformationBinding stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
+            var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
             UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = new ReflectionBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
+            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
             bindingRegistryStub.Object.StepTransformations.Add(stepTransformationBinding);
             TimeSpan duration;
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             table.AddRow("Harry");
             
             UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = new ReflectionBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
+            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
             bindingRegistryStub.Object.StepTransformations.Add(stepTransformationBinding);
             TimeSpan duration;

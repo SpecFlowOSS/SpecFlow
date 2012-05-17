@@ -185,9 +185,6 @@
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingMatchService.cs" />
     <Compile Include="Bindings\IBindingRegistryNew.cs" />
-    <Compile Include="Bindings\Reflection\BindingMethod.cs" />
-    <Compile Include="Bindings\Reflection\BindingParameter.cs" />
-    <Compile Include="Bindings\Reflection\BindingType.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
@@ -380,7 +377,9 @@
       <Visible>false</Visible>
     </VSCTIncludePath>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Bindings\Reflection\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />-->
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />

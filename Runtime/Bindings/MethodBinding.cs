@@ -12,23 +12,13 @@ namespace TechTalk.SpecFlow.Bindings
 
     public abstract class MethodBinding : IBinding
     {
+        public IBindingMethod Method { get; private set; }
+
         protected MethodBinding(IBindingMethod bindingMethod)
         {
             Method = bindingMethod;
         }
 
-        public IBindingMethod Method { get; private set; }
-
-        public Type[] ParameterTypes { get { return AssertMethodInfo().GetParameters().Select(pi => pi.ParameterType).ToArray(); } }
-        public Type ReflectionReturnType { get { return AssertMethodInfo().ReturnType; } }
-
         internal Delegate cachedBindingDelegate;
-        internal protected MethodInfo AssertMethodInfo()
-        {
-            var reflectionBindingMethod = Method as ReflectionBindingMethod;
-            if (reflectionBindingMethod == null)
-                throw new SpecFlowException("The binding method cannot be used for reflection: " + Method);
-            return reflectionBindingMethod.MethodInfo;
-        }
     }
 }

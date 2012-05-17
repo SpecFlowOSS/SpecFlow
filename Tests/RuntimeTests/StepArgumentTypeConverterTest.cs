@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             Mock<IBindingRegistry> bindingRegistryStub = new Mock<IBindingRegistry>();
-            List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
+            List<IStepArgumentTransformationBinding> stepTransformations = new List<IStepArgumentTransformationBinding>();
             bindingRegistryStub.Setup(br => br.StepTransformations).Returns(stepTransformations);
 
             _stepArgumentTypeConverter = new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, new Mock<IContextManager>().Object, methodBindingInvokerStub.Object);

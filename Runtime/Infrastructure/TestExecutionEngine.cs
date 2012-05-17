@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -397,22 +398,23 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
-            if (match.Arguments.Length != match.StepBinding.ParameterTypes.Length)
+            var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
+            if (match.Arguments.Length != bindingParameters.Length)
                 throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
             var arguments = match.Arguments.Select(
-                (arg, argIndex) => ConvertArg(arg, match.StepBinding.ParameterTypes[argIndex]))
+                (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
                 .ToArray();
 
             return arguments;
         }
 
-        private object ConvertArg(object value, Type typeToConvertTo)
+        private object ConvertArg(object value, IBindingType typeToConvertTo)
         {
             Debug.Assert(value != null);
             Debug.Assert(typeToConvertTo != null);
 
-            if (value.GetType().IsAssignableFrom(typeToConvertTo))
+            if (typeToConvertTo.IsAssignableTo(value.GetType()))
                 return value;
 
             return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);

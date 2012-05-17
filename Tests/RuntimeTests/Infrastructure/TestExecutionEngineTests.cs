@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
@@ -79,7 +80,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
         {
+            var methodStub = new Mock<IBindingMethod>();
             var stepDefStub = new Mock<IStepDefinitionBinding>();
+            stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
+
             stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepArgs>())).Returns((StepArgs sa) =>
                       new List<BindingMatch> { new BindingMatch(stepDefStub.Object, sa, new string[0], new string[0], 0) });
 

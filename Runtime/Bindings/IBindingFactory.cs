@@ -9,8 +9,8 @@ namespace TechTalk.SpecFlow.Bindings
     public interface IBindingFactory
     {
         IHookBinding CreateEventBinding(IBindingMethod bindingMethod, BindingScope bindingScope);
-        StepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope);
-        StepTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod);
+        IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope);
+        IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod);
     }
 
     public class BindingFactory : IBindingFactory
@@ -27,16 +27,16 @@ namespace TechTalk.SpecFlow.Bindings
             return new HookBinding(bindingMethod, bindingScope);
         }
 
-        public StepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
+        public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
         {
             if (regexString == null)
                 regexString = stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
             return new StepDefinitionBinding(type, regexString, bindingMethod, bindingScope);
         }
 
-        public StepTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod)
+        public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod)
         {
-            return new StepTransformationBinding(regexString, bindingMethod);
+            return new StepArgumentTransformationBinding(regexString, bindingMethod);
         }
     }
 }
