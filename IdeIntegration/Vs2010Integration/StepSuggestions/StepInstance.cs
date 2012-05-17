@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             return bindingMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }

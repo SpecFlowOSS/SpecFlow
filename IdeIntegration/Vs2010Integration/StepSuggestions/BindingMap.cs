@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     {
         public string FileName { get; set; }
         public DateTime TimeStamp { get; set; }
-        public List<StepBindingNew> StepDefinitions { get; set; }
+        public List<StepDefinitionBinding> StepDefinitions { get; set; }
     }
 
     public class FeatureSteps

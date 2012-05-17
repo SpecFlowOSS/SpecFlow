@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
     {
-        public StepDefinitionType Type { get; private set; }
+        public StepDefinitionType StepDefinitionType { get; private set; }
         public Regex Regex { get; private set; }
 
         public BindingScope BindingScope { get; private set; }
@@ -19,16 +19,16 @@ namespace TechTalk.SpecFlow.Bindings
         private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
 #endif
 
-        public StepDefinitionBinding(StepDefinitionType type, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
+        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
             : base(bindingMethod)
         {
-            Type = type;
+            StepDefinitionType = stepDefinitionType;
             Regex = regex;
             BindingScope = bindingScope;
         }
 
-        public StepDefinitionBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
-            : this(type, new Regex("^" + regexString + "$", RegexOptions), bindingMethod, bindingScope)
+        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : this(stepDefinitionType, new Regex("^" + regexString + "$", RegexOptions), bindingMethod, bindingScope)
         {
         }
 

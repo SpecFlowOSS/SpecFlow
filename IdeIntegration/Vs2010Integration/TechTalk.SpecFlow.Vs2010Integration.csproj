@@ -188,7 +188,6 @@
     <Compile Include="Bindings\Reflection\BindingMethod.cs" />
     <Compile Include="Bindings\Reflection\BindingParameter.cs" />
     <Compile Include="Bindings\Reflection\BindingType.cs" />
-    <Compile Include="Bindings\StepBinding.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />

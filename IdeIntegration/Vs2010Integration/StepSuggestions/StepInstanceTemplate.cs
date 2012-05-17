@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
         }
 
-        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepDefinitionType StepDefinitionType { get; private set; }
         internal string StepPrefix { get; private set; }
 
-        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;

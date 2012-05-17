@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public List<BindingMatch> GetMatches(StepArgs stepArgs)
         {
             var matches = bindingRegistry
-                .Where(b => b.Type == stepArgs.Type)
+                .Where(b => b.StepDefinitionType == stepArgs.Type)
                 .Select(binding => Match(binding, stepArgs, true, true))
                 .Where(match => match != null)
                 .ToList();
@@ -53,12 +53,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
+            return bindingRegistry.Where(b => b.StepDefinitionType == stepArgs.Type).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
         }
 
         public List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.Where(b => b.Type == stepArgs.Type).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
+            return bindingRegistry.Where(b => b.StepDefinitionType == stepArgs.Type).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
         }
 
         private static readonly object[] emptyExtraArgs = new object[0];

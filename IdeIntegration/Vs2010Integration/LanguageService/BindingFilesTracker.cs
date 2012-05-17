@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class BindingFileInfo : FileInfo
     {
-        public IEnumerable<StepBindingNew> StepBindings { get; set; }
+        public IEnumerable<StepDefinitionBinding> StepBindings { get; set; }
 
         public BindingFileInfo(ProjectItem projectItem)
         {
@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                                   TimeStamp = bindingFileInfo.LastChangeDate
                                               };
 
-                fileStepDefinitions.StepDefinitions = new List<StepBindingNew>();
+                fileStepDefinitions.StepDefinitions = new List<StepDefinitionBinding>();
                 fileStepDefinitions.StepDefinitions.AddRange(bindingFileInfo.StepBindings);
                 projectStepDefinitions.FileStepDefinitions.Add(fileStepDefinitions);
             }

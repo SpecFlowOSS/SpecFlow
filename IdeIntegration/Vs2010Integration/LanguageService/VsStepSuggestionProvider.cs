@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool readyInvoked = false;
         public event Action Ready;
 
-        private readonly Dictionary<BindingFileInfo, List<StepBindingNew>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBindingNew>>();
+        private readonly Dictionary<BindingFileInfo, List<StepDefinitionBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepDefinitionBinding>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
         public bool Populated
@@ -249,7 +249,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
         {
-            List<StepBindingNew> bindings;
+            List<StepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -259,7 +259,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
         {
-            List<StepBindingNew> bindings;
+            List<StepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -267,7 +267,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                bindings = new List<StepBindingNew>();
+                bindings = new List<StepDefinitionBinding>();
                 bindingSuggestions.Add(bindingFileInfo, bindings);
             }
 

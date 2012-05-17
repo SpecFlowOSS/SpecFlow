@@ -5,6 +5,6 @@ namespace TechTalk.SpecFlow.Bindings
     public interface IBindingRegistryNew
     {
         bool Ready { get; }
-        IEnumerable<StepBindingNew> GetConsideredBindings(string stepText);
+        IEnumerable<StepDefinitionBinding> GetConsideredBindings(string stepText);
     }
 }

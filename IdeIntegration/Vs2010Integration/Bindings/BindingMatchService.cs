@@ -11,8 +11,8 @@ namespace TechTalk.SpecFlow.Bindings
     public interface IBindingMatchService
     {
         bool Ready { get; }
-        StepBindingNew GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepBindingNew> candidatingBindings);
-        BindingMatchNew Match(StepBindingNew stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
+        StepDefinitionBinding GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepDefinitionBinding> candidatingBindings);
+        BindingMatchNew Match(StepDefinitionBinding stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
     }
 
     public class BindingMatchService : IBindingMatchService
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Bindings
             this.bindingRegistry = bindingRegistry;
         }
 
-        public BindingMatchNew Match(StepBindingNew stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
+        public BindingMatchNew Match(StepDefinitionBinding stepBinding, StepInstance stepInstance, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
             if (useParamMatching)
                 useRegexMatching = true;
@@ -80,9 +80,9 @@ namespace TechTalk.SpecFlow.Bindings
             return matches;
         }
 
-        public StepBindingNew GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepBindingNew> candidatingBindings)
+        public StepDefinitionBinding GetBestMatchingBinding(StepInstance stepInstance, out IEnumerable<StepDefinitionBinding> candidatingBindings)
         {
-            candidatingBindings = Enumerable.Empty<StepBindingNew>();
+            candidatingBindings = Enumerable.Empty<StepDefinitionBinding>();
             var matches = GetCandidatingBindings(stepInstance, useParamMatching: true).ToList();
             if (matches.Count == 0)
             {
