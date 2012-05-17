@@ -32,7 +32,7 @@
 
         public void Given(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Given(step, multilineTextArg, tableArg);
+            testRunner.Given(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -54,7 +54,7 @@
 
         public void When(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.When(step, multilineTextArg, tableArg);
+            testRunner.When(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -76,7 +76,7 @@
 
         public void Then(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Then(step, multilineTextArg, tableArg);
+            testRunner.Then(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -98,7 +98,7 @@
 
         public void But(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.But(step, multilineTextArg, tableArg);
+            testRunner.But(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -120,7 +120,7 @@
 
         public void And(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.And(step, multilineTextArg, tableArg);
+            testRunner.And(step, multilineTextArg, tableArg, null);
         }
         #endregion
     }

@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Bindings
     {
         public StepDefinitionType StepDefinitionType { get; private set; }
         public StepDefinitionKeyword StepDefinitionKeyword { get; private set; }
-        public string Keyword { get; private set; } //TODO: we should preserve the original keyword as well
+        public string KeywordWithTrailingSpaces { get; private set; }
 
         public string Text { get; private set; }
         public string MultilineTextArgument { get; private set; }
@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         public StepContext StepContext { get; private set; }
       
-        public StepArgs(StepDefinitionType type, StepDefinitionKeyword stepDefinitionKeyword, string text, string multilineTextArgument, Table tableArgument, StepContext stepContext)
+        public StepArgs(StepDefinitionType type, StepDefinitionKeyword stepDefinitionKeyword, string text, string multilineTextArgument, Table tableArgument, StepContext stepContext, string keyword)
         {
             StepDefinitionType = type;
             StepDefinitionKeyword = stepDefinitionKeyword;
@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Bindings
             MultilineTextArgument = multilineTextArgument;
             TableArgument = tableArgument;
             StepContext = stepContext;
+            KeywordWithTrailingSpaces = keyword;
         }
     }
 }

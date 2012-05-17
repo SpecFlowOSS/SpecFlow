@@ -56,9 +56,13 @@ namespace TechTalk.SpecFlow.Tracing
         public string GetStepText(StepArgs stepArgs)
         {
             StringBuilder result = new StringBuilder();
-            result.Append(stepArgs.Keyword ?? 
-                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionKeyword));
-            result.Append(" ");
+            if (stepArgs.KeywordWithTrailingSpaces != null)
+                result.Append(stepArgs.KeywordWithTrailingSpaces);
+            else
+            {
+                result.Append(LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionKeyword));
+                result.Append(" ");
+            }
             result.AppendLine(stepArgs.Text);
 
             if (stepArgs.MultilineTextArgument != null)

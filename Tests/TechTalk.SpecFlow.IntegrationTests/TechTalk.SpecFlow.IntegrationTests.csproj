@@ -80,6 +80,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\Tracing.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tracing.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnitSmokeTests.feature.cs">
       <DependentUpon>XUnitSmokeTests.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -123,6 +128,10 @@
     <None Include="Features\MbUnitSmokeTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MbUnitSmokeTests1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Tracing.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Tracing.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnitSmokeTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

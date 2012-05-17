@@ -129,29 +129,29 @@ namespace TechTalk.SpecFlow.Async
             UnregisterAsyncTestExecutor();
         }
 
-        public void Given(string text, string multilineTextArg, Table tableArg)
+        public void Given(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Given, text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg));
         }
 
-        public void When(string text, string multilineTextArg, Table tableArg)
+        public void When(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.When, text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg));
         }
 
-        public void Then(string text, string multilineTextArg, Table tableArg)
+        public void Then(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Then, text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg));
         }
 
-        public void And(string text, string multilineTextArg, Table tableArg)
+        public void And(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.And, text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg));
         }
 
-        public void But(string text, string multilineTextArg, Table tableArg)
+        public void But(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.But, text, multilineTextArg, tableArg));
+            AsyncTestExecutor.EnqueueWithNewContext(() => testExecutionEngine.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg));
         }
 
         public void Pending()

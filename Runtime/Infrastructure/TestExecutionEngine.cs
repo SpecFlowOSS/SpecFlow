@@ -426,12 +426,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         #endregion
 
         #region Given-When-Then
-        public void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg)
+        public void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
         {
-            StepDefinitionType stepDefinitionType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
+            StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
-                                          : (StepDefinitionType) keyword;
-            ExecuteStep(new StepArgs(stepDefinitionType, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                                          : (StepDefinitionType) stepDefinitionKeyword;
+            ExecuteStep(new StepArgs(stepDefinitionType, stepDefinitionKeyword, text, multilineTextArg, tableArg, contextManager.GetStepContext(), keyword));
         }
 
         private StepDefinitionType GetCurrentBindingType()

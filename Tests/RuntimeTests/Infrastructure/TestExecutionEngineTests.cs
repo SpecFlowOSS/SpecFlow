@@ -118,7 +118,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(beforeStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             scenarioContext.TestStatus = TestStatus.TestError;
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(stepDefMock.Object, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration), Times.Never());
@@ -163,7 +163,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeStepMock = CreateHookMock(beforeStepEvents);
             var afterStepMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(beforeStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
@@ -178,7 +178,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration));
@@ -193,7 +193,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandlerMock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
         }
@@ -210,7 +210,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandler1Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
             stepErrorHandler2Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
@@ -228,7 +228,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.TestStatus.ShouldEqual(TestStatus.OK);
         }
@@ -242,7 +242,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.TestStatus.ShouldEqual(TestStatus.TestError);
         }

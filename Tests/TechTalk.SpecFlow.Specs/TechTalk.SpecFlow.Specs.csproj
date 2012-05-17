@@ -137,6 +137,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\StepArguments.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepArguments.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\StepArgumentTransformations.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -235,6 +240,10 @@
     <None Include="Features\ScopedSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ScopedSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\StepArguments.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepArguments.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\StepArgumentTransformations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
