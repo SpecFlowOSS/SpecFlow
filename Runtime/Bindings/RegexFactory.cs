@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         public static Regex Create(string regexString)
         {
-            return new Regex("^" + regexString + "$", RegexOptions);
+            return regexString == null ? null : new Regex("^" + regexString + "$", RegexOptions);
         }
     }
 }
