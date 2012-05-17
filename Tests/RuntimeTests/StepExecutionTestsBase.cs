@@ -6,6 +6,7 @@ using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
@@ -62,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceNoMatchingStepDefinition");
             }
 
-            public void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments)
+            public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
             {
                 //nop
             }

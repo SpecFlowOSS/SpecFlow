@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -17,7 +18,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
         void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck);
-        void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments);
+        void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
 
@@ -101,10 +102,10 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput(message.ToString());
         }
 
-        public void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments)
+        public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
             traceListener.WriteToolOutput("duration: {0}: {1:F1}s", 
-                stepFormatter.GetMatchText(methodInfo, arguments), elapsed.TotalSeconds);
+                stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
         }
 
         public void TraceDuration(TimeSpan elapsed, string text)

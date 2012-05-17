@@ -5,7 +5,12 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class StepTransformationBinding : MethodBinding
+    public interface IStepArgumentTransformationBinding : IBinding
+    {
+        
+    }
+
+    public class StepTransformationBinding : MethodBinding, IStepArgumentTransformationBinding
     {
 
 #if SILVERLIGHT

@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Bindings
 
                 if (runtimeConfiguration.TraceTimings && stopwatch.Elapsed >= runtimeConfiguration.MinTracedDuration)
                 {
-                    testTracer.TraceDuration(stopwatch.Elapsed, methodInfo, arguments);
+                    testTracer.TraceDuration(stopwatch.Elapsed, binding.Method, arguments);
                 }
 
                 duration = stopwatch.Elapsed;
@@ -55,12 +55,12 @@ namespace TechTalk.SpecFlow.Bindings
             }
             catch (ArgumentException ex)
             {
-                throw errorProvider.GetCallError(methodInfo, ex);
+                throw errorProvider.GetCallError(binding.Method, ex);
             }
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
-                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(methodInfo));
+                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 throw ex;
             }
         }

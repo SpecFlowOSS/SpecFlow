@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             if (!IsScenarioSpecificEvent(bindingEvent) &&
                 !method.IsStatic)
-                throw errorProvider.GetNonStaticEventError(method);
+                throw errorProvider.GetNonStaticEventError(new ReflectionBindingMethod(method));
 
             //TODO: check parameters, etc.
         }

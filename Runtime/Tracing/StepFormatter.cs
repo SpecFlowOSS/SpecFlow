@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Tracing
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.Tracing
     {
         string GetStepDescription(StepArgs stepArgs);
         string GetMatchText(BindingMatch match, object[] arguments);
-        string GetMatchText(MethodInfo methodInfo, object[] arguments);
+        string GetMatchText(IBindingMethod method, object[] arguments);
         string GetStepText(StepArgs stepArgs);
     }
 
@@ -26,15 +27,14 @@ namespace TechTalk.SpecFlow.Tracing
 
         public string GetMatchText(BindingMatch match, object[] arguments)
         {
-            var methodInfo = match.StepBinding.MethodInfo;
-            return GetMatchText(methodInfo, arguments);
+            return GetMatchText(match.StepBinding.Method, arguments);
         }
 
-        public string GetMatchText(MethodInfo methodInfo, object[] arguments)
+        public string GetMatchText(IBindingMethod method, object[] arguments)
         {
             string argText = arguments == null ? "" : string.Join(", ", 
                                                           arguments.Select(a => GetParamString(a)).ToArray());
-            return string.Format("{0}.{1}({2})", methodInfo.ReflectedType.Name, methodInfo.Name, argText);
+            return string.Format("{0}.{1}({2})", method.Type.Name, method.Name, argText);
         }
 
         private string GetParamString(object arg)
