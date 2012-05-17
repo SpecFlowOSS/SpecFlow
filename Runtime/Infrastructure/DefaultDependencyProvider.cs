@@ -29,6 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
+            container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
 
             container.RegisterTypeAs<ContextManager, IContextManager>();
 

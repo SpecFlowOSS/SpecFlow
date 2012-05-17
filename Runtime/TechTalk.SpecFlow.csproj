@@ -119,8 +119,10 @@
     <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
     <Compile Include="Bindings\IBindingFactory.cs" />
     <Compile Include="Bindings\IHookBinding.cs" />
+    <Compile Include="Bindings\IBindingInvoker.cs" />
     <Compile Include="Bindings\IScopedBinding.cs" />
     <Compile Include="Bindings\IStepDefinitionBinding.cs" />
+    <Compile Include="Bindings\BindingInvoker.cs" />
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
     <Compile Include="Bindings\Reflection\IBindingMethod.cs" />

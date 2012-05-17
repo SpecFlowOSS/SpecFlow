@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         private readonly Mock<IBindingRegistry> bindingRegistryStub = new Mock<IBindingRegistry>();
         private readonly Mock<IContextManager> contextManagerStub = new Mock<IContextManager>();
+        private readonly Mock<IBindingInvoker> methodBindingInvokerStub = new Mock<IBindingInvoker>();
 
         [SetUp]
         public void SetUp()
@@ -54,7 +56,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepTransformationBinding CreateStepTransformationBinding(string regexString, MethodInfo transformMethod)
         {
-            return new StepTransformationBinding(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object, regexString, new ReflectionBindingMethod(transformMethod));
+            return new StepTransformationBinding(regexString, new ReflectionBindingMethod(transformMethod));
         }
 
         [Test]
@@ -67,7 +69,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
 
             //var result = stepTransformationBinding.BindingAction.DynamicInvoke(contextManagerStub.Object, "xyz");
-            var result = stepTransformationBinding.InvokeAction(contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object);
+            var invoker = new BindingInvoker(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "xyz" }, new Mock<ITestTracer>().Object, out duration);
             Assert.NotNull(result);
             Assert.That(result.GetType(), Is.EqualTo(typeof(User)));
             Assert.That(((User)result).Name, Is.EqualTo("xyz"));
@@ -89,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter()
         {
-            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, contextManagerStub.Object);
+            return new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, contextManagerStub.Object, methodBindingInvokerStub.Object);
         }
 
         [Test]

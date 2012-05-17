@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -18,11 +19,13 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly ITestTracer testTracer;
         private readonly IContextManager contextManager;
+        private readonly IBindingInvoker bindingInvoker;
 
-        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager)
+        public StepArgumentTypeConverter(ITestTracer testTracer, IBindingRegistry bindingRegistry, IContextManager contextManager, IBindingInvoker bindingInvoker)
         {
             this.testTracer = testTracer;
             this.contextManager = contextManager;
+            this.bindingInvoker = bindingInvoker;
             StepTransformations = bindingRegistry.StepTransformations ?? new List<StepTransformationBinding>();
         }
 
@@ -48,9 +51,30 @@ namespace TechTalk.SpecFlow.Bindings
 
             var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
             if (stepTransformation != null)
-                return stepTransformation.Transform(contextManager, value, testTracer, this, cultureInfo);
+                return DoTransform(stepTransformation, value, cultureInfo);
 
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
+        }
+
+        private object DoTransform(StepTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
+        {
+            object[] arguments;
+            if (stepTransformation.Regex != null && value is string)
+                arguments = GetStepTransformationArgumentsFromRegex(stepTransformation, (string)value, cultureInfo);
+            else
+                arguments = new object[] {value};
+
+            TimeSpan duration;
+            return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments, testTracer, out duration);
+        }
+
+        private object[] GetStepTransformationArgumentsFromRegex(StepTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
+        {
+            var match = stepTransformation.Regex.Match(stepSnippet);
+            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            return argumentStrings
+                .Select((arg, argIndex) => this.Convert(arg, stepTransformation.ParameterTypes[argIndex], cultureInfo))
+                .ToArray();
         }
 
         public bool CanConvert(object value, Type typeToConvertTo, CultureInfo cultureInfo)

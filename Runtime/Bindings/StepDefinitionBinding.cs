@@ -2,10 +2,6 @@ using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
@@ -23,23 +19,22 @@ namespace TechTalk.SpecFlow.Bindings
         private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
 #endif
 
-        public StepDefinitionBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
-            : base(runtimeConfiguration, errorProvider, bindingMethod)
+        public StepDefinitionBinding(StepDefinitionType type, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : base(bindingMethod)
         {
             Type = type;
-            Regex regex = new Regex("^" + regexString + "$", RegexOptions);
             Regex = regex;
-            this.BindingScope = bindingScope;
+            BindingScope = bindingScope;
+        }
+
+        public StepDefinitionBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : this(type, new Regex("^" + regexString + "$", RegexOptions), bindingMethod, bindingScope)
+        {
         }
 
         public MethodInfo MethodInfo
         {
             get { return AssertMethodInfo(); }
-        }
-
-        public void Invoke(IContextManager contextManager, ITestTracer testTracer, object[] arguments, out TimeSpan duration)
-        {
-            InvokeAction(contextManager, arguments, testTracer, out duration);
         }
     }
 }

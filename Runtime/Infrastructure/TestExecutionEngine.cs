@@ -26,16 +26,18 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IContextManager contextManager;
         private readonly IStepDefinitionMatcher stepDefinitionMatcher;
         private readonly IStepErrorHandler[] stepErrorHandlers;
+        private readonly IBindingInvoker bindingInvoker;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers)
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker)
         {
             this.errorProvider = errorProvider;
             this.stepDefinitionMatcher = stepDefinitionMatcher;
+            this.bindingInvoker = bindingInvoker;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -238,7 +240,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                eventBinding.Invoke(contextManager, testTracer);
+                bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
             }
         }
 
@@ -359,7 +361,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             TimeSpan duration = TimeSpan.Zero;
             try
             {
-                match.StepBinding.Invoke(contextManager, testTracer, arguments, out duration);
+                bindingInvoker.InvokeBinding(match.StepBinding, contextManager, arguments, testTracer, out duration);
             }
             catch(Exception ex)
             {

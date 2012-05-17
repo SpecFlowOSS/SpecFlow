@@ -6,13 +6,9 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IStepDefinitionBinding : IScopedBinding
+    public interface IStepDefinitionBinding : IScopedBinding, IBinding
     {
-        IBindingMethod BindingMethod { get; }
-
         MethodInfo MethodInfo { get; }
         Type[] ParameterTypes { get; }
-
-        void Invoke(IContextManager contextManager, ITestTracer testTracer, object[] arguments, out TimeSpan duration);
     }
 }
