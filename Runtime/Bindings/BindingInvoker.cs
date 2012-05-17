@@ -143,10 +143,10 @@ namespace TechTalk.SpecFlow.Bindings
 
         #region extended action types
         static readonly Type[] actionTypes = new[] { typeof(Action), 
-                                                     typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(MethodBinding.ExtendedAction<,,,,>), 
-                                                     typeof(MethodBinding.ExtendedAction<,,,,,>),             typeof(MethodBinding.ExtendedAction<,,,,,,>),             typeof(MethodBinding.ExtendedAction<,,,,,,,>),            typeof(MethodBinding.ExtendedAction<,,,,,,,,>),               typeof(MethodBinding.ExtendedAction<,,,,,,,,,>),
-                                                     typeof(MethodBinding.ExtendedAction<,,,,,,,,,,>),        typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,>),        typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,>),       typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,>),          typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,>),
-                                                     typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(MethodBinding.ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
+                                                     typeof(Action<>),                          typeof(Action<,>),                          typeof(Action<,,>),                         typeof(Action<,,,>),                            typeof(ExtendedAction<,,,,>), 
+                                                     typeof(ExtendedAction<,,,,,>),             typeof(ExtendedAction<,,,,,,>),             typeof(ExtendedAction<,,,,,,,>),            typeof(ExtendedAction<,,,,,,,,>),               typeof(ExtendedAction<,,,,,,,,,>),
+                                                     typeof(ExtendedAction<,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,>),        typeof(ExtendedAction<,,,,,,,,,,,,>),       typeof(ExtendedAction<,,,,,,,,,,,,,>),          typeof(ExtendedAction<,,,,,,,,,,,,,,>),
+                                                     typeof(ExtendedAction<,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,>),   typeof(ExtendedAction<,,,,,,,,,,,,,,,,,>),  typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,>),     typeof(ExtendedAction<,,,,,,,,,,,,,,,,,,,>),
                                                    };
 
         public delegate void ExtendedAction<T1, T2, T3, T4, T5>                                                                         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
@@ -182,10 +182,10 @@ namespace TechTalk.SpecFlow.Bindings
         
         #region extended func types
         static readonly Type[] funcTypes = new[] { typeof(Func<>), 
-                                                   typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(MethodBinding.ExtendedFunc<,,,,,>), 
-                                                   typeof(MethodBinding.ExtendedFunc<,,,,,,>),            typeof(MethodBinding.ExtendedFunc<,,,,,,,>),              typeof(MethodBinding.ExtendedFunc<,,,,,,,,>),             typeof(MethodBinding.ExtendedFunc<,,,,,,,,,>),            typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,>),
-                                                   typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,>),       typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,>),         typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,>),        typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,>),
-                                                   typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(MethodBinding.ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
+                                                   typeof(Func<,>),                         typeof(Func<,,>),                           typeof(Func<,,,>),                          typeof(Func<,,,,>),                         typeof(ExtendedFunc<,,,,,>), 
+                                                   typeof(ExtendedFunc<,,,,,,>),            typeof(ExtendedFunc<,,,,,,,>),              typeof(ExtendedFunc<,,,,,,,,>),             typeof(ExtendedFunc<,,,,,,,,,>),            typeof(ExtendedFunc<,,,,,,,,,,>),
+                                                   typeof(ExtendedFunc<,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,>),         typeof(ExtendedFunc<,,,,,,,,,,,,,>),        typeof(ExtendedFunc<,,,,,,,,,,,,,,>),       typeof(ExtendedFunc<,,,,,,,,,,,,,,,>),
+                                                   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,>),    typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,>),   typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,>),  typeof(ExtendedFunc<,,,,,,,,,,,,,,,,,,,,>),
                                                  };
 
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, TResult>                                                                           (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);
