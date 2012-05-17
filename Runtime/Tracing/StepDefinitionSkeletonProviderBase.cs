@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Tracing
     internal abstract class StepDefinitionSkeletonProviderBase : IStepDefinitionSkeletonProvider
     {
         public const string CODEINDENT = "    ";
-        public abstract string GetStepDefinitionSkeleton(StepArgs stepArgs);
+        public abstract string GetStepDefinitionSkeleton(StepInstance stepInstance);
         public abstract string GetBindingClassSkeleton(string stepDefinitions);
 
         protected static string GetAttributeName(Type attributeType)

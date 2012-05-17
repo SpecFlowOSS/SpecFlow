@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
         {
-            public void TraceStep(StepArgs stepArgs, bool showAdditionalArguments)
+            public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
             {
             }
 
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceError: {0}", ex);
             }
 
-            public void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
+            public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
             {
                 Console.WriteLine("TraceNoMatchingStepDefinition");
             }

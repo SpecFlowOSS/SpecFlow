@@ -6,12 +6,12 @@ namespace TechTalk.SpecFlow.Tracing
 {
     internal class StepDefinitionSkeletonProviderCS : StepDefinitionSkeletonProviderBase
     {
-        public override string GetStepDefinitionSkeleton(StepArgs stepArgs)
+        public override string GetStepDefinitionSkeleton(StepInstance stepInstance)
         {
             List<string> extraArgs = new List<string>();
-            if (stepArgs.MultilineTextArgument != null)
+            if (stepInstance.MultilineTextArgument != null)
                 extraArgs.Add("string multilineText");
-            if (stepArgs.TableArgument != null)
+            if (stepInstance.TableArgument != null)
                 extraArgs.Add("Table table");
 
             StringBuilder result = new StringBuilder();
@@ -20,10 +20,10 @@ public void {1}{3}({4})
 {{
     ScenarioContext.Current.Pending();
 }}",
-                                stepArgs.StepDefinitionType,
-                                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionType).ToIdentifier(),
-                                EscapeRegex(stepArgs.Text),
-                                stepArgs.Text.ToIdentifier(),
+                                stepInstance.StepDefinitionType,
+                                LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionType).ToIdentifier(),
+                                EscapeRegex(stepInstance.Text),
+                                stepInstance.Text.ToIdentifier(),
                                 string.Join(", ", extraArgs.ToArray())
                 );
             result.AppendLine();

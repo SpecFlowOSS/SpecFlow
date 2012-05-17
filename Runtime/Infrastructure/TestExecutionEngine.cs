@@ -248,11 +248,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private void ExecuteStep(StepArgs stepArgs)
+        private void ExecuteStep(StepInstance stepInstance)
         {
-            HandleBlockSwitch(stepArgs.StepDefinitionType.ToScenarioBlock());
+            HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
-            testTracer.TraceStep(stepArgs, true);
+            testTracer.TraceStep(stepInstance, true);
 
             bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
 
@@ -260,7 +260,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             object[] arguments = null;
             try
             {
-                match = GetStepMatch(stepArgs);
+                match = GetStepMatch(stepInstance);
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -320,9 +320,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepArgs stepArgs)
+        private BindingMatch GetStepMatch(StepInstance stepInstance)
         {
-            List<BindingMatch> matches = stepDefinitionMatcher.GetMatches(stepArgs);
+            List<BindingMatch> matches = stepDefinitionMatcher.GetMatches(stepInstance);
 
             if (matches.Count == 0)
             {
@@ -330,11 +330,11 @@ namespace TechTalk.SpecFlow.Infrastructure
                 // to provide better error message for the param matching error, we re-run 
                 // the matching without param check
 
-                List<BindingMatch> matchesWithoutScopeCheck = stepDefinitionMatcher.GetMatchesWithoutScopeCheck(stepArgs);
+                List<BindingMatch> matchesWithoutScopeCheck = stepDefinitionMatcher.GetMatchesWithoutScopeCheck(stepInstance);
 
                 if (matchesWithoutScopeCheck.Count == 0)
                 {
-                    List<BindingMatch> matchesWithoutParamCheck = stepDefinitionMatcher.GetMatchesWithoutParamCheck(stepArgs);
+                    List<BindingMatch> matchesWithoutParamCheck = stepDefinitionMatcher.GetMatchesWithoutParamCheck(stepInstance);
                     if (matchesWithoutParamCheck.Count == 1)
                     {
                         // no ambiguouity, but param error -> execute will find it out
@@ -343,19 +343,19 @@ namespace TechTalk.SpecFlow.Infrastructure
                     if (matchesWithoutParamCheck.Count > 1)
                     {
                         // ambiguouity, because of param error
-                        throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
+                        throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepInstance);
                     }
                 }
 
-                testTracer.TraceNoMatchingStepDefinition(stepArgs, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
+                testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
                 contextManager.ScenarioContext.MissingSteps.Add(
-                    currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
+                    currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance));
                 throw errorProvider.GetMissingStepDefinitionError();
             }
             if (matches.Count > 1)
             {
                 if (runtimeConfiguration.DetectAmbiguousMatches)
-                    throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
+                    throw errorProvider.GetAmbiguousMatchError(matches, stepInstance);
             }
             return matches[0];
         }
@@ -431,7 +431,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
                                           : (StepDefinitionType) stepDefinitionKeyword;
-            ExecuteStep(new StepArgs(stepDefinitionType, stepDefinitionKeyword, text, multilineTextArg, tableArg, contextManager.GetStepContext(), keyword));
+            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
         }
 
         private StepDefinitionType GetCurrentBindingType()

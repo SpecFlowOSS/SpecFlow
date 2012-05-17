@@ -88,7 +88,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var stepDefStub = new Mock<IStepDefinitionBinding>();
             stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
 
-            stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepArgs>())).Returns((StepArgs sa) =>
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepInstance>())).Returns((StepInstance sa) =>
                       new List<BindingMatch> { new BindingMatch(stepDefStub.Object, 0, new string[0], sa.StepContext) });
 
             return stepDefStub;

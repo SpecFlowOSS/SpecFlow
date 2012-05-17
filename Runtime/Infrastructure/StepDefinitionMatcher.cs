@@ -10,9 +10,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public interface IStepDefinitionMatcher
     {
-        List<BindingMatch> GetMatches(StepArgs stepArgs);
-        List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs);
-        List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs);
+        List<BindingMatch> GetMatches(StepInstance stepInstance);
+        List<BindingMatch> GetMatchesWithoutScopeCheck(StepInstance stepInstance);
+        List<BindingMatch> GetMatchesWithoutParamCheck(StepInstance stepInstance);
     }
 
     public class StepDefinitionMatcher : IStepDefinitionMatcher
@@ -28,10 +28,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
         }
 
-        public List<BindingMatch> GetMatches(StepArgs stepArgs)
+        public List<BindingMatch> GetMatches(StepInstance stepInstance)
         {
-            var matches = bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text)
-                .Select(binding => Match(binding, stepArgs, true, true))
+            var matches = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text)
+                .Select(binding => Match(binding, stepInstance, true, true))
                 .Where(match => match != null)
                 .ToList();
 
@@ -51,24 +51,24 @@ namespace TechTalk.SpecFlow.Infrastructure
             return matches;
         }
 
-        public List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
+        public List<BindingMatch> GetMatchesWithoutParamCheck(StepInstance stepInstance)
         {
-            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(binding => Match(binding, stepInstance, false, true)).Where(match => match != null).ToList();
         }
 
-        public List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
+        public List<BindingMatch> GetMatchesWithoutScopeCheck(StepInstance stepInstance)
         {
-            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(binding => Match(binding, stepInstance, true, false)).Where(match => match != null).ToList();
         }
 
-        private object[] CalculateArguments(Match match, StepArgs stepArgs)
+        private object[] CalculateArguments(Match match, StepInstance stepInstance)
         {
             var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
             var arguments = regexArgs.Cast<object>().ToList();
-            if (stepArgs.MultilineTextArgument != null)
-                arguments.Add(stepArgs.MultilineTextArgument);
-            if (stepArgs.TableArgument != null)
-                arguments.Add(stepArgs.TableArgument);
+            if (stepInstance.MultilineTextArgument != null)
+                arguments.Add(stepInstance.MultilineTextArgument);
+            if (stepInstance.TableArgument != null)
+                arguments.Add(stepInstance.TableArgument);
 
             return arguments.ToArray();
         }
@@ -81,9 +81,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, contextManager.FeatureContext.BindingCulture);
         }
 
-        private BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepArgs stepArgs, bool useParamMatching, bool useScopeMatching)
+        private BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, bool useParamMatching, bool useScopeMatching)
         {
-            Match match = stepDefinitionBinding.Regex.Match(stepArgs.Text);
+            Match match = stepDefinitionBinding.Regex.Match(stepInstance.Text);
 
             // Check if regexp is a match
             if (!match.Success)
@@ -92,11 +92,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             int scopeMatches = 0;
             if (useScopeMatching && stepDefinitionBinding.IsScoped)
             {
-                if (!stepDefinitionBinding.BindingScope.Match(stepArgs.StepContext, out scopeMatches))
+                if (!stepDefinitionBinding.BindingScope.Match(stepInstance.StepContext, out scopeMatches))
                     return null;
             }
 
-            var bindingMatch = new BindingMatch(stepDefinitionBinding, scopeMatches, CalculateArguments(match, stepArgs), stepArgs.StepContext);
+            var bindingMatch = new BindingMatch(stepDefinitionBinding, scopeMatches, CalculateArguments(match, stepInstance), stepInstance.StepContext);
 
             if (useParamMatching)
             {

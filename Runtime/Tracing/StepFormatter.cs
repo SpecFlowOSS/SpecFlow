@@ -10,19 +10,19 @@ namespace TechTalk.SpecFlow.Tracing
 {
     public interface IStepFormatter
     {
-        string GetStepDescription(StepArgs stepArgs);
+        string GetStepDescription(StepInstance stepInstance);
         string GetMatchText(BindingMatch match, object[] arguments);
         string GetMatchText(IBindingMethod method, object[] arguments);
-        string GetStepText(StepArgs stepArgs);
+        string GetStepText(StepInstance stepInstance);
     }
 
     internal class StepFormatter : IStepFormatter
     {
         public const string INDENT = "  ";
 
-        public string GetStepDescription(StepArgs stepArgs)
+        public string GetStepDescription(StepInstance stepInstance)
         {
-            return string.Format("{0} {1}", stepArgs.StepDefinitionType, stepArgs.Text);
+            return string.Format("{0} {1}", stepInstance.StepDefinitionType, stepInstance.Text);
         }
 
         public string GetMatchText(BindingMatch match, object[] arguments)
@@ -53,28 +53,28 @@ namespace TechTalk.SpecFlow.Tracing
             return arg.ToString().TrimEllipse(maxLength);
         }
 
-        public string GetStepText(StepArgs stepArgs)
+        public string GetStepText(StepInstance stepInstance)
         {
             StringBuilder result = new StringBuilder();
-            if (stepArgs.KeywordWithTrailingSpaces != null)
-                result.Append(stepArgs.KeywordWithTrailingSpaces);
+            if (stepInstance.Keyword != null)
+                result.Append(stepInstance.Keyword);
             else
             {
-                result.Append(LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionKeyword));
+                result.Append(LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionKeyword));
                 result.Append(" ");
             }
-            result.AppendLine(stepArgs.Text);
+            result.AppendLine(stepInstance.Text);
 
-            if (stepArgs.MultilineTextArgument != null)
+            if (stepInstance.MultilineTextArgument != null)
             {
                 result.AppendLine("--- multiline step argument ---".Indent(INDENT));
-                result.AppendLine(stepArgs.MultilineTextArgument.Indent(INDENT));
+                result.AppendLine(stepInstance.MultilineTextArgument.Indent(INDENT));
             }
 
-            if (stepArgs.TableArgument != null)
+            if (stepInstance.TableArgument != null)
             {
                 result.AppendLine("--- table step argument ---".Indent(INDENT));
-                result.AppendLine(stepArgs.TableArgument.ToString().Indent(INDENT));
+                result.AppendLine(stepInstance.TableArgument.ToString().Indent(INDENT));
             }
 
             return result.ToString();

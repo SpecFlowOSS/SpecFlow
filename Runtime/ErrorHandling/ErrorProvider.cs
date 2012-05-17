@@ -16,9 +16,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
         string GetMethodText(IBindingMethod method);
         Exception GetCallError(IBindingMethod method, Exception ex);
         Exception GetParameterCountError(BindingMatch match, int expectedParameterCount);
-        Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepArgs stepArgs);
-        Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepArgs stepArgs);
-        Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepArgs stepArgs);
+        Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepInstance stepInstance);
+        Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepInstance stepInstance);
+        Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance);
         MissingStepDefinitionException GetMissingStepDefinitionError();
         PendingStepException GetPendingStepDefinitionError();
         void ThrowPendingError(TestStatus testStatus, string message);
@@ -59,9 +59,9 @@ namespace TechTalk.SpecFlow.ErrorHandling
                     GetMethodText(match.StepBinding.Method), expectedParameterCount));
         }
 
-        public Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepArgs stepArgs)
+        public Exception GetAmbiguousMatchError(IEnumerable<BindingMatch> matches, StepInstance stepInstance)
         {
-            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
                 string.Format("Ambiguous step definitions found for step '{0}': {1}",
                     stepDescription,
@@ -69,18 +69,18 @@ namespace TechTalk.SpecFlow.ErrorHandling
         }
 
 
-        public Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepArgs stepArgs)
+        public Exception GetAmbiguousBecauseParamCheckMatchError(List<BindingMatch> matches, StepInstance stepInstance)
         {
-            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
                 string.Format("Multiple step definitions found, but none of them have matching parameter count and type for step '{0}': {1}",
                     stepDescription,
                     string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.Method)).ToArray())));
         }
 
-        public Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepArgs stepArgs)
+        public Exception GetNoMatchBecauseOfScopeFilterError(List<BindingMatch> matches, StepInstance stepInstance)
         {
-            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
+            string stepDescription = stepFormatter.GetStepDescription(stepInstance);
             return new BindingException(
                 string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
                     stepDescription,

@@ -181,7 +181,7 @@
     <Compile Include="FeatureInfo.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
-    <Compile Include="Bindings\StepArgs.cs" />
+    <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilder.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
