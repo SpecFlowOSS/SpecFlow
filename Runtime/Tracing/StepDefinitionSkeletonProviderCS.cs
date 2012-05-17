@@ -20,8 +20,8 @@ public void {1}{3}({4})
 {{
     ScenarioContext.Current.Pending();
 }}",
-                                stepArgs.Type,
-                                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.Type).ToIdentifier(),
+                                stepArgs.StepDefinitionType,
+                                LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionType).ToIdentifier(),
                                 EscapeRegex(stepArgs.Text),
                                 stepArgs.Text.ToIdentifier(),
                                 string.Join(", ", extraArgs.ToArray())

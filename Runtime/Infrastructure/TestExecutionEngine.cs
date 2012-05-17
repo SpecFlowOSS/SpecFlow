@@ -250,7 +250,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void ExecuteStep(StepArgs stepArgs)
         {
-            HandleBlockSwitch(stepArgs.Type.ToScenarioBlock());
+            HandleBlockSwitch(stepArgs.StepDefinitionType.ToScenarioBlock());
 
             testTracer.TraceStep(stepArgs, true);
 

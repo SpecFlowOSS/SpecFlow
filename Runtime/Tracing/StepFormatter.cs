@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public string GetStepDescription(StepArgs stepArgs)
         {
-            return string.Format("{0} {1}", stepArgs.Type, stepArgs.Text);
+            return string.Format("{0} {1}", stepArgs.StepDefinitionType, stepArgs.Text);
         }
 
         public string GetMatchText(BindingMatch match, object[] arguments)
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Tracing
         public string GetStepText(StepArgs stepArgs)
         {
             StringBuilder result = new StringBuilder();
-            result.Append(stepArgs.OriginalStepKeyword ?? 
+            result.Append(stepArgs.Keyword ?? 
                 LanguageHelper.GetDefaultKeyword(stepArgs.StepContext.Language, stepArgs.StepDefinitionKeyword));
             result.Append(" ");
             result.AppendLine(stepArgs.Text);

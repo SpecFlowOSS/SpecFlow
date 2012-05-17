@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public List<BindingMatch> GetMatches(StepArgs stepArgs)
         {
-            var matches = bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text)
+            var matches = bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text)
                 .Select(binding => Match(binding, stepArgs, true, true))
                 .Where(match => match != null)
                 .ToList();
@@ -53,12 +53,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public List<BindingMatch> GetMatchesWithoutParamCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text).Select(binding => Match(binding, stepArgs, false, true)).Where(match => match != null).ToList();
         }
 
         public List<BindingMatch> GetMatchesWithoutScopeCheck(StepArgs stepArgs)
         {
-            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.Type, stepArgs.Text).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
+            return bindingRegistry.GetConsideredStepDefinitions(stepArgs.StepDefinitionType, stepArgs.Text).Select(binding => Match(binding, stepArgs, true, false)).Where(match => match != null).ToList();
         }
 
         private object[] CalculateArguments(Match match, StepArgs stepArgs)
