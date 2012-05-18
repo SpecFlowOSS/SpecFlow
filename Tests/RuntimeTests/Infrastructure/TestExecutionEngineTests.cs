@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             StepDefinitionAmbiguityReason ambiguityReason;
             List<BindingMatch> candidatingMatches;
-            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), out ambiguityReason, out candidatingMatches))
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), CultureInfo.InvariantCulture, out ambiguityReason, out candidatingMatches))
                 //.GetMatches(It.IsAny<StepInstance>()))
                 .Returns(//(StepInstance sa) => 
                     new BindingMatch(stepDefStub.Object, 0, new string[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));

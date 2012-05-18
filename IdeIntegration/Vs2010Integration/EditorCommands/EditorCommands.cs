@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 using BoDi;
@@ -70,7 +71,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
-            var match = bindingMatchService.GetBestMatch(step, out ambiguityReason, out candidatingMatches);
+            CultureInfo bindingCulture = languageService.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? step.StepContext.Language;
+            var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
             var binding = match.StepBinding;
 
             if (!match.Success)

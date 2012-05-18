@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         public VsStepSuggestionProvider(VsProjectScope vsProjectScope)
-            : base(VsSuggestionItemFactory.Instance)
+            : base(VsSuggestionItemFactory.Instance, vsProjectScope)
         {
             this.vsProjectScope = vsProjectScope;
         }

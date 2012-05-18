@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow.Infrastructure;
@@ -12,6 +13,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     {
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
+
+        public CultureInfo Language
+        {
+            get { return StepContext.Language; }
+        }
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
@@ -63,9 +69,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
-            return stepDefinitionMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
+            return stepDefinitionMatchService.Match(binding, this, bindingCulture, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }
     }
 }

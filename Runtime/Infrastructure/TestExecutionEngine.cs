@@ -326,7 +326,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
-            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, out ambiguityReason, out candidatingMatches);
+            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, contextManager.FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
 
             if (match.Success)
                 return match;

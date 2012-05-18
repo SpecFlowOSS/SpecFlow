@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -28,7 +29,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             NativeSuggestionItem = nativeSuggestionItemFactory.CloneTo(template.NativeSuggestionItem, this);
         }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public CultureInfo Language
+        {
+            get { return Template.Language; } 
+        }
+
+        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -36,7 +42,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (suggestions.Count == 0)
                 return false;
 
-            return suggestions.Any(i => i.Match(binding, true, stepDefinitionMatchService));
+            return suggestions.Any(i => i.Match(binding, bindingCulture, true, stepDefinitionMatchService));
         }
     }
 
@@ -50,7 +56,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepDefinitionType StepDefinitionType { get; private set; }
         internal string StepPrefix { get; private set; }
 
-        public bool Match(StepDefinitionBinding binding, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public CultureInfo Language { get; private set; }
+
+        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -58,7 +66,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             if (instances.Count == 0)
                 return false;
 
-            return instances.Any(i => i.Match(binding, true, stepDefinitionMatchService));
+            return instances.Any(i => i.Match(binding, bindingCulture, true, stepDefinitionMatchService));
         }
 
         static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
@@ -66,6 +74,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public StepInstanceTemplate(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             StepDefinitionType = (StepDefinitionType)scenarioStep.ScenarioBlock;
+            Language = stepContext.Language;
 
             NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, StepInstance<TNativeSuggestionItem>.GetInsertionText(scenarioStep), 1, StepDefinitionType.ToString().Substring(0, 1) + "-t", this);
             instances = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);

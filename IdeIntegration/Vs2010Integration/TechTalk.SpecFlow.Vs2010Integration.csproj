@@ -182,7 +182,6 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
-    <Compile Include="Bindings\BindingMatchService.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />

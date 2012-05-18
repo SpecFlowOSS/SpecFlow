@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
 using TechTalk.SpecFlow.BindingSkeletons;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
@@ -148,6 +150,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        private class CannotConverter : IStepArgumentTypeConverter
+        {
+            public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+            {
+                throw new NotSupportedException();
+            }
+
+            public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+            {
+                return false;
+            }
+        }
+
         private void Initialize()
         {
             visualStudioTracer.Trace("Initializing...", "VsProjectScope");
@@ -170,7 +185,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                     stepSuggestionProvider = new VsStepSuggestionProvider(this);
                     stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
-                    stepDefinitionMatchService = new BindingMatchService(stepSuggestionProvider);
+                    //stepDefinitionMatchService = new BindingMatchService(stepSuggestionProvider);
+                    stepDefinitionMatchService = new StepDefinitionMatcher(stepSuggestionProvider, new CannotConverter());
                 }
                 visualStudioTracer.Trace("Initialized", "VsProjectScope");
                 initialized = true;

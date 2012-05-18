@@ -14,6 +14,8 @@ namespace TechTalk.SpecFlow.Configuration
     /// </summary>
     public class RuntimeConfigurationForGenerator
     {
+        public CultureInfo BindingCulture { get; set; }
+
         private readonly List<string> additionalStepAssemblies = new List<string>();
 
         public IEnumerable<string> AdditionalStepAssemblies
@@ -24,19 +26,30 @@ namespace TechTalk.SpecFlow.Configuration
             }
         }
 
-        internal RuntimeConfigurationForGenerator UpdateFromConfigFile(ConfigurationSectionHandler configSection)
+        public RuntimeConfigurationForGenerator()
+        {
+            BindingCulture = null;
+        }
+
+        internal void LoadConfiguration(ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException("configSection");
 
-            var config = this;
+            if (IsSpecified(configSection.BindingCulture))
+            {
+                this.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
+            }
 
             foreach (var element in configSection.StepAssemblies)
             {
                 var stepAssembly = ((StepAssemblyConfigElement)element).Assembly;
-                config.additionalStepAssemblies.Add(stepAssembly);
+                this.additionalStepAssemblies.Add(stepAssembly);
             }
+        }
 
-            return config;
+        private bool IsSpecified(ConfigurationElement configurationElement)
+        {
+            return configurationElement != null && configurationElement.ElementInformation.IsPresent;
         }
 
         #region Equality
@@ -45,7 +58,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return other.additionalStepAssemblies.SequenceEqual(additionalStepAssemblies);
+            return other.additionalStepAssemblies.SequenceEqual(additionalStepAssemblies) && Equals(other.BindingCulture, BindingCulture);
         }
 
         public override bool Equals(object obj)
@@ -60,11 +73,9 @@ namespace TechTalk.SpecFlow.Configuration
         {
             unchecked
             {
-                int result = additionalStepAssemblies.Count.GetHashCode();
-                return result;
+                return ((additionalStepAssemblies.Count.GetHashCode())*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
             }
         }
-
         #endregion
     }
 }

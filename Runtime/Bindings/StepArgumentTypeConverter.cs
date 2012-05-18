@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Bindings
             this.bindingInvoker = bindingInvoker;
         }
 
-        private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, IBindingType typeToConvertTo, bool traceWarning)
+        protected virtual IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, IBindingType typeToConvertTo, bool traceWarning)
         {
             var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
             if (stepTransformations.Length > 1 && traceWarning)
