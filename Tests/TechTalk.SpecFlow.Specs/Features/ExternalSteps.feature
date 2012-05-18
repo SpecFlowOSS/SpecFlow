@@ -28,6 +28,7 @@ Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
 	When I execute the tests
 	Then all tests should pass
 
+@fsharp
 Scenario: Steps can defined in an external F# project
 	Given there is an external F# class library project 'ExternalSteps_FSharp'
 	And the following binding class

@@ -139,6 +139,7 @@ Scenario: Underscore in parameter name
 	When I execute the tests
 	Then the binding method 'When_W_H_O_does_something' is executed
 
+@fsharp
 Scenario Outline: F# method name can be used as a regex
 	Given there is an external F# class library project 'ExternalSteps_FSharp'
 	And the following step definition in the external library

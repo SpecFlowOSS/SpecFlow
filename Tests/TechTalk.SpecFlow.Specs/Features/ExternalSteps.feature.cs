@@ -95,29 +95,31 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Steps can defined in an external F# project")]
+        [NUnit.Framework.CategoryAttribute("fsharp")]
         public virtual void StepsCanDefinedInAnExternalFProject()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Steps can defined in an external F# project", ((string[])(null)));
-#line 31
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Steps can defined in an external F# project", new string[] {
+                        "fsharp"});
 #line 32
+this.ScenarioSetup(scenarioInfo);
+#line 33
  testRunner.Given("there is an external F# class library project \'ExternalSteps_FSharp\'");
 #line hidden
-#line 33
+#line 34
  testRunner.And("the following binding class", "[<TechTalk.SpecFlow.Binding>]\r\nmodule Bindings\r\n\r\nlet [<TechTalk.SpecFlow.When(@\"" +
                     "I do something\")>] WhenIDoSomething() = ()", ((TechTalk.SpecFlow.Table)(null)));
-#line 40
+#line 41
  testRunner.And("there is a SpecFlow project with a reference to the external library");
 #line hidden
-#line 41
+#line 42
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 45
+#line 46
  testRunner.And("the specflow configuration is", "<specFlow>\r\n<stepAssemblies>\r\n<stepAssembly assembly=\"ExternalSteps_FSharp\" />\r\n<" +
                     "/stepAssemblies>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
-#line 53
- testRunner.When("I execute the tests");
 #line 54
+ testRunner.When("I execute the tests");
+#line 55
  testRunner.Then("all tests should pass");
 #line hidden
             this.ScenarioCleanup();

@@ -300,26 +300,32 @@ this.ScenarioSetup(scenarioInfo);
         
         public virtual void FMethodNameCanBeUsedAsARegex(string @case, string method, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("F# method name can be used as a regex", exampleTags);
-#line 142
-this.ScenarioSetup(scenarioInfo);
+            string[] @__tags = new string[] {
+                    "fsharp"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("F# method name can be used as a regex", @__tags);
 #line 143
+this.ScenarioSetup(scenarioInfo);
+#line 144
  testRunner.Given("there is an external F# class library project \'ExternalSteps_FSharp\'");
 #line hidden
-#line 144
+#line 145
  testRunner.And("the following step definition in the external library", string.Format("let [<When>] {0} = ()", method), ((TechTalk.SpecFlow.Table)(null)));
-#line 148
+#line 149
  testRunner.And("there is a SpecFlow project with a reference to the external library");
 #line hidden
-#line 149
+#line 150
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something really important", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 153
+#line 154
  testRunner.And("the specflow configuration is", "<specFlow>\r\n<stepAssemblies>\r\n<stepAssembly assembly=\"ExternalSteps_FSharp\" />\r\n<" +
                     "/stepAssemblies>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
-#line 161
- testRunner.When("I execute the tests");
 #line 162
+ testRunner.When("I execute the tests");
+#line 163
  testRunner.Then("all tests should pass");
 #line hidden
             this.ScenarioCleanup();
@@ -327,6 +333,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        [NUnit.Framework.CategoryAttribute("fsharp")]
         public virtual void FMethodNameCanBeUsedAsARegex_Simple()
         {
             this.FMethodNameCanBeUsedAsARegex("simple", "``I do something really important``()", ((string[])(null)));
@@ -334,6 +341,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        [NUnit.Framework.CategoryAttribute("fsharp")]
         public virtual void FMethodNameCanBeUsedAsARegex_BasicRegexOps()
         {
             this.FMethodNameCanBeUsedAsARegex("basic regex ops", "``I do something .* important``()", ((string[])(null)));
@@ -341,6 +349,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        [NUnit.Framework.CategoryAttribute("fsharp")]
         public virtual void FMethodNameCanBeUsedAsARegex_Parameter()
         {
             this.FMethodNameCanBeUsedAsARegex("parameter", "``I do something (.*) important``(howMuch: string)", ((string[])(null)));
@@ -348,6 +357,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("F# method name can be used as a regex")]
+        [NUnit.Framework.CategoryAttribute("fsharp")]
         public virtual void FMethodNameCanBeUsedAsARegex_Non_RegexMethodName()
         {
             this.FMethodNameCanBeUsedAsARegex("non-regex method name", "When_I_do_something_really_important()", ((string[])(null)));
@@ -356,23 +366,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Non_EnglishKeywords(string @case, string keyword, string methodPrefix, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-English keywords", exampleTags);
-#line 171
+#line 172
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 174
+#line 175
  testRunner.Given("there is a feature file in the project as", string.Format("\tFunktionalität: German\r\n\tSzenario: Zwei Zahlen hinzufügen\r\n\t\t{0} ich Knopf drück" +
                         "e", keyword), ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 180
+#line 181
  testRunner.And("the following step definitions", string.Format("[Given]\r\npublic void {0}ich_Knopf_drücke()\r\n{{}}", methodPrefix), ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 186
+#line 187
  testRunner.And("the specflow configuration is", "<specFlow>\r\n<!-- the localized prefixes are detected if the \r\nfeature language or" +
                     " the binding culture is set in the config -->\r\n<language feature=\"de-DE\" /> \r\n<!" +
                     "--<bindingCulture name=\"de-DE\" />-->\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
-#line 195
- testRunner.When("I execute the tests");
 #line 196
+ testRunner.When("I execute the tests");
+#line 197
  testRunner.Then(string.Format("the binding method \'{0}ich_Knopf_drücke\' is executed", methodPrefix));
 #line hidden
             this.ScenarioCleanup();
