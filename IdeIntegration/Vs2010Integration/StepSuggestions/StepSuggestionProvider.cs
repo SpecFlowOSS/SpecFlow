@@ -59,19 +59,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public void AddBinding(StepDefinitionBinding stepBinding)
         {
-            var item = new BoundStepSuggestions<TNativeSuggestionItem>(stepBinding, nativeSuggestionItemFactory);
+            try
+            {
+                var item = new BoundStepSuggestions<TNativeSuggestionItem>(stepBinding, nativeSuggestionItemFactory);
 
-            var affectedSuggestions = new List<IBoundStepSuggestion<TNativeSuggestionItem>>(
-                boundStepSuggestions.GetRelatedItems(stepBinding.Regex).SelectMany(relatedItem => relatedItem.Suggestions).Where(s => s.Match(stepBinding, GetBindingCulture(s), true, BindingMatchService)));
-            affectedSuggestions.AddRange(notMatchingSteps[item.StepDefinitionType].Suggestions.Where(s => s.Match(stepBinding, GetBindingCulture(s), true, BindingMatchService)));
+                var affectedSuggestions = new List<IBoundStepSuggestion<TNativeSuggestionItem>>(
+                    boundStepSuggestions.GetRelatedItems(stepBinding.Regex).SelectMany(relatedItem => relatedItem.Suggestions).Where(s => s.Match(stepBinding, GetBindingCulture(s), true, BindingMatchService)));
+                affectedSuggestions.AddRange(notMatchingSteps[item.StepDefinitionType].Suggestions.Where(s => s.Match(stepBinding, GetBindingCulture(s), true, BindingMatchService)));
 
-            foreach (var affectedSuggestion in affectedSuggestions)
-                RemoveBoundStepSuggestion(affectedSuggestion);
+                foreach (var affectedSuggestion in affectedSuggestions)
+                    RemoveBoundStepSuggestion(affectedSuggestion);
 
-            boundStepSuggestions.Add(item);
+                boundStepSuggestions.Add(item);
 
-            foreach (var affectedSuggestion in affectedSuggestions)
-                AddStepSuggestion(affectedSuggestion);
+                foreach (var affectedSuggestion in affectedSuggestions)
+                    AddStepSuggestion(affectedSuggestion);
+            }
+            catch(Exception ex)
+            {
+                projectScope.Tracer.Trace("Error while adding step definition binding: " + ex, GetType().Name);
+                throw;
+            }
         }
 
         public void RemoveBinding(StepDefinitionBinding stepBinding)

@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
         {
-            vsProjectScope.VisualStudioTracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
+            vsProjectScope.Tracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
             fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem).ToArray();
             fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
         }
@@ -128,8 +128,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                                   TimeStamp = bindingFileInfo.LastChangeDate
                                               };
 
-                fileStepDefinitions.StepDefinitions = new List<StepDefinitionBinding>();
-                fileStepDefinitions.StepDefinitions.AddRange(bindingFileInfo.StepBindings);
+                fileStepDefinitions.StepDefinitions = new List<StepDefinitionBindingItem>();
+                fileStepDefinitions.StepDefinitions.AddRange(bindingFileInfo.StepBindings.Select(StepDefinitionBindingItem.FromStepDefinitionBinding));
                 projectStepDefinitions.FileStepDefinitions.Add(fileStepDefinitions);
             }
         }
@@ -153,18 +153,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             foreach (var fileStepDefinitions in projectStepDefitions.FileStepDefinitions)
             {
-                var fileInfo = FindFileInfo(fileStepDefinitions.FileName);
-                if (fileInfo == null)
-                    continue;
+                try
+                {
+                    var fileInfo = FindFileInfo(fileStepDefinitions.FileName);
+                    if (fileInfo == null)
+                        continue;
 
-                if (fileInfo.IsDirty(fileStepDefinitions.TimeStamp))
-                    continue;
+                    if (fileInfo.IsDirty(fileStepDefinitions.TimeStamp))
+                        continue;
 
-                fileInfo.StepBindings = fileStepDefinitions.StepDefinitions;
-                fileInfo.IsAnalyzed = true;
+                    fileInfo.StepBindings = fileStepDefinitions.StepDefinitions.Select(bi => bi.ToStepDefinitionBinding()).ToList();
+
+                    FireFileUpdated(fileInfo);
+                    fileInfo.IsAnalyzed = true;
+                }
+                catch(Exception ex)
+                {
+                    vsProjectScope.Tracer.Trace(string.Format("Binding load error for {0}: {1}", fileStepDefinitions.FileName, ex), GetType().Name);
+                }
             }
 
-            vsProjectScope.VisualStudioTracer.Trace("Applied loaded bindings", "BindingFilesTracker");
+            vsProjectScope.Tracer.Trace("Applied loaded bindings", GetType().Name);
         }
     }
 }

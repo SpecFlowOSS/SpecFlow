@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected VsProjectFilesTracker CreateFilesTracker(Project project, string regexPattern)
         {
-            var result = new VsProjectFilesTracker(project, regexPattern, vsProjectScope.DteWithEvents, vsProjectScope.VisualStudioTracer);
+            var result = new VsProjectFilesTracker(project, regexPattern, vsProjectScope.DteWithEvents, vsProjectScope.Tracer);
             result.FileChanged += FilesTrackerOnFileChanged;
             result.FileRenamed += FilesTrackerOnFileRenamed;
             result.FileOutOfScope += FilesTrackerOnFileOutOfScope;
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected void DoTaskAsynch(Action action)
         {
-            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.VisualStudioTracer));
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.Tracer));
         }
 
         public virtual void Initialize()
@@ -140,7 +140,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (Initialized != null)
                 Initialized();
 
-            vsProjectScope.VisualStudioTracer.Trace("Initialized", GetType().Name);
+            vsProjectScope.Tracer.Trace("Initialized", GetType().Name);
         }
 
         protected virtual void AnalyzeInitially()
@@ -183,18 +183,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 Analyze(fileInfo, pi);
 
-                if (fireUpdatedEvent && FileUpdated != null)
-                    FileUpdated(fileInfo);
+                if (fireUpdatedEvent)
+                    FireFileUpdated(fileInfo);
             }
             catch(Exception exception)
             {
-                vsProjectScope.VisualStudioTracer.Trace("Exception: " + exception.ToString(), GetType().Name);
+                vsProjectScope.Tracer.Trace("Exception: " + exception.ToString(), GetType().Name);
             }
             finally
             {
                 IsStepMapDirty = true;
                 fileInfo.IsAnalyzed = true;
             }
+        }
+
+        protected void FireFileUpdated(TFileInfo fileInfo)
+        {
+            if (FileUpdated != null)
+                FileUpdated(fileInfo);
         }
 
         private ProjectItem FindProjectItemByProjectRelativePath(TFileInfo fileInfo)
@@ -205,7 +211,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             catch(Exception exception)
             {
-                vsProjectScope.VisualStudioTracer.Trace("Exception: " + exception.ToString(), GetType().Name);
+                vsProjectScope.Tracer.Trace("Exception: " + exception.ToString(), GetType().Name);
                 return null;
             }
         }

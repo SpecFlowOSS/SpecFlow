@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
@@ -24,7 +25,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         private readonly Project project;
         private readonly DteWithEvents dteWithEvents;
-        private readonly IVisualStudioTracer visualStudioTracer;
+        private readonly IVisualStudioTracer tracer;
         private readonly IIntegrationOptionsProvider integrationOptionsProvider;
         private readonly IBindingSkeletonProviderFactory bindingSkeletonProviderFactory;
         private readonly GherkinTextBufferParser parser;
@@ -99,7 +100,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         public Project Project { get { return project; } }
-        public IVisualStudioTracer VisualStudioTracer { get { return visualStudioTracer; } }
+        public IIdeTracer Tracer { get { return tracer; } }
         internal DteWithEvents DteWithEvents { get { return dteWithEvents; } }
 
         public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
@@ -115,25 +116,25 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
 
-        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer visualStudioTracer, IIntegrationOptionsProvider integrationOptionsProvider, IBindingSkeletonProviderFactory bindingSkeletonProviderFactory)
+        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider, IBindingSkeletonProviderFactory bindingSkeletonProviderFactory)
         {
             Classifications = classifications;
             this.project = project;
             this.dteWithEvents = dteWithEvents;
-            this.visualStudioTracer = visualStudioTracer;
+            this.tracer = tracer;
             this.integrationOptionsProvider = integrationOptionsProvider;
             this.bindingSkeletonProviderFactory = bindingSkeletonProviderFactory;
 
             var integrationOptions = integrationOptionsProvider.GetOptions();
 
-            parser = new GherkinTextBufferParser(this, visualStudioTracer);
+            parser = new GherkinTextBufferParser(this, tracer);
 //TODO: enable when analizer is implemented
 //            if (integrationOptions.EnableAnalysis)
 //                analyzer = new GherkinScopeAnalyzer(this, visualStudioTracer);
 
-            GherkinProcessingScheduler = new GherkinProcessingScheduler(visualStudioTracer, integrationOptions.EnableAnalysis);
+            GherkinProcessingScheduler = new GherkinProcessingScheduler(tracer, integrationOptions.EnableAnalysis);
 
-            GeneratorServices = new VsGeneratorServices(project, new VsSpecFlowConfigurationReader(project, visualStudioTracer), visualStudioTracer);
+            GeneratorServices = new VsGeneratorServices(project, new VsSpecFlowConfigurationReader(project, tracer), tracer);
         }
 
         private void EnsureInitialized()
@@ -165,13 +166,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void Initialize()
         {
-            visualStudioTracer.Trace("Initializing...", "VsProjectScope");
+            tracer.Trace("Initializing...", "VsProjectScope");
             try
             {
                 specFlowProjectConfiguration = LoadConfiguration();
                 gherkinDialectServices = new GherkinDialectServices(specFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage);
 
-                appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, visualStudioTracer);
+                appConfigTracker = new VsProjectFileTracker(project, "App.config", dteWithEvents, tracer);
                 appConfigTracker.FileChanged += AppConfigTrackerOnFileChanged;
                 appConfigTracker.FileOutOfScope += AppConfigTrackerOnFileOutOfScope;
 
@@ -185,15 +186,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                     stepSuggestionProvider = new VsStepSuggestionProvider(this);
                     stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
-                    //stepDefinitionMatchService = new BindingMatchService(stepSuggestionProvider);
-                    stepDefinitionMatchService = new StepDefinitionMatcher(stepSuggestionProvider, new CannotConverter());
+                    stepDefinitionMatchService = new StepDefinitionMatchService(stepSuggestionProvider, new CannotConverter());
                 }
-                visualStudioTracer.Trace("Initialized", "VsProjectScope");
+                tracer.Trace("Initialized", "VsProjectScope");
                 initialized = true;
 
                 if (enableAnalysis)
                 {
-                    visualStudioTracer.Trace("Starting analysis services...", "VsProjectScope");
+                    tracer.Trace("Starting analysis services...", "VsProjectScope");
 
                     stepSuggestionProvider.Initialize();
                     bindingFilesTracker.Initialize();
@@ -206,16 +206,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                     dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
 
-                    visualStudioTracer.Trace("Analysis services started", "VsProjectScope");
+                    tracer.Trace("Analysis services started", "VsProjectScope");
                 }
                 else
                 {
-                    visualStudioTracer.Trace("Analysis services disabled", "VsProjectScope");
+                    tracer.Trace("Analysis services disabled", "VsProjectScope");
                 }
             }
             catch(Exception exception)
             {
-                visualStudioTracer.Trace("Exception: " + exception, "VsProjectScope");
+                tracer.Trace("Exception: " + exception, "VsProjectScope");
             }
         }
 
@@ -287,7 +287,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
-            ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, visualStudioTracer); //TODO: load through DI
+            ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, tracer); //TODO: load through DI
             ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoaderWithoutPlugins(); //TODO: load through DI
 
             try
@@ -296,14 +296,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             catch(Exception exception)
             {
-                visualStudioTracer.Trace("Configuration loading error: " + exception, "VsProjectScope");
+                tracer.Trace("Configuration loading error: " + exception, "VsProjectScope");
                 return new SpecFlowProjectConfiguration();
             }
         }
 
         private void OnSpecFlowProjectConfigurationChanged()
         {
-            this.visualStudioTracer.Trace("SpecFlow configuration changed", "VsProjectScope");
+            this.tracer.Trace("SpecFlow configuration changed", "VsProjectScope");
             if (SpecFlowProjectConfigurationChanged != null)
                 SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
 
@@ -314,7 +314,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void OnGherkinDialectServicesChanged()
         {
-            this.visualStudioTracer.Trace("default language changed", "VsProjectScope");
+            this.tracer.Trace("default language changed", "VsProjectScope");
             if (GherkinDialectServicesChanged != null)
                 GherkinDialectServicesChanged(this, EventArgs.Empty);
         }
@@ -385,7 +385,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (!featureFilesTracker.IsStepMapDirty && !bindingFilesTracker.IsStepMapDirty)
             {
-                visualStudioTracer.Trace("Step map up-to-date", typeof(StepMap).Name);
+                tracer.Trace("Step map up-to-date", typeof(StepMap).Name);
                 return;
             }
 
@@ -393,7 +393,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             featureFilesTracker.SaveToStepMap(stepMap);
             bindingFilesTracker.SaveToStepMap(stepMap);
 
-            stepMap.SaveToFile(GetStepMapFileName(), visualStudioTracer);
+            stepMap.SaveToFile(GetStepMapFileName(), tracer);
         }
 
         private void LoadStepMap()
@@ -402,7 +402,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (!File.Exists(fileName))
                 return;
 
-            var stepMap = StepMap.LoadFromFile(fileName, visualStudioTracer);
+            var stepMap = StepMap.LoadFromFile(fileName, tracer);
             if (stepMap != null)
             {
                 if (stepMap.DefaultLanguage.Equals(GherkinDialectServices.DefaultLanguage)) // if default language changed in config => ignore cache

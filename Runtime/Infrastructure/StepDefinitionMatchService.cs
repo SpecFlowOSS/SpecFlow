@@ -24,12 +24,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
     }
 
-    public class StepDefinitionMatcher : IStepDefinitionMatchService
+    public class StepDefinitionMatchService : IStepDefinitionMatchService
     {
         private readonly IBindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
 
-        public StepDefinitionMatcher(IBindingRegistry bindingRegistry, IStepArgumentTypeConverter stepArgumentTypeConverter)
+        public StepDefinitionMatchService(IBindingRegistry bindingRegistry, IStepArgumentTypeConverter stepArgumentTypeConverter)
         {
             this.bindingRegistry = bindingRegistry;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;

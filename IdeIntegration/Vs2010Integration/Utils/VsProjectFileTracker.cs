@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using EnvDTE;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
@@ -11,17 +12,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
     {
         protected Project project;
         protected DteWithEvents dteWithEvents;
-        protected IVisualStudioTracer visualStudioTracer;
+        protected IIdeTracer tracer;
 
         public event Action<ProjectItem> FileChanged;
         public event Action<ProjectItem, string> FileOutOfScope;
         public event Action<ProjectItem, string> FileRenamed;
 
-        protected VsProjectFileTrackerBase(Project project, DteWithEvents dteWithEvents, IVisualStudioTracer visualStudioTracer)
+        protected VsProjectFileTrackerBase(Project project, DteWithEvents dteWithEvents, IIdeTracer tracer)
         {
             this.project = project;
             this.dteWithEvents = dteWithEvents;
-            this.visualStudioTracer = visualStudioTracer;
+            this.tracer = tracer;
         }
 
         protected virtual void SubscribeToDteEvents()
@@ -42,21 +43,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void ProjectItemsEventsOnItemAdded(ProjectItem item)
         {
-            visualStudioTracer.Trace("Item Added: " + item.Name, "VsProjectFileTracker");
+            tracer.Trace("Item Added: " + item.Name, "VsProjectFileTracker");
             if (IsItemRelevant(item))
                 OnFileChanged(item);
         }
 
         private void ProjectItemsEventsOnItemRemoved(ProjectItem item)
         {
-            visualStudioTracer.Trace("Item Removed: " + item.Name, "VsProjectFileTracker");
+            tracer.Trace("Item Removed: " + item.Name, "VsProjectFileTracker");
             if (IsItemRelevant(item))
                 OnFileOutOfScope(item, VsxHelper.GetProjectRelativePath(item));
         }
 
         private void ProjectItemsEventsOnItemRenamed(ProjectItem item, string oldName)
         {
-            visualStudioTracer.Trace("Item Renamed to: " + item.Name + " from " + oldName, "VsProjectFileTracker");
+            tracer.Trace("Item Renamed to: " + item.Name + " from " + oldName, "VsProjectFileTracker");
             if (IsItemRelevant(item))
             {
                 OnFileRenamed(item, oldName);
@@ -71,7 +72,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void DocumentEventsOnDocumentSaved(Document document)
         {
-            visualStudioTracer.Trace("Document Saved: " + document, "VsProjectFileTracker");
+            tracer.Trace("Document Saved: " + document, "VsProjectFileTracker");
             ProjectItem item = document.ProjectItem;
             if (IsItemRelevant(item))
                 OnFileChanged(item);
@@ -120,7 +121,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
     {
         private readonly Regex fileNameRe;
 
-        public VsProjectFilesTracker(Project project, string regexPattern, DteWithEvents dteWithEvents, IVisualStudioTracer visualStudioTracer) : base(project, dteWithEvents, visualStudioTracer)
+        public VsProjectFilesTracker(Project project, string regexPattern, DteWithEvents dteWithEvents, IIdeTracer tracer) : base(project, dteWithEvents, tracer)
         {
             fileNameRe = new Regex(regexPattern, RegexOptions.IgnoreCase);
 
@@ -157,8 +158,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             
         }
 
-        public VsProjectFileTracker(Project project, string fileName, DteWithEvents dteWithEvents, IVisualStudioTracer visualStudioTracer, bool followTrackingAfterRename = false) :
-            base(project, dteWithEvents, visualStudioTracer)
+        public VsProjectFileTracker(Project project, string fileName, DteWithEvents dteWithEvents, IVisualStudioTracer tracer, bool followTrackingAfterRename = false) :
+            base(project, dteWithEvents, tracer)
         {
             this.followTrackingAfterRename = followTrackingAfterRename;
             this.fileName = fileName;
@@ -182,7 +183,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void BuildEventsOnOnBuildDone(vsBuildScope scope, vsBuildAction action)
         {
-            this.visualStudioTracer.Trace("Build Done.", "VsProjectFileTracker");
+            this.tracer.Trace("Build Done.", "VsProjectFileTracker");
             ProjectItem item = VsxHelper.FindProjectItemByProjectRelativePath(project, fileName);
             var newChangeDate = VsxHelper.GetLastChangeDate(item);
             if (newChangeDate != LastChangeDate)
@@ -217,14 +218,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         protected override void OnFileChanged(ProjectItem projectItem)
         {
             SetLastChangeDate(projectItem);
-            visualStudioTracer.Trace("File Changed: " + fileName, "VsProjectFileTracker");
+            tracer.Trace("File Changed: " + fileName, "VsProjectFileTracker");
             base.OnFileChanged(projectItem);
         }
 
         protected override void OnFileRenamed(ProjectItem projectItem, string oldProjectRelativeFileName)
         {
             SetLastChangeDate(projectItem);
-            visualStudioTracer.Trace("File renamed: " + fileName, "VsProjectFileTracker");
+            tracer.Trace("File renamed: " + fileName, "VsProjectFileTracker");
             base.OnFileRenamed(projectItem, oldProjectRelativeFileName);
         }
 

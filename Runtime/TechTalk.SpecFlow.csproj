@@ -150,7 +150,7 @@
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
-    <Compile Include="Infrastructure\StepDefinitionMatcher.cs" />
+    <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />

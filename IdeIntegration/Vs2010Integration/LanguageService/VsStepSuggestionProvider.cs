@@ -192,7 +192,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void FeatureFilesTrackerOnReady()
         {
             featureFilesPopulated = true;
-            vsProjectScope.VisualStudioTracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
+            vsProjectScope.Tracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
 
             FireReady();
         }
@@ -216,7 +216,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void BindingFilesTrackerOnReady()
         {
             bindingsPopulated = true;
-            vsProjectScope.VisualStudioTracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
+            vsProjectScope.Tracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
         }
 
         private void FeatureFilesTrackerOnFeatureFileRemoved(FeatureFileInfo featureFileInfo)

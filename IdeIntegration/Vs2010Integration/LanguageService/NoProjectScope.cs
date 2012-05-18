@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.IdeIntegration;
 using TechTalk.SpecFlow.IdeIntegration.Generator;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Bindings;
@@ -21,6 +22,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; private set; }
         public GherkinDialectServices GherkinDialectServices { get; private set; }
         public IIntegrationOptionsProvider IntegrationOptionsProvider { get; private set; }
+        public IIdeTracer Tracer { get; private set; }
 
         public event EventHandler SpecFlowProjectConfigurationChanged { add {} remove {} }
         public event EventHandler GherkinDialectServicesChanged { add { } remove { } }
@@ -58,6 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             GherkinDialectServices = new GherkinDialectServices(SpecFlowProjectConfiguration.GeneratorConfiguration.FeatureLanguage); 
             Classifications = classifications;
             IntegrationOptionsProvider = integrationOptionsProvider;
+            Tracer = visualStudioTracer;
         }
 
         public void Dispose()
