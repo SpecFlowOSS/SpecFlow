@@ -44,9 +44,6 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Generator\FileBasedSpecFlowConfigurationReader.cs" />
     <Compile Include="Generator\GeneratorServices.cs" />
     <Compile Include="Generator\IdeSingleFileGenerator.cs" />

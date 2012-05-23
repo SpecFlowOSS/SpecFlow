@@ -93,9 +93,6 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="..\Vs2010Integration\SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs">
       <Link>Common\CodeGeneratorRegistrationAttribute.cs</Link>
     </Compile>

@@ -59,9 +59,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="AssemblyServices.cs" />
     <Compile Include="BindingCollector.cs" />
     <Compile Include="MsTestExecutionReport\MsTestExecutionReportGenerator.cs" />
