@@ -1,4 +1,4 @@
-vNext - ???
+1.9.0 beta - ???
 
 New Features:
 + Added SpecFlow.xUnit NuGet package
@@ -13,9 +13,6 @@ New Features:
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
-
-1.8.1 - 2012/3/1
-Fixed issue:
 + SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml.
 
 1.8.1 - 2011/10/25
@@ -23,10 +20,6 @@ Fixed issue:
 Fixed issues:
 + ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
 + Step definition with more than 10 parameters causing BindingException (extended now to 20)
-
-1.8.1 - 2011/10/25
-
-Fixed issues:
 + Run & debug scenarios from the feature file context menu does not work with ReSharper 6 (Issue 138)
 + VS2010 step autocomplete: New steps form external project are not found unless IDE is restarted (Issue 88, by Stanislaw Wozniak)
 + VS2010 step autocomplete: Duplicated steps
