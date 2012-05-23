@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
     public class StepMap
     {
-        public const int CURRENT_VERSION = 1;
+        public const int CURRENT_VERSION = 2;
 
         public static StepMap CreateStepMap(CultureInfo defaultLanguage)
         {
