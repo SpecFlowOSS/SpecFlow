@@ -15,6 +15,7 @@ New Features:
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
 + SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml.
++ VS2010: Formatting table fails if table row does not end with a pipe (Issue 146)
 
 1.8.1 - 2011/10/25
 

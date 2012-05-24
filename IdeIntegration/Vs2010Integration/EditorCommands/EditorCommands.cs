@@ -200,7 +200,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     indent = line.Substring(0, line.IndexOf('|'));
 
                 var cells = GetCells(line);
-                for (int i = 0; i < cells.Length; i++)
+                for (int i = 0; i < Math.Min(cells.Length, widths.Length); i++)
                 {
                     int cellLength = cells[i].Trim().Length;
                     widths[i] = Math.Max(widths[i], cellLength);
@@ -224,7 +224,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     stringBuilder.Append(padding);
                     var trimmedCell = cells[i].Trim();
                     stringBuilder.Append(trimmedCell);
-                    stringBuilder.Append(' ', widths[i] - trimmedCell.Length);
+                    if (i < widths.Length)
+                        stringBuilder.Append(' ', widths[i] - trimmedCell.Length);
                     stringBuilder.Append(padding);
                     stringBuilder.Append('|');
                 }
