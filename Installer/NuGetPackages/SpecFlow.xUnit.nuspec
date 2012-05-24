@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
     <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
@@ -18,7 +18,7 @@
     <description>Combined package to setup SpecFlow with xUnit easily.</description>
     <summary>Combined package to setup SpecFlow with xUnit easily.</summary>
     <language>en-US</language>
-    <tags>specflow nunit</tags>
+    <tags>specflow xUnit</tags>
   </metadata>
   <files>
     <file src="..\xUnit\App.config.transform" target="content\App.config.transform" />
