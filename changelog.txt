@@ -18,6 +18,7 @@ Fixed issues:
 + SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml. (Issue 151, Pull 170)
 + VS2010: Formatting table fails if table row does not end with a pipe (Issue 146)
 + Support for missing feature/GenerationTargetLanguage (Issue 163)
++ RuntimePluginLoader: IsAssignableFrom is backwards (Issue 164)
 
 1.8.1 - 2011/10/25
 
