@@ -21,6 +21,6 @@
     <tags>specflow nunit</tags>
   </metadata>
   <files>
-    <file src="content\App.config.transform" target="content\App.config.transform" />
+    <file src="..\xUnit\App.config.transform" target="content\App.config.transform" />
   </files>
 </package>

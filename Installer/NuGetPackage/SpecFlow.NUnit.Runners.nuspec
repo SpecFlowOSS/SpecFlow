@@ -20,8 +20,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="SpecFlowNUnitExtension.cs" target="content" />
-    <file src="Install.ps1" target="tools" />
-    <file src="Uninstall.ps1" target="tools" />
+    <file src="..\NUnit.Runners\SpecFlowNUnitExtension.cs" target="content" />
+    <file src="..\NUnit.Runners\Install.ps1" target="tools" />
+    <file src="..\NUnit.Runners\Uninstall.ps1" target="tools" />
   </files>
 </package>

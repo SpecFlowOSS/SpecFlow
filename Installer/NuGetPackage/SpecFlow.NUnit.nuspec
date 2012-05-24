@@ -20,6 +20,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="App.config.transform" target="content" />
+    <file src="..\NUnit\App.config.transform" target="content" />
   </files>
 </package>
