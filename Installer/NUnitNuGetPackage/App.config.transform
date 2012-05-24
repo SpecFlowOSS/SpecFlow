@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <specFlow>
+    <!-- For additional details on SpecFlow configuration options see https://github.com/techtalk/SpecFlow/wiki/Configuration -->
+    <unitTestProvider name="NUnit" />
+  </specFlow>
+</configuration>

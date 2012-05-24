@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NUnitNuGetPackage")]
+[assembly: AssemblyTitle("NUnitRunnersNuGetPackage")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NUnitNuGetPackage")]
-[assembly: AssemblyCopyright("Copyright © TechTalk 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("NUnitRunnersNuGetPackage")]
+[assembly: AssemblyCopyright("Copyright © TechTalk 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("212ae04e-d68f-4498-968f-276647a62226")]
+[assembly: Guid("49d2252b-a6c1-4a01-b065-f4acea851181")]
 
 // Version information for an assembly consists of the following four values:
 //

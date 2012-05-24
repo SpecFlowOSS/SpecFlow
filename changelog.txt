@@ -10,6 +10,7 @@ New Features:
 + VS2010: Cache analysis result for faster solution startup
 + VS2010: It can now be installed on machines used for SharePoint development
 + Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
++ SpecFlow.NUnit NuGet package has been split to SpecFlow.NUnit (w/o AddOn for NUnit runner) and SpecFlow.NUnit.Runners (with runner support)
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
