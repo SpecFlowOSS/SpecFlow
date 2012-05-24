@@ -75,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdeIntegrationTests", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTests", "Tests\GeneratorTests\GeneratorTests.csproj", "{97C30FCC-3093-4430-93DC-D671C656C404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackage", "Installer\NuGetPackage\NuGetPackage.csproj", "{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "Installer\NuGetPackages\NuGetPackages.csproj", "{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{27B6695E-7049-4C1B-8820-812722128D9E} = {27B6695E-7049-4C1B-8820-812722128D9E}
 	EndProjectSection
