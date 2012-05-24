@@ -90,15 +90,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var codeBehindItem = GetCodeBehindItem(projectItem);
             if (codeBehindItem != null)
             {
-                string codeBehind = VsxHelper.GetFileContent(codeBehindItem);
+                string codeBehindContent = VsxHelper.GetFileContent(codeBehindItem);
+                DetectGeneratedTestVersion(featureFileInfo, codeBehindContent);
+            }
+        }
+
+        private void DetectGeneratedTestVersion(FeatureFileInfo featureFileInfo, string codeBehindContent)
+        {
+            try
+            {
                 using (var testGenerator = vsProjectScope.GeneratorServices.CreateTestGenerator())
                 {
                     featureFileInfo.GeneratorVersion = testGenerator.DetectGeneratedTestVersion(
                         new FeatureFileInput(featureFileInfo.ProjectRelativePath)
                             {
-                                GeneratedTestFileContent = codeBehind
+                                GeneratedTestFileContent = codeBehindContent
                             });
                 }
+            }
+            catch(Exception ex)
+            {
+                // if there was an error during version detect, we skip discovering the version for this file.
+                vsProjectScope.Tracer.Trace(
+                    string.Format("Cannot detect generated test version for file: {0}, error: {1}", featureFileInfo.ProjectRelativePath, ex.Message), GetType().Name);
             }
         }
 

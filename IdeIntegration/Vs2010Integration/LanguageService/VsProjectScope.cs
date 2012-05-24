@@ -288,7 +288,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
             ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, tracer); //TODO: load through DI
-            ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoaderWithoutPlugins(); //TODO: load through DI
+            ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoader(); //TODO: load through DI
 
             try
             {
@@ -369,7 +369,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private string GetStepMapFileName()
         {
             return stepMapFileName ?? (stepMapFileName = Path.Combine(Path.GetTempPath(), 
-                string.Format(@"specflow-stepmap-{1}-{2}-{0}.cache", VsxHelper.GetProjectUniqueId(project), project.Name, Math.Abs(VsxHelper.GetProjectFolder(project).GetHashCode()))));
+                string.Format(@"specflow-stepmap-{1}-{2}-{0}{3}.cache", VsxHelper.GetProjectUniqueId(project), project.Name, Math.Abs(VsxHelper.GetProjectFolder(project).GetHashCode()), GetConfigurationText())));
+        }
+
+        private string GetConfigurationText()
+        {
+            //TODO: once we can better track config changes, we can also have different cache for the different configs
+#if USE_CONFIG_DEPENDENT_CACHE
+            try
+            {
+                return "-" + project.ConfigurationManager.ActiveConfiguration.ConfigurationName + "-" +
+                       project.ConfigurationManager.ActiveConfiguration.PlatformName;
+            }
+            catch(Exception ex)
+            {
+                tracer.Trace("Unable to get configuration name: " + ex, GetType().Name);
+                return "-na";
+            }
+#else
+            return "";
+#endif
         }
 
         private void BuildEventsOnOnBuildDone(vsBuildScope scope, vsBuildAction action)

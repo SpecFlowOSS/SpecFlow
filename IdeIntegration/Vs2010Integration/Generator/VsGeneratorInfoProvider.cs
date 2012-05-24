@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
             {
                 //TODO: have a "project context" where the actual confic can be read without re-loading/parsing it.
                 var configurationHolder = configurationReader.ReadConfiguration();
-                var config = new SpecFlowProjectConfigurationLoaderWithoutPlugins().LoadConfiguration(configurationHolder);
+                var config = new SpecFlowProjectConfigurationLoader().LoadConfiguration(configurationHolder);
                 if (config == null)
                     return new GeneratorConfiguration();
 
@@ -107,10 +107,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
             if (specFlowRef == null)
                 return false;
 
-            if (specFlowRef.Path == null)
+            var specFlowRefPath = specFlowRef.Path;
+            if (string.IsNullOrWhiteSpace(specFlowRefPath))
                 return false;
 
-            string runtimeFolder = Path.GetDirectoryName(specFlowRef.Path);
+            string runtimeFolder = Path.GetDirectoryName(specFlowRefPath);
             if (runtimeFolder == null)
                 return false;
 
