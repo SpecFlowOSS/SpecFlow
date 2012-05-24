@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>SpecFlow.CustomGenerator</id>
+    <version>1.0.0-alpha</version>
+    <title>SpecFlow.CustomGenerator</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>Package for writing custom generator extensions for SpecFlow.</description>
+    <summary>Package for writing custom generator extensions for SpecFlow.</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
+    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow bdd gherkin cucumber generator</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+    </dependencies>
+    <references>
+      <reference file="TechTalk.SpecFlow.Generator.dll" />
+      <reference file="TechTalk.SpecFlow.Utils.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.dll" target="lib\net40"
+          exclude="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.Reporting.dll;..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.dll"  />
+  </files>
+</package>

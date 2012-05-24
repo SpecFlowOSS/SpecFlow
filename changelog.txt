@@ -12,6 +12,7 @@ New Features:
 + Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
 + SpecFlow.NUnit NuGet package has been split to SpecFlow.NUnit (w/o AddOn for NUnit runner) and SpecFlow.NUnit.Runners (with runner support)
 + MsTest: Support for MSTest's [Owner] and [WorkItem] attributes with tags like @owner:foo @workitem:123 (Issue 162, Pull 161)
++ NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)

@@ -17,19 +17,19 @@
   </metadata>
   <files>
     <!-- common reference files -->
-    <file src="..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net35" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net35" />
 
     <!-- alternative runtimes -->
-    <file src="..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl3" />
-    <file src="..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.WindowsPhone7.dll" target="lib\sl4-wp" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl3" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.WindowsPhone7.dll" target="lib\sl4-wp" />
 
     <!-- Tools -->
-    <file src="..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.*" target="tools" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.*" target="tools" />
 
     <!-- config -->
-    <file src="App.config.transform" target="content" />
+    <file src="..\App.config.transform" target="content" />
 
     <!-- license & version information -->
-    <file src="..\..\Installer\SpecFlowBinPackage\bin\package\*.txt" target="" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\*.txt" target="" />
   </files>
 </package>
