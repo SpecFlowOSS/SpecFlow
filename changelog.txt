@@ -11,11 +11,13 @@ New Features:
 + VS2010: It can now be installed on machines used for SharePoint development
 + Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
 + SpecFlow.NUnit NuGet package has been split to SpecFlow.NUnit (w/o AddOn for NUnit runner) and SpecFlow.NUnit.Runners (with runner support)
++ MsTest: Support for MSTest's [Owner] and [WorkItem] attributes with tags like @owner:foo @workitem:123 (Issue 162, Pull 161)
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
-+ SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml.
++ SharePoint: throws errors when creating a test class based on the .feature file generated in SharePoint progress because the content of the file is xml. (Issue 151, Pull 170)
 + VS2010: Formatting table fails if table row does not end with a pipe (Issue 146)
++ Support for missing feature/GenerationTargetLanguage (Issue 163)
 
 1.8.1 - 2011/10/25
 
