@@ -10,6 +10,7 @@ New Features:
 + VS2010: Cache analysis result for faster solution startup
 + VS2010: It can now be installed on machines used for SharePoint development
 + Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
++ ReSharper: editor features (toggle comment, go to step definition, run/debug scenarios) can be used with R# keyboard shortcuts
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)

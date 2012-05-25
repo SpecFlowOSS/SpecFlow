@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
     public interface ITestRunnerGatewayProvider
     {
-        ITestRunnerGateway GetTestRunnerGateway();
+        ITestRunnerGateway GetTestRunnerGateway(TestRunnerTool? runnerTool = null);
     }
 
     internal class TestRunnerGatewayProvider : ITestRunnerGatewayProvider
@@ -23,9 +23,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             this.integrationOptionsProvider = integrationOptionsProvider;
         }
 
-        public ITestRunnerGateway GetTestRunnerGateway()
+        public ITestRunnerGateway GetTestRunnerGateway(TestRunnerTool? runnerTool = null)
         {
-            TestRunnerTool testRunnerTool = integrationOptionsProvider.GetOptions().TestRunnerTool;
+            TestRunnerTool testRunnerTool = runnerTool ?? integrationOptionsProvider.GetOptions().TestRunnerTool;
 
             try
             {
