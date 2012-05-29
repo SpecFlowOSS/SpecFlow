@@ -1,6 +1,8 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
 using Should;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -11,21 +13,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableFloatValueRetriever(v => 3.01F);
+            var mock = new Mock<IValueRetriever<float>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(3.01F);
+
+            var retriever = new NullableFloatValueRetriever(mock.Object);
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_value_from_Single_value_retriever_when_not_empty()
         {
-            Func<string, Single> func = v =>
-                                            {
-                                                if (v == "value 1") return 1F;
-                                                if (v == "value 2") return 2F;
-                                                return 0;
-                                            };
+            var mock = new Mock<IValueRetriever<float>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(0);
+            mock.Setup(x => x.GetValue("value 1")).Returns(1F);
+            mock.Setup(x => x.GetValue("value 2")).Returns(2F);
 
-            var retriever = new NullableFloatValueRetriever(func);
+            var retriever = new NullableFloatValueRetriever(mock.Object);
             retriever.GetValue("value 1").ShouldEqual(1F);
             retriever.GetValue("value 2").ShouldEqual(2F);
         }
@@ -33,7 +36,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableFloatValueRetriever(v => 99F);
+            var mock = new Mock<IValueRetriever<float>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(99F);
+
+            var retriever = new NullableFloatValueRetriever(mock.Object);
             retriever.GetValue("").ShouldBeNull();
         }
     }

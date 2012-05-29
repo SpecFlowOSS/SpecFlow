@@ -2,11 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableByteValueRetriever
+    public class NullableByteValueRetriever : IValueRetriever<byte?>
     {
-        private readonly Func<string, byte> byteValueRetriever;
+        private readonly IValueRetriever<byte> byteValueRetriever;
 
-        public NullableByteValueRetriever(Func<string, byte> byteValueRetriever)
+        public NullableByteValueRetriever(IValueRetriever<byte> byteValueRetriever)
         {
             this.byteValueRetriever = byteValueRetriever;
         }
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public byte? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return byteValueRetriever(value);
+            return byteValueRetriever.GetValue(value);
         }
     }
 }

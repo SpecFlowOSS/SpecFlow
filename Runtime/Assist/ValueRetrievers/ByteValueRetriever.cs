@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class ByteValueRetriever
+    public class ByteValueRetriever : IValueRetriever<byte>
     {
         public virtual byte GetValue(string value)
         {

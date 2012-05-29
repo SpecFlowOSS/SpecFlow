@@ -2,11 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableDoubleValueRetriever
+    public class NullableDoubleValueRetriever : IValueRetriever<double?>
     {
-        private readonly Func<string, double> DoubleValueRetriever;
+        private readonly IValueRetriever<double> DoubleValueRetriever;
 
-        public NullableDoubleValueRetriever(Func<string, double> DoubleValueRetriever)
+        public NullableDoubleValueRetriever(IValueRetriever<double> DoubleValueRetriever)
         {
             this.DoubleValueRetriever = DoubleValueRetriever;
         }
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public double? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return DoubleValueRetriever(value);
+            return DoubleValueRetriever.GetValue(value);
         }
     }
 }

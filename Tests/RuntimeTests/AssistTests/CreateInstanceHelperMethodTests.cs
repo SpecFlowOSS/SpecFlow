@@ -4,6 +4,8 @@ using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -16,6 +18,39 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             // this is required, because the tests depend on parsing decimals with the en-US culture
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        [Test]
+        public void Create_instance_of_person_will_result_in_correct_birth_date()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("BirthDate", "12-31-1980");
+
+            // Act
+            var person = table.CreateInstance<Person>();
+
+            // Assert
+            person.BirthDate.ShouldEqual(new DateTime(1980, 12, 31));
+        }
+
+        [Test]
+        public void Create_instance_of_person_with_custom_value_retriever_will_result_in_different_birth_date()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("BirthDate", "12-31-1980");
+            var originalValueRetriever = ValueRetrieverCollection.ValueRetrievers[typeof (DateTime)];
+
+            // Act
+            ValueRetrieverCollection.ValueRetrievers[typeof (DateTime)] = () => new CustomDateTimeValueRetriever();
+            var person = table.CreateInstance<Person>();
+
+            // Assert
+            person.BirthDate.ShouldEqual(new DateTime(1990, 12, 31));
+
+            // Restore default value retriever
+            ValueRetrieverCollection.ValueRetrievers[typeof (DateTime)] = originalValueRetriever;
         }
 
         [Test]
@@ -307,5 +342,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
 
 
+    }
+
+    public class CustomDateTimeValueRetriever : IValueRetriever<DateTime>
+    {
+        public DateTime GetValue(string text)
+        {
+            var returnValue = DateTime.MinValue;
+            if (DateTime.TryParse(text, out returnValue))
+                returnValue = returnValue.AddYears(10);
+            return returnValue;
+        }
     }
 }

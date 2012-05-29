@@ -56,6 +56,8 @@
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
+    <Compile Include="Assist\ValueRetrievers\IEnumValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\IValueRetriever.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\IValueRetriever`1.cs" />
     <Compile Include="Assist\ValueRetrievers\LongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableLongValueRetriever.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationDefaultsProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
+    <Compile Include="Configuration\ValueRetrieverCollection.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
@@ -201,7 +205,6 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

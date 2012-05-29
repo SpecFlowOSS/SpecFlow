@@ -2,11 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableDecimalValueRetriever
+    public class NullableDecimalValueRetriever : IValueRetriever<decimal?>
     {
-        private readonly Func<string, decimal> decimalValueRetriever;
+        private readonly IValueRetriever<decimal> decimalValueRetriever;
 
-        public NullableDecimalValueRetriever(Func<string, decimal> decimalValueRetriever)
+        public NullableDecimalValueRetriever(IValueRetriever<decimal> decimalValueRetriever)
         {
             this.decimalValueRetriever = decimalValueRetriever;
         }
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public decimal? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return decimalValueRetriever(value);
+            return decimalValueRetriever.GetValue(value);
         }
     }
 }

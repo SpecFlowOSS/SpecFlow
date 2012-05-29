@@ -2,11 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableShortValueRetriever
+    public class NullableShortValueRetriever : IValueRetriever<short?>
     {
-        private readonly Func<string, short> shortValueRetriever;
+        private readonly IValueRetriever<short> shortValueRetriever;
 
-        public NullableShortValueRetriever(Func<string, short> shortValueRetriever)
+        public NullableShortValueRetriever(IValueRetriever<short> shortValueRetriever)
         {
             this.shortValueRetriever = shortValueRetriever;
         }
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public short? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return shortValueRetriever(value);
+            return shortValueRetriever.GetValue(value);
         }
     }
 }
