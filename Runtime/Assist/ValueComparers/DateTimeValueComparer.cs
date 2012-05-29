@@ -1,4 +1,6 @@
 ﻿using System;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
@@ -11,9 +13,10 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            DateTime expected;
-            if (DateTime.TryParse(expectedValue, out expected) == false)
-                return false;
+            var valueRetriever = ValueRetrieverCollection.GetValueRetriever<DateTime>();
+            var expected = valueRetriever.GetValue(expectedValue);
+
+            if (expected == DateTime.MinValue) return false;
             return expected == (DateTime) actualValue;
         }
     }

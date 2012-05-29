@@ -16,5 +16,18 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (string.IsNullOrEmpty(value)) return null;
             return byteValueRetriever.GetValue(value);
         }
+
+        public bool TryGetValue(string text, out byte? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            byte original;
+            var tryResult = byteValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
+        }
     }
 }

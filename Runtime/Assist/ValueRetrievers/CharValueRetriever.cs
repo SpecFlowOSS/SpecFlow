@@ -4,14 +4,14 @@
     {
         public virtual char GetValue(string value)
         {
-            return ThisStringIsNotASingleCharacter(value)
-                       ? '\0'
-                       : value[0];
+            char result;
+            TryGetValue(value, out result);
+            return result;
         }
 
-        private bool ThisStringIsNotASingleCharacter(string value)
+        public bool TryGetValue(string text, out char result)
         {
-            return string.IsNullOrEmpty(value) || value.Length > 1;
+            return char.TryParse(text, out result);
         }
     }
 }

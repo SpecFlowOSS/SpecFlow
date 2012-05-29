@@ -17,5 +17,18 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 return null;
             return charValueRetriever.GetValue(value);
         }
+
+        public bool TryGetValue(string text, out char? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            char original;
+            var tryResult = charValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
+        }
     }
 }

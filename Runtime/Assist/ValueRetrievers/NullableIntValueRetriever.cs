@@ -16,5 +16,18 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (string.IsNullOrEmpty(value)) return null;
             return intValueRetriever.GetValue(value);
         }
+
+        public bool TryGetValue(string text, out int? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            int original;
+            var tryResult = intValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
+        }
     }
 }

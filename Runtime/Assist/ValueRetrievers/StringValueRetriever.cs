@@ -6,5 +6,11 @@
         {
             return value;
         }
+
+        public bool TryGetValue(string text, out string result)
+        {
+            result = text;
+            return true;
+        }
     }
 }

@@ -4,7 +4,14 @@
     {
         public virtual bool GetValue(string value)
         {
-            return value == "True" || value == "true";
+            bool returnValue;
+            TryGetValue(value, out returnValue);
+            return returnValue;
+        }
+
+        public bool TryGetValue(string text, out bool result)
+        {
+            return bool.TryParse(text, out result);
         }
     }
 }

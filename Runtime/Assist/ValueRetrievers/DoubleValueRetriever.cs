@@ -7,8 +7,13 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public virtual double GetValue(string value)
         {
             double returnValue = 0;
-            Double.TryParse(value, out returnValue);
+            TryGetValue(value, out returnValue);
             return returnValue;
+        }
+
+        public bool TryGetValue(string text, out double result)
+        {
+            return double.TryParse(text, out result);
         }
     }
 }

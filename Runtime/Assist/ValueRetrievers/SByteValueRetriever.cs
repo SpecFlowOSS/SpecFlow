@@ -5,8 +5,13 @@
         public virtual sbyte GetValue(string value)
         {
             sbyte returnValue;
-            sbyte.TryParse(value, out returnValue);
+            TryGetValue(value, out returnValue);
             return returnValue;
+        }
+
+        public bool TryGetValue(string text, out sbyte result)
+        {
+            return sbyte.TryParse(text, out result);
         }
     }
 }

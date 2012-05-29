@@ -16,5 +16,18 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (string.IsNullOrEmpty(value)) return null;
             return ulongValueRetriever.GetValue(value);
         }
+
+        public bool TryGetValue(string text, out ulong? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            ulong original;
+            var tryResult = ulongValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
+        }
     }
 }

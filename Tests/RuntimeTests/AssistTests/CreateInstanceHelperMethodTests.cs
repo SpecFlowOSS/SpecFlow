@@ -4,8 +4,8 @@ using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.CustomValueRetrievers;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -338,20 +338,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         private class EnumPropertyTest
         {
             public Style ThisIsAStyle { get; set; }
-        }
-
-
-
-    }
-
-    public class CustomDateTimeValueRetriever : IValueRetriever<DateTime>
-    {
-        public DateTime GetValue(string text)
-        {
-            var returnValue = DateTime.MinValue;
-            if (DateTime.TryParse(text, out returnValue))
-                returnValue = returnValue.AddYears(10);
-            return returnValue;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
             float expected;
-            if (float.TryParse(expectedValue, out expected) == false)
+            if (ValueRetrieverCollection.GetValueRetriever<float>().TryGetValue(expectedValue, out expected) == false)
                 return false;
             return expected == (float) actualValue;
         }

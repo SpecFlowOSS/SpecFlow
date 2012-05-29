@@ -65,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomBoolValueRetriever.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomDateTimeValueRetriever.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomDecimalValueRetriever.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomDoubleValueRetriever.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomFloatValueRetriever.cs" />
+    <Compile Include="AssistTests\CustomValueRetrievers\CustomGuidValueRetriever.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />

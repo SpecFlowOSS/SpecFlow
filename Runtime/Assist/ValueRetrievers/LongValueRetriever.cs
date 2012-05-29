@@ -5,8 +5,13 @@
         public virtual long GetValue(string value)
         {
             long returnValue;
-            long.TryParse(value, out returnValue);
+            TryGetValue(value, out returnValue);
             return returnValue;
+        }
+
+        public bool TryGetValue(string text, out long result)
+        {
+            return long.TryParse(text, out result);
         }
     }
 }

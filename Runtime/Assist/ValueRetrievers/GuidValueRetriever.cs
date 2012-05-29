@@ -23,6 +23,18 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
         }
 
+        public bool TryGetValue(string text, out Guid result)
+        {
+            if (IsAValidGuid(text))
+            {
+                result = GetValue(text);
+                return true;
+            }
+            result = default(Guid);
+            return false;
+        }
+
+
         private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
         {
             value = value.Replace("-", "");

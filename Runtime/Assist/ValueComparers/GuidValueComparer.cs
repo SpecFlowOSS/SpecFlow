@@ -1,15 +1,16 @@
 ﻿using System;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
     internal class GuidValueComparer : IValueComparer
     {
-        private readonly GuidValueRetriever guidValueRetriever;
+        private readonly IValueRetriever<Guid> guidValueRetriever;
 
-        public GuidValueComparer(GuidValueRetriever guidValueRetriever)
+        public GuidValueComparer()
         {
-            this.guidValueRetriever = guidValueRetriever;
+            this.guidValueRetriever = ValueRetrieverCollection.GetValueRetriever<Guid>();
         }
 
         public bool CanCompare(object actualValue)
@@ -19,17 +20,10 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            try
-            {
-                return new Guid(expectedValue) == (Guid) actualValue;
-            }
-            catch
-            {
-                if (guidValueRetriever.IsAValidGuid(expectedValue) == false) return false;
-                var guid = guidValueRetriever.GetValue(expectedValue);
-                if (guid == new Guid()) return true;
-                return guid == (Guid)actualValue;
-            }
+            Guid guid;
+            if (!guidValueRetriever.TryGetValue(expectedValue, out guid))
+                return false;
+            return guid == (Guid) actualValue;
         }
     }
 }

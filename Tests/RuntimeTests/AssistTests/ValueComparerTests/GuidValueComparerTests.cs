@@ -2,13 +2,28 @@
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.CustomValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
     [TestFixture]
     public class GuidValueComparerTests
     {
+        [Test]
+        public void Should_correctly_compare_a_bool_with_custom_value_retriever()
+        {
+            var originalValueRetriever = ValueRetrieverCollection.ValueRetrievers[typeof(Guid)];
+            ValueRetrieverCollection.ValueRetrievers[typeof(Guid)] = () => new CustomGuidValueRetriever();
+
+            var comparer = new GuidValueComparer();
+            comparer.TheseValuesAreTheSame("6EFE6DA0-A8B4-4E71-8329-49819C409227",
+                new Guid("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")).ShouldBeTrue();
+
+            // Restore default value retriever
+            ValueRetrieverCollection.ValueRetrievers[typeof(Guid)] = originalValueRetriever;
+        }
+
         [Test]
         public void Can_compare_if_the_value_is_a_guid()
         {
@@ -129,7 +144,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 
         private static GuidValueComparer CreateComparer()
         {
-            return new GuidValueComparer(new GuidValueRetriever());
+            return new GuidValueComparer();
         }
     }
 }

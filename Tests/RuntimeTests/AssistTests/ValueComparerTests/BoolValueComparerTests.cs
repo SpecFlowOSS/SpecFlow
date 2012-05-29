@@ -1,12 +1,28 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueComparers;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.CustomValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
     [TestFixture]
     public class BoolValueComparerTests
     {
+        [Test]
+        public void Should_correctly_compare_a_bool_with_custom_value_retriever()
+        {
+            var originalValueRetriever = ValueRetrieverCollection.ValueRetrievers[typeof(bool)];
+            var comparer = new BoolValueComparer();
+
+            ValueRetrieverCollection.ValueRetrievers[typeof(bool)] = () => new CustomBoolValueRetriever();
+            comparer.TheseValuesAreTheSame("True", false).ShouldBeTrue();
+
+            // Restore default value retriever
+            ValueRetrieverCollection.ValueRetrievers[typeof(bool)] = originalValueRetriever;
+        }
+
         [Test]
         public void Can_compare_if_the_value_is_a_bool()
         {

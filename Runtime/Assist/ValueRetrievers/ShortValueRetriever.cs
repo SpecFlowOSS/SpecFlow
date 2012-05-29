@@ -5,8 +5,13 @@
         public virtual short GetValue(string value)
         {
             short returnValue;
-            short.TryParse(value, out returnValue);
+            TryGetValue(value, out returnValue);
             return returnValue;
+        }
+
+        public bool TryGetValue(string text, out short result)
+        {
+            return short.TryParse(text, out result);
         }
     }
 }
