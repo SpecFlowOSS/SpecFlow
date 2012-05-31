@@ -29,6 +29,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         }
     }
+
+    [TestFixture]
     public class StepExecutionTestsWithConversionsForTables : StepExecutionTestsBase
     {
         [Test]

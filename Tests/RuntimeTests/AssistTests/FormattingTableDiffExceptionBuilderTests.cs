@@ -5,6 +5,7 @@ using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
+    [TestFixture]
     public class FormattingTableDiffExceptionBuilderTests
     {
         [Test]
