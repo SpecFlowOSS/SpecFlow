@@ -115,6 +115,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                                                                 @"tools",
                                                                 @"..\tools",
                                                                 @"..\..\tools",
+                                                                @"..\..\..\SpecRun.Runner.1.0.0\tools", //TODO: provide a more stable solution
 #if DEBUG
                                                                 @"..\..\..\TechTalk.SpecRun.ConsoleRunner\bin\Debug"
 #endif
