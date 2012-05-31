@@ -32,17 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework, Version=1.0.4109.34242, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Should">
       <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
@@ -252,7 +244,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
-xcopy $(SolutionDir)packages\NUnit.2.5.10.11092\*.* $(TargetDir)NUnit\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
+xcopy $(SolutionDir)packages\NUnit.Runners.2.6.0.12051\*.* $(TargetDir)NUnit.Runners\ /s /y
 xcopy $(SolutionDir)packages\xunit.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
 xcopy $(SolutionDir)packages\xunit.extensions.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
 xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y</PostBuildEvent>

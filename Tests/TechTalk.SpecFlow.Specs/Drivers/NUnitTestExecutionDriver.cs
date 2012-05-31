@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public TestRunSummary Execute()
         {
-            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"NUnit\tools\nunit-console-x86.exe");
+            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"NUnit.Runners\tools\nunit-console-x86.exe");
 
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
