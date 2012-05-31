@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Parser.SyntaxElements;
 using gherkin;
 
 namespace TechTalk.SpecFlow.Parser
@@ -42,6 +43,13 @@ namespace TechTalk.SpecFlow.Parser
         {
             return new GherkinDialect(language, 
                 new I18n(language.CompatibleGherkinLanguage ?? language.Language));
+        }
+
+        public GherkinDialect GetGherkinDialect(Feature feature)
+        {
+            string langName =  feature.Language ?? defaultLanguage.Name;
+            var language = SupportedLanguageHelper.GetSupportedLanguage(langName);
+            return GetGherkinDialect(language);
         }
 
         public GherkinDialect GetGherkinDialect(string fileContent)

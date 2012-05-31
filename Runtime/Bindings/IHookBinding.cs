@@ -1,10 +1,6 @@
-﻿using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
-
-namespace TechTalk.SpecFlow.Bindings
+﻿namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IHookBinding : IScopedBinding
+    public interface IHookBinding : IScopedBinding, IBinding
     {
-        void Invoke(IContextManager contextManager, ITestTracer testTracer);
     }
 }

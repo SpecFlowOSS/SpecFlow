@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using BoDi;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
@@ -33,7 +34,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true, DescriptionResourceID = 121)]
     [Guid(GuidList.guidSpecFlowPkgString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string)]
     public sealed class SpecFlowPackagePackage : Package
     {
         public IObjectContainer Container { get; private set; }

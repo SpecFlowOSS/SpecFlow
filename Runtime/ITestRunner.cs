@@ -18,11 +18,11 @@ namespace TechTalk.SpecFlow
         void OnScenarioEnd();
         void OnTestRunEnd();
 
-        void Given(string text, string multilineTextArg, Table tableArg);
-        void When(string text, string multilineTextArg, Table tableArg);
-        void Then(string text, string multilineTextArg, Table tableArg);
-        void And(string text, string multilineTextArg, Table tableArg);
-        void But(string text, string multilineTextArg, Table tableArg);
+        void Given(string text, string multilineTextArg, Table tableArg, string keyword = null);
+        void When(string text, string multilineTextArg, Table tableArg, string keyword = null);
+        void Then(string text, string multilineTextArg, Table tableArg, string keyword = null);
+        void And(string text, string multilineTextArg, Table tableArg, string keyword = null);
+        void But(string text, string multilineTextArg, Table tableArg, string keyword = null);
 
         void Pending();
     }
@@ -31,52 +31,27 @@ namespace TechTalk.SpecFlow
     {
         public static void Given(this ITestRunner testRunner, string text)
         {
-            testRunner.Given(text, null, null);
-        }
-
-        public static void Given(this ITestRunner testRunner, string text, string multilineTextArg)
-        {
-            testRunner.Given(text, multilineTextArg, null);
+            testRunner.Given(text, null, null, null);
         }
 
         public static void When(this ITestRunner testRunner, string text)
         {
-            testRunner.When(text, null, null);
-        }
-
-        public static void When(this ITestRunner testRunner, string text, string multilineTextArg)
-        {
-            testRunner.When(text, multilineTextArg, null);
+            testRunner.When(text, null, null, null);
         }
 
         public static void Then(this ITestRunner testRunner, string text)
         {
-            testRunner.Then(text, null, null);
-        }
-
-        public static void Then(this ITestRunner testRunner, string text, string multilineTextArg)
-        {
-            testRunner.Then(text, multilineTextArg, null);
+            testRunner.Then(text, null, null, null);
         }
 
         public static void And(this ITestRunner testRunner, string text)
         {
-            testRunner.And(text, null, null);
+            testRunner.And(text, null, null, null);
         }
 
-        public static void And(this ITestRunner testRunner, string text, string multilineTextArg)
-        {
-            testRunner.And(text, multilineTextArg, null);
-        }
- 
         public static void But(this ITestRunner testRunner, string text)
         {
-            testRunner.But(text, null, null);
-        }
-
-        public static void But(this ITestRunner testRunner, string text, string multilineTextArg)
-        {
-            testRunner.But(text, multilineTextArg, null);
+            testRunner.But(text, null, null, null);
         }
     }
 }

@@ -19,29 +19,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
 
-        public StepBindingNew StepBinding { get; private set; }
-        public BindingType BindingType { get; set; }
+        public StepDefinitionBinding StepBinding { get; private set; }
+        public StepDefinitionType StepDefinitionType { get; set; }
 
-        public BoundStepSuggestions(BindingType bindingType, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public BoundStepSuggestions(StepDefinitionType stepDefinitionType, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             StepBinding = null;
-            BindingType = bindingType;
+            StepDefinitionType = stepDefinitionType;
             NativeSuggestionItem = nativeSuggestionItemFactory.Create("[unbound steps]", "...", 0, "nb", this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        public BoundStepSuggestions(StepBindingNew stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public BoundStepSuggestions(StepDefinitionBinding stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             if (stepBinding == null) throw new ArgumentNullException("stepBinding");
 
             StepBinding = stepBinding;
-            BindingType = stepBinding.BindingType;
+            StepDefinitionType = stepBinding.StepDefinitionType;
             string suggestionText = GetSuggestionText(stepBinding);
-            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, BindingType.ToString().Substring(0, 1) + "-b", this);
+            NativeSuggestionItem = nativeSuggestionItemFactory.Create(suggestionText, GetInsertionText(StepBinding), 0, StepDefinitionType.ToString().Substring(0, 1) + "-b", this);
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        private string GetSuggestionText(StepBindingNew stepBinding)
+        private string GetSuggestionText(StepDefinitionBinding stepBinding)
         {
             string suggestionTextBase = stepBinding.Regex == null ? "[...]" :
                 "[" + RegexSampler.GetRegexSample(stepBinding.Regex.ToString(), stepBinding.Method.Parameters.Select(p => p.ParameterName).ToArray()) + "]";
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return string.Format("{0} -> {1}", suggestionTextBase, stepBinding.Method.GetShortDisplayText());
         }
 
-        private string GetInsertionText(StepBindingNew stepBinding)
+        private string GetInsertionText(StepDefinitionBinding stepBinding)
         {
             if (stepBinding.Regex == null)
                 return "...";

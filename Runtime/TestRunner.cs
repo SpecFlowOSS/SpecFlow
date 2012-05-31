@@ -62,29 +62,29 @@ namespace TechTalk.SpecFlow
             executionEngine.OnTestRunEnd();
         }
 
-        public void Given(string text, string multilineTextArg, Table tableArg)
+        public void Given(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.Given, text, multilineTextArg, tableArg);
+            executionEngine.Step(StepDefinitionKeyword.Given, keyword, text, multilineTextArg, tableArg);
         }
 
-        public void When(string text, string multilineTextArg, Table tableArg)
+        public void When(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.When, text, multilineTextArg, tableArg);
+            executionEngine.Step(StepDefinitionKeyword.When, keyword, text, multilineTextArg, tableArg);
         }
 
-        public void Then(string text, string multilineTextArg, Table tableArg)
+        public void Then(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.Then, text, multilineTextArg, tableArg);
+            executionEngine.Step(StepDefinitionKeyword.Then, keyword, text, multilineTextArg, tableArg);
         }
 
-        public void And(string text, string multilineTextArg, Table tableArg)
+        public void And(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.And, text, multilineTextArg, tableArg);
+            executionEngine.Step(StepDefinitionKeyword.And, keyword, text, multilineTextArg, tableArg);
         }
 
-        public void But(string text, string multilineTextArg, Table tableArg)
+        public void But(string text, string multilineTextArg, Table tableArg, string keyword = null)
         {
-            executionEngine.Step(StepDefinitionKeyword.But, text, multilineTextArg, tableArg);
+            executionEngine.Step(StepDefinitionKeyword.But, keyword, text, multilineTextArg, tableArg);
         }
 
         public void Pending()

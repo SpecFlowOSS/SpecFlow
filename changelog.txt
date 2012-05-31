@@ -11,6 +11,7 @@ New Features:
 + VS2010: It can now be installed on machines used for SharePoint development
 + Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
 + SpecFlow.NUnit NuGet package has been split to SpecFlow.NUnit (w/o AddOn for NUnit runner) and SpecFlow.NUnit.Runners (with runner support)
++ ReSharper: editor features (toggle comment, go to step definition, run/debug scenarios) can be used with R# keyboard shortcuts
 + MsTest: Support for MSTest's [Owner] and [WorkItem] attributes with tags like @owner:foo @workitem:123 (Issue 162, Pull 161)
 + NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
 

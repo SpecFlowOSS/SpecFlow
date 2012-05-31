@@ -33,7 +33,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit-console-runner">
+      <HintPath>..\..\packages\NUnit.Runners.2.6.0.12051\tools\lib\nunit-console-runner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -125,6 +128,11 @@
       <DependentUpon>ScopedSteps.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\StepArguments.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepArguments.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\StepArgumentTransformations.feature.cs">
       <AutoGen>True</AutoGen>
@@ -224,6 +232,10 @@
     <None Include="Features\ScopedSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ScopedSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\StepArguments.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepArguments.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\StepArgumentTransformations.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

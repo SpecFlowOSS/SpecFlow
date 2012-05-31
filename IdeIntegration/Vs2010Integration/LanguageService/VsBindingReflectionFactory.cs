@@ -9,16 +9,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public IBindingType CreateBindingType(CodeTypeRef type)
         {
+            if (type == null)
+                return null;
+
             var fullName = type.AsFullName;
+
+            if (string.IsNullOrWhiteSpace(fullName) || fullName.Equals(typeof(void).FullName))
+                return null;
+
             int lastPeriodIndex = fullName.LastIndexOf('.');
             var name = lastPeriodIndex >= 0 ? fullName.Substring(lastPeriodIndex + 1) : fullName;
 
-            return new BindingReflectionType(name, fullName);
+            return new BindingType(name, fullName);
         }
 
         public IBindingType CreateBindingType(CodeClass codeClass)
         {
-            return new BindingReflectionType(codeClass.Name, codeClass.FullName);
+            return new BindingType(codeClass.Name, codeClass.FullName);
         }
 
         public IBindingParameter CreateBindingParameter(CodeParameter codeParameter)
@@ -32,7 +39,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             var parameters = codeFunction.Parameters.Cast<CodeParameter>().Select(CreateBindingParameter).ToArray();
             var type = CreateBindingType((CodeClass)codeFunction.Parent);
-            return new BindingMethod(type, codeFunction.Name, parameters);
+            var returnType = CreateBindingType(codeFunction.Type);
+            return new BindingMethod(type, codeFunction.Name, parameters, returnType);
         }
     }
 }

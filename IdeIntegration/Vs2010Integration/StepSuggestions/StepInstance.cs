@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Bindings;
 
@@ -12,13 +14,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
 
+        public CultureInfo Language
+        {
+            get { return StepContext.Language; }
+        }
+
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
-        public StepInstance(ScenarioStep step, StepScopeNew stepScope, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
-            : base((BindingType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepScope)
+        public StepInstance(ScenarioStep step, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
+            : base((StepDefinitionType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepContext)
         {
-            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, BindingType.ToString().Substring(0, 1), this);
+            this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, StepDefinitionType.ToString().Substring(0, 1), this);
         }
 
         private const string stepParamIndent = "         ";
@@ -62,9 +69,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepBindingNew binding, bool includeRegexCheck, IBindingMatchService bindingMatchService)
+        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
-            return bindingMatchService.Match(binding, this, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
+            return stepDefinitionMatchService.Match(binding, this, bindingCulture, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }
     }
 }

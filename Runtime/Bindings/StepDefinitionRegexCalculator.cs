@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Tracing;
 
@@ -11,7 +12,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IStepDefinitionRegexCalculator
     {
-        string CalculateRegexFromMethod(BindingType bindingType, MethodInfo methodInfo);
+        string CalculateRegexFromMethod(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod);
     }
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
@@ -24,18 +25,18 @@ namespace TechTalk.SpecFlow.Bindings
         }
 
         static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
-        public string CalculateRegexFromMethod(BindingType bindingType, MethodInfo methodInfo)
+        public string CalculateRegexFromMethod(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod)
         {
             // if method name seems to contain regex, we use it as-is
-            if (nonIdentifierRe.Match(methodInfo.Name).Success)
+            if (nonIdentifierRe.Match(bindingMethod.Name).Success)
             {
-                return methodInfo.Name;
+                return bindingMethod.Name;
             }
 
-            string stepText = methodInfo.Name;
-            stepText = RemoveStepPrefix(bindingType, stepText);
+            string stepText = bindingMethod.Name;
+            stepText = RemoveStepPrefix(stepDefinitionType, stepText);
 
-            var parameters = methodInfo.GetParameters();
+            var parameters = bindingMethod.Parameters.ToArray();
 
             int processedPosition = 0;
             var reBuilder = new StringBuilder("(?i)");
@@ -55,9 +56,9 @@ namespace TechTalk.SpecFlow.Bindings
             return reBuilder.ToString();
         }
 
-        private string RemoveStepPrefix(BindingType bindingType, string stepText)
+        private string RemoveStepPrefix(StepDefinitionType stepDefinitionType, string stepText)
         {
-            var prefixesToRemove = GetPrefixesToRemove(bindingType);
+            var prefixesToRemove = GetPrefixesToRemove(stepDefinitionType);
             foreach (var prefixToRemove in prefixesToRemove)
             {
                 if (stepText.StartsWith(prefixToRemove, StringComparison.CurrentCultureIgnoreCase))
@@ -69,13 +70,13 @@ namespace TechTalk.SpecFlow.Bindings
             return stepText;
         }
 
-        private IEnumerable<string> GetPrefixesToRemove(BindingType bindingType)
+        private IEnumerable<string> GetPrefixesToRemove(StepDefinitionType stepDefinitionType)
         {
-            yield return bindingType.ToString();
+            yield return stepDefinitionType.ToString();
 
             var cultureToSearch = runtimeConfiguration.BindingCulture ?? runtimeConfiguration.FeatureLanguage;
 
-            foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, bindingType))
+            foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, stepDefinitionType))
             {
                 if (keyword.Contains(' '))
                 {
@@ -89,10 +90,9 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private string CalculateParamRegex(ParameterInfo parameterInfo)
+        private string CalculateParamRegex(IBindingParameter parameterInfo)
         {
-            //return string.Format(@"(?:[""](?<{0}>.*[^""])[""]|(?:['](?<{0}>.*[^'])[']|(?<{0}>.+))", parameterInfo.Name);
-            return string.Format(@"(?:['""](?<{0}>.*[^'""])['""]|(?<{0}>.+))", parameterInfo.Name);
+            return string.Format(@"(?:['""](?<{0}>.*[^'""])['""]|(?<{0}>.+))", parameterInfo.ParameterName);
         }
 
         private static readonly Regex wordBoundaryRe = new Regex(@"(?<=[\d\p{L}])\p{Lu}|(?<=\p{L})\d"); //mathces on boundaries of: 0A, aA, AA, a0, A0
@@ -123,9 +123,9 @@ namespace TechTalk.SpecFlow.Bindings
             return index;
         }
 
-        private ParamSearchResult CalculateParamPosition(string stepText, ParameterInfo parameterInfo, int paramIndex)
+        private ParamSearchResult CalculateParamPosition(string stepText, IBindingParameter bindingParameter, int paramIndex)
         {
-            string paramName = parameterInfo.Name.ToUpper();
+            string paramName = bindingParameter.ParameterName.ToUpper();
             int result = IndexOfWithUnderscores(stepText, paramName);
             if (result >= 0)
                 return new ParamSearchResult(result, paramName.Length, paramIndex);

@@ -15,15 +15,15 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class StepDefinitionBaseAttribute : Attribute
     {
-        internal BindingType[] Types { get; private set; }
+        internal StepDefinitionType[] Types { get; private set; }
         public string Regex { get; set; }
 
-        internal StepDefinitionBaseAttribute(string regex, BindingType type)
+        internal StepDefinitionBaseAttribute(string regex, StepDefinitionType type)
             : this(regex, new[] { type })
         {
         }
 
-        protected StepDefinitionBaseAttribute(string regex, BindingType[] types)
+        protected StepDefinitionBaseAttribute(string regex, StepDefinitionType[] types)
         {
             if (types == null) throw new ArgumentNullException("types");
             if (types.Length == 0) throw new ArgumentException("List cannot be empty", "types");
@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow
 
 
         public GivenAttribute(string regex)
-            : base(regex, BindingType.Given)
+            : base(regex, StepDefinitionType.Given)
         {
         }
     }
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow
         }
 
         public WhenAttribute(string regex)
-            : base(regex, BindingType.When)
+            : base(regex, StepDefinitionType.When)
         {
         }
     }
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow
         }
 
         public ThenAttribute(string regex)
-            : base(regex, BindingType.Then)
+            : base(regex, StepDefinitionType.Then)
         {
         }
     }
@@ -88,7 +88,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-        public StepDefinitionAttribute(string regex) : base(regex, new[] { BindingType.Given, BindingType.When, BindingType.Then })
+        public StepDefinitionAttribute(string regex) : base(regex, new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then })
         {
         }
     }

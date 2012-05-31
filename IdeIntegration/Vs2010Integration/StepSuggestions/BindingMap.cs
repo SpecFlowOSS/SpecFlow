@@ -5,7 +5,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
@@ -17,11 +19,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public List<FileStepDefinitions> FileStepDefinitions { get; set; }
     }
 
+    public class StepDefinitionBindingItem
+    {
+        public IBindingMethod Method { get; set; }
+        public StepDefinitionType StepDefinitionType { get; set; }
+        public Regex Regex { get; set; }
+        public BindingScope BindingScope { get; set; }
+
+        static public StepDefinitionBindingItem FromStepDefinitionBinding(StepDefinitionBinding stepDefinitionBinding)
+        {
+            return new StepDefinitionBindingItem()
+                       {
+                           Method = stepDefinitionBinding.Method,
+                           StepDefinitionType =  stepDefinitionBinding.StepDefinitionType,
+                           Regex = stepDefinitionBinding.Regex,
+                           BindingScope = stepDefinitionBinding.BindingScope
+                       };
+        }
+
+        public StepDefinitionBinding ToStepDefinitionBinding()
+        {
+            return new StepDefinitionBinding(StepDefinitionType, Regex, Method, BindingScope);
+        }
+    }
+
     public class FileStepDefinitions
     {
         public string FileName { get; set; }
         public DateTime TimeStamp { get; set; }
-        public List<StepBindingNew> StepDefinitions { get; set; }
+        public List<StepDefinitionBindingItem> StepDefinitions { get; set; }
     }
 
     public class FeatureSteps
@@ -34,7 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
     public class StepMap
     {
-        public const int CURRENT_VERSION = 1;
+        public const int CURRENT_VERSION = 2;
 
         public static StepMap CreateStepMap(CultureInfo defaultLanguage)
         {

@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateRuntimeConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.RuntimeConfiguration.UpdateFromConfigFile(specFlowConfigSection);
+            configuration.RuntimeConfiguration.LoadConfiguration(specFlowConfigSection);
         }
 
         internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)

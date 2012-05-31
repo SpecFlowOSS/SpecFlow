@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();
             container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
-            container.RegisterTypeAs<StepDefinitionMatcher, IStepDefinitionMatcher>();
+            container.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>();
@@ -26,9 +26,11 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
+            container.RegisterTypeAs<BindingRegistry, IRuntimeBindingRegistryBuilder>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
+            container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
 
             container.RegisterTypeAs<ContextManager, IContextManager>();
 

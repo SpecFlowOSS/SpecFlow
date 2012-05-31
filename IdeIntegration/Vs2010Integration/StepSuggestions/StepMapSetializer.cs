@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
                     return base.ResolveContract(typeof(BindingParameter));
 
                 if (type == typeof(IBindingType))
-                    return base.ResolveContract(typeof(BindingReflectionType));
+                    return base.ResolveContract(typeof(BindingType));
 
                 if (type == typeof(Version))
                     return new JsonStringContract(typeof(Version)) { Converter = new ToStringJsonConverter<Version>() };

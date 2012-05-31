@@ -70,5 +70,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             if (times != int.MaxValue)
                 regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
         }
+
+        [Then(@"the execution log should contain text '(.*)'")]
+        public void ThenTheExecutionLogShouldContainText(string text)
+        {
+            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+            testExecutionResult.ExecutionLog.ShouldContain(text);
+        }
     }
 }
