@@ -5,7 +5,6 @@ using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow.IntegrationTests.TestFiles;
 using Should;
-using TechTalk.SpecFlow.Assist;
 using System.Linq;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;

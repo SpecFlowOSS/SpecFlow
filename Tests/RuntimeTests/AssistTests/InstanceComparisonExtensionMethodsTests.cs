@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class InstanceComparisonExtensionMethodsTests
+    public class InstanceComparisonExtensionMethodsTests : AssistTestsBase
     {
         [SetUp]
         public void SetUp()

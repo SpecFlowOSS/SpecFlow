@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
-    public abstract class CreateInstanceHelperMethodTestBase
+    public abstract class CreateInstanceHelperMethodTestBase : AssistTestsBase
     {
         private readonly Func<Table, Person> func;
 

@@ -9,7 +9,7 @@ using RowExtensionMethods = TechTalk.SpecFlow.Assist.RowExtensionMethods;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class RowExtensionMethodTests_GetEnum
+    public class RowExtensionMethodTests_GetEnum : AssistTestsBase
     {
         [Test]
         public void GetEnum_should_return_the_enum_value_from_the_row()

@@ -10,7 +10,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
-    public class CreateSetWithNullableValuesTests
+    public class CreateSetWithNullableValuesTests : AssistTestsBase
     {
         [SetUp]
         public void SetUp()

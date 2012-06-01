@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             var retriever = new BoolValueRetriever();
             retriever.GetValue("sssssdfsd").ShouldBeFalse();
-            retriever.GetValue(null).ShouldBeFalse();
+            retriever.GetValue((string) null).ShouldBeFalse();
             retriever.GetValue("").ShouldBeFalse();
             retriever.GetValue("this is false").ShouldBeFalse();
         }

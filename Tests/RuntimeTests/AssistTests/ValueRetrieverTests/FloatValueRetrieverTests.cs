@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_zero_when_passed_a_non_numeric_value()
         {
             var retriever = new FloatValueRetriever();
-            retriever.GetValue(null).ShouldEqual(0F);
+            retriever.GetValue((string) null).ShouldEqual(0F);
             retriever.GetValue("").ShouldEqual(0F);
             retriever.GetValue("xxxslkdfj").ShouldEqual(0F);
         }

@@ -6,31 +6,27 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
     [TestFixture]
-    public class NullableBoolValueRetrieverTests
+    public class NullableBoolValueRetrieverTests : AssistTestsBase
     {
         [Test]
         public void Returns_the_value_from_the_BoolValueRetriever()
         {
-            Func<string, bool> func = value => value == "this value" || value == "another value";
-            
-            var retriever = new NullableBoolValueRetriever(func);
-            retriever.GetValue("this value").ShouldEqual(true);
-            retriever.GetValue("another value").ShouldEqual(true);
-            retriever.GetValue("failing value").ShouldEqual(false);
-            retriever.GetValue("another thing that returns false").ShouldEqual(false);
+            var retriever = new NullableBoolValueRetriever();
+            retriever.GetValue("true").ShouldEqual(true);
+            retriever.GetValue("false").ShouldEqual(false);
         }
 
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableBoolValueRetriever(value => true);
-            retriever.GetValue(null).ShouldBeNull();
+            var retriever = new NullableBoolValueRetriever();
+            retriever.GetValue((string) null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableBoolValueRetriever(value => true);
+            var retriever = new NullableBoolValueRetriever();
             retriever.GetValue(string.Empty).ShouldBeNull();
         }
     }

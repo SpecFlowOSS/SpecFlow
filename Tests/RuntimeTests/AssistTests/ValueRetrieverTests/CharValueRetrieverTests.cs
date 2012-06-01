@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_char0_when_passed_null()
         {
             var retriever = new CharValueRetriever();
-            retriever.GetValue(null).ShouldEqual('\0');
+            retriever.GetValue((string) null).ShouldEqual('\0');
         }
 
         [Test]

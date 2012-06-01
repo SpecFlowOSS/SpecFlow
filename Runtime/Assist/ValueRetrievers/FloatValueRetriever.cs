@@ -2,13 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class FloatValueRetriever
+    internal class FloatValueRetriever : ValueRetrieverBase<float>
     {
-        public virtual float GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            float returnValue = 0F;
-            float.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(float.TryParse, context.Value, out result);
         }
     }
 }

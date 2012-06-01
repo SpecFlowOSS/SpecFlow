@@ -1,12 +1,10 @@
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class UIntValueRetriever
+    internal class UIntValueRetriever : ValueRetrieverBase<uint>
     {
-        public virtual uint GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            uint returnValue;
-            uint.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(uint.TryParse, context.Value, out result);
         }
     }
 }

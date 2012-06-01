@@ -2,13 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class DateTimeValueRetriever
+    internal class DateTimeValueRetriever : ValueRetrieverBase<DateTime>
     {
-        public virtual DateTime GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            var returnValue = DateTime.MinValue;
-            DateTime.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(DateTime.TryParse, context.Value, out result);
         }
     }
 }

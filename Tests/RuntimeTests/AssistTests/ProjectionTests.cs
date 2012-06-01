@@ -10,7 +10,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class ProjectionTests
+    public class ProjectionTests : AssistTestsBase
     {
         private SetComparisonTestObject testInstance;
         private IEnumerable<SetComparisonTestObject> testCollection;

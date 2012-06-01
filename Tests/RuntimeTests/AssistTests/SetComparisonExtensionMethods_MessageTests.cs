@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class SetComparisonExtensionMethods_MessageTests
+    public class SetComparisonExtensionMethods_MessageTests : AssistTestsBase
     {
         [Test]
         public void Returns_the_names_of_any_fields_that_do_not_exist()

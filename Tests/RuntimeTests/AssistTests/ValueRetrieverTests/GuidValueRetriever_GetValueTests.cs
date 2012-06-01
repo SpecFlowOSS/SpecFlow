@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_an_empty_guid_when_passed_invalid_value()
         {
             var retriever = new GuidValueRetriever();
-            retriever.GetValue(null).ShouldEqual(new Guid());
+            retriever.GetValue((string) null).ShouldEqual(new Guid());
             retriever.GetValue("").ShouldEqual(new Guid());
             retriever.GetValue("xxxxx").ShouldEqual(new Guid());
         }

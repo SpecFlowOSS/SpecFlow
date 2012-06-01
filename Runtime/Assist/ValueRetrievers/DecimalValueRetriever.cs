@@ -2,13 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class DecimalValueRetriever
+    internal class DecimalValueRetriever : ValueRetrieverBase<decimal>
     {
-        public virtual decimal GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            var returnValue = 0M;
-            Decimal.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(decimal.TryParse, context.Value, out result);
         }
     }
 }

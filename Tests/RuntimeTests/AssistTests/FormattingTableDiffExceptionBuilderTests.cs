@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    public class FormattingTableDiffExceptionBuilderTests
+    public class FormattingTableDiffExceptionBuilderTests : AssistTestsBase
     {
         [Test]
         public void Returns_null_if_parent_passes_null()

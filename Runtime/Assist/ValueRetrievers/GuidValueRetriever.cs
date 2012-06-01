@@ -2,8 +2,24 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class GuidValueRetriever
+    internal class GuidValueRetriever : IValueRetriever<Guid>
     {
+        public bool TryGetValue(ValueRetrieverContext context, out object result)
+        {
+            if (IsAValidGuid(context.Value))
+            {
+                result = GetValue(context.Value);
+                return true;
+            }
+            result = default(Guid);
+            return false;
+        }
+
+        public object GetValue(ValueRetrieverContext context)
+        {
+            return GetValue(context.Value);
+        }
+
         public virtual Guid GetValue(string value)
         {
             try

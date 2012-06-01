@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    public class SafetyTableDiffExceptionBuilderTests
+    public class SafetyTableDiffExceptionBuilderTests : AssistTestsBase
     {
         [Test]
         public void Returns_expected_results_when_that_is_returned_from_the_parent()

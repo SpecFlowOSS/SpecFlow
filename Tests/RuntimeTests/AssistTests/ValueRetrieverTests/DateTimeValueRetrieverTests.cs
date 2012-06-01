@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_MinValue_when_the_value_is_null()
         {
             var retriever = new DateTimeValueRetriever();
-            retriever.GetValue(null).ShouldEqual(DateTime.MinValue);
+            retriever.GetValue((string)null).ShouldEqual(DateTime.MinValue);
         }
 
         [Test]

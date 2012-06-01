@@ -2,13 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class DoubleValueRetriever
+    internal class DoubleValueRetriever : ValueRetrieverBase<double>
     {
-        public virtual double GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            double returnValue = 0;
-            Double.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(double.TryParse, context.Value, out result);
         }
     }
 }

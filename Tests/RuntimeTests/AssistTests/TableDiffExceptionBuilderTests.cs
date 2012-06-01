@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class TableDiffExceptionBuilderTests
+    public class TableDiffExceptionBuilderTests : AssistTestsBase
     {
         [Test]
         public void Adds_a_two_character_prefix_to_the_table()

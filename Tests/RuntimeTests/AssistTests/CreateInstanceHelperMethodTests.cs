@@ -1,21 +1,59 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class CreateInstanceHelperMethodTests
+    public class CreateInstanceHelperMethodTests : AssistTestsBase
     {
         [SetUp]
         public void TestSetup()
         {
             // this is required, because the tests depend on parsing decimals with the en-US culture
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        [Test]
+        public void Should_use_custom_value_retriever()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("Name", "John");
+            table.AddRow("PhoneNumber", "+55 21 9999-9999");
+
+            ScenarioContext.Current.ValueRetrievers.Set<PhoneNumber, PhoneNumberValueRetriever>();
+
+            // Act
+            var person = table.CreateInstance<CustomPerson>();
+
+            // Assert
+            person.PhoneNumber.ShouldNotBeNull();
+            person.PhoneNumber.CountryCode.ShouldEqual(55);
+            person.PhoneNumber.AreaCode.ShouldEqual(21);
+            person.PhoneNumber.Phone.ShouldEqual("9999-9999");
+        }
+
+        [Test]
+        public void Should_use_overridden_value_retriever()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("BirthDate", "1980-12-31");
+
+            ScenarioContext.Current.ValueRetrievers.Set<DateTime, CustomDateTimeValueRetriever>();
+
+            // Act
+            var person = table.CreateInstance<Person>();
+
+            // Assert
+            person.BirthDate.ShouldEqual(new DateTime(1990, 12, 31));
         }
 
         [Test]
@@ -304,8 +342,41 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             public Style ThisIsAStyle { get; set; }
         }
+    }
 
+    public class PhoneNumberValueRetriever : ValueRetrieverBase<PhoneNumber>
+    {
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
+        {
+            if (string.IsNullOrEmpty(context.Value))
+            {
+                result = null;
+                return true;
+            }
+            var match = Regex.Match(context.Value, @"^\+(?<country>\d+) (?<area>\d+) (?<phone>.+)$");
+            if (!match.Success)
+            {
+                result = null;
+                return false;
+            }
 
+            result = new PhoneNumber
+                {
+                    CountryCode = int.Parse(match.Groups["country"].Value),
+                    AreaCode = int.Parse(match.Groups["area"].Value),
+                    Phone = match.Groups["phone"].Value
+                };
+            return true;
+        }
+    }
 
+    public class CustomDateTimeValueRetriever : ValueRetrieverBase<DateTime>
+    {
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
+        {
+            var success = TryParse(DateTime.TryParse, context.Value, out result);
+            result = ((DateTime) result).AddYears(10);
+            return success;
+        }
     }
 }

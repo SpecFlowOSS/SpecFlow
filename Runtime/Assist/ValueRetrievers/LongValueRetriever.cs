@@ -1,12 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class LongValueRetriever
+    internal class LongValueRetriever : ValueRetrieverBase<long>
     {
-        public virtual long GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            long returnValue;
-            long.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(long.TryParse, context.Value, out result);
         }
     }
 }

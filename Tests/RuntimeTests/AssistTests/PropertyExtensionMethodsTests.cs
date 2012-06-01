@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class PropertyExtensionMethodsTests
+    public class PropertyExtensionMethodsTests : AssistTestsBase
     {
         [Test]
         public void Can_get_the_property_of_an_object_through_GetPropertyValue()

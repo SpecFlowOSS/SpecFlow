@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
-    public class CreateInstanceHelperMethodTests_WithFunc
+    public class CreateInstanceHelperMethodTests_WithFunc : AssistTestsBase
     {
         [Test]
         public void CreateInstance_returns_the_object_returned_from_the_func()

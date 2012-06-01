@@ -1,17 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class CharValueRetriever
+    internal class CharValueRetriever : ValueRetrieverBase<char>
     {
-        public virtual char GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            return ThisStringIsNotASingleCharacter(value)
-                       ? '\0'
-                       : value[0];
-        }
-
-        private bool ThisStringIsNotASingleCharacter(string value)
-        {
-            return string.IsNullOrEmpty(value) || value.Length > 1;
+            return TryParse(char.TryParse, context.Value, out result);
         }
     }
 }

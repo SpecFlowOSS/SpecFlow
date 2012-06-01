@@ -1,10 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class BoolValueRetriever
+    internal class BoolValueRetriever : ValueRetrieverBase<bool>
     {
-        public virtual bool GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            return value == "True" || value == "true";
+            return TryParse(bool.TryParse, context.Value, out result);
         }
     }
 }

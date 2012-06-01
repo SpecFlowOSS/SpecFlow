@@ -1,12 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class SByteValueRetriever
+    internal class SByteValueRetriever : ValueRetrieverBase<sbyte>
     {
-        public virtual sbyte GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            sbyte returnValue;
-            sbyte.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(sbyte.TryParse, context.Value, out result);
         }
     }
 }

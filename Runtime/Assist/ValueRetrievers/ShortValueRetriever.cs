@@ -1,12 +1,10 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class ShortValueRetriever
+    internal class ShortValueRetriever : ValueRetrieverBase<short>
     {
-        public virtual short GetValue(string value)
+        public override bool TryGetValue(ValueRetrieverContext context, out object result)
         {
-            short returnValue;
-            short.TryParse(value, out returnValue);
-            return returnValue;
+            return TryParse(short.TryParse, context.Value, out result);
         }
     }
 }

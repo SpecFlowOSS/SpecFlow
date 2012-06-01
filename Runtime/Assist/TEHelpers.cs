@@ -79,14 +79,19 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static IEnumerable<PropertyHandler> GetPropertiesThatNeedToBeSet<T>(Table table)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs<T>();
+            var handlers = ScenarioContext.Current.ValueRetrievers;
 
             return from property in typeof (T).GetProperties()
                    from key in handlers.Keys
                    from row in table.Rows
-                   where ThisPropertyMatchesTheType(property, key) 
-                         && IsPropertyMatchingToColumnName(property, row.Id())
-                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+                   where ThisPropertyMatchesTheType(property, key)
+                       && IsPropertyMatchingToColumnName(property, row.Id())
+                   select new PropertyHandler
+                       {
+                           Row = row,
+                           PropertyName = property.Name,
+                           Handler = r => handlers.GetValue(key, new ValueRetrieverContext(typeof (T), table, r))
+                       };
         }
 
         private static bool ThisPropertyMatchesTheType(PropertyInfo property, Type key)
@@ -98,7 +103,7 @@ namespace TechTalk.SpecFlow.Assist
             return false;
         }
 
-        internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
+        /*internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
         {
             return new Dictionary<Type, Func<TableRow, object>>
                        {
@@ -135,7 +140,7 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
                        };
-        }
+        }*/
 
         internal class PropertyHandler
         {

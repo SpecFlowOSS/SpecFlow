@@ -56,6 +56,8 @@
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
+    <Compile Include="Assist\IValueRetriever.cs" />
+    <Compile Include="Assist\NullableValueRetrieverBase.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
@@ -76,6 +78,9 @@
     <Compile Include="Assist\ValueComparers\DecimalValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\DefaultValueComparer.cs" />
     <Compile Include="Assist\ValueComparers\GuidValueComparer.cs" />
+    <Compile Include="Assist\ValueRetrieverBase.cs" />
+    <Compile Include="Assist\ValueRetrieverCollection.cs" />
+    <Compile Include="Assist\ValueRetrieverContext.cs" />
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />

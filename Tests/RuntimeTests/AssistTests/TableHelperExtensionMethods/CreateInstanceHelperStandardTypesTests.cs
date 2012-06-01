@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
-    public class CreateInstanceHelperStandardTypesTests
+    public class CreateInstanceHelperStandardTypesTests : AssistTestsBase
     {
         [SetUp]
         public void SetUp()

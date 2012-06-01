@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Should;
-using TechTalk.SpecFlow.Assist;
 using System.Linq;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 

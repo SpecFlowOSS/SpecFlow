@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class PivotTableTests
+    public class PivotTableTests : AssistTestsBase
     {
         [Test]
         public void Returns_a_table_when_asked_for_an_instance_of_the_first_item_in_a_set()

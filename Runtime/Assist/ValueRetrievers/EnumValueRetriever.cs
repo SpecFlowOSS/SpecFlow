@@ -1,9 +1,33 @@
 ﻿using System;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class EnumValueRetriever
+    internal class EnumValueRetriever : IValueRetriever<Enum>
     {
+        public bool TryGetValue(ValueRetrieverContext context, out object result)
+        {
+            try
+            {
+                result = GetValue(context);
+                return true;
+            }
+            catch (InvalidOperationException e)
+            {
+                if (!e.Message.Contains("No enum with value")) throw;
+
+                result = null;
+                return false;
+            }
+        }
+
+        public object GetValue(ValueRetrieverContext context)
+        {
+            return GetValue(context.Value, context.InstanceType.GetProperties()
+                .First(x => x.Name.MatchesThisColumnName(context.Field))
+                .PropertyType);
+        }
+
         public object GetValue(string value, Type enumType)
         {
             CheckThatTheValueIsAnEnum(value, enumType);

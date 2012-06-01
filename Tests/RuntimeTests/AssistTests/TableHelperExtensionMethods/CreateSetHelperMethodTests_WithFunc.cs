@@ -10,7 +10,7 @@ using ObjectAssertExtensions = Should.ObjectAssertExtensions;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
     [TestFixture]
-    public class CreateSetHelperMethodTests_WithFunc
+    public class CreateSetHelperMethodTests_WithFunc : AssistTestsBase
     {
         [SetUp]
         public void SetUp()
