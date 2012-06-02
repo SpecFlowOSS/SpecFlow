@@ -1,12 +1,27 @@
 ﻿using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist.ValueComparers;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.CustomValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
     [TestFixture, SetCulture("en-US")]
     public class DecimalValueComparerTests
     {
+        [Test]
+        public void Should_correctly_compare_a_bool_with_custom_value_retriever()
+        {
+            var originalValueRetriever = ValueRetrieverCollection.ValueRetrievers[typeof(decimal)];
+            var comparer = new DecimalValueComparer();
+
+            ValueRetrieverCollection.ValueRetrievers[typeof(decimal)] = () => new CustomDecimalValueRetriever();
+            comparer.TheseValuesAreTheSame("100", 200m).ShouldBeTrue();
+
+            // Restore default value retriever
+            ValueRetrieverCollection.ValueRetrievers[typeof(decimal)] = originalValueRetriever;
+        }
+
         [Test]
         public void Can_compare_if_the_value_is_a_decimal()
         {

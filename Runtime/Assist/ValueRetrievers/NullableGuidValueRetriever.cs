@@ -2,11 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableGuidValueRetriever
+    public class NullableGuidValueRetriever : IValueRetriever<Guid?>
     {
-        private readonly Func<string, Guid> guidValueRetriever;
+        private readonly IValueRetriever<Guid> guidValueRetriever;
 
-        public NullableGuidValueRetriever(Func<string, Guid> guidValueRetriever)
+        public NullableGuidValueRetriever(IValueRetriever<Guid> guidValueRetriever)
         {
             this.guidValueRetriever = guidValueRetriever;
         }
@@ -14,7 +14,20 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public Guid? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return guidValueRetriever(value);
+            return guidValueRetriever.GetValue(value);
+        }
+
+        public bool TryGetValue(string text, out Guid? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            Guid original;
+            var tryResult = guidValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
         }
     }
 }

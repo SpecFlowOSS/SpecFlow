@@ -1,13 +1,30 @@
 ﻿using System;
 using NUnit.Framework;
 using Should;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.CustomValueRetrievers;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
     [TestFixture, SetCulture("en-US")]
     public class DateTimeValueComparerTests
     {
+        [Test]
+        public void Should_correctly_compare_a_date_with_custom_value_retriever()
+        {
+            var originalValueRetriever = ValueRetrieverCollection.ValueRetrievers[typeof(DateTime)];
+            var comparer = new DateTimeValueComparer();
+
+            ValueRetrieverCollection.ValueRetrievers[typeof(DateTime)] = () => new CustomDateTimeValueRetriever();
+            comparer.TheseValuesAreTheSame("12-31-1980", new DateTime(1990, 12, 31)).ShouldBeTrue();
+
+            // Restore default value retriever
+            ValueRetrieverCollection.ValueRetrievers[typeof(DateTime)] = originalValueRetriever;
+        }
+
         [Test]
         public void Can_compare_if_the_value_is_a_datetime()
         {

@@ -1,12 +1,17 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class ULongValueRetriever
+    public class ULongValueRetriever : IValueRetriever<ulong>
     {
         public virtual ulong GetValue(string value)
         {
             ulong returnValue;
-            ulong.TryParse(value, out returnValue);
+            TryGetValue(value, out returnValue);
             return returnValue;
+        }
+
+        public bool TryGetValue(string text, out ulong result)
+        {
+            return ulong.TryParse(text, out result);
         }
     }
 }

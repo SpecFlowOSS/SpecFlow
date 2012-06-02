@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -102,38 +103,38 @@ namespace TechTalk.SpecFlow.Assist
         {
             return new Dictionary<Type, Func<TableRow, object>>
                        {
-                           {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
-                           {typeof (byte), (TableRow row) => new ByteValueRetriever().GetValue(row[1])},
-                           {typeof (byte?), (TableRow row) => new NullableByteValueRetriever(v => new ByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (sbyte), (TableRow row) => new SByteValueRetriever().GetValue(row[1])},
-                           {typeof (sbyte?), (TableRow row) => new NullableSByteValueRetriever(v => new SByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
-                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (uint), (TableRow row) => new UIntValueRetriever().GetValue(row[1])},
-                           {typeof (uint?), (TableRow row) => new NullableUIntValueRetriever(v => new UIntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (short), (TableRow row) => new ShortValueRetriever().GetValue(row[1])},
-                           {typeof (short?), (TableRow row) => new NullableShortValueRetriever(v => new ShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ushort), (TableRow row) => new UShortValueRetriever().GetValue(row[1])},
-                           {typeof (ushort?), (TableRow row) => new NullableUShortValueRetriever(v => new UShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (long), (TableRow row) => new LongValueRetriever().GetValue(row[1])},
-                           {typeof (long?), (TableRow row) => new NullableLongValueRetriever(v => new LongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ulong), (TableRow row) => new ULongValueRetriever().GetValue(row[1])},
-                           {typeof (ulong?), (TableRow row) => new NullableULongValueRetriever(v => new ULongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (float), (TableRow row) => new FloatValueRetriever().GetValue(row[1])},
-                           {typeof (float?), (TableRow row) => new NullableFloatValueRetriever(v => new FloatValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {typeof (double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
+                           {typeof (string), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<string>().GetValue(row[1])},
+                           {typeof (byte), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<byte>().GetValue(row[1])},
+                           {typeof (byte?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<byte?>().GetValue(row[1])},
+                           {typeof (sbyte), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<sbyte>().GetValue(row[1])},
+                           {typeof (sbyte?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<sbyte?>().GetValue(row[1])},
+                           {typeof (int), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<int>().GetValue(row[1])},
+                           {typeof (int?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<int?>().GetValue(row[1])},
+                           {typeof (uint), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<uint>().GetValue(row[1])},
+                           {typeof (uint?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<uint?>().GetValue(row[1])},
+                           {typeof (short), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<short>().GetValue(row[1])},
+                           {typeof (short?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<short?>().GetValue(row[1])},
+                           {typeof (ushort), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<ushort>().GetValue(row[1])},
+                           {typeof (ushort?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<ushort?>().GetValue(row[1])},
+                           {typeof (long), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<long>().GetValue(row[1])},
+                           {typeof (long?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<long?>().GetValue(row[1])},
+                           {typeof (ulong), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<ulong>().GetValue(row[1])},
+                           {typeof (ulong?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<ulong?>().GetValue(row[1])},
+                           {typeof (float), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<float>().GetValue(row[1])},
+                           {typeof (float?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<float?>().GetValue(row[1])},
+                           {typeof (double), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<double>().GetValue(row[1])},
+                           {typeof (double?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<double?>().GetValue(row[1])},
+                           {typeof (decimal), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<decimal>().GetValue(row[1])},
+                           {typeof (decimal?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<decimal?>().GetValue(row[1])},
+                           {typeof (char), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<char>().GetValue(row[1])},
+                           {typeof (char?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<char?>().GetValue(row[1])},
+                           {typeof (bool), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<bool>().GetValue(row[1])},
+                           {typeof (bool?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<bool?>().GetValue(row[1])},
+                           {typeof (DateTime), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<DateTime>().GetValue(row[1])},
+                           {typeof (DateTime?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<DateTime?>().GetValue(row[1])},
+                           {typeof (Guid), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<Guid>().GetValue(row[1])},
+                           {typeof (Guid?), (TableRow row) => ValueRetrieverCollection.GetValueRetriever<Guid?>().GetValue(row[1])},
+                           {typeof (Enum), (TableRow row) => ValueRetrieverCollection.GetEnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
                        };
         }
 

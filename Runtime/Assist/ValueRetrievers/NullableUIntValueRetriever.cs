@@ -2,11 +2,11 @@ using System;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableUIntValueRetriever
+    public class NullableUIntValueRetriever : IValueRetriever<uint?>
     {
-        private readonly Func<string, uint> uintValueRetriever;
+        private readonly IValueRetriever<uint> uintValueRetriever;
 
-        public NullableUIntValueRetriever(Func<string, uint> uintValueRetriever)
+        public NullableUIntValueRetriever(IValueRetriever<uint> uintValueRetriever)
         {
             this.uintValueRetriever = uintValueRetriever;
         }
@@ -14,7 +14,20 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public uint? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
-            return uintValueRetriever(value);
+            return uintValueRetriever.GetValue(value);
+        }
+
+        public bool TryGetValue(string text, out uint? result)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                result = null;
+                return true;
+            }
+            uint original;
+            var tryResult = uintValueRetriever.TryGetValue(text, out original);
+            result = original;
+            return tryResult;
         }
     }
 }

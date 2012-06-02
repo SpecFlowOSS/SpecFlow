@@ -1,6 +1,8 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
 using Should;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -11,21 +13,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_null()
         {
-            var retriever = new NullableDecimalValueRetriever(v => 23M);
+            var mock = new Mock<IValueRetriever<decimal>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(23M);
+
+            var retriever = new NullableDecimalValueRetriever(mock.Object);
             retriever.GetValue(null).ShouldBeNull();
         }
 
         [Test]
         public void Returns_value_from_decimal_value_retriever_when_not_empty()
         {
-            Func<string, decimal> func = v =>
-                                             {
-                                                 if (v == "value 1") return 1M;
-                                                 if (v == "value 2") return 2M;
-                                                 return 0M;
-                                             };
+            var mock = new Mock<IValueRetriever<decimal>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(0M);
+            mock.Setup(x => x.GetValue("value 1")).Returns(1M);
+            mock.Setup(x => x.GetValue("value 2")).Returns(2M);
 
-            var retriever = new NullableDecimalValueRetriever(func);
+            var retriever = new NullableDecimalValueRetriever(mock.Object);
             retriever.GetValue("value 1").ShouldEqual(1M);
             retriever.GetValue("value 2").ShouldEqual(2M);
         }
@@ -33,7 +36,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
-            var retriever = new NullableDecimalValueRetriever(v => 3M);
+            var mock = new Mock<IValueRetriever<decimal>>();
+            mock.Setup(x => x.GetValue(It.IsAny<string>())).Returns(3M);
+
+            var retriever = new NullableDecimalValueRetriever(mock.Object);
             retriever.GetValue("").ShouldBeNull();
         }
     }
