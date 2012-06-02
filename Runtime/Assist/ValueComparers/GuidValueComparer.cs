@@ -3,33 +3,12 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class GuidValueComparer : IValueComparer
+    internal class GuidValueComparer : ValueComparerBase<Guid>
     {
-        private readonly GuidValueRetriever guidValueRetriever;
-
-        public GuidValueComparer(GuidValueRetriever guidValueRetriever)
+        public override bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            this.guidValueRetriever = guidValueRetriever;
-        }
-
-        public bool CanCompare(object actualValue)
-        {
-            return actualValue != null && actualValue.GetType() == typeof (Guid);
-        }
-
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
-        {
-            try
-            {
-                return new Guid(expectedValue) == (Guid) actualValue;
-            }
-            catch
-            {
-                if (guidValueRetriever.IsAValidGuid(expectedValue) == false) return false;
-                var guid = guidValueRetriever.GetValue(expectedValue);
-                if (guid == new Guid()) return true;
-                return guid == (Guid)actualValue;
-            }
+            return TheseValuesAreTheSame(expectedValue, actualValue,
+                (e, a) => (Guid) e == (Guid) a);
         }
     }
 }

@@ -40,5 +40,11 @@ namespace TechTalk.SpecFlow.Assist
             var valueRetriever = Get<T>();
             return valueRetriever.TryGetValue(context, out result);
         }
+
+        public bool TryGetValue(Type type, ValueRetrieverContext context, out object result)
+        {
+            var valueRetriever = Get(type);
+            return valueRetriever.TryGetValue(context, out result);
+        }
     }
 }

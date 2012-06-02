@@ -2,19 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class DoubleValueComparer : IValueComparer
+    internal class DoubleValueComparer : ValueComparerBase<double>
     {
-        public bool CanCompare(object actualValue)
+        public override bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (double);
-        }
-
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
-        {
-            Double expected;
-            if (Double.TryParse(expectedValue, out expected) == false)
-                return false;
-            return expected == (double) actualValue;
+            return TheseValuesAreTheSame(expectedValue, actualValue, (e, a) => (double) e == (double) a);
         }
     }
 }

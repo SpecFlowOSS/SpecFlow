@@ -6,7 +6,7 @@ using TechTalk.SpecFlow.Assist.ValueComparers;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 {
     [TestFixture, SetCulture("en-US")]
-    public class DateTimeValueComparerTests
+    public class DateTimeValueComparerTests : AssistTestsBase
     {
         [Test]
         public void Can_compare_if_the_value_is_a_datetime()

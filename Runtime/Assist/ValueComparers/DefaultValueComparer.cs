@@ -11,9 +11,21 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            var actual = actualValue == null ? String.Empty : actualValue.ToString();
+            if(actualValue == null && string.IsNullOrEmpty(expectedValue))
+                return true;
+            if(actualValue == null) return false;
 
-            return expectedValue == actual;
+            var type = actualValue.GetType();
+
+            object value;
+            if (!ScenarioContext.Current.ValueRetrievers.TryGetValue(type,
+                new ValueRetrieverContext(expectedValue), out value))
+            {
+                return false;
+            }
+            
+            var equalsMethod = value.GetType().GetMethod("Equals", new[] {typeof (object)});
+            return (bool) equalsMethod.Invoke(value, new[] {actualValue});
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -17,6 +18,47 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
+        [Test]
+        public void Throws_exception_when_object_with_custom_value_retriever_does_not_match()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("PhoneNumber", "+55 21 8888-8888");
+            var test = new CustomPerson {PhoneNumber = new PhoneNumber(55, 21, "9999-9999")};
+            ScenarioContext.Current.ValueRetrievers.Set<PhoneNumber, PhoneNumberValueRetriever>();
+
+            // Act
+            Assert.Throws<ComparisonException>(() => table.CompareToInstance(test));
+        }
+
+        [Test]
+        public void Should_not_throw_exception_when_objects_with_custom_value_retriever_match()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("PhoneNumber", "+55 21 9999-9999");
+            var test = new CustomPerson { PhoneNumber = new PhoneNumber(55, 21, "9999-9999") };
+            ScenarioContext.Current.ValueRetrievers.Set<PhoneNumber, PhoneNumberValueRetriever>();
+
+            // Act
+            table.CompareToInstance(test);
+        }
+
+        [Test]
+        public void Should_compare_instance_using_overridden_value_retriever()
+        {
+            // Arrange
+            var table = new Table("Field", "Value");
+            table.AddRow("DateTimeProperty", "12/25/2010 8:00:00 AM");
+            var test = new InstanceComparisonTestObject { DateTimeProperty = new DateTime(2020, 12, 25, 8, 0, 0) };
+            ScenarioContext.Current.ValueRetrievers.Set<DateTime, CustomDateTimeValueRetriever>();
+
+            // Act
+            var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
+
+            // Assert
+            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+        }
         [Test]
         public void Throws_exception_when_value_of_matching_string_property_does_not_match()
         {

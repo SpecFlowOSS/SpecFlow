@@ -2,16 +2,11 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class BoolValueComparer : IValueComparer
+    internal class BoolValueComparer : ValueComparerBase<bool>
     {
-        public bool CanCompare(object actualValue)
+        public override bool TheseValuesAreTheSame(string expectedValue, object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (bool);
-        }
-
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
-        {
-            return bool.Parse(expectedValue) == (bool) actualValue;
+            return TheseValuesAreTheSame(expectedValue, actualValue, (e, a) => (bool) e == (bool) a);
         }
     }
 }

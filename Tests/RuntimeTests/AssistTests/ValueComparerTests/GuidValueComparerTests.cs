@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
 
         private static GuidValueComparer CreateComparer()
         {
-            return new GuidValueComparer(new GuidValueRetriever());
+            return new GuidValueComparer();
         }
     }
 }
