@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Should;
 using System.Linq;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
