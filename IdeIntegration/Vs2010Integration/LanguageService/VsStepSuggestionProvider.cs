@@ -167,7 +167,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 var featureScope = CreateStepScope(feature);
                 foreach (var scenarioStep in feature.Background.Steps)
-                    yield return new StepInstance<Completion>(scenarioStep, featureScope, nativeSuggestionItemFactory);
+                    yield return new StepInstance<Completion>(scenarioStep, feature, featureScope, nativeSuggestionItemFactory);
             }
 
             if (feature.Scenarios != null)
@@ -179,11 +179,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     {
                         if (scenarioOutline == null || !StepInstanceTemplate<Completion>.IsTemplate(scenarioStep))
                         {
-                            yield return new StepInstance<Completion>(scenarioStep, stepScope, nativeSuggestionItemFactory);
+                            yield return new StepInstance<Completion>(scenarioStep, feature, stepScope, nativeSuggestionItemFactory);
                         }
                         else
                         {
-                            yield return new StepInstanceTemplate<Completion>(scenarioStep, scenarioOutline, stepScope, nativeSuggestionItemFactory);
+                            yield return new StepInstanceTemplate<Completion>(scenarioStep, scenarioOutline, feature, stepScope, nativeSuggestionItemFactory);
                         }
                     }
                 }

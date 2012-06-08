@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
     internal class EditorCommands
     {
+        private readonly IIdeTracer tracer;
         private readonly IObjectContainer container;
         private readonly GherkinLanguageService languageService;
         private readonly IWpfTextView textView;
@@ -35,6 +37,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.container = container;
             this.languageService = languageService;
             this.textView = textView;
+            this.tracer = languageService.ProjectScope.Tracer;
         }
 
         private IStepDefinitionMatchService GetBindingMatchService()

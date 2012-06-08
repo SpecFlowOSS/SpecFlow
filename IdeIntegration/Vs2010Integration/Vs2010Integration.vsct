@@ -46,6 +46,13 @@
           <ButtonText>Go To Step Definition</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGoToSteps" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Go To Steps</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -95,6 +102,7 @@
       <IDSymbol name="cmdidDebugScenarios" value="0x0102"/>
       <IDSymbol name="cmdidGoToStepDefinition" value="0x0103"/>
       <IDSymbol name="cmdidReGenerateAll" value="0x0104"/>
+      <IDSymbol name="cmdidGoToSteps" value="0x0105"/>
     </GuidSymbol>
   </Symbols>
 </CommandTable>

@@ -71,20 +71,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
 
-        public StepInstanceTemplate(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public StepInstanceTemplate(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, Feature feature, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             StepDefinitionType = (StepDefinitionType)scenarioStep.ScenarioBlock;
             Language = stepContext.Language;
 
             NativeSuggestionItem = nativeSuggestionItemFactory.Create(scenarioStep.Text, StepInstance<TNativeSuggestionItem>.GetInsertionText(scenarioStep), 1, StepDefinitionType.ToString().Substring(0, 1) + "-t", this);
             instances = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
-            AddInstances(scenarioStep, scenarioOutline, stepContext, nativeSuggestionItemFactory);
+            AddInstances(scenarioStep, scenarioOutline, feature, stepContext, nativeSuggestionItemFactory);
 
             var match = paramRe.Match(scenarioStep.Text);
             StepPrefix = match.Success ? scenarioStep.Text.Substring(0, match.Index) : scenarioStep.Text;
         }
 
-        private void AddInstances(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        private void AddInstances(ScenarioStep scenarioStep, ScenarioOutline scenarioOutline, Feature feature, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
             {
@@ -102,7 +102,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
                     var newStep = scenarioStep.Clone();
                     newStep.Text = replacedText;
-                    instances.Add(new StepInstance<TNativeSuggestionItem>(newStep, stepContext, nativeSuggestionItemFactory, 2) { ParentTemplate = this });
+                    instances.Add(new StepInstance<TNativeSuggestionItem>(newStep, feature, stepContext, nativeSuggestionItemFactory, 2) { ParentTemplate = this });
                 }
             }
         }
