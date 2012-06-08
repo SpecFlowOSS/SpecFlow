@@ -6,6 +6,7 @@ using EnvDTE;
 using EnvDTE80;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
@@ -13,6 +14,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     internal class VsStepSuggestionBindingCollector
     {
         private readonly VsBindingReflectionFactory bindingReflectionFactory = new VsBindingReflectionFactory();
+        private readonly IStepDefinitionRegexCalculator regexCalculator;
+
+        public VsStepSuggestionBindingCollector()
+        {
+            regexCalculator = new StepDefinitionRegexCalculator(new RuntimeConfiguration()); //TODO
+        }
 
         public IEnumerable<StepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
@@ -185,12 +192,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             try
             {
                 IBindingMethod bindingMethod = bindingReflectionFactory.CreateBindingMethod(codeFunction);
+                string regexString;
 
                 var regexArg = attr.Arguments.Cast<CodeAttributeArgument>().FirstOrDefault();
-                if (regexArg == null)
-                    return null;
-
-                var regexString = VsxHelper.ParseCodeStringValue(regexArg.Value, regexArg.Language);
+                if (regexArg != null)
+                    regexString = VsxHelper.ParseCodeStringValue(regexArg.Value, regexArg.Language);
+                else
+                    regexString = regexCalculator.CalculateRegexFromMethod(stepDefinitionType, bindingMethod);
 
                 return new StepDefinitionBinding(stepDefinitionType, regexString, bindingMethod, bindingScope);
             }
