@@ -39,6 +39,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 
+            container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
+
             RegisterUnitTestProviders(container);
         }
     }

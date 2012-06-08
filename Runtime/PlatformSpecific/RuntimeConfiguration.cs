@@ -16,8 +16,6 @@ namespace TechTalk.SpecFlow.Configuration
     {
         public ContainerRegistrationCollection CustomDependencies { get; set; }
 
-        private readonly List<Assembly> additionalStepAssemblies = new List<Assembly>();
-
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
         public CultureInfo ToolLanguage { get; set; }
@@ -32,18 +30,11 @@ namespace TechTalk.SpecFlow.Configuration
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
 
         //tracing settings
-        public Type TraceListenerType { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
 
-        public IEnumerable<Assembly> AdditionalStepAssemblies
-        {
-            get
-            {
-                return additionalStepAssemblies;
-            }
-        }
+        public List<string> AdditionalStepAssemblies { get; private set; }
 
         public RuntimeConfiguration()
         {
@@ -57,10 +48,11 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
             MissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
 
-            TraceListenerType = typeof(DefaultListener);
             TraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
             TraceTimings = ConfigDefaults.TraceTimings;
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+
+            AdditionalStepAssemblies = new List<string>();
         }
 
         public static IEnumerable<PluginDescriptor> GetPlugins()
@@ -118,12 +110,8 @@ namespace TechTalk.SpecFlow.Configuration
                 if (!string.IsNullOrEmpty(configSection.UnitTestProvider.RuntimeProvider))
                 {
                     //compatibility mode, we simulate a custom dependency
-
-                    if (this.CustomDependencies == null)
-                        this.CustomDependencies = new ContainerRegistrationCollection();
-
                     this.RuntimeUnitTestProvider = "custom";
-                    this.CustomDependencies.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, this.RuntimeUnitTestProvider);
+                    AddCustomDependency(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider), this.RuntimeUnitTestProvider);
                 }
                 else
                 {
@@ -133,8 +121,10 @@ namespace TechTalk.SpecFlow.Configuration
 
             if (IsSpecified(configSection.Trace))
             {
-                if (!string.IsNullOrEmpty(configSection.Trace.Listener))
-                    this.TraceListenerType = GetTypeConfig(configSection.Trace.Listener);
+                if (!string.IsNullOrEmpty(configSection.Trace.Listener)) // backwards compatibility
+                {
+                    AddCustomDependency(configSection.Trace.Listener, typeof(ITraceListener));
+                }
 
                 this.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
                 this.TraceTimings = configSection.Trace.TraceTimings;
@@ -143,23 +133,17 @@ namespace TechTalk.SpecFlow.Configuration
 
             foreach (var element in configSection.StepAssemblies)
             {
-                Assembly stepAssembly = Assembly.Load(((StepAssemblyConfigElement)element).Assembly);
-                this.additionalStepAssemblies.Add(stepAssembly);
+                var assemblyName = ((StepAssemblyConfigElement)element).Assembly;
+                this.AdditionalStepAssemblies.Add(assemblyName);
             }
         }
 
-        private static Type GetTypeConfig(string typeName)
+        private void AddCustomDependency(string implementationType, Type interfaceType, string name = null)
         {
-            try
-            {
-                return Type.GetType(typeName, true);
-            }
-            catch (Exception ex)
-            {
-                throw new ConfigurationErrorsException(
-                    string.Format("Invalid type reference '{0}': {1}",
-                        typeName, ex.Message), ex);
-            }
+            if (this.CustomDependencies == null)
+                this.CustomDependencies = new ContainerRegistrationCollection();
+
+            this.CustomDependencies.Add(implementationType, interfaceType.AssemblyQualifiedName, name);
         }
     }
 }

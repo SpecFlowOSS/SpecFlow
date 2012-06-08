@@ -15,19 +15,11 @@ namespace TechTalk.SpecFlow.Configuration
     public class RuntimeConfigurationForGenerator
     {
         public CultureInfo BindingCulture { get; set; }
-
-        private readonly List<string> additionalStepAssemblies = new List<string>();
-
-        public IEnumerable<string> AdditionalStepAssemblies
-        {
-            get
-            {
-                return additionalStepAssemblies;
-            }
-        }
+        public List<string> AdditionalStepAssemblies { get; private set; }
 
         public RuntimeConfigurationForGenerator()
         {
+            AdditionalStepAssemblies = new List<string>();
             BindingCulture = null;
         }
 
@@ -43,7 +35,7 @@ namespace TechTalk.SpecFlow.Configuration
             foreach (var element in configSection.StepAssemblies)
             {
                 var stepAssembly = ((StepAssemblyConfigElement)element).Assembly;
-                this.additionalStepAssemblies.Add(stepAssembly);
+                this.AdditionalStepAssemblies.Add(stepAssembly);
             }
         }
 
@@ -58,7 +50,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return other.additionalStepAssemblies.SequenceEqual(additionalStepAssemblies) && Equals(other.BindingCulture, BindingCulture);
+            return other.AdditionalStepAssemblies.SequenceEqual(AdditionalStepAssemblies) && Equals(other.BindingCulture, BindingCulture);
         }
 
         public override bool Equals(object obj)
@@ -73,7 +65,7 @@ namespace TechTalk.SpecFlow.Configuration
         {
             unchecked
             {
-                return ((additionalStepAssemblies.Count.GetHashCode())*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
+                return ((AdditionalStepAssemblies.Count.GetHashCode())*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
             }
         }
         #endregion
