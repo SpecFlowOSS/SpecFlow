@@ -1,4 +1,6 @@
+using System;
 using System.Reflection;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
@@ -24,6 +26,16 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         public override string ToString()
         {
             return string.Format("{0}: {1}", ParameterName, Type);
+        }
+
+
+        public bool IsParamArray
+        {
+            get 
+            {
+                var attribute = (parameterInfo == null) ? false : parameterInfo.GetCustomAttributes(typeof(ParamArrayAttribute), false).FirstOrDefault();
+                return (attribute != null);
+            }
         }
     }
 }

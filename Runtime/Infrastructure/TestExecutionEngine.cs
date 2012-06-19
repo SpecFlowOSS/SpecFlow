@@ -389,12 +389,21 @@ namespace TechTalk.SpecFlow.Infrastructure
         private object[] GetExecuteArguments(BindingMatch match)
         {
             var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
-            if (match.Arguments.Length != bindingParameters.Length)
-                throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
+            object[] arguments;
 
-            var arguments = match.Arguments.Select(
-                (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
-                .ToArray();
+            if (bindingParameters.Any(p => p.IsParamArray))
+            {
+                arguments = new object[] { match.Arguments.ToArray<object>() };
+            }
+            else
+            {
+                if (match.Arguments.Length != bindingParameters.Length)
+                    throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
+
+                arguments = match.Arguments.Select(
+                    (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
+                    .ToArray();
+            }
 
             return arguments;
         }

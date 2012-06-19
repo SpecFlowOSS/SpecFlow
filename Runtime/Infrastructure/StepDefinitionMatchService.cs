@@ -38,6 +38,29 @@ namespace TechTalk.SpecFlow.Infrastructure
         private object[] CalculateArguments(Match match, StepInstance stepInstance)
         {
             var regexArgs = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
+            //regexArgs = match.Groups.Cast<Group>().Skip<Group>(1)
+            //            .SelectMany<Group, string>(g => 
+            //                g.Captures.Cast<Capture>()
+            //                .Select<Capture, string>(c => c.Value)
+            //                .ToArray<string>())
+            //                .ToArray<string>();
+            var arguments = regexArgs.Cast<object>().ToList();
+            if (stepInstance.MultilineTextArgument != null)
+                arguments.Add(stepInstance.MultilineTextArgument);
+            if (stepInstance.TableArgument != null)
+                arguments.Add(stepInstance.TableArgument);
+
+            return arguments.ToArray();
+        }
+
+        private object[] CalculateRecursiveArguments(Match match, StepInstance stepInstance)
+        {
+            var regexArgs = match.Groups.Cast<Group>().Skip<Group>(1)
+                        .SelectMany<Group, string>(g =>
+                            g.Captures.Cast<Capture>()
+                            .Select<Capture, string>(c => c.Value)
+                            .ToArray<string>())
+                            .ToArray<string>();
             var arguments = regexArgs.Cast<object>().ToList();
             if (stepInstance.MultilineTextArgument != null)
                 arguments.Add(stepInstance.MultilineTextArgument);
@@ -83,14 +106,23 @@ namespace TechTalk.SpecFlow.Infrastructure
                 Debug.Assert(match != null); // useParamMatching -> useRegexMatching
                 var bindingParameters = stepDefinitionBinding.Method.Parameters.ToArray();
 
-                // check if the regex + extra arguments match to the binding method parameters
-                if (arguments.Length != bindingParameters.Length)
-                    return BindingMatch.NonMatching;
+                var isParamArray = bindingParameters.Any(p => p.IsParamArray);
 
-                // Check if regex & extra arguments can be converted to the method parameters
-                //if (arguments.Zip(bindingParameters, (arg, parameter) => CanConvertArg(arg, parameter.Type)).Any(canConvert => !canConvert))
-                if (arguments.Where((arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type, bindingCulture)).Any())
-                    return BindingMatch.NonMatching;
+                if (isParamArray)
+                {
+                    arguments = match == null ? new object[0] : CalculateRecursiveArguments(match, stepInstance);
+                }
+                else
+                {
+                    // check if the regex + extra arguments match to the binding method parameters
+                    if (arguments.Length != bindingParameters.Length)
+                        return BindingMatch.NonMatching;
+
+                    // Check if regex & extra arguments can be converted to the method parameters
+                    //if (arguments.Zip(bindingParameters, (arg, parameter) => CanConvertArg(arg, parameter.Type)).Any(canConvert => !canConvert))
+                    if (arguments.Where((arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type, bindingCulture)).Any())
+                        return BindingMatch.NonMatching;
+                }
             }
 
             return new BindingMatch(stepDefinitionBinding, scopeMatches, arguments, stepInstance.StepContext);
@@ -159,7 +191,10 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
-            var matches = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
+            var candidates = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text);
+            var allMatches = candidates.Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching));
+            var matches = allMatches.Where(b => b.Success);
+
             // we remove duplicate maches for the same method (take the highest scope matches from each)
             matches = matches.GroupBy(m => m.StepBinding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;
