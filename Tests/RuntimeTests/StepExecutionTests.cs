@@ -22,6 +22,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
             
         }
 
+        [Given(@"^I modify the (?<entity>@?[_\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}\p{Cf}]*)(?:\.(?<property>@?[_\p{L}\p{Nl}][\p{L}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}\p{Cf}]*))+ to ""(?<value>.*)""$")]
+        public virtual void BindingWithParamArray(params object[] parameters)
+        {
+        }
+
         [Given("sample step with (multi)(ple) param")]
         public virtual void BindingWithMultipleParam(string param1, string param2)
         {
@@ -139,6 +144,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
             MockRepository.ReplayAll();
 
             testRunner.Given("sample step with multiple param");
+
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            MockRepository.VerifyAll();
+        }
+
+        [Test]
+        public void SholdCallBindingParamArray()
+        {
+            StepExecutionTestsBindings bindingInstance;
+            TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
+
+            var parameters = new object[] { "Account", "Company", "Name", "Acme Widget Company" };
+            bindingInstance.Expect(b => b.BindingWithParamArray(parameters));
+
+            MockRepository.ReplayAll();
+
+            testRunner.Given("I modify the Account.Company.Name to \"Acme Widget Company\"");
 
             Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
             MockRepository.VerifyAll();
