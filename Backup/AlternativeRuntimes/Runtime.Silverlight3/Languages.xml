@@ -1,0 +1,665 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SpecFlowLanguages>
+  <Language code="ar" cultureInfo="ar" defaultSpecificCulture="ar-SA" englishName="Arabic">
+    <Feature>خاصية</Feature>
+    <Background>الخلفية</Background>
+    <Scenario>سيناريو</Scenario>
+    <ScenarioOutline>سيناريو مخطط</ScenarioOutline>
+    <Examples>امثلة</Examples>
+    <Given>بفرض</Given>
+    <When>متى</When>
+    <When>عندما</When>
+    <Then>اذاً</Then>
+    <Then>ثم</Then>
+    <And>و</And>
+    <But>لكن</But>
+  </Language>
+  <Language code="bg" cultureInfo="bg" defaultSpecificCulture="bg-BG" englishName="Bulgarian">
+    <Feature>Функционалност</Feature>
+    <Background>Предистория</Background>
+    <Scenario>Сценарий</Scenario>
+    <ScenarioOutline>Рамка на сценарий</ScenarioOutline>
+    <Examples>Примери</Examples>
+    <Given>Дадено</Given>
+    <When>Когато</When>
+    <Then>То</Then>
+    <And>И</And>
+    <But>Но</But>
+  </Language>
+  <Language code="ca" cultureInfo="ca" defaultSpecificCulture="ca-ES" englishName="Catalan">
+    <Feature>Característica</Feature>
+    <Feature>Funcionalitat</Feature>
+    <Background>Rerefons</Background>
+    <Background>Antecedents</Background>
+    <Scenario>Escenari</Scenario>
+    <ScenarioOutline>Esquema de l'escenari</ScenarioOutline>
+    <Examples>Exemples</Examples>
+    <Given>Donat</Given>
+    <Given>Donada</Given>
+    <Given>Atès</Given>
+    <Given>Atesa</Given>
+    <When>Quan</When>
+    <Then>Aleshores</Then>
+    <Then>Cal</Then>
+    <And>I</And>
+    <But>Però</But>
+  </Language>
+  <Language code="cs" cultureInfo="cs" defaultSpecificCulture="cs-CZ" englishName="Czech">
+    <Feature>Požadavek</Feature>
+    <Background>Pozadí</Background>
+    <Background>Kontext</Background>
+    <Scenario>Scénář</Scenario>
+    <ScenarioOutline>Náčrt Scénáře</ScenarioOutline>
+    <ScenarioOutline>Osnova scénáře</ScenarioOutline>
+    <Examples>Příklady</Examples>
+    <Given>Pokud</Given>
+    <When>Když</When>
+    <Then>Pak</Then>
+    <And>A</And>
+    <And>A také</And>
+    <But>Ale</But>
+  </Language>
+  <Language code="cy-GB" cultureInfo="cy-GB" englishName="Welsh (United Kingdom)">
+    <Feature>Arwedd</Feature>
+    <Background>Cefndir</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Scenario Amlinellol</ScenarioOutline>
+    <Examples>Enghreifftiau</Examples>
+    <Given>Anrhegedig a</Given>
+    <When>Pryd</When>
+    <Then>Yna</Then>
+    <And>A</And>
+    <But>Ond</But>
+  </Language>
+  <Language code="da" cultureInfo="da" defaultSpecificCulture="da-DK" englishName="Danish">
+    <Feature>Egenskab</Feature>
+    <Background>Baggrund</Background>
+    <Scenario>Scenarie</Scenario>
+    <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <Examples>Eksempler</Examples>
+    <Given>Givet</Given>
+    <When>Når</When>
+    <Then>Så</Then>
+    <And>Og</And>
+    <But>Men</But>
+  </Language>
+  <Language code="de" cultureInfo="de" defaultSpecificCulture="de-DE" englishName="German">
+    <Feature>Funktionalität</Feature>
+    <Background>Grundlage</Background>
+    <Scenario>Szenario</Scenario>
+    <ScenarioOutline>Szenariogrundriss</ScenarioOutline>
+    <Examples>Beispiele</Examples>
+    <Given>Angenommen</Given>
+    <Given>Gegeben sei</Given>
+    <When>Wenn</When>
+    <Then>Dann</Then>
+    <And>Und</And>
+    <But>Aber</But>
+  </Language>
+  <Language code="en" cultureInfo="en" defaultSpecificCulture="en-US" englishName="English">
+    <Feature>Feature</Feature>
+    <Background>Background</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Scenario Outline</ScenarioOutline>
+    <ScenarioOutline>Scenario Template</ScenarioOutline>
+    <Examples>Examples</Examples>
+    <Examples>Scenarios</Examples>
+    <Given>Given</Given>
+    <When>When</When>
+    <Then>Then</Then>
+    <And>And</And>
+    <But>But</But>
+  </Language>
+  <Language code="en-AU" cultureInfo="en-AU" englishName="English (Australia)">
+    <Feature>Crikey</Feature>
+    <Background>Background</Background>
+    <Scenario>Mate</Scenario>
+    <ScenarioOutline>Blokes</ScenarioOutline>
+    <Examples>Cobber</Examples>
+    <Given>Ya know how</Given>
+    <When>When</When>
+    <Then>Ya gotta</Then>
+    <And>N</And>
+    <But>Cept</But>
+  </Language>
+  <Language code="en-LOL" cultureInfo="en" englishName="English">
+    <Feature>OH HAI</Feature>
+    <Background>B4</Background>
+    <Scenario>MISHUN</Scenario>
+    <ScenarioOutline>MISHUN SRSLY</ScenarioOutline>
+    <Examples>EXAMPLZ</Examples>
+    <Given>I CAN HAZ</Given>
+    <When>WEN</When>
+    <Then>DEN</Then>
+    <And>AN</And>
+    <But>BUT</But>
+  </Language>
+  <Language code="en-PIRATE" cultureInfo="en" englishName="English">
+    <Feature>Ahoy matey!</Feature>
+    <Background>Yo-ho-ho</Background>
+    <Scenario>Heave to</Scenario>
+    <ScenarioOutline>Shiver me timbers</ScenarioOutline>
+    <Examples>Dead men tell no tales</Examples>
+    <Given>Gangway!</Given>
+    <When>Blimey!</When>
+    <Then>Let go and haul</Then>
+    <And>Aye</And>
+    <But>Avast!</But>
+  </Language>
+  <Language code="en-SCOUSE" cultureInfo="en" englishName="English">
+    <Feature>Feature</Feature>
+    <Background>Dis is what went down</Background>
+    <Scenario>The thing of it is</Scenario>
+    <ScenarioOutline>Wharrimean is</ScenarioOutline>
+    <Examples>Examples</Examples>
+    <Given>Givun</Given>
+    <Given>Youse know when youse got</Given>
+    <When>Wun</When>
+    <When>Youse know like when</When>
+    <Then>Dun</Then>
+    <Then>Den youse gotta</Then>
+    <And>An</And>
+    <But>Buh</But>
+  </Language>
+  <Language code="en-TX" cultureInfo="en" englishName="English">
+    <Feature>Feature</Feature>
+    <Background>Background</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>All y'all</ScenarioOutline>
+    <Examples>Examples</Examples>
+    <Given>Given y'all</Given>
+    <When>When y'all</When>
+    <Then>Then y'all</Then>
+    <And>And y'all</And>
+    <But>But y'all</But>
+  </Language>
+  <Language code="es" cultureInfo="es" defaultSpecificCulture="es-ES" englishName="Spanish">
+    <Feature>Característica</Feature>
+    <Background>Antecedentes</Background>
+    <Scenario>Escenario</Scenario>
+    <ScenarioOutline>Esquema del escenario</ScenarioOutline>
+    <Examples>Ejemplos</Examples>
+    <Given>Dado</Given>
+    <Given>Dada</Given>
+    <Given>Dados</Given>
+    <Given>Dadas</Given>
+    <When>Cuando</When>
+    <Then>Entonces</Then>
+    <And>Y</And>
+    <But>Pero</But>
+  </Language>
+  <Language code="et" cultureInfo="et" defaultSpecificCulture="et-EE" englishName="Estonian">
+    <Feature>Omadus</Feature>
+    <Background>Taust</Background>
+    <Scenario>Stsenaarium</Scenario>
+    <ScenarioOutline>Raamstsenaarium</ScenarioOutline>
+    <Examples>Juhtumid</Examples>
+    <Given>Eeldades</Given>
+    <When>Kui</When>
+    <Then>Siis</Then>
+    <And>Ja</And>
+    <But>Kuid</But>
+  </Language>
+  <Language code="fi" cultureInfo="fi" defaultSpecificCulture="fi-FI" englishName="Finnish">
+    <Feature>Ominaisuus</Feature>
+    <Background>Tausta</Background>
+    <Scenario>Tapaus</Scenario>
+    <ScenarioOutline>Tapausaihio</ScenarioOutline>
+    <Examples>Tapaukset</Examples>
+    <Given>Oletetaan</Given>
+    <When>Kun</When>
+    <Then>Niin</Then>
+    <And>Ja</And>
+    <But>Mutta</But>
+  </Language>
+  <Language code="fr" cultureInfo="fr" defaultSpecificCulture="fr-FR" englishName="French">
+    <Feature>Fonctionnalité</Feature>
+    <Background>Contexte</Background>
+    <Scenario>Scénario</Scenario>
+    <ScenarioOutline>Plan du scénario</ScenarioOutline>
+    <ScenarioOutline>Plan du Scénario</ScenarioOutline>
+    <Examples>Exemples</Examples>
+    <Given>Soit</Given>
+    <Given>Etant donné</Given>
+    <Given>Etant donnée</Given>
+    <Given>Etant donnés</Given>
+    <Given>Etant données</Given>
+    <Given>Étant donné</Given>
+    <Given>Étant donnée</Given>
+    <Given>Étant donnés</Given>
+    <Given>Étant données</Given>
+    <When>Quand</When>
+    <When>Lorsque</When>
+    <When>Lorsqu'</When>
+    <Then>Alors</Then>
+    <And>Et</And>
+    <But>Mais</But>
+  </Language>
+  <Language code="he" cultureInfo="he" defaultSpecificCulture="he-IL" englishName="Hebrew">
+    <Feature>תכונה</Feature>
+    <Background>רקע</Background>
+    <Scenario>תרחיש</Scenario>
+    <ScenarioOutline>תבנית תרחיש</ScenarioOutline>
+    <Examples>דוגמאות</Examples>
+    <Given>בהינתן</Given>
+    <When>כאשר</When>
+    <Then>אז</Then>
+    <Then>אזי</Then>
+    <And>וגם</And>
+    <But>אבל</But>
+  </Language>
+  <Language code="hr" cultureInfo="hr" defaultSpecificCulture="hr-HR" englishName="Croatian">
+    <Feature>Osobina</Feature>
+    <Feature>Mogućnost</Feature>
+    <Feature>Mogucnost</Feature>
+    <Background>Pozadina</Background>
+    <Scenario>Scenarij</Scenario>
+    <ScenarioOutline>Skica</ScenarioOutline>
+    <ScenarioOutline>Koncept</ScenarioOutline>
+    <Examples>Primjeri</Examples>
+    <Examples>Scenariji</Examples>
+    <Given>Zadan</Given>
+    <Given>Zadani</Given>
+    <Given>Zadano</Given>
+    <When>Kada</When>
+    <When>Kad</When>
+    <Then>Onda</Then>
+    <And>I</And>
+    <But>Ali</But>
+  </Language>
+  <Language code="hu" cultureInfo="hu" defaultSpecificCulture="hu-HU" englishName="Hungarian">
+    <Feature>Jellemző</Feature>
+    <Background>Háttér</Background>
+    <Scenario>Forgatókönyv</Scenario>
+    <ScenarioOutline>Forgatókönyv vázlat</ScenarioOutline>
+    <Examples>Példák</Examples>
+    <Given>Amennyiben</Given>
+    <Given>Adott</Given>
+    <When>Majd</When>
+    <When>Ha</When>
+    <When>Amikor</When>
+    <Then>Akkor</Then>
+    <And>És</And>
+    <But>De</But>
+  </Language>
+  <Language code="id" cultureInfo="id" defaultSpecificCulture="id-ID" englishName="Indonesian">
+    <Feature>Fitur</Feature>
+    <Background>Dasar</Background>
+    <Scenario>Skenario</Scenario>
+    <ScenarioOutline>Skenario konsep</ScenarioOutline>
+    <Examples>Contoh</Examples>
+    <Given>Dengan</Given>
+    <When>Ketika</When>
+    <Then>Maka</Then>
+    <And>Dan</And>
+    <But>Tapi</But>
+  </Language>
+  <Language code="is" cultureInfo="is" defaultSpecificCulture="is-IS" englishName="Icelandic">
+    <Feature>Eiginleiki</Feature>
+    <Background>Bakgrunnur</Background>
+    <Scenario>Atburðarás</Scenario>
+    <ScenarioOutline>Lýsing Atburðarásar</ScenarioOutline>
+    <ScenarioOutline>Lýsing Dæma</ScenarioOutline>
+    <Examples>Dæmi</Examples>
+    <Examples>Atburðarásir</Examples>
+    <Given>Ef</Given>
+    <When>Þegar</When>
+    <Then>Þá</Then>
+    <And>Og</And>
+    <But>En</But>
+  </Language>
+  <Language code="it" cultureInfo="it" defaultSpecificCulture="it-IT" englishName="Italian">
+    <Feature>Funzionalità</Feature>
+    <Background>Contesto</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Schema dello scenario</ScenarioOutline>
+    <Examples>Esempi</Examples>
+    <Given>Dato</Given>
+    <Given>Data</Given>
+    <Given>Dati</Given>
+    <Given>Date</Given>
+    <When>Quando</When>
+    <Then>Allora</Then>
+    <And>E</And>
+    <But>Ma</But>
+  </Language>
+  <Language code="ja" cultureInfo="ja" defaultSpecificCulture="ja-JP" englishName="Japanese">
+    <Feature>フィーチャ</Feature>
+    <Feature>機能</Feature>
+    <Background>背景</Background>
+    <Scenario>シナリオ</Scenario>
+    <ScenarioOutline>シナリオアウトライン</ScenarioOutline>
+    <ScenarioOutline>シナリオテンプレート</ScenarioOutline>
+    <ScenarioOutline>テンプレ</ScenarioOutline>
+    <ScenarioOutline>シナリオテンプレ</ScenarioOutline>
+    <Examples>例</Examples>
+    <Examples>サンプル</Examples>
+    <Given>前提</Given>
+    <When>もし</When>
+    <Then>ならば</Then>
+    <And>かつ</And>
+    <But>しかし</But>
+    <But>但し</But>
+    <But>ただし</But>
+  </Language>
+  <Language code="ko" cultureInfo="ko" defaultSpecificCulture="ko-KR" englishName="Korean">
+    <Feature>기능</Feature>
+    <Background>배경</Background>
+    <Scenario>시나리오</Scenario>
+    <ScenarioOutline>시나리오 개요</ScenarioOutline>
+    <Examples>예</Examples>
+    <Given>조건</Given>
+    <Given>먼저</Given>
+    <When>만일</When>
+    <When>만약</When>
+    <Then>그러면</Then>
+    <And>그리고</And>
+    <But>하지만</But>
+    <But>단</But>
+  </Language>
+  <Language code="lt" cultureInfo="lt" defaultSpecificCulture="lt-LT" englishName="Lithuanian">
+    <Feature>Savybė</Feature>
+    <Background>Kontekstas</Background>
+    <Scenario>Scenarijus</Scenario>
+    <ScenarioOutline>Scenarijaus šablonas</ScenarioOutline>
+    <Examples>Pavyzdžiai</Examples>
+    <Examples>Scenarijai</Examples>
+    <Examples>Variantai</Examples>
+    <Given>Duota</Given>
+    <When>Kai</When>
+    <Then>Tada</Then>
+    <And>Ir</And>
+    <But>Bet</But>
+  </Language>
+  <Language code="lb-LU" cultureInfo="lb-LU" compatibleGherkinCode="lu" englishName="Luxembourgish (Luxembourg)">
+    <Feature>Funktionalitéit</Feature>
+    <Background>Hannergrond</Background>
+    <Scenario>Szenario</Scenario>
+    <ScenarioOutline>Plang vum Szenario</ScenarioOutline>
+    <Examples>Beispiller</Examples>
+    <Given>ugeholl</Given>
+    <When>wann</When>
+    <Then>dann</Then>
+    <And>an</And>
+    <And>a</And>
+    <But>awer</But>
+    <But>mä</But>
+  </Language>
+  <Language code="lv" cultureInfo="lv" defaultSpecificCulture="lv-LV" englishName="Latvian">
+    <Feature>Funkcionalitāte</Feature>
+    <Feature>Fīča</Feature>
+    <Background>Konteksts</Background>
+    <Background>Situācija</Background>
+    <Scenario>Scenārijs</Scenario>
+    <ScenarioOutline>Scenārijs pēc parauga</ScenarioOutline>
+    <Examples>Piemēri</Examples>
+    <Examples>Paraugs</Examples>
+    <Given>Kad</Given>
+    <When>Ja</When>
+    <Then>Tad</Then>
+    <And>Un</And>
+    <But>Bet</But>
+  </Language>
+  <Language code="nl" cultureInfo="nl" defaultSpecificCulture="nl-NL" englishName="Dutch">
+    <Feature>Functionaliteit</Feature>
+    <Background>Achtergrond</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Abstract Scenario</ScenarioOutline>
+    <Examples>Voorbeelden</Examples>
+    <Given>Gegeven</Given>
+    <Given>Stel</Given>
+    <When>Als</When>
+    <Then>Dan</Then>
+    <And>En</And>
+    <But>Maar</But>
+  </Language>
+  <Language code="no" cultureInfo="no" defaultSpecificCulture="nb-NO" englishName="Norwegian">
+    <Feature>Egenskap</Feature>
+    <Background>Bakgrunn</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Scenariomal</ScenarioOutline>
+    <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <Examples>Eksempler</Examples>
+    <Given>Gitt</Given>
+    <When>Når</When>
+    <Then>Så</Then>
+    <And>Og</And>
+    <But>Men</But>
+  </Language>
+  <Language code="pl" cultureInfo="pl" defaultSpecificCulture="pl-PL" englishName="Polish">
+    <Feature>Właściwość</Feature>
+    <Background>Założenia</Background>
+    <Scenario>Scenariusz</Scenario>
+    <ScenarioOutline>Szablon scenariusza</ScenarioOutline>
+    <Examples>Przykłady</Examples>
+    <Given>Zakładając</Given>
+    <Given>Mając</Given>
+    <When>Jeżeli</When>
+    <When>Jeśli</When>
+    <Then>Wtedy</Then>
+    <And>Oraz</And>
+    <And>I</And>
+    <But>Ale</But>
+  </Language>
+  <Language code="pt" cultureInfo="pt" defaultSpecificCulture="pt-PT" englishName="Portuguese">
+    <Feature>Funcionalidade</Feature>
+    <Background>Contexto</Background>
+    <Scenario>Cenário</Scenario>
+    <Scenario>Cenario</Scenario>
+    <ScenarioOutline>Esquema do Cenário</ScenarioOutline>
+    <ScenarioOutline>Esquema do Cenario</ScenarioOutline>
+    <Examples>Exemplos</Examples>
+    <Given>Dado</Given>
+    <Given>Dada</Given>
+    <Given>Dados</Given>
+    <Given>Dadas</Given>
+    <When>Quando</When>
+    <Then>Então</Then>
+    <Then>Entao</Then>
+    <And>E</And>
+    <But>Mas</But>
+  </Language>
+  <Language code="ro" cultureInfo="ro" defaultSpecificCulture="ro-RO" englishName="Romanian">
+    <Feature>Functionalitate</Feature>
+    <Feature>Funcționalitate</Feature>
+    <Feature>Funcţionalitate</Feature>
+    <Background>Context</Background>
+    <Scenario>Scenariu</Scenario>
+    <ScenarioOutline>Structura scenariu</ScenarioOutline>
+    <ScenarioOutline>Structură scenariu</ScenarioOutline>
+    <Examples>Exemple</Examples>
+    <Given>Date fiind</Given>
+    <Given>Dat fiind</Given>
+    <Given>Dati fiind</Given>
+    <Given>Dați fiind</Given>
+    <Given>Daţi fiind</Given>
+    <When>Cand</When>
+    <When>Când</When>
+    <Then>Atunci</Then>
+    <And>Si</And>
+    <And>Și</And>
+    <And>Şi</And>
+    <But>Dar</But>
+  </Language>
+  <Language code="ru" cultureInfo="ru" defaultSpecificCulture="ru-RU" englishName="Russian">
+    <Feature>Функция</Feature>
+    <Feature>Функционал</Feature>
+    <Feature>Свойство</Feature>
+    <Background>Предыстория</Background>
+    <Background>Контекст</Background>
+    <Scenario>Сценарий</Scenario>
+    <ScenarioOutline>Структура сценария</ScenarioOutline>
+    <Examples>Примеры</Examples>
+    <Given>Допустим</Given>
+    <Given>Дано</Given>
+    <Given>Пусть</Given>
+    <When>Если</When>
+    <When>Когда</When>
+    <Then>То</Then>
+    <Then>Тогда</Then>
+    <And>И</And>
+    <And>К тому же</And>
+    <But>Но</But>
+    <But>А</But>
+  </Language>
+  <Language code="sk" cultureInfo="sk" defaultSpecificCulture="sk-SK" englishName="Slovak">
+    <Feature>Požiadavka</Feature>
+    <Background>Pozadie</Background>
+    <Scenario>Scenár</Scenario>
+    <ScenarioOutline>Náčrt Scenáru</ScenarioOutline>
+    <Examples>Príklady</Examples>
+    <Given>Pokiaľ</Given>
+    <When>Keď</When>
+    <Then>Tak</Then>
+    <And>A</And>
+    <But>Ale</But>
+  </Language>
+  <Language code="sr-CYRL" cultureInfo="sr" englishName="Serbian">
+    <Feature>Функционалност</Feature>
+    <Feature>Могућност</Feature>
+    <Feature>Особина</Feature>
+    <Background>Контекст</Background>
+    <Background>Основа</Background>
+    <Background>Позадина</Background>
+    <Scenario>Сценарио</Scenario>
+    <Scenario>Пример</Scenario>
+    <ScenarioOutline>Структура сценарија</ScenarioOutline>
+    <ScenarioOutline>Скица</ScenarioOutline>
+    <ScenarioOutline>Концепт</ScenarioOutline>
+    <Examples>Примери</Examples>
+    <Examples>Сценарији</Examples>
+    <Given>Задато</Given>
+    <Given>Задате</Given>
+    <Given>Задати</Given>
+    <When>Када</When>
+    <When>Кад</When>
+    <Then>Онда</Then>
+    <And>И</And>
+    <But>Али</But>
+  </Language>
+  <Language code="sr-LATN" cultureInfo="sr" englishName="Serbian">
+    <Feature>Funkcionalnost</Feature>
+    <Feature>Mogućnost</Feature>
+    <Feature>Mogucnost</Feature>
+    <Feature>Osobina</Feature>
+    <Background>Kontekst</Background>
+    <Background>Osnova</Background>
+    <Background>Pozadina</Background>
+    <Scenario>Scenario</Scenario>
+    <Scenario>Primer</Scenario>
+    <ScenarioOutline>Struktura scenarija</ScenarioOutline>
+    <ScenarioOutline>Skica</ScenarioOutline>
+    <ScenarioOutline>Koncept</ScenarioOutline>
+    <Examples>Primeri</Examples>
+    <Examples>Scenariji</Examples>
+    <Given>Zadato</Given>
+    <Given>Zadate</Given>
+    <Given>Zatati</Given>
+    <When>Kada</When>
+    <When>Kad</When>
+    <Then>Onda</Then>
+    <And>I</And>
+    <But>Ali</But>
+  </Language>
+  <Language code="sv" cultureInfo="sv" defaultSpecificCulture="sv-SE" englishName="Swedish">
+    <Feature>Egenskap</Feature>
+    <Background>Bakgrund</Background>
+    <Scenario>Scenario</Scenario>
+    <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <ScenarioOutline>Scenariomall</ScenarioOutline>
+    <Examples>Exempel</Examples>
+    <Given>Givet</Given>
+    <When>När</When>
+    <Then>Så</Then>
+    <And>Och</And>
+    <But>Men</But>
+  </Language>
+  <Language code="tr" cultureInfo="tr" defaultSpecificCulture="tr-TR" englishName="Turkish">
+    <Feature>Özellik</Feature>
+    <Background>Geçmiş</Background>
+    <Scenario>Senaryo</Scenario>
+    <ScenarioOutline>Senaryo taslağı</ScenarioOutline>
+    <Examples>Örnekler</Examples>
+    <Given>Diyelim ki</Given>
+    <When>Eğer ki</When>
+    <Then>O zaman</Then>
+    <And>Ve</And>
+    <But>Fakat</But>
+    <But>Ama</But>
+  </Language>
+  <Language code="uk" cultureInfo="uk" defaultSpecificCulture="uk-UA" englishName="Ukrainian">
+    <Feature>Функціонал</Feature>
+    <Background>Передумова</Background>
+    <Scenario>Сценарій</Scenario>
+    <ScenarioOutline>Структура сценарію</ScenarioOutline>
+    <Examples>Приклади</Examples>
+    <Given>Припустимо</Given>
+    <Given>Припустимо, що</Given>
+    <Given>Нехай</Given>
+    <Given>Дано</Given>
+    <When>Якщо</When>
+    <When>Коли</When>
+    <Then>То</Then>
+    <Then>Тоді</Then>
+    <And>І</And>
+    <And>А також</And>
+    <And>Та</And>
+    <But>Але</But>
+  </Language>
+  <Language code="uz" cultureInfo="uz" defaultSpecificCulture="uz-Cyrl-UZ" englishName="Uzbek">
+    <Feature>Функционал</Feature>
+    <Background>Тарих</Background>
+    <Scenario>Сценарий</Scenario>
+    <ScenarioOutline>Сценарий структураси</ScenarioOutline>
+    <Examples>Мисоллар</Examples>
+    <Given>Агар</Given>
+    <When>Агар</When>
+    <Then>Унда</Then>
+    <And>Ва</And>
+    <But>Лекин</But>
+    <But>Бирок</But>
+    <But>Аммо</But>
+  </Language>
+  <Language code="vi" cultureInfo="vi" defaultSpecificCulture="vi-VN" englishName="Vietnamese">
+    <Feature>Tính năng</Feature>
+    <Background>Bối cảnh</Background>
+    <Scenario>Tình huống</Scenario>
+    <Scenario>Kịch bản</Scenario>
+    <ScenarioOutline>Khung tình huống</ScenarioOutline>
+    <ScenarioOutline>Khung kịch bản</ScenarioOutline>
+    <Examples>Dữ liệu</Examples>
+    <Given>Biết</Given>
+    <Given>Cho</Given>
+    <When>Khi</When>
+    <Then>Thì</Then>
+    <And>Và</And>
+    <But>Nhưng</But>
+  </Language>
+  <Language code="zh-CN" cultureInfo="zh-CN" englishName="Chinese (People's Republic of China)">
+    <Feature>功能</Feature>
+    <Background>背景</Background>
+    <Scenario>场景</Scenario>
+    <ScenarioOutline>场景大纲</ScenarioOutline>
+    <Examples>例子</Examples>
+    <Given>假如</Given>
+    <When>当</When>
+    <Then>那么</Then>
+    <And>而且</And>
+    <But>但是</But>
+  </Language>
+  <Language code="zh-TW" cultureInfo="zh-TW" englishName="Chinese (Taiwan)">
+    <Feature>功能</Feature>
+    <Background>背景</Background>
+    <Scenario>場景</Scenario>
+    <Scenario>劇本</Scenario>
+    <ScenarioOutline>場景大綱</ScenarioOutline>
+    <ScenarioOutline>劇本大綱</ScenarioOutline>
+    <Examples>例子</Examples>
+    <Given>假設</Given>
+    <When>當</When>
+    <Then>那麼</Then>
+    <And>而且</And>
+    <And>並且</And>
+    <But>但是</But>
+  </Language>
+</SpecFlowLanguages>

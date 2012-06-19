@@ -1,6 +1,7 @@
 1.9.0 beta - ???
 
 New Features:
++ Support for recursive regular expressions using a ParamArray in the step definition
 + Added SpecFlow.xUnit NuGet package
 + Guids can now be used as arguments to step definitions.
 + Any missing characters on a guid in tables or step arguments will be filled with trailing zeroes. ("7" => 70000000-0000-0000-0000-000000000000)

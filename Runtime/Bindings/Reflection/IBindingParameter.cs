@@ -4,5 +4,6 @@
     {
         IBindingType Type { get; }
         string ParameterName { get; }
+        bool IsParamArray { get; }
     }
 }
