@@ -21,6 +21,7 @@ Fixed issues:
 + VS2010: Formatting table fails if table row does not end with a pipe (Issue 146)
 + Support for missing feature/GenerationTargetLanguage (Issue 163)
 + RuntimePluginLoader: IsAssignableFrom is backwards (Issue 164)
++ VS2010: Specflow options show up as "General" in VS Import/Export settings (Issue 184)
 
 1.8.1 - 2011/10/25
 
