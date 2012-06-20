@@ -51,6 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                         var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider));
                         dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
+                        dtex.SolutionEventsListener.OnQueryUnloadProject += OnProjectClosed;
                         VisualStudioTracer.Trace("subscribed to solution closed " + Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");
                         return dtex;
                     });
@@ -72,6 +73,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return noProjectScopeReference.Value;
 
             return projectScopeCache.GetOrCreate(project);
+        }
+
+        private void OnProjectClosed(Project project)
+        {
+            VisualStudioTracer.Trace("project closed", "ProjectScopeFactory");
+
+            var projectScope = projectScopeCache.Pop(project);
+            if (projectScope != null)
+                projectScope.Dispose();
         }
 
         private void OnSolutionClosed()

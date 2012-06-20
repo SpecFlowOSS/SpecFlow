@@ -2,7 +2,7 @@
 using EnvDTE;
 using EnvDTE80;
 
-namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
+namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
     /// <summary>
     /// This class is ncecessary because of COM interop. If the .NET wrapper of the event sources are 
@@ -17,6 +17,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public readonly BuildEvents BuildEvents;
         public readonly CodeModelEvents CodeModelEvents;
 
+        public readonly SolutionEventsListener SolutionEventsListener;
+
         public DteWithEvents(DTE dte)
         {
             DTE = dte;
@@ -25,6 +27,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             DocumentEvents = ((Events2) dte.Events).DocumentEvents;
             BuildEvents = ((Events2) dte.Events).BuildEvents;
             CodeModelEvents = ((Events2)dte.Events).CodeModelEvents;
+
+            SolutionEventsListener = new SolutionEventsListener();
         }
     }
 }

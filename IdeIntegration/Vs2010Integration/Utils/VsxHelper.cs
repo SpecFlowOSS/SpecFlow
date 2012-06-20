@@ -388,5 +388,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
             return File.GetLastWriteTime(filePath);
         }
+
+        public static Project GetProject(IVsHierarchy hierarchy)
+        {
+            object project;
+            ErrorHandler.ThrowOnFailure(hierarchy.GetProperty(
+                VSConstants.VSITEMID_ROOT,
+                (int) __VSHPROPID.VSHPROPID_ExtObject,
+                out project));
+
+            return (project as Project);
+        }
+
+        public static IVsHierarchy GetHierarchy(System.IServiceProvider serviceProvider, Project project)
+        {
+            var solution = serviceProvider.GetService(typeof (SVsSolution)) as IVsSolution;
+            if (solution == null)
+                return null;
+            IVsHierarchy hierarchy;
+            solution.GetProjectOfUniqueName(project.FullName, out hierarchy);
+            return hierarchy;
+        }
     }
 }
