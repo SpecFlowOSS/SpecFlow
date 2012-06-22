@@ -89,6 +89,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                     pi => filePath.Equals(GetProjectRelativePath(pi), StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public static ProjectItem FindProjectItemByFilePath(Project project, string filePath)
+        {
+            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                    pi => filePath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         /// <summary>
         /// Retrieves the first project in the solution that matches the specified criteria.
         /// </summary>

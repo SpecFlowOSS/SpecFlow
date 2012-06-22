@@ -1,6 +1,7 @@
 ﻿using System;
 using EnvDTE;
 using EnvDTE80;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
@@ -18,8 +19,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         public readonly CodeModelEvents CodeModelEvents;
 
         public readonly SolutionEventsListener SolutionEventsListener;
+        public readonly FileChangeEventsListener FileChangeEventsListener;
 
-        public DteWithEvents(DTE dte)
+        public DteWithEvents(DTE dte, IIdeTracer tracer)
         {
             DTE = dte;
             SolutionEvents = dte.Events.SolutionEvents;
@@ -29,6 +31,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             CodeModelEvents = ((Events2)dte.Events).CodeModelEvents;
 
             SolutionEventsListener = new SolutionEventsListener();
+            FileChangeEventsListener = new FileChangeEventsListener(tracer);
+
+            SolutionEvents.BeforeClosing += FileChangeEventsListener.StopListening;
         }
     }
 }

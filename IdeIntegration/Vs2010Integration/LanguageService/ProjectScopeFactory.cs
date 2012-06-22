@@ -48,8 +48,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             dteReference = new SynchInitializedInstance<DteWithEvents>(
                 () =>
                     {
-
-                        var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider));
+                        var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider), VisualStudioTracer);
                         dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
                         dtex.SolutionEventsListener.OnQueryUnloadProject += OnProjectClosed;
                         VisualStudioTracer.Trace("subscribed to solution closed " + Thread.CurrentThread.ManagedThreadId, "ProjectScopeFactory");

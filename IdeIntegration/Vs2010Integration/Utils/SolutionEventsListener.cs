@@ -11,9 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         private IVsSolution solution;
         private uint solutionEventsCookie;
 
-        public event Action OnAfterOpenProject;
         public event Action<Project> OnQueryUnloadProject;
-
 
         public SolutionEventsListener()
         {
@@ -29,7 +27,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void InitNullEvents()
         {
-            OnAfterOpenProject += () => { };
             OnQueryUnloadProject += (_) => { };
         }
 
@@ -47,7 +44,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         int IVsSolutionEvents.OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
-            OnAfterOpenProject();
             return VSConstants.S_OK;
         }
 
@@ -100,7 +96,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 GC.SuppressFinalize(this);
                 solution.UnadviseSolutionEvents(solutionEventsCookie);
                 OnQueryUnloadProject = null;
-                OnAfterOpenProject = null;
                 solutionEventsCookie = 0;
                 solution = null;
             }
