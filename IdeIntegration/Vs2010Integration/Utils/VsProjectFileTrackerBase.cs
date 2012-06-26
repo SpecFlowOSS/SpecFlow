@@ -48,6 +48,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             dteWithEvents.ProjectItemsEvents.ItemRenamed -= ProjectItemsEventsOnItemRenamed;
             dteWithEvents.DocumentEvents.DocumentSaved -= DocumentEventsOnDocumentSaved;
             dteWithEvents.FileChangeEventsListener.FileChanged -= FileChangedOnDisk;
+
+            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            filesChangedOnDisk.Clear();
         }
 
         private void ProjectItemsEventsOnItemAdded(ProjectItem item)
