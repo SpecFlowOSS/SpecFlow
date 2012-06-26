@@ -133,7 +133,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (!IsInitialized)
                 return;
 
-            bool isInScope = bindingAssemblies.Any(ba => ba.AssemblyName.Equals(reference.Name, StringComparison.InvariantCultureIgnoreCase));
+            var bindingAsssembly = bindingAssemblies.FirstOrDefault(ba => ba.AssemblyName.Equals(reference.Name, StringComparison.InvariantCultureIgnoreCase));
+            bool isInScope = bindingAsssembly != null && !bindingAsssembly.IsProject;
             var fileInfo = FindFileInfo(VsxHelper.GetProjectRelativePath(reference));
             if (fileInfo != null)
             {
