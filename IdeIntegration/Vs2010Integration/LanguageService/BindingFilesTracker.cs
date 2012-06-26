@@ -55,6 +55,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private Dictionary<BindingAssemblyInfo, VsProjectFilesTracker> filesTracker;
         private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
+        private VsProjectReferencesTracker projectReferencesTracker;
 
         public BindingFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
@@ -72,6 +73,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker = bindingAssemblies.ToDictionary(
                 ai => ai,
                 ai => ai.IsProject ? CreateFilesTracker(ai) : null);
+
+            projectReferencesTracker = new VsProjectReferencesTracker(mainProject, vsProjectScope.DteWithEvents, vsProjectScope.Tracer);
+            projectReferencesTracker.StartTracking();
 
             base.Initialize();
         }
@@ -141,6 +145,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (var vsProjectFilesTracker in filesTracker.Values.Where(t => t != null))
                     DisposeFilesTracker(vsProjectFilesTracker);
                 filesTracker.Clear();
+            }
+            if (projectReferencesTracker != null)
+            {
+                projectReferencesTracker.Dispose();
+                projectReferencesTracker = null;
             }
         }
 

@@ -216,6 +216,7 @@
     <Compile Include="Utils\SolutionEventsListener.cs" />
     <Compile Include="Utils\VsProjectFilesTracker.cs" />
     <Compile Include="Utils\VsProjectFileTrackerBase.cs" />
+    <Compile Include="Utils\VsProjectReferencesTracker.cs" />
     <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Guids.cs" />
