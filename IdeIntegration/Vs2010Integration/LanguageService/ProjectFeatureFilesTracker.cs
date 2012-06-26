@@ -188,6 +188,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     fileInfo.GeneratorVersion = featureSteps.GeneratorVersion;
 
                     FireFileUpdated(fileInfo);
+                    fileInfo.IsError = false;
                     fileInfo.IsAnalyzed = true;
                 }
                 catch(Exception ex)

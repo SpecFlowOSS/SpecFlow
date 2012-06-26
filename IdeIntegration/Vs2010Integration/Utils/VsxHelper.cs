@@ -241,6 +241,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
         }
 
+        public static string GetProjectRelativePath(Reference reference)
+        {
+            string fileName = reference.Path;
+            if (fileName == null)
+                return null;
+
+            string projectFolder = GetProjectFolder(reference.ContainingProject);
+            return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
         public static string GetProjectFolder(Project project)
         {
             return Path.GetDirectoryName(project.FullName);
@@ -395,6 +405,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return File.GetLastWriteTime(filePath);
         }
 
+        public static DateTime? GetLastChangeDate(Reference reference)
+        {
+            string filePath;
+            if (reference == null || reference.Path == null || !File.Exists(filePath = reference.Path))
+            {
+                return null;
+            }
+
+            return File.GetLastWriteTime(filePath);
+        }
+
         public static Project GetProject(IVsHierarchy hierarchy)
         {
             object project;
@@ -414,6 +435,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             IVsHierarchy hierarchy;
             solution.GetProjectOfUniqueName(project.FullName, out hierarchy);
             return hierarchy;
+        }
+
+        public static Reference GetReferenceByProjectRelativePath(Project project, string projectRelativePath)
+        {
+            VSProject vsProject = project.Object as VSProject;
+            if (vsProject == null)
+                return null;
+
+            var assemblyPath = Path.GetFullPath(Path.Combine(GetProjectFolder(project), projectRelativePath));
+            return vsProject.References.OfType<Reference>().FirstOrDefault(r => assemblyPath.Equals(r.Path, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

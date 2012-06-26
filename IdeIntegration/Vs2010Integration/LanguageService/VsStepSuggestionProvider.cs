@@ -274,7 +274,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 bindingSuggestions.Add(bindingFileInfo, bindings);
             }
 
-            if (bindingFileInfo.StepBindings.Any())
+            if (!bindingFileInfo.IsError && bindingFileInfo.StepBindings.Any())
             {
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
