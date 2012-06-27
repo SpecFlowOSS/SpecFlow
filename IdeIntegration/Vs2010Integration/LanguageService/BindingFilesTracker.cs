@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.IdeIntegration.Bindings;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -192,8 +196,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 throw new InvalidOperationException("Could not find project reference for path: " + fileInfo.ProjectRelativePath);
 
             vsProjectScope.Tracer.Trace("Calculate step definitions from assembly: {0}", this, reference.Name);
-            //TODO: fileInfo.StepBindings = ...
-            fileInfo.StepBindings = new StepDefinitionBinding[0];
+
+            ILBindingRegistryBuilder builder = new ILBindingRegistryBuilder();
+            fileInfo.StepBindings = builder.GetStepDefinitionsFromAssembly(reference.Path).ToArray();
+
+            vsProjectScope.Tracer.Trace("Detected {0} step definitions from reference {1}", this, fileInfo.StepBindings.Count(), reference.Name);
+
             fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(reference) ?? DateTime.MinValue;
         }
 
