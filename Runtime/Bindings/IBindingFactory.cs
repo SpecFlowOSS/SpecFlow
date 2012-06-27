@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Bindings
     {
         private readonly IStepDefinitionRegexCalculator stepDefinitionRegexCalculator;
 
-        internal BindingFactory(IStepDefinitionRegexCalculator stepDefinitionRegexCalculator)
+        public BindingFactory(IStepDefinitionRegexCalculator stepDefinitionRegexCalculator)
         {
             this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
         }

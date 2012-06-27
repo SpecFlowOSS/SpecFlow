@@ -45,7 +45,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         public static bool TypeEquals(this IBindingType type1, Type type2)
         {
             if (type1 is RuntimeBindingType)
-                return ((RuntimeBindingType)type1).Type.Equals(type2);
+                return ((RuntimeBindingType)type1).Type == type2;
 
             return TypeEquals(type1, new RuntimeBindingType(type2));
         }
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
                 return false;
 
             if (type1 is RuntimeBindingType && type2 is RuntimeBindingType)
-                return ((RuntimeBindingType)type1).Type.Equals(((RuntimeBindingType)type2).Type);
+                return ((RuntimeBindingType)type1).Type == ((RuntimeBindingType)type2).Type;
 
             return type1.FullName == type2.FullName;
         }
