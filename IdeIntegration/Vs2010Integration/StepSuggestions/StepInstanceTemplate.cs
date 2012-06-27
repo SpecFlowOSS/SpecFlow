@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             get { return Template.Language; } 
         }
 
-        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public bool Match(IStepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public CultureInfo Language { get; private set; }
 
-        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public bool Match(IStepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             if (binding.StepDefinitionType != StepDefinitionType)
                 return false;

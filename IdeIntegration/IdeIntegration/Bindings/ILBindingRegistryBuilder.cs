@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 
                 foreach (var methodDefinition in typeDefinition.Methods)
                 {
-                    bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodDefinition, bindingSourceType));
+                    bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodDefinition, bindingSourceType, bindingSourceProcessor));
                 }
 // ReSharper restore PossibleMultipleEnumeration
             }
@@ -39,13 +39,14 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
             return bindingProcessor.ReadStepDefinitionBindings();
         }
 
-        private BindingSourceMethod CreateBindingSourceMethod(MethodDefinition methodDefinition, BindingSourceType bindingSourceType)
+        private BindingSourceMethod CreateBindingSourceMethod(MethodDefinition methodDefinition, BindingSourceType bindingSourceType, IBindingSourceProcessor bindingSourceProcessor)
         {
             return new BindingSourceMethod
                        {
                            BindingMethod = new BindingMethod(bindingSourceType.BindingType, methodDefinition.Name, GetParameters(methodDefinition), GetReturnType(methodDefinition)), 
                            IsPublic = methodDefinition.IsPublic,
-                           IsStatic = methodDefinition.IsStatic
+                           IsStatic = methodDefinition.IsStatic,
+                           Attributes = GetAttributes(methodDefinition.CustomAttributes.Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.AttributeType.FullName)))
                        };
         }
 

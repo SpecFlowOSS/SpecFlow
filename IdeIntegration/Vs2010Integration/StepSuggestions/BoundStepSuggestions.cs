@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
 
-        public StepDefinitionBinding StepBinding { get; private set; }
+        public IStepDefinitionBinding StepBinding { get; private set; }
         public StepDefinitionType StepDefinitionType { get; set; }
 
         public BoundStepSuggestions(StepDefinitionType stepDefinitionType, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        public BoundStepSuggestions(StepDefinitionBinding stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
+        public BoundStepSuggestions(IStepDefinitionBinding stepBinding, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory)
         {
             if (stepBinding == null) throw new ArgumentNullException("stepBinding");
 
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             suggestions = new StepSuggestionList<TNativeSuggestionItem>(nativeSuggestionItemFactory);
         }
 
-        private string GetSuggestionText(StepDefinitionBinding stepBinding)
+        private string GetSuggestionText(IStepDefinitionBinding stepBinding)
         {
             string suggestionTextBase = stepBinding.Regex == null ? "[...]" :
                 "[" + RegexSampler.GetRegexSample(stepBinding.Regex.ToString(), stepBinding.Method.Parameters.Select(p => p.ParameterName).ToArray()) + "]";
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return string.Format("{0} -> {1}", suggestionTextBase, stepBinding.Method.GetShortDisplayText());
         }
 
-        private string GetInsertionText(StepDefinitionBinding stepBinding)
+        private string GetInsertionText(IStepDefinitionBinding stepBinding)
         {
             if (stepBinding.Regex == null)
                 return "...";

@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public Regex Regex { get; set; }
         public BindingScope BindingScope { get; set; }
 
-        static public StepDefinitionBindingItem FromStepDefinitionBinding(StepDefinitionBinding stepDefinitionBinding)
+        static public StepDefinitionBindingItem FromStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
         {
             return new StepDefinitionBindingItem()
                        {

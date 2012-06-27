@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public class BindingFileInfo : FileInfo
     {
-        public IEnumerable<StepDefinitionBinding> StepBindings { get; set; }
+        public IEnumerable<IStepDefinitionBinding> StepBindings { get; set; }
 
         public bool IsAssembly
         {
