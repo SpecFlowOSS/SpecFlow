@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private TestRunnerFactory CreateTestRunnerFactory()
         {
             objectContainerStub.Setup(o => o.Resolve<ITestRunner>()).Returns(testRunnerFake.Object);
+            objectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
             return new TestRunnerFactory(objectContainerStub.Object, runtimeConfigurationStub);
         }
 

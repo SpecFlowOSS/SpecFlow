@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Tracing
 {
     public interface ITestTracer
     {
-        void TraceStep(StepArgs stepArgs, bool showAdditionalArguments);
+        void TraceStep(StepInstance stepInstance, bool showAdditionalArguments);
         void TraceWarning(string text);
         void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration);
         void TraceStepSkipped();
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
-        void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck);
-        void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments);
+        void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck);
+        void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
 
@@ -34,9 +35,9 @@ namespace TechTalk.SpecFlow.Tracing
             this.stepFormatter = stepFormatter;
         }
 
-        public void TraceStep(StepArgs stepArgs, bool showAdditionalArguments)
+        public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
         {
-            string stepText = stepFormatter.GetStepText(stepArgs);
+            string stepText = stepFormatter.GetStepText(stepInstance);
             traceListener.WriteTestOutput(stepText.TrimEnd());
         }
 
@@ -72,7 +73,7 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
-        public void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
+        public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
         {
 //            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
 //            return new BindingException(
@@ -95,16 +96,16 @@ namespace TechTalk.SpecFlow.Tracing
             }
             message.Append(
                 stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs))
+                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance))
                         .Indent(StepDefinitionSkeletonProviderBase.CODEINDENT));
 
             traceListener.WriteToolOutput(message.ToString());
         }
 
-        public void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments)
+        public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
             traceListener.WriteToolOutput("duration: {0}: {1:F1}s", 
-                stepFormatter.GetMatchText(methodInfo, arguments), elapsed.TotalSeconds);
+                stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
         }
 
         public void TraceDuration(TimeSpan elapsed, string text)

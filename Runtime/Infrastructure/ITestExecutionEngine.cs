@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         void OnScenarioEnd();
         void OnTestRunEnd();
 
-        void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg);
+        void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg);
 
         void Pending();
     }

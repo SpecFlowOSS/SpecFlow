@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using gherkin;
@@ -10,6 +11,11 @@ namespace TechTalk.SpecFlow.Parser
     {
         internal I18n NativeLanguageService { get; private set; }
         internal LanguageInfo LanguageInfo { get; private set; }
+
+        public CultureInfo CultureInfo
+        {
+            get { return LanguageInfo.CultureInfo; }
+        }
 
         internal GherkinDialect(LanguageInfo languageInfo, I18n nativeLanguageService)
         {

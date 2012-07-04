@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Given(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.Given(Text, MultilineTextArg, table));
+            mockTestRunner.AssertWasCalled(m => m.Given(Text, MultilineTextArg, table, null));
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.When(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.When(Text, MultilineTextArg, table));
+            mockTestRunner.AssertWasCalled(m => m.When(Text, MultilineTextArg, table, null));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.Then(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.Then(Text, MultilineTextArg, table));
+            mockTestRunner.AssertWasCalled(m => m.Then(Text, MultilineTextArg, table, null));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.But(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.But(Text, MultilineTextArg, table));
+            mockTestRunner.AssertWasCalled(m => m.But(Text, MultilineTextArg, table, null));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             steps.And(Text, MultilineTextArg, table);
 
-            mockTestRunner.AssertWasCalled(m => m.And(Text, MultilineTextArg, table));
+            mockTestRunner.AssertWasCalled(m => m.And(Text, MultilineTextArg, table, null));
         }
 
         public class StepsTestableHelper : Steps

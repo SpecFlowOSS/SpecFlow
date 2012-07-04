@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Browser;
 
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
     public class RuntimeConfiguration
     {
-        private List<Assembly> _additionalStepAssemblies = new List<Assembly>();
-
         //language settings
+        public CultureInfo FeatureLanguage { get; set; }
         public CultureInfo ToolLanguage { get; set; }
         public CultureInfo BindingCulture { get; set; }
 
@@ -29,21 +25,15 @@ namespace TechTalk.SpecFlow.Configuration
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
 
         //tracing settings
-        public Type TraceListenerType { get; set; }
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
 
-        public IEnumerable<Assembly> AdditionalStepAssemblies
-        {
-            get
-            {
-                return _additionalStepAssemblies;
-            }
-        }
+        public List<string> AdditionalStepAssemblies { get; private set; }
 
         public RuntimeConfiguration()
         {
+            FeatureLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
@@ -53,10 +43,11 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = ConfigDefaults.StopAtFirstError;
             MissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
 
-            TraceListenerType = typeof(DefaultListener);
             TraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
             TraceTimings = ConfigDefaults.TraceTimings;
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+
+            AdditionalStepAssemblies = new List<string>();
         }
 
         public void LoadConfiguration()
@@ -71,6 +62,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         private void UpdateFromQueryString()
         {
+            FeatureLanguage = GetCultureInfoFromQueryString("featureLanguage", FeatureLanguage);
             ToolLanguage = GetCultureInfoFromQueryString("toolLanguage", ToolLanguage);
 
             string providerName;
@@ -83,7 +75,8 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = GetBoolFromQueryString("stopAtFirstError", StopAtFirstError);
             MissingOrPendingStepsOutcome = GetEnumFromQueryString("missingOrPendingStepsOutcome", MissingOrPendingStepsOutcome);
 
-            TraceListenerType = GetTypeFromQueryString("traceListener", TraceListenerType);
+            //TODO: support custom listener?
+            //TraceListenerType = GetTypeFromQueryString("traceListener", TraceListenerType);
             TraceSuccessfulSteps = GetBoolFromQueryString("traceSuccessfulSteps", TraceSuccessfulSteps);
             TraceTimings = GetBoolFromQueryString("traceTimings", TraceTimings);
             MinTracedDuration = GetTimeSpanFromQueryString("minTracedDuration", MinTracedDuration);

@@ -29,7 +29,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\VS2010IntegrationTest\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -169,9 +169,6 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\CustomCompletionSet.cs" />
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
@@ -182,21 +179,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
-    <Compile Include="Bindings\BindingMatch.cs" />
-    <Compile Include="Bindings\BindingMatchService.cs" />
-    <Compile Include="Bindings\IBindingRegistryNew.cs" />
-    <Compile Include="Bindings\Reflection\BindingMethod.cs" />
-    <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
-    <Compile Include="Bindings\Reflection\BindingParameter.cs" />
-    <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
-    <Compile Include="Bindings\BindingScope.cs" />
-    <Compile Include="Bindings\Reflection\BindingType.cs" />
-    <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
-    <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
-    <Compile Include="Bindings\Reflection\IBindingType.cs" />
-    <Compile Include="Bindings\StepBinding.cs" />
-    <Compile Include="Bindings\StepInstance.cs" />
-    <Compile Include="Bindings\StepScope.cs" />
+    <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
@@ -205,12 +188,13 @@
     <Compile Include="Commands\SpecFlowProjectSingleSelectionCommand.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
     <Compile Include="EditorCommands\EditorCommands.cs" />
+    <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
+    <Compile Include="Bindings\Discovery\VsBindingMethodLocator.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFilesTracker.cs" />
     <Compile Include="LanguageService\VsBindingReflectionFactory.cs" />
-    <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
     <Compile Include="SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs" />
@@ -229,6 +213,11 @@
     <Compile Include="TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
+    <Compile Include="Utils\FileChangeEventsListener.cs" />
+    <Compile Include="Utils\SolutionEventsListener.cs" />
+    <Compile Include="Utils\VsProjectFilesTracker.cs" />
+    <Compile Include="Utils\VsProjectFileTrackerBase.cs" />
+    <Compile Include="Utils\VsProjectReferencesTracker.cs" />
     <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Guids.cs" />

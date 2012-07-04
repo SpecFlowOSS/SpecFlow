@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\packages\Mono.Cecil.0.9.5.3\lib\net35\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\..\packages\Mono.Cecil.0.9.5.3\lib\net35\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\..\packages\Mono.Cecil.0.9.5.3\lib\net35\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\..\packages\Mono.Cecil.0.9.5.3\lib\net35\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,9 +56,8 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
+    <Compile Include="Bindings\IdeBindingSourceProcessor.cs" />
+    <Compile Include="Bindings\ILBindingRegistryBuilder.cs" />
     <Compile Include="Generator\FileBasedSpecFlowConfigurationReader.cs" />
     <Compile Include="Generator\GeneratorServices.cs" />
     <Compile Include="Generator\IdeSingleFileGenerator.cs" />
@@ -66,12 +77,18 @@
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -70,9 +70,6 @@
     <Compile Include="MonoDevelopGeneratorServices.cs" />
     <Compile Include="SingleFeatureFileGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="ThreadAsyncOperation.cs" />
   </ItemGroup>
   <ItemGroup>

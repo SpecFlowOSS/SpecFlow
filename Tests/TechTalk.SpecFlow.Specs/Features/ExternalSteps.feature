@@ -26,6 +26,30 @@ Scenario: Steps can defined in an external .NET (e.g. c# or VB.NET) project
 		</specFlow>
         """
 	When I execute the tests
-	Then the execution summary should contain
-         | Succeeded |
-         | 1         |
+	Then all tests should pass
+
+@fsharp
+Scenario: Steps can defined in an external F# project
+	Given there is an external F# class library project 'ExternalSteps_FSharp'
+	And the following binding class
+        """
+		[<TechTalk.SpecFlow.Binding>]
+		module Bindings
+
+		let [<TechTalk.SpecFlow.When(@"I do something")>] WhenIDoSomething() = ()
+        """
+	And there is a SpecFlow project with a reference to the external library
+	And a scenario 'Simple Scenario' as
+         """
+         When I do something
+         """
+	And the specflow configuration is
+        """
+		<specFlow>
+			<stepAssemblies>
+				<stepAssembly assembly="ExternalSteps_FSharp" />
+			</stepAssemblies>
+		</specFlow>
+        """
+	When I execute the tests
+	Then all tests should pass

@@ -1,39 +1,29 @@
 using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
     public class StepDefinitionBinding : MethodBinding, IStepDefinitionBinding
     {
-        public BindingType Type { get; private set; }
+        public StepDefinitionType StepDefinitionType { get; private set; }
         public Regex Regex { get; private set; }
 
         public BindingScope BindingScope { get; private set; }
         public bool IsScoped { get { return BindingScope != null; } }
 
-#if SILVERLIGHT
-        private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
-#else
-        private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
-#endif
-
-        public StepDefinitionBinding(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider, BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
-            : base(runtimeConfiguration, errorProvider, methodInfo)
+        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, Regex regex, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : base(bindingMethod)
         {
-            Type = type;
-            Regex regex = new Regex("^" + regexString + "$", RegexOptions);
+            StepDefinitionType = stepDefinitionType;
             Regex = regex;
-            this.BindingScope = bindingScope;
+            BindingScope = bindingScope;
         }
 
-        public void Invoke(IContextManager contextManager, ITestTracer testTracer, object[] arguments, out TimeSpan duration)
+        public StepDefinitionBinding(StepDefinitionType stepDefinitionType, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
+            : this(stepDefinitionType, RegexFactory.Create(regexString), bindingMethod, bindingScope)
         {
-            InvokeAction(contextManager, arguments, testTracer, out duration);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Infrastructure;
+using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {

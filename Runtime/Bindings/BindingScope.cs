@@ -30,11 +30,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             scopeMatches = 0;
 
-            var tags = Enumerable.Empty<string>();
-            if (stepContext.FeatureInfo != null && stepContext.FeatureInfo.Tags != null)
-                tags = tags.Concat(stepContext.FeatureInfo.Tags);
-            if (stepContext.ScenarioInfo != null && stepContext.ScenarioInfo.Tags != null)
-                tags = tags.Concat(stepContext.ScenarioInfo.Tags);
+            var tags = stepContext.Tags;
 
             if (Tag != null)
             {
@@ -43,16 +39,16 @@ namespace TechTalk.SpecFlow.Bindings
 
                 scopeMatches++;
             }
-            if (FeatureTitle != null && stepContext.FeatureInfo != null)
+            if (FeatureTitle != null)
             {
-                if (!string.Equals(FeatureTitle, stepContext.FeatureInfo.Title, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(FeatureTitle, stepContext.FeatureTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;
             }
-            if (ScenarioTitle != null && stepContext.ScenarioInfo != null)
+            if (ScenarioTitle != null)
             {
-                if (!string.Equals(ScenarioTitle, stepContext.ScenarioInfo.Title, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(ScenarioTitle, stepContext.ScenarioTitle, StringComparison.CurrentCultureIgnoreCase))
                     return false;
 
                 scopeMatches++;

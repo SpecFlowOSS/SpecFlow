@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuGetIntegration</RootNamespace>
+    <AssemblyName>to_be_removed</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config.transform" />
+    <None Include="NUnit.Runners\Install.ps1" />
+    <None Include="NUnit.Runners\Uninstall.ps1" />
+    <None Include="NUnit\App.config.transform" />
+    <None Include="SpecFlow.CustomGenerator.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SpecFlow.NUnit.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SpecFlow.NUnit.Runners.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SpecFlow.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SpecFlow.xUnit.nuspec" />
+    <None Include="xUnit\App.config.transform" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NUnit.Runners\SpecFlowNUnitExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <!--<SpecFlowPackageVersion>1.2.3</SpecFlowPackageVersion>-->
+    <NuGetVersionSpec Condition="'$(SpecFlowPackageVersion)' != ''">-Version $(SpecFlowPackageVersion)</NuGetVersionSpec>
+    <NuGetVersion>1.7.0</NuGetVersion>
+    <CreateSpecFlowPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)
+    </CreateSpecFlowPackageCommand>
+    <CreateSpecFlowCustomGeneratorPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.CustomGenerator.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)
+    </CreateSpecFlowCustomGeneratorPackageCommand>
+    <CreateSpecFlowNUnitPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+    </CreateSpecFlowNUnitPackageCommand>
+    <CreateSpecFlowNUnitRunnersPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.Runners.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+    </CreateSpecFlowNUnitRunnersPackageCommand>
+    <CreateSpecFlowxUnitPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+    </CreateSpecFlowxUnitPackageCommand>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <NuSpecFlies Include="$(ProjectDir)*.nuspec" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NuSpecFlies)" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true" />
+    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.CustomGenerator.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
+    <Exec Command="$(CreateSpecFlowPackageCommand)" />
+    <Exec Command="$(CreateSpecFlowCustomGeneratorPackageCommand)" />
+    <Exec Command="$(CreateSpecFlowNUnitPackageCommand)" />
+    <Exec Command="$(CreateSpecFlowNUnitRunnersPackageCommand)" />
+    <Exec Command="$(CreateSpecFlowxUnitPackageCommand)" />
+  </Target>
+</Project>

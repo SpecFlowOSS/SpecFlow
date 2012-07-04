@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using BoDi;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
@@ -28,12 +29,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration
     [PackageRegistration(UseManagedResourcesOnly = true)]
     // This attribute is used to register the informations needed to show the this package
     // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration("#110", "#112", "1.8.1", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "1.9.0", IconResourceID = 400)]
     [ProvideOptionPageAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true)]
-    [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 122, true, DescriptionResourceID = 121)]
+    [ProvideProfileAttribute(typeof(OptionsPageGeneral), IntegrationOptionsProvider.SPECFLOW_OPTIONS_CATEGORY, IntegrationOptionsProvider.SPECFLOW_GENERAL_OPTIONS_PAGE, 121, 123, true, DescriptionResourceID = 121)]
     [Guid(GuidList.guidSpecFlowPkgString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string)]
     public sealed class SpecFlowPackagePackage : Package
     {
         public IObjectContainer Container { get; private set; }

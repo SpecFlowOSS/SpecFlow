@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -24,18 +26,22 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
         private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
-        private readonly IStepDefinitionMatcher stepDefinitionMatcher;
+        private readonly IStepDefinitionMatchService stepDefinitionMatchService;
         private readonly IStepErrorHandler[] stepErrorHandlers;
+        private readonly IBindingInvoker bindingInvoker;
+        private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
         private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatcher stepDefinitionMatcher,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers)
+            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.errorProvider = errorProvider;
-            this.stepDefinitionMatcher = stepDefinitionMatcher;
+            //this.stepDefinitionMatcher = stepDefinitionMatcher;
+            this.bindingInvoker = bindingInvoker;
+            this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.contextManager = contextManager;
             this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
@@ -47,6 +53,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
 
             this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
+
+            this.stepDefinitionMatchService = stepDefinitionMatchService;
         }
 
         public FeatureContext FeatureContext
@@ -63,8 +71,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             foreach (Assembly assembly in bindingAssemblies)
             {
-                bindingRegistry.BuildBindingsFromAssembly(assembly);
+                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
             }
+            bindingRegistry.Ready = true;
 
             OnTestRunnerStart();
 #if !SILVERLIGHT
@@ -84,7 +93,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void OnTestRunnerStart()
         {
-            FireEvents(BindingEvent.TestRunStart);
+            FireEvents(HookType.BeforeTestRun);
         }
 
         private bool testRunnerEndExecuted = false;
@@ -95,7 +104,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
 
             testRunnerEndExecuted = true;
-            FireEvents(BindingEvent.TestRunEnd);
+            FireEvents(HookType.AfterTestRun);
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)
@@ -111,13 +120,14 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             if (!stepDefinitionSkeletonProviders.ContainsKey(featureInfo.GenerationTargetLanguage))
                 currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback case for unsupported skeleton provider
-            currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[featureInfo.GenerationTargetLanguage];
+            else
+                currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[featureInfo.GenerationTargetLanguage];
 
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
             contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
-            FireEvents(BindingEvent.FeatureStart);
+            FireEvents(HookType.BeforeFeature);
         }
 
         public void OnFeatureEnd()
@@ -129,7 +139,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.FeatureContext == null)
                 return;
                 
-            FireEvents(BindingEvent.FeatureEnd);
+            FireEvents(HookType.AfterFeature);
 
             if (runtimeConfiguration.TraceTimings)
             {
@@ -144,7 +154,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             contextManager.InitializeScenarioContext(scenarioInfo);
-            FireScenarioEvents(BindingEvent.ScenarioStart);
+            FireScenarioEvents(HookType.BeforeScenario);
         }
 
         public void OnAfterLastStep()
@@ -192,7 +202,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioEnd()
         {
-            FireScenarioEvents(BindingEvent.ScenarioEnd);
+            FireScenarioEvents(HookType.AfterScenario);
             contextManager.CleanupScenarioContext();
         }
 
@@ -201,7 +211,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(BindingEvent.BlockStart); 
+            FireScenarioEvents(HookType.BeforeScenarioBlock); 
         }
 
         protected virtual void OnBlockEnd(ScenarioBlock block)
@@ -209,44 +219,44 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(BindingEvent.BlockEnd);
+            FireScenarioEvents(HookType.AfterScenarioBlock);
         }
 
         protected virtual void OnStepStart()
         {
-            FireScenarioEvents(BindingEvent.StepStart); 
+            FireScenarioEvents(HookType.BeforeStep); 
         }
 
         protected virtual void OnStepEnd()
         {
-            FireScenarioEvents(BindingEvent.StepEnd);
+            FireScenarioEvents(HookType.AfterStep);
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(BindingEvent bindingEvent)
+        private void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
 
-        private void FireEvents(BindingEvent bindingEvent)
+        private void FireEvents(HookType bindingEvent)
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in bindingRegistry.GetEvents(bindingEvent))
+            foreach (IHookBinding eventBinding in bindingRegistry.GetHooks(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                eventBinding.Invoke(contextManager, testTracer);
+                bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
             }
         }
 
-        private void ExecuteStep(StepArgs stepArgs)
+        private void ExecuteStep(StepInstance stepInstance)
         {
-            HandleBlockSwitch(stepArgs.Type.ToScenarioBlock());
+            HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
-            testTracer.TraceStep(stepArgs, true);
+            testTracer.TraceStep(stepInstance, true);
 
             bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
 
@@ -254,7 +264,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             object[] arguments = null;
             try
             {
-                match = GetStepMatch(stepArgs);
+                match = GetStepMatch(stepInstance);
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -314,44 +324,28 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepArgs stepArgs)
+        private BindingMatch GetStepMatch(StepInstance stepInstance)
         {
-            List<BindingMatch> matches = stepDefinitionMatcher.GetMatches(stepArgs);
+            List<BindingMatch> candidatingMatches;
+            StepDefinitionAmbiguityReason ambiguityReason;
+            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, contextManager.FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
 
-            if (matches.Count == 0)
+            if (match.Success)
+                return match;
+
+            if (candidatingMatches.Any())
             {
-                // there were either no regex match or it was filtered out by the param/scope matching
-                // to provide better error message for the param matching error, we re-run 
-                // the matching without param check
-
-                List<BindingMatch> matchesWithoutScopeCheck = stepDefinitionMatcher.GetMatchesWithoutScopeCheck(stepArgs);
-
-                if (matchesWithoutScopeCheck.Count == 0)
-                {
-                    List<BindingMatch> matchesWithoutParamCheck = stepDefinitionMatcher.GetMatchesWithoutParamCheck(stepArgs);
-                    if (matchesWithoutParamCheck.Count == 1)
-                    {
-                        // no ambiguouity, but param error -> execute will find it out
-                        return matchesWithoutParamCheck[0];
-                    }
-                    if (matchesWithoutParamCheck.Count > 1)
-                    {
-                        // ambiguouity, because of param error
-                        throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(matchesWithoutParamCheck, stepArgs);
-                    }
-                }
-
-                testTracer.TraceNoMatchingStepDefinition(stepArgs, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, matchesWithoutScopeCheck);
-                contextManager.ScenarioContext.MissingSteps.Add(
-                    currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepArgs));
-                throw errorProvider.GetMissingStepDefinitionError();
+                if (ambiguityReason == StepDefinitionAmbiguityReason.AmbiguousSteps)
+                    throw errorProvider.GetAmbiguousMatchError(candidatingMatches, stepInstance);
+                
+                if (ambiguityReason == StepDefinitionAmbiguityReason.ParameterErrors) // ambiguouity, because of param error
+                    throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
-            if (matches.Count > 1)
-            {
-                if (runtimeConfiguration.DetectAmbiguousMatches)
-                    throw errorProvider.GetAmbiguousMatchError(matches, stepArgs);
-            }
-            return matches[0];
+
+            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, candidatingMatches);
+            contextManager.ScenarioContext.MissingSteps.Add(
+                currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance));
+            throw errorProvider.GetMissingStepDefinitionError();
         }
 
         private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
@@ -359,13 +353,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             TimeSpan duration = TimeSpan.Zero;
             try
             {
-                match.StepBinding.Invoke(contextManager, testTracer, arguments, out duration);
+                bindingInvoker.InvokeBinding(match.StepBinding, contextManager, arguments, testTracer, out duration);
             }
             catch(Exception ex)
             {
                 if (stepErrorHandlers != null)
                 {
-                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepArgs.StepContext, ex);
+                    StepFailureEventArgs stepFailureEventArgs = new StepFailureEventArgs(match.StepBinding, match.StepContext, ex);
                     foreach (var stepErrorHandler in stepErrorHandlers)
                     {
                         stepErrorHandler.OnStepFailure(this, stepFailureEventArgs);
@@ -395,22 +389,23 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private object[] GetExecuteArguments(BindingMatch match)
         {
-            if (match.Arguments.Length != match.StepBinding.ParameterTypes.Length)
+            var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
+            if (match.Arguments.Length != bindingParameters.Length)
                 throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
             var arguments = match.Arguments.Select(
-                (arg, argIndex) => ConvertArg(arg, match.StepBinding.ParameterTypes[argIndex]))
+                (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
                 .ToArray();
 
             return arguments;
         }
 
-        private object ConvertArg(object value, Type typeToConvertTo)
+        private object ConvertArg(object value, IBindingType typeToConvertTo)
         {
             Debug.Assert(value != null);
             Debug.Assert(typeToConvertTo != null);
 
-            if (value.GetType().IsAssignableFrom(typeToConvertTo))
+            if (typeToConvertTo.IsAssignableTo(value.GetType()))
                 return value;
 
             return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
@@ -419,18 +414,18 @@ namespace TechTalk.SpecFlow.Infrastructure
         #endregion
 
         #region Given-When-Then
-        public void Step(StepDefinitionKeyword keyword, string text, string multilineTextArg, Table tableArg)
+        public void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg)
         {
-            BindingType bindingType = (keyword == StepDefinitionKeyword.And || keyword == StepDefinitionKeyword.But)
+            StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
-                                          : (BindingType) keyword;
-            ExecuteStep(new StepArgs(bindingType, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                                          : (StepDefinitionType) stepDefinitionKeyword;
+            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
         }
 
-        private BindingType GetCurrentBindingType()
+        private StepDefinitionType GetCurrentBindingType()
         {
             ScenarioBlock currentScenarioBlock = contextManager.ScenarioContext.CurrentScenarioBlock;
-            return currentScenarioBlock == ScenarioBlock.None ? BindingType.Given : currentScenarioBlock.ToBindingType();
+            return currentScenarioBlock == ScenarioBlock.None ? StepDefinitionType.Given : currentScenarioBlock.ToBindingType();
         }
 
         #endregion

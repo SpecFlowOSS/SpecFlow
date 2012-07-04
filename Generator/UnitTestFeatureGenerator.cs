@@ -635,13 +635,12 @@ namespace TechTalk.SpecFlow.Generator
             arguments.Add(
                 GetSubstitutedString(scenarioStep.Text, paramToIdentifier));
             if (scenarioStep.MultiLineTextArgument != null || scenarioStep.TableArg != null)
-            {
                 AddLineDirectiveHidden(testMethod.Statements);
-                arguments.Add(
-                    GetMultilineTextArgExpression(scenarioStep.MultiLineTextArgument, paramToIdentifier));
-                arguments.Add(
-                    GetTableArgExpression(scenarioStep.TableArg, testMethod.Statements, paramToIdentifier));
-            }
+            arguments.Add(
+                GetMultilineTextArgExpression(scenarioStep.MultiLineTextArgument, paramToIdentifier));
+            arguments.Add(
+                GetTableArgExpression(scenarioStep.TableArg, testMethod.Statements, paramToIdentifier));
+            arguments.Add(new CodePrimitiveExpression(scenarioStep.Keyword));
 
             AddLineDirective(testMethod.Statements, scenarioStep);
             testMethod.Statements.Add(

@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 stepInstance.StepDefinitionKeyword == StepDefinitionKeyword.Then)
                 keyword = stepInstance.Keyword;
             else
-                keyword = gherkinDialect.GetStepKeywords((StepKeyword) stepInstance.BindingType).FirstOrDefault(k => !k.StartsWith("*")) ?? "";
+                keyword = gherkinDialect.GetStepKeywords((StepKeyword) stepInstance.StepDefinitionType).FirstOrDefault(k => !k.StartsWith("*")) ?? "";
 
             return keyword + stepInstance.Text;
         }

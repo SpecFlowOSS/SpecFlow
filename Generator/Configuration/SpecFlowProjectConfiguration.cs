@@ -5,12 +5,12 @@ namespace TechTalk.SpecFlow.Generator.Configuration
     public class SpecFlowProjectConfiguration
     {
         public GeneratorConfiguration GeneratorConfiguration { get; set; }
-        public RuntimeConfigurationForGenerator RuntimeConfiguration { get; set; }
+        public RuntimeConfiguration RuntimeConfiguration { get; set; }
 
         public SpecFlowProjectConfiguration()
         {
             GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
-            RuntimeConfiguration = new RuntimeConfigurationForGenerator(); // load defaults
+            RuntimeConfiguration = new RuntimeConfiguration(); // load defaults
         }
 
         #region Equality

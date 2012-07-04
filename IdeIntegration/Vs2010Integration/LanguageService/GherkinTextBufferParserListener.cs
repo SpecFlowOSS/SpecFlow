@@ -336,9 +336,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             var editorLine = stepSpan.StartPosition.Line;
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
-            var stepScope = new StepScopeNew(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray());
+            var stepContext = new StepContext(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray(), gherkinFileScope.GherkinDialect.CultureInfo);
 
-            currentStep = new GherkinStep((BindingType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepScope, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            currentStep = new GherkinStep((StepDefinitionType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepContext, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 

@@ -18,9 +18,22 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             this.templateManager = templateManager;
         }
 
+        private string GetProjectFileExtension(string language)
+        {
+            switch (language.ToLower())
+            {
+                case "c#":
+                    return "csproj";
+                case "f#":
+                    return "fsproj";
+                default:
+                    throw new NotSupportedException("Language not supported: " + language);
+            }
+        }
+
         public Project GenerateProject(InputProjectDriver inputProjectDriver)
         {
-            string projectFileName = string.Format("{0}_{1}.csproj", inputProjectDriver.ProjectName, Guid.NewGuid().ToString("N"));
+            string projectFileName = string.Format("{0}_{1}.{2}", inputProjectDriver.ProjectName, Guid.NewGuid().ToString("N"), GetProjectFileExtension(inputProjectDriver.Language));
 
             Console.WriteLine("Compiling project '{0}' in '{1}'", projectFileName, inputProjectDriver.CompilationFolder);
 
@@ -37,7 +50,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             {
                 string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, featureFileInput.ProjectRelativePath);
                 File.WriteAllText(outputPath, featureFileInput.Content, Encoding.UTF8);
-                var generatedFile = featureFileInput.ProjectRelativePath + ".cs";
+                var generatedFile = featureFileInput.ProjectRelativePath + "." + inputProjectDriver.CodeFileExtension;
                 project.AddItem("None", featureFileInput.ProjectRelativePath, new[]
                                                                                   {
                                                                                       new KeyValuePair<string, string>("Generator", "SpecFlowSingleFileGenerator"),
@@ -80,7 +93,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
         {
             if (bindingClassInput.RawClass != null)
             {
-                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass.cs", bindingClassInput.FileName, new Dictionary<string, string>
+                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
                                                                                         { "AdditionalUsings", "" },
                                                                                         { "BindingClass", bindingClassInput.RawClass },
@@ -88,7 +101,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             }
             else
             {
-                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "Bindings.cs", bindingClassInput.FileName, new Dictionary<string, string>
+                SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "Bindings." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
                                                                                         { "ClassName", bindingClassInput.Name },
                                                                                         { "Bindings", GetBindingsCode(bindingClassInput) },
@@ -131,6 +144,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                 replacements = new Dictionary<string, string>();
 
             replacements.Add("SpecFlowRoot", Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), "SpecFlow"));
+            replacements.Add("LibRoot", AssemblyFolderHelper.GetTestAssemblyFolder());
 
             string fileContent = templateManager.LoadTemplate(templateName, replacements);
 
@@ -145,7 +159,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
             Guid projectId = Guid.NewGuid();
 
-            string projectFileName = SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "TestProjectFile.csproj", outputFileName, new Dictionary<string, string>
+            string projectFileName = SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "TestProjectFile." + GetProjectFileExtension(inputProjectDriver.Language), outputFileName, new Dictionary<string, string>
                                                                                     {
                                                                                         { "ProjectGuid", projectId.ToString("B") },
                                                                                         { "ProjectName", inputProjectDriver.ProjectName },

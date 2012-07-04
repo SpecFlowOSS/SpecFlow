@@ -89,6 +89,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                     pi => filePath.Equals(GetProjectRelativePath(pi), StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public static ProjectItem FindProjectItemByFilePath(Project project, string filePath)
+        {
+            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                    pi => filePath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         /// <summary>
         /// Retrieves the first project in the solution that matches the specified criteria.
         /// </summary>
@@ -168,7 +174,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static string GetAssemblyName(this Project project)
         {
-            Property prop = project.Properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
+            var properties = project.Properties;
+            if (properties == null)
+                return null;
+            Property prop = properties.Cast<Property>().FirstOrDefault(p => p.Name == "AssemblyName");
             return prop != null && prop.Value != null ? prop.Value.ToString() : null;
         }
 
@@ -187,12 +196,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static T GetOption<T>(DTE dte, string categoryName, string pageName, string optionName, T defaultValue = default(T))
         {
-            Properties properties = dte.Properties[categoryName, pageName];
-            if (properties == null)
-                return defaultValue;
-
             try
             {
+                Properties properties = dte.Properties[categoryName, pageName];
+                if (properties == null)
+                    return defaultValue;
+
                 Property property = properties.Item(optionName);
                 if (property == null)
                     return defaultValue;
@@ -229,6 +238,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 return null;
 
             string projectFolder = GetProjectFolder(projectItem.ContainingProject);
+            return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
+        public static string GetProjectRelativePath(Reference reference)
+        {
+            string fileName = reference.Path;
+            if (fileName == null)
+                return null;
+
+            string projectFolder = GetProjectFolder(reference.ContainingProject);
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
         }
 
@@ -384,6 +403,48 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             }
 
             return File.GetLastWriteTime(filePath);
+        }
+
+        public static DateTime? GetLastChangeDate(Reference reference)
+        {
+            string filePath;
+            if (reference == null || reference.Path == null || !File.Exists(filePath = reference.Path))
+            {
+                return null;
+            }
+
+            return File.GetLastWriteTime(filePath);
+        }
+
+        public static Project GetProject(IVsHierarchy hierarchy)
+        {
+            object project;
+            ErrorHandler.ThrowOnFailure(hierarchy.GetProperty(
+                VSConstants.VSITEMID_ROOT,
+                (int) __VSHPROPID.VSHPROPID_ExtObject,
+                out project));
+
+            return (project as Project);
+        }
+
+        public static IVsHierarchy GetHierarchy(System.IServiceProvider serviceProvider, Project project)
+        {
+            var solution = serviceProvider.GetService(typeof (SVsSolution)) as IVsSolution;
+            if (solution == null)
+                return null;
+            IVsHierarchy hierarchy;
+            solution.GetProjectOfUniqueName(project.FullName, out hierarchy);
+            return hierarchy;
+        }
+
+        public static Reference GetReferenceByProjectRelativePath(Project project, string projectRelativePath)
+        {
+            VSProject vsProject = project.Object as VSProject;
+            if (vsProject == null)
+                return null;
+
+            var assemblyPath = Path.GetFullPath(Path.Combine(GetProjectFolder(project), projectRelativePath));
+            return vsProject.References.OfType<Reference>().FirstOrDefault(r => assemblyPath.Equals(r.Path, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

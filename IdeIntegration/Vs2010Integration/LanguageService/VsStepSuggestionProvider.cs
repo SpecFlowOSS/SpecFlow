@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.VisualStudio.Language.Intellisense;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
@@ -70,7 +72,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
     }
 
-    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistryNew
+    public class VsStepSuggestionProvider : StepSuggestionProvider<Completion>, IDisposable, IBindingRegistry
     {
         private bool featureFilesPopulated = false;
         private bool bindingsPopulated = false;
@@ -79,7 +81,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool readyInvoked = false;
         public event Action Ready;
 
-        private readonly Dictionary<BindingFileInfo, List<StepBindingNew>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepBindingNew>>();
+        private readonly Dictionary<BindingFileInfo, List<IStepDefinitionBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<IStepDefinitionBinding>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
         public bool Populated
@@ -97,18 +99,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return bindingsPopulated; }
         }
 
-        bool IBindingRegistryNew.Ready
+        bool IBindingRegistry.Ready
         {
             get { return BindingsPopulated; }
+            set { /*nop*/ }
         }
 
-        protected override IBindingMatchService BindingMatchService
+        protected override IStepDefinitionMatchService BindingMatchService
         {
             get { return vsProjectScope.BindingMatchService; }
         }
 
         public VsStepSuggestionProvider(VsProjectScope vsProjectScope)
-            : base(VsSuggestionItemFactory.Instance)
+            : base(VsSuggestionItemFactory.Instance, vsProjectScope)
         {
             this.vsProjectScope = vsProjectScope;
         }
@@ -136,20 +139,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.BindingFilesTracker.FileRemoved += BindingFilesTrackerOnFileRemoved;
         }
 
-        private static StepScopeNew CreateStepScope(Feature feature, Scenario scenario)
+        private StepContext CreateStepScope(Feature feature, Scenario scenario)
         {
             var tags =
                 (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Concat(scenario.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScopeNew(feature.Title, scenario.Title, tags.ToArray());
+            return new StepContext(feature.Title, scenario.Title, tags.ToArray(), GetLanguage(feature));
         }
 
-        private static StepScopeNew CreateStepScope(Feature feature)
+        private StepContext CreateStepScope(Feature feature)
         {
             var tags = (feature.Tags.AsEnumerable() ?? Enumerable.Empty<Tag>())
                 .Select(t => t.Name).Distinct();
-            return new StepScopeNew(feature.Title, null, tags.ToArray());
+            return new StepContext(feature.Title, null, tags.ToArray(), GetLanguage(feature));
+        }
+
+        private CultureInfo GetLanguage(Feature feature)
+        {
+            var language = this.vsProjectScope.GherkinDialectServices.GetGherkinDialect(feature).CultureInfo;
+            return language;
         }
 
         private IEnumerable<IStepSuggestion<Completion>> GetStepSuggestions(Feature feature)
@@ -183,7 +192,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void FeatureFilesTrackerOnReady()
         {
             featureFilesPopulated = true;
-            vsProjectScope.VisualStudioTracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
+            vsProjectScope.Tracer.Trace("Suggestions from feature files ready", "ProjectStepSuggestionProvider");
 
             FireReady();
         }
@@ -196,6 +205,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 lock(this)
                 {
                     doReady = !readyInvoked;
+                    readyInvoked = true;
                 }
 
                 if (doReady)
@@ -206,7 +216,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void BindingFilesTrackerOnReady()
         {
             bindingsPopulated = true;
-            vsProjectScope.VisualStudioTracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
+            vsProjectScope.Tracer.Trace("Suggestions from bindings ready", "ProjectStepSuggestionProvider");
         }
 
         private void FeatureFilesTrackerOnFeatureFileRemoved(FeatureFileInfo featureFileInfo)
@@ -242,7 +252,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
         {
-            List<StepBindingNew> bindings;
+            List<IStepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -252,7 +262,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
         {
-            List<StepBindingNew> bindings;
+            List<IStepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -260,15 +270,40 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                bindings = new List<StepBindingNew>();
+                bindings = new List<IStepDefinitionBinding>();
                 bindingSuggestions.Add(bindingFileInfo, bindings);
             }
 
-            if (bindingFileInfo.StepBindings.Any())
+            if (!bindingFileInfo.IsError && bindingFileInfo.StepBindings.Any())
             {
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
             }
+        }
+
+        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterHookBinding(IHookBinding hookBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
+        {
+            return Enumerable.Empty<IHookBinding>(); //not used in VS
+        }
+
+        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
+        {
+            return Enumerable.Empty<IStepArgumentTransformationBinding>(); //not used in VS
         }
 
         public void Dispose()

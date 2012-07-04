@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
@@ -14,22 +13,47 @@ namespace TechTalk.SpecFlow.Tracing
 {
     internal static class LanguageHelper
     {
-        class KeywordTranslation : Dictionary<StepDefinitionKeyword, string>
+        struct KeywordSet
+        {
+            public string DefaultKeyword
+            {
+                get { return Keywords.First(); }
+            }
+            public readonly string[] Keywords;
+
+            public KeywordSet(string[] keywords)
+            {
+                this.Keywords = keywords;
+            }
+        }
+
+        class KeywordTranslation : Dictionary<StepDefinitionKeyword, KeywordSet>
         {
             public CultureInfo DefaultSpecificCulture { get; set; }
         }
 
         private static readonly Dictionary<CultureInfo, KeywordTranslation> translationCache = new Dictionary<CultureInfo, KeywordTranslation>();
 
-        public static string GetDefaultKeyword(CultureInfo language, BindingType bindingType)
+        public static string GetDefaultKeyword(CultureInfo language, StepDefinitionType stepDefinitionType)
         {
-            return GetDefaultKeyword(language, bindingType.ToStepDefinitionKeyword());
+            return GetDefaultKeyword(language, stepDefinitionType.ToStepDefinitionKeyword());
+        }
+
+        public static string[] GetKeywords(CultureInfo language, StepDefinitionType stepDefinitionType)
+        {
+            return GetKeywords(language, stepDefinitionType.ToStepDefinitionKeyword());
+        }
+
+        public static string[] GetKeywords(CultureInfo language, StepDefinitionKeyword keyword)
+        {
+            KeywordTranslation translation = GetTranslation(language);
+            return translation[keyword].Keywords;
         }
 
         public static string GetDefaultKeyword(CultureInfo language, StepDefinitionKeyword keyword)
         {
             KeywordTranslation translation = GetTranslation(language);
-            return translation[keyword];
+            return translation[keyword].DefaultKeyword;
         }
 
         private static KeywordTranslation GetTranslation(CultureInfo language)
@@ -85,10 +109,8 @@ namespace TechTalk.SpecFlow.Tracing
 
             foreach (StepDefinitionKeyword keyword in EnumHelper.GetValues(typeof (StepDefinitionKeyword)))
             {
-                //NOTE: we only load the first translation of each keyword
-                XElement keywordElm = langElm.Element(keyword.ToString());
-                Debug.Assert(keywordElm != null);
-                result[keyword] = keywordElm.Value;
+                var keywordList = langElm.Elements(keyword.ToString()).Select(keywordElm => keywordElm.Value).ToArray();
+                result[keyword] = new KeywordSet(keywordList);
             }
 
             return result;

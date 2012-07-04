@@ -39,14 +39,17 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
                 return base.GetTestGeneratorFactoryForCreate();
             }
 
-            if (generatorInfo.GeneratorAssemblyVersion < new Version(1, 6))
+            var currentGeneratorAssemblyVersion = GetCurrentGeneratorAssemblyVersion();
+
+            if (generatorInfo.GeneratorAssemblyVersion < new Version(1, 6) && 
+                generatorInfo.GeneratorAssemblyVersion != currentGeneratorAssemblyVersion) // in debug mode 1.0 is the version, that is < 1.6
             {
                 // old generator version -> call the "current" directly
                 tracer.Trace(string.Format("The project's generator ({0}) is older than v1.6: the generator bound to the IDE is used", generatorInfo.GeneratorAssemblyVersion), "RemoteGeneratorServices");
                 return base.GetTestGeneratorFactoryForCreate();
             }
 
-            if (generatorInfo.GeneratorAssemblyVersion == GetCurrentGeneratorAssemblyVersion() && !generatorInfo.UsesPlugins)
+            if (generatorInfo.GeneratorAssemblyVersion == currentGeneratorAssemblyVersion && !generatorInfo.UsesPlugins)
             {
                 // uses the "current" generator (and no plugins) -> call it directly
                 tracer.Trace("The generator of the project is the same as the generator bound to the IDE: using it from the IDE", "RemoteGeneratorServices");

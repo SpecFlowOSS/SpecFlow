@@ -15,10 +15,6 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Templates
             Debug.Assert(projectTemplateStream != null);
             string fileContent = new StreamReader(projectTemplateStream).ReadToEnd();
 
-//            var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-//            Debug.Assert(assemblyFolder != null);
-//            string fileContent = template.Replace("{SpecFlowRoot}", Path.Combine(assemblyFolder, "SpecFlow"));
-
             if (replacements != null)
             {
                 fileContent = replacements.Aggregate(fileContent, (current, replacement) => current.Replace("{" + replacement.Key + "}", replacement.Value));

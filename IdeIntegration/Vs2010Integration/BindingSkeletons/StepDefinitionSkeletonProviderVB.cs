@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
             // in VB "When" and "Then" are language keywords - use the fully qualified namespace
             string namespaceAddition = "TechTalk.SpecFlow.";
-            if (stepInstance.BindingType == BindingType.Given)
+            if (stepInstance.StepDefinitionType == StepDefinitionType.Given)
             {
                 namespaceAddition = "";
             }
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 Public Sub {2}({3})
     ScenarioContext.Current.Pending()
 End Sub",
-                stepInstance.BindingType,
+                stepInstance.StepDefinitionType,
                 EscapeRegex(stepInstance.Text),
                 GetStepText(stepInstance).ToIdentifier(),
                 string.Join(", ", extraArgs.ToArray()),

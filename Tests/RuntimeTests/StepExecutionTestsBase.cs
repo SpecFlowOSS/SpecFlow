@@ -6,10 +6,13 @@ using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 using MockRepository = Rhino.Mocks.MockRepository;
+using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -24,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         #region dummy test tracer
         public class DummyTestTracer : ITestTracer
         {
-            public void TraceStep(StepArgs stepArgs, bool showAdditionalArguments)
+            public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
             {
             }
 
@@ -57,12 +60,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceError: {0}", ex);
             }
 
-            public void TraceNoMatchingStepDefinition(StepArgs stepArgs, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
+            public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
             {
                 Console.WriteLine("TraceNoMatchingStepDefinition");
             }
 
-            public void TraceDuration(TimeSpan elapsed, MethodInfo methodInfo, object[] arguments)
+            public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
             {
                 //nop
             }
@@ -117,9 +120,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         container.RegisterTypeAs<DummyTestTracer, ITestTracer>();
                         container.RegisterInstanceAs(ContextManagerStub);
 
-                        var bindingRegistry = (BindingRegistry) container.Resolve<IBindingRegistry>();
+                        var builder = (RuntimeBindingRegistryBuilder)container.Resolve<IRuntimeBindingRegistryBuilder>();
                         foreach (var bindingType in bindingTypes)
-                            bindingRegistry.BuildBindingsFromType(bindingType);
+                            builder.BuildBindingsFromType(bindingType);
 
                         if (registerMocks != null)
                             registerMocks(container);

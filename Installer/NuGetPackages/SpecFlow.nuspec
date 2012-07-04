@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>SpecFlow</id>
+    <version>1.0.0-alpha</version>
+    <title>SpecFlow</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</description>
+    <summary>SpecFlow aims at bridging the communication gap between domain experts and developers by binding business readable behavior specifications to the underlying implementation. Our mission is to provide a pragmatic and frictionless approach to Acceptance Test Driven Development and Behavior Driven Development for .NET projects today.</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
+    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow bdd gherkin cucumber</tags>
+  </metadata>
+  <files>
+    <!-- common reference files -->
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net35" />
+
+    <!-- alternative runtimes -->
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl3" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.WindowsPhone7.dll" target="lib\sl4-wp" />
+
+    <!-- Tools -->
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.*" target="tools" />
+
+    <!-- config -->
+    <file src="..\App.config.transform" target="content" />
+
+    <!-- license & version information -->
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\*.txt" target="" />
+  </files>
+</package>

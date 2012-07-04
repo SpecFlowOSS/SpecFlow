@@ -5,12 +5,15 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using Should;
+using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -20,10 +23,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ScenarioContext scenarioContext;
         private RuntimeConfiguration runtimeConfiguration;
         private Mock<IBindingRegistry> bindingRegistryStub;
+        private Mock<IRuntimeBindingRegistryBuilder> runtimeBindingRegistryBuilderStub;
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
         private Mock<ITestTracer> testTracerStub;
-        private Mock<IStepDefinitionMatcher> stepDefinitionMatcherStub;
+        private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
+        private Mock<IBindingInvoker> methodBindingInvokerMock;
         private Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> skeletonProviders;
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
 
@@ -44,16 +49,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
 
+            runtimeBindingRegistryBuilderStub = new Mock<IRuntimeBindingRegistryBuilder>();
+
             bindingRegistryStub = new Mock<IBindingRegistry>();
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.StepStart)).Returns(beforeStepEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.StepEnd)).Returns(afterStepEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.BlockStart)).Returns(beforeScenarioBlockEvents);
-            bindingRegistryStub.Setup(br => br.GetEvents(BindingEvent.BlockEnd)).Returns(afterScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeStep)).Returns(beforeStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterStep)).Returns(afterStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenarioBlock)).Returns(beforeScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenarioBlock)).Returns(afterScenarioBlockEvents);
 
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
-            stepDefinitionMatcherStub = new Mock<IStepDefinitionMatcher>();
+            stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
+            methodBindingInvokerMock = new Mock<IBindingInvoker>();
 
             stepErrorHandlers = new Dictionary<string, IStepErrorHandler>();
         }
@@ -71,14 +79,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 skeletonProviders, 
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
-                stepErrorHandlers);
+                stepErrorHandlers, 
+                methodBindingInvokerMock.Object, 
+                runtimeBindingRegistryBuilderStub.Object);
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
         {
+            var methodStub = new Mock<IBindingMethod>();
             var stepDefStub = new Mock<IStepDefinitionBinding>();
-            stepDefinitionMatcherStub.Setup(sdm => sdm.GetMatches(It.IsAny<StepArgs>())).Returns((StepArgs sa) =>
-                      new List<BindingMatch> { new BindingMatch(stepDefStub.Object, sa, new string[0], new string[0], 0) });
+            stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
+                //.GetMatches(It.IsAny<StepInstance>()))
+                .Returns(//(StepInstance sa) => 
+                    new BindingMatch(stepDefStub.Object, 0, new string[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
 
             return stepDefStub;
         }
@@ -88,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             var stepDefStub = RegisterStepDefinition();
             TimeSpan duration;
-            stepDefStub.Setup(sd => sd.Invoke(contextManagerStub.Object, testTracerStub.Object, It.IsAny<object[]>(), out duration))
+            methodBindingInvokerMock.Setup(i => i.InvokeBinding(stepDefStub.Object, contextManagerStub.Object, It.IsAny<object[]>(), testTracerStub.Object, out duration))
                 .Throws(new Exception("simulated error"));
         }
 
@@ -107,9 +124,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(beforeStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            hookMock.Verify(sm => sm.Invoke(contextManagerStub.Object, testTracerStub.Object), Times.Once());
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
         }
 
         [Test]
@@ -120,9 +138,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            hookMock.Verify(sm => sm.Invoke(contextManagerStub.Object, testTracerStub.Object), Times.Once());
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
         }
 
         [Test]
@@ -133,10 +152,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             scenarioContext.TestStatus = TestStatus.TestError;
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             TimeSpan duration;
-            stepDefMock.Verify(sm => sm.Invoke(It.IsAny<IContextManager>(), It.IsAny<ITestTracer>(), It.IsAny<object[]>(), out duration), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(stepDefMock.Object, It.IsAny<IContextManager>(), It.IsAny<object[]>(), It.IsAny<ITestTracer>(), out duration), Times.Never());
         }
 
         [Test]
@@ -150,10 +169,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var beforeStepMock = CreateHookMock(beforeStepEvents);
             var afterStepMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            beforeStepMock.Verify(sm => sm.Invoke(It.IsAny<IContextManager>(), It.IsAny<ITestTracer>()), Times.Never());
-            afterStepMock.Verify(sm => sm.Invoke(It.IsAny<IContextManager>(), It.IsAny<ITestTracer>()), Times.Never());
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(beforeStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
 
         [Test]
@@ -164,9 +184,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var hookMock = CreateHookMock(afterStepEvents);
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            hookMock.Verify(sm => sm.Invoke(contextManagerStub.Object, testTracerStub.Object));
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration));
         }
 
         [Test]
@@ -178,7 +199,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandlerMock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
         }
@@ -195,7 +216,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             stepErrorHandler1Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
             stepErrorHandler2Mock.Verify(seh => seh.OnStepFailure(testExecutionEngine, It.IsAny<StepFailureEventArgs>()), Times.Once());
@@ -213,7 +234,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.TestStatus.ShouldEqual(TestStatus.OK);
         }
@@ -227,7 +248,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var testExecutionEngine = CreateTestExecutionEngine();
             RegisterFailingStepDefinition();
 
-            testExecutionEngine.Step(StepDefinitionKeyword.Given, "foo", null, null);
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.TestStatus.ShouldEqual(TestStatus.TestError);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -17,6 +18,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public SpecFlowConfigurationDriver ConfigurationDriver { get; private set; }
 
         public string ProjectName { get; set; }
+        public string Language { get; set; }
 
         public List<FeatureFileInput> FeatureFiles { get; private set; }
         public FeatureFileInput CurrentFeatureFile { get; set; }
@@ -24,7 +26,19 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public List<ContentFileInput> ContentFiles { get; private set; }
 
         public List<BindingClassInput> BindingClasses { get; private set; }
-        public BindingClassInput DefaultBindingClass { get; set; }
+        private BindingClassInput defaultBindingClass;
+        public BindingClassInput DefaultBindingClass
+        {
+            get
+            {
+                if (defaultBindingClass == null)
+                {
+                    defaultBindingClass = new BindingClassInput("DefaultBindings." + CodeFileExtension);
+                    BindingClasses.Add(defaultBindingClass);
+                }
+                return defaultBindingClass;
+            }
+        }
 
         public List<string> References { get; private set; }
 
@@ -39,10 +53,40 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         }
         public string ProjectFilePath { get; set; }
 
+        public string CodeFileExtension
+        {
+            get
+            {
+                switch (Language.ToLower())
+                {
+                    case "c#":
+                        return "cs";
+                    case "f#":
+                        return "fs";
+                    default:
+                        throw new NotSupportedException("Language not supported: " + Language);
+                }
+            }
+        }
+
+        public IEnumerable<string> FrameworkAssembliesToCopy
+        {
+            get
+            {
+                switch (Language.ToLower())
+                {
+                    case "f#":
+                        yield return "FSharp.Core.dll";
+                        break;
+                }
+            }
+        }
+
         public InputProjectDriver(SpecFlowConfigurationDriver configurationDriver)
         {
             ConfigurationDriver = configurationDriver;
             ProjectName = "SpecFlow.TestProject";
+            Language = "C#";
 
             compilationFolder = Path.Combine(Path.GetTempPath(), Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["testProjectFolder"]));
 
@@ -50,10 +94,21 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             ContentFiles = new List<ContentFileInput>();
             BindingClasses = new List<BindingClassInput>();
 
-            DefaultBindingClass = new BindingClassInput("DefaultBindings.cs");
-            BindingClasses.Add(DefaultBindingClass);
+            References = new List<string>();
+        }
+
+        public void Reset()
+        {
+            ProjectName = "SpecFlow.TestProject";
+            Language = "C#";
+
+            FeatureFiles = new List<FeatureFileInput>();
+            ContentFiles = new List<ContentFileInput>();
+            BindingClasses = new List<BindingClassInput>();
 
             References = new List<string>();
+
+            defaultBindingClass = null;
         }
 
         private string GetFeatureFileName()
@@ -63,7 +118,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         private string GetBindingFileName()
         {
-            return string.Format("Binding{0}.cs", BindingClasses.Count + 1);
+            return string.Format("Binding{0}." + CodeFileExtension, BindingClasses.Count + 1);
         }
 
         public void AddFeatureFile(string featureFileText, string featureFileName = null)

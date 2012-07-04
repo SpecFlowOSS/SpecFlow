@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
         {
-            vsProjectScope.VisualStudioTracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
+            vsProjectScope.Tracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
             AnalyzeCodeBehind(featureFileInfo, projectItem);
 
             var fileContent = VsxHelper.GetFileContent(projectItem, loadLastSaved: true);
@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             catch (Exception)
             {
-                vsProjectScope.VisualStudioTracer.Trace("Invalid feature file: " + sourceFileName, "ProjectFeatureFilesTracker");
+                vsProjectScope.Tracer.Trace("Invalid feature file: " + sourceFileName, "ProjectFeatureFilesTracker");
                 return null;
             }
         }
@@ -90,15 +90,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var codeBehindItem = GetCodeBehindItem(projectItem);
             if (codeBehindItem != null)
             {
-                string codeBehind = VsxHelper.GetFileContent(codeBehindItem);
+                string codeBehindContent = VsxHelper.GetFileContent(codeBehindItem);
+                DetectGeneratedTestVersion(featureFileInfo, codeBehindContent);
+            }
+        }
+
+        private void DetectGeneratedTestVersion(FeatureFileInfo featureFileInfo, string codeBehindContent)
+        {
+            try
+            {
                 using (var testGenerator = vsProjectScope.GeneratorServices.CreateTestGenerator())
                 {
                     featureFileInfo.GeneratorVersion = testGenerator.DetectGeneratedTestVersion(
                         new FeatureFileInput(featureFileInfo.ProjectRelativePath)
                             {
-                                GeneratedTestFileContent = codeBehind
+                                GeneratedTestFileContent = codeBehindContent
                             });
                 }
+            }
+            catch(Exception ex)
+            {
+                // if there was an error during version detect, we skip discovering the version for this file.
+                vsProjectScope.Tracer.Trace(
+                    string.Format("Cannot detect generated test version for file: {0}, error: {1}", featureFileInfo.ProjectRelativePath, ex.Message), GetType().Name);
             }
         }
 
@@ -162,19 +176,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             foreach (var featureSteps in stepMap.FeatureSteps)
             {
-                var featureFileInfo = FindFileInfo(featureSteps.FileName);
-                if (featureFileInfo == null)
-                    continue;
+                try{
+                    var fileInfo = FindFileInfo(featureSteps.FileName);
+                    if (fileInfo == null)
+                        continue;
 
-                if (featureFileInfo.IsDirty(featureSteps.TimeStamp))
-                    continue;
+                    if (fileInfo.IsDirty(featureSteps.TimeStamp))
+                        continue;
 
-                featureFileInfo.ParsedFeature = featureSteps.Feature;
-                featureFileInfo.GeneratorVersion = featureSteps.GeneratorVersion;
-                featureFileInfo.IsAnalyzed = true;
+                    fileInfo.ParsedFeature = featureSteps.Feature;
+                    fileInfo.GeneratorVersion = featureSteps.GeneratorVersion;
+
+                    FireFileUpdated(fileInfo);
+                    fileInfo.IsError = false;
+                    fileInfo.IsAnalyzed = true;
+                }
+                catch(Exception ex)
+                {
+                    vsProjectScope.Tracer.Trace(string.Format("Feature steps load error for {0}: {1}", featureSteps.FileName, ex), GetType().Name);
+                }
             }
 
-            vsProjectScope.VisualStudioTracer.Trace("Applied loaded fieature file steps", "ProjectFeatureFilesTracker");
+            vsProjectScope.Tracer.Trace("Applied loaded fieature file steps", GetType().Name);
         }
     }
 }

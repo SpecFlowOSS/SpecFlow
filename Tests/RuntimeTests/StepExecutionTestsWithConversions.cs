@@ -1,11 +1,38 @@
+using System;
 using System.Globalization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
+using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
+    internal static class LegacyStepArgumentTypeConverterExtensions
+    {
+        public static object Convert(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
+        {
+            return converter.Convert(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
+        }
+
+        public static Function<IStepArgumentTypeConverter, bool> GetCanConvertMethodFilter(object argument, Type type)
+        {
+            return c => c.CanConvert(
+                Arg<string>.Is.Equal(argument),
+                Arg<IBindingType>.Matches(bt => bt.TypeEquals(type)), 
+                Arg<CultureInfo>.Is.Anything);
+        }
+
+        public static Function<IStepArgumentTypeConverter, object> GetConvertMethodFilter(object argument, Type type)
+        {
+            return c => c.Convert(
+                Arg<string>.Is.Equal(argument),
+                Arg<IBindingType>.Matches(bt => bt.TypeEquals(type)), 
+                Arg<CultureInfo>.Is.Anything);
+        }
+    }
+
     [Binding]
     public class StepExecutionTestsBindingsForArgumentConvert
     {
@@ -74,10 +101,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             TestRunner testRunner = GetTestRunnerWithConverterStub(out bindingInstance);
 
             // return false unless its a Double
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
-            StepArgumentTypeConverterStub.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
+            StepArgumentTypeConverterStub.Expect(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter("argument", typeof(double))).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArg(1.23));
 
             MockRepository.ReplayAll();
@@ -96,8 +123,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             TestRunner testRunner = GetTestRunnerWithConverterStub(out bindingInstance);
 
             // return false unless its a Double or an Int
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert("argument", typeof(int), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(int))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
             MockRepository.ReplayAll();
@@ -118,10 +145,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Table table = new Table("h1");
 
             // return false unless its a Double or table->table
-            StepArgumentTypeConverterStub.Stub(c => c.CanConvert("argument", typeof(double), FeatureLanguage)).Return(true);
+            StepArgumentTypeConverterStub.Stub(LegacyStepArgumentTypeConverterExtensions.GetCanConvertMethodFilter("argument", typeof(double))).Return(true);
             StepArgumentTypeConverterStub.Stub(c => c.CanConvert(null, null, null)).IgnoreArguments().Return(false);
 
-            StepArgumentTypeConverterStub.Expect(c => c.Convert("argument", typeof(double), FeatureLanguage)).Return(1.23);
+            StepArgumentTypeConverterStub.Expect(LegacyStepArgumentTypeConverterExtensions.GetConvertMethodFilter("argument", typeof(double))).Return(1.23);
             bindingInstance.Expect(b => b.DoubleArgWithTable(1.23, table));
 
             MockRepository.ReplayAll();
@@ -149,8 +176,5 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
-
-
-
     }
 }

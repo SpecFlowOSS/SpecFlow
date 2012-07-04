@@ -44,9 +44,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterInstanceAs(runtimeConfiguration);
 
-            if (runtimeConfiguration.TraceListenerType != null)
-                container.RegisterTypeAs<ITraceListener>(runtimeConfiguration.TraceListenerType);
-
             if (runtimeConfiguration.RuntimeUnitTestProvider != null)
                 container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
 

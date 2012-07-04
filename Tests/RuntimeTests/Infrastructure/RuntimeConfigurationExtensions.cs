@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public static void AddAdditionalStepAssembly(this RuntimeConfiguration runtimeConfiguration, Assembly assembly)
         {
-            ((ICollection<Assembly>)runtimeConfiguration.AdditionalStepAssemblies).Add(assembly);
+            runtimeConfiguration.AdditionalStepAssemblies.Add(assembly.FullName);
         }
     }
 }

@@ -25,7 +25,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"there is an external class library project '(.*)'")]
         public void GivenThereIsAnExternalClassLibraryProject(string libraryName)
         {
+            GivenThereIsAnExternalClassLibraryProject("C#", libraryName);
+        }
+
+        [Given(@"there is an external (.+) class library project '(.*)'")]
+        public void GivenThereIsAnExternalClassLibraryProject(string language, string libraryName)
+        {
             inputProjectDriver.ProjectName = libraryName;
+            inputProjectDriver.Language = language;
         }
 
         [Given(@"the following step definition in the external library")]
@@ -34,20 +41,40 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             Given("the following step definition", stepDefinition);
         }
 
-        [Given(@"there is a SpecFlow project with a reference to the external library")]
-        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary()
+        [Given(@"there is a (.+) SpecFlow project with a reference to the external library")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary(string language)
         {
             var project = projectGenerator.GenerateProject(inputProjectDriver);
             projectCompiler.Compile(project);
 
+            List<string> assembliesToReference = new List<string>();
+
             var libName = inputProjectDriver.CompiledAssemblyPath;
             var savedLibPath = Path.Combine(Path.GetTempPath(), Path.GetFileName(libName));
             File.Copy(libName, savedLibPath, true);
+            assembliesToReference.Add(savedLibPath);
 
-            inputProjectDriver.DefaultBindingClass.OtherBindings.Clear();
-            inputProjectDriver.DefaultBindingClass.StepBindings.Clear();
+            foreach (var assemblyFileName in inputProjectDriver.FrameworkAssembliesToCopy)
+            {
+                var originalAssemblyPath = Path.Combine(inputProjectDriver.DeploymentFolder, assemblyFileName);
+                var savedAssemblyPath = Path.Combine(Path.GetTempPath(), assemblyFileName);
+                File.Copy(originalAssemblyPath, savedAssemblyPath, true);
+                assembliesToReference.Add(savedAssemblyPath);
+            }
+
+            inputProjectDriver.Reset();
             inputProjectDriver.ProjectName = "SpecFlow.TestProject";
-            inputProjectDriver.References.Add(savedLibPath);
+            inputProjectDriver.Language = language;
+            foreach (var assemblyPath in assembliesToReference)
+            {
+                inputProjectDriver.References.Add(assemblyPath);
+            }
+        }
+
+        [Given(@"there is a SpecFlow project with a reference to the external library")]
+        public void GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary()
+        {
+            GivenThereIsASpecFlowProjectWithAReferenceToTheExternalLibrary("C#");
         }
     }
 }

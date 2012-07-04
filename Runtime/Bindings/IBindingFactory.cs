@@ -1,48 +1,42 @@
 ﻿using System;
 using System.Reflection;
 using BoDi;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Bindings.Reflection;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingFactory
     {
-        IHookBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope);
-        StepDefinitionBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope);
-        StepTransformationBinding CreateStepArgumentTransformation(string regexString, MethodInfo methodInfo);
+        IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope);
+        IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope);
+        IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod);
     }
 
-    class BindingFactory : IBindingFactory
+    public class BindingFactory : IBindingFactory
     {
-        private readonly RuntimeConfiguration runtimeConfiguration;
-        private readonly IErrorProvider errorProvider;
+        private readonly IStepDefinitionRegexCalculator stepDefinitionRegexCalculator;
 
-        public BindingFactory(IObjectContainer container)
+        public BindingFactory(IStepDefinitionRegexCalculator stepDefinitionRegexCalculator)
         {
-            this.runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
-            this.errorProvider = container.Resolve<IErrorProvider>();
+            this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
         }
 
-        internal BindingFactory(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider)
+        public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope)
         {
-            this.runtimeConfiguration = runtimeConfiguration;
-            this.errorProvider = errorProvider;
+            return new HookBinding(bindingMethod, hookType, bindingScope);
         }
 
-        public IHookBinding CreateEventBinding(MethodInfo methodInfo, BindingScope bindingScope)
+        public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
         {
-            return new HookBinding(runtimeConfiguration, errorProvider, methodInfo, bindingScope);
+            if (regexString == null)
+                regexString = stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
+            return new StepDefinitionBinding(type, regexString, bindingMethod, bindingScope);
         }
 
-        public StepDefinitionBinding CreateStepBinding(BindingType type, string regexString, MethodInfo methodInfo, BindingScope bindingScope)
+        public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod)
         {
-            return new StepDefinitionBinding(runtimeConfiguration, errorProvider, type, regexString, methodInfo, bindingScope);
-        }
-
-        public StepTransformationBinding CreateStepArgumentTransformation(string regexString, MethodInfo methodInfo)
-        {
-            return new StepTransformationBinding(runtimeConfiguration, errorProvider, regexString, methodInfo);
+            return new StepArgumentTransformationBinding(regexString, bindingMethod);
         }
     }
 }

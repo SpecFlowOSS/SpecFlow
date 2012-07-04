@@ -24,6 +24,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             return table.CreateInstance<TestRunSummary>();
         }
 
+        [Then(@"all tests should pass")]
+        public void ThenAllTestsShouldPass()
+        {
+            testExecutionResult.LastExecutionSummary.ShouldNotBeNull();
+            testExecutionResult.LastExecutionSummary.Succeeded.ShouldEqual(testExecutionResult.LastExecutionSummary.Total);
+        }
+
         [Then(@"the execution summary should contain")]
         public void ThenTheExecutionSummaryShouldContain(Table expectedSummary)
         {
@@ -62,6 +69,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             if (times != int.MaxValue)
                 regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
+        }
+
+        [Then(@"the execution log should contain text '(.*)'")]
+        public void ThenTheExecutionLogShouldContainText(string text)
+        {
+            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+            testExecutionResult.ExecutionLog.ShouldContain(text);
         }
     }
 }

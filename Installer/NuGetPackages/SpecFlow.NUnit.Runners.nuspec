@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>SpecFlow.NUnit.Runners</id>
+    <version>1.0.0</version>
+    <title>SpecFlow.NUnit.Runners</title>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <description>Combined package to setup SpecFlow with NUnit easily for running the tests with the NUnit runners.</description>
+    <summary>Combined package to setup SpecFlow with NUnit easily for running the tests with the NUnit runners.</summary>
+    <language>en-US</language>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
+    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>specflow nunit nunit.runners nunit-console</tags>
+    <dependencies>
+      <dependency id="SpecFlow.NUnit" version="1.1" />
+      <dependency id="NUnit.Runners" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NUnit.Runners\SpecFlowNUnitExtension.cs" target="content" />
+    <file src="..\NUnit.Runners\Install.ps1" target="tools" />
+    <file src="..\NUnit.Runners\Uninstall.ps1" target="tools" />
+  </files>
+</package>

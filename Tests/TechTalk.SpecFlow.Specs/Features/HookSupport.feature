@@ -27,6 +27,11 @@ Examples:
 #bug: nunit does not run the AfterTestRun event
 #	| AfterTestRun        |
 
+Examples: Cucumber compatibility
+	| event  |
+	| Before |
+	| After  |
+
 Scenario Outline: Should execute the hooks according to their semantics
 	Given there is a feature file in the project as
         """
@@ -78,3 +83,9 @@ Examples:
 	| BeforeTestRun       | 1     |
 #bug: nunit does not run the AfterTestRun event
 #	| AfterTestRun        | 1     |
+
+Examples: Cucumber compatibility
+	| event  | count |
+	| Before | 3     |
+	| After  | 3     |
+

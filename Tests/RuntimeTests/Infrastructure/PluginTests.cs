@@ -119,6 +119,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Should_be_able_to_specify_a_plugin()
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new Mock<IRuntimePlugin>().Object);
             TestRunContainerBuilder.CreateContainer(configurationHolder);
         }
 

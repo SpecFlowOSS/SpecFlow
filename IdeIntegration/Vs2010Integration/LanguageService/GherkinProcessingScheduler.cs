@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Concurrency;
 using System.Threading;
 using System.Windows.Threading;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -18,12 +19,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class DelegateTask : IGherkinProcessingTask
     {
         private readonly Action task;
-        private readonly IVisualStudioTracer visualStudioTracer;
+        private readonly IIdeTracer tracer;
 
-        public DelegateTask(Action task, IVisualStudioTracer visualStudioTracer)
+        public DelegateTask(Action task, IIdeTracer tracer)
         {
             this.task = task;
-            this.visualStudioTracer = visualStudioTracer;
+            this.tracer = tracer;
         }
 
         public void Apply()
@@ -34,7 +35,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             catch(Exception exception)
             {
-                visualStudioTracer.Trace("Exception: " + exception, "DelegateTask");
+                tracer.Trace("Exception: " + exception, "DelegateTask");
             }
         }
 
@@ -114,7 +115,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             if (!(task is PingTask))
                 visualStudioTracer.Trace("Applying task on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
-            task.Apply();
+
+            try
+            {
+                task.Apply();
+            }
+            catch(Exception exception)
+            {
+                visualStudioTracer.Trace("Exception: " + exception, "GherkinProcessingScheduler");
+            }
         }
 
         private void ApplyTask(IEnumerable<IGherkinProcessingTask> tasks)

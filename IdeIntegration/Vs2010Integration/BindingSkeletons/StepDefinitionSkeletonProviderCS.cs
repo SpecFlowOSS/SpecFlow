@@ -26,7 +26,7 @@ public void {2}({3})
 {{
     ScenarioContext.Current.Pending();
 }}",
-                                stepInstance.BindingType,
+                                stepInstance.StepDefinitionType,
                                 EscapeRegex(stepInstance.Text),
                                 GetStepText(stepInstance).ToIdentifier(),
                                 string.Join(", ", extraArgs.ToArray())

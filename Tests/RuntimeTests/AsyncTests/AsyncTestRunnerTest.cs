@@ -36,11 +36,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.Given(Text, MultilineTextArg, table);
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Given, null, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -48,11 +48,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.When(Text, MultilineTextArg, table);
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.When, null, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -60,11 +60,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.Then(Text, MultilineTextArg, table);
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.Then, null, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -72,11 +72,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.And(Text, MultilineTextArg, table);
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.And, null, Text, MultilineTextArg, table));
         }
 
         [Test]
@@ -84,11 +84,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         {
             asyncTestRunner.But(Text, MultilineTextArg, table);
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Table>()), Times.Never());
 
             fakeAsyncTestExecutor.EnqueuedWithNewContext();
 
-            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, Text, MultilineTextArg, table));
+            testExecutionEngineStub.Verify(m => m.Step(StepDefinitionKeyword.But, null, Text, MultilineTextArg, table));
         }
 
         [Test]

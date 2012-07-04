@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (pluginAttribute == null)
                 throw new SpecFlowException("Missing plugin attribute in " + assembly.FullName);
 
-            if (!pluginAttribute.PluginType.IsAssignableFrom(typeof(IRuntimePlugin)))
+            if (!typeof(IRuntimePlugin).IsAssignableFrom((pluginAttribute.PluginType)))
                 throw new SpecFlowException("Invalid plugin attribute in " + assembly.FullName);
 
             IRuntimePlugin plugin;

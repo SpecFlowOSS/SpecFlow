@@ -213,7 +213,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 point += 1;
         }
 
-        private BindingType? GetCurrentBindingType(SnapshotPoint triggerPoint, out string parsedKeyword)
+        private StepDefinitionType? GetCurrentBindingType(SnapshotPoint triggerPoint, out string parsedKeyword)
         {
             parsedKeyword = null;
             var fileScope = languageService.GetFileScope(waitForParsingSnapshot: triggerPoint.Snapshot);
@@ -225,7 +225,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (step != null)
             {
                 parsedKeyword = step.Keyword.TrimEnd();
-                return step.BindingType;
+                return step.StepDefinitionType;
             }
 
             if (!IsStepLine(triggerPoint, languageService))
@@ -254,22 +254,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             parsedKeyword = keywordCandidate;
 
             if (stepKeyword == StepKeyword.Given)
-                return BindingType.Given;
+                return StepDefinitionType.Given;
             if (stepKeyword == StepKeyword.When)
-                return BindingType.When;
+                return StepDefinitionType.When;
             if (stepKeyword == StepKeyword.Then)
-                return BindingType.Then;
+                return StepDefinitionType.Then;
 
             parsedKeyword = null;
             // now we need the context
             var stepBlock = fileScope.GetStepBlockFromStepPosition(triggerLineNumber);
             var lastStep = stepBlock.Steps.LastOrDefault(s => s.BlockRelativeLine + stepBlock.KeywordLine < triggerLineNumber);
             if (lastStep == null)
-                return BindingType.Given;
-            return lastStep.BindingType;
+                return StepDefinitionType.Given;
+            return lastStep.StepDefinitionType;
         }
 
-        private void GetCompletionsForBindingType(BindingType bindingType, out IEnumerable<Completion> completions, out IEnumerable<Completion> completionBuilders)
+        private void GetCompletionsForBindingType(StepDefinitionType stepDefinitionType, out IEnumerable<Completion> completions, out IEnumerable<Completion> completionBuilders)
         {
             completionBuilders = null;
 
@@ -291,7 +291,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
             try
             {
-                completions = suggestionProvider.GetNativeSuggestionItems(bindingType);
+                completions = suggestionProvider.GetNativeSuggestionItems(stepDefinitionType);
             }
             catch(Exception)
             {

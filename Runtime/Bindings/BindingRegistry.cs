@@ -1,205 +1,71 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using TechTalk.SpecFlow.ErrorHandling;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public enum BindingEvent
+    public interface IBindingRegistry
     {
-        TestRunStart,
-        TestRunEnd,
-        FeatureStart,
-        FeatureEnd,
-        ScenarioStart,
-        ScenarioEnd,
-        BlockStart,
-        BlockEnd,
-        StepStart,
-        StepEnd
-    }
+        bool Ready { get; set; }
 
-    public interface IBindingRegistry : IEnumerable<StepDefinitionBinding>
-    {
-        void BuildBindingsFromAssembly(Assembly assembly);
-        List<IHookBinding> GetEvents(BindingEvent bindingEvent);
-        ICollection<StepTransformationBinding> StepTransformations { get; }
+        IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null);
+        IEnumerable<IHookBinding> GetHooks(HookType bindingEvent);
+        IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations();
+
+        void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding);
+        void RegisterHookBinding(IHookBinding hookBinding);
+        void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding);
     }
 
     internal class BindingRegistry : IBindingRegistry
     {
-        private readonly IErrorProvider errorProvider;
-        private readonly IBindingFactory bindingFactory;
+        private readonly List<IStepDefinitionBinding> stepDefinitions = new List<IStepDefinitionBinding>();
+        private readonly List<IStepArgumentTransformationBinding> stepArgumentTransformations = new List<IStepArgumentTransformationBinding>();
+        private readonly Dictionary<HookType, List<IHookBinding>> hooks = new Dictionary<HookType, List<IHookBinding>>();
 
-        private readonly List<StepDefinitionBinding> stepBindings = new List<StepDefinitionBinding>();
-        private readonly List<StepTransformationBinding> stepTransformations = new List<StepTransformationBinding>();
-        private readonly Dictionary<BindingEvent, List<IHookBinding>> eventBindings = new Dictionary<BindingEvent, List<IHookBinding>>();
+        public bool Ready { get; set; }
 
-        public BindingRegistry(IErrorProvider errorProvider, IBindingFactory bindingFactory)
+        public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText)
         {
-            this.errorProvider = errorProvider;
-            this.bindingFactory = bindingFactory;
+            //TODO: later optimize to return step definitions that has a chance to match to stepText
+            return stepDefinitions.Where(sd => sd.StepDefinitionType == stepDefinitionType);
         }
 
-        public void BuildBindingsFromAssembly(Assembly assembly)
-        {
-            foreach (Type type in assembly.GetTypes())
-            {
-                BindingAttribute bindingAttr = (BindingAttribute)Attribute.GetCustomAttribute(type, typeof (BindingAttribute));
-                if (bindingAttr == null)
-                    continue;
-
-                BuildBindingsFromType(type);
-            }
-        }
-
-        internal void BuildBindingsFromType(Type type)
-        {
-            foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-            {
-                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(StepDefinitionBaseAttribute));
-                if (scenarioStepAttrs != null)
-                    foreach (StepDefinitionBaseAttribute scenarioStepAttr in scenarioStepAttrs)
-                    {
-                        BuildStepBindingFromMethod(method, scenarioStepAttr);
-                    }
-
-                var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(HookAttribute));
-                if (bindingEventAttrs != null)
-                    foreach (HookAttribute bindingEventAttr in bindingEventAttrs)
-                    {
-                        BuildEventBindingFromMethod(method, bindingEventAttr);
-                    }
-
-                var stepTransformationAttrs = Attribute.GetCustomAttributes(method, typeof(StepArgumentTransformationAttribute));
-                if (stepTransformationAttrs != null)
-                    foreach (StepArgumentTransformationAttribute stepTransformationAttr in stepTransformationAttrs)
-                    {
-                        BuildStepTransformationFromMethod(method, stepTransformationAttr);
-                    }
-            }
-        }
-
-        public List<IHookBinding> GetEvents(BindingEvent bindingEvent)
+        private List<IHookBinding> GetHookList(HookType bindingEvent)
         {
             List<IHookBinding> list;
-            if (!eventBindings.TryGetValue(bindingEvent, out list))
+            if (!hooks.TryGetValue(bindingEvent, out list))
             {
                 list = new List<IHookBinding>();
-                eventBindings.Add(bindingEvent, list);
+                hooks.Add(bindingEvent, list);
             }
 
             return list;
         }
 
-        public ICollection<StepTransformationBinding> StepTransformations 
-        { 
-            get { return stepTransformations; }
+        public IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
+        {
+            return GetHookList(bindingEvent);
         }
 
-        private void BuildEventBindingFromMethod(MethodInfo method, HookAttribute hookAttr)
+        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
         {
-            CheckEventBindingMethod(hookAttr.Event, method);
-
-            ApplyForScope(method,
-                          scope =>
-                              {
-                                  var eventBinding = bindingFactory.CreateEventBinding(method, scope);
-                                  GetEvents(hookAttr.Event).Add(eventBinding);
-                              },
-                          hookAttr.Tags == null
-                              ? null
-                              : hookAttr.Tags.Select(tag => new ScopeAttribute { Tag = tag })
-                );
+            return stepArgumentTransformations;
         }
 
-        private void CheckEventBindingMethod(BindingEvent bindingEvent, MethodInfo method)
+        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
         {
-            if (!IsScenarioSpecificEvent(bindingEvent) &&
-                !method.IsStatic)
-                throw errorProvider.GetNonStaticEventError(method);
-
-            //TODO: check parameters, etc.
+            stepDefinitions.Add(stepDefinitionBinding);
         }
 
-        private bool IsScenarioSpecificEvent(BindingEvent bindingEvent)
+        public void RegisterHookBinding(IHookBinding hookBinding)
         {
-            return
-                bindingEvent == BindingEvent.ScenarioStart ||
-                bindingEvent == BindingEvent.ScenarioEnd ||
-                bindingEvent == BindingEvent.BlockStart ||
-                bindingEvent == BindingEvent.BlockEnd ||
-                bindingEvent == BindingEvent.StepStart ||
-                bindingEvent == BindingEvent.StepEnd;
+            GetHookList(hookBinding.HookType).Add(hookBinding);
         }
 
-        private void ApplyForScope(MethodInfo method, Action<BindingScope> action, IEnumerable<ScopeAttribute> additionalScopeAttrs = null)
+        public void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
         {
-            var scopeAttrs =
-                Attribute.GetCustomAttributes(method.ReflectedType, typeof(ScopeAttribute)).Concat(
-                Attribute.GetCustomAttributes(method, typeof(ScopeAttribute))).Cast<ScopeAttribute>();
-
-            if (additionalScopeAttrs != null)
-                scopeAttrs = scopeAttrs.Concat(additionalScopeAttrs);
-
-            if (scopeAttrs.Any())
-            {
-                foreach (var scopeAttr in scopeAttrs)
-                {
-                    action(CreateScope(scopeAttr));
-                }
-            }
-            else
-            {
-                action(null);
-            }
-        }
-
-        private void BuildStepBindingFromMethod(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr)
-        {
-            CheckStepBindingMethod(method);
-            ApplyForScope(method, scope => AddStepBinding(method, stepDefinitionBaseAttr, scope));
-        }
-
-        private BindingScope CreateScope(ScopeAttribute scopeAttr)
-        {
-            if (scopeAttr.Tag == null && scopeAttr.Feature == null && scopeAttr.Scenario == null)
-                return null;
-
-            return new BindingScope(scopeAttr.Tag, scopeAttr.Feature, scopeAttr.Scenario);
-        }
-
-        private void AddStepBinding(MethodInfo method, StepDefinitionBaseAttribute stepDefinitionBaseAttr, BindingScope stepScope)
-        {
-            foreach (var bindingType in stepDefinitionBaseAttr.Types)
-            {
-                var stepBinding = bindingFactory.CreateStepBinding(bindingType, stepDefinitionBaseAttr.Regex, method, stepScope);
-                stepBindings.Add(stepBinding);
-            }
-        }
-
-        private void BuildStepTransformationFromMethod(MethodInfo method, StepArgumentTransformationAttribute argumentTransformationAttribute)
-        {
-            var stepTransformationBinding = bindingFactory.CreateStepArgumentTransformation(argumentTransformationAttribute.Regex, method);
-
-            stepTransformations.Add(stepTransformationBinding);
-        }
-
-        private void CheckStepBindingMethod(MethodInfo method)
-        {
-            //TODO: check parameters, etc.
-        }
-
-        public IEnumerator<StepDefinitionBinding> GetEnumerator()
-        {
-            return stepBindings.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            stepArgumentTransformations.Add(stepArgumentTransformationBinding);
         }
     }
 }

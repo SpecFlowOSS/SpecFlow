@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 using BoDi;
@@ -8,13 +9,22 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
 using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
+    internal enum CommentUncommentAction
+    {
+        Comment,
+        Uncomment,
+        Toggle
+    }
+
     internal class EditorCommands
     {
         private readonly IObjectContainer container;
@@ -28,7 +38,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             this.textView = textView;
         }
 
-        private IBindingMatchService GetBindingMatchService()
+        private IStepDefinitionMatchService GetBindingMatchService()
         {
             var bindingMatchService = languageService.ProjectScope.BindingMatchService;
             if (bindingMatchService == null)
@@ -68,17 +78,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 return true;
             }
 
-            IEnumerable<StepBindingNew> candidatingBindings;
-            var binding = bindingMatchService.GetBestMatchingBinding(step, out candidatingBindings);
+            List<BindingMatch> candidatingMatches;
+            StepDefinitionAmbiguityReason ambiguityReason;
+            CultureInfo bindingCulture = languageService.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? step.StepContext.Language;
+            var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
+            var binding = match.StepBinding;
 
-            if (binding == null)
+            if (!match.Success)
             {
-                if (candidatingBindings.Any())
+                if (candidatingMatches.Any())
                 {
-                    string bindingsText = string.Join(Environment.NewLine, candidatingBindings.Select(b => b.Method.GetShortDisplayText()));
+                    string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.StepBinding.Method.GetShortDisplayText()));
                     MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
                         + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
-                    binding = candidatingBindings.First();
+                    binding = candidatingMatches.First().StepBinding;
                 }
                 else
                 {
@@ -95,7 +108,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             }
 
             var method = binding.Method;
-            var codeFunction = new VsStepSuggestionBindingCollector().FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
+            var codeFunction = new VsBindingMethodLocator().FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
 
             if (codeFunction != null)
             {
@@ -200,7 +213,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     indent = line.Substring(0, line.IndexOf('|'));
 
                 var cells = GetCells(line);
-                for (int i = 0; i < cells.Length; i++)
+                for (int i = 0; i < Math.Min(cells.Length, widths.Length); i++)
                 {
                     int cellLength = cells[i].Trim().Length;
                     widths[i] = Math.Max(widths[i], cellLength);
@@ -224,7 +237,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     stringBuilder.Append(padding);
                     var trimmedCell = cells[i].Trim();
                     stringBuilder.Append(trimmedCell);
-                    stringBuilder.Append(' ', widths[i] - trimmedCell.Length);
+                    if (i < widths.Length)
+                        stringBuilder.Append(' ', widths[i] - trimmedCell.Length);
                     stringBuilder.Append(padding);
                     stringBuilder.Append('|');
                 }
@@ -246,44 +260,67 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             return line.Split('|');
         }
 
-        public bool RunScenarios()
+        public bool RunScenarios(TestRunnerTool? runnerTool = null)
         {
             var engine = container.Resolve<ITestRunnerEngine>();
-            return engine.RunFromEditor(languageService, false);
+            return engine.RunFromEditor(languageService, false, runnerTool);
         }
 
-        public bool DebugScenarios()
+        public bool DebugScenarios(TestRunnerTool? runnerTool = null)
         {
             var engine = container.Resolve<ITestRunnerEngine>();
-            return engine.RunFromEditor(languageService, true);
+            return engine.RunFromEditor(languageService, true, runnerTool);
         }
 
         /// <summary>
         /// Handle the Comment Selection and Uncomment Selection editor commands.  These commands comment/uncomment
         /// the currently selected lines.
         /// </summary>
-        /// <param name="isCommentSelection">The requested command is Comment Selection, otherwise Uncomment Selection</param>
+        /// <param name="action">The requested command is Comment Selection, otherwise Uncomment Selection</param>
         /// <returns>True if the operation succeeds to comment/uncomment the selected lines, false otherwise</returns>
-        public bool CommentOrUncommentSelection(bool isCommentSelection)
+        public bool CommentOrUncommentSelection(CommentUncommentAction action)
         {
             var selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
-            var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            var selectionEndLine = GetSelectionEndLine(selectionStartLine);
 
-            if (isCommentSelection)
+            switch (action)
             {
-                CommentSelection(selectionStartLine, selectionEndLine);
-            }
-            else
-            {
-                UncommentSelection(selectionStartLine, selectionEndLine);
+                case CommentUncommentAction.Comment:
+                    CommentSelection(selectionStartLine, selectionEndLine);
+                    break;
+                case CommentUncommentAction.Uncomment:
+                    UncommentSelection(selectionStartLine, selectionEndLine);
+                    break;
+                case CommentUncommentAction.Toggle:
+                    if (IsCommented(selectionStartLine))
+                        UncommentSelection(selectionStartLine, selectionEndLine);
+                    else
+                        CommentSelection(selectionStartLine, selectionEndLine);
+                    break;
             }
 
             // Select the entirety of the lines that were just commented or uncommented, have to update start/end lines due to snapshot changes
             selectionStartLine = textView.Selection.Start.Position.GetContainingLine();
-            selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            selectionEndLine = GetSelectionEndLine(selectionStartLine);
             textView.Selection.Select(new SnapshotSpan(selectionStartLine.Start, selectionEndLine.End), false);
 
             return true;
+        }
+
+        private bool IsCommented(ITextSnapshotLine line)
+        {
+            return line.GetText().TrimStart().StartsWith("#");
+        }
+
+        private ITextSnapshotLine GetSelectionEndLine(ITextSnapshotLine selectionStartLine)
+        {
+            var selectionEndLine = textView.Selection.End.Position.GetContainingLine();
+            // if the selection ends exactly at the beginning of a new line (ie line select), we do not comment out the last line
+            if (selectionStartLine.LineNumber != selectionEndLine.LineNumber && selectionEndLine.Start.Equals(textView.Selection.End.Position))
+            {
+                selectionEndLine = selectionEndLine.Snapshot.GetLineFromLineNumber(selectionEndLine.LineNumber - 1);
+            }
+            return selectionEndLine;
         }
 
         private void UncommentSelection(ITextSnapshotLine startLine, ITextSnapshotLine endLine)

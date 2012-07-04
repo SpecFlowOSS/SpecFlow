@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EnvDTE;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 {
@@ -38,6 +39,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 }
             }
             return result;
+        }
+
+        public TValue Get(TSource source)
+        {
+            TValue result;
+            var key = getKey(source);
+            if (!innerDictionary.TryGetValue(key, out result))
+                return null;
+
+            return result;
+        }
+
+        public TValue Pop(TSource source)
+        {
+            TValue result;
+            var key = getKey(source);
+            if (innerDictionary.TryGetValue(key, out result))
+            {
+                lock (this)
+                {
+                    if (innerDictionary.TryGetValue(key, out result))
+                    {
+                        System.Threading.Thread.MemoryBarrier();
+                        innerDictionary.Remove(key);
+                        return result;
+                    }
+                }
+            }
+            return null;
         }
 
         public void Clear()

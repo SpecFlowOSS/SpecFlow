@@ -52,21 +52,16 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="BatchGenerator.cs" />
     <Compile Include="Configuration\GeneratorInfo.cs" />
     <Compile Include="Configuration\GeneratorConfiguration.cs" />
     <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
     <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
-    <Compile Include="Configuration\SpecFlowProjectConfigurationLoaderWithoutPlugins.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
-    <Compile Include="Configuration\RuntimeConfiguration.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />
     <Compile Include="RemotableGeneratorClass.cs" />
