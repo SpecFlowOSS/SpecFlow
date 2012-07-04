@@ -10,6 +10,7 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.IdeIntegration.Bindings;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using VSLangProj;
@@ -85,12 +86,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private static readonly string[] bindingFileExtensions = new[] {"cs", "vb" };
 
         private Dictionary<BindingAssemblyInfo, VsProjectFilesTracker> filesTracker;
-        private readonly VsStepSuggestionBindingCollector stepSuggestionBindingCollector;
+        private readonly VsBindingRegistryBuilder stepSuggestionBindingCollector;
         private VsProjectReferencesTracker projectReferencesTracker;
 
         public BindingFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
-            stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector();
+            stepSuggestionBindingCollector = new VsBindingRegistryBuilder();
         }
 
         private IEnumerable<BindingAssemblyInfo> bindingAssemblies
@@ -223,7 +224,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (!bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase)))
                     return false;
 
-                return VsxHelper.GetClasses(projectItem).Any(VsStepSuggestionBindingCollector.IsBindingClass);
+                return VsxHelper.GetClasses(projectItem).Any(VsBindingRegistryBuilder.IsPotentialBindingClass);
             }
             catch (Exception)
             {

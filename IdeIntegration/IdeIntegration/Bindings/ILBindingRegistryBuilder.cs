@@ -95,8 +95,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
                        };
         }
 
-
-
         private IBindingSourceAttributeValueProvider CreateAttributeValue(CustomAttributeArgument customAttributeArgument)
         {
             return new BindingSourceAttributeValueProvider(customAttributeArgument.Value);

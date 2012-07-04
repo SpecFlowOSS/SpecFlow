@@ -30,9 +30,14 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             return true;
         }
 
-        public bool PreFilterType(IEnumerable<string> attributeTypeNames)
+        public static bool IsPotentialBindingClass(IEnumerable<string> attributeTypeNames)
         {
             return attributeTypeNames.Any(attr => attr.Equals(BINDING_ATTR, StringComparison.InvariantCulture));
+        }
+
+        public bool PreFilterType(IEnumerable<string> attributeTypeNames)
+        {
+            return IsPotentialBindingClass(attributeTypeNames);
         }
 
         public bool ProcessType(BindingSourceType bindingSourceType)

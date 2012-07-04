@@ -179,6 +179,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
@@ -190,10 +191,10 @@
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
+    <Compile Include="Bindings\Discovery\VsBindingMethodLocator.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
     <Compile Include="LanguageService\ProjectFilesTracker.cs" />
     <Compile Include="LanguageService\VsBindingReflectionFactory.cs" />
-    <Compile Include="LanguageService\VsStepSuggestionBindingCollector.cs" />
     <Compile Include="LanguageService\VsStepSuggestionProvider.cs" />
     <Compile Include="Commands\MenuCommandHandler.cs" />
     <Compile Include="SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs" />
