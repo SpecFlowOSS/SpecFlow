@@ -14,6 +14,8 @@ New Features:
 + ReSharper: editor features (toggle comment, go to step definition, run/debug scenarios) can be used with R# keyboard shortcuts
 + MsTest: Support for MSTest's [Owner] and [WorkItem] attributes with tags like @owner:foo @workitem:123 (Issue 162, Pull 161)
 + NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
++ VS2010: Integration can track files changed outside of VS (e.g. updated by a SCC pull)
++ VS2010: Collect bindings from assembly references
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
