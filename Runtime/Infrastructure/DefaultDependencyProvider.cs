@@ -1,5 +1,6 @@
 ﻿using BoDi;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
@@ -26,7 +27,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
-            container.RegisterTypeAs<BindingRegistry, IRuntimeBindingRegistryBuilder>();
+            container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
+            container.RegisterTypeAs<RuntimeBindingRegistryBuilder, IRuntimeBindingRegistryBuilder>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();

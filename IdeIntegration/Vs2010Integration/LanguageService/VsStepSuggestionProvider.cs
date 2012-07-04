@@ -281,7 +281,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public IEnumerable<IHookBinding> GetHooks(BindingEvent bindingEvent)
+        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterHookBinding(IHookBinding hookBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
         {
             return Enumerable.Empty<IHookBinding>(); //not used in VS
         }

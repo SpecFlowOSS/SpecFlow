@@ -56,12 +56,6 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Bindings\BindingSourceAttribute.cs" />
-    <Compile Include="Bindings\BindingSourceMethod.cs" />
-    <Compile Include="Bindings\BindingSourceProcessor.cs" />
-    <Compile Include="Bindings\BindingSourceType.cs" />
-    <Compile Include="Bindings\IBindingSourceAttributeValueProvider.cs" />
-    <Compile Include="Bindings\IBindingSourceProcessor.cs" />
     <Compile Include="Bindings\IdeBindingSourceProcessor.cs" />
     <Compile Include="Bindings\ILBindingRegistryBuilder.cs" />
     <Compile Include="Generator\FileBasedSpecFlowConfigurationReader.cs" />

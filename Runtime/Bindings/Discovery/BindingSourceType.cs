@@ -1,6 +1,6 @@
 using TechTalk.SpecFlow.Bindings.Reflection;
 
-namespace TechTalk.SpecFlow.IdeIntegration.Bindings
+namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public class BindingSourceType
     {

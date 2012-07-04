@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
@@ -70,7 +71,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             foreach (Assembly assembly in bindingAssemblies)
             {
-                bindingRegistryBuilder.BuildBindingsFromAssembly(bindingRegistry, assembly);
+                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
             }
             bindingRegistry.Ready = true;
 
@@ -92,7 +93,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void OnTestRunnerStart()
         {
-            FireEvents(BindingEvent.TestRunStart);
+            FireEvents(HookType.BeforeTestRun);
         }
 
         private bool testRunnerEndExecuted = false;
@@ -103,7 +104,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 return;
 
             testRunnerEndExecuted = true;
-            FireEvents(BindingEvent.TestRunEnd);
+            FireEvents(HookType.AfterTestRun);
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)
@@ -126,7 +127,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
             contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
-            FireEvents(BindingEvent.FeatureStart);
+            FireEvents(HookType.BeforeFeature);
         }
 
         public void OnFeatureEnd()
@@ -138,7 +139,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 contextManager.FeatureContext == null)
                 return;
                 
-            FireEvents(BindingEvent.FeatureEnd);
+            FireEvents(HookType.AfterFeature);
 
             if (runtimeConfiguration.TraceTimings)
             {
@@ -153,7 +154,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             contextManager.InitializeScenarioContext(scenarioInfo);
-            FireScenarioEvents(BindingEvent.ScenarioStart);
+            FireScenarioEvents(HookType.BeforeScenario);
         }
 
         public void OnAfterLastStep()
@@ -201,7 +202,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void OnScenarioEnd()
         {
-            FireScenarioEvents(BindingEvent.ScenarioEnd);
+            FireScenarioEvents(HookType.AfterScenario);
             contextManager.CleanupScenarioContext();
         }
 
@@ -210,7 +211,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(BindingEvent.BlockStart); 
+            FireScenarioEvents(HookType.BeforeScenarioBlock); 
         }
 
         protected virtual void OnBlockEnd(ScenarioBlock block)
@@ -218,26 +219,26 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (block == ScenarioBlock.None)
                 return;
 
-            FireScenarioEvents(BindingEvent.BlockEnd);
+            FireScenarioEvents(HookType.AfterScenarioBlock);
         }
 
         protected virtual void OnStepStart()
         {
-            FireScenarioEvents(BindingEvent.StepStart); 
+            FireScenarioEvents(HookType.BeforeStep); 
         }
 
         protected virtual void OnStepEnd()
         {
-            FireScenarioEvents(BindingEvent.StepEnd);
+            FireScenarioEvents(HookType.AfterStep);
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(BindingEvent bindingEvent)
+        private void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
 
-        private void FireEvents(BindingEvent bindingEvent)
+        private void FireEvents(HookType bindingEvent)
         {
             var stepContext = contextManager.GetStepContext();
 

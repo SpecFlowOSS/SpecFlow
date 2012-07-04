@@ -1,4 +1,4 @@
-namespace TechTalk.SpecFlow.IdeIntegration.Bindings
+namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IBindingSourceAttributeValueProvider
     {

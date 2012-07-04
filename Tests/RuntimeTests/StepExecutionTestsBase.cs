@@ -6,6 +6,7 @@ using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -119,9 +120,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
                         container.RegisterTypeAs<DummyTestTracer, ITestTracer>();
                         container.RegisterInstanceAs(ContextManagerStub);
 
-                        var bindingRegistry = (BindingRegistry) container.Resolve<IBindingRegistry>();
+                        var builder = (RuntimeBindingRegistryBuilder)container.Resolve<IRuntimeBindingRegistryBuilder>();
                         foreach (var bindingType in bindingTypes)
-                            bindingRegistry.BuildBindingsFromType(bindingType);
+                            builder.BuildBindingsFromType(bindingType);
 
                         if (registerMocks != null)
                             registerMocks(container);

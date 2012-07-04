@@ -29,5 +29,24 @@ namespace TechTalk.SpecFlow.Compatibility
 
             return values.ToArray();
         }
+
+        public static string[] GetNames(Type enumType)
+        {
+            if (!enumType.IsEnum)
+            {
+                throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
+            }
+
+            FieldInfo[] fiArray = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
+            return fiArray.Select(fi => fi.Name).ToArray();
+        }
+    }
+
+    internal static class TypeHelper
+    {
+        public static bool IsNested(Type type)
+        {
+            return type.DeclaringType != null;
+        }
     }
 }

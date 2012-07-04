@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.IdeIntegration.Bindings
+namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IBindingSourceProcessor
     {
@@ -13,5 +13,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 
         bool ProcessType(BindingSourceType bindingSourceType);
         void ProcessMethod(BindingSourceMethod bindingSourceMethod);
+        void ProcessTypeDone();
     }
 }

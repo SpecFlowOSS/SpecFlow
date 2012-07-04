@@ -1,7 +1,8 @@
+using System.Linq;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
-namespace TechTalk.SpecFlow.IdeIntegration.Bindings
+namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public class BindingSourceAttribute
     {
@@ -12,9 +13,18 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 
         public TValue TryGetAttributeValue<TValue>(int index, TValue defaultValue = default(TValue))
         {
-            if (AttributeValues.Length >= index)
+            if (AttributeValues.Length > index)
                 return AttributeValues[index].GetValue<TValue>();
             return defaultValue;
+        }
+
+        public TValue[] TryGetParamsAttributeValue<TValue>(int index, TValue[] defaultValue = null)
+        {
+            if (AttributeValues.Length <= index)
+                return defaultValue;
+
+            return AttributeValues[index].GetValue<object>() as TValue[] ??
+                   AttributeValues.Skip(index).OfType<TValue>().ToArray();
         }
 
         public TValue TryGetAttributeValue<TValue>(string name, TValue defaultValue = default(TValue))

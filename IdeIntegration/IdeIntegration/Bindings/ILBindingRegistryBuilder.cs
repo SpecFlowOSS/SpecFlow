@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Bindings
@@ -28,6 +29,8 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
                 {
                     bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodDefinition, bindingSourceType, bindingSourceProcessor));
                 }
+
+                bindingSourceProcessor.ProcessTypeDone();
 // ReSharper restore PossibleMultipleEnumeration
             }
         }
