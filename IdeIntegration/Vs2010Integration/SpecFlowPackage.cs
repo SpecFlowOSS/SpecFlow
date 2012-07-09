@@ -9,6 +9,7 @@ using System.Text;
 using BoDi;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 
@@ -61,6 +62,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             base.Initialize();
 
             Container = VsContainerBuilder.CreateContainer(this);
+
+            InstallServices installServices = Container.Resolve<InstallServices>();
+            installServices.OnPackageLoad(IdeIntegration.Install.IdeIntegration.VisualStudio2010);
 
             OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (menuCommandService != null)

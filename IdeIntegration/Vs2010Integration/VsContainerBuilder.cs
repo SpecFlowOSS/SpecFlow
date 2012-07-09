@@ -7,6 +7,7 @@ using BoDi;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
@@ -50,6 +51,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         {
             var serviceProvider = container.Resolve<IServiceProvider>();
             RegisterVsDependencies(container, serviceProvider);
+
+            container.RegisterTypeAs<InstallServices, InstallServices>();
+            container.RegisterTypeAs<ExternalBrowserGuidanceNotificationService, IGuidanceNotificationService>();
 
             container.RegisterTypeAs<IntegrationOptionsProvider, IIntegrationOptionsProvider>();
             container.RegisterInstanceAs<IIdeTracer>(VsxHelper.ResolveMefDependency<IVisualStudioTracer>(serviceProvider));
