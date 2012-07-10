@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TESTINSTALLSERVICES</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -64,7 +64,12 @@
     <Compile Include="Generator\IdeSingleFileGenerator.cs" />
     <Compile Include="Generator\IGeneratorServices.cs" />
     <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
-    <Compile Include="Install\FileAssociationDetector.cs" />
+    <Compile Include="Install\ExternalBrowserGuidanceNotificationService.cs" />
+    <Compile Include="Install\IFileAssociationDetector.cs" />
+    <Compile Include="Install\IStatusAccessor.cs" />
+    <Compile Include="Install\RegistryStatusAccessor.cs" />
+    <Compile Include="Install\SpecFlowInstallationStatus.cs" />
+    <Compile Include="Install\WindowsFileAssociationDetector.cs" />
     <Compile Include="Install\IdeIntegration.cs" />
     <Compile Include="Install\IGuidanceNotificationService.cs" />
     <Compile Include="Install\InstallServices.cs" />
@@ -92,6 +97,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Installer\Resources\gherkin.ico">
+      <Link>gherkin.ico</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

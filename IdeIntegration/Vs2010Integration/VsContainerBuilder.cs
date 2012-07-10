@@ -54,6 +54,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             container.RegisterTypeAs<InstallServices, InstallServices>();
             container.RegisterTypeAs<ExternalBrowserGuidanceNotificationService, IGuidanceNotificationService>();
+            container.RegisterTypeAs<WindowsFileAssociationDetector, IFileAssociationDetector>();
+            container.RegisterTypeAs<RegistryStatusAccessor, IStatusAccessor>();
 
             container.RegisterTypeAs<IntegrationOptionsProvider, IIntegrationOptionsProvider>();
             container.RegisterInstanceAs<IIdeTracer>(VsxHelper.ResolveMefDependency<IVisualStudioTracer>(serviceProvider));

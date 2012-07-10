@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using Microsoft.Win32;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Install
 {
-    internal class SpecFlowInstallationStatus
-    {
-        public bool IsInstalled { get { return InstalledVersion != null; } }
-        public Version InstalledVersion { get; set; }
-        public DateTime? InstallDate { get; set; }
-        public DateTime? LastUsedDate { get; set; }
-        public int UsageDays { get; set; }
-        public int UserLevel { get; set; }
-    }
-
     public enum GuidanceNotification
     {
         AfterInstall = 1,
@@ -33,25 +24,24 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
 
         private readonly IIdeTracer tracer;
         private readonly IGuidanceNotificationService notificationService;
-        private readonly string regPath;
+        private readonly IFileAssociationDetector fileAssociationDetector;
+        private readonly IStatusAccessor statusAccessor;
 
         public IdeIntegration IdeIntegration { get; private set; }
-        public Version CurrentVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
+        public static Version CurrentVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
 
-        public bool IsDevBuild
+        internal static bool IsDevBuild
         {
-            get { return CurrentVersion.Equals(new Version(1, 0)); }
+            get { return CurrentVersion.Equals(new Version(1, 0, 0, 0)); }
         }
 
-        public InstallServices(IGuidanceNotificationService notificationService, IIdeTracer tracer)
+        public InstallServices(IGuidanceNotificationService notificationService, IIdeTracer tracer, IFileAssociationDetector fileAssociationDetector, IStatusAccessor statusAccessor)
         {
             this.notificationService = notificationService;
             this.tracer = tracer;
+            this.fileAssociationDetector = fileAssociationDetector;
+            this.statusAccessor = statusAccessor;
             IdeIntegration = IdeIntegration.Unknown;
-
-            regPath = REG_PATH;
-            if (IsDevBuild)
-                regPath += "Dev";
         }
 
         public void OnPackageLoad(IdeIntegration ideIntegration)
@@ -60,6 +50,15 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
 
             if (IsDevBuild)
                 tracer.Trace("Running on 'dev' version", this);
+
+
+            var isAssociated = fileAssociationDetector.IsAssociated();
+            if (isAssociated != null && !isAssociated.Value)
+            {
+                tracer.Trace(".feature is not associated to SpecFlow", this);
+                if (!fileAssociationDetector.SetAssociation())
+                    tracer.Trace("Unable to associate .feature to SpecFlow", this);
+            }
 
             var today = DateTime.Today;
             var status = GetInstallStatus();
@@ -130,89 +129,14 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
             return notificationService.ShowPage(url);
         }
 
-        private const string REG_PATH = @"Software\TechTalk\SpecFlow";
-
         private void UpdateStatus(SpecFlowInstallationStatus status)
         {
-            using (var key = Registry.CurrentUser.CreateSubKey(REG_PATH, RegistryKeyPermissionCheck.ReadWriteSubTree))
-            {
-                if (key == null)
-                    return;
-
-                key.SetValue("version", status.InstalledVersion);
-                key.SetValue("installDate", SerializeDate(status.InstallDate));
-                key.SetValue("lastUsedDate", SerializeDate(status.LastUsedDate));
-                key.SetValue("usageDays", status.UsageDays);
-                key.SetValue("userLevel", status.UserLevel);
-            }
+            statusAccessor.UpdateStatus(status);
         }
 
         private SpecFlowInstallationStatus GetInstallStatus()
         {
-            var status = new SpecFlowInstallationStatus();
-
-            using (var key = Registry.CurrentUser.OpenSubKey(REG_PATH, RegistryKeyPermissionCheck.ReadSubTree))
-            {
-                if (key == null)
-                    return status;
-
-                status.InstalledVersion = ReadStringValue(key, "version", s => new Version(s));
-                status.InstallDate = ReadIntValue(key, "installDate", DeserializeDate);
-                status.LastUsedDate = ReadIntValue(key, "lastUsedDate", DeserializeDate);
-                status.UsageDays = ReadIntValue(key, "usageDays", i => i);
-                status.UserLevel = ReadIntValue(key, "userLevel", i => i);
-            }
-
-            return status;
+            return statusAccessor.GetInstallStatus();
         }
-
-        private T ReadStringValue<T>(RegistryKey key, string name, Func<string, T> converter)
-        {
-            try
-            {
-                var value = key.GetValue(name) as string;
-                if (string.IsNullOrEmpty(value))
-                    return default(T);
-                return converter(value);
-            }
-            catch(Exception ex)
-            {
-                tracer.Trace("Registry read error: {0}", this, ex);
-                return default(T);
-            }
-        }
-
-        private T ReadIntValue<T>(RegistryKey key, string name, Func<int, T> converter)
-        {
-            try
-            {
-                var value = key.GetValue(name);
-                if (value == null || !(value is int))
-                    return default(T);
-                return converter((int)value);
-            }
-            catch(Exception ex)
-            {
-                tracer.Trace("Registry read error: {0}", this, ex);
-                return default(T);
-            }
-        }
-
-        private readonly DateTime magicDate = new DateTime(2009, 9, 11); //when SpecFlow has born
-        private DateTime? DeserializeDate(int days)
-        {
-            if (days <= 0)
-                return null;
-            return magicDate.AddDays(days);
-        }
-
-        private int SerializeDate(DateTime? dateTime)
-        {
-            if (dateTime == null)
-                return 0;
-
-            return (int)dateTime.Value.Date.Subtract(magicDate).TotalDays;
-        }
-
     }
 }
