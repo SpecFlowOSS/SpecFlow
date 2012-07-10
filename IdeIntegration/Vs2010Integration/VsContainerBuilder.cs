@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Install;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
@@ -53,7 +54,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             RegisterVsDependencies(container, serviceProvider);
 
             container.RegisterTypeAs<InstallServices, InstallServices>();
-            container.RegisterTypeAs<ExternalBrowserGuidanceNotificationService, IGuidanceNotificationService>();
+            container.RegisterTypeAs<VsBrowserGuidanceNotificationService, IGuidanceNotificationService>();
             container.RegisterTypeAs<WindowsFileAssociationDetector, IFileAssociationDetector>();
             container.RegisterTypeAs<RegistryStatusAccessor, IStatusAccessor>();
 

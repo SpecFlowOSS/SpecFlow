@@ -190,6 +190,7 @@
     <Compile Include="EditorCommands\EditorCommands.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
+    <Compile Include="Install\VsBrowserGuidanceNotificationService.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
     <Compile Include="Bindings\Discovery\VsBindingMethodLocator.cs" />
     <Compile Include="LanguageService\ProjectFeatureFilesTracker.cs" />
