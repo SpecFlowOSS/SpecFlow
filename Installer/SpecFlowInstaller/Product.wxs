@@ -77,7 +77,7 @@
         </Feature>
       </Feature>
       <Feature Id="Feature_VS2010" Level="1" AllowAdvertise="no"
-               Title="Visual Studio 2010 Integration" Description="Visual Studio 2010 Integration">
+               Title="Visual Studio 2010 Integration" Description="Visual Studio 2010 Integration - consider installing it from Visual Studio Gallery!">
         <Condition Level="0"> NOT VS2010DEVENV </Condition>
         <ComponentGroupRef Id="CompGroup_VS2010" />
       </Feature>
