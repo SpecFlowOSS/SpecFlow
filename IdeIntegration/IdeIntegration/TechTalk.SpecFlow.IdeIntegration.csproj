@@ -65,6 +65,7 @@
     <Compile Include="Generator\IGeneratorServices.cs" />
     <Compile Include="Generator\IRemoteAppDomainTestGeneratorFactory.cs" />
     <Compile Include="Install\ExternalBrowserGuidanceNotificationService.cs" />
+    <Compile Include="Install\GuidanceNotification.cs" />
     <Compile Include="Install\IFileAssociationDetector.cs" />
     <Compile Include="Install\IStatusAccessor.cs" />
     <Compile Include="Install\RegistryStatusAccessor.cs" />

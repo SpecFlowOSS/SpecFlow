@@ -7,15 +7,6 @@ using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Install
 {
-    public enum GuidanceNotification
-    {
-        AfterInstall = 1,
-        Upgrade = 2,
-        AfterRampUp = 100,
-        Experienced = 200,
-        Veteran = 300
-    }
-
     public class InstallServices
     {
         private const int AFTER_RAMP_UP_DAYS = 10;
@@ -124,7 +115,13 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
         private bool ShowNotification(GuidanceNotification guidanceNotification)
         {
             int linkid = (int)guidanceNotification + (int)IdeIntegration;
-            string url = string.Format("http://go.specflow.org/g{0}", linkid);
+            string url = string.Format("http://go.specflow.org/g{0}{1}{2}", linkid, CurrentVersion.Major, CurrentVersion.Minor);
+
+            if (IsDevBuild)
+            {
+                tracer.Trace("Showing notification: {0}", this, url);
+                url += "-dev";
+            }
 
             return notificationService.ShowPage(url);
         }
