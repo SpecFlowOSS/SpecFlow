@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             return result.ToString();
         }
 
-        public bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
+        public bool Match(IStepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService)
         {
             return stepDefinitionMatchService.Match(binding, this, bindingCulture, useRegexMatching: includeRegexCheck, useParamMatching: false).Success;
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -51,10 +52,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             runtimeBindingRegistryBuilderStub = new Mock<IRuntimeBindingRegistryBuilder>();
 
             bindingRegistryStub = new Mock<IBindingRegistry>();
-            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.StepStart)).Returns(beforeStepEvents);
-            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.StepEnd)).Returns(afterStepEvents);
-            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.BlockStart)).Returns(beforeScenarioBlockEvents);
-            bindingRegistryStub.Setup(br => br.GetHooks(BindingEvent.BlockEnd)).Returns(afterScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeStep)).Returns(beforeStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterStep)).Returns(afterStepEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenarioBlock)).Returns(beforeScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenarioBlock)).Returns(afterScenarioBlockEvents);
 
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();

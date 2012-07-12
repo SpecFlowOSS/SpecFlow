@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             this.projectScope = projectScope;
         }
 
-        public void AddBinding(StepDefinitionBinding stepBinding)
+        public void AddBinding(IStepDefinitionBinding stepBinding)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public void RemoveBinding(StepDefinitionBinding stepBinding)
+        public void RemoveBinding(IStepDefinitionBinding stepBinding)
         {
             var item = boundStepSuggestions.GetRelatedItems(stepBinding.Regex).FirstOrDefault(it => it.StepBinding == stepBinding);
             if (item == null)

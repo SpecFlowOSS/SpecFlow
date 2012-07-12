@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
     {
         CultureInfo Language { get; }
 
-        bool Match(StepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService);
+        bool Match(IStepDefinitionBinding binding, CultureInfo bindingCulture, bool includeRegexCheck, IStepDefinitionMatchService stepDefinitionMatchService);
         ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get; }
     }
 }

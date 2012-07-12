@@ -136,7 +136,8 @@
     <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
     <Compile Include="AsyncTests\AsyncTestRunnerTestBase.cs" />
     <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
-    <Compile Include="BindingRegistryTest.cs" />
+    <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
+    <Compile Include="BindingSourceProcessorStub.cs" />
     <Compile Include="Infrastructure\PluginTests.cs" />
     <Compile Include="Infrastructure\RuntimeConfigurationExtensions.cs" />
     <Compile Include="Infrastructure\StringConfigProvider.cs" />

@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using System.Linq;
 using TechTalk.SpecFlow.Vs2010Integration.TestRunner;
@@ -110,7 +111,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             }
 
             var method = binding.Method;
-            var codeFunction = new VsStepSuggestionBindingCollector().FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
+            var codeFunction = new VsBindingMethodLocator().FindCodeFunction(((VsProjectScope) languageService.ProjectScope), method);
 
             if (codeFunction != null)
             {

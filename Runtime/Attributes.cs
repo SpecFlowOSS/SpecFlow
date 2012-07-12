@@ -96,10 +96,10 @@ namespace TechTalk.SpecFlow
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class HookAttribute : Attribute
     {
-        internal BindingEvent Event { get; private set; }
+        internal HookType Event { get; private set; }
         public string[] Tags { get; private set; }
 
-        internal HookAttribute(BindingEvent bindingEvent, string[] tags)
+        internal HookAttribute(HookType bindingEvent, string[] tags)
         {
             Event = bindingEvent;
             Tags = tags;
@@ -108,22 +108,22 @@ namespace TechTalk.SpecFlow
 
     public class BeforeTestRunAttribute : HookAttribute
     {
-        public BeforeTestRunAttribute() : base(BindingEvent.TestRunStart, null) {}
+        public BeforeTestRunAttribute() : base(HookType.BeforeTestRun, null) {}
     }
 
     public class AfterTestRunAttribute : HookAttribute
     {
-        public AfterTestRunAttribute() : base(BindingEvent.TestRunEnd, null) { }
+        public AfterTestRunAttribute() : base(HookType.AfterTestRun, null) { }
     }
 
     public class BeforeFeatureAttribute : HookAttribute
     {
-        public BeforeFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureStart, tags) { }
+        public BeforeFeatureAttribute(params string[] tags) : base(HookType.BeforeFeature, tags) { }
     }
 
     public class AfterFeatureAttribute : HookAttribute
     {
-        public AfterFeatureAttribute(params string[] tags) : base(BindingEvent.FeatureEnd, tags) { }
+        public AfterFeatureAttribute(params string[] tags) : base(HookType.AfterFeature, tags) { }
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class BeforeScenarioAttribute : HookAttribute
     {
-        public BeforeScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioStart, tags) { }
+        public BeforeScenarioAttribute(params string[] tags) : base(HookType.BeforeScenario, tags) { }
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class AfterScenarioAttribute : HookAttribute
     {
-        public AfterScenarioAttribute(params string[] tags) : base(BindingEvent.ScenarioEnd, tags) { }
+        public AfterScenarioAttribute(params string[] tags) : base(HookType.AfterScenario, tags) { }
     }
 
     /// <summary>
@@ -160,22 +160,22 @@ namespace TechTalk.SpecFlow
 
     public class BeforeScenarioBlockAttribute : HookAttribute
     {
-        public BeforeScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockStart, tags) { }
+        public BeforeScenarioBlockAttribute(params string[] tags) : base(HookType.BeforeScenarioBlock, tags) { }
     }
 
     public class AfterScenarioBlockAttribute : HookAttribute
     {
-        public AfterScenarioBlockAttribute(params string[] tags) : base(BindingEvent.BlockEnd, tags) { }
+        public AfterScenarioBlockAttribute(params string[] tags) : base(HookType.AfterScenarioBlock, tags) { }
     }
 
     public class BeforeStepAttribute : HookAttribute
     {
-        public BeforeStepAttribute(params string[] tags) : base(BindingEvent.StepStart, tags) { }
+        public BeforeStepAttribute(params string[] tags) : base(HookType.BeforeStep, tags) { }
     }
 
     public class AfterStepAttribute : HookAttribute
     {
-        public AfterStepAttribute(params string[] tags) : base(BindingEvent.StepEnd, tags) { }
+        public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags) { }
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

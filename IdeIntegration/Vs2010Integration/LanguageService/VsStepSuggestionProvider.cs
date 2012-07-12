@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool readyInvoked = false;
         public event Action Ready;
 
-        private readonly Dictionary<BindingFileInfo, List<StepDefinitionBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<StepDefinitionBinding>>();
+        private readonly Dictionary<BindingFileInfo, List<IStepDefinitionBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<IStepDefinitionBinding>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
 
         public bool Populated
@@ -252,7 +252,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileRemoved(BindingFileInfo bindingFileInfo)
         {
-            List<StepDefinitionBinding> bindings;
+            List<IStepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -262,7 +262,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
         {
-            List<StepDefinitionBinding> bindings;
+            List<IStepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
@@ -270,18 +270,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                bindings = new List<StepDefinitionBinding>();
+                bindings = new List<IStepDefinitionBinding>();
                 bindingSuggestions.Add(bindingFileInfo, bindings);
             }
 
-            if (bindingFileInfo.StepBindings.Any())
+            if (!bindingFileInfo.IsError && bindingFileInfo.StepBindings.Any())
             {
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
             }
         }
 
-        public IEnumerable<IHookBinding> GetHooks(BindingEvent bindingEvent)
+        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterHookBinding(IHookBinding hookBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
         {
             return Enumerable.Empty<IHookBinding>(); //not used in VS
         }

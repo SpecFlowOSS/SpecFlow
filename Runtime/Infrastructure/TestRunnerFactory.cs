@@ -2,6 +2,7 @@
 using System.Reflection;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -21,7 +22,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             var testRunner = CreateTestRunnerInstance();
 
             var bindingAssemblies = new List<Assembly> { testAssembly };
-            bindingAssemblies.AddRange(runtimeConfiguration.AdditionalStepAssemblies);
+
+            var assemblyLoader = objectContainer.Resolve<IBindingAssemblyLoader>();
+            bindingAssemblies.AddRange(
+                runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
 
             testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
 

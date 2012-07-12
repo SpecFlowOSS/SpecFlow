@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public abstract class FileInfo
     {
         public bool IsAnalyzed { get; set; }
+        public bool IsError { get; set; }
         public DateTime LastChangeDate { get; set; }
         public string ProjectRelativePath { get; set; }
 
@@ -125,7 +126,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public virtual void Initialize()
         {
-            DoTaskAsynch(InitializeInternal);
+            DoTaskAsynch(InitializeInternally);
         }
 
         public virtual void Run()
@@ -133,14 +134,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             DoTaskAsynch(AnalyzeInitially);
         }
 
-        protected virtual void InitializeInternal()
+        protected virtual void InitializeInternally()
         {
-            files = GetFileProjectItems().Select(CreateFileInfo).ToList();
+            InitializeInternal();
 
             if (Initialized != null)
                 Initialized();
 
             vsProjectScope.Tracer.Trace("Initialized", GetType().Name);
+        }
+
+        protected virtual void InitializeInternal()
+        {
+            files = GetFileProjectItems().Select(CreateFileInfo).ToList();
         }
 
         protected virtual void AnalyzeInitially()
@@ -170,24 +176,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                              });
         }
 
+        protected virtual bool HandleMissingProjectItem(TFileInfo fileInfo)
+        {
+            RemoveFileInfo(fileInfo); // this must be a problem, but anyway
+            return true;
+        }
+
         private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent)
         {
             var pi = FindProjectItemByProjectRelativePath(fileInfo);
             if (pi == null)
             {
-                RemoveFileInfo(fileInfo); // this must be a problem, but anyway
-                return;
+                if (HandleMissingProjectItem(fileInfo))
+                    return;
             }
 
             try
             {
                 Analyze(fileInfo, pi);
+                fileInfo.IsError = false;
 
                 if (fireUpdatedEvent)
                     FireFileUpdated(fileInfo);
             }
             catch(Exception exception)
             {
+                fileInfo.IsError = true;
                 vsProjectScope.Tracer.Trace("Exception: " + exception.ToString(), GetType().Name);
             }
             finally
@@ -237,9 +251,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected virtual void AddFileInfo(ProjectItem projectItem)
         {
-            var featureFileInfo = CreateFileInfo(projectItem);
-            files.Add(featureFileInfo);
-            AnalyzeBackground(featureFileInfo);
+            var fileInfo = CreateFileInfo(projectItem);
+            files.Add(fileInfo);
+            AnalyzeBackground(fileInfo);
+        }
+
+        protected void AddFileInfo(TFileInfo fileInfo)
+        {
+            files.Add(fileInfo);
+            AnalyzeBackground(fileInfo);
         }
 
         protected virtual void ChangeFile(TFileInfo featureFileInfo)

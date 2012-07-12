@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public static class RuntimeConfigurationReader
     {
-        public static void UpdateConfigFromFile(RuntimeConfigurationForGenerator runtimeConfiguration, string configFile)
+        public static void UpdateConfigFromFile(RuntimeConfiguration runtimeConfiguration, string configFile)
         {
             using (TextReader file = new StreamReader(configFile))
             {
@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             }
         }
 
-        public static void UpdateConfigFromFileContent(RuntimeConfigurationForGenerator runtimeConfiguration, string configFileContent)
+        public static void UpdateConfigFromFileContent(RuntimeConfiguration runtimeConfiguration, string configFileContent)
         {
             XmlDocument configDocument;
             try
