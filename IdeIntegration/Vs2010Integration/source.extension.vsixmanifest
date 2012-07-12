@@ -4,10 +4,11 @@
     <Name>SpecFlow</Name>
     <Author>TechTalk</Author>
     <Version>1.9.0</Version>
-    <Description xml:space="preserve">SpecFlow integration for Microsoft Visual Studio 2010 (including syntax coloring for Ghrekin (.feature) files). SpecFlow is sponsored by TechTalk (http://www.techtalk.at).</Description>
+    <Description xml:space="preserve">SpecFlow integration for Microsoft Visual Studio 2010 and 2012 (including syntax coloring for Ghrekin (.feature) files). SpecFlow is sponsored by TechTalk (http://www.techtalk.at).</Description>
     <Locale>1033</Locale>
     <MoreInfoUrl>http://www.specflow.org</MoreInfoUrl>
-    <GettingStartedGuide>http://www.specflow.org/specflow/getting-started.aspx</GettingStartedGuide>
+    <License>LICENSE.txt</License>
+    <GettingStartedGuide>http://go.specflow.org/getting-started</GettingStartedGuide>
     <Icon>specflowsetup.ico</Icon>
     <PreviewImage>specflow_preview.png</PreviewImage>
     <InstalledByMsi>false</InstalledByMsi>
@@ -17,8 +18,13 @@
         <Edition>Premium</Edition>
         <Edition>Pro</Edition>
       </VisualStudio>
+      <VisualStudio Version="11.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+      </VisualStudio>
     </SupportedProducts>
-    <SupportedFrameworkRuntimeEdition MinVersion="2.0" MaxVersion="4.0" />
+    <SupportedFrameworkRuntimeEdition MinVersion="3.5" MaxVersion="4.5" />
   </Identifier>
   <References>
     <Reference Id="Microsoft.VisualStudio.MPF" MinVersion="10.0">

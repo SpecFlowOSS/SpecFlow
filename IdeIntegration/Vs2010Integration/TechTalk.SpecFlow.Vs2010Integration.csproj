@@ -135,6 +135,7 @@
     <Reference Include="System.CoreEx, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\RX\System.CoreEx.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -143,6 +144,7 @@
     <Reference Include="System.Reactive, Version=1.0.2838.104, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\RX\System.Reactive.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -293,9 +295,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\changelog.txt">
+      <Link>changelog.txt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="..\..\Installer\Resources\gherkin.ico">
       <Link>gherkin.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\..\Installer\Resources\specflowsetup.ico">
       <Link>specflowsetup.ico</Link>
@@ -321,6 +328,10 @@
     <Resource Include="Resources\autocomplete-w-t.png" />
     <Resource Include="Resources\autocomplete-w.png" />
     <Resource Include="Resources\autocomplete-nb.png" />
+    <Content Include="..\..\LICENSE.txt">
+      <Link>LICENSE.txt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\specflowpackage.ico" />
     <Content Include="Tracing\OutputWindow\readme.txt" />
   </ItemGroup>
@@ -344,6 +355,14 @@
     <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
       <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
       <Name>TechTalk.SpecFlow.IdeIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj">
+      <Project>{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}</Project>
+      <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <TemplateType>Item</TemplateType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
