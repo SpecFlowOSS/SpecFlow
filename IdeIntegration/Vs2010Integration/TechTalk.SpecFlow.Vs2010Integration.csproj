@@ -190,6 +190,7 @@
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
     <Compile Include="EditorCommands\EditorCommands.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
+    <Compile Include="UI\ContextMenuBuilder.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
     <Compile Include="Bindings\Discovery\VsBindingMethodLocator.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
+    <Compile Include="UI\VsContextMenuManager.cs" />
     <Compile Include="Utils\FileChangeEventsListener.cs" />
     <Compile Include="Utils\SolutionEventsListener.cs" />
     <Compile Include="Utils\VsProjectFilesTracker.cs" />

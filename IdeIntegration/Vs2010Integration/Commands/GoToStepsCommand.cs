@@ -6,8 +6,10 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
+using TechTalk.SpecFlow.Vs2010Integration.UI;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using TextSelection = EnvDTE.TextSelection;
 
@@ -76,17 +78,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return;
             }
 
-            //TODO: provide a dialog to be able to choose from the candidate list.
+            var menuBuilder = new ContextMenuBuilder();
+            menuBuilder.Title = "Go to steps: Multiple matching steps found.";
+            menuBuilder.AddRange(candidatingPositions.Select((si, index) =>
+                new ContextMenuBuilder.ContextCommandItem(
+                    GetStepInstanceGotoTitle(si), 
+                    () => JumpToStep(si))));
 
-            string list =
-                string.Join(Environment.NewLine,
-                            candidatingPositions.Select((si, index) =>
-                                string.Format("{3} - \"{0}{1}\" in scenario \"{4}\" ({2})", si.Keyword, si.Text, ((ISourceFilePosition) si).SourceFile, index, si.StepContext.ScenarioTitle ?? "<background>")));
+            VsContextMenuManager.ShowContextMenu(menuBuilder.ToContextMenu(), dte);
+        }
 
-            System.Windows.MessageBox.Show("Multiple matching steps found. Navigating to the first match..."
-                        + Environment.NewLine + Environment.NewLine + list);
+        private string GetStepInstanceGotoTitle(StepInstance stepInstance)
+        {
+            var position = ((ISourceFilePosition) stepInstance);
 
-            JumpToStep(candidatingPositions[0]);
+            string inFilePositionText = stepInstance.StepContext.ScenarioTitle == null ? "'Backround' section" :
+                string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
+
+            return string.Format("\"{0}{1}\" in {2} ({3}, line {4})", stepInstance.Keyword, stepInstance.Text, inFilePositionText, position.SourceFile, position.FilePosition.Line);
         }
 
         private void JumpToStep(StepInstance stepInstance)
@@ -158,8 +167,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         private bool IsStepDefinition(IBindingMethod bindingMethod, Document activeDocument)
         {
-            var stepSuggestionBindingCollector = new VsStepSuggestionBindingCollector();
-            var stepDefinitionBinding = stepSuggestionBindingCollector.GetBindingsFromProjectItem(activeDocument.ProjectItem).FirstOrDefault(sdb => sdb.Method.MethodEquals(bindingMethod));
+            var vsBindingRegistryBuilder = new VsBindingRegistryBuilder();
+            var stepDefinitionBinding = vsBindingRegistryBuilder.GetBindingsFromProjectItem(activeDocument.ProjectItem).FirstOrDefault(sdb => sdb.Method.MethodEquals(bindingMethod));
             return stepDefinitionBinding != null;
         }
 
