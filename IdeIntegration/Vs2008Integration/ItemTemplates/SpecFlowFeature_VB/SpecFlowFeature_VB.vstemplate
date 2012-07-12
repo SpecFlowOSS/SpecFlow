@@ -8,6 +8,6 @@
     <Icon>SpecFlowFeatureIcon.ico</Icon>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem SubType="" TargetFileName="$fileinputname$.feature" ReplaceParameters="false">SpecFlowFeature1.feature</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$.feature" ReplaceParameters="true">SpecFlowFeature1.feature</ProjectItem>
   </TemplateContent>
 </VSTemplate>
