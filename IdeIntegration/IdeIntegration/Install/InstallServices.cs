@@ -40,7 +40,9 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
             IdeIntegration = ideIntegration;
 
             if (IsDevBuild)
-                tracer.Trace("Running on 'dev' version", this);
+            {
+                tracer.Trace("Running on 'dev' version on {0}", this, ideIntegration);
+            }
 
 
             var isAssociated = fileAssociationDetector.IsAssociated();

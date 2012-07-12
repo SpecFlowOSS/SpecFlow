@@ -52,6 +52,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
+        private IdeIntegration.Install.IdeIntegration? CurrentIdeIntegration
+        {
+            get
+            {
+                Version vsVersion;
+                if (!Version.TryParse(Container.Resolve<EnvDTE.DTE>().Version, out vsVersion))
+                    return null;
+
+                switch (vsVersion.Major)
+                {
+                    case 10:
+                        return IdeIntegration.Install.IdeIntegration.VisualStudio2010;
+                    case 11:
+                        return IdeIntegration.Install.IdeIntegration.VisualStudio2012;
+                    default:
+                        return null;
+                }
+            }
+        }
+
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initilaization code that rely on services provided by VisualStudio.
@@ -63,8 +83,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration
 
             Container = VsContainerBuilder.CreateContainer(this);
 
-            InstallServices installServices = Container.Resolve<InstallServices>();
-            installServices.OnPackageLoad(IdeIntegration.Install.IdeIntegration.VisualStudio2010);
+            var currentIdeIntegration = CurrentIdeIntegration;
+            if (currentIdeIntegration != null)
+            {
+                InstallServices installServices = Container.Resolve<InstallServices>();
+                installServices.OnPackageLoad(currentIdeIntegration.Value);
+            }
 
             OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (menuCommandService != null)
