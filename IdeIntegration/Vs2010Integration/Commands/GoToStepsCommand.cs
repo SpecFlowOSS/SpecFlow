@@ -54,6 +54,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             Invoke(activeDocument);
         }
 
+        private class StepInstanceWithProjectScope
+        {
+            public StepInstance StepInstance { get; private set; }
+            public VsProjectScope ProjectScope { get; private set; }
+
+            public StepInstanceWithProjectScope(StepInstance stepInstance, VsProjectScope projectScope)
+            {
+                StepInstance = stepInstance;
+                ProjectScope = projectScope;
+            }
+        }
+
         internal void Invoke(Document activeDocument)
         {
             var bindingMethod = GetSelectedBindingMethod(activeDocument);
@@ -64,11 +76,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to steps");
                 return;
             }
-            var candidatingPositions =
-                projectScopes.SelectMany(ps => GetMatchingSteps(bindingMethod, ps))
-                    .Distinct(StepInstanceComparer.Instance)
-                    .OrderBy(si => si, StepInstanceComparer.Instance)
-                    .ToArray();
+            var candidatingPositions = projectScopes.SelectMany(ps => GetMatchingSteps(bindingMethod, ps)).ToArray();
 
             if (candidatingPositions.Length == 0)
             {
@@ -92,9 +100,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             VsContextMenuManager.ShowContextMenu(menuBuilder.ToContextMenu(), dte);
         }
 
-        private string GetStepInstanceGotoTitle(StepInstance stepInstance)
+        private string GetStepInstanceGotoTitle(StepInstanceWithProjectScope stepInstanceWithProjectScope)
         {
-            var position = ((ISourceFilePosition) stepInstance);
+            var stepInstance = stepInstanceWithProjectScope.StepInstance;
+            var position = ((ISourceFilePosition)stepInstance);
 
             string inFilePositionText = stepInstance.StepContext.ScenarioTitle == null ? "'Backround' section" :
                 string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
@@ -102,10 +111,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             return string.Format("\"{0}{1}\" in {2} ({3}, line {4})", stepInstance.Keyword, stepInstance.Text, inFilePositionText, position.SourceFile, position.FilePosition.Line);
         }
 
-        private void JumpToStep(StepInstance stepInstance)
+        private void JumpToStep(StepInstanceWithProjectScope stepInstanceWithProjectScope)
         {
-            var position = ((ISourceFilePosition) stepInstance);
-            var featureProjItem = VsxHelper.GetAllPhysicalFileProjectItem(dte.ActiveDocument.ProjectItem.ContainingProject).FirstOrDefault(
+            var position = ((ISourceFilePosition)stepInstanceWithProjectScope.StepInstance);
+            var featureProjItem = VsxHelper.GetAllPhysicalFileProjectItem(stepInstanceWithProjectScope.ProjectScope.Project).FirstOrDefault(
                 pi => VsxHelper.GetProjectRelativePath(pi).Equals(position.SourceFile));
 
             if (featureProjItem == null)
@@ -114,7 +123,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             if (!featureProjItem.IsOpen)
                 featureProjItem.Open();
             GoToLine(featureProjItem, position.FilePosition.Line);
-
         }
 
         private static void GoToLine(ProjectItem projectItem, int line)
@@ -155,18 +163,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             }
         }
 
-        private IEnumerable<IProjectScope> GetProjectScopes(Document activeDocument)
+        private IEnumerable<VsProjectScope> GetProjectScopes(Document activeDocument)
         {
-            var projectScope = projectScopeFactory.GetProjectScope(activeDocument.ProjectItem.ContainingProject);
-            //TODO: instead of getting the project scope of the step definition, we need to find the project scopes, where the step definition is included...
-            if (projectScope != null && projectScope.StepSuggestionProvider != null)
-                yield return projectScope;
-        } 
+            var projectScopes = projectScopeFactory.GetProjectScopesFromBindingProject(activeDocument.ProjectItem.ContainingProject);
+            return projectScopes.OfType<VsProjectScope>();
+        }
 
-        private IEnumerable<StepInstance> GetMatchingSteps(IBindingMethod bindingMethod, IProjectScope projectScope)
+        private IEnumerable<StepInstanceWithProjectScope> GetMatchingSteps(IBindingMethod bindingMethod, VsProjectScope projectScope)
         {
             return projectScope.StepSuggestionProvider.GetMatchingInstances(bindingMethod)
-                .Where(si => si is ISourceFilePosition);
+                .Where(si => si is ISourceFilePosition)
+                .Distinct(StepInstanceComparer.Instance)
+                .OrderBy(si => si, StepInstanceComparer.Instance)
+                .Select(si => new StepInstanceWithProjectScope(si, projectScope));
         }
 
         private bool IsStepDefinition(IBindingMethod bindingMethod, Document activeDocument)

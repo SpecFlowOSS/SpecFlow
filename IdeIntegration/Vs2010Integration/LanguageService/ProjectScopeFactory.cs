@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.Composition;
 using EnvDTE;
@@ -17,6 +18,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public interface IProjectScopeFactory
     {
         IProjectScope GetProjectScope(Project project);
+        IEnumerable<IProjectScope> GetProjectScopesFromBindingProject(Project bindingProject);
     }
 
     [Export(typeof(IProjectScopeFactory))]
@@ -72,6 +74,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return noProjectScopeReference.Value;
 
             return projectScopeCache.GetOrCreate(project);
+        }
+
+        public IEnumerable<IProjectScope> GetProjectScopesFromBindingProject(Project bindingProject)
+        {
+            if (bindingProject == null)
+                yield break;
+
+            var scope = projectScopeCache.Get(bindingProject);
+
+            var assemblyName = bindingProject.GetAssemblyName();
+            if (assemblyName == null)
+                yield break;
+
+            var projectScopes = projectScopeCache.Values.ToArray();
+            foreach (var projectScope in projectScopes)
+            {
+                if (projectScope == scope || 
+                    GetAdditionalBindingAssemblyNames(projectScope).Any(an => an.Equals(assemblyName, StringComparison.InvariantCultureIgnoreCase)))
+
+                    yield return projectScope;
+            }
+        }
+
+        private static IEnumerable<string> GetAdditionalBindingAssemblyNames(IProjectScope projectScope)
+        {
+            return projectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.AdditionalStepAssemblies.Select(a => a.Split(new[] {','}, 2)[0]);
         }
 
         private void OnProjectClosed(Project project)
