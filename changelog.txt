@@ -16,6 +16,8 @@ New Features:
 + NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
 + VS2010: Integration can track files changed outside of VS (e.g. updated by a SCC pull)
 + VS2010: Collect bindings from assembly references
++ VS2010: Navigation from step definitions to the matching steps
++ VS2010: Context-dependent navigation (go to step definition / go to steps) with Alt+Ctrl+Shift+S
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
