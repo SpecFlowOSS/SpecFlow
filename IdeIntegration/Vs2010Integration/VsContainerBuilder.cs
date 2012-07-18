@@ -76,6 +76,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             }
 
             container.RegisterInstanceAs(VsxHelper.ResolveMefDependency<IOutputWindowService>(serviceProvider));
+            container.RegisterInstanceAs(VsxHelper.ResolveMefDependency<IGherkinLanguageServiceFactory>(serviceProvider));
         }
     }
 

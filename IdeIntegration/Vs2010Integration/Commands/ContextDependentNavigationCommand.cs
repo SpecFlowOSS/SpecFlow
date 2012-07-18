@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EnvDTE;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
@@ -9,10 +7,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
     public class ContextDependentNavigationCommand : MenuCommandHandler
     {
         private readonly GoToStepsCommand goToStepsCommand;
+        private readonly GoToStepDefinitionCommand goToStepDefinitionCommand;
 
-        public ContextDependentNavigationCommand(IServiceProvider serviceProvider, DTE dte, GoToStepsCommand goToStepsCommand) : base(serviceProvider, dte)
+        public ContextDependentNavigationCommand(IServiceProvider serviceProvider, DTE dte, GoToStepsCommand goToStepsCommand, GoToStepDefinitionCommand goToStepDefinitionCommand) : base(serviceProvider, dte)
         {
             this.goToStepsCommand = goToStepsCommand;
+            this.goToStepDefinitionCommand = goToStepDefinitionCommand;
         }
 
         protected override void BeforeQueryStatus(Microsoft.VisualStudio.Shell.OleMenuCommand command, SelectedItems selection)
@@ -32,14 +32,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
             if (IsFeatureFile(activeDocument.ProjectItem))
             {
-                //TODO
-                command.Enabled = true;
+                command.Enabled = goToStepDefinitionCommand.IsEnabled(activeDocument);
                 command.Text = "Go To Step Definition";
             }
             else if (IsCodeFile(activeDocument.ProjectItem))
             {
-                command.Enabled = goToStepsCommand.IsStepDefinition(activeDocument);
-                command.Text = "Go To Steps";
+                command.Enabled = goToStepsCommand.IsEnabled(activeDocument);
+                command.Text = "Go To Matching SpecFlow Steps";
             }
             else
             {
@@ -53,7 +52,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
             if (IsFeatureFile(activeDocument.ProjectItem))
             {
-                throw new NotImplementedException(); //TODO
+                goToStepDefinitionCommand.Invoke(activeDocument);
             }
             else if (IsCodeFile(activeDocument.ProjectItem))
             {
@@ -61,7 +60,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             }
         }
 
-        private bool IsFeatureFile(ProjectItem projectItem)
+        internal static bool IsFeatureFile(ProjectItem projectItem)
         {
             return projectItem.Name.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase);
         }

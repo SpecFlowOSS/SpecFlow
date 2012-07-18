@@ -39,10 +39,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return;
             }
 
-            command.Enabled = IsStepDefinition(activeDocument);
+            command.Enabled = IsEnabled(activeDocument);
         }
 
-        internal bool IsStepDefinition(Document activeDocument)
+        internal bool IsEnabled(Document activeDocument)
         {
             var bindingMethod = GetSelectedBindingMethod(activeDocument);
             return bindingMethod != null && IsStepDefinition(bindingMethod, activeDocument);

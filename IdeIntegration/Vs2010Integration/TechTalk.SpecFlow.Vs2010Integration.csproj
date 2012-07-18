@@ -180,6 +180,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
+    <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
@@ -188,8 +189,11 @@
     <Compile Include="Commands\RegisterCommands.cs" />
     <Compile Include="Commands\RunScenariosCommand.cs" />
     <Compile Include="Commands\SpecFlowProjectSingleSelectionCommand.cs" />
+    <Compile Include="EditorCommands\CommentUncommentCommand.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
-    <Compile Include="EditorCommands\EditorCommands.cs" />
+    <Compile Include="EditorCommands\FormatTableCommand.cs" />
+    <Compile Include="EditorCommands\GherkinEditorContext.cs" />
+    <Compile Include="EditorCommands\GherkinTextViewCreationListener.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="UI\ContextMenuBuilder.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />

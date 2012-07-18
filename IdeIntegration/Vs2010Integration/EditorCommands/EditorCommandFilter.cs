@@ -1,63 +1,33 @@
 ﻿using System;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using BoDi;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.Vs2010Integration.Commands;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
-    [Export(typeof(IVsTextViewCreationListener))]
-    [ContentType("gherkin")]
-    [TextViewRole(PredefinedTextViewRoles.Interactive)]
-    internal sealed class GherkinTextViewCreationListener : IVsTextViewCreationListener
+    internal class EditorCommandFilter
     {
-        [Import]
-        IVsEditorAdaptersFactoryService AdaptersFactory = null;
-
-        [Import]
-        IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
-
-        [Import]
-        IBiDiContainerProvider ContainerProvider = null;
-
-        public void VsTextViewCreated(IVsTextView textViewAdapter)
-        {
-            IWpfTextView view = AdaptersFactory.GetWpfTextView(textViewAdapter);
-            Debug.WriteLineIf(view != null, "No WPF editor view found");
-            if (view == null)
-                return;
-
-            var languageService = GherkinLanguageServiceFactory.GetLanguageService(view.TextBuffer);
-
-            var commandFilter = new EditorCommandFilter(ContainerProvider.ObjectContainer, view, languageService);
-
-            IOleCommandTarget next;
-            textViewAdapter.AddCommandFilter(commandFilter, out next);
-            commandFilter.Next = next;
-        }
-    }
-
-    internal class EditorCommandFilter : IOleCommandTarget
-    {
+// ReSharper disable NotAccessedField.Local
         private readonly IIdeTracer tracer;
-        private readonly EditorCommands editorCommands;
+// ReSharper restore NotAccessedField.Local
+        private readonly GoToStepDefinitionCommand goToStepDefinitionCommand;
+        private readonly DebugScenariosCommand debugScenariosCommand;
+        private readonly RunScenariosCommand runScenariosCommand;
+        private readonly FormatTableCommand formatTableCommand;
+        private readonly CommentUncommentCommand commentUncommentCommand;
 
-        public IOleCommandTarget Next { get; set; }
-
-        public EditorCommandFilter(IObjectContainer container, IWpfTextView textView, GherkinLanguageService languageService)
+        public EditorCommandFilter(IIdeTracer tracer, GoToStepDefinitionCommand goToStepDefinitionCommand, DebugScenariosCommand debugScenariosCommand, RunScenariosCommand runScenariosCommand, FormatTableCommand formatTableCommand, CommentUncommentCommand commentUncommentCommand)
         {
-            editorCommands = new EditorCommands(container, languageService, textView);
-            tracer = languageService.ProjectScope.Tracer;
+            this.goToStepDefinitionCommand = goToStepDefinitionCommand;
+            this.debugScenariosCommand = debugScenariosCommand;
+            this.runScenariosCommand = runScenariosCommand;
+            this.formatTableCommand = formatTableCommand;
+            this.commentUncommentCommand = commentUncommentCommand;
+            this.tracer = tracer;
         }
 
         private char GetTypeChar(IntPtr pvaIn)
@@ -65,12 +35,87 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
         }
 
-        public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+        public bool QueryStatus(GherkinEditorContext editorContext, Guid pguidCmdGroup, OLECMD prgCmd)
         {
-            bool handled = false;
-            int hresult = VSConstants.S_OK;
+            if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+            {
+                var vsStd97CmdId = (VSConstants.VSStd97CmdID)prgCmd.cmdID;
+#if TRACE_VS_COMMANDS
+                tracer.Trace("QueryStatus/VSStd97CmdID:{0}", this, vsStd97CmdId);
+#endif
+                switch (vsStd97CmdId)
+                {
+                    case VSConstants.VSStd97CmdID.GotoDefn:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        if (goToStepDefinitionCommand.CanGoToDefinition(editorContext))
+                            return true;
+                        break;
+                }
+            }
+            else if (pguidCmdGroup == VSConstants.VSStd2K)
+            {
+                var vsStd2KCmdId = (VSConstants.VSStd2KCmdID)prgCmd.cmdID;
+#if TRACE_VS_COMMANDS
+                tracer.Trace("QueryStatus/VSStd2KCmdID:{0}", this, vsStd2KCmdId);
+#endif
+                switch (vsStd2KCmdId)
+                {
+                    case VSConstants.VSStd2KCmdID.COMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
+                    case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
+                    case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return true;
+                }
+            }
+            else if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)
+            {
+                var specFlowCmdSet = (SpecFlowCmdSet)prgCmd.cmdID;
+#if TRACE_VS_COMMANDS
+                tracer.Trace("QueryStatus/SpecFlowCmdSet:{0}", this, specFlowCmdSet);
+#endif
+                switch (specFlowCmdSet)
+                {
+                    case SpecFlowCmdSet.RunScenarios:
+                    case SpecFlowCmdSet.DebugScenarios:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return true;
+                }
+            }
+            else if(pguidCmdGroup == ReSharperCommandGroups.CommandGroup)
+            {
+                var reSharperCmd = (ReSharperCommand)prgCmd.cmdID;
+#if TRACE_VS_COMMANDS
+                tracer.Trace("QueryStatus/ReSharperCommand:{0}", this, reSharperCmd);
+#endif
+                switch (reSharperCmd)
+                {
+                    case ReSharperCommand.GotoDeclaration:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        if (goToStepDefinitionCommand.CanGoToDefinition(editorContext))
+                            return true;
+                        break;
+                    case ReSharperCommand.LineComment:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return true;
+                    case ReSharperCommand.UnitTestRunContext:
+                    case ReSharperCommand.UnitTestDebugContext:
+                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return true;
+                }
+            }
+#if TRACE_VS_COMMANDS
+            else
+            {
+                tracer.Trace("QueryStatus/Other:{0} / {1}", this, pguidCmdGroup, prgCmd.cmdID);
+            }
+#endif
 
-            // 1. Pre-process
+            return false;
+        }
+
+        public bool PreExec(GherkinEditorContext editorContext, Guid pguidCmdGroup, uint nCmdID)
+        {
             if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
             {
                 var vsStd97CmdId = (VSConstants.VSStd97CmdID)nCmdID;
@@ -81,7 +126,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch (vsStd97CmdId)
                 {
                     case VSConstants.VSStd97CmdID.GotoDefn:
-                        handled = editorCommands.GoToDefinition();
+                        if (goToStepDefinitionCommand.GoToDefinition(editorContext))
+                            return true;
                         break;
                 }
             }
@@ -95,11 +141,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 {
                     case VSConstants.VSStd2KCmdID.COMMENT_BLOCK:
                     case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
-                        handled = editorCommands.CommentOrUncommentSelection(CommentUncommentAction.Comment);
+                        if (commentUncommentCommand.CommentOrUncommentSelection(editorContext, CommentUncommentAction.Comment))
+                            return true;
                         break;
                     case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
                     case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
-                        handled = editorCommands.CommentOrUncommentSelection(CommentUncommentAction.Uncomment);
+                        if (commentUncommentCommand.CommentOrUncommentSelection(editorContext, CommentUncommentAction.Uncomment))
+                            return true;
                         break;
                 }
             }
@@ -112,13 +160,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch (specFlowCmdSet)
                 {
                     case SpecFlowCmdSet.RunScenarios:
-                        handled = editorCommands.RunScenarios();
+                        if (runScenariosCommand.InvokeFromEditor(editorContext, null))
+                            return true;
                         break;
                     case SpecFlowCmdSet.DebugScenarios:
-                        handled = editorCommands.DebugScenarios();
-                        break;
-                    case SpecFlowCmdSet.GoToStepDefinition:
-                        handled = editorCommands.GoToDefinition();
+                        if (debugScenariosCommand.InvokeFromEditor(editorContext, null))
+                            return true;
                         break;
                 }
             }
@@ -131,42 +178,46 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch (reSharperCmd)
                 {
                     case ReSharperCommand.GotoDeclaration:
-                        handled = editorCommands.GoToDefinition();
+                        if (goToStepDefinitionCommand.GoToDefinition(editorContext))
+                            return true;
                         break;
                     case ReSharperCommand.LineComment:
-                        handled = editorCommands.CommentOrUncommentSelection(CommentUncommentAction.Toggle);
+                        if (commentUncommentCommand.CommentOrUncommentSelection(editorContext, CommentUncommentAction.Toggle))
+                            return true;
                         break;
                     case ReSharperCommand.UnitTestRunContext:
-                        handled = editorCommands.RunScenarios(TestRunnerTool.ReSharper);
+                        if (runScenariosCommand.InvokeFromEditor(editorContext, TestRunnerTool.ReSharper))
+                            return true;
                         break;
                     case ReSharperCommand.UnitTestDebugContext:
-                        handled = editorCommands.DebugScenarios(TestRunnerTool.ReSharper);
+                        if (debugScenariosCommand.InvokeFromEditor(editorContext, TestRunnerTool.ReSharper))
+                            return true;
                         break;
                 }
             }
+#if TRACE_VS_COMMANDS
             else
             {
-#if TRACE_VS_COMMANDS
                 tracer.Trace("Exec/Other:{0} / {1}", this, pguidCmdGroup, nCmdID);
-#endif
             }
+#endif
 
-            if (!handled)
-                hresult = Next.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+            return false;
+        }
 
-            if (ErrorHandler.Succeeded(hresult))
+        public void PostExec(GherkinEditorContext editorContext, Guid pguidCmdGroup, uint nCmdID, IntPtr pvaIn)
+        {
+            if (pguidCmdGroup == VSConstants.VSStd2K)
             {
-                if (pguidCmdGroup == VSConstants.VSStd2K)
+                switch ((VSConstants.VSStd2KCmdID) nCmdID)
                 {
-                    switch ((VSConstants.VSStd2KCmdID)nCmdID)
-                    {
-                        case VSConstants.VSStd2KCmdID.TYPECHAR:
-                            var ch = GetTypeChar(pvaIn);
-                            if (ch == '|')
-                                editorCommands.FormatTable();
-                            break;
-                    }
+                    case VSConstants.VSStd2KCmdID.TYPECHAR:
+                        var ch = GetTypeChar(pvaIn);
+                        if (ch == '|')
+                            formatTableCommand.FormatTable(editorContext);
+                        break;
                 }
+            }
 //TODO: uncomment this to add further command handlers
 //                if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
 //                {
@@ -174,92 +225,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 //                    {
 //                    }
 //                }
-            }
-
-            return hresult;
-        }
-
-        public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
-        {
-            if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
-            {
-                var vsStd97CmdId = (VSConstants.VSStd97CmdID)prgCmds[0].cmdID;
-#if TRACE_VS_COMMANDS
-                tracer.Trace("QueryStatus/VSStd97CmdID:{0}", this, vsStd97CmdId);
-#endif
-                switch (vsStd97CmdId)
-                {
-                    case VSConstants.VSStd97CmdID.GotoDefn:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        if (editorCommands.CanGoToDefinition())
-                            return VSConstants.S_OK;
-                        break;
-                }
-            }
-            else if (pguidCmdGroup == VSConstants.VSStd2K)
-            {
-                var vsStd2KCmdId = (VSConstants.VSStd2KCmdID)prgCmds[0].cmdID;
-#if TRACE_VS_COMMANDS
-                tracer.Trace("QueryStatus/VSStd2KCmdID:{0}", this, vsStd2KCmdId);
-#endif
-                switch (vsStd2KCmdId)
-                {
-                    case VSConstants.VSStd2KCmdID.COMMENT_BLOCK:
-                    case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
-                    case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
-                    case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
-                }
-            }
-            else if (pguidCmdGroup == GuidList.guidSpecFlowCmdSet)
-            {
-                var specFlowCmdSet = (SpecFlowCmdSet)prgCmds[0].cmdID;
-#if TRACE_VS_COMMANDS
-                tracer.Trace("QueryStatus/SpecFlowCmdSet:{0}", this, specFlowCmdSet);
-#endif
-                switch (specFlowCmdSet)
-                {
-                    case SpecFlowCmdSet.RunScenarios:
-                    case SpecFlowCmdSet.DebugScenarios:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
-                    case SpecFlowCmdSet.GoToStepDefinition:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        if (editorCommands.CanGoToDefinition())
-                            return VSConstants.S_OK;
-                        break;
-                }
-            }
-            else if(pguidCmdGroup == ReSharperCommandGroups.CommandGroup)
-            {
-                var reSharperCmd = (ReSharperCommand)prgCmds[0].cmdID;
-#if TRACE_VS_COMMANDS
-                tracer.Trace("QueryStatus/ReSharperCommand:{0}", this, reSharperCmd);
-#endif
-                switch (reSharperCmd)
-                {
-                    case ReSharperCommand.GotoDeclaration:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        if (editorCommands.CanGoToDefinition())
-                            return VSConstants.S_OK;
-                        break;
-                    case ReSharperCommand.LineComment:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
-                    case ReSharperCommand.UnitTestRunContext:
-                    case ReSharperCommand.UnitTestDebugContext:
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
-                }
-            }
-            else
-            {
-#if TRACE_VS_COMMANDS
-                tracer.Trace("QueryStatus/Other:{0} / {1}", this, pguidCmdGroup, prgCmds[0].cmdID);
-#endif
-            }
-            return Next.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
     }
 
