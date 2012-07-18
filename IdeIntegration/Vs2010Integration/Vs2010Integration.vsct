@@ -28,6 +28,10 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Regenerate Feature Files</ButtonText>
+          <CommandName>SpecFlow - Regenerate Feature Files</CommandName>
+          <CanonicalName>SpecFlow.RegenerateFeatureFiles</CanonicalName>
+          <LocCanonicalName>SpecFlow.RegenerateFeatureFiles</LocCanonicalName>
+          <ToolTipText>Regenerates the code behind files for all feature files in this project</ToolTipText>
         </Strings>
       </Button>
 
@@ -44,7 +48,10 @@
         <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
         <Strings>
           <ButtonText>Go To Step Definition</ButtonText>
-          <CommandName>SpecFlow.GoToStepDefinition</CommandName>
+          <CommandName>SpecFlow - Go To Step Definition</CommandName>
+          <CanonicalName>SpecFlow.GoToStepDefinition</CanonicalName>
+          <LocCanonicalName>SpecFlow.GoToStepDefinition</LocCanonicalName>
+          <ToolTipText>Jumps to the step definition matchig to the current step</ToolTipText>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidGoToSteps" priority="0x0100" type="Button">
@@ -52,6 +59,10 @@
         <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
         <Strings>
           <ButtonText>Go To Steps</ButtonText>
+          <CommandName>SpecFlow - Go To Steps</CommandName>
+          <CanonicalName>SpecFlow.GoToSteps</CanonicalName>
+          <LocCanonicalName>SpecFlow.GoToSteps</LocCanonicalName>
+          <ToolTipText>Jumps to the step(s) matchig to the current step definition</ToolTipText>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidContextDependentNavigation" priority="0x0100" type="Button">
@@ -59,7 +70,11 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>Go To Steps / Step Definition</ButtonText>
+          <ButtonText>Navigate Between Step and Step Definition</ButtonText>
+          <CommandName>SpecFlow - Navigate Between Step and Step Definition</CommandName>
+          <CanonicalName>SpecFlow.NavigateBetweenStepAndStepDefinition</CanonicalName>
+          <LocCanonicalName>SpecFlow.NavigateBetweenStepAndStepDefinition</LocCanonicalName>
+          <ToolTipText>Jumps between the step definition and the matchig step(s)</ToolTipText>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110" type="Button">
@@ -67,6 +82,10 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Run SpecFlow Scenarios</ButtonText>
+          <CommandName>SpecFlow - Run SpecFlow Scenarios</CommandName>
+          <CanonicalName>SpecFlow.RunSpecFlowScenarios</CanonicalName>
+          <LocCanonicalName>SpecFlow.RunSpecFlowScenarios</LocCanonicalName>
+          <ToolTipText>Executes the current scenario(s) with the configured runner</ToolTipText>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0111" type="Button">
@@ -74,6 +93,10 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Debug SpecFlow Scenarios</ButtonText>
+          <CommandName>SpecFlow - Debug SpecFlow Scenarios</CommandName>
+          <CanonicalName>SpecFlow.DebugSpecFlowScenarios</CanonicalName>
+          <LocCanonicalName>SpecFlow.DebugSpecFlowScenarios</LocCanonicalName>
+          <ToolTipText>Debugs the current scenario(s) with the configured runner</ToolTipText>
         </Strings>
       </Button>
     </Buttons>
