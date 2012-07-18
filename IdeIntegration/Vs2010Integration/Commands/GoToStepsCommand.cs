@@ -39,19 +39,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return;
             }
 
-            var bindingMethod = GetSelectedBindingMethod(activeDocument);
-            if (bindingMethod == null || !IsStepDefinition(bindingMethod, activeDocument))
-            {
-                command.Enabled = false;
-                return;
-            }
+            command.Enabled = IsStepDefinition(activeDocument);
+        }
 
-            command.Enabled = true;
+        internal bool IsStepDefinition(Document activeDocument)
+        {
+            var bindingMethod = GetSelectedBindingMethod(activeDocument);
+            return bindingMethod != null && IsStepDefinition(bindingMethod, activeDocument);
         }
 
         protected override void Invoke(OleMenuCommand command, SelectedItems selection)
         {
             var activeDocument = dte.ActiveDocument;
+            Invoke(activeDocument);
+        }
+
+        internal void Invoke(Document activeDocument)
+        {
             var bindingMethod = GetSelectedBindingMethod(activeDocument);
 
             var projectScopes = GetProjectScopes(activeDocument).ToArray();
@@ -81,9 +85,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             var menuBuilder = new ContextMenuBuilder();
             menuBuilder.Title = "Go to steps: Multiple matching steps found.";
             menuBuilder.AddRange(candidatingPositions.Select((si, index) =>
-                new ContextMenuBuilder.ContextCommandItem(
-                    GetStepInstanceGotoTitle(si), 
-                    () => JumpToStep(si))));
+                                                             new ContextMenuBuilder.ContextCommandItem(
+                                                                 GetStepInstanceGotoTitle(si),
+                                                                 () => JumpToStep(si))));
 
             VsContextMenuManager.ShowContextMenu(menuBuilder.ToContextMenu(), dte);
         }

@@ -179,6 +179,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />

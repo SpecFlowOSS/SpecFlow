@@ -41,16 +41,25 @@
 
       <Button guid="guidSpecFlowCmdSet" id="cmdidGoToStepDefinition" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
         <Strings>
           <ButtonText>Go To Step Definition</ButtonText>
+          <CommandName>SpecFlow.GoToStepDefinition</CommandName>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidGoToSteps" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
         <Strings>
           <ButtonText>Go To Steps</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidContextDependentNavigation" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Go To Steps / Step Definition</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110" type="Button">
@@ -88,6 +97,10 @@
     </CommandPlacement>
   </CommandPlacements>
 
+  <KeyBindings>
+    <KeyBinding guid="guidSpecFlowCmdSet" id="cmdidContextDependentNavigation" editor="guidVSStd97" key1="S" mod1="Alt Control Shift" />
+  </KeyBindings>
+  
   <Symbols>
     <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
     
@@ -103,6 +116,7 @@
       <IDSymbol name="cmdidGoToStepDefinition" value="0x0103"/>
       <IDSymbol name="cmdidReGenerateAll" value="0x0104"/>
       <IDSymbol name="cmdidGoToSteps" value="0x0105"/>
+      <IDSymbol name="cmdidContextDependentNavigation" value="0x0106" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>
