@@ -5,6 +5,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Classification;
 using TechTalk.SpecFlow.BindingSkeletons;
+using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
@@ -37,6 +38,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal IBindingSkeletonProviderFactory BindingSkeletonProviderFactory = null;
 
+        [Import]
+        internal IBiDiContainerProvider ContainerProvider = null;
+
         private readonly SynchInitializedInstance<DteWithEvents> dteReference;
         private readonly SynchInitializedInstance<GherkinFileEditorClassifications> classificationsReference;
         private readonly SynchronizedResultCache<Project, string, IProjectScope> projectScopeCache;
@@ -48,6 +52,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             dteReference = new SynchInitializedInstance<DteWithEvents>(
                 () =>
                     {
+                        ContainerProvider.ObjectContainer.Resolve<InstallServices>().OnPackageUsed(); //TODO: find a better place
                         var dtex = new DteWithEvents(VsxHelper.GetDte(ServiceProvider), VisualStudioTracer);
                         dtex.SolutionEvents.AfterClosing += OnSolutionClosed;
                         dtex.SolutionEventsListener.OnQueryUnloadProject += OnProjectClosed;

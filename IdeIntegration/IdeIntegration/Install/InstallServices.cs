@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
-using Microsoft.Win32;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Install
@@ -44,15 +42,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
                 tracer.Trace("Running on 'dev' version on {0}", this, ideIntegration);
             }
 
-
-            var isAssociated = fileAssociationDetector.IsAssociated();
-            if (isAssociated != null && !isAssociated.Value)
-            {
-                tracer.Trace(".feature is not associated to SpecFlow", this);
-                if (!fileAssociationDetector.SetAssociation())
-                    tracer.Trace("Unable to associate .feature to SpecFlow", this);
-            }
-
             var today = DateTime.Today;
             var status = GetInstallStatus();
 
@@ -66,6 +55,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
                     status.LastUsedDate = today;
 
                     UpdateStatus(status);
+                    CheckFileAssociation();
                 }
             }
             else if (status.InstalledVersion < CurrentVersion)
@@ -77,9 +67,33 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
                     status.InstalledVersion = CurrentVersion;
 
                     UpdateStatus(status);
+                    CheckFileAssociation();
                 }
             }
-            
+        }
+
+        private void CheckFileAssociation()
+        {
+            var isAssociated = fileAssociationDetector.IsAssociated();
+            if (isAssociated != null && !isAssociated.Value)
+            {
+                tracer.Trace(".feature is not associated to SpecFlow", this);
+                if (!fileAssociationDetector.SetAssociation())
+                    tracer.Trace("Unable to associate .feature to SpecFlow", this);
+            }
+        }
+
+        public void OnPackageUsed()
+        {
+            if (IsDevBuild)
+                tracer.Trace("Package used", this);
+
+            var today = DateTime.Today;
+            var status = GetInstallStatus();
+
+            if (!status.IsInstalled)
+                return;
+
             if (status.LastUsedDate != today)
             {
                 //a shiny new day with SpecFlow
@@ -112,7 +126,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
                     UpdateStatus(status);
                 }
             }
-        }   
+        }
 
         private bool ShowNotification(GuidanceNotification guidanceNotification)
         {
