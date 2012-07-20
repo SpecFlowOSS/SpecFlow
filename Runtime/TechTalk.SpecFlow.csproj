@@ -150,6 +150,7 @@
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
+    <Compile Include="Infrastructure\GeneratorPluginAttribute.cs" />
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
