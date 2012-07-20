@@ -148,7 +148,6 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
-    <Compile Include="Configuration\IRuntimeConfigurationDefaultsProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
