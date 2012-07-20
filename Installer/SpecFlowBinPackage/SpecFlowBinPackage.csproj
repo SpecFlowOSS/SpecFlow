@@ -96,7 +96,9 @@
     <Copy SourceFiles="@(Pdbs)" DestinationFolder="$(PdbDir)" />
     <ItemGroup>
       <BinPackageFiles Include="$(PackageDir)\**\*.*" />
+      <PdbPackageFiles Include="$(PdbDir)\**\*.*" />
     </ItemGroup>
     <Zip Files="@(BinPackageFiles)" Flatten="false" WorkingDirectory="$(PackageDir)" ZipFileName="$(TargetDir)\SpecFlowBinPackage.zip" />
+    <Zip Files="@(PdbPackageFiles)" Flatten="false" WorkingDirectory="$(PdbDir)" ZipFileName="$(TargetDir)\SpecFlowSymbolPackage.zip" />
   </Target>
 </Project>
