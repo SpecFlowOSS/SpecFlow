@@ -19,17 +19,17 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public interface IRuntimePluginLoader
     {
-        IRuntimePlugin LoadRuntimePlugin(string name);
+        IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor);
     }
 
     public class RuntimePluginLoader : IRuntimePluginLoader
     {
         private const string ASSEMBLY_NAME_PATTERN = "{0}.SpecFlowPlugin";
 
-        public IRuntimePlugin LoadRuntimePlugin(string name)
+        public IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor)
         {
             //TODO: support for loading plugins for a specific version: MyPlugin.SpecFlowPlugin.6.5.dll
-            var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, name);
+            var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, pluginDescriptor.Name);
             Assembly assembly;
             try
             {
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch(Exception ex)
             {
-                throw new SpecFlowException("Unable to load plugin: " + name, ex);
+                throw new SpecFlowException("Unable to load plugin: " + pluginDescriptor.Name, ex);
             }
 
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));

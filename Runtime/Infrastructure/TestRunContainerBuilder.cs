@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using BoDi;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -23,18 +22,15 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
 
-            var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            var plugins = configurationProvider.GetPlugins().Select(pd => LoadPlugin(pluginLoader, pd)).ToArray();
+            var plugins = LoadPlugins(configurationProvider, container);
             foreach (var plugin in plugins)
-            {
-                plugin.RegisterDefaults(container);
-            }
+                plugin.RegisterDependencies(container);
 
             RuntimeConfiguration runtimeConfiguration = new RuntimeConfiguration();
-            foreach (var defaultsProvider in container.Resolve<IDictionary<string, IRuntimeConfigurationDefaultsProvider>>().Values)
-            {
-                defaultsProvider.SetDefaultConfiguration(runtimeConfiguration);
-            }
+
+            foreach (var plugin in plugins)
+                plugin.RegisterConfigurationDefaults(runtimeConfiguration);
+
             configurationProvider.LoadConfiguration(runtimeConfiguration);
 
 #if !BODI_LIMITEDRUNTIME
@@ -48,16 +44,24 @@ namespace TechTalk.SpecFlow.Infrastructure
                 container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
 
             foreach (var plugin in plugins)
-            {
                 plugin.RegisterCustomizations(container, runtimeConfiguration);
-            }
 
             return container;
         }
 
+        private static IRuntimePlugin[] LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container)
+        {
+            var plugins = container.Resolve<IDictionary<string, IRuntimePlugin>>().Values.AsEnumerable();
+
+            var pluginLoader = container.Resolve<IRuntimePluginLoader>();
+            plugins = plugins.Concat(configurationProvider.GetPlugins().Select(pd => LoadPlugin(pluginLoader, pd)));
+
+            return plugins.ToArray();
+        }
+
         private static IRuntimePlugin LoadPlugin(IRuntimePluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
         {
-            return pluginLoader.LoadRuntimePlugin(pluginDescriptor.Name);
+            return pluginLoader.LoadPlugin(pluginDescriptor);
         }
 
         private static void RegisterDefaults(ObjectContainer container)

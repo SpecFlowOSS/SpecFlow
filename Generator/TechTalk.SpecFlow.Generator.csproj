@@ -60,6 +60,8 @@
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
+    <Compile Include="Plugins\IGeneratorPlugin.cs" />
+    <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
@@ -69,7 +71,7 @@
     <Compile Include="TestGeneratorException.cs" />
     <Compile Include="Project\SpecFlowProject.cs" />
     <Compile Include="Configuration\SpecFlowProjectConfiguration.cs" />
-    <Compile Include="Configuration\SpecFlowProjectConfigurationLoader.cs" />
+    <Compile Include="Configuration\GeneratorConfigurationProvider.cs" />
     <Compile Include="ErrorHandlingTestGenerator.cs" />
     <Compile Include="FeatureFileInputExtensions.cs" />
     <Compile Include="GeneratorContainerBuilder.cs" />
@@ -86,7 +88,7 @@
     <Compile Include="Interfaces\TestGenerationError.cs" />
     <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
     <Compile Include="Interfaces\TestGeneratorResult.cs" />
-    <Compile Include="Configuration\ISpecFlowProjectConfigurationLoader.cs" />
+    <Compile Include="Configuration\IGeneratorConfigurationProvider.cs" />
     <Compile Include="ITestHeaderWriter.cs" />
     <Compile Include="TestHeaderWriter.cs" />
     <Compile Include="TestUpToDateChecker.cs" />

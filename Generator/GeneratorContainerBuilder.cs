@@ -1,9 +1,11 @@
-﻿using BoDi;
-using TechTalk.SpecFlow.Configuration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
@@ -15,11 +17,22 @@ namespace TechTalk.SpecFlow.Generator
         public static IObjectContainer CreateContainer(SpecFlowConfigurationHolder configurationHolder, ProjectSettings projectSettings)
         {
             var container = new ObjectContainer();
+            container.RegisterInstanceAs(projectSettings);
 
             RegisterDefaults(container);
 
-            var specFlowConfiguration = container.Resolve<ISpecFlowProjectConfigurationLoader>()
-                .LoadConfiguration(configurationHolder);
+            var configurationProvider = container.Resolve<IGeneratorConfigurationProvider>();
+
+            var plugins = LoadPlugins(container, configurationProvider, configurationHolder);
+            foreach (var plugin in plugins)
+                plugin.RegisterDependencies(container);
+
+            var specFlowConfiguration = new SpecFlowProjectConfiguration();
+
+            foreach (var plugin in plugins)
+                plugin.RegisterConfigurationDefaults(specFlowConfiguration);
+
+            configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
 
             if (specFlowConfiguration.GeneratorConfiguration.CustomDependencies != null)
                 container.RegisterFromConfiguration(specFlowConfiguration.GeneratorConfiguration.CustomDependencies);
@@ -31,14 +44,30 @@ namespace TechTalk.SpecFlow.Generator
             var generatorInfo = container.Resolve<IGeneratorInfoProvider>().GetGeneratorInfo();
             container.RegisterInstanceAs(generatorInfo);
 
-            container.RegisterInstanceAs(projectSettings);
-
             container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
 
             if (specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider != null)
                 container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider));
 
+            foreach (var plugin in plugins)
+                plugin.RegisterCustomizations(container, specFlowConfiguration);
+
             return container;
+        }
+
+        private static IGeneratorPlugin[] LoadPlugins(ObjectContainer container, IGeneratorConfigurationProvider configurationProvider, SpecFlowConfigurationHolder configurationHolder)
+        {
+            var plugins = container.Resolve<IDictionary<string, IGeneratorPlugin>>().Values.AsEnumerable();
+
+            var pluginLoader = container.Resolve<IGeneratorPluginLoader>();
+            plugins = plugins.Concat(configurationProvider.GetPlugins(configurationHolder).Select(pd => LoadPlugin(pluginLoader, pd)));
+
+            return plugins.ToArray();
+        }
+
+        private static IGeneratorPlugin LoadPlugin(IGeneratorPluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
+        {
+            return pluginLoader.LoadPlugin(pluginDescriptor);
         }
 
         private static void RegisterDefaults(ObjectContainer container)

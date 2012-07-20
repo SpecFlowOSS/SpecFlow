@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Configuration
             if (section == null || section.Plugins == null)
                 return Enumerable.Empty<PluginDescriptor>();
 
-            return section.Plugins.Select(pce => new PluginDescriptor(pce.Name));
+            return section.Plugins.Select(pce => pce.ToPluginDescriptor());
         }
 
         public void LoadConfiguration()

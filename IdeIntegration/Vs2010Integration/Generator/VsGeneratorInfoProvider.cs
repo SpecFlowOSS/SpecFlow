@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
             {
                 //TODO: have a "project context" where the actual confic can be read without re-loading/parsing it.
                 var configurationHolder = configurationReader.ReadConfiguration();
-                var config = new SpecFlowProjectConfigurationLoader().LoadConfiguration(configurationHolder);
+                var config = new GeneratorConfigurationProvider().LoadConfiguration(configurationHolder);
                 if (config == null)
                     return new GeneratorConfiguration();
 

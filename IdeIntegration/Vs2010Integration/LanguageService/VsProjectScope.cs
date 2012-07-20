@@ -288,7 +288,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
             ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, tracer); //TODO: load through DI
-            ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoader(); //TODO: load through DI
+            IGeneratorConfigurationProvider configurationLoader = new GeneratorConfigurationProvider(); //TODO: load through DI
 
             try
             {
