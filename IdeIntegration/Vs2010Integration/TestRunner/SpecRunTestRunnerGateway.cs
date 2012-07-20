@@ -115,7 +115,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                                                                 @"tools",
                                                                 @"..\tools",
                                                                 @"..\..\tools",
-                                                                @"..\..\..\SpecRun.Runner.1.0.0\tools", //TODO: provide a more stable solution
 #if DEBUG
                                                                 @"..\..\..\TechTalk.SpecRun.ConsoleRunner\bin\Debug"
 #endif
@@ -134,8 +133,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (runtimeFolder == null)
                 return null;
 
-            return probingPaths.Select(probingPath => Path.GetFullPath(Path.Combine(runtimeFolder, probingPath)))
+            string fromRuntimePackage = probingPaths.Select(probingPath => Path.GetFullPath(Path.Combine(runtimeFolder, probingPath)))
                 .Select(GetConsolePath).FirstOrDefault(cp => cp != null);
+            if (fromRuntimePackage != null)
+                return fromRuntimePackage;
+
+            string nuGetPackagesFolder = Path.GetFullPath(Path.Combine(runtimeFolder, @"..\..\.."));
+            if (!Directory.Exists(nuGetPackagesFolder))
+                return null;
+            var latestRunnerPackage = Directory.GetDirectories(nuGetPackagesFolder, "SpecRun.Runner.*").OrderByDescending(d => d)
+                .Select(s => GetConsolePath(s + @"\tools")).FirstOrDefault(cp => cp != null);
+            return latestRunnerPackage;
         }
 
         public bool RunTests(Project project, string filter, bool debug)
