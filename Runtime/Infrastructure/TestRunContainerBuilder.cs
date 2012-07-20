@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var plugins = container.Resolve<IDictionary<string, IRuntimePlugin>>().Values.AsEnumerable();
 
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            plugins = plugins.Concat(configurationProvider.GetPlugins().Select(pd => LoadPlugin(pluginLoader, pd)));
+            plugins = plugins.Concat(configurationProvider.GetPlugins().Where(pd => (pd.Type & PluginType.Runtime) != 0).Select(pd => LoadPlugin(pluginLoader, pd)));
 
             return plugins.ToArray();
         }

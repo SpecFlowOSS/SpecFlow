@@ -314,9 +314,16 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["path"] = value; }
         }
 
+        [ConfigurationProperty("type", IsRequired = false, DefaultValue = PluginType.GeneratorAndRuntime)]
+        public PluginType Type
+        {
+            get { return (PluginType)this["type"]; }
+            set { this["type"] = value; }
+        }
+
         public PluginDescriptor ToPluginDescriptor()
         {
-            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path);
+            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, Type);
         }
     }
 }
