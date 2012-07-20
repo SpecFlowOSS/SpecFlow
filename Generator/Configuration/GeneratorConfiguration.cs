@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 if (IsSpecified(configSection.Generator.Dependencies))
                 {
                     this.CustomDependencies = configSection.Generator.Dependencies;
-                    UsesPlugins = true; //TODO: this calculation can be refined later
+                    UsesPlugins = true;
                 }
             }
 
@@ -80,13 +80,16 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                     this.GeneratorUnitTestProvider = "custom";
                     this.CustomDependencies.Add(configSection.UnitTestProvider.GeneratorProvider, typeof(IUnitTestGeneratorProvider).AssemblyQualifiedName, this.GeneratorUnitTestProvider);
 
-                    UsesPlugins = true; //TODO: is this needed?
+                    UsesPlugins = true;
                 }
                 else
                 {
                     this.GeneratorUnitTestProvider = configSection.UnitTestProvider.Name;
                 }
             }
+
+            if (IsSpecified(configSection.Plugins))
+                UsesPlugins = true;
         }
 
         private bool IsSpecified(ConfigurationElement configurationElement)
