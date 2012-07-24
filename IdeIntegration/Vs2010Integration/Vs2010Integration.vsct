@@ -34,15 +34,17 @@
           <ToolTipText>Regenerates the code behind files for all feature files in this project</ToolTipText>
         </Strings>
       </Button>
-
-      <!--<Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
-        <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Generate Step Definition File</ButtonText>
+          <ButtonText>Generate Step Definitions</ButtonText>
+          <CommandName>SpecFlow - Generate Step Definitions</CommandName>
+          <CanonicalName>SpecFlow.GenerateStepDefinitions</CanonicalName>
+          <LocCanonicalName>SpecFlow.GenerateStepDefinitions</LocCanonicalName>
+          <ToolTipText>Generates step definition skeletons for all unbound steps in the current file</ToolTipText>
         </Strings>
-      </Button>-->
-
+      </Button>
       <Button guid="guidSpecFlowCmdSet" id="cmdidGoToStepDefinition" priority="0x0100" type="Button">
         <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
         <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->

@@ -18,6 +18,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             container.RegisterTypeAs<GoToStepDefinitionCommand, MenuCommandHandler>(SpecFlowCmdSet.GoToStepDefinition.ToString());
             container.RegisterTypeAs<GoToStepsCommand, MenuCommandHandler>(SpecFlowCmdSet.GoToSteps.ToString());
             container.RegisterTypeAs<ContextDependentNavigationCommand, MenuCommandHandler>(SpecFlowCmdSet.ContextDependentNavigation.ToString());
+            container.RegisterTypeAs<GenerateStepDefinitionSkeletonCommand, MenuCommandHandler>(SpecFlowCmdSet.GenerateStepDefinitionSkeleton.ToString());
         }
     }
 }

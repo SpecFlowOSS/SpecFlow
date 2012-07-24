@@ -103,12 +103,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         private string GetStepInstanceGotoTitle(StepInstanceWithProjectScope stepInstanceWithProjectScope)
         {
             var stepInstance = stepInstanceWithProjectScope.StepInstance;
-            var position = ((ISourceFilePosition)stepInstance);
-
-            string inFilePositionText = stepInstance.StepContext.ScenarioTitle == null ? "'Backround' section" :
-                string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
-
-            return string.Format("\"{0}{1}\" in {2} ({3}, line {4})", stepInstance.Keyword, stepInstance.Text, inFilePositionText, position.SourceFile, position.FilePosition.Line);
+            return stepInstance.GetFileScopedLabel();
         }
 
         private void JumpToStep(StepInstanceWithProjectScope stepInstanceWithProjectScope)

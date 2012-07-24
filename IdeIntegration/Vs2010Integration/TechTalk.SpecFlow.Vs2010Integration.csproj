@@ -180,6 +180,7 @@
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
+    <Compile Include="Commands\GenerateStepDefinitionSkeletonCommand.cs" />
     <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
@@ -220,6 +221,12 @@
     <Compile Include="TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
+    <Compile Include="UI\GenerateStepDefinitionSkeletonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GenerateStepDefinitionSkeletonForm.Designer.cs">
+      <DependentUpon>GenerateStepDefinitionSkeletonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\VsContextMenuManager.cs" />
     <Compile Include="Utils\FileChangeEventsListener.cs" />
     <Compile Include="Utils\SolutionEventsListener.cs" />
@@ -357,6 +364,9 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GenerateStepDefinitionSkeletonForm.resx">
+      <DependentUpon>GenerateStepDefinitionSkeletonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
