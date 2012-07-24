@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
@@ -13,7 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
         private class ListItem
         {
             private readonly bool fileScopedDisplay;
-            public StepInstance Step { get; set; }
+            public StepInstance Step { get; private set; }
 
             public ListItem(StepInstance step, bool fileScopedDisplay = false)
             {
@@ -38,9 +39,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             get { return stepsList.CheckedItems.Cast<ListItem>().Select(li => li.Step).ToArray(); }
         }
 
-        public StepDefinitionGenerationStyle Style
+        public StepDefinitionSkeletonStyle Style
         {
-            get { return (StepDefinitionGenerationStyle)styleComboBox.SelectedIndex; }
+            get { return (StepDefinitionSkeletonStyle)styleComboBox.SelectedIndex; }
         }
 
         public GenerateStepDefinitionSkeletonForm(string featureTitle, StepInstance[] steps)

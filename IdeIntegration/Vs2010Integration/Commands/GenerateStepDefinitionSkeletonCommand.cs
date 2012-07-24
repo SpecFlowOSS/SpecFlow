@@ -14,13 +14,6 @@ using TechTalk.SpecFlow.Vs2010Integration.UI;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
-    public enum StepDefinitionGenerationStyle
-    {
-        RegularExpressions = 0,
-        MethodNameUnderscores = 1,
-        MethodNamePascalCase = 2
-    }
-
     public class GenerateStepDefinitionSkeletonCommand  : SpecFlowProjectSingleSelectionCommand
     {
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;

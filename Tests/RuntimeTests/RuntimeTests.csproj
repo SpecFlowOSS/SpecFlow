@@ -136,6 +136,9 @@
     <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
     <Compile Include="AsyncTests\AsyncTestRunnerTestBase.cs" />
     <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
+    <Compile Include="BindingSkeletons\DefaultSkeletonTemplateProviderTests.cs" />
+    <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProviderTests.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderTests.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
     <Compile Include="BindingSourceProcessorStub.cs" />
     <Compile Include="Infrastructure\PluginTests.cs" />

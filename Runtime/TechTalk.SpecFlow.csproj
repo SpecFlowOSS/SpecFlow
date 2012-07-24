@@ -112,6 +112,10 @@
     <Compile Include="Async\AsyncSteps.cs" />
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncTestExecutor.cs" />
+    <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\Discovery\BindingSourceAttribute.cs" />
@@ -198,12 +202,13 @@
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
-    <Compile Include="Tracing\IStepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\DefaultSkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderBase.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderCS.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
@@ -228,7 +233,9 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

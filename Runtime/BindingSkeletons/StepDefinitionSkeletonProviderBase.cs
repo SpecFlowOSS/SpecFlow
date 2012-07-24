@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Tracing
@@ -18,6 +19,11 @@ namespace TechTalk.SpecFlow.Tracing
         protected static string EscapeRegex(string text)
         {
             return Regex.Escape(text).Replace("\"", "\"\"").Replace("\\ ", " ");
+        }
+
+        public string GetBindingClassSkeleton(StepInstance[] stepInstances, string className, StepDefinitionSkeletonStyle style)
+        {
+            throw new NotImplementedException();
         }
     }
 }

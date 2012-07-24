@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
