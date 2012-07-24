@@ -38,66 +38,17 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                                                    attribute = stepInstance.StepDefinitionType, 
                                                    regex = EscapeRegex(GetRegex(stepInstance.Text)), 
                                                    methodName = GetMethodName(stepInstance), 
-                                                   parameters = string.Join(", ", GetParameters(stepInstance).Select(p => p.ToDeclaration(language)).ToArray())
+                                                   parameters = string.Join(", ", GetParameters(stepInstance).Select(p => ToDeclaration(language, p)).ToArray())
                                                });
         }
 
-        private class ParameterDescriptor
+        private IEnumerable<AnalyzedStepParameter> GetParameters(StepInstance stepInstance)
         {
-            private readonly string type;
-            private readonly string name;
-
-            public ParameterDescriptor(string type, string name)
-            {
-                this.type = type;
-                this.name = name;
-            }
-
-            public string ToDeclaration(ProgrammingLanguage language)
-            {
-                switch (language)
-                {
-                    case ProgrammingLanguage.VB:
-                        return string.Format("ByVal {0} As {1}", name, type);
-                    case ProgrammingLanguage.CSharp:
-                        return string.Format("{1} {0}", name, GetCSharpTypeName());
-                    case ProgrammingLanguage.FSharp:
-                        return string.Format("{0} : {1}", name, GetFSharpTypeName());
-                    default:
-                        return string.Format("{1} {0}", name, type);
-                }
-            }
-
-            private string GetCSharpTypeName()
-            {
-                switch (type)
-                {
-                    case "String":
-                        return "string";
-                    default:
-                        return type;
-                }
-            }
-
-            private string GetFSharpTypeName()
-            {
-                switch (type)
-                {
-                    case "String":
-                        return "string";
-                    default:
-                        return type;
-                }
-            }
-        }
-
-        private IEnumerable<ParameterDescriptor> GetParameters(StepInstance stepInstance)
-        {
-            var extraArgs = new List<ParameterDescriptor>();
+            var extraArgs = new List<AnalyzedStepParameter>();
             if (stepInstance.MultilineTextArgument != null)
-                extraArgs.Add(new ParameterDescriptor("String", "multilineText"));
+                extraArgs.Add(new AnalyzedStepParameter("String", "multilineText"));
             if (stepInstance.TableArgument != null)
-                extraArgs.Add(new ParameterDescriptor("Table", "table"));
+                extraArgs.Add(new AnalyzedStepParameter("Table", "table"));
             return extraArgs.ToArray();
         }
 
@@ -120,6 +71,43 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         private string ApplyTemplate(string template, object args)
         {
             return args.GetType().GetProperties().Aggregate(template, (current, propertyInfo) => current.Replace("{" + propertyInfo.Name + "}", propertyInfo.GetValue(args, null).ToString()));
+        }
+
+        private string ToDeclaration(ProgrammingLanguage language, AnalyzedStepParameter parameter)
+        {
+            switch (language)
+            {
+                case ProgrammingLanguage.VB:
+                    return String.Format("ByVal {0} As {1}", parameter.Name, parameter.Type);
+                case ProgrammingLanguage.CSharp:
+                    return String.Format("{1} {0}", parameter.Name, GetCSharpTypeName(parameter.Type));
+                case ProgrammingLanguage.FSharp:
+                    return String.Format("{0} : {1}", parameter.Name, GetFSharpTypeName(parameter.Type));
+                default:
+                    return String.Format("{1} {0}", parameter.Name, parameter.Type);
+            }
+        }
+
+        private string GetCSharpTypeName(string type)
+        {
+            switch (type)
+            {
+                case "String":
+                    return "string";
+                default:
+                    return type;
+            }
+        }
+
+        private string GetFSharpTypeName(string type)
+        {
+            switch (type)
+            {
+                case "String":
+                    return "string";
+                default:
+                    return type;
+            }
         }
     }
 }

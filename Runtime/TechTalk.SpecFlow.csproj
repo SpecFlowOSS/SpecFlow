@@ -116,6 +116,7 @@
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
+    <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\Discovery\BindingSourceAttribute.cs" />
