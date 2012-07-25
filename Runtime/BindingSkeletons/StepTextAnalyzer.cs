@@ -6,13 +6,13 @@ using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
-    internal class AnalyzedStepText
+    public class AnalyzedStepText
     {
         public readonly List<string> TextParts = new List<string>();
         public readonly List<AnalyzedStepParameter> Parameters = new List<AnalyzedStepParameter>();
     }
 
-    internal class AnalyzedStepParameter
+    public class AnalyzedStepParameter
     {
         public readonly string Type;
         public readonly string Name;
@@ -26,12 +26,12 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         }
     }
 
-    internal interface IStepTextAnalyzer
+    public interface IStepTextAnalyzer
     {
         AnalyzedStepText Analyze(string stepText, CultureInfo bindingCulture);
     }
 
-    internal class StepTextAnalyzer : IStepTextAnalyzer
+    public class StepTextAnalyzer : IStepTextAnalyzer
     {
         public AnalyzedStepText Analyze(string stepText, CultureInfo bindingCulture)
         {

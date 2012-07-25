@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Tracing
 
             text = punctCharRe.Replace(text, "_");
 
-            text = RemoveAccentChars(text);
+            text = RemoveAccentAndPunctuationChars(text);
 
             if (text.Length > 0)
                 text = text.Substring(0, 1).ToUpper() + text.Substring(1);
@@ -184,7 +184,7 @@ namespace TechTalk.SpecFlow.Tracing
         static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}]");
         static private readonly Regex nonLatinRe = new Regex("[^a-zA-Z]");
 
-        private static string RemoveAccentChars(string text)
+        public static string RemoveAccentAndPunctuationChars(string text)
         {
             var nonIdRemoved = nonIdentifierRe.Replace(text, String.Empty);
 

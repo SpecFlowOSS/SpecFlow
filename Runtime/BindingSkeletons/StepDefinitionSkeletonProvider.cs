@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
@@ -10,10 +12,12 @@ namespace TechTalk.SpecFlow.BindingSkeletons
     public class StepDefinitionSkeletonProvider : IStepDefinitionSkeletonProvider2
     {
         private readonly ISkeletonTemplateProvider templateProvider;
+        private readonly IStepTextAnalyzer stepTextAnalyzer;
 
-        public StepDefinitionSkeletonProvider(ISkeletonTemplateProvider templateProvider)
+        public StepDefinitionSkeletonProvider(ISkeletonTemplateProvider templateProvider, IStepTextAnalyzer stepTextAnalyzer)
         {
             this.templateProvider = templateProvider;
+            this.stepTextAnalyzer = stepTextAnalyzer;
         }
 
         public string GetBindingClassSkeleton(ProgrammingLanguage language, StepInstance[] stepInstances, string namespaceName, string className, StepDefinitionSkeletonStyle style)
@@ -32,35 +36,96 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             var withRegex = style == StepDefinitionSkeletonStyle.RegularExpressions;
             var template = templateProvider.GetStepDefinitionTemplate(language, withRegex);
+            var analyzedStepText = Analyze(stepInstance);
             //{attribute}/{regex}/{methodName}/{parameters}
             return ApplyTemplate(template, new
                                                {
                                                    attribute = stepInstance.StepDefinitionType, 
-                                                   regex = EscapeRegex(GetRegex(stepInstance.Text)), 
-                                                   methodName = GetMethodName(stepInstance), 
-                                                   parameters = string.Join(", ", GetParameters(stepInstance).Select(p => ToDeclaration(language, p)).ToArray())
+                                                   regex = withRegex ? GetRegex(analyzedStepText) : "", 
+                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style), 
+                                                   parameters = string.Join(", ", analyzedStepText.Parameters.Select(p => ToDeclaration(language, p)).ToArray())
                                                });
         }
 
-        private IEnumerable<AnalyzedStepParameter> GetParameters(StepInstance stepInstance)
+        private AnalyzedStepText Analyze(StepInstance stepInstance)
         {
-            var extraArgs = new List<AnalyzedStepParameter>();
+            var result = stepTextAnalyzer.Analyze(stepInstance.Text, CultureInfo.CurrentCulture); //TODO
             if (stepInstance.MultilineTextArgument != null)
-                extraArgs.Add(new AnalyzedStepParameter("String", "multilineText"));
+                result.Parameters.Add(new AnalyzedStepParameter("String", "multilineText"));
             if (stepInstance.TableArgument != null)
-                extraArgs.Add(new AnalyzedStepParameter("Table", "table"));
-            return extraArgs.ToArray();
+                result.Parameters.Add(new AnalyzedStepParameter("Table", "table"));
+            return result;
         }
 
-        private string GetMethodName(StepInstance stepInstance)
+        static private readonly Regex wordRe = new Regex(@"[\w]+");
+        private IEnumerable<string> GetWords(string text)
         {
-            var keyword = LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionType).ToIdentifier();
-            return keyword + stepInstance.Text.ToIdentifier();
+            return wordRe.Matches(text).Cast<Match>().Select(m => m.Value);
         }
 
-        private string GetRegex(string stepText)
+        private string GetMethodName(StepInstance stepInstance, AnalyzedStepText analyzedStepText, StepDefinitionSkeletonStyle style)
         {
-            return stepText;
+            var keyword = LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionType);
+            switch (style)
+            {
+                case StepDefinitionSkeletonStyle.RegularExpressions:
+                    return keyword.ToIdentifier() + stepInstance.Text.ToIdentifier();
+                case StepDefinitionSkeletonStyle.MethodNameUnderscores:
+                    return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsUnderscored, "_{0}");
+                case StepDefinitionSkeletonStyle.MethodNamePascalCase:
+                    return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsPascalCase, "_{0}_");
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        private string GetMatchingMethodName(string keyword, AnalyzedStepText analyzedStepText, CultureInfo language, Action<string, CultureInfo, StringBuilder> appendWords, string paramFormat)
+        {
+            StringBuilder result = new StringBuilder(keyword);
+
+            appendWords(analyzedStepText.TextParts[0], language, result);
+            for (int i = 1; i < analyzedStepText.TextParts.Count; i++)
+            {
+                result.AppendFormat(paramFormat, analyzedStepText.Parameters[i - 1].Name.ToUpperInvariant());
+                appendWords(analyzedStepText.TextParts[i], language, result);
+            }
+
+            if (result.Length > 0 && result[result.Length - 1] == '_')
+                result.Remove(result.Length - 1, 1);
+
+            return result.ToString();
+        }
+
+        private void AppendWordsUnderscored(string text, CultureInfo language, StringBuilder result)
+        {
+            foreach (var word in GetWords(text))
+            {
+                result.Append("_");
+                result.Append(word);
+            }
+        }
+
+        private void AppendWordsPascalCase(string text, CultureInfo language, StringBuilder result)
+        {
+            foreach (var word in GetWords(text))
+            {
+                result.Append(word.Substring(0, 1).ToUpper(language));
+                result.Append(word.Substring(1));
+            }
+        }
+
+        private string GetRegex(AnalyzedStepText stepText)
+        {
+            StringBuilder result = new StringBuilder();
+
+            result.Append(EscapeRegex(stepText.TextParts[0]));
+            for (int i = 1; i < stepText.TextParts.Count; i++)
+            {
+                result.AppendFormat("({0})", stepText.Parameters[i-1].RegexPattern);
+                result.Append(EscapeRegex(stepText.TextParts[i]));
+            }
+
+            return result.ToString();
         }
 
         protected static string EscapeRegex(string text)
@@ -94,6 +159,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             {
                 case "String":
                     return "string";
+                case "Int32":
+                    return "int";
                 default:
                     return type;
             }
