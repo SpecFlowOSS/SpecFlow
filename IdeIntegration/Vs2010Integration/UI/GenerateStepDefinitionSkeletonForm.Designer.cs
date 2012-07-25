@@ -38,6 +38,9 @@
             this.generateButton = new System.Windows.Forms.Button();
             this.selectAllButton = new System.Windows.Forms.Button();
             this.selectNoneButton = new System.Windows.Forms.Button();
+            this.copyButton = new System.Windows.Forms.Button();
+            this.previewButton = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // stepsList
@@ -55,7 +58,7 @@
             "four"});
             this.stepsList.Location = new System.Drawing.Point(13, 49);
             this.stepsList.Name = "stepsList";
-            this.stepsList.Size = new System.Drawing.Size(456, 227);
+            this.stepsList.Size = new System.Drawing.Size(456, 209);
             this.stepsList.TabIndex = 1;
             // 
             // styleComboBox
@@ -68,9 +71,9 @@
             "Regular expressions",
             "Method name - underscores",
             "Method name - pascal case"});
-            this.styleComboBox.Location = new System.Drawing.Point(82, 282);
+            this.styleComboBox.Location = new System.Drawing.Point(82, 290);
             this.styleComboBox.Name = "styleComboBox";
-            this.styleComboBox.Size = new System.Drawing.Size(387, 21);
+            this.styleComboBox.Size = new System.Drawing.Size(315, 21);
             this.styleComboBox.TabIndex = 3;
             // 
             // label1
@@ -88,7 +91,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 285);
+            this.label2.Location = new System.Drawing.Point(13, 293);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 2;
@@ -98,7 +101,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 312);
+            this.label3.Location = new System.Drawing.Point(12, 267);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 4;
@@ -108,7 +111,7 @@
             // 
             this.classNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.classNameTextBox.Location = new System.Drawing.Point(82, 309);
+            this.classNameTextBox.Location = new System.Drawing.Point(82, 264);
             this.classNameTextBox.Name = "classNameTextBox";
             this.classNameTextBox.Size = new System.Drawing.Size(387, 20);
             this.classNameTextBox.TabIndex = 5;
@@ -134,6 +137,7 @@
             this.generateButton.TabIndex = 6;
             this.generateButton.Text = "Generate";
             this.generateButton.UseVisualStyleBackColor = true;
+            this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
             // selectAllButton
             // 
@@ -161,6 +165,35 @@
             this.selectNoneButton.UseVisualStyleBackColor = true;
             this.selectNoneButton.Click += new System.EventHandler(this.selectNoneButton_Click);
             // 
+            // copyButton
+            // 
+            this.copyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.copyButton.Location = new System.Drawing.Point(148, 335);
+            this.copyButton.Name = "copyButton";
+            this.copyButton.Size = new System.Drawing.Size(158, 23);
+            this.copyButton.TabIndex = 10;
+            this.copyButton.Text = "Copy methods to clipboard";
+            this.copyButton.UseVisualStyleBackColor = true;
+            this.copyButton.Click += new System.EventHandler(this.copyButton_Click);
+            // 
+            // previewButton
+            // 
+            this.previewButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.previewButton.Location = new System.Drawing.Point(403, 290);
+            this.previewButton.Name = "previewButton";
+            this.previewButton.Size = new System.Drawing.Size(65, 23);
+            this.previewButton.TabIndex = 11;
+            this.previewButton.Text = "Preview";
+            this.previewButton.UseVisualStyleBackColor = true;
+            this.previewButton.Click += new System.EventHandler(this.previewButton_Click);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.CheckPathExists = false;
+            this.saveFileDialog.DefaultExt = "cs";
+            this.saveFileDialog.Filter = "C# files|*.cs|All files|*.*";
+            this.saveFileDialog.Title = "Select target step definition class file";
+            // 
             // GenerateStepDefinitionSkeletonForm
             // 
             this.AcceptButton = this.generateButton;
@@ -168,6 +201,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(481, 370);
+            this.Controls.Add(this.previewButton);
+            this.Controls.Add(this.copyButton);
             this.Controls.Add(this.selectNoneButton);
             this.Controls.Add(this.selectAllButton);
             this.Controls.Add(this.generateButton);
@@ -202,5 +237,8 @@
         private System.Windows.Forms.Button generateButton;
         private System.Windows.Forms.Button selectAllButton;
         private System.Windows.Forms.Button selectNoneButton;
+        private System.Windows.Forms.Button copyButton;
+        private System.Windows.Forms.Button previewButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }

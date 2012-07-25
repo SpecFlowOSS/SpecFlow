@@ -1,26 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Vs2010Integration.EditorCommands;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.UI;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
     public class GenerateStepDefinitionSkeletonCommand  : SpecFlowProjectSingleSelectionCommand
     {
+        private readonly IProjectScopeFactory projectScopeFactory;
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;
+        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
 
-        public GenerateStepDefinitionSkeletonCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory) : base(serviceProvider, dte)
+        public GenerateStepDefinitionSkeletonCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider, IProjectScopeFactory projectScopeFactory) : base(serviceProvider, dte)
         {
             this.gherkinLanguageServiceFactory = gherkinLanguageServiceFactory;
+            this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
+            this.projectScopeFactory = projectScopeFactory;
         }
 
         protected override void Invoke(OleMenuCommand command, SelectedItems selection)
@@ -49,7 +58,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return false;
 
             var featureTitle = GetFeatureTitle(fileScope);
-            var steps = GetUnboundSteps(bindingMatchService, editorContext, fileScope).ToArray();
+            var bindingCulture = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? fileScope.GherkinDialect.CultureInfo;
+            var steps = GetUnboundSteps(bindingMatchService, fileScope, bindingCulture).ToArray();
 
             if (steps.Length == 0)
             {
@@ -57,16 +67,91 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return true;
             }
 
-            using (var form = new GenerateStepDefinitionSkeletonForm(featureTitle, steps))
+            var specFlowProject = ((VsProjectScope) editorContext.ProjectScope).Project;
+            var defaultLanguage = VsProjectScope.GetTargetLanguage(specFlowProject);
+
+            using (var skeletonGeneratorForm = new GenerateStepDefinitionSkeletonForm(featureTitle, steps, specFlowProject))
             {
-                var result = form.ShowDialog();
-                if (result == DialogResult.OK)
+                skeletonGeneratorForm.OnPreview = (form) =>
+                    {
+                        var skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                            defaultLanguage, form.SelectedSteps, "MyNamespace",
+                            form.ClassName, form.Style, bindingCulture);
+                        MessageBox.Show(skeleton, "Step definition skeleton preview");
+                    };
+                skeletonGeneratorForm.OnCopy = (form) =>
+                    {
+                        var skeleton = string.Join(Environment.NewLine, 
+                            form.SelectedSteps.Select(si => stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(
+                            defaultLanguage, si, form.Style, bindingCulture)).Distinct()).Indent("        ");
+
+                        Clipboard.SetText(skeleton);
+                        return true;
+                    };
+                skeletonGeneratorForm.OnGenerate = (form, targetPath) =>
                 {
-                    MessageBox.Show("TODO");
-                }
+                    var project = GetTartgetProject(targetPath, specFlowProject);
+                    var language = VsProjectScope.GetTargetLanguage(project);
+
+                    var skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                        language, form.SelectedSteps, CalculateNamespace(targetPath, project), 
+                        form.ClassName, form.Style, bindingCulture);
+
+                    string folder = Path.GetDirectoryName(targetPath);
+                    if (folder != null && !Directory.Exists(folder))
+                        Directory.CreateDirectory(folder);
+                    File.WriteAllText(targetPath, skeleton, Encoding.UTF8);
+
+                    var projectItem = VsxHelper.FindProjectItemByFilePath(project, targetPath);
+                    if (projectItem == null)
+                        projectItem = project.ProjectItems.AddFromFile(targetPath);
+
+                    if (projectItem != null)
+                        projectItem.Open();
+
+                    return true;
+                };
+
+                skeletonGeneratorForm.ShowDialog();
             }
 
             return true;
+        }
+
+        private string CalculateNamespace(string targetPath, Project project)
+        {
+            string folder = Path.GetDirectoryName(targetPath);
+            var rootNamespace = (string) project.Properties.Item("DefaultNamespace").Value;
+
+            string projectRelativeFolder = FileSystemHelper.GetRelativePath(folder, VsxHelper.GetProjectFolder(project));
+            if (projectRelativeFolder == ".")
+            {
+                return rootNamespace;
+            }
+
+            var folderItem = VsxHelper.FindFolderProjectItemByFilePath(project, folder);
+            if (folderItem != null)
+            {
+                return (string)folderItem.Properties.Item("DefaultNamespace").Value;
+            }
+
+            return rootNamespace + "." + projectRelativeFolder.Replace("\\", ".");
+        }
+
+        private Project GetTartgetProject(string targetPath, Project specFlowProject)
+        {
+            string folder = Path.GetDirectoryName(targetPath);
+            if (folder == null)
+                return specFlowProject;
+
+            var ps = (VsProjectScope)projectScopeFactory.GetProjectScope(specFlowProject);
+            var targetProject = ps.BindingFilesTracker.BindingAssemblies.Where(ba => ba.IsProject).Select(ba => ba.Project)
+                .FirstOrDefault(prj =>
+                                    {
+                                        var projectFolder = VsxHelper.GetProjectFolder(prj);
+                                        return projectFolder != null && folder.StartsWith(projectFolder);
+                                    });
+            return targetProject ?? specFlowProject;
         }
 
         private string GetFeatureTitle(IGherkinFileScope fileScope)
@@ -77,9 +162,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             return fileScope.HeaderBlock.Title;
         }
 
-        private IEnumerable<StepInstance> GetUnboundSteps(IStepDefinitionMatchService bindingMatchService, GherkinEditorContext editorContext, IGherkinFileScope fileScope)
+        private IEnumerable<StepInstance> GetUnboundSteps(IStepDefinitionMatchService bindingMatchService, IGherkinFileScope fileScope, CultureInfo bindingCulture)
         {
-            CultureInfo bindingCulture = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? fileScope.GherkinDialect.CultureInfo;
             return fileScope.GetAllSteps().Where(s => !IsBound(s, bindingMatchService, bindingCulture));
         }
 

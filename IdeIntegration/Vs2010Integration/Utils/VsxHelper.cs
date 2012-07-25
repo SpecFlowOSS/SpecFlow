@@ -97,6 +97,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                     pi => filePath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public static ProjectItem FindFolderProjectItemByFilePath(Project project, string filePath)
+        {
+            return GetAllProjectItem(project).Where(IsPhysicalFolder).FirstOrDefault(
+                    pi => filePath.Equals(GetFolderName(pi), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         /// <summary>
         /// Retrieves the first project in the solution that matches the specified criteria.
         /// </summary>
@@ -228,12 +234,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return String.Equals(projectItem.Kind, VSConstants.GUID_ItemType_PhysicalFile.ToString("B"), StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public static bool IsPhysicalFolder(ProjectItem projectItem)
+        {
+            return String.Equals(projectItem.Kind, VSConstants.GUID_ItemType_PhysicalFolder.ToString("B"), StringComparison.InvariantCultureIgnoreCase);
+        }
+
         public static string GetFileName(ProjectItem projectItem)
         {
             if (!IsPhysicalFile(projectItem))
                 return null;
 
             return projectItem.FileNames[1];
+        }
+
+        public static string GetFolderName(ProjectItem projectItem)
+        {
+            if (IsPhysicalFile(projectItem))
+                return Path.GetDirectoryName(GetFileName(projectItem));
+
+            if (!IsPhysicalFolder(projectItem))
+                return null;
+
+            return projectItem.FileNames[1].TrimEnd('\\');
         }
 
         public static string GetProjectRelativePath(ProjectItem projectItem)

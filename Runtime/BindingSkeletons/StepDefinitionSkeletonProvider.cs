@@ -20,11 +20,12 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             this.stepTextAnalyzer = stepTextAnalyzer;
         }
 
-        public string GetBindingClassSkeleton(ProgrammingLanguage language, StepInstance[] stepInstances, string namespaceName, string className, StepDefinitionSkeletonStyle style)
+        public string GetBindingClassSkeleton(ProgrammingLanguage language, StepInstance[] stepInstances, string namespaceName, string className, StepDefinitionSkeletonStyle style, CultureInfo bindingCulture)
         {
             var template = templateProvider.GetStepDefinitionClassTemplate(language);
 
-            var bindings = string.Join(Environment.NewLine, GetOrderedSteps(stepInstances).Select(si => GetStepDefinitionSkeleton(language, si, style)).Distinct().ToArray());
+            var bindings = string.Join(Environment.NewLine, GetOrderedSteps(stepInstances)
+                .Select(si => GetStepDefinitionSkeleton(language, si, style, bindingCulture)).Distinct().ToArray()).TrimEnd();
             if (bindings.Length > 0)
                 bindings = bindings.Indent("        ");
 
@@ -41,11 +42,11 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                 .Select(item => item.Step);
         }
 
-        public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style)
+        public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style, CultureInfo bindingCulture)
         {
             var withRegex = style == StepDefinitionSkeletonStyle.RegexAttribute;
             var template = templateProvider.GetStepDefinitionTemplate(language, withRegex);
-            var analyzedStepText = Analyze(stepInstance);
+            var analyzedStepText = Analyze(stepInstance, bindingCulture);
             //{attribute}/{regex}/{methodName}/{parameters}
             return ApplyTemplate(template, new
                                                {
@@ -56,9 +57,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                                                });
         }
 
-        private AnalyzedStepText Analyze(StepInstance stepInstance)
+        private AnalyzedStepText Analyze(StepInstance stepInstance, CultureInfo bindingCulture)
         {
-            var result = stepTextAnalyzer.Analyze(stepInstance.Text, CultureInfo.CurrentCulture); //TODO
+            var result = stepTextAnalyzer.Analyze(stepInstance.Text, bindingCulture);
             if (stepInstance.MultilineTextArgument != null)
                 result.Parameters.Add(new AnalyzedStepParameter("String", "multilineText"));
             if (stepInstance.TableArgument != null)
@@ -78,7 +79,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             switch (style)
             {
                 case StepDefinitionSkeletonStyle.RegexAttribute:
-                    return keyword.ToIdentifier() + stepInstance.Text.ToIdentifier();
+                    return keyword.ToIdentifier() + string.Concat(analyzedStepText.TextParts.ToArray()).ToIdentifier();
                 case StepDefinitionSkeletonStyle.MethodNameUnderscores:
                     return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsUnderscored, "_{0}");
                 case StepDefinitionSkeletonStyle.MethodNamePascalCase:
@@ -99,7 +100,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             appendWords(analyzedStepText.TextParts[0], language, result);
             for (int i = 1; i < analyzedStepText.TextParts.Count; i++)
             {
-                result.AppendFormat(paramFormat, analyzedStepText.Parameters[i - 1].Name.ToUpperInvariant());
+                result.AppendFormat(paramFormat, analyzedStepText.Parameters[i - 1].Name.ToUpper(CultureInfo.InvariantCulture));
                 appendWords(analyzedStepText.TextParts[i], language, result);
             }
 

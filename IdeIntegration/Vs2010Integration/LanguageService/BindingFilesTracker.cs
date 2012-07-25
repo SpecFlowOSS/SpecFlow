@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             stepSuggestionBindingCollector = new VsBindingRegistryBuilder();
         }
 
-        private IEnumerable<BindingAssemblyInfo> bindingAssemblies
+        public IEnumerable<BindingAssemblyInfo> BindingAssemblies
         {
             get { return filesTracker.Keys; }
         }
@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (!IsInitialized)
                 return;
 
-            var bindingAsssembly = bindingAssemblies.FirstOrDefault(ba => ba.AssemblyName.Equals(reference.Name, StringComparison.InvariantCultureIgnoreCase));
+            var bindingAsssembly = BindingAssemblies.FirstOrDefault(ba => ba.AssemblyName.Equals(reference.Name, StringComparison.InvariantCultureIgnoreCase));
             bool isInScope = bindingAsssembly != null && !bindingAsssembly.IsProject;
             var fileInfo = FindFileInfo(VsxHelper.GetProjectRelativePath(reference));
             if (fileInfo != null)
@@ -159,7 +159,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             base.InitializeInternal();
 
-            files.AddRange(bindingAssemblies.Where(ba => ba.IsAssemblyReference).Select(ba => new BindingFileInfo(ba.Reference)));
+            files.AddRange(BindingAssemblies.Where(ba => ba.IsAssemblyReference).Select(ba => new BindingFileInfo(ba.Reference)));
         }
 
         private VsProjectFilesTracker CreateFilesTracker(BindingAssemblyInfo ai)

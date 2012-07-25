@@ -1,16 +1,23 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using EnvDTE;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.UI
 {
     public partial class GenerateStepDefinitionSkeletonForm : Form
     {
+        public Action<GenerateStepDefinitionSkeletonForm> OnPreview { get; set; }
+        public Func<GenerateStepDefinitionSkeletonForm, bool> OnCopy { get; set; }
+        public Func<GenerateStepDefinitionSkeletonForm, string, bool> OnGenerate { get; set; }
+
         private class ListItem
         {
             private readonly bool fileScopedDisplay;
@@ -29,6 +36,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             }
         }
 
+        private string defaultFolder;
+
         public string ClassName
         {
             get { return classNameTextBox.Text; }
@@ -44,7 +53,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             get { return (StepDefinitionSkeletonStyle)styleComboBox.SelectedIndex; }
         }
 
-        public GenerateStepDefinitionSkeletonForm(string featureTitle, StepInstance[] steps)
+        public GenerateStepDefinitionSkeletonForm(string featureTitle, StepInstance[] steps, Project specFlowProject)
         {
             InitializeComponent();
 
@@ -59,6 +68,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             classNameTextBox.Text = string.Format("{0} Steps", featureTitle).ToIdentifier();
 
             styleComboBox.SelectedIndex = 0;
+
+            defaultFolder = Path.Combine(VsxHelper.GetProjectFolder(specFlowProject), "StepDefinitions");
+            if (!Directory.Exists(defaultFolder))
+                defaultFolder = VsxHelper.GetProjectFolder(specFlowProject);
         }
 
         private void selectAllButton_Click(object sender, EventArgs e)
@@ -77,6 +90,31 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             for (int i = 0; i < stepsList.Items.Count; i++)
                 stepsList.SetItemCheckState(i, value ? CheckState.Checked : CheckState.Unchecked);
             stepsList.EndUpdate();
+        }
+
+        private void previewButton_Click(object sender, EventArgs e)
+        {
+            OnPreview(this);
+        }
+
+        private void copyButton_Click(object sender, EventArgs e)
+        {
+            if (OnCopy(this))
+            {
+                DialogResult = DialogResult.No;
+            }
+        }
+
+        private void generateButton_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.FileName = Path.Combine(defaultFolder, ClassName);
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (OnGenerate(this, saveFileDialog.FileName))
+                {
+                    DialogResult = DialogResult.OK;
+                }
+            }
         }
     }
 }
