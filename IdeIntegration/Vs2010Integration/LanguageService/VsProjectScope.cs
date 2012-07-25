@@ -27,7 +27,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly DteWithEvents dteWithEvents;
         private readonly IVisualStudioTracer tracer;
         private readonly IIntegrationOptionsProvider integrationOptionsProvider;
-        private readonly IBindingSkeletonProviderFactory bindingSkeletonProviderFactory;
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
@@ -103,11 +102,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IIdeTracer Tracer { get { return tracer; } }
         internal DteWithEvents DteWithEvents { get { return dteWithEvents; } }
 
-        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
-        {
-            get { return bindingSkeletonProviderFactory.GetProvider(GetTargetLanguage(project), GherkinDialectServices.GetDefaultDialect()); }
-        }
-
         public IIntegrationOptionsProvider IntegrationOptionsProvider
         {
             get { return integrationOptionsProvider; }
@@ -116,14 +110,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public event EventHandler SpecFlowProjectConfigurationChanged;
         public event EventHandler GherkinDialectServicesChanged;
 
-        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider, IBindingSkeletonProviderFactory bindingSkeletonProviderFactory)
+        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider)
         {
             Classifications = classifications;
             this.project = project;
             this.dteWithEvents = dteWithEvents;
             this.tracer = tracer;
             this.integrationOptionsProvider = integrationOptionsProvider;
-            this.bindingSkeletonProviderFactory = bindingSkeletonProviderFactory;
 
             var integrationOptions = integrationOptionsProvider.GetOptions();
 

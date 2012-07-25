@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
@@ -17,10 +18,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
     public class GoToStepDefinitionCommand : SpecFlowProjectSingleSelectionCommand
     {
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;
+        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
 
-        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory) : base(serviceProvider, dte)
+        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider) : base(serviceProvider, dte)
         {
             this.gherkinLanguageServiceFactory = gherkinLanguageServiceFactory;
+            this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
         }
 
         internal bool IsEnabled(Document activeDocument)
@@ -79,7 +82,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 }
                 else
                 {
-                    string skeleton = editorContext.ProjectScope.StepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(step);
+                    var language = editorContext.ProjectScope is VsProjectScope ? VsProjectScope.GetTargetLanguage(((VsProjectScope) editorContext.ProjectScope).Project) : ProgrammingLanguage.CSharp;
+                    string skeleton = stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(language, step, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
 
                     var result = MessageBox.Show("No matching step binding found for this step! Do you want to copy the step binding skeleton to the clipboard?"
                          + Environment.NewLine + Environment.NewLine + skeleton, "Go to binding", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);

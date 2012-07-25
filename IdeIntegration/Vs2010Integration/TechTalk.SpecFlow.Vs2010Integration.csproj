@@ -174,11 +174,6 @@
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
-    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
-    <Compile Include="BindingSkeletons\IBindingSkeletonProviderFactory.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
     <Compile Include="Commands\GenerateStepDefinitionSkeletonCommand.cs" />
     <Compile Include="Commands\GoToStepDefinitionCommand.cs" />

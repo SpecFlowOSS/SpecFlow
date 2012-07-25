@@ -42,11 +42,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return null; }
         }
 
-        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
-        {
-            get { return null; }
-        }
-
         public IGeneratorServices GeneratorServices
         {
             get { return null; }
