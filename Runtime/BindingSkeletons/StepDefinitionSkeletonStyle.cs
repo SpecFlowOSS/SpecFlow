@@ -2,8 +2,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 {
     public enum StepDefinitionSkeletonStyle
     {
-        RegularExpressions = 0,
+        RegexAttribute = 0,
         MethodNameUnderscores = 1,
-        MethodNamePascalCase = 2
+        MethodNamePascalCase = 2,
+        MethodNameRegex = 3
     }
 }

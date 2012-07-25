@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style)
         {
-            var withRegex = style == StepDefinitionSkeletonStyle.RegularExpressions;
+            var withRegex = style == StepDefinitionSkeletonStyle.RegexAttribute;
             var template = templateProvider.GetStepDefinitionTemplate(language, withRegex);
             var analyzedStepText = Analyze(stepInstance);
             //{attribute}/{regex}/{methodName}/{parameters}
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
                                                {
                                                    attribute = stepInstance.StepDefinitionType, 
                                                    regex = withRegex ? GetRegex(analyzedStepText) : "", 
-                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style), 
+                                                   methodName = GetMethodName(stepInstance, analyzedStepText, style, language), 
                                                    parameters = string.Join(", ", analyzedStepText.Parameters.Select(p => ToDeclaration(language, p)).ToArray())
                                                });
         }
@@ -63,17 +63,21 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return wordRe.Matches(text).Cast<Match>().Select(m => m.Value);
         }
 
-        private string GetMethodName(StepInstance stepInstance, AnalyzedStepText analyzedStepText, StepDefinitionSkeletonStyle style)
+        private string GetMethodName(StepInstance stepInstance, AnalyzedStepText analyzedStepText, StepDefinitionSkeletonStyle style, ProgrammingLanguage language)
         {
             var keyword = LanguageHelper.GetDefaultKeyword(stepInstance.StepContext.Language, stepInstance.StepDefinitionType);
             switch (style)
             {
-                case StepDefinitionSkeletonStyle.RegularExpressions:
+                case StepDefinitionSkeletonStyle.RegexAttribute:
                     return keyword.ToIdentifier() + stepInstance.Text.ToIdentifier();
                 case StepDefinitionSkeletonStyle.MethodNameUnderscores:
                     return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsUnderscored, "_{0}");
                 case StepDefinitionSkeletonStyle.MethodNamePascalCase:
                     return GetMatchingMethodName(keyword, analyzedStepText, stepInstance.StepContext.Language, AppendWordsPascalCase, "_{0}_");
+                case StepDefinitionSkeletonStyle.MethodNameRegex:
+                    if (language != ProgrammingLanguage.FSharp)
+                        goto case StepDefinitionSkeletonStyle.MethodNameUnderscores;
+                    return "``" + GetRegex(analyzedStepText) + "``";
                 default:
                     throw new NotSupportedException();
             }

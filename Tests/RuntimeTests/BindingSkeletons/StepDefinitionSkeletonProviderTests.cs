@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = CreateSut();
 
-            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new StepInstance[0], "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new StepInstance[0], "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("MyName.Space/MyClass/");
         }
@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(templateProviderMock.Object, stepTextAnalyzerMock.Object, "step-definition-skeleton");
 
-            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton");
         }
@@ -96,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
     inner-line
 ");
 
-            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton
             inner-line
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = CreateSut();
 
-            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, CreateSimpleWhen(), StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, CreateSimpleWhen(), StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("When/I do something/WhenIDoSomething/");
         }
@@ -118,7 +118,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = CreateSut();
 
-            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("When/I do something/WhenIDoSomething/string multilineText, Table table");
         }
@@ -128,7 +128,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = CreateSut();
 
-            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.FSharp, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.FSharp, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("When/I do something/WhenIDoSomething/multilineText : string, table : Table");
         }
@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = CreateSut();
 
-            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.VB, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.VB, CreateWhenWithExtraArgs(), StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("When/I do something/WhenIDoSomething/ByVal multilineText As String, ByVal table As Table");
         }
@@ -150,7 +150,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             var stepInstance = CreateWhenWithSingleParam();
 
-            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, stepInstance, StepDefinitionSkeletonStyle.RegularExpressions);
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual("When/I '(.*)' something/WhenIDoSomething/string p0");
         }
@@ -244,6 +244,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, stepInstance, StepDefinitionSkeletonStyle.MethodNamePascalCase);
 
             result.ShouldEqual("When/WhenIDo_P0/int p0");
+        }
+
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_generate_simple_regex_method_name_style()
+        {
+            var sut = CreateSut();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.FSharp, CreateSimpleWhen(), StepDefinitionSkeletonStyle.MethodNameRegex);
+
+            result.ShouldEqual("When/``I do something``/");
         }
     }
 }
