@@ -24,12 +24,21 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             var template = templateProvider.GetStepDefinitionClassTemplate(language);
 
-            var bindings = string.Join(Environment.NewLine, stepInstances.Select(si => GetStepDefinitionSkeleton(language, si, style)).ToArray());
+            var bindings = string.Join(Environment.NewLine, GetOrderedSteps(stepInstances).Select(si => GetStepDefinitionSkeleton(language, si, style)).Distinct().ToArray());
             if (bindings.Length > 0)
                 bindings = bindings.Indent("        ");
 
             //{namespace}/{className}/{bindings}
             return ApplyTemplate(template, new { @namespace = namespaceName, className, bindings});
+        }
+
+        private static IEnumerable<StepInstance> GetOrderedSteps(StepInstance[] stepInstances)
+        {
+            return stepInstances
+                .Select((si, index) => new { Step = si, Index = index})
+                .OrderBy(item => item.Step.StepDefinitionType)
+                .ThenBy(item => item.Index)
+                .Select(item => item.Step);
         }
 
         public virtual string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style)

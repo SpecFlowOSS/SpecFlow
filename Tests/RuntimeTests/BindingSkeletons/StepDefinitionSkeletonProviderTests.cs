@@ -40,6 +40,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             return result;
         }
 
+        private StepInstance CreateSimpleGiven(string text = "I had something")
+        {
+            var result = new StepInstance(StepDefinitionType.Given, StepDefinitionKeyword.Given, "Given ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US")));
+            analizeResult.TextParts.Add(text);
+            return result;
+        }
+
+        private StepInstance CreateSimpleThen(string text = "I have something")
+        {
+            var result = new StepInstance(StepDefinitionType.Then, StepDefinitionKeyword.Then, "Then ", text, null, null, new StepContext("MyFeature", "MyScenario", null, new CultureInfo("en-US")));
+            analizeResult.TextParts.Add(text);
+            return result;
+        }
+
         private StepInstance CreateWhenWithExtraArgs()
         {
             var result = CreateSimpleWhen();
@@ -51,16 +65,31 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
         private class StepDefinitionSkeletonProviderStepDefinitionSkeletonStub : StepDefinitionSkeletonProvider
         {
-            private readonly string stepDefinitionSkeleton;
+            private int usageIndex = 0;
+            private readonly string[] stepDefinitionSkeletons;
+            private Func<StepInstance, string> getSkeleton;
 
-            public StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(ISkeletonTemplateProvider templateProvider, IStepTextAnalyzer stepTextAnalyzer, string stepDefinitionSkeleton) : base(templateProvider, stepTextAnalyzer)
+            public StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(ISkeletonTemplateProvider templateProvider, IStepTextAnalyzer stepTextAnalyzer, params string[] stepDefinitionSkeletons) : base(templateProvider, stepTextAnalyzer)
             {
-                this.stepDefinitionSkeleton = stepDefinitionSkeleton;
+                this.stepDefinitionSkeletons = stepDefinitionSkeletons;
+            }
+
+            public StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(ISkeletonTemplateProvider templateProvider, IStepTextAnalyzer stepTextAnalyzer, Func<StepInstance, string> getSkeleton) : base(templateProvider, stepTextAnalyzer)
+            {
+                this.getSkeleton = getSkeleton;
             }
 
             public override string GetStepDefinitionSkeleton(ProgrammingLanguage language, StepInstance stepInstance, StepDefinitionSkeletonStyle style)
             {
-                return stepDefinitionSkeleton;
+                if (getSkeleton != null)
+                    return getSkeleton(stepInstance);
+
+                if (usageIndex < stepDefinitionSkeletons.Length)
+                {
+                    return stepDefinitionSkeletons[usageIndex++];
+                }
+
+                return stepDefinitionSkeletons[stepDefinitionSkeletons.Length - 1];
             }
         }
 
@@ -87,6 +116,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
 
             result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton");
+        }
+
+        [Test]
+        public void Should_GetBindingClassSkeleton_merges_same_step_definition_methods()
+        {
+            var sut = new StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(templateProviderMock.Object, stepTextAnalyzerMock.Object, "step-definition-skeleton", "other-step-definition-skeleton", "step-definition-skeleton");
+
+            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen(), CreateSimpleWhen(), CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
+
+            result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton
+        other-step-definition-skeleton");
+        }
+
+        [Test]
+        public void Should_GetBindingClassSkeleton_orders_step_definition_methods_by_type()
+        {
+            var sut = new StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(templateProviderMock.Object, stepTextAnalyzerMock.Object, si => si.StepDefinitionType.ToString() + "-skeleton");
+
+            var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen(), CreateSimpleThen(), CreateSimpleGiven() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute);
+
+            result.ShouldEqual(@"MyName.Space/MyClass/        Given-skeleton
+        When-skeleton
+        Then-skeleton");
         }
 
         [Test]
