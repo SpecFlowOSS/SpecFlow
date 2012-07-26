@@ -6,6 +6,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
@@ -18,10 +19,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
     public class GoToStepsCommand : MenuCommandHandler
     {
         private readonly IProjectScopeFactory projectScopeFactory;
+        private readonly IIdeTracer tracer;
 
-        public GoToStepsCommand(IServiceProvider serviceProvider, DTE dte, IProjectScopeFactory projectScopeFactory) : base(serviceProvider, dte)
+        public GoToStepsCommand(IServiceProvider serviceProvider, DTE dte, IProjectScopeFactory projectScopeFactory, IIdeTracer tracer) : base(serviceProvider, dte)
         {
             this.projectScopeFactory = projectScopeFactory;
+            this.tracer = tracer;
         }
 
         protected override void BeforeQueryStatus(OleMenuCommand command, SelectedItems selection)
@@ -175,7 +178,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         private bool IsStepDefinition(IBindingMethod bindingMethod, Document activeDocument)
         {
-            var vsBindingRegistryBuilder = new VsBindingRegistryBuilder();
+            var vsBindingRegistryBuilder = new VsBindingRegistryBuilder(tracer);
             var stepDefinitionBinding = vsBindingRegistryBuilder.GetBindingsFromProjectItem(activeDocument.ProjectItem).FirstOrDefault(sdb => sdb.Method.MethodEquals(bindingMethod));
             return stepDefinitionBinding != null;
         }

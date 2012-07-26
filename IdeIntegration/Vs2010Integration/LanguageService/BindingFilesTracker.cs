@@ -91,7 +91,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public BindingFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
-            stepSuggestionBindingCollector = new VsBindingRegistryBuilder();
+            stepSuggestionBindingCollector = new VsBindingRegistryBuilder(vsProjectScope.Tracer);
         }
 
         public IEnumerable<BindingAssemblyInfo> BindingAssemblies

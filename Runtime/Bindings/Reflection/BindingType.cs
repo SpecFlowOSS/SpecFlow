@@ -1,4 +1,6 @@
-﻿namespace TechTalk.SpecFlow.Bindings.Reflection
+﻿using System;
+
+namespace TechTalk.SpecFlow.Bindings.Reflection
 {
     public class BindingType : IBindingType
     {
@@ -7,6 +9,9 @@
 
         public BindingType(string name, string fullName)
         {
+            if (name == null) throw new ArgumentNullException("name");
+            if (fullName == null) throw new ArgumentNullException("fullName");
+
             Name = name;
             FullName = fullName;
         }
