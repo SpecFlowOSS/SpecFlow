@@ -17,11 +17,18 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
         private readonly IStatusAccessor statusAccessor;
 
         public IdeIntegration IdeIntegration { get; private set; }
-        public static Version CurrentVersion { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
+        public static Version CurrentVersion
+        {
+            get
+            {
+                var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                return new Version(assemblyVersion.Major, assemblyVersion.Minor);
+            }
+        }
 
         internal static bool IsDevBuild
         {
-            get { return CurrentVersion.Equals(new Version(1, 0, 0, 0)); }
+            get { return CurrentVersion.Equals(new Version(1, 0)); }
         }
 
         public InstallServices(IGuidanceNotificationService notificationService, IIdeTracer tracer, IFileAssociationDetector fileAssociationDetector, IStatusAccessor statusAccessor)
