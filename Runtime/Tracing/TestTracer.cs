@@ -7,6 +7,7 @@ using System.Text;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -29,12 +30,14 @@ namespace TechTalk.SpecFlow.Tracing
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
+        private readonly RuntimeConfiguration runtimeConfiguration;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, RuntimeConfiguration runtimeConfiguration)
         {
             this.traceListener = traceListener;
             this.stepFormatter = stepFormatter;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
+            this.runtimeConfiguration = runtimeConfiguration;
         }
 
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
@@ -88,7 +91,7 @@ namespace TechTalk.SpecFlow.Tracing
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
             }
             message.Append(
-               stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(targetLanguage, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture)
+               stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(targetLanguage, stepInstance, runtimeConfiguration.StepDefinitionSkeletonStyle, bindingCulture)
                     .Indent(StepDefinitionSkeletonProvider.METHOD_INDENT));
 
             traceListener.WriteToolOutput(message.ToString());

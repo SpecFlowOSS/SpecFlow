@@ -181,7 +181,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 string skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
                     defaultTargetLanguage, 
-                    contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", StepDefinitionSkeletonStyle.RegexAttribute, defaultBindingCulture);
+                    contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", runtimeConfiguration.StepDefinitionSkeletonStyle, defaultBindingCulture);
 
                 errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,

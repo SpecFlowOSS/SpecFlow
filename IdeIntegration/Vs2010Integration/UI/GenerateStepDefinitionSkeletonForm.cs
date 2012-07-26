@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
 {
     public partial class GenerateStepDefinitionSkeletonForm : Form
     {
+        private readonly DTE dte;
         public Action<GenerateStepDefinitionSkeletonForm> OnPreview { get; set; }
         public Func<GenerateStepDefinitionSkeletonForm, bool> OnCopy { get; set; }
         public Func<GenerateStepDefinitionSkeletonForm, string, bool> OnGenerate { get; set; }
@@ -36,7 +38,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             }
         }
 
-        private string defaultFolder;
+        private class StyleItem
+        {
+            public StepDefinitionSkeletonStyle Style { get; private set; }
+
+            public StyleItem(StepDefinitionSkeletonStyle style)
+            {
+                Style = style;
+            }
+
+            public override string ToString()
+            {
+                return ((DescriptionAttribute)Attribute.GetCustomAttribute(typeof(StepDefinitionSkeletonStyle).GetField(Style.ToString()), typeof(DescriptionAttribute))).Description;
+            }
+        }
+
+        private readonly string defaultFolder;
 
         public string ClassName
         {
@@ -53,8 +70,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
             get { return (StepDefinitionSkeletonStyle)styleComboBox.SelectedIndex; }
         }
 
-        public GenerateStepDefinitionSkeletonForm(string featureTitle, StepInstance[] steps, Project specFlowProject)
+        public GenerateStepDefinitionSkeletonForm(string featureTitle, StepInstance[] steps, Project specFlowProject, StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle, ProgrammingLanguage defaultLanguage, DTE dte)
         {
+            this.dte = dte;
             InitializeComponent();
 
             stepsList.BeginUpdate();
@@ -67,7 +85,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
 
             classNameTextBox.Text = string.Format("{0} Steps", featureTitle).ToIdentifier();
 
-            styleComboBox.SelectedIndex = 0;
+            styleComboBox.BeginUpdate();
+            var styles = Enum.GetValues(typeof (StepDefinitionSkeletonStyle)).Cast<StepDefinitionSkeletonStyle>()
+                .Where(value => value != StepDefinitionSkeletonStyle.MethodNameRegex || defaultLanguage == ProgrammingLanguage.FSharp)
+                .ToArray();
+            styleComboBox.Items.Clear();
+            styleComboBox.Items.AddRange(styles.Select(s => new StyleItem(s)).ToArray<object>());
+
+            int selectedIndex = Array.IndexOf(styles, stepDefinitionSkeletonStyle);
+            styleComboBox.SelectedIndex = selectedIndex < 0 ? 0 : selectedIndex;
+            styleComboBox.EndUpdate();
 
             defaultFolder = Path.Combine(VsxHelper.GetProjectFolder(specFlowProject), "StepDefinitions");
             if (!Directory.Exists(defaultFolder))
@@ -115,6 +142,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
                     DialogResult = DialogResult.OK;
                 }
             }
+        }
+
+        private void helpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string url = (string)((LinkLabel)sender).Tag;
+            dte.ItemOperations.Navigate(url, vsNavigateOptions.vsNavigateOptionsNewWindow);
         }
     }
 }

@@ -69,8 +69,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
             var specFlowProject = ((VsProjectScope) editorContext.ProjectScope).Project;
             var defaultLanguage = VsProjectScope.GetTargetLanguage(specFlowProject);
+            var stepDefinitionSkeletonStyle = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.StepDefinitionSkeletonStyle;
 
-            using (var skeletonGeneratorForm = new GenerateStepDefinitionSkeletonForm(featureTitle, steps, specFlowProject))
+            using (var skeletonGeneratorForm = new GenerateStepDefinitionSkeletonForm(featureTitle, steps, specFlowProject, stepDefinitionSkeletonStyle, defaultLanguage, dte))
             {
                 skeletonGeneratorForm.OnPreview = (form) =>
                     {

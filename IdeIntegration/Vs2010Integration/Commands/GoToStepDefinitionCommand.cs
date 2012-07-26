@@ -83,7 +83,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 else
                 {
                     var language = editorContext.ProjectScope is VsProjectScope ? VsProjectScope.GetTargetLanguage(((VsProjectScope) editorContext.ProjectScope).Project) : ProgrammingLanguage.CSharp;
-                    string skeleton = stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(language, step, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+                    var stepDefinitionSkeletonStyle = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.StepDefinitionSkeletonStyle;
+                    string skeleton = stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(language, step, stepDefinitionSkeletonStyle, bindingCulture);
 
                     var result = MessageBox.Show("No matching step binding found for this step! Do you want to copy the step binding skeleton to the clipboard?"
                          + Environment.NewLine + Environment.NewLine + skeleton, "Go to binding", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);

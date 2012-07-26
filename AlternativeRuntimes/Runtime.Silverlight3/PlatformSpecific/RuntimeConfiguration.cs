@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Browser;
-
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -28,6 +28,7 @@ namespace TechTalk.SpecFlow.Configuration
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
+        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
 
         public List<string> AdditionalStepAssemblies { get; private set; }
 
@@ -46,6 +47,7 @@ namespace TechTalk.SpecFlow.Configuration
             TraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
             TraceTimings = ConfigDefaults.TraceTimings;
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+            StepDefinitionSkeletonStyle = ConfigDefaults.StepDefinitionSkeletonStyle;
 
             AdditionalStepAssemblies = new List<string>();
         }
@@ -78,6 +80,7 @@ namespace TechTalk.SpecFlow.Configuration
             TraceSuccessfulSteps = GetBoolFromQueryString("traceSuccessfulSteps", TraceSuccessfulSteps);
             TraceTimings = GetBoolFromQueryString("traceTimings", TraceTimings);
             MinTracedDuration = GetTimeSpanFromQueryString("minTracedDuration", MinTracedDuration);
+            StepDefinitionSkeletonStyle = GetEnumFromQueryString("stepDefinitionSkeletonStyle", StepDefinitionSkeletonStyle);
         }
 
         private static CultureInfo GetCultureInfoFromQueryString(string key, CultureInfo defaultValue)
@@ -114,12 +117,6 @@ namespace TechTalk.SpecFlow.Configuration
             }
 
             return defaultValue;
-        }
-
-        private static Type GetTypeFromQueryString(string key, Type defaultValue)
-        {
-            string value;
-            return QueryString.TryGetValue(key, out value) ? Type.GetType(value, true) : defaultValue;
         }
 
         private static TimeSpan GetTimeSpanFromQueryString(string key, TimeSpan defaultValue)

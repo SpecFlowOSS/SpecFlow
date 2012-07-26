@@ -41,6 +41,7 @@
             this.copyButton = new System.Windows.Forms.Button();
             this.previewButton = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.helpLinkLabel = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // stepsList
@@ -194,6 +195,18 @@
             this.saveFileDialog.Filter = "C# files|*.cs|All files|*.*";
             this.saveFileDialog.Title = "Select target step definition class file";
             // 
+            // helpLinkLabel
+            // 
+            this.helpLinkLabel.AutoSize = true;
+            this.helpLinkLabel.Location = new System.Drawing.Point(286, 311);
+            this.helpLinkLabel.Name = "helpLinkLabel";
+            this.helpLinkLabel.Size = new System.Drawing.Size(183, 13);
+            this.helpLinkLabel.TabIndex = 12;
+            this.helpLinkLabel.TabStop = true;
+            this.helpLinkLabel.Tag = "http://go.specflow.org/doc-stepdefstyles";
+            this.helpLinkLabel.Text = "learn more about step definition styles";
+            this.helpLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.helpLinkLabel_LinkClicked);
+            // 
             // GenerateStepDefinitionSkeletonForm
             // 
             this.AcceptButton = this.generateButton;
@@ -201,6 +214,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(481, 370);
+            this.Controls.Add(this.helpLinkLabel);
             this.Controls.Add(this.previewButton);
             this.Controls.Add(this.copyButton);
             this.Controls.Add(this.selectNoneButton);
@@ -240,5 +254,6 @@
         private System.Windows.Forms.Button copyButton;
         private System.Windows.Forms.Button previewButton;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.LinkLabel helpLinkLabel;
     }
 }

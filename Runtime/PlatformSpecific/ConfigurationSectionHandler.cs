@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using BoDi;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Configuration
@@ -251,6 +252,13 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (string)this["listener"]; }
             set { this["listener"] = value; }
+        }
+
+        [ConfigurationProperty("stepDefinitionSkeletonStyle", IsRequired = false, DefaultValue = StepDefinitionSkeletonStyle.RegexAttribute)]
+        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle
+        {
+            get { return (StepDefinitionSkeletonStyle)this["stepDefinitionSkeletonStyle"]; }
+            set { this["stepDefinitionSkeletonStyle"] = value; }
         }
     }
 

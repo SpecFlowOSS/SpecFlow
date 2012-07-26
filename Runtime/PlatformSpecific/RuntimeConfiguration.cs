@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using BoDi;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -33,6 +34,7 @@ namespace TechTalk.SpecFlow.Configuration
         public bool TraceSuccessfulSteps { get; set; }
         public bool TraceTimings { get; set; }
         public TimeSpan MinTracedDuration { get; set; }
+        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
 
         public List<string> AdditionalStepAssemblies { get; private set; }
 
@@ -51,6 +53,7 @@ namespace TechTalk.SpecFlow.Configuration
             TraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
             TraceTimings = ConfigDefaults.TraceTimings;
             MinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+            StepDefinitionSkeletonStyle = ConfigDefaults.StepDefinitionSkeletonStyle;
 
             AdditionalStepAssemblies = new List<string>();
         }
@@ -129,6 +132,7 @@ namespace TechTalk.SpecFlow.Configuration
                 this.TraceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
                 this.TraceTimings = configSection.Trace.TraceTimings;
                 this.MinTracedDuration = configSection.Trace.MinTracedDuration;
+                this.StepDefinitionSkeletonStyle = configSection.Trace.StepDefinitionSkeletonStyle;
             }
 
             foreach (var element in configSection.StepAssemblies)

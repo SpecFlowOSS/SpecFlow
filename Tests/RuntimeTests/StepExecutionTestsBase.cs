@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
                 Console.WriteLine("TraceError: {0}", ex);
             }
 
-            public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
+            public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
             {
                 Console.WriteLine("TraceNoMatchingStepDefinition");
             }

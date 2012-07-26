@@ -1,5 +1,8 @@
+using TechTalk.SpecFlow.BindingSkeletons;
+
 namespace TechTalk.SpecFlow.Configuration
 {
+// ReSharper disable RedundantNameQualifier
     public static class ConfigDefaults
     {
         public const string FeatureLanguage = "en-US";
@@ -14,10 +17,12 @@ namespace TechTalk.SpecFlow.Configuration
         public const bool TraceSuccessfulSteps = true;
         public const bool TraceTimings = false;
         public const string MinTracedDuration = "0:0:0.1";
+        public const StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle = TechTalk.SpecFlow.BindingSkeletons.StepDefinitionSkeletonStyle.RegexAttribute;
 
         public const bool AllowDebugGeneratedFiles = false;
         public const bool AllowRowTests = true;
         public const bool GenerateAsyncTests = false;
         public const string GeneratorPath = null;
     }
+// ReSharper restore RedundantNameQualifier
 }
