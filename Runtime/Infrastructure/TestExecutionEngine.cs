@@ -25,36 +25,33 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepFormatter stepFormatter;
         private readonly IBindingRegistry bindingRegistry;
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
-        private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
         private readonly IContextManager contextManager;
         private readonly IStepDefinitionMatchService stepDefinitionMatchService;
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
         private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
+        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
 
-        private IStepDefinitionSkeletonProvider currentStepDefinitionSkeletonProvider;
+        private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
+        private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
+            IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.errorProvider = errorProvider;
-            //this.stepDefinitionMatcher = stepDefinitionMatcher;
             this.bindingInvoker = bindingInvoker;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.contextManager = contextManager;
-            this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
+            this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
             this.bindingRegistry = bindingRegistry;
             this.runtimeConfiguration = runtimeConfiguration;
             this.testTracer = testTracer;
             this.stepFormatter = stepFormatter;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
-
-            this.currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback if feature initialization was not proper
-
             this.stepDefinitionMatchService = stepDefinitionMatchService;
         }
 
@@ -119,14 +116,13 @@ namespace TechTalk.SpecFlow.Infrastructure
                 OnFeatureEnd();
             }
 
-            if (!stepDefinitionSkeletonProviders.ContainsKey(featureInfo.GenerationTargetLanguage))
-                currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[ProgrammingLanguage.CSharp]; // fallback case for unsupported skeleton provider
-            else
-                currentStepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[featureInfo.GenerationTargetLanguage];
-
             // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
             // The runtime can define the binding-culture: Value is configured on App.config, else it is null
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
+
+            defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
+            defaultBindingCulture = bindingCulture;
+
             contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
             FireEvents(HookType.BeforeFeature);
         }
@@ -184,13 +180,13 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             if (contextManager.ScenarioContext.TestStatus == TestStatus.MissingStepDefinition)
             {
-                var missingSteps = contextManager.ScenarioContext.MissingSteps.Distinct().OrderBy(s => s);
-                string bindingSkeleton =
-                    currentStepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                        string.Join(Environment.NewLine, missingSteps.ToArray()));
+                string skeleton = stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
+                    defaultTargetLanguage, 
+                    contextManager.ScenarioContext.MissingSteps.ToArray(), "MyNamespace", "StepDefinitions", StepDefinitionSkeletonStyle.RegexAttribute, defaultBindingCulture);
+
                 errorProvider.ThrowPendingError(contextManager.ScenarioContext.TestStatus, string.Format("{0}{2}{1}",
                     errorProvider.GetMissingStepDefinitionError().Message,
-                    bindingSkeleton,
+                    skeleton,
                     Environment.NewLine));
                 return;
             }
@@ -344,8 +340,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, candidatingMatches);
-            contextManager.ScenarioContext.MissingSteps.Add(
-                currentStepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance));
+            contextManager.ScenarioContext.MissingSteps.Add(stepInstance);
             throw errorProvider.GetMissingStepDefinitionError();
         }
 

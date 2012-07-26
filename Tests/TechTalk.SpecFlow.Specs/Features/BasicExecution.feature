@@ -24,3 +24,9 @@ Scenario: Should be able to execute a simple failing scenario
 	Then the execution summary should contain
 		| Total | Failed |
 		| 1     | 1      |
+
+Scenario: Should be able to execute a simple pending scenario
+	When I execute the tests
+	Then the execution summary should contain
+		| Total | Pending |
+		| 1     | 1       |

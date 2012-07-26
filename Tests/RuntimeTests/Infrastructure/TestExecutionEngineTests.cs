@@ -30,8 +30,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<ITestTracer> testTracerStub;
         private Mock<IStepDefinitionMatchService> stepDefinitionMatcherStub;
         private Mock<IBindingInvoker> methodBindingInvokerMock;
-        private Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> skeletonProviders;
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
+        private Mock<IStepDefinitionSkeletonProvider2> stepDefinitionSkeletonProviderMock;
 
         private readonly List<IHookBinding> beforeStepEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> afterStepEvents = new List<IHookBinding>();
@@ -41,8 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [SetUp]
         public void Setup()
         {
-            skeletonProviders = new Dictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider>();
-            skeletonProviders.Add(ProgrammingLanguage.CSharp, new Mock<IStepDefinitionSkeletonProvider>().Object);
+            stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider2>();
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
@@ -77,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 runtimeConfiguration, 
                 bindingRegistryStub.Object,
                 new Mock<IUnitTestRuntimeProvider>().Object,
-                skeletonProviders, 
+                stepDefinitionSkeletonProviderMock.Object, 
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
@@ -94,9 +93,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             StepDefinitionAmbiguityReason ambiguityReason;
             List<BindingMatch> candidatingMatches;
             stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
-                //.GetMatches(It.IsAny<StepInstance>()))
-                .Returns(//(StepInstance sa) => 
-                    new BindingMatch(stepDefStub.Object, 0, new string[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
+                .Returns(
+                    new BindingMatch(stepDefStub.Object, 0, new object[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
 
             return stepDefStub;
         }

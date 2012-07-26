@@ -39,9 +39,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider2>();
             container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
-
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderCS, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.CSharp.ToString());
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderVB, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.VB.ToString());
+            container.RegisterTypeAs<StepTextAnalyzer, IStepTextAnalyzer>();
 
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 

@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 {
     public class StepDefinitionSkeletonProvider : IStepDefinitionSkeletonProvider2
     {
+        public const string METHOD_INDENT = "        ";
+
         private readonly ISkeletonTemplateProvider templateProvider;
         private readonly IStepTextAnalyzer stepTextAnalyzer;
 
@@ -27,7 +29,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             var bindings = string.Join(Environment.NewLine, GetOrderedSteps(stepInstances)
                 .Select(si => GetStepDefinitionSkeleton(language, si, style, bindingCulture)).Distinct().ToArray()).TrimEnd();
             if (bindings.Length > 0)
-                bindings = bindings.Indent("        ");
+                bindings = bindings.Indent(METHOD_INDENT);
 
             //{namespace}/{className}/{bindings}
             return ApplyTemplate(template, new { @namespace = namespaceName, className, bindings});

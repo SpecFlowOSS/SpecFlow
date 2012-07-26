@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
@@ -27,13 +28,13 @@ namespace TechTalk.SpecFlow.Tracing
     {
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
-        private readonly IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders;
+        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IDictionary<ProgrammingLanguage, IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviders)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider)
         {
             this.traceListener = traceListener;
-            this.stepDefinitionSkeletonProviders = stepDefinitionSkeletonProviders;
             this.stepFormatter = stepFormatter;
+            this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
         }
 
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
@@ -76,14 +77,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
         {
-//            string stepDescription = stepFormatter.GetStepDescription(stepArgs);
-//            return new BindingException(
-//                string.Format("Multiple step definitions found, but none of them have matching scope for step '{0}': {1}",
-//                    stepDescription,
-//                    string.Join(", ", matches.Select(m => GetMethodText(m.StepBinding.MethodInfo)).ToArray())));
-
-
-            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider = stepDefinitionSkeletonProviders[targetLanguage];
+            CultureInfo bindingCulture = new CultureInfo("en-US"); //TODO
 
             StringBuilder message = new StringBuilder();
             if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)
@@ -96,9 +90,8 @@ namespace TechTalk.SpecFlow.Tracing
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
             }
             message.Append(
-                stepDefinitionSkeletonProvider.GetBindingClassSkeleton(
-                    stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(stepInstance))
-                        .Indent(StepDefinitionSkeletonProviderBase.CODEINDENT));
+               stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(targetLanguage, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture)
+                    .Indent(StepDefinitionSkeletonProvider.METHOD_INDENT));
 
             traceListener.WriteToolOutput(message.ToString());
         }

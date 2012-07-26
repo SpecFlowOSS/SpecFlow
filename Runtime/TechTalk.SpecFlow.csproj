@@ -207,9 +207,6 @@
     <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
