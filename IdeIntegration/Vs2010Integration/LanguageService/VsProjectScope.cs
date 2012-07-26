@@ -219,10 +219,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (generatorVersion == null)
                 return;
 
-            // we reset the last numbers as we don't want to force generating the files for every build
-            generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0); 
-                //TODO: consider removing this after the generator versioning has been well established
-
             Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
             if (featureFilesTracker.Files.Any(outOfDateFiles))
             {

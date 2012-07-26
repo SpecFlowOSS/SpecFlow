@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static IEnumerable<PluginDescriptor> GetPlugins()
         {
-            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins in WP7
         }
     }
 }

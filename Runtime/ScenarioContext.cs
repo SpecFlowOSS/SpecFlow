@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow
 
         internal TestStatus TestStatus { get; set; }
         internal List<string> PendingSteps { get; private set; }
-        internal List<StepInstance> MissingSteps { get; private set; } //TODO
+        internal List<StepInstance> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
         internal ITestRunner TestRunner { get; private set; } 

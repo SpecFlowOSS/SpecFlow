@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static IEnumerable<PluginDescriptor> GetPlugins()
         {
-            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins
+            return Enumerable.Empty<PluginDescriptor>(); //TODO: support plugins in Silverlight
         }
 
         private void UpdateFromQueryString()
@@ -75,8 +75,6 @@ namespace TechTalk.SpecFlow.Configuration
             StopAtFirstError = GetBoolFromQueryString("stopAtFirstError", StopAtFirstError);
             MissingOrPendingStepsOutcome = GetEnumFromQueryString("missingOrPendingStepsOutcome", MissingOrPendingStepsOutcome);
 
-            //TODO: support custom listener?
-            //TraceListenerType = GetTypeFromQueryString("traceListener", TraceListenerType);
             TraceSuccessfulSteps = GetBoolFromQueryString("traceSuccessfulSteps", TraceSuccessfulSteps);
             TraceTimings = GetBoolFromQueryString("traceTimings", TraceTimings);
             MinTracedDuration = GetTimeSpanFromQueryString("minTracedDuration", MinTracedDuration);

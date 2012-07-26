@@ -9,7 +9,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
-    public class StepDefinitionSkeletonProvider : IStepDefinitionSkeletonProvider2
+    public class StepDefinitionSkeletonProvider : IStepDefinitionSkeletonProvider
     {
         public const string METHOD_INDENT = "        ";
 

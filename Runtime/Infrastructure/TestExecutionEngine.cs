@@ -30,14 +30,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
         private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
-        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
         private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
         private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
 
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
-            IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
+            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
             IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.errorProvider = errorProvider;
@@ -85,7 +85,6 @@ namespace TechTalk.SpecFlow.Infrastructure
                     {
                         OnTestRunEnd();
                     };
-            //TODO: Siverlight
 #endif
         }
 
@@ -339,7 +338,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
 
-            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, candidatingMatches);
+            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, contextManager.FeatureContext.BindingCulture, candidatingMatches);
             contextManager.ScenarioContext.MissingSteps.Add(stepInstance);
             throw errorProvider.GetMissingStepDefinitionError();
         }

@@ -18,9 +18,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
     public class GoToStepDefinitionCommand : SpecFlowProjectSingleSelectionCommand
     {
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;
-        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
-        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider) : base(serviceProvider, dte)
+        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider) : base(serviceProvider, dte)
         {
             this.gherkinLanguageServiceFactory = gherkinLanguageServiceFactory;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;

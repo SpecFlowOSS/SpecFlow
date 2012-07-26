@@ -23,9 +23,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
     {
         private readonly IProjectScopeFactory projectScopeFactory;
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;
-        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
-        public GenerateStepDefinitionSkeletonCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider, IProjectScopeFactory projectScopeFactory) : base(serviceProvider, dte)
+        public GenerateStepDefinitionSkeletonCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IProjectScopeFactory projectScopeFactory) : base(serviceProvider, dte)
         {
             this.gherkinLanguageServiceFactory = gherkinLanguageServiceFactory;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                     {
                         var skeleton = string.Join(Environment.NewLine, 
                             form.SelectedSteps.Select(si => stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(
-                            defaultLanguage, si, form.Style, bindingCulture)).Distinct()).Indent("        ");
+                            defaultLanguage, si, form.Style, bindingCulture)).Distinct()).Indent(StepDefinitionSkeletonProvider.METHOD_INDENT);
 
                         Clipboard.SetText(skeleton);
                         return true;

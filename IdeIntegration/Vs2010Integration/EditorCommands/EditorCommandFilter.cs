@@ -218,7 +218,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                         break;
                 }
             }
-//TODO: uncomment this to add further command handlers
+//uncomment this to add further command handlers
 //                if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
 //                {
 //                    switch ((VSConstants.VSStd97CmdID)nCmdID)

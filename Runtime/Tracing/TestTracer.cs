@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
-        void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck);
+        void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
@@ -28,9 +28,9 @@ namespace TechTalk.SpecFlow.Tracing
     {
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
-        private readonly IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider;
+        private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
-        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider2 stepDefinitionSkeletonProvider)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider)
         {
             this.traceListener = traceListener;
             this.stepFormatter = stepFormatter;
@@ -75,10 +75,8 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
-        public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, List<BindingMatch> matchesWithoutScopeCheck)
+        public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
         {
-            CultureInfo bindingCulture = new CultureInfo("en-US"); //TODO
-
             StringBuilder message = new StringBuilder();
             if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)
                 message.AppendLine("No matching step definition found for the step. Use the following code to create one:");
