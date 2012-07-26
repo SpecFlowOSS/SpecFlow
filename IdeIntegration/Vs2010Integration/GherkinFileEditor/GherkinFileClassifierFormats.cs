@@ -161,4 +161,35 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             this.DisplayName = "Gherkin Step Text"; 
         }
     }
+	
+	// exports a classification format for the classification type gherkin.knownsteptext
+	[Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.knownsteptext")]
+    [Name("gherkin.knownsteptext")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinKnownStepTextClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinKnownStepTextClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Known Step Text";
+            this.ForegroundColor = Colors.Green;
+        }
+    }
+
+	// exports a classification format for the classification type gherkin.variable
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.variable")]
+    [Name("gherkin.variable")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinVariableClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinVariableClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Variable";
+            this.ForegroundColor = Colors.Red;
+            this.IsItalic = true;
+        }
+    }
 }
