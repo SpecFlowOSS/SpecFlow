@@ -1,6 +1,7 @@
 1.9.0 beta - ???
 
 New Features:
++ VS2010: Known steps appear in green and variables in red like in cuke4VS under visual 2008
 + Added SpecFlow.xUnit NuGet package
 + Guids can now be used as arguments to step definitions.
 + Any missing characters on a guid in tables or step arguments will be filled with trailing zeroes. ("7" => 70000000-0000-0000-0000-000000000000)

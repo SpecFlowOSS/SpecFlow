@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.projectScope = projectScope;
             this.visualStudioTracer = visualStudioTracer;
+
         }
 
         private GherkinDialect GetGherkinDialect(ITextSnapshot textSnapshot)
@@ -80,7 +81,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             partialParseCount = 0;
 
-            var gherkinListener = new GherkinTextBufferParserListener(gherkinDialect, textSnapshot, projectScope.Classifications);
+            var gherkinListener = new GherkinTextBufferParserListener(gherkinDialect, textSnapshot, projectScope);
 
             var scanner = new GherkinScanner(gherkinDialect, textSnapshot.GetText(), 0);
             scanner.Scan(gherkinListener);
@@ -117,7 +118,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             var gherkinListener = new GherkinTextBufferPartialParserListener(
                 previousScope.GherkinDialect,
-                textSnapshot, projectScope.Classifications, 
+                textSnapshot, projectScope, 
                 previousScope, 
                 change.EndLine, change.LineCountDelta);
 

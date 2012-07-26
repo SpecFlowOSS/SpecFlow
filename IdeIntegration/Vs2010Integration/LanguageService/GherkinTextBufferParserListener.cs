@@ -11,13 +11,15 @@ using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Infrastructure;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class GherkinTextBufferParserListener : GherkinTextBufferParserListenerBase
     {
-        public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
-            : base(gherkinDialect, textSnapshot, classifications)
+        public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, IProjectScope projectScope)
+            : base(gherkinDialect, textSnapshot, projectScope)
         {
         }
     }
@@ -26,6 +28,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileScope gherkinFileScope;
+        private readonly IProjectScope projectScope;
 
         private GherkinBuffer gherkinBuffer;
         private readonly ITextSnapshot textSnapshot;
@@ -47,10 +50,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         protected virtual string FeatureTitle { get { return gherkinFileScope.HeaderBlock == null ? null : gherkinFileScope.HeaderBlock.Title; } }
         protected virtual IEnumerable<string> FeatureTags { get { return gherkinFileScope.HeaderBlock == null ? Enumerable.Empty<string>() : gherkinFileScope.HeaderBlock.Tags; } }
 
-        protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
+        protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, IProjectScope projectScope)
         {
             this.textSnapshot = textSnapshot;
-            this.classifications = classifications;
+            this.classifications = projectScope.Classifications;
+            this.projectScope = projectScope;
+           
             gherkinFileScope = new GherkinFileScope(gherkinDialect, textSnapshot);
         }
 
@@ -325,8 +330,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
-
             if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock))
             {
                 var matches = placeholderRe.Matches(text);
@@ -340,6 +343,38 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             currentStep = new GherkinStep((StepDefinitionType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepContext, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.Steps.Add(currentStep);
+
+
+
+            var bindingMatchService = projectScope.BindingMatchService;
+         
+
+
+            if (bindingMatchService.Ready && bindingMatchService != null)
+            {
+                List<BindingMatch> candidatingMatches;
+                candidatingMatches = null;
+                StepDefinitionAmbiguityReason ambiguityReason;
+                CultureInfo bindingCulture = currentStep.StepContext.Language;
+                var match = bindingMatchService.GetBestMatch(currentStep, bindingCulture, out ambiguityReason, out candidatingMatches);
+
+                if (candidatingMatches.Count == 0)
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
+                }
+                else
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.KnownStepText);
+                    foreach (String value in candidatingMatches.First().StepBinding.Regex.Split(text))
+                        ColorizeLinePart(value, stepSpan, classifications.Variable);
+                }
+                  
+
+            
+            }
+            else
+                ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
+
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
