@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
-    public class DefaultSkeletonTemplateProvider : FileBasedSkeletonTemplateProvider
+    public class ResourceSkeletonTemplateProvider : FileBasedSkeletonTemplateProvider
     {
         protected override string GetTemplateFileContent()
         {
@@ -15,10 +15,33 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             using (var reader = new StreamReader(resourceStream))
                 return reader.ReadToEnd();
         }
+    }
 
-        protected override string MissingTemplate(string key)
+    public class DefaultSkeletonTemplateProvider : FileBasedSkeletonTemplateProvider
+    {
+        private readonly ResourceSkeletonTemplateProvider resourceSkeletonTemplateProvider;
+
+        public DefaultSkeletonTemplateProvider(ResourceSkeletonTemplateProvider resourceSkeletonTemplateProvider)
         {
-            return "undefined template";
+            this.resourceSkeletonTemplateProvider = resourceSkeletonTemplateProvider;
+        }
+
+        protected override string GetTemplateFileContent()
+        {
+#if SILVERLIGHT
+            return "";
+#else
+            string templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"SpecFlow\SkeletonTemplates.sftemplate");
+            if (!File.Exists(templateFilePath))
+                return "";
+
+            return File.ReadAllText(templateFilePath);
+#endif
+        }
+
+        protected internal override string GetTemplate(string key)
+        {
+            return base.GetTemplate(key) ?? resourceSkeletonTemplateProvider.GetTemplate(key);
         }
     }
 }

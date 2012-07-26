@@ -147,7 +147,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.UI
         private void helpLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string url = (string)((LinkLabel)sender).Tag;
-            dte.ItemOperations.Navigate(url, vsNavigateOptions.vsNavigateOptionsNewWindow);
+            try
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to open the browser.");
+            }
         }
     }
 }

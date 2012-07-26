@@ -31,14 +31,26 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         }
 
         protected abstract string GetTemplateFileContent();
-        protected abstract string MissingTemplate(string key);
+        protected virtual string MissingTemplate(string key)
+        {
+            return "undefined template";
+        }
+
+        internal protected virtual string GetTemplate(string key)
+        {
+            EnsureInitialized();
+
+            string template;
+            if (!templates.TryGetValue(key, out template))
+                return null;
+            return template;
+        }
 
         public string GetStepDefinitionTemplate(ProgrammingLanguage language, bool withRegex)
         {
-            EnsureInitialized();
             string key = string.Format("{0}/StepDefinition{1}", language, withRegex ? "Regex" : "");
-            string template;
-            if (!templates.TryGetValue(key, out template))
+            string template = GetTemplate(key);
+            if (template == null)
                 return MissingTemplate(key);
 
             return template;
@@ -46,10 +58,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         public string GetStepDefinitionClassTemplate(ProgrammingLanguage language)
         {
-            EnsureInitialized();
             string key = string.Format("{0}/StepDefinitionClass", language);
-            string template;
-            if (!templates.TryGetValue(key, out template))
+            string template = GetTemplate(key);
+            if (template == null)
                 return MissingTemplate(key);
 
             return template;

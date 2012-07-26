@@ -198,7 +198,7 @@
             // helpLinkLabel
             // 
             this.helpLinkLabel.AutoSize = true;
-            this.helpLinkLabel.Location = new System.Drawing.Point(286, 311);
+            this.helpLinkLabel.Location = new System.Drawing.Point(286, 312);
             this.helpLinkLabel.Name = "helpLinkLabel";
             this.helpLinkLabel.Size = new System.Drawing.Size(183, 13);
             this.helpLinkLabel.TabIndex = 12;
