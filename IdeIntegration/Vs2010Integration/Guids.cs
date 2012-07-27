@@ -27,6 +27,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         public const uint cmdidDebugScenarios = 0x0102;
         public const uint cmdidGoToStepDefinition = 0x0103;
         public const uint cmdidReGenerateAll = 0x0104;
+        public const uint cmdidGoToSteps = 0x0105;
+        public const uint cmdidContextDependentNavigation = 0x0106;
     };
 
     public enum SpecFlowCmdSet : uint 
@@ -36,5 +38,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         DebugScenarios = PkgCmdIDList.cmdidDebugScenarios,
         GoToStepDefinition = PkgCmdIDList.cmdidGoToStepDefinition,
         ReGenerateAll = PkgCmdIDList.cmdidReGenerateAll,
+        GoToSteps = PkgCmdIDList.cmdidGoToSteps,
+        ContextDependentNavigation = PkgCmdIDList.cmdidContextDependentNavigation,
     }
 }

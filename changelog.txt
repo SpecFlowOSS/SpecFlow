@@ -16,6 +16,12 @@ New Features:
 + NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
 + VS2010: Integration can track files changed outside of VS (e.g. updated by a SCC pull)
 + VS2010: Collect bindings from assembly references
++ VS2010: Navigation from step definitions to the matching steps (Issue 192)
++ VS2010: Context-dependent navigation (go to step definition / go to steps) with Alt+Ctrl+Shift+S
++ VS2010: Generate missing step definitions from a feature file
++ Support custom step definition skeleton templates (dirrerent style customizable in config, template can be overriden in 
+  "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see http://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
++ VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
@@ -24,6 +30,7 @@ Fixed issues:
 + Support for missing feature/GenerationTargetLanguage (Issue 163)
 + RuntimePluginLoader: IsAssignableFrom is backwards (Issue 164)
 + VS2010: Specflow options show up as "General" in VS Import/Export settings (Issue 184)
++ Dispose IDisposable user objects created by SpecFlow (Issue 22)
 
 1.8.1 - 2011/10/25
 

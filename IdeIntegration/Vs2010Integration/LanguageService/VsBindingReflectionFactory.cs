@@ -79,8 +79,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (type == null)
                 return null;
 
-            var fullName = type.AsFullName;
+            if (type.TypeKind == vsCMTypeRef.vsCMTypeRefVoid)
+                return null;
 
+            if (type.TypeKind == vsCMTypeRef.vsCMTypeRefArray)
+            {
+                var elementType = CreateBindingType(type.ElementType);
+                int rank = type.Rank;
+                return CreateBindingType(elementType.FullName + "[" + new string(',', rank - 1) + "]");
+            }
+
+            var fullName = type.AsFullName;
             return CreateBindingType(fullName);
         }
 

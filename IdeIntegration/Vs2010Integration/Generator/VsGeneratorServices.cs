@@ -16,10 +16,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
         protected readonly Project project;
         private readonly ISpecFlowConfigurationReader configurationReader;
 
-        public VsGeneratorServices(Project project, ISpecFlowConfigurationReader configurationReader, IIdeTracer tracer) : base(
-            new TestGeneratorFactory(), //TODO: load through DI
-            new RemoteAppDomainTestGeneratorFactory(tracer), //TODO: load through DI
-            new VsGeneratorInfoProvider(project, tracer, configurationReader), //TODO: load through DI
+        public VsGeneratorServices(Project project, ISpecFlowConfigurationReader configurationReader, IIdeTracer tracer) : base( //TODO: load dependencies through DI
+            new TestGeneratorFactory(), 
+            new RemoteAppDomainTestGeneratorFactory(tracer), 
+            new VsGeneratorInfoProvider(project, tracer, configurationReader), 
             tracer, false)
         {
             this.project = project;

@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public void StartListeningToFile(string file)
         {
-            if (fileChangeEx == null)
+            if (fileChangeEx == null || file == null)
                 return;
 
             file = Path.GetFullPath(file);

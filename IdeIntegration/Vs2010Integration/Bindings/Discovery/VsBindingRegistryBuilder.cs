@@ -7,6 +7,7 @@ using EnvDTE80;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.IdeIntegration.Bindings;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -14,7 +15,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
 {
     public class VsBindingRegistryBuilder
     {
+        private readonly IIdeTracer tracer;
         private readonly VsBindingReflectionFactory bindingReflectionFactory = new VsBindingReflectionFactory();
+
+        public VsBindingRegistryBuilder(IIdeTracer tracer)
+        {
+            this.tracer = tracer;
+        }
 
         public IEnumerable<IStepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
@@ -55,7 +62,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
 
             foreach (var codeFunction in codeClass.Children.OfType<CodeFunction>())
             {
-                bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(codeFunction, bindingSourceType, bindingSourceProcessor));
+                var bindingSourceMethod = CreateBindingSourceMethod(codeFunction, bindingSourceType, bindingSourceProcessor);
+                if (bindingSourceMethod != null)
+                    bindingSourceProcessor.ProcessMethod(bindingSourceMethod);
             }
 
             bindingSourceProcessor.ProcessTypeDone();
@@ -63,8 +72,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
 
         private BindingSourceMethod CreateBindingSourceMethod(CodeFunction codeFunction, BindingSourceType bindingSourceType, IdeBindingSourceProcessor bindingSourceProcessor)
         {
-            var filteredAttributes = codeFunction.Attributes.Cast<CodeAttribute2>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.FullName)).ToArray();
-            return bindingReflectionFactory.CreateBindingSourceMethod(codeFunction, bindingSourceType, filteredAttributes);
+            try
+            {
+                var filteredAttributes = codeFunction.Attributes.Cast<CodeAttribute2>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.FullName)).ToArray();
+                return bindingReflectionFactory.CreateBindingSourceMethod(codeFunction, bindingSourceType, filteredAttributes);
+            }
+            catch (Exception ex)
+            {
+                tracer.Trace("CreateBindingSourceMethod error: {0}", this, ex);
+                return null;
+            }
         }
 
         static internal bool IsPotentialBindingClass(CodeClass codeClass)

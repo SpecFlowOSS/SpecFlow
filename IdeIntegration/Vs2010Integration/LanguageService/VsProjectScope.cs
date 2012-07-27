@@ -27,7 +27,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly DteWithEvents dteWithEvents;
         private readonly IVisualStudioTracer tracer;
         private readonly IIntegrationOptionsProvider integrationOptionsProvider;
-        private readonly IBindingSkeletonProviderFactory bindingSkeletonProviderFactory;
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
@@ -103,27 +102,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IIdeTracer Tracer { get { return tracer; } }
         internal DteWithEvents DteWithEvents { get { return dteWithEvents; } }
 
-        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
-        {
-            get { return bindingSkeletonProviderFactory.GetProvider(GetTargetLanguage(project), GherkinDialectServices.GetDefaultDialect()); }
-        }
-
         public IIntegrationOptionsProvider IntegrationOptionsProvider
         {
             get { return integrationOptionsProvider; }
         }
 
-        public event EventHandler SpecFlowProjectConfigurationChanged;
-        public event EventHandler GherkinDialectServicesChanged;
+        public event Action SpecFlowProjectConfigurationChanged;
+        public event Action GherkinDialectServicesChanged;
 
-        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider, IBindingSkeletonProviderFactory bindingSkeletonProviderFactory)
+        internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider)
         {
             Classifications = classifications;
             this.project = project;
             this.dteWithEvents = dteWithEvents;
             this.tracer = tracer;
             this.integrationOptionsProvider = integrationOptionsProvider;
-            this.bindingSkeletonProviderFactory = bindingSkeletonProviderFactory;
 
             var integrationOptions = integrationOptionsProvider.GetOptions();
 
@@ -226,10 +219,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (generatorVersion == null)
                 return;
 
-            // we reset the last numbers as we don't want to force generating the files for every build
-            generatorVersion = new Version(generatorVersion.Major, generatorVersion.Minor, 0, 0); 
-                //TODO: consider removing this after the generator versioning has been well established
-
             Func<FeatureFileInfo, bool> outOfDateFiles = ffi => ffi.GeneratorVersion != null && ffi.GeneratorVersion < generatorVersion;
             if (featureFilesTracker.Files.Any(outOfDateFiles))
             {
@@ -288,7 +277,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private SpecFlowProjectConfiguration LoadConfiguration()
         {
             ISpecFlowConfigurationReader configurationReader = new VsSpecFlowConfigurationReader(project, tracer); //TODO: load through DI
-            ISpecFlowProjectConfigurationLoader configurationLoader = new SpecFlowProjectConfigurationLoader(); //TODO: load through DI
+            IGeneratorConfigurationProvider configurationLoader = new GeneratorConfigurationProvider(); //TODO: load through DI
 
             try
             {
@@ -305,7 +294,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.tracer.Trace("SpecFlow configuration changed", "VsProjectScope");
             if (SpecFlowProjectConfigurationChanged != null)
-                SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
+                SpecFlowProjectConfigurationChanged();
 
             GeneratorServices.InvalidateSettings();
 
@@ -316,7 +305,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.tracer.Trace("default language changed", "VsProjectScope");
             if (GherkinDialectServicesChanged != null)
-                GherkinDialectServicesChanged(this, EventArgs.Empty);
+                GherkinDialectServicesChanged();
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser

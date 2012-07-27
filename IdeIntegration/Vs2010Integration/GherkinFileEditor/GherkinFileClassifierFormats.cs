@@ -48,20 +48,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         }
     }
 
-    // exports a classification format for the classification type gherkin.placeholder
-    [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "gherkin.placeholder")]
-    [Name("gherkin.placeholder")]
-    [UserVisible(true)] //this should be visible to the end user
-    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
-    internal sealed class GherkinPlaceholderClassificationFormat : ClassificationFormatDefinition
-    {
-        public GherkinPlaceholderClassificationFormat()
-        {
-            this.DisplayName = "Gherkin Scenario Outline Placeholder"; 
-        }
-    }
-
     // exports a classification format for the classification type gherkin.multilinetext
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = "gherkin.multilinetext")]
@@ -159,6 +145,51 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public GherkinStepTextClassificationFormat()
         {
             this.DisplayName = "Gherkin Step Text"; 
+        }
+    }
+	
+	// exports a classification format for the classification type gherkin.unboundsteptext
+	[Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.unboundsteptext")]
+    [Name("gherkin.unboundsteptext")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinUnboundStepTextClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinUnboundStepTextClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Unbound Step Text";
+            this.ForegroundColor = Color.FromRgb(105, 54, 153);
+        }
+    }
+
+	// exports a classification format for the classification type gherkin.stepargument
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.stepargument")]
+    [Name("gherkin.stepargument")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinStepArgumentClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinStepArgumentClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Step Argument";
+            this.ForegroundColor = Color.FromRgb(100, 100, 100);
+            this.IsItalic = true;
+        }
+    }
+
+    // exports a classification format for the classification type gherkin.placeholder
+    [Export(typeof(EditorFormatDefinition))]
+    [ClassificationType(ClassificationTypeNames = "gherkin.placeholder")]
+    [Name("gherkin.placeholder")]
+    [UserVisible(true)] //this should be visible to the end user
+    [Order(Before = Priority.Default)] //set the priority to be after the default classifiers
+    internal sealed class GherkinPlaceholderClassificationFormat : ClassificationFormatDefinition
+    {
+        public GherkinPlaceholderClassificationFormat()
+        {
+            this.DisplayName = "Gherkin Scenario Outline Placeholder"; 
         }
     }
 }

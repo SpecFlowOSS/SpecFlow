@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.Utils;
 using VSLangProj;
 using Constants = EnvDTE.Constants;
@@ -95,6 +97,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                     pi => filePath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public static ProjectItem FindFolderProjectItemByFilePath(Project project, string filePath)
+        {
+            return GetAllProjectItem(project).Where(IsPhysicalFolder).FirstOrDefault(
+                    pi => filePath.Equals(GetFolderName(pi), StringComparison.InvariantCultureIgnoreCase));
+        }
+
         /// <summary>
         /// Retrieves the first project in the solution that matches the specified criteria.
         /// </summary>
@@ -169,7 +177,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         /// it doesn't exist. Project can be C# or VB.</returns>
         public static Project FindProjectByAssemblyName(_DTE vs, string name)
         {
-            return FindProject(vs, project => project.GetAssemblyName() == name);
+            if (name == null)
+                return null;
+
+            return FindProject(vs, project => name.Equals(project.GetAssemblyName(), StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static string GetAssemblyName(this Project project)
@@ -223,12 +234,28 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return String.Equals(projectItem.Kind, VSConstants.GUID_ItemType_PhysicalFile.ToString("B"), StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public static bool IsPhysicalFolder(ProjectItem projectItem)
+        {
+            return String.Equals(projectItem.Kind, VSConstants.GUID_ItemType_PhysicalFolder.ToString("B"), StringComparison.InvariantCultureIgnoreCase);
+        }
+
         public static string GetFileName(ProjectItem projectItem)
         {
             if (!IsPhysicalFile(projectItem))
                 return null;
 
             return projectItem.FileNames[1];
+        }
+
+        public static string GetFolderName(ProjectItem projectItem)
+        {
+            if (IsPhysicalFile(projectItem))
+                return Path.GetDirectoryName(GetFileName(projectItem));
+
+            if (!IsPhysicalFolder(projectItem))
+                return null;
+
+            return projectItem.FileNames[1].TrimEnd('\\');
         }
 
         public static string GetProjectRelativePath(ProjectItem projectItem)
@@ -445,6 +472,53 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
             var assemblyPath = Path.GetFullPath(Path.Combine(GetProjectFolder(project), projectRelativePath));
             return vsProject.References.OfType<Reference>().FirstOrDefault(r => assemblyPath.Equals(r.Path, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static IVsTextView GetActiveIVsTextView()
+        {
+            //see also: http://stackoverflow.com/questions/2413530/find-an-ivstextview-or-iwpftextview-for-a-given-projectitem-in-vs-2010-rc-exten
+
+            IVsTextManager textManager = (IVsTextManager)Package.GetGlobalService(typeof(SVsTextManager));
+            IVsTextView view;
+            var result = textManager.GetActiveView(VSConstants.S_FALSE, null, out view);
+            if (result != VSConstants.S_OK)
+                return null;
+            return view;
+        }
+
+        public static IVsTextView GetIVsTextView(Document activeDocument)
+        {
+            if (activeDocument == null)
+                return null;
+            return GetIVsTextView(activeDocument.DTE, activeDocument.FullName);
+        }
+
+        public static IVsTextView GetIVsTextView(DTE dte, string filePath)
+        {
+            ServiceProvider serviceProvider = new ServiceProvider((IServiceProvider)dte);
+
+            IVsUIHierarchy uiHierarchy;
+            uint itemID;
+            IVsWindowFrame windowFrame;
+            if (VsShellUtilities.IsDocumentOpen(serviceProvider, filePath, Guid.Empty, out uiHierarchy, out itemID, out windowFrame))
+            {
+                return VsShellUtilities.GetTextView(windowFrame);
+            }
+
+            return null;
+        }
+
+        public static IWpfTextView GetWpfTextView(IVsTextView vTextView)
+        {
+            IVsUserData userData = vTextView as IVsUserData;
+            if (userData == null)
+                return null;
+
+            object holder;
+            Guid guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
+            userData.GetData(ref guidViewHost, out holder);
+            IWpfTextViewHost viewHost = (IWpfTextViewHost) holder;
+            return viewHost.TextView;
         }
     }
 }

@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using BoDi;
+using TechTalk.SpecFlow.BindingSkeletons;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Configuration
 {
@@ -251,6 +253,13 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (string)this["listener"]; }
             set { this["listener"] = value; }
         }
+
+        [ConfigurationProperty("stepDefinitionSkeletonStyle", IsRequired = false, DefaultValue = StepDefinitionSkeletonStyle.RegexAttribute)]
+        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle
+        {
+            get { return (StepDefinitionSkeletonStyle)this["stepDefinitionSkeletonStyle"]; }
+            set { this["stepDefinitionSkeletonStyle"] = value; }
+        }
     }
 
     public class StepAssemblyCollection : ConfigurationElementCollection
@@ -304,6 +313,25 @@ namespace TechTalk.SpecFlow.Configuration
         {
             get { return (string)this["name"]; }
             set { this["name"] = value; }
+        }
+
+        [ConfigurationProperty("path", IsRequired = false, DefaultValue = null)]
+        public string Path
+        {
+            get { return (string)this["path"]; }
+            set { this["path"] = value; }
+        }
+
+        [ConfigurationProperty("type", IsRequired = false, DefaultValue = PluginType.GeneratorAndRuntime)]
+        public PluginType Type
+        {
+            get { return (PluginType)this["type"]; }
+            set { this["type"] = value; }
+        }
+
+        public PluginDescriptor ToPluginDescriptor()
+        {
+            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, Type);
         }
     }
 }

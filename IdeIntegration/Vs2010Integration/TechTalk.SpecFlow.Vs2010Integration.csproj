@@ -176,11 +176,10 @@
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
-    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
-    <Compile Include="BindingSkeletons\IBindingSkeletonProviderFactory.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderBase.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderCS.cs" />
-    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderVB.cs" />
+    <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
+    <Compile Include="Commands\GenerateStepDefinitionSkeletonCommand.cs" />
+    <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
+    <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
@@ -188,9 +187,13 @@
     <Compile Include="Commands\RegisterCommands.cs" />
     <Compile Include="Commands\RunScenariosCommand.cs" />
     <Compile Include="Commands\SpecFlowProjectSingleSelectionCommand.cs" />
+    <Compile Include="EditorCommands\CommentUncommentCommand.cs" />
     <Compile Include="EditorCommands\EditorCommandFilter.cs" />
-    <Compile Include="EditorCommands\EditorCommands.cs" />
+    <Compile Include="EditorCommands\FormatTableCommand.cs" />
+    <Compile Include="EditorCommands\GherkinEditorContext.cs" />
+    <Compile Include="EditorCommands\GherkinTextViewCreationListener.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
+    <Compile Include="UI\ContextMenuBuilder.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="Install\VsBrowserGuidanceNotificationService.cs" />
     <Compile Include="LanguageService\BindingFilesTracker.cs" />
@@ -216,6 +219,13 @@
     <Compile Include="TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="TestRunner\TestRunnerEngine.cs" />
+    <Compile Include="UI\GenerateStepDefinitionSkeletonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GenerateStepDefinitionSkeletonForm.Designer.cs">
+      <DependentUpon>GenerateStepDefinitionSkeletonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\VsContextMenuManager.cs" />
     <Compile Include="Utils\FileChangeEventsListener.cs" />
     <Compile Include="Utils\SolutionEventsListener.cs" />
     <Compile Include="Utils\VsProjectFilesTracker.cs" />
@@ -369,6 +379,9 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GenerateStepDefinitionSkeletonForm.resx">
+      <DependentUpon>GenerateStepDefinitionSkeletonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>

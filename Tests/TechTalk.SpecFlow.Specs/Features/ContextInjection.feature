@@ -30,6 +30,15 @@ Background:
 				this.SingleContext = singleContext;
 			}
 		}
+		public class DisposableContext : IDisposable
+		{
+			public static bool WasDisposed = false;
+
+			public void Dispose()
+			{
+				WasDisposed = true;
+			}
+		}
         """
 	And the following step definition
         """
@@ -211,3 +220,39 @@ Scenario: Context classes are recreated for every scenario
 	Then the execution summary should contain
          | Succeeded |
          | 2         |
+
+Scenario: Disposable dependencies should be disposed after scenario execution
+	Given the following binding class
+        """
+		[Binding]
+		public class StepsWithSingleContext
+		{
+			public StepsWithSingleContext(DisposableContext context)
+			{
+			}
+
+			[When(@"I do something")]
+			public void WhenIDoSomething()
+			{
+				if (DisposableContext.WasDisposed) throw new Exception("context was disposed");
+			}
+
+			[AfterFeature]
+			static public void AfterFeature()
+			{
+			}
+		}
+        """
+	And a scenario 'Simple Scenario' as
+         """
+         When I do something
+         """
+	And a scenario 'Second Scenario' as
+         """
+         When I do something
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded | Failed |
+         | 1         | 1      |
+

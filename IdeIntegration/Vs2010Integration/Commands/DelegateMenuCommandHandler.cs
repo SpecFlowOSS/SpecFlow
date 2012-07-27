@@ -14,7 +14,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             : base(serviceProvider, dte)
         {
             this.invoke = invoke;
-            this.beforeQueryStatus = beforeQueryStatus;
+            this.beforeQueryStatus = beforeQueryStatus ??
+                                     ((command, _) =>
+                                          {
+                                              command.Visible = true;
+                                              command.Enabled = true;
+                                          });
         }
 
         protected override void BeforeQueryStatus(OleMenuCommand command, SelectedItems selection)

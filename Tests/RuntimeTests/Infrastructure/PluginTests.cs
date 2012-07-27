@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public class PluginWithCustomDependency : IRuntimePlugin
         {
-            public void RegisterDefaults(ObjectContainer container)
+            public void RegisterDependencies(ObjectContainer container)
             {
                 container.RegisterTypeAs<CustomDependency, ICustomDependency>();
             }
@@ -26,11 +26,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
                 
             }
+
+            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
+            {
+            }
         }
 
         public class PluginWithCustomTestRunnerFactoryWhenStopAtFirstErrorIsTrue : IRuntimePlugin
         {
-            public void RegisterDefaults(ObjectContainer container)
+            public void RegisterDependencies(ObjectContainer container)
             {
             }
 
@@ -39,9 +43,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 if (runtimeConfiguration.StopAtFirstError)
                     container.RegisterTypeAs<CustomTestRunnerFactory, ITestRunnerFactory>();
             }
+
+            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
+            {
+            }
         }
 
-        public class PluginWithCustomConfiguration : IRuntimePlugin, IRuntimeConfigurationDefaultsProvider
+        public class PluginWithCustomConfiguration : IRuntimePlugin
         {
             private readonly Action<RuntimeConfiguration> specifyDefaults;
 
@@ -50,17 +58,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 this.specifyDefaults = specifyDefaults;
             }
 
-            public void RegisterDefaults(ObjectContainer container)
+            public void RegisterDependencies(ObjectContainer container)
             {
-                container.RegisterInstanceAs<IRuntimeConfigurationDefaultsProvider>(this, "myconfig");
             }
 
             public void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
             {
-                
             }
 
-            public void SetDefaultConfiguration(RuntimeConfiguration runtimeConfiguration)
+            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
             {
                 specifyDefaults(runtimeConfiguration);
             }
@@ -98,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 base.RegisterDefaults(container);
 
                 var pluginLoaderStub = new Mock<IRuntimePluginLoader>();
-                pluginLoaderStub.Setup(pl => pl.LoadRuntimePlugin(It.IsAny<string>())).Returns(pluginToReturn);
+                pluginLoaderStub.Setup(pl => pl.LoadPlugin(It.IsAny<PluginDescriptor>())).Returns(pluginToReturn);
                 container.RegisterInstanceAs<IRuntimePluginLoader>(pluginLoaderStub.Object);
             }
         }

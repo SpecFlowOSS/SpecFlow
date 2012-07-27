@@ -9,7 +9,13 @@ using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {
-    public class StepInstance<TNativeSuggestionItem> : StepInstance, IBoundStepSuggestion<TNativeSuggestionItem>
+    public interface ISourceFilePosition
+    {
+        string SourceFile { get; }
+        FilePosition FilePosition { get; }
+    }
+
+    public class StepInstance<TNativeSuggestionItem> : StepInstance, IBoundStepSuggestion<TNativeSuggestionItem>, ISourceFilePosition
     {
         private readonly List<BoundStepSuggestions<TNativeSuggestionItem>> matchGroups = new List<BoundStepSuggestions<TNativeSuggestionItem>>(1);
         public ICollection<BoundStepSuggestions<TNativeSuggestionItem>> MatchGroups { get { return matchGroups; } }
@@ -22,10 +28,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public TNativeSuggestionItem NativeSuggestionItem { get; private set; }
         public StepInstanceTemplate<TNativeSuggestionItem> ParentTemplate { get; internal set; }
 
-        public StepInstance(ScenarioStep step, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
+        public string SourceFile { get; private set; }
+        public FilePosition FilePosition { get; private set; }
+
+        public StepInstance(ScenarioStep step, Feature feature, StepContext stepContext, INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, int level = 1)
             : base((StepDefinitionType)step.ScenarioBlock, (StepDefinitionKeyword)step.StepKeyword, step.Keyword, step.Text, stepContext)
         {
             this.NativeSuggestionItem = nativeSuggestionItemFactory.Create(step.Text, GetInsertionText(step), level, StepDefinitionType.ToString().Substring(0, 1), this);
+            this.FilePosition = step.FilePosition;
+            this.SourceFile = feature.SourceFile;
         }
 
         private const string stepParamIndent = "         ";

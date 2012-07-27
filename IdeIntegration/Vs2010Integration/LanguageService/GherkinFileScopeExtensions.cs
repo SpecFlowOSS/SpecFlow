@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -119,6 +121,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public static IStepBlock GetStepBlockFromStepPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
         {
             return gherkinFileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < lineNumber) as IStepBlock;
+        }
+ 
+        public static IEnumerable<GherkinStep> GetAllSteps(this IGherkinFileScope gherkinFileScope)
+        {
+            return gherkinFileScope.GetAllBlocks().OfType<IStepBlock>().SelectMany(b => b.Steps);
+        }
+
+        public static string GetFileScopedLabel(this StepInstance stepInstance)
+        {
+            var position = stepInstance as ISourceFilePosition;
+
+            var simpleLabel = stepInstance.GetLabel();
+
+            if (position == null)
+                return simpleLabel;
+
+            return string.Format("{0} ({1}, line {2})", simpleLabel, position.SourceFile, position.FilePosition.Line);
+        }
+
+        public static string GetLabel(this StepInstance stepInstance)
+        {
+            string inFilePositionText = stepInstance.StepContext.ScenarioTitle == null
+                                            ? "'Backround' section"
+                                            : string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
+
+            return string.Format("\"{0}{1}\" in {2}", stepInstance.Keyword, stepInstance.Text, inFilePositionText);
         }
     }
 }

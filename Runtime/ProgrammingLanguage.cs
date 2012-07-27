@@ -4,6 +4,7 @@
     {
         Other,
         CSharp,
-        VB
+        VB,
+        FSharp
     }
 }

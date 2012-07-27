@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Vs2008Integration
         {
             var configurationReader = new Vs2008SpecFlowConfigurationReader(CurrentProject, NullIdeTracer.Instance);
             var configurationHolder = configurationReader.ReadConfiguration();
-            var config = new SpecFlowProjectConfigurationLoader().LoadConfiguration(configurationHolder) ??
+            var config = new GeneratorConfigurationProvider().LoadConfiguration(configurationHolder) ??
                          new SpecFlowProjectConfiguration();
 
             scanner = new RegularExpressionScanner(config.GeneratorConfiguration.FeatureLanguage);

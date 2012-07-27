@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             if (section == null || section.Plugins == null)
                 return Enumerable.Empty<PluginDescriptor>();
 
-            return section.Plugins.Select(pce => new PluginDescriptor(pce.Name));
+            return section.Plugins.Select(pce => pce.ToPluginDescriptor());
         }
 
         private ConfigurationSectionHandler GetSection()

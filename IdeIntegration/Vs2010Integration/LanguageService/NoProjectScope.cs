@@ -24,8 +24,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IIntegrationOptionsProvider IntegrationOptionsProvider { get; private set; }
         public IIdeTracer Tracer { get; private set; }
 
-        public event EventHandler SpecFlowProjectConfigurationChanged { add {} remove {} }
-        public event EventHandler GherkinDialectServicesChanged { add { } remove { } }
+        public event Action SpecFlowProjectConfigurationChanged { add {} remove {} }
+        public event Action GherkinDialectServicesChanged { add { } remove { } }
 
         public GherkinScopeAnalyzer GherkinScopeAnalyzer
         {
@@ -38,11 +38,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         public IStepDefinitionMatchService BindingMatchService
-        {
-            get { return null; }
-        }
-
-        public IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider
         {
             get { return null; }
         }

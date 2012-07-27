@@ -112,6 +112,11 @@
     <Compile Include="Async\AsyncSteps.cs" />
     <Compile Include="Async\AsyncTestRunner.cs" />
     <Compile Include="Async\IAsyncTestExecutor.cs" />
+    <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
+    <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
     <Compile Include="Bindings\Discovery\BindingSourceAttribute.cs" />
@@ -148,9 +153,9 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
-    <Compile Include="Configuration\IRuntimeConfigurationDefaultsProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
+    <Compile Include="Infrastructure\GeneratorPluginAttribute.cs" />
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
@@ -158,6 +163,7 @@
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
@@ -197,12 +203,10 @@
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
-    <Compile Include="Tracing\IStepDefinitionSkeletonProvider.cs" />
+    <Compile Include="BindingSkeletons\DefaultSkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\IStepDefinitionSkeletonProvider.cs" />
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderBase.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderCS.cs" />
-    <Compile Include="Tracing\StepDefinitionSkeletonProviderVB.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
@@ -227,7 +231,9 @@
       <Link>Languages.xml</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

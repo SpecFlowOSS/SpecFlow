@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using BoDi;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 
 #if SILVERLIGHT
@@ -33,7 +34,7 @@ namespace TechTalk.SpecFlow
 
         internal TestStatus TestStatus { get; set; }
         internal List<string> PendingSteps { get; private set; }
-        internal List<string> MissingSteps { get; private set; }
+        internal List<StepInstance> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
         internal ITestRunner TestRunner { get; private set; } 
@@ -52,7 +53,7 @@ namespace TechTalk.SpecFlow
             ScenarioInfo = scenarioInfo;
             TestStatus = TestStatus.OK;
             PendingSteps = new List<string>();
-            MissingSteps = new List<string>();
+            MissingSteps = new List<StepInstance>();
         }
 
         public void Pending()

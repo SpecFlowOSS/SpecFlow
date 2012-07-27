@@ -23,12 +23,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; }
         VsStepSuggestionProvider StepSuggestionProvider { get; }
         IStepDefinitionMatchService BindingMatchService { get; }
-        IStepDefinitionSkeletonProvider StepDefinitionSkeletonProvider { get; }
         IIntegrationOptionsProvider IntegrationOptionsProvider { get; }
         IGeneratorServices GeneratorServices { get; }
         IIdeTracer Tracer { get; }
 
-        event EventHandler SpecFlowProjectConfigurationChanged;
-        event EventHandler GherkinDialectServicesChanged;
+        event Action SpecFlowProjectConfigurationChanged;
+        event Action GherkinDialectServicesChanged;
     }
 }

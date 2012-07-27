@@ -142,12 +142,18 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
 
         public GherkinBufferPosition IndexOfTextForLine(string text, int line)
         {
-            int startPosition = GetBufferPositionFromLine(line);
+            return IndexOfTextForLine(text, line, 0);
+        }
+
+        public GherkinBufferPosition IndexOfTextForLine(string text, int line, int skipLineCharacters)
+        {
+            int lineStartPosition = GetBufferPositionFromLine(line);
+            int startPosition = lineStartPosition + skipLineCharacters;
             int length = GetLineLength(line);
-            var index = content.IndexOf(text, startPosition, length);
+            var index = content.IndexOf(text, startPosition, length - skipLineCharacters, StringComparison.InvariantCulture);
             if (index < 0)
                 return null;
-            return new GherkinBufferPosition(this, line, index - startPosition);
+            return new GherkinBufferPosition(this, line, index - lineStartPosition);
         }
 
         public string GetContent()

@@ -1,4 +1,5 @@
 ﻿using BoDi;
+using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
@@ -36,8 +37,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<ContextManager, IContextManager>();
 
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderCS, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.CSharp.ToString());
-            container.RegisterTypeAs<StepDefinitionSkeletonProviderVB, IStepDefinitionSkeletonProvider>(ProgrammingLanguage.VB.ToString());
+            container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
+            container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
+            container.RegisterTypeAs<StepTextAnalyzer, IStepTextAnalyzer>();
 
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 

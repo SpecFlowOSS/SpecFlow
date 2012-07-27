@@ -65,6 +65,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
                     return;
                 }
+                ((IDisposable)instance).Dispose();
                 instance = null;
             }
 

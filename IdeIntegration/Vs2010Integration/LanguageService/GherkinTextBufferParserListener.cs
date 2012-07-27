@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
@@ -11,13 +10,15 @@ using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
+using TechTalk.SpecFlow.Infrastructure;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class GherkinTextBufferParserListener : GherkinTextBufferParserListenerBase
     {
-        public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
-            : base(gherkinDialect, textSnapshot, classifications)
+        public GherkinTextBufferParserListener(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, IProjectScope projectScope)
+            : base(gherkinDialect, textSnapshot, projectScope)
         {
         }
     }
@@ -26,6 +27,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileScope gherkinFileScope;
+        private readonly IProjectScope projectScope;
+        private readonly bool enableStepMatchColoring;
 
         private GherkinBuffer gherkinBuffer;
         private readonly ITextSnapshot textSnapshot;
@@ -47,10 +50,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         protected virtual string FeatureTitle { get { return gherkinFileScope.HeaderBlock == null ? null : gherkinFileScope.HeaderBlock.Title; } }
         protected virtual IEnumerable<string> FeatureTags { get { return gherkinFileScope.HeaderBlock == null ? Enumerable.Empty<string>() : gherkinFileScope.HeaderBlock.Tags; } }
 
-        protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, GherkinFileEditorClassifications classifications)
+        protected GherkinTextBufferParserListenerBase(GherkinDialect gherkinDialect, ITextSnapshot textSnapshot, IProjectScope projectScope)
         {
             this.textSnapshot = textSnapshot;
-            this.classifications = classifications;
+            this.classifications = projectScope.Classifications;
+            this.projectScope = projectScope;
+            this.enableStepMatchColoring = projectScope.IntegrationOptionsProvider.GetOptions().EnableStepMatchColoring;
+           
             gherkinFileScope = new GherkinFileScope(gherkinDialect, textSnapshot);
         }
 
@@ -93,16 +99,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             AddClassification(classificationType, startIndex, length);
         }
 
-        private void ColorizeLinePart(string value, GherkinBufferSpan span, IClassificationType classificationType)
+        private int ColorizeLinePart(string value, GherkinBufferSpan span, IClassificationType classificationType, int lineStartPosition = 0)
         {
-            var textPosition = gherkinBuffer.IndexOfTextForLine(value, span.StartPosition.Line);
+            var textPosition = gherkinBuffer.IndexOfTextForLine(value, span.StartPosition.Line, lineStartPosition);
             if (textPosition == null)
-                return;
+                return lineStartPosition;
 
             var textSpan = new GherkinBufferSpan(
                 textPosition,
                 textPosition.ShiftByCharacters(value.Length));
             ColorizeSpan(textSpan, classificationType);
+            return textPosition.LinePosition + value.Length;
         }
 
         private void RegisterKeyword(string keyword, GherkinBufferSpan headerSpan)
@@ -323,9 +330,45 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
 
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
+
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
+            var editorLine = stepSpan.StartPosition.Line;
+            var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
+            var stepContext = new StepContext(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray(), gherkinFileScope.GherkinDialect.CultureInfo);
+
+            currentStep = new GherkinStep((StepDefinitionType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepContext, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
+            CurrentFileBlockBuilder.Steps.Add(currentStep);
+
+            var bindingMatchService = projectScope.BindingMatchService;
+            if (enableStepMatchColoring && bindingMatchService != null && bindingMatchService.Ready)
+            {
+                List<BindingMatch> candidatingMatches;
+                StepDefinitionAmbiguityReason ambiguityReason;
+                CultureInfo bindingCulture = projectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? currentStep.StepContext.Language;
+                var match = bindingMatchService.GetBestMatch(currentStep, bindingCulture, out ambiguityReason, out candidatingMatches);
+
+                if (match.Success)
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
+                    int linePos = stepSpan.StartPosition.LinePosition;
+                    foreach (var stringArg in match.Arguments.OfType<string>())
+                    {
+                        linePos = ColorizeLinePart(stringArg, stepSpan, classifications.StepArgument, linePos);
+                    }
+                }
+                else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && placeholderRe.Match(text).Success)
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText); // we do not show binding errors in placeholdered scenario outline steps
+                    //TODO: check match based on the scenario examples - unfortunately the steps are parsed earlier than the examples, so we would need to delay the colorization somehow
+                }
+                else
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.UnboundStepText);
+                }
+            }
+            else
+                ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
 
             if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock))
             {
@@ -333,13 +376,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (Match match in matches)
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
-
-            var editorLine = stepSpan.StartPosition.Line;
-            var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
-            var stepContext = new StepContext(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray(), gherkinFileScope.GherkinDialect.CultureInfo);
-
-            currentStep = new GherkinStep((StepDefinitionType)scenarioBlock, (StepDefinitionKeyword)stepKeyword, text, stepContext, keyword, editorLine - CurrentFileBlockBuilder.KeywordLine);
-            CurrentFileBlockBuilder.Steps.Add(currentStep);
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)

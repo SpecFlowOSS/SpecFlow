@@ -1,6 +1,7 @@
 using BoDi;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Utils;
 
@@ -12,11 +13,13 @@ namespace TechTalk.SpecFlow.Generator
 
         public virtual void RegisterDefaults(ObjectContainer container)
         {
-            container.RegisterTypeAs<SpecFlowProjectConfigurationLoader, ISpecFlowProjectConfigurationLoader>();
+            container.RegisterTypeAs<GeneratorConfigurationProvider, IGeneratorConfigurationProvider>();
             container.RegisterTypeAs<InProcGeneratorInfoProvider, IGeneratorInfoProvider>();
             container.RegisterTypeAs<TestGenerator, ITestGenerator>();
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
+
+            container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
 
             container.RegisterTypeAs<UnitTestFeatureGenerator, UnitTestFeatureGenerator>();
             container.RegisterTypeAs<FeatureGeneratorRegistry, IFeatureGeneratorRegistry>();

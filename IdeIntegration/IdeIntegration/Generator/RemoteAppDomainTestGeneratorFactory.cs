@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         private ITestGeneratorFactory remoteTestGeneratorFactory = null;
         private UsageCounter usageCounter;
         private readonly string remoteGeneratorAssemblyName;
+        private readonly string remoteRuntimeAssemblyName;
         public Timer cleanupTimer;
 
         private class UsageCounter
@@ -56,6 +57,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         {
             this.tracer = tracer;
             this.remoteGeneratorAssemblyName = typeof(ITestGeneratorFactory).Assembly.GetName().Name;
+            this.remoteRuntimeAssemblyName = typeof(SpecFlowException).Assembly.GetName().Name;
 
             this.AppDomainCleanupTime = TimeSpan.FromSeconds(APPDOMAIN_CLEANUP_SECONDS);
             this.cleanupTimer = new Timer(CleanupTimerElapsed, null, Timeout.Infinite, Timeout.Infinite);
@@ -106,6 +108,10 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             if (assemblyName.Equals(remoteGeneratorAssemblyName, StringComparison.InvariantCultureIgnoreCase))
             {
                 return typeof (ITestGeneratorFactory).Assembly;
+            }
+            if (assemblyName.Equals(remoteRuntimeAssemblyName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return typeof (SpecFlowException).Assembly;
             }
             return null;
         }

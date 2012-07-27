@@ -11,16 +11,16 @@ namespace TechTalk.SpecFlow.Generator.Project
 {
     public class MsBuildProjectReader : ISpecFlowProjectReader
     {
-        private readonly ISpecFlowProjectConfigurationLoader configurationLoader;
+        private readonly IGeneratorConfigurationProvider configurationLoader;
 
-        public MsBuildProjectReader(ISpecFlowProjectConfigurationLoader configurationLoader)
+        public MsBuildProjectReader(IGeneratorConfigurationProvider configurationLoader)
         {
             this.configurationLoader = configurationLoader;
         }
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
-            return new MsBuildProjectReader(new SpecFlowProjectConfigurationLoader()).ReadSpecFlowProject(projectFilePath);
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider()).ReadSpecFlowProject(projectFilePath);
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)

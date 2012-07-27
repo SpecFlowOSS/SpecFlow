@@ -1,0 +1,59 @@
+﻿>>>CSharp/StepDefinitionClass
+using System;
+using TechTalk.SpecFlow;
+
+namespace {namespace}
+{
+    [Binding]
+    public class {className}
+    {
+{bindings}
+    }
+}
+>>>CSharp/StepDefinitionRegex
+[{attribute}(@"{regex}")]
+public void {methodName}({parameters})
+{
+    ScenarioContext.Current.Pending();
+}
+>>>CSharp/StepDefinition
+[{attribute}]
+public void {methodName}({parameters})
+{
+    ScenarioContext.Current.Pending();
+}
+>>>VB/StepDefinitionClass
+Imports System
+Imports TechTalk.SpecFlow
+
+Namespace {namespace}
+
+    <Binding()> _
+    Public Class {className}
+
+{bindings}
+
+    End Class
+
+End Namespace
+>>>VB/StepDefinitionRegex
+<TechTalk.SpecFlow.{attribute}("{regex}")> _
+Public Sub {methodName}({parameters})
+    ScenarioContext.Current.Pending()
+End Sub
+>>>VB/StepDefinition
+<TechTalk.SpecFlow.{attribute}()> _
+Public Sub {methodName}({parameters})
+    ScenarioContext.Current.Pending()
+End Sub
+>>>FSharp/StepDefinitionClass
+[<TechTalk.SpecFlow.Binding>]
+module {className}
+
+open TechTalk.SpecFlow
+
+{bindings}
+>>>FSharp/StepDefinitionRegex
+let [<{attribute}(@"{regex}")>] {methodName}({parameters}) = ()
+>>>FSharp/StepDefinition
+let [<{attribute}>] {methodName}({parameters}) = ()

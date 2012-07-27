@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -203,6 +204,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null)
         {
             return boundStepSuggestions.GetMatchingItems(stepText).Select(it => it.StepBinding).Where(sd => sd.StepDefinitionType == stepDefinitionType);
+        }
+
+        public IEnumerable<StepInstance> GetMatchingInstances(IBindingMethod method)
+        {
+            return boundStepSuggestions//.OfType<BoundStepSuggestions<TNativeSuggestionItem>>()
+                .Where(bss => bss.StepBinding.Method.MethodEquals(method))
+                .SelectMany(bss => bss.Suggestions.OfType<StepInstance>()); //TODO: scenario outline nesting...
         }
     }
 }

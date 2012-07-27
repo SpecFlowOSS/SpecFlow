@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             vsProjectScope.GherkinDialectServicesChanged += OnGherkinDialectServicesChanged;
         }
 
-        private void OnGherkinDialectServicesChanged(object sender, EventArgs eventArgs)
+        private void OnGherkinDialectServicesChanged()
         {
             AnalyzeFilesBackground();
         }

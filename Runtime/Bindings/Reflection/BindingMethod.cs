@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Bindings.Reflection
 {
@@ -11,6 +12,10 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public BindingMethod(IBindingType type, string name, IEnumerable<IBindingParameter> parameters, IBindingType returnType)
         {
+            if (type == null) throw new ArgumentNullException("type");
+            if (name == null) throw new ArgumentNullException("name");
+            if (parameters == null) throw new ArgumentNullException("parameters");
+
             Type = type;
             Name = name;
             Parameters = parameters;

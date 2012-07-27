@@ -1,35 +1,20 @@
 ﻿using System;
 using System.Reflection;
-using BoDi;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
-    public class RuntimePluginAttribute: Attribute
-    {
-        public Type PluginType { get; private set; }
-
-        public RuntimePluginAttribute(Type pluginType)
-        {
-            if (pluginType == null) throw new ArgumentNullException("pluginType");
-
-            PluginType = pluginType;
-        }
-    }
-
     public interface IRuntimePluginLoader
     {
-        IRuntimePlugin LoadRuntimePlugin(string name);
+        IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor);
     }
 
     public class RuntimePluginLoader : IRuntimePluginLoader
     {
         private const string ASSEMBLY_NAME_PATTERN = "{0}.SpecFlowPlugin";
 
-        public IRuntimePlugin LoadRuntimePlugin(string name)
+        public IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor)
         {
-            //TODO: support for loading plugins for a specific version: MyPlugin.SpecFlowPlugin.6.5.dll
-            var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, name);
+            var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, pluginDescriptor.Name);
             Assembly assembly;
             try
             {
@@ -37,15 +22,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch(Exception ex)
             {
-                throw new SpecFlowException("Unable to load plugin: " + name, ex);
+                throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check http://go.specflow.org/doc-plugins for details.", pluginDescriptor.Name), ex);
             }
 
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
             if (pluginAttribute == null)
-                throw new SpecFlowException("Missing plugin attribute in " + assembly.FullName);
+                throw new SpecFlowException(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
 
             if (!typeof(IRuntimePlugin).IsAssignableFrom((pluginAttribute.PluginType)))
-                throw new SpecFlowException("Invalid plugin attribute in " + assembly.FullName);
+                throw new SpecFlowException(string.Format("Invalid plugin attribute in {0}. Plugin type must implement IRuntimePlugin. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
 
             IRuntimePlugin plugin;
             try
@@ -54,7 +39,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             catch (Exception ex)
             {
-                throw new SpecFlowException("Invalid plugin in " + assembly.FullName, ex);
+                throw new SpecFlowException(string.Format("Invalid plugin in {0}. Plugin must have a default constructor that does not throw exception. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName), ex);
             }
 
             return plugin;

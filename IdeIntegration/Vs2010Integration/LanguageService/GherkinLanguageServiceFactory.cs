@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -32,21 +33,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         [Import]
         internal IGherkinBufferServiceManager GherkinBufferServiceManager = null;
 
+        [Import]
+        IIntegrationOptionsProvider IntegrationOptionsProvider = null;
+
         public GherkinLanguageService GetLanguageService(ITextBuffer textBuffer)
         {
-            return GherkinBufferServiceManager.GetOrCreate(textBuffer, () => CreateLanguageService(textBuffer));
+            var gherkinLanguageService = GherkinBufferServiceManager.GetOrCreate(textBuffer, () => CreateLanguageService(textBuffer));
+            gherkinLanguageService.EnsureInitialized(textBuffer);
+            return gherkinLanguageService;
         }
 
         private GherkinLanguageService CreateLanguageService(ITextBuffer textBuffer)
         {
             var project = VsxHelper.GetCurrentProject(textBuffer, AdaptersFactory, ServiceProvider);
             var projectScope = ProjectScopeFactory.GetProjectScope(project);
-            var languageService = new GherkinLanguageService(projectScope, VisualStudioTracer);
+            var languageService = new GherkinLanguageService(projectScope, VisualStudioTracer, enableStepMatchColoring: IntegrationOptionsProvider.GetOptions().EnableStepMatchColoring);
 
             textBuffer.Changed +=
                 (sender, args) => languageService.TextBufferChanged(GetTextBufferChange(args));
-
-            languageService.Initialize(textBuffer);
 
             return languageService;
         }
