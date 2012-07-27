@@ -21,7 +21,7 @@ New Features:
 + VS2010: Generate missing step definitions from a feature file
 + Support custom step definition skeleton templates (dirrerent style customizable in config, template can be overriden in 
   "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see http://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
-+ VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Pull 189, with support of matgiro)
++ VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
