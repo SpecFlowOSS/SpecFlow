@@ -36,12 +36,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [BaseDefinition("symbol definition")]
         internal static ClassificationTypeDefinition GherkinTagClassifierType = null;
 
-        // exports a classification type for the Gherkin Scenaroio Outline placeholders: gherkin.placeholder
-        [Export(typeof(ClassificationTypeDefinition))]
-        [Name("gherkin.placeholder")]
-        [BaseDefinition("string")]
-        internal static ClassificationTypeDefinition GherkinPlaceholderClassifierType = null;
-
         // exports a classification type for the Gherkin multi-line text arguments: gherkin.multilinetext
         [Export(typeof(ClassificationTypeDefinition))]
         [Name("gherkin.multilinetext")]
@@ -79,14 +73,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         [Name("gherkin.steptext")]
         internal static ClassificationTypeDefinition GherkinStepTextClassifierType = null;
 		
-        // exports a classification type for the Gherkin Feature Title: gherkin.knownsteptext
+        // exports a classification type for the Gherkin Feature Title: gherkin.unboundsteptext
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("gherkin.knownsteptext")]
-        internal static ClassificationTypeDefinition GherkinKnownStepTextClassifierType = null;
+        [Name("gherkin.unboundsteptext")]
+        internal static ClassificationTypeDefinition GherkinUnboundStepTextClassifierType = null;
 
-        // exports a classification type for the Gherkin Feature Title: gherkin.variable
+        // exports a classification type for the Gherkin Feature Title: gherkin.stepargument
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("gherkin.variable")]
-        internal static ClassificationTypeDefinition GherkinVariableClassifierType = null;
+        [Name("gherkin.stepargument")]
+        internal static ClassificationTypeDefinition GherkinStepArgumentClassifierType = null;
+
+        // exports a classification type for the Gherkin Scenaroio Outline placeholders: gherkin.placeholder
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("gherkin.placeholder")]
+        [BaseDefinition("string")]
+        internal static ClassificationTypeDefinition GherkinPlaceholderClassifierType = null;
     }
 }

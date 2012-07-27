@@ -350,16 +350,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                 if (match.Success)
                 {
-                    ColorizeKeywordLine(keyword, stepSpan, classifications.KnownStepText);
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
                     int linePos = stepSpan.StartPosition.LinePosition;
                     foreach (var stringArg in match.Arguments.OfType<string>())
                     {
-                        linePos = ColorizeLinePart(stringArg, stepSpan, classifications.Variable, linePos);
+                        linePos = ColorizeLinePart(stringArg, stepSpan, classifications.StepArgument, linePos);
                     }
                 }
                 else
                 {
-                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.UnboundStepText);
                 }
             }
             else

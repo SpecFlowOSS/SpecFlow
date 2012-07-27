@@ -15,8 +15,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
         public readonly IClassificationType TableHeader;
         public readonly IClassificationType Description;
         public readonly IClassificationType StepText;
-        public readonly IClassificationType KnownStepText;
-        public readonly IClassificationType Variable;
+        public readonly IClassificationType UnboundStepText;
+        public readonly IClassificationType StepArgument;
 
         public GherkinFileEditorClassifications(IClassificationTypeRegistryService registry)
         {
@@ -31,8 +31,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor
             TableHeader = registry.GetClassificationType("gherkin.tableheader");
             Description = registry.GetClassificationType("gherkin.description");
             StepText = registry.GetClassificationType("gherkin.steptext");
-            KnownStepText = registry.GetClassificationType("gherkin.knownsteptext");
-            Variable = registry.GetClassificationType("gherkin.variable");
+            UnboundStepText = registry.GetClassificationType("gherkin.unboundsteptext");
+            StepArgument = registry.GetClassificationType("gherkin.stepargument");
         }
     }
 }
