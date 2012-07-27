@@ -357,6 +357,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         linePos = ColorizeLinePart(stringArg, stepSpan, classifications.StepArgument, linePos);
                     }
                 }
+                else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && placeholderRe.Match(text).Success)
+                {
+                    ColorizeKeywordLine(keyword, stepSpan, classifications.StepText); // we do not show binding errors in placeholdered scenario outline steps
+                    //TODO: check match based on the scenario examples - unfortunately the steps are parsed earlier than the examples, so we would need to delay the colorization somehow
+                }
                 else
                 {
                     ColorizeKeywordLine(keyword, stepSpan, classifications.UnboundStepText);
