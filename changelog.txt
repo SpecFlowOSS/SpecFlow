@@ -30,6 +30,7 @@ Fixed issues:
 + Support for missing feature/GenerationTargetLanguage (Issue 163)
 + RuntimePluginLoader: IsAssignableFrom is backwards (Issue 164)
 + VS2010: Specflow options show up as "General" in VS Import/Export settings (Issue 184)
++ Dispose IDisposable user objects created by SpecFlow (Issue 22)
 
 1.8.1 - 2011/10/25
 
