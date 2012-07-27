@@ -34,7 +34,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public GherkinLanguageService GetLanguageService(ITextBuffer textBuffer)
         {
-            return GherkinBufferServiceManager.GetOrCreate(textBuffer, () => CreateLanguageService(textBuffer));
+            var gherkinLanguageService = GherkinBufferServiceManager.GetOrCreate(textBuffer, () => CreateLanguageService(textBuffer));
+            gherkinLanguageService.EnsureInitialized(textBuffer);
+            return gherkinLanguageService;
         }
 
         private GherkinLanguageService CreateLanguageService(ITextBuffer textBuffer)
@@ -45,8 +47,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             textBuffer.Changed +=
                 (sender, args) => languageService.TextBufferChanged(GetTextBufferChange(args));
-
-            languageService.Initialize(textBuffer);
 
             return languageService;
         }

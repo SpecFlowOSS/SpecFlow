@@ -107,8 +107,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return integrationOptionsProvider; }
         }
 
-        public event EventHandler SpecFlowProjectConfigurationChanged;
-        public event EventHandler GherkinDialectServicesChanged;
+        public event Action SpecFlowProjectConfigurationChanged;
+        public event Action GherkinDialectServicesChanged;
 
         internal VsProjectScope(Project project, DteWithEvents dteWithEvents, GherkinFileEditorClassifications classifications, IVisualStudioTracer tracer, IIntegrationOptionsProvider integrationOptionsProvider)
         {
@@ -294,7 +294,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.tracer.Trace("SpecFlow configuration changed", "VsProjectScope");
             if (SpecFlowProjectConfigurationChanged != null)
-                SpecFlowProjectConfigurationChanged(this, EventArgs.Empty);
+                SpecFlowProjectConfigurationChanged();
 
             GeneratorServices.InvalidateSettings();
 
@@ -305,7 +305,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.tracer.Trace("default language changed", "VsProjectScope");
             if (GherkinDialectServicesChanged != null)
-                GherkinDialectServicesChanged(this, EventArgs.Empty);
+                GherkinDialectServicesChanged();
         }
 
         public GherkinTextBufferParser GherkinTextBufferParser

@@ -80,6 +80,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private bool readyInvoked = false;
         public event Action Ready;
+        public event Action BindingsChanged;
 
         private readonly Dictionary<BindingFileInfo, List<IStepDefinitionBinding>> bindingSuggestions = new Dictionary<BindingFileInfo, List<IStepDefinitionBinding>>();
         private readonly Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>> fileSuggestions = new Dictionary<FeatureFileInfo, List<IStepSuggestion<Completion>>>();
@@ -213,6 +214,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
+        private void FireBindingsChanged()
+        {
+            if (Populated && BindingsChanged != null)
+            {
+                BindingsChanged();
+            }
+        }
+
         private void BindingFilesTrackerOnReady()
         {
             bindingsPopulated = true;
@@ -257,16 +266,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 bindings.ForEach(RemoveBinding);
                 bindingSuggestions.Remove(bindingFileInfo);
+
+                FireBindingsChanged();
             }
         }
 
         private void BindingFilesTrackerOnFileUpdated(BindingFileInfo bindingFileInfo)
         {
+            bool isChanged = false;
+
             List<IStepDefinitionBinding> bindings;
             if (bindingSuggestions.TryGetValue(bindingFileInfo, out bindings))
             {
                 bindings.ForEach(RemoveBinding);
                 bindings.Clear();
+                isChanged = true;
             }
             else
             {
@@ -278,7 +292,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
+                isChanged = true;
             }
+
+            if (isChanged)
+                FireBindingsChanged();
         }
 
         public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)

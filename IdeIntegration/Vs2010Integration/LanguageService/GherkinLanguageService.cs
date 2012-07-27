@@ -19,6 +19,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private IGherkinFileScope lastGherkinFileScope = null;
         private ITextSnapshot lastRegisteredSnapshot = null;
 
+        private bool isInitialized = false;
+
         public IProjectScope ProjectScope
         {
             get { return projectScope; }
@@ -33,15 +35,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             visualStudioTracer.Trace("Language service created", "GherkinLanguageService");
         }
 
-        public void Initialize(ITextBuffer textBuffer)
+        public void EnsureInitialized(ITextBuffer textBuffer)
+        {
+            if (!isInitialized)
+            {
+                lock(this)
+                {
+                    if (!isInitialized)
+                    {
+                        Initialize(textBuffer);
+                        isInitialized = true;
+                    }
+                }
+            }
+        }
+
+        private void Initialize(ITextBuffer textBuffer)
         {
             // do initial parsing
             TextBufferChanged(GherkinTextBufferChange.CreateEntireBufferChange(textBuffer.CurrentSnapshot));
 
-            projectScope.GherkinDialectServicesChanged += GherkinDialectServicesChanged;
+            projectScope.GherkinDialectServicesChanged += ReParseEntireFile;
+            projectScope.StepSuggestionProvider.Ready += ReParseEntireFile;
+            projectScope.StepSuggestionProvider.BindingsChanged += ReParseEntireFile;
         }
 
-        private void GherkinDialectServicesChanged(object sender, EventArgs eventArgs)
+        private void ReParseEntireFile()
         {
             if (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot == null)
                 return;
@@ -235,7 +254,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             visualStudioTracer.Trace("Language service disposed", "GherkinLanguageService");
             isDisposed = true;
-            projectScope.GherkinDialectServicesChanged -= GherkinDialectServicesChanged;
+            projectScope.GherkinDialectServicesChanged -= ReParseEntireFile;
+            projectScope.StepSuggestionProvider.Ready -= ReParseEntireFile;
+            projectScope.StepSuggestionProvider.BindingsChanged -= ReParseEntireFile;
             lastGherkinFileScope = null;
         }
     }

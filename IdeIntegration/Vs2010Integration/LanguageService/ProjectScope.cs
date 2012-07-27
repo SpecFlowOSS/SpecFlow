@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         IGeneratorServices GeneratorServices { get; }
         IIdeTracer Tracer { get; }
 
-        event EventHandler SpecFlowProjectConfigurationChanged;
-        event EventHandler GherkinDialectServicesChanged;
+        event Action SpecFlowProjectConfigurationChanged;
+        event Action GherkinDialectServicesChanged;
     }
 }
