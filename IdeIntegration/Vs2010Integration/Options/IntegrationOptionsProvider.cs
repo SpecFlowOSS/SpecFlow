@@ -19,6 +19,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableIntelliSenseDefaultValue = true;
         public const bool EnableAnalysisDefaultValue = true;
         public const bool EnableTableAutoFormatDefaultValue = true;
+        public const bool EnableStepMatchColoringDefaultValue = true;
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
         public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.Auto;
@@ -48,6 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
                                               EnableIntelliSense = GetGeneralOption(dte, "EnableIntelliSense", EnableIntelliSenseDefaultValue),
                                               EnableAnalysis = GetGeneralOption(dte, "EnableAnalysis", EnableAnalysisDefaultValue),
                                               EnableTableAutoFormat = GetGeneralOption(dte, "EnableTableAutoFormat", EnableTableAutoFormatDefaultValue),
+                                              EnableStepMatchColoring = GetGeneralOption(dte, "EnableStepMatchColoring", EnableStepMatchColoringDefaultValue),
                                               EnableTracing = GetGeneralOption(dte, "EnableTracing", EnableTracingDefaultValue),
                                               TracingCategories = GetGeneralOption(dte, "TracingCategories", TracingCategoriesDefaultValue),
                                               TestRunnerTool = GetGeneralOption(dte, "TestRunnerTool", TestRunnerToolDefaultValue),

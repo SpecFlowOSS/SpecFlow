@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         private readonly IProjectScope projectScope;
         private readonly IVisualStudioTracer visualStudioTracer;
+        private readonly bool enableStepMatchColoring;
 
         private bool isDisposed = false;
         private IGherkinFileScope lastGherkinFileScope = null;
@@ -26,10 +27,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return projectScope; }
         }
 
-        public GherkinLanguageService(IProjectScope projectScope, IVisualStudioTracer visualStudioTracer)
+        public GherkinLanguageService(IProjectScope projectScope, IVisualStudioTracer visualStudioTracer, bool enableStepMatchColoring)
         {
             this.projectScope = projectScope;
             this.visualStudioTracer = visualStudioTracer;
+            this.enableStepMatchColoring = enableStepMatchColoring;
             AnalyzingEnabled = projectScope.GherkinScopeAnalyzer != null;
 
             visualStudioTracer.Trace("Language service created", "GherkinLanguageService");
@@ -56,8 +58,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             TextBufferChanged(GherkinTextBufferChange.CreateEntireBufferChange(textBuffer.CurrentSnapshot));
 
             projectScope.GherkinDialectServicesChanged += ReParseEntireFile;
-            projectScope.StepSuggestionProvider.Ready += ReParseEntireFile;
-            projectScope.StepSuggestionProvider.BindingsChanged += ReParseEntireFile;
+
+            if (enableStepMatchColoring)
+            {
+                projectScope.StepSuggestionProvider.Ready += ReParseEntireFile;
+                projectScope.StepSuggestionProvider.BindingsChanged += ReParseEntireFile;
+            }
         }
 
         private void ReParseEntireFile()

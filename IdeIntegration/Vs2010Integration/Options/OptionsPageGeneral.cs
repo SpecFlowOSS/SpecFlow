@@ -55,6 +55,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public bool EnableIntelliSense { get; set; }
 
         [Category("Editor Settings")]
+        [Description("Controls whether the step definition match status should be indicated with a different color in the editor. (beta)")]
+        [DisplayName(@"Enable Step Match Coloring")]
+        [DefaultValue(IntegrationOptionsProvider.EnableStepMatchColoringDefaultValue)]
+        public bool EnableStepMatchColoring { get; set; }
+
+        [Category("Editor Settings")]
         [Description("Controls whether the tables should be formatted automatically when you type \"|\" character.")]
         [DisplayName(@"Enable Table Formatting")]
         [DefaultValue(IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue)]
@@ -85,6 +91,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
             EnableOutlining = IntegrationOptionsProvider.EnableOutliningDefaultValue;
             EnableIntelliSense = IntegrationOptionsProvider.EnableIntelliSenseDefaultValue;
             EnableTableAutoFormat = IntegrationOptionsProvider.EnableTableAutoFormatDefaultValue;
+            EnableStepMatchColoring = IntegrationOptionsProvider.EnableStepMatchColoringDefaultValue;
             EnableTracing = IntegrationOptionsProvider.EnableTracingDefaultValue;
             TracingCategories = IntegrationOptionsProvider.TracingCategoriesDefaultValue;
             TestRunnerTool = IntegrationOptionsProvider.TestRunnerToolDefaultValue;
