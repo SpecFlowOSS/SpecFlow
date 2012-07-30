@@ -9,6 +9,17 @@ using TechTalk.SpecFlow.Vs2010Integration.Commands;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
+    internal static class VS2012CommandGroups
+    {
+        public static readonly Guid CommandGroup = new Guid("1e198c22-5980-4e7e-92f3-f73168d1fb63");
+    }
+
+    internal enum VS2012Command
+    {
+        TestExplorerRunAllTestsInContext = 885,
+        TestExplorerDebugAllTestsInContext = 89600
+    }
+
     internal class EditorCommandFilter
     {
 // ReSharper disable NotAccessedField.Local

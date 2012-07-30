@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using BoDi;
 using EnvDTE;
+using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -12,10 +13,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
     public class AutoTestRunnerGateway : ITestRunnerGateway
     {
         private readonly IObjectContainer container;
+        private readonly IdeIntegration.Install.IdeIntegration ideIntegration;
 
-        public AutoTestRunnerGateway(IObjectContainer container)
+        public AutoTestRunnerGateway(IObjectContainer container, InstallServices installServices)
         {
             this.container = container;
+            ideIntegration = installServices.IdeIntegration;
         }
 
         private ITestRunnerGateway GetCurrentTestRunnerGateway(Project project)
@@ -33,8 +36,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper.ToString());
             }
 
+            if (ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2012)
+            {
+                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.VisualStudio2012.ToString());
+            }
+
             if (VsxHelper.GetReference(project, "Microsoft.VisualStudio.QualityTools.UnitTestFramework") != null)
-                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.MsTest.ToString());
+                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.VisualStudio2010MsTest.ToString());
 
             MessageBox.Show(
                 "Could not find matching test runner. Please specify the test runner tool in 'Tools / Options / SpecFlow'",

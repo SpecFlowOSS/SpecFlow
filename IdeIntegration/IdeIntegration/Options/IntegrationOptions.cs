@@ -17,9 +17,10 @@
     {
         Auto = 0,
         ReSharper = 1,
-        MsTest = 2,
+        VisualStudio2010MsTest = 2,
         SpecRun = 3,
-        TestDrivenDotNet = 4,
+        //TestDrivenDotNet = 4,
         ReSharper5 = 5,
+        VisualStudio2012 = 6,
     }
 }
