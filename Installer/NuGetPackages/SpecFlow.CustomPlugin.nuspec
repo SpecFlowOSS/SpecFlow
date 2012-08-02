@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <id>SpecFlow.CustomGenerator</id>
+    <id>SpecFlow.CustomPlugin</id>
     <version>1.0.0-alpha</version>
-    <title>SpecFlow.CustomGenerator</title>
+    <title>SpecFlow.CustomPlugin</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
-    <description>Package for writing custom generator extensions for SpecFlow.</description>
-    <summary>Package for writing custom generator extensions for SpecFlow.</summary>
+    <description>Package for writing custom extensions for SpecFlow.</description>
+    <summary>Package for writing custom extensions for SpecFlow.</summary>
     <language>en-US</language>
     <projectUrl>http://www.specflow.org</projectUrl>
     <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
