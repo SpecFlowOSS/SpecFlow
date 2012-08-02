@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -144,7 +145,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private class CannotConverter : IStepArgumentTypeConverter
+        private class StepDefinitionMatchServiceWithOnlySimpleTypeConverter : StepDefinitionMatchService
+        {
+            public StepDefinitionMatchServiceWithOnlySimpleTypeConverter(IBindingRegistry bindingRegistry) : base(bindingRegistry, new OnlySimpleConverter())
+            {
+            }
+
+            protected override IEnumerable<BindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
+            {
+                var normalResult = base.GetCandidatingBindingsForBestMatch(stepInstance, bindingCulture).ToList();
+                if (normalResult.Count > 0)
+                    return normalResult;
+
+                return GetCandidatingBindings(stepInstance, bindingCulture, useParamMatching: false); // we disable param checking
+            }
+        }
+
+        private class OnlySimpleConverter : IStepArgumentTypeConverter
         {
             public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
             {
@@ -153,7 +170,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
             {
-                return false;
+                if (!(typeToConvertTo is RuntimeBindingType))
+                {
+                    Type systemType = Type.GetType(typeToConvertTo.FullName, false);
+                    if (systemType == null)
+                        return false;
+                    typeToConvertTo = new RuntimeBindingType(systemType);
+                }
+
+                return StepArgumentTypeConverter.CanConvertSimple(typeToConvertTo, value, cultureInfo);
             }
         }
 
@@ -179,7 +204,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
                     stepSuggestionProvider = new VsStepSuggestionProvider(this);
                     stepSuggestionProvider.Ready += StepSuggestionProviderOnReady;
-                    stepDefinitionMatchService = new StepDefinitionMatchService(stepSuggestionProvider, new CannotConverter());
+                    stepDefinitionMatchService = new StepDefinitionMatchServiceWithOnlySimpleTypeConverter(stepSuggestionProvider);
                 }
                 tracer.Trace("Initialized", "VsProjectScope");
                 initialized = true;

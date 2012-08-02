@@ -101,7 +101,7 @@ namespace TechTalk.SpecFlow.Bindings
             return true;
         }
 
-        private object ConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
+        private static object ConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             if (!(typeToConvertTo is RuntimeBindingType))
                 throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
@@ -109,7 +109,7 @@ namespace TechTalk.SpecFlow.Bindings
             return ConvertSimple(((RuntimeBindingType) typeToConvertTo).Type, value, cultureInfo);
         }
 
-        private object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
+        private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             if (typeToConvertTo.IsEnum && value is string)
                 return Enum.Parse(typeToConvertTo, (string)value, true);
@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow.Bindings
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
         }
 
-        public bool CanConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
+        public static bool CanConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             try
             {

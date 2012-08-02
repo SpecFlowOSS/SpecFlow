@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public BindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture, out StepDefinitionAmbiguityReason ambiguityReason, out List<BindingMatch> candidatingMatches)
         {
-            candidatingMatches = GetCandidatingBindings(stepInstance, bindingCulture, useParamMatching: true).ToList();
+            candidatingMatches = GetCandidatingBindingsForBestMatch(stepInstance, bindingCulture).ToList();
             KeepMaxScopeMatches(candidatingMatches);
 
             ambiguityReason = StepDefinitionAmbiguityReason.None;
@@ -107,9 +107,14 @@ namespace TechTalk.SpecFlow.Infrastructure
             else if (candidatingMatches.Count == 0)
                 ambiguityReason = OnNoMatch(stepInstance, bindingCulture, out candidatingMatches);
 
-            if (candidatingMatches.Count == 1)
+            if (candidatingMatches.Count == 1 && ambiguityReason == StepDefinitionAmbiguityReason.None)
                 return candidatingMatches[0];
             return BindingMatch.NonMatching;
+        }
+
+        protected virtual IEnumerable<BindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
+        {
+            return GetCandidatingBindings(stepInstance, bindingCulture, useParamMatching: true);
         }
 
         private static void KeepMaxScopeMatches(List<BindingMatch> matches)
