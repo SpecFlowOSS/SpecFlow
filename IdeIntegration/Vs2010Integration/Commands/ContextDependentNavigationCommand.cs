@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             else if (IsCodeFile(activeDocument.ProjectItem))
             {
                 command.Enabled = goToStepsCommand.IsEnabled(activeDocument);
-                command.Text = "Go To Matching SpecFlow Steps";
+                command.Text = "Go To SpecFlow Step Definition Usage";
             }
             else
             {

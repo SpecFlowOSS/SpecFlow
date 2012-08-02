@@ -32,6 +32,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             this.projectScopeFactory = projectScopeFactory;
         }
 
+        protected override void BeforeQueryStatus(OleMenuCommand command, SelectedItems selection)
+        {
+            base.BeforeQueryStatus(command, selection);
+
+            if (command.Visible)
+            {
+                if (dte.ActiveDocument == null || dte.ActiveDocument.ProjectItem == null || !ContextDependentNavigationCommand.IsFeatureFile(dte.ActiveDocument.ProjectItem))
+                    command.Visible = false;
+            }
+        }
+
         protected override void Invoke(OleMenuCommand command, SelectedItems selection)
         {
             var activeDocument = dte.ActiveDocument;
@@ -63,7 +74,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
             if (steps.Length == 0)
             {
-                MessageBox.Show("All the steps are bound!", "Generate step definition skeleton");
+                MessageBox.Show("All steps are bound!", "Generate step definition skeleton");
                 return true;
             }
 
