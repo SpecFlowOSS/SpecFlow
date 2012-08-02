@@ -25,7 +25,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="SharpDevelop4.wxs" />
-    <Compile Include="VS2010.wxs" />
     <Compile Include="CoreFiles.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="Product.Generated.wxs">

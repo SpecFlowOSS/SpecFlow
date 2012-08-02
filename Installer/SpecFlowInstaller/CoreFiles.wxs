@@ -20,11 +20,11 @@
         <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.Runtime.dll" />
         <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
         <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
+        <File Id="TechTalk.SpecFlow.IdeIntegration.dll" Name="TechTalk.SpecFlow.IdeIntegration.dll" Source="$(var.TechTalk.SpecFlow.IdeIntegration.TargetDir)\TechTalk.SpecFlow.IdeIntegration.dll" />
       </Component>
 
       <!-- Gherkin file associations -->
       <Component Id="Comp_CoreGherkinFileAssociation" Guid="8BDE968A-8638-47F9-823E-EC637153881B">
-        <Condition>!Feature_VS2010 = 3</Condition>
         <File Name="featurefile.ico" Source="$(var.SetupResourcesDir)\gherkin.ico" />
         <ProgId Id="GherkinFile" Description="Gherkin Specification File" Icon="featurefile.ico">
           <Extension Id="feature" ContentType='application/text' />

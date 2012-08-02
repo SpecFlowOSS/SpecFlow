@@ -34,7 +34,6 @@
     <Property Id="ARPURLUPDATEINFO" Value="$(var.ProductUrl)" />
 
     <PropertyRef Id="VS90DEVENV" />
-    <PropertyRef Id="VS2010DEVENV" />
 
     <Property Id="SHARPDEVELOP4PATH">
         <DirectorySearch Depth='0' Id="DirSearch_SharpDevelop4" Path="[ProgramFilesFolder]SharpDevelop\4.0">
@@ -75,11 +74,6 @@
                Title="Syntax Coloring for Visual Studio 2008" Description="Provides syntax Coloring for Visual Studio 2008. Do not install this feature if you are using cuke4vs.">
           <ComponentRef Id="Comp_VS2008SyntaxColoring" />          
         </Feature>
-      </Feature>
-      <Feature Id="Feature_VS2010" Level="1" AllowAdvertise="no"
-               Title="Visual Studio 2010 Integration" Description="Visual Studio 2010 Integration - consider installing it from Visual Studio Gallery!">
-        <Condition Level="0"> NOT VS2010DEVENV </Condition>
-        <ComponentGroupRef Id="CompGroup_VS2010" />
       </Feature>
   		
 		<Feature Id="Feature_SharpDevelop4" Level="1" AllowAdvertise="no" 
