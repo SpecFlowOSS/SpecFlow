@@ -50,6 +50,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         }
 
         [Test]
+        public void Should_recognize_angle_bracket_strings()
+        {
+            var sut = new StepTextAnalyzer();
+
+            var result = sut.Analyze("I <do> something", bindingCulture);
+            result.Parameters.Count.ShouldEqual(1);
+            result.TextParts.Count.ShouldEqual(2);
+            result.TextParts[0].ShouldEqual("I ");
+            result.TextParts[1].ShouldEqual(" something");
+        }
+
+        [Test]
         public void Should_handle_quote_overlaps()
         {
             var sut = new StepTextAnalyzer();

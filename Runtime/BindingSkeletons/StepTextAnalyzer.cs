@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
             int intParamValue;
             if (int.TryParse(value, NumberStyles.Integer, bindingCulture, out intParamValue))
-                return new AnalyzedStepParameter("Int32", paramName, "\\d+");
+                return new AnalyzedStepParameter("Int32", paramName, ".*");
 
             decimal decimalParamValue;
             if (decimal.TryParse(value, NumberStyles.Number, bindingCulture, out decimalParamValue))
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return new AnalyzedStepParameter("String", paramName, ".*");
         }
 
-        private static readonly Regex quotesRe = new Regex(@"""+(?<param>.*?)""+|'+(?<param>.*?)'+");
+        private static readonly Regex quotesRe = new Regex(@"""+(?<param>.*?)""+|'+(?<param>.*?)'+|(?<param>\<.*?\>)");
         private IEnumerable<Capture> RecognizeQuotedTexts(string stepText)
         {
             return quotesRe.Matches(stepText).Cast<Match>().Select(m => (Capture)m.Groups["param"]);
