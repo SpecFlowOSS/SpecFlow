@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -63,7 +64,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static SnapshotSpan CreateSpan(this IEnumerable<IGherkinFileBlock> changedBlocks, ITextSnapshot textSnapshot)
         {
-            VisualStudioTracer.Assert(changedBlocks.Count() > 0, "there is no changed block");
+            VisualStudioTracer.Assert(changedBlocks.Any(), "there is no changed block");
 
             int minLineNumber = changedBlocks.First().GetStartLine();
             int maxLineNumber = changedBlocks.Last().GetEndLine();
@@ -147,6 +148,33 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                             : string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
 
             return string.Format("\"{0}{1}\" in {2}", stepInstance.Keyword, stepInstance.Text, inFilePositionText);
+        }
+
+        public static IEnumerable<GherkinStep> GetAllStepsWithFirstExampleSubstituted(this IGherkinFileScope gherkinFileScope)
+        {
+            return gherkinFileScope.GetAllBlocks().OfType<IStepBlock>().SelectMany(b => b is IScenarioOutlineBlock ? GetSubstitutedSteps((IScenarioOutlineBlock)b) : b.Steps);
+        }
+
+        private static IEnumerable<GherkinStep> GetSubstitutedSteps(IScenarioOutlineBlock scenarioOutlineBlock)
+        {
+            var firstNonEmptyExampleSet = scenarioOutlineBlock.ExampleSets.FirstOrDefault(es => es.ExamplesTable != null && es.ExamplesTable.RowCount > 0);
+            if (firstNonEmptyExampleSet == null)
+                return scenarioOutlineBlock.Steps;
+
+            return scenarioOutlineBlock.Steps.Select(step => GetSubstitutedStep(step, firstNonEmptyExampleSet.ExamplesTable.Rows.First()));
+        }
+
+        static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
+
+        private static GherkinStep GetSubstitutedStep(GherkinStep step, IDictionary<string, string> exampleDictionary)
+        {
+            var replacedText = paramRe.Replace(step.Text,
+                                               match =>
+                                                   {
+                                                       string value;
+                                                       return exampleDictionary.TryGetValue(match.Groups["param"].Value, out value) ? value : match.Value;
+                                                   });
+            return new GherkinStep(step.StepDefinitionType, step.StepDefinitionKeyword, replacedText, step.StepContext, step.Keyword, step.BlockRelativeLine);
         }
     }
 }
