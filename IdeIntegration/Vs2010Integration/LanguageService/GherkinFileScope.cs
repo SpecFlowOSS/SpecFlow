@@ -150,6 +150,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal class ScenarioOutlineExampleSet : KeywordLine, IScenarioOutlineExampleSet
     {
+        public Table ExamplesTable { get; set; }
+
         public ScenarioOutlineExampleSet(string keyword, string text, int blockRelativeLine) : base(keyword, text, blockRelativeLine)
         {
         }

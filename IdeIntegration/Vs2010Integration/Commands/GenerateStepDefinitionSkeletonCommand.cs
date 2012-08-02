@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
@@ -174,18 +175,48 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             return fileScope.HeaderBlock.Title;
         }
 
-        private IEnumerable<StepInstance> GetUnboundSteps(IStepDefinitionMatchService bindingMatchService, IGherkinFileScope fileScope, CultureInfo bindingCulture)
+        public static IEnumerable<GherkinStep> GetAllStepsWithFirstExampleSubstituted(IGherkinFileScope gherkinFileScope)
         {
-            return fileScope.GetAllSteps().Where(s => !IsBound(s, bindingMatchService, bindingCulture));
+            return gherkinFileScope.GetAllBlocks().OfType<IStepBlock>().SelectMany(b => b is IScenarioOutlineBlock ? GetSubstitutedSteps((IScenarioOutlineBlock)b) : b.Steps);
         }
 
-        private static bool IsBound(GherkinStep step, IStepDefinitionMatchService bindingMatchService, CultureInfo bindingCulture)
+        private static IEnumerable<GherkinStep> GetSubstitutedSteps(IScenarioOutlineBlock scenarioOutlineBlock)
+        {
+            var firstNonEmptyExampleSet = scenarioOutlineBlock.ExampleSets.FirstOrDefault(es => es.ExamplesTable != null && es.ExamplesTable.RowCount > 0);
+            if (firstNonEmptyExampleSet == null)
+                return scenarioOutlineBlock.Steps;
+
+            return scenarioOutlineBlock.Steps.Select(step => GetSubstitutedStep(step, firstNonEmptyExampleSet.ExamplesTable.Rows.First()));
+        }
+
+        static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
+        private static GherkinStep GetSubstitutedStep(GherkinStep step, IDictionary<string, string> exampleDictionary)
+        {
+            var replacedText = paramRe.Replace(step.Text,
+                match =>
+                {
+                    string value;
+                    return exampleDictionary.TryGetValue(match.Groups["param"].Value, out value) ? value : match.Value;
+                });
+            return new GherkinStep(step.StepDefinitionType, step.StepDefinitionKeyword, replacedText, step.StepContext, step.Keyword, step.BlockRelativeLine);
+        }
+
+        private IEnumerable<StepInstance> GetUnboundSteps(IStepDefinitionMatchService bindingMatchService, IGherkinFileScope fileScope, CultureInfo bindingCulture)
+        {
+            return GetAllStepsWithFirstExampleSubstituted(fileScope).Where(s => IsListed(s, bindingMatchService, bindingCulture));
+        }
+
+        private static bool IsListed(GherkinStep step, IStepDefinitionMatchService bindingMatchService, CultureInfo bindingCulture)
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
             var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
-            bool isBound = match.Success;
-            return isBound;
+            bool isListed = !match.Success;
+            if (isListed && candidatingMatches.Count > 0)
+            {
+                isListed = ambiguityReason == StepDefinitionAmbiguityReason.AmbiguousScopes; // if it is already ambiguous (except scopes), we rather not list it
+            }
+            return isListed;
         }
 
         private IStepDefinitionMatchService GetBindingMatchService(GherkinLanguageService languageService)

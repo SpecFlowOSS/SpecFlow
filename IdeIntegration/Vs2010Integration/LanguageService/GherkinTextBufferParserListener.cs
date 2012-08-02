@@ -281,6 +281,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             ScenarioOutlineExampleSet exampleSet = new ScenarioOutlineExampleSet(keyword, name, 
                 editorLine - CurrentFileBlockBuilder.KeywordLine);
             CurrentFileBlockBuilder.ExampleSets.Add(exampleSet);
+            currentStep = null;
 
             CloseLevel2Outlinings += regionEndLine =>
                                          {
@@ -385,18 +386,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(cellSpan, classifications.TableHeader);
             }
 
+            Table table;
+            try
+            {
+                table = new Table(cells);
+            }
+            catch (Exception)
+            {
+                //TODO: shall we mark it as error?
+                return;
+            }
+
             if (currentStep != null)
             {
-                try
-                {
-                    currentStep.TableArgument = new Table(cells);
-                }
-                catch(Exception)
-                {
-                    //TODO: shall we mark it as error?
-                }
+                currentStep.TableArgument = table;
             }
-            //TODO: register outline example
+            else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
+            {
+                var exampleSet = CurrentFileBlockBuilder.ExampleSets.Last();
+                exampleSet.ExamplesTable = table;
+            }
         }
 
         public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
@@ -405,18 +414,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
             }
+            Table table = null;
             if (currentStep != null)
+                table = currentStep.TableArgument;
+            else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
+                table = CurrentFileBlockBuilder.ExampleSets.Last().ExamplesTable;
+
+            if (table == null)
             {
-                try
-                {
-                    currentStep.TableArgument.AddRow(cells);
-                }
-                catch (Exception)
-                {
-                    //TODO: shall we mark it as error?
-                }
+                //TODO: shall we mark it as error?
+                return;
             }
-            //TODO: register outline example
+
+            try
+            {
+                table.AddRow(cells);
+            }
+            catch (Exception)
+            {
+                //TODO: shall we mark it as error?
+                return;
+            }
         }
 
         public void MultilineText(string text, GherkinBufferSpan textSpan)

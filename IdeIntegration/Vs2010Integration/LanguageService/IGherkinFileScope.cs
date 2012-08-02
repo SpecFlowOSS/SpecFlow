@@ -124,6 +124,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public interface IScenarioOutlineExampleSet : IKeywordLine
     {
+        Table ExamplesTable { get; set; }
     }
 
     public interface IScenarioOutlineBlock : IScenarioBlock
