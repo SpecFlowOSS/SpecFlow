@@ -93,6 +93,9 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Vs2010Integration\Install\VsBrowserGuidanceNotificationService.cs">
+      <Link>VsBrowserGuidanceNotificationService.cs</Link>
+    </Compile>
     <Compile Include="..\Vs2010Integration\SingleFileGenerator\CodeGeneratorRegistrationAttribute.cs">
       <Link>Common\CodeGeneratorRegistrationAttribute.cs</Link>
     </Compile>
