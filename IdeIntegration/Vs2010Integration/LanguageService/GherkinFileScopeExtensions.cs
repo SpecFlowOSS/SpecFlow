@@ -111,12 +111,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public static GherkinStep GetStepAtPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
         {
-            IStepBlock scenarioInfo = GetStepBlockFromStepPosition(gherkinFileScope, lineNumber);
-            if (scenarioInfo == null)
+            IStepBlock block;
+            return GetStepAtPosition(gherkinFileScope, lineNumber, out block);
+        }
+
+        public static GherkinStep GetStepAtPosition(this IGherkinFileScope gherkinFileScope, int lineNumber, out IStepBlock block)
+        {
+            block = GetStepBlockFromStepPosition(gherkinFileScope, lineNumber);
+            if (block == null)
                 return null;
 
-            var blockRelativeLine = lineNumber - scenarioInfo.KeywordLine;
-            return scenarioInfo.Steps.FirstOrDefault(s => s.BlockRelativeLine == blockRelativeLine);
+            var blockRelativeLine = lineNumber - block.KeywordLine;
+            return block.Steps.FirstOrDefault(s => s.BlockRelativeLine == blockRelativeLine);
         }
 
         public static IStepBlock GetStepBlockFromStepPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
@@ -164,8 +170,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return scenarioOutlineBlock.Steps.Select(step => GetSubstitutedStep(step, firstNonEmptyExampleSet.ExamplesTable.Rows.First()));
         }
 
-        static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
+        public static GherkinStep GetSubstitutedStep(this GherkinStep step, IScenarioOutlineBlock scenarioOutlineBlock)
+        {
+            var firstNonEmptyExampleSet = scenarioOutlineBlock.ExampleSets.FirstOrDefault(es => es.ExamplesTable != null && es.ExamplesTable.RowCount > 0);
+            if (firstNonEmptyExampleSet == null)
+                return step;
 
+            return GetSubstitutedStep(step, firstNonEmptyExampleSet.ExamplesTable.Rows.First());
+        }
+
+        static private readonly Regex paramRe = new Regex(@"\<(?<param>[^\>]+)\>");
         private static GherkinStep GetSubstitutedStep(GherkinStep step, IDictionary<string, string> exampleDictionary)
         {
             var replacedText = paramRe.Replace(step.Text,

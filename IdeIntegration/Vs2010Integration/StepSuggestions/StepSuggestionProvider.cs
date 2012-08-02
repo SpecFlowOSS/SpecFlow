@@ -208,9 +208,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
         public IEnumerable<StepInstance> GetMatchingInstances(IBindingMethod method)
         {
-            return boundStepSuggestions//.OfType<BoundStepSuggestions<TNativeSuggestionItem>>()
+            var instances = boundStepSuggestions
                 .Where(bss => bss.StepBinding.Method.MethodEquals(method))
-                .SelectMany(bss => bss.Suggestions.OfType<StepInstance>()); //TODO: scenario outline nesting...
+                .SelectMany(bss => bss.Suggestions.Select(s => 
+                    s is StepInstance ? (StepInstance)s : 
+                    s is BoundInstanceTemplate<TNativeSuggestionItem> ? ((BoundInstanceTemplate<TNativeSuggestionItem>)s).Suggestions.OfType<StepInstance>().FirstOrDefault() 
+                    : null))
+                .Where(si => si != null);
+
+            return instances;
         }
     }
 }

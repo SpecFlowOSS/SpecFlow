@@ -129,7 +129,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return null;
 
             SnapshotPoint caret = editorContext.TextView.Caret.Position.BufferPosition;
-            return fileScope.GetStepAtPosition(caret.GetContainingLine().LineNumber);
+            IStepBlock block;
+            var step = fileScope.GetStepAtPosition(caret.GetContainingLine().LineNumber, out block);
+
+            if (block is IScenarioOutlineBlock)
+                step = step.GetSubstitutedStep((IScenarioOutlineBlock)block);
+
+            return step;
         }
     }
 }
