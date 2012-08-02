@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.projectScope = projectScope;
             this.visualStudioTracer = visualStudioTracer;
-            this.enableStepMatchColoring = enableStepMatchColoring;
+            this.enableStepMatchColoring = enableStepMatchColoring && projectScope.StepSuggestionProvider != null;
             AnalyzingEnabled = projectScope.GherkinScopeAnalyzer != null;
 
             visualStudioTracer.Trace("Language service created", "GherkinLanguageService");
@@ -261,8 +261,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             visualStudioTracer.Trace("Language service disposed", "GherkinLanguageService");
             isDisposed = true;
             projectScope.GherkinDialectServicesChanged -= ReParseEntireFile;
-            projectScope.StepSuggestionProvider.Ready -= ReParseEntireFile;
-            projectScope.StepSuggestionProvider.BindingsChanged -= ReParseEntireFile;
+            if (enableStepMatchColoring)
+            {
+                projectScope.StepSuggestionProvider.Ready -= ReParseEntireFile;
+                projectScope.StepSuggestionProvider.BindingsChanged -= ReParseEntireFile;
+            }
             lastGherkinFileScope = null;
         }
     }
