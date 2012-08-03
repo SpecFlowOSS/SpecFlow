@@ -13,6 +13,8 @@
     <AssemblyName>TechTalk.SpecFlow.Vs2010Integration</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -432,4 +434,5 @@
     <XmlPoke XmlInputPath="$(OutDir)\extension.vsixmanifest" Query="/vsx:Vsix/vsx:Identifier/vsx:InstalledByMsi" Value="true" Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010' /&gt;">
     </XmlPoke>
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

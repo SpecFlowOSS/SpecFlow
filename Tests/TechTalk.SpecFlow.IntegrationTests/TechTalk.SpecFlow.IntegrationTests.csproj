@@ -12,6 +12,8 @@
     <AssemblyName>TechTalk.SpecFlow.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -259,6 +261,7 @@ xcopy $(SolutionDir)packages\xunit.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
 xcopy $(SolutionDir)packages\xunit.extensions.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
 xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
