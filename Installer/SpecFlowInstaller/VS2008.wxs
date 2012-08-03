@@ -40,16 +40,16 @@
       <Directory Id="Dir_VS2008_ItemTemplates" Name="VS2008_ItemTemplates">
         <Directory Id="Dir_VS2008_ItemTemplates_CSharp" Name="CSharp" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
           <Component Id="Comp_VS2008ItemTemplates_CSharp" Guid="50EF978E-F646-48e8-96A3-01EC83374FF0">
-            <File Id="File_SpecFlowFeature.zip_VS2008" Name="SpecFlowFeature.zip" />
-            <File Id="File_SpecFlowStepDefinition.zip_VS2008" Name="SpecFlowStepDefinition.zip" />
-            <File Id="File_SpecFlowEventDefinition.zip_VS2008" Name="SpecFlowEventDefinition.zip" />
+            <File Id="File_SpecFlowFeature.zip_VS2008" Name="SpecFlowFeature_CSharp.zip" />
+            <File Id="File_SpecFlowStepDefinition.zip_VS2008" Name="SpecFlowStepDefinition_CSharp.zip" />
+            <File Id="File_SpecFlowEventDefinition.zip_VS2008" Name="SpecFlowHooks_CSharp.zip" />
           </Component>
         </Directory>
         <Directory Id="Dir_VS2008_ItemTemplates_VisualBasic" Name="VisualBasic" FileSource="$(var.TechTalk.SpecFlow.Vs2008Integration.TargetDir)">
           <Component Id="Comp_VS2008ItemTemplates_VisualBasic" Guid="64327D18-847B-479e-AAAD-FFB966BC2805">
             <File Id="File_SpecFlowFeature_VB.zip_VS2008" Name="SpecFlowFeature_VB.zip" />
             <File Id="File_SpecFlowStepDefinition_VB.zip_VS2008" Name="SpecFlowStepDefinition_VB.zip" />
-            <File Id="File_SpecFlowEventDefinition_VB.zip_VS2008" Name="SpecFlowEventDefinition_VB.zip" />
+            <File Id="File_SpecFlowEventDefinition_VB.zip_VS2008" Name="SpecFlowHooks_VB.zip" />
           </Component>
         </Directory>
       </Directory>
