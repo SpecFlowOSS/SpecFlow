@@ -35,11 +35,6 @@
 
     <PropertyRef Id="VS90DEVENV" />
 
-    <Property Id="SHARPDEVELOP4PATH">
-        <DirectorySearch Depth='0' Id="DirSearch_SharpDevelop4" Path="[ProgramFilesFolder]SharpDevelop\4.0">
-        </DirectorySearch>
-    </Property>
-
     <!-- Launch conditions -->
     <Condition Message="An administrator must approve or install [ProductName]."> Privileged </Condition>
     <Condition Message="The same or a later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
@@ -75,14 +70,8 @@
           <ComponentRef Id="Comp_VS2008SyntaxColoring" />          
         </Feature>
       </Feature>
-  		
-		<Feature Id="Feature_SharpDevelop4" Level="1" AllowAdvertise="no" 
-               Title="SharpDevelop 4 Integration" Description="SharpDevelop 4 Integration. Use the SharpDevelop AddIn Manager to register the addin from the SpecFlow installation folder.">
-        <Condition Level="0"> NOT SHARPDEVELOP4PATH </Condition>
-        <ComponentGroupRef Id="CompGroup_SharpDevelop4" />
-      </Feature>
     </Feature>
-
+  		
     <!-- icons -->
     <Icon Id="specflowsetup.ico" SourceFile="$(var.SetupResourcesDir)\specflowsetup.ico"/>
     <Property Id="ARPPRODUCTICON" Value="specflowsetup.ico" />

@@ -140,4 +140,16 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(SolutionDir)lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <AddInContent Include="$(TargetDir)\*.dll" />
+      <AddInContent Include="$(TargetDir)\*.addin" />
+      <AddInContent Include="$(TargetDir)\Templates\*.*" />
+    </ItemGroup>
+    <Zip Files="@(AddInContent)" Flatten="false" WorkingDirectory="$(TargetDir)" ZipFileName="$(TargetDir)\TechTalk.SpecFlow.SharpDevelop4Integration.sdaddin" />
+  </Target>
 </Project>

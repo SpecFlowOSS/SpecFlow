@@ -31,7 +31,7 @@
 	</Properties>-->
 
 	<Files>
-		<File name="${FullName}" customTool="SpecFlowSingleFileGenerator"><![CDATA[
+		<File name="${FullName}" Generator="SpecFlowSingleFileGenerator"><![CDATA[
 Feature: Addition
 	In order to avoid silly mistakes
 	As a math idiot
