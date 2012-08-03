@@ -455,6 +455,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return ProgrammingLanguage.CSharp;
             if (project.FullName.EndsWith(".vbproj"))
                 return ProgrammingLanguage.VB;
+            if (project.FullName.EndsWith(".fsproj"))
+                return ProgrammingLanguage.FSharp;
             return ProgrammingLanguage.Other;
         }
     }

@@ -49,7 +49,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             AssemblyName = assemblyName;
             Project = VsxHelper.FindProjectByAssemblyName(mainProject.DTE, AssemblyShortName);
 
-            if (Project == null)
+            if (Project != null && VsProjectScope.GetTargetLanguage(Project) == ProgrammingLanguage.FSharp) //HACK: we force the f# libs to be used as assembly reference
+                Project = null;
+
+            if (Project == null)  
                 Reference = VsxHelper.GetReference(mainProject, assemblyName);
         }
     }
