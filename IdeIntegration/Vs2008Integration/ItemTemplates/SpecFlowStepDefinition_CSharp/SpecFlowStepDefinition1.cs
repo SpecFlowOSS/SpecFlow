@@ -9,14 +9,13 @@ namespace $rootnamespace$
     [Binding]
     public class $safeitemname$
     {
+        // For additional details on SpecFlow step definitions see http://go.specflow.org/doc-stepdef
+
         [Given("I have entered (.*) into the calculator")]
         public void GivenIHaveEnteredSomethingIntoTheCalculator(int number)
         {
-            //TODO: implement arrange (recondition) logic
-            // For storing and retrieving scenario-specific data, 
-            // the instance fields of the class or the
-            //     ScenarioContext.Current
-            // collection can be used.
+            //TODO: implement arrange (precondition) logic
+            // For storing and retrieving scenario-specific data see http://go.specflow.org/doc-sharingdata 
             // To use the multiline text or the table argument of the scenario,
             // additional string/Table parameters can be defined on the step definition
             // method. 

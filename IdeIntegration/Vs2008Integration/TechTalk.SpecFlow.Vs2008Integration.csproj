@@ -120,10 +120,10 @@
     <Compile Include="RegularExpressionLanguageServicePackage2.cs" />
     <Compile Include="Vs2008SpecFlowConfigurationReader.cs" />
     <Compile Include="VsxHelper.cs" />
-    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition\SpecFlowStepDefinition1.cs" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition\SpecFlowEventDefinition1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks1.cs" />
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition1.vb" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition_VB\SpecFlowEventDefinition1.vb" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks1.vb" />
     <Compile Include="SpecFlowSingleFileGenerator.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -147,18 +147,24 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeature.vstemplate" />
-    <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeatureIcon.ico" />
-    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition\SpecFlowStepDefinition.vstemplate" />
-    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition\SpecFlowStepDefinitionIcon.ico" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition\SpecFlowEventDefinition.vstemplate" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition\SpecFlowEventDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeatureIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooksIcon.ico" />
     <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature_VB.vstemplate" />
     <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeatureIcon.ico" />
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition.vstemplate" />
     <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinitionIcon.ico" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition_VB\SpecFlowEventDefinition.vstemplate" />
-    <ZipItem Include="ItemTemplates\SpecFlowEventDefinition_VB\SpecFlowEventDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition1.fs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks1.fs" />
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +186,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ZipItem Include="ItemTemplates\SpecFlowFeature\SpecFlowFeature1.feature" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature1.feature" />
   </ItemGroup>
   <ItemGroup>
     <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature1.feature" />
