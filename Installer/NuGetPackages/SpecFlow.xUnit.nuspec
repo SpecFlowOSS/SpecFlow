@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
     <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
