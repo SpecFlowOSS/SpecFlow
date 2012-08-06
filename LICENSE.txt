@@ -1,4 +1,4 @@
-New BSD License
+SpecFlow Licence (New BSD License)
 
 Copyright (c) 2009, TechTalk
 
