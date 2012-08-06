@@ -194,7 +194,8 @@ namespace BoDi
 
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, IEnumerable<Type> resolutionPath)
             {
-                object obj = container.GetPooledObject(ImplementationType);
+                var pooledObjectKey = new RegistrationKey(ImplementationType, keyToResolve.Name);
+                object obj = container.GetPooledObject(pooledObjectKey);
 
                 if (obj == null)
                 {
@@ -202,7 +203,7 @@ namespace BoDi
                         throw new ObjectContainerException("Interface cannot be resolved: " + keyToResolve, resolutionPath);
 
                     obj = container.CreateObject(ImplementationType, resolutionPath, keyToResolve);
-                    container.objectPool.Add(ImplementationType, obj);
+                    container.objectPool.Add(pooledObjectKey, obj);
                 }
 
                 return obj;
@@ -272,7 +273,7 @@ namespace BoDi
         private readonly ObjectContainer baseContainer;
         private readonly Dictionary<RegistrationKey, IRegistration> registrations = new Dictionary<RegistrationKey, IRegistration>();
         private readonly Dictionary<RegistrationKey, object> resolvedObjects = new Dictionary<RegistrationKey, object>();
-        private readonly Dictionary<Type, object> objectPool = new Dictionary<Type, object>();
+        private readonly Dictionary<RegistrationKey, object> objectPool = new Dictionary<RegistrationKey, object>();
 
         public ObjectContainer()
         {
@@ -340,7 +341,7 @@ namespace BoDi
 
             ClearRegistrations(registrationKey);
             AddRegistration(registrationKey, new InstanceRegistration(instance));
-            objectPool[instance.GetType()] = instance;
+            objectPool[new RegistrationKey(instance.GetType(), name)] = instance;
         }
 
         public void RegisterInstanceAs<TInterface>(TInterface instance, string name = null) where TInterface : class
@@ -463,14 +464,14 @@ namespace BoDi
             return keyToResolve.Name == null && keyToResolve.Type.IsGenericType && keyToResolve.Type.GetGenericTypeDefinition() == typeof(IDictionary<,>);
         }
 
-        private object GetPooledObject(Type registeredType)
+        private object GetPooledObject(RegistrationKey pooledObjectKey)
         {
             object obj;
-            if (objectPool.TryGetValue(registeredType, out obj))
+            if (objectPool.TryGetValue(pooledObjectKey, out obj))
                 return obj;
 
             if (baseContainer != null)
-                return baseContainer.GetPooledObject(registeredType);
+                return baseContainer.GetPooledObject(pooledObjectKey);
 
             return null;
         }
