@@ -1,6 +1,15 @@
-1.9.0 beta - ???
+1.9.0 - 2012/08/06
+
+See detailed feature summary at http://go.specflow.org/whatsnew-19
 
 New Features:
++ Visual Studio 2012 support
++ Download IDE integration packages through their own distribution channel:
+    Visual Studio 2012 and 2010: Visual Studio Gallery (http://go.specflow.org/vsgallery)
+    MonoDevelop: MonoDevelop Add-in Repository (http://go.specflow.org/monodevelop-addin)
+    SharpDevelop: download addin and install it from SharpDevelop AddIn Manager (http://go.specflow.org/download-sdaddin)
+    Visual Studio 2008: download installer (http://go.specflow.org/download-vs2008msi)
++ Visual Studio 2012 generic test runner support
 + Added SpecFlow.xUnit NuGet package
 + Guids can now be used as arguments to step definitions.
 + Any missing characters on a guid in tables or step arguments will be filled with trailing zeroes. ("7" => 70000000-0000-0000-0000-000000000000)
@@ -9,11 +18,12 @@ New Features:
 + VS2010: Comment and uncomment selection
 + VS2010: Cache analysis result for faster solution startup
 + VS2010: It can now be installed on machines used for SharePoint development
-+ Detect step regular expression from method name (underscore style, pascal-case style, F# regex method names)
++ Step Definitions without Regular Expressions (underscore style, pascal-case style)
++ F# step definitions (regex method names, Visual Studio integration)
 + SpecFlow.NUnit NuGet package has been split to SpecFlow.NUnit (w/o AddOn for NUnit runner) and SpecFlow.NUnit.Runners (with runner support)
 + ReSharper: editor features (toggle comment, go to step definition, run/debug scenarios) can be used with R# keyboard shortcuts
 + MsTest: Support for MSTest's [Owner] and [WorkItem] attributes with tags like @owner:foo @workitem:123 (Issue 162, Pull 161)
-+ NuGet package for creating custom generator extensions: SpecFlow.CustomGenerator
++ NuGet package for creating custom generator extensions: SpecFlow.CustomPlugin
 + VS2010: Integration can track files changed outside of VS (e.g. updated by a SCC pull)
 + VS2010: Collect bindings from assembly references
 + VS2010: Navigation from step definitions to the matching steps (Issue 192)
@@ -22,6 +32,7 @@ New Features:
 + Support custom step definition skeleton templates (dirrerent style customizable in config, template can be overriden in 
   "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see http://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
 + VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
++ Plugin infrastructure
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
