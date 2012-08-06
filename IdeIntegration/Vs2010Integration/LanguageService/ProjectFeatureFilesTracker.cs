@@ -6,6 +6,7 @@ using System.Linq;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
@@ -19,10 +20,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public Version GeneratorVersion { get; set; }
         public Feature ParsedFeature { get; set; }
 
-        public FeatureFileInfo(ProjectItem projectItem)
+        public FeatureFileInfo(ProjectItem projectItem, ProjectItem codeBehindItem)
         {
             ProjectRelativePath = VsxHelper.GetProjectRelativePath(projectItem);
-            LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
+            var codeBehindItemChangeDate = VsxHelper.GetLastChangeDate(codeBehindItem) ?? DateTime.MinValue;
+            var featureFileLastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
+            LastChangeDate = featureFileLastChangeDate > codeBehindItemChangeDate ? featureFileLastChangeDate : codeBehindItemChangeDate;
         }
     }
 
@@ -37,7 +40,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override FeatureFileInfo CreateFileInfo(ProjectItem projectItem)
         {
-            return new FeatureFileInfo(projectItem);
+            return new FeatureFileInfo(projectItem, GetCodeBehindItem(projectItem));
         }
 
         protected override bool IsMatchingProjectItem(ProjectItem projectItem)
@@ -59,11 +62,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
         {
             vsProjectScope.Tracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
-            AnalyzeCodeBehind(featureFileInfo, projectItem);
+            var codeBehindChangeDate = AnalyzeCodeBehind(featureFileInfo, projectItem);
 
             var fileContent = VsxHelper.GetFileContent(projectItem, loadLastSaved: true);
             featureFileInfo.ParsedFeature = ParseGherkinFile(fileContent, featureFileInfo.ProjectRelativePath, vsProjectScope.GherkinDialectServices.DefaultLanguage);
-            featureFileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
+            var featureLastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
+            featureFileInfo.LastChangeDate = featureLastChangeDate > codeBehindChangeDate ? featureLastChangeDate : codeBehindChangeDate;
         }
 
         public Feature ParseGherkinFile(string fileContent, string sourceFileName, CultureInfo defaultLanguage)
@@ -85,14 +89,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private void AnalyzeCodeBehind(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
+        private DateTime AnalyzeCodeBehind(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
         {
             var codeBehindItem = GetCodeBehindItem(projectItem);
             if (codeBehindItem != null)
             {
                 string codeBehindContent = VsxHelper.GetFileContent(codeBehindItem);
                 DetectGeneratedTestVersion(featureFileInfo, codeBehindContent);
+                var lastChangeDate = VsxHelper.GetLastChangeDate(codeBehindItem) ?? DateTime.MinValue;
+                return lastChangeDate;
             }
+
+            return DateTime.MinValue;
         }
 
         private void DetectGeneratedTestVersion(FeatureFileInfo featureFileInfo, string codeBehindContent)
@@ -118,10 +126,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private ProjectItem GetCodeBehindItem(ProjectItem projectItem)
         {
-            if (projectItem.ProjectItems == null)
-                return null;
+            try
+            {
+                if (projectItem.ProjectItems == null)
+                    return null;
 
-            return projectItem.ProjectItems.Cast<ProjectItem>().FirstOrDefault();
+                return projectItem.ProjectItems.Cast<ProjectItem>().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                vsProjectScope.Tracer.Trace("Cannot get code behind item: {0}", this, ex);
+                return null;
+            }
         }
 
         public void ReGenerateAll(Func<FeatureFileInfo,bool> predicate = null)
