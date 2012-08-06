@@ -15,8 +15,9 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<MbUnitTestGeneratorProvider, IUnitTestGeneratorProvider>("mbunit");
             container.RegisterTypeAs<MbUnit3TestGeneratorProvider, IUnitTestGeneratorProvider>("mbunit.3");
             container.RegisterTypeAs<XUnitTestGeneratorProvider, IUnitTestGeneratorProvider>("xunit");
-            container.RegisterTypeAs<MsTestGeneratorProvider, IUnitTestGeneratorProvider>("mstest");
+            container.RegisterTypeAs<MsTestGeneratorProvider, IUnitTestGeneratorProvider>("mstest.2008");
             container.RegisterTypeAs<MsTest2010GeneratorProvider, IUnitTestGeneratorProvider>("mstest.2010");
+            container.RegisterTypeAs<MsTest2010GeneratorProvider, IUnitTestGeneratorProvider>("mstest");
 
             container.RegisterTypeAs<MsTestSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("mstest.silverlight");
             container.RegisterTypeAs<MsTestSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("mstest.silverlight3");

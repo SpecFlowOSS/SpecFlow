@@ -33,6 +33,8 @@ New Features:
   "C:\Users\<user>\AppData\Local\SpecFlow\SkeletonTemplates.sftemplate", see http://go.specflow.org/doc-stepdefstyles) (Issue 137, Pull 113)
 + VS2010: Highlight unbound steps and step parameters in the editor (beta, can be switched off in Tools/Options/SpecFlow) (Issue 49, Pull 189, with support of matgiro)
 + Plugin infrastructure
++ The default MsTest unit test provider is changed to the MsTest.2010. If you need to use the MsTest 2008 provider, you have to specify "MsTest.2008". 
+  For newer MsTest providers, you can use "MsTest" (recommended) or "MsTest.2010".
 
 Fixed issues:
 + VS2010: The message "Step bindings are still being analyzed. Please wait." displayed infinitely (Issue 168)
