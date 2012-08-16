@@ -408,11 +408,8 @@
     <VsSDKInstall>..\..\lib\VS2010SDK</VsSDKInstall>
     <VsctVerboseOutput>true</VsctVerboseOutput>
     <VsixSchemaPath>$(VsSDKInstall)\VSIXManifestSchema.xsd</VsixSchemaPath>
-    <!--<VsSDKIncludes>C:\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Inc</VsSDKIncludes>-->
     <UseCodebase>true</UseCodebase>
-    <!--<BypassVsixValidation>true</BypassVsixValidation>-->
-    <!--<CopyVsixExtensionFiles>True</CopyVsixExtensionFiles>-->
-    <!--<CopyVsixExtensionLocation>$(OutDir)\TechTalk.SpecFlow.Vs2010Integration</CopyVsixExtensionLocation>-->
+    <MSBuildCommunityTasksPath>$(SolutionDir)\lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
   </PropertyGroup>
   <ItemGroup>
     <VSCTIncludePath Include="$(VsSDKInstall)\VSCTInclude">
@@ -424,16 +421,23 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!--<Import Project="..\..\lib\VS2010SDK\MsBuild\Microsoft.VsSDK.targets" />-->
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  -->
-  <Target Name="AfterBuild">
-    <XmlPoke XmlInputPath="$(OutDir)\extension.vsixmanifest" Query="/vsx:Vsix/vsx:Identifier/vsx:InstalledByMsi" Value="true" Namespaces="&lt;Namespace Prefix='vsx' Uri='http://schemas.microsoft.com/developer/vsx-schema/2010' /&gt;">
-    </XmlPoke>
-  </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Target Name="AfterBuild">
+    <RemoveDir Directories="$(TargetDir)\VSIX" />
+    <Unzip ZipFileName="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix" TargetDirectory="$(TargetDir)\VSIX" />
+    <Delete Files="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix.orig" />
+    <Move SourceFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix" DestinationFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix.orig" />
+    <ItemGroup>
+      <VsFiles Include="$(TargetDir)\VSIX\EnvDTE*.dll" />
+      <VsFiles Include="$(TargetDir)\VSIX\VSLangProj*.dll" />
+      <VsFiles Include="$(TargetDir)\VSIX\Microsoft.VisualStudio.*.dll" />
+    </ItemGroup>
+    <Delete Files="@(VsFiles)" />
+    <ItemGroup>
+      <VsixFiles Include="$(TargetDir)\VSIX\**\*.*" />
+    </ItemGroup>
+    <Zip Files="@(VsixFiles)" Flatten="false" WorkingDirectory="$(TargetDir)\VSIX" ZipFileName="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix" />
+  </Target>
 </Project>
