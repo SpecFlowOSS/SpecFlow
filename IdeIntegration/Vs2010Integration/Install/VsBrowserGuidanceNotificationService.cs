@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows;
 using EnvDTE;
 using TechTalk.SpecFlow.IdeIntegration.Install;
 using Window = EnvDTE.Window;
+using Timer = System.Windows.Forms.Timer;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Install
 {
@@ -19,27 +16,51 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Install
             this.dte = dte;
         }
 
-        private System.Windows.Forms.Timer activationTimer;
+        private Timer openPageTimer;
+        private Timer activationTimer;
 
         public bool ShowPage(string url)
         {
-            var window = dte.ItemOperations.Navigate(url, vsNavigateOptions.vsNavigateOptionsNewWindow);
-
-            activationTimer = new System.Windows.Forms.Timer();
-            activationTimer.Tick += (sender, args) => ActivateWindow(window);
-            activationTimer.Interval = 5000;
-            activationTimer.Start();
+            // we use winforms timers to avoid invoking UI actions from background threads, etc.
+            openPageTimer = CreateTimer(() => OpenPage(url), 1);
 
             return true;
         }
 
-        private void ActivateWindow(object state)
+        private Timer CreateTimer(Action action, int seconds)
         {
-            activationTimer.Stop();
+            var timer = new Timer();
+            timer.Tick += (sender, args) => action();
+            timer.Interval = seconds * 1000;
+            timer.Start();
+            return timer;
+        }
+
+        private void OpenPage(string url)
+        {
+            openPageTimer.Stop();
+            openPageTimer = null;
 
             try
             {
-                Window window = (Window)state;
+                var window = dte.ItemOperations.Navigate(url, vsNavigateOptions.vsNavigateOptionsNewWindow);
+                window.Activate();
+
+                activationTimer = CreateTimer(() => ActivateWindow(window), 4);
+            }
+            catch (Exception)
+            {
+                // bad luck...
+            }
+        }
+
+        private void ActivateWindow(Window window)
+        {
+            activationTimer.Stop();
+            activationTimer = null;
+
+            try
+            {
                 window.Activate();
             }
             catch (Exception)
