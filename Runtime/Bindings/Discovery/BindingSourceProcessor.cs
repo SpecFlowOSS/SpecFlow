@@ -136,7 +136,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
             var scopes = methodScopes.AsEnumerable();
 
-            string[] tags = hookAttribute.TryGetParamsAttributeValue<string>(0);
+			// HACK: Currently on mono to compile we have to pass the optional parameter to TryGetParamsAttributeValue
+            string[] tags = hookAttribute.TryGetParamsAttributeValue<string>(0, null);
             if (tags != null)
                 scopes = scopes.Concat(tags.Select(t => new BindingScope(t, null, null)));
 
