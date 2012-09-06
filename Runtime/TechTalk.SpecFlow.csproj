@@ -79,6 +79,7 @@
     <Compile Include="Assist\ValueRetrievers\BoolValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\CharValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\ListValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\LongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableLongValueRetriever.cs" />
