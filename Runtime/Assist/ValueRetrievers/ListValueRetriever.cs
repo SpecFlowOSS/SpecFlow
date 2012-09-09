@@ -13,8 +13,15 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
             object list = Activator.CreateInstance(listType);
             var add = listType.GetMethod("Add");
-            foreach (var value in values.Split(new[] { "," }, StringSplitOptions.None).Select(v => v.Trim()).Select(v => Convert.ChangeType(v, elementType)))
+
+            foreach (var value in values
+                .Split(new[] { "," }, StringSplitOptions.None)
+                .Select(v => v.Trim())
+                .Where(v => !string.IsNullOrEmpty(v))
+                .Select(v => Convert.ChangeType(v, elementType)))
+            {
                 add.Invoke(list, new[] { value });
+            }
 
             return list;
         }
