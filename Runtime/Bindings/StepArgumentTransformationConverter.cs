@@ -57,10 +57,12 @@ namespace TechTalk.SpecFlow.Bindings
             if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
                 return false;
 
-            if (stepTransformationBinding.Regex != null && value is string)
-                return stepTransformationBinding.Regex.IsMatch((string)value);
+            if (stepTransformationBinding.Regex != null)
+            {
+                return value is string && stepTransformationBinding.Regex.IsMatch((string)value);
+            }
 
-            return true;
+            return stepTransformationBinding.Method.Parameters.Count() == 1;
         }
 
         private object DoTransform(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
