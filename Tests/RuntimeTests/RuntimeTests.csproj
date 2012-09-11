@@ -167,6 +167,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
+    <Compile Include="TableConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

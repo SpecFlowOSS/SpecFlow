@@ -133,8 +133,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var table = new Table("Name");
             table.AddRow("xyz");
-            var result = stepArgumentTypeConverter.CanConvert(table, new RuntimeBindingType(typeof(User)), new CultureInfo("en-US"));
-            Assert.That(result, Is.False);
+            var result = stepArgumentTypeConverter.Convert(table, new RuntimeBindingType(typeof(User)), new CultureInfo("en-US"));
+            Assert.That(result, Is.Not.EqualTo(resultUser));
         }
 
         private StepArgumentTypeConverter CreateStepArgumentTypeConverter(IBindingInvoker bindingInvoker)

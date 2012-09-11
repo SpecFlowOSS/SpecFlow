@@ -23,6 +23,8 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 new IndentityConverter(),
                 new StepArgumentTransformationConverter(this, testTracer, bindingRegistry, contextManager, bindingInvoker),
+                new VerticalTableConverter(this),
+                new HorizontalTableConverter(this),
                 new SimpleConverter()
             };
         }

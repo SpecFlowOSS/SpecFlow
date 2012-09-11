@@ -128,6 +128,7 @@
     <Compile Include="Bindings\Discovery\RuntimeBindingRegistryBuilder.cs" />
     <Compile Include="Bindings\Discovery\RuntimeBindingSourceProcessor.cs" />
     <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
+    <Compile Include="Bindings\HorizontalTableConverter.cs" />
     <Compile Include="Bindings\IBindingFactory.cs" />
     <Compile Include="Bindings\IHookBinding.cs" />
     <Compile Include="Bindings\IBindingInvoker.cs" />
@@ -155,6 +156,8 @@
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
+    <Compile Include="Bindings\TableConverterBase.cs" />
+    <Compile Include="Bindings\VerticalTableConverter.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
