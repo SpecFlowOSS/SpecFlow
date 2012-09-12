@@ -248,5 +248,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Guid.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
             result.Style.ShouldEqual(Style.VeryCool);
         }
+
+        [Test]
+        public void Table_converters_will_try_to_convert_the_string_value_of_a_single_header_horizontal_table_if_there_is_no_conversion_available_for_the_pivoted_vertical_tables()
+        {
+            var table = new Table("Person");
+            table.AddRow("Homer Simpson");
+            table.AddRow("Mona Simpson");
+            
+            var result = PersonArrayConversionTest(table, true);
+            result.ShouldNotBeNull();
+            result.Length.ShouldEqual(2);
+            result[0].ShouldNotBeNull();
+            result[0].FirstName.ShouldEqual("Homer");
+            result[0].LastName.ShouldEqual("Simpson");
+            result[1].ShouldNotBeNull();
+            result[1].FirstName.ShouldEqual("Mona");
+            result[1].LastName.ShouldEqual("Simpson");
+        }
     }
 }
