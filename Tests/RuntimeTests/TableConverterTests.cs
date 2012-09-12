@@ -38,6 +38,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             
         }
         
+        [Given("sample step with Table to UserWithConstructorParameters conversion")]
+        public virtual void UserWithConstructorParametersArg(UserWithConstructorParameters param)
+        {
+            
+        }
+        
         [StepArgumentTransformation(@"user (\w+)")]
         public virtual User Create(string name)
         {
@@ -57,6 +63,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public Person Person { get; set; }
         public Guid Guid { get; set; }
         public Style Style { get; set; }
+    }
+
+    public class UserWithConstructorParameters
+    {
+        public int Id { get; private set; }
+        public string Name { get; set; }
+
+        public UserWithConstructorParameters()
+	    {
+
+	    }
+
+        public UserWithConstructorParameters(int id)
+	    {
+            Id = id;
+	    }
     }
 
     [TestFixture]
@@ -103,6 +125,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private UserPerson UserPersonConversionTest(Table table, bool shouldSucceed)
         {
             return ConversionTest<UserPerson>("sample step with Table to UserPerson conversion", (b, a) => b.UserPersonArg(a), table, shouldSucceed);
+        }
+
+        private UserWithConstructorParameters UserWithConstructorParametersConversionTest(Table table, bool shouldSucceed)
+        {
+            return ConversionTest<UserWithConstructorParameters>("sample step with Table to UserWithConstructorParameters conversion", (b, a) => b.UserWithConstructorParametersArg(a), table, shouldSucceed);
         }
 
         [Test]
@@ -255,7 +282,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var table = new Table("Person");
             table.AddRow("Homer Simpson");
             table.AddRow("Mona Simpson");
-            
+
             var result = PersonArrayConversionTest(table, true);
             result.ShouldNotBeNull();
             result.Length.ShouldEqual(2);
@@ -265,6 +292,30 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result[1].ShouldNotBeNull();
             result[1].FirstName.ShouldEqual("Mona");
             result[1].LastName.ShouldEqual("Simpson");
+        }
+
+        [Test]
+        public void Table_converters_will_use_the_constructor_that_includes_the_maximum_number_of_columns_with_no_matching_writable_property()
+        {
+            var table = new Table("Id", "Name");
+            table.AddRow("444", "Homer");
+
+            var result = UserWithConstructorParametersConversionTest(table, true);
+            result.ShouldNotBeNull();
+            result.Id.ShouldEqual(444);
+            result.Name.ShouldEqual("Homer");
+        }
+
+        [Test]
+        public void Table_converters_will_ignore_columns_with_not_matching_writable_property_or_constructor_parameter()
+        {
+            var table = new Table("Id", "Name", "Comment");
+            table.AddRow("444", "Homer", "Some comment");
+
+            var result = UserWithConstructorParametersConversionTest(table, true);
+            result.ShouldNotBeNull();
+            result.Id.ShouldEqual(444);
+            result.Name.ShouldEqual("Homer");
         }
     }
 }

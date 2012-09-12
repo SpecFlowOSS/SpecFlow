@@ -25,9 +25,11 @@ namespace TechTalk.SpecFlow.Bindings
             var objectInitializationData = GetObjectInitializationData(values.Keys, runtimeBindingType.Type);
             var bindingTypes = objectInitializationData.GetBindingTypes();
 
-            var convertedValues = values.ToDictionary(
-                x => x.Key,
-                x => stepArgumentTypeConverter.Convert(x.Value, bindingTypes[x.Key], cultureInfo));
+            var convertedValues = values
+                .Where(x => bindingTypes.ContainsKey(x.Key))
+                .ToDictionary(
+                    x => x.Key,
+                    x => stepArgumentTypeConverter.Convert(x.Value, bindingTypes[x.Key], cultureInfo));
             var constructorParameters = objectInitializationData.Constructor.GetParameters()
                 .Select(x => convertedValues[SanitizePropertyName(x.Name)]).ToArray();
             var result = objectInitializationData.Constructor.Invoke(constructorParameters);
@@ -57,7 +59,9 @@ namespace TechTalk.SpecFlow.Bindings
                 return false;
 
             var bindingTypes = objectInitializationData.GetBindingTypes();
-            return values.All(x => stepArgumentTypeConverter.CanConvert(x.Value, bindingTypes[x.Key], cultureInfo));
+            return values
+                .Where(x => bindingTypes.ContainsKey(x.Key))
+                .All(x => stepArgumentTypeConverter.CanConvert(x.Value, bindingTypes[x.Key], cultureInfo));
         }
 
         private Table GetVerticalTable(Table table, RuntimeBindingType runtimeBindingType)
@@ -84,15 +88,17 @@ namespace TechTalk.SpecFlow.Bindings
         private ObjectInitializationData GetObjectInitializationData(IEnumerable<string> columns, Type type)
         {
             var writableProperties = GetWritableProperties(type);
-            var readonlyColumns = new HashSet<string>(columns.Where(x => !writableProperties.ContainsKey(x)));
-            var writableColumns = new HashSet<string>(columns.Where(writableProperties.ContainsKey));
+            var requiredParameters = new HashSet<string>(columns.Where(x => !writableProperties.ContainsKey(x)));
+            var optionalParameters = new HashSet<string>(columns.Where(writableProperties.ContainsKey));
 
-            var constructor = GetConstructor(type, readonlyColumns, writableColumns);
+            var constructor = GetBestMatchingConstructor(type, requiredParameters, optionalParameters);
             if (constructor == null)
                 return null;
 
             var constructorColumns = new HashSet<string>(constructor.GetParameters().Select(x => SanitizePropertyName(x.Name)));
-            var propertiesToSet = columns.Where(x => !constructorColumns.Contains(x)).Select(x => writableProperties[x]).ToList();
+            var propertiesToSet = columns
+                .Where(x => !constructorColumns.Contains(x) && writableProperties.ContainsKey(x))
+                .Select(x => writableProperties[x]).ToList();
 
             return new ObjectInitializationData
             {
@@ -101,22 +107,15 @@ namespace TechTalk.SpecFlow.Bindings
             };
         }
 
-        private ConstructorInfo GetConstructor(Type type, HashSet<string> requiredParameters, HashSet<string> optionalParameters)
+        private ConstructorInfo GetBestMatchingConstructor(Type type, HashSet<string> requiredParameters, HashSet<string> optionalParameters)
         {
-            var constructors = type.GetConstructors().OrderBy(x => x.GetParameters().Length);
-            foreach (var constructor in constructors)
-            {
-                var parameterNames = constructor.GetParameters().Select(x => SanitizePropertyName(x.Name)).ToList();
-                var requiredCount = parameterNames.Count(requiredParameters.Contains);
-                if (requiredCount != requiredParameters.Count)
-                    continue;
-
-                var optionalCount = parameterNames.Count(optionalParameters.Contains);
-                if (parameterNames.Count == requiredCount + optionalCount)
-                    return constructor;
-            }
-
-            return null;
+            return type.GetConstructors()
+                .Select(c => new { Constructor = c, Parameters = c.GetParameters().Select(p => SanitizePropertyName(p.Name)).ToList() })
+                .OrderByDescending(x => x.Parameters.Count(requiredParameters.Contains))
+                .ThenBy(x => x.Parameters.Count)
+                .Where(x => x.Parameters.All(p => requiredParameters.Contains(p) || optionalParameters.Contains(p)))
+                .Select(x => x.Constructor)
+                .FirstOrDefault();
         }
 
         private class ObjectInitializationData
