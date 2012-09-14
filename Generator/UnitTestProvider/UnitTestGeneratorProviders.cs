@@ -23,6 +23,11 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<MsTestSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("mstest.silverlight3");
             container.RegisterTypeAs<MsTestSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("mstest.silverlight4");
             container.RegisterTypeAs<MsTestSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("mstest.windowsphone7");
+
+            container.RegisterTypeAs<NUnitSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("nunit.silverlight");
+            container.RegisterTypeAs<NUnitSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("nunit.silverlight3");
+            container.RegisterTypeAs<NUnitSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("nunit.silverlight4");
+            container.RegisterTypeAs<NUnitSilverlightGeneratorProvider, IUnitTestGeneratorProvider>("nunit.windowsphone7");
         }
     }
 }
