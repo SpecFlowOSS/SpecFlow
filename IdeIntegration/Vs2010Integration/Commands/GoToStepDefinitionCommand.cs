@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             IStepBlock block;
             var step = fileScope.GetStepAtPosition(caret.GetContainingLine().LineNumber, out block);
 
-            if (block is IScenarioOutlineBlock)
+            if (step != null && block is IScenarioOutlineBlock)
                 step = step.GetSubstitutedStep((IScenarioOutlineBlock)block);
 
             return step;
