@@ -30,12 +30,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return false;
 
             IGherkinFileScope fileScope;
-            var currentScenario = GetCurrentScenario(languageService, dte.ActiveDocument, out fileScope);
+            int currentLine = GetCurrentLine(dte.ActiveDocument);
+            var currentScenario = GetCurrentScenario(languageService, currentLine, out fileScope);
             if (currentScenario == null)
             {
                 // run for the entire file
                 return RunFromProjectItem(dte.ActiveDocument.ProjectItem, debug, runnerTool);
             }
+
+            //TODO: select the scenario outline example, if it was invoked from that line
 
             var testRunnerGateway = testRunnerGatewayProvider.GetTestRunnerGateway(runnerTool);
             if (testRunnerGateway == null)
@@ -62,11 +65,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return testRunnerGateway.RunFeatures(project, debug);
         }
 
-        private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, Document activeDocument, out IGherkinFileScope fileScope)
+        private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, int currentLine, out IGherkinFileScope fileScope)
         {
-            var currentTextDocument = ((TextDocument)activeDocument.Object("TextDocument"));
-            var currentLine = currentTextDocument.Selection.ActivePoint.Line;
-
             fileScope = languageService.GetFileScope();
             if (fileScope == null)
                 return null;
@@ -76,6 +76,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return null; // between two scenarios
 
             return block;
+        }
+
+        private int GetCurrentLine(Document activeDocument)
+        {
+            var currentTextDocument = ((TextDocument) activeDocument.Object("TextDocument"));
+            var currentLine = currentTextDocument.Selection.ActivePoint.Line;
+            return currentLine;
         }
     }
 }

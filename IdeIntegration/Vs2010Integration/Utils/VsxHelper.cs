@@ -403,6 +403,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             return componentModel.GetService<T>();
         }
 
+        public static object ResolveMefDependency(System.IServiceProvider serviceProvider, Type typeToResolve)
+        {
+            IComponentModel componentModel = (IComponentModel)serviceProvider.GetService(typeof(SComponentModel));
+            var getServiceMethod = typeof (IComponentModel).GetMethod("GetService").MakeGenericMethod(typeToResolve);
+            return getServiceMethod.Invoke(componentModel, null);
+        }
+
         public static Reference GetReference(Project project, string assemblyName)
         {
             VSProject vsProject = project.Object as VSProject;

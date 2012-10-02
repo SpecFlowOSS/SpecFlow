@@ -1,7 +1,6 @@
 using System;
+using System.Windows;
 using EnvDTE;
-using Microsoft.VisualStudio.TestWindow.Extensibility.Model;
-using Microsoft.VisualStudio.TestWindow.Model;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
@@ -23,7 +22,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
         {
-            return RunInCurrentContext(VsxHelper.GetFileName(projectItem), debug);
+            return RunInCurrentContext(VsxHelper.GetFileName(projectItem), debug, currentScenario.KeywordLine);
         }
 
         public bool RunFeatures(ProjectItem projectItem, bool debug)
@@ -35,16 +34,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return RunCommand(debug ? "TestExplorer.DebugAllTestsInContext" : "TestExplorer.RunAllTestsInContext");
         }
 
-        private bool RunInCurrentContext(string fileName, bool debug)
+        private bool RunInCurrentContext(string fileName, bool debug, int lineNumber = -1)
         {
             try
             {
-                IRunCommandsExecutor runCommandsExecutor = VsxHelper.ResolveMefDependency<IRunCommandsExecutor>(serviceProvider);
+                const string testWindowAssemblyName = "Microsoft.VisualStudio.TestWindow, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+                const string testWindowInterfacesAssemblyName = "Microsoft.VisualStudio.TestWindow.Interfaces, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+                var tIRunCommandsExecutor = Type.GetType("Microsoft.VisualStudio.TestWindow.Controller.IRunCommandsExecutor, " + testWindowAssemblyName, true);
+                var tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Extensibility.Model.HostContext, " + testWindowInterfacesAssemblyName, true);
 
-                if (debug)
-                    runCommandsExecutor.OnInvokeDebugTestsInContext(new HostContext(fileName));
-                else
-                    runCommandsExecutor.OnInvokeRunTestsInContext(new HostContext(fileName));
+                var runCommandsExecutor = VsxHelper.ResolveMefDependency(serviceProvider, tIRunCommandsExecutor);
+                var hostContext = Activator.CreateInstance(tHostContext, fileName, lineNumber, -1);
+
+                string methodNameToInvoke = debug ? "OnInvokeDebugTestsInContext" : "OnInvokeRunTestsInContext";
+
+                var method = tIRunCommandsExecutor.GetMethod(methodNameToInvoke);
+                method.Invoke(runCommandsExecutor, new[] { hostContext });
                 return true;
             }
             catch (Exception ex)
