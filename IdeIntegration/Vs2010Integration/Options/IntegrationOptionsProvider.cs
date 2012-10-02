@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
         public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.Auto;
+        public const bool DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue = false;
 
         private DTE dte;
 
@@ -53,6 +54,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
                                               EnableTracing = GetGeneralOption(dte, "EnableTracing", EnableTracingDefaultValue),
                                               TracingCategories = GetGeneralOption(dte, "TracingCategories", TracingCategoriesDefaultValue),
                                               TestRunnerTool = GetGeneralOption(dte, "TestRunnerTool", TestRunnerToolDefaultValue),
+                                              DisableRegenerateFeatureFilePopupOnConfigChange = GetGeneralOption(dte, "DisableRegenerateFeatureFilePopupOnConfigChange", DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue)
                                           };
             return options;
         }

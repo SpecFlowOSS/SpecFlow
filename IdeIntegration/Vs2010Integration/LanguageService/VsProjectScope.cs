@@ -265,8 +265,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void ConfirmReGenerateFilesOnConfigChange()
         {
+            if (integrationOptionsProvider.GetOptions().DisableRegenerateFeatureFilePopupOnConfigChange)
+                return;
+
             var questionResult = MessageBox.Show(
-                "SpecFlow detected changes in the configuration that might require re-generating the feature files. Do you want to re-generate them now?", 
+                "SpecFlow detected changes in the configuration that might require re-generating the feature files. You can disable this popup in the SpecFlow Visual Studio settings (\"Tools / Options / SpecFlow\")." + Environment.NewLine + "Do you want to re-generate them now?", 
                 "SpecFlow Configuration Changes",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question, 

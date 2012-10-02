@@ -22,6 +22,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         [DefaultValue(IntegrationOptionsProvider.EnableAnalysisDefaultValue)]
         public bool EnableAnalysis { get; set; }
 
+        [Category("Analysis Settings")]
+        [Description("Controls whether SpecFlow Visual Studio integration should offer re-generating the feature files on configuration change.")]
+        [DisplayName(@"Disable re-generate feature file popup")]
+        [DefaultValue(IntegrationOptionsProvider.DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue)]
+        public bool DisableRegenerateFeatureFilePopupOnConfigChange { get; set; }
+
         private bool enableSyntaxColoring = true;
         [Category("Editor Settings")]
         [Description("Controls whether the different syntax elements of the feature files should be indicated in the editor.")]
@@ -95,6 +101,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
             EnableTracing = IntegrationOptionsProvider.EnableTracingDefaultValue;
             TracingCategories = IntegrationOptionsProvider.TracingCategoriesDefaultValue;
             TestRunnerTool = IntegrationOptionsProvider.TestRunnerToolDefaultValue;
+            DisableRegenerateFeatureFilePopupOnConfigChange = IntegrationOptionsProvider.DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue;
         }
     }
 }
