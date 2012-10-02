@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Utils
 
         public static string GetRegexSampleInternal(string regex, string[] paramNames, bool allowEmpty, ref int currentParamIndex)
         {
-            const string defaultParamPlaceholder = "{param}";
+            const string defaultParamPlaceholder = "<param>";
 
             StringBuilder regexSample = new StringBuilder();
 
@@ -57,7 +57,7 @@ namespace TechTalk.SpecFlow.Utils
                             {
                                 var placeholder = currentParamIndex >= paramNames.Length
                                                       ? defaultParamPlaceholder
-                                                      : string.Format("{{{0}}}", paramNames[currentParamIndex++]);
+                                                      : string.Format("<{0}>", paramNames[currentParamIndex++]);
                                 regexSample.Append(placeholder);
                                 lastAppendedLength = placeholder.Length;
                             }
