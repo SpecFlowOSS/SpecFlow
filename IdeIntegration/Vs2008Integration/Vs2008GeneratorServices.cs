@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using EnvDTE;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -44,9 +46,27 @@ namespace TechTalk.SpecFlow.Vs2008Integration
                            AssemblyName = project.Properties.Item("AssemblyName").Value as string,
                            ProjectFolder = VsxHelper.GetProjectFolder(project),
                            DefaultNamespace = project.Properties.Item("DefaultNamespace").Value as string,
-                           ProjectPlatformSettings = new ProjectPlatformSettings(), // TODO: We only support C# for now, later we'll add support to grab the provider based on the project
+                           ProjectPlatformSettings = ProjectPlatformSettings(),
                            ConfigurationHolder = configurationHolder
                        };
+        }
+
+        private ProjectPlatformSettings ProjectPlatformSettings()
+        {
+            var projectPlatformSettings = new ProjectPlatformSettings();
+            try
+            {
+                if (project.FullName.EndsWith(".vbproj"))
+                {
+                    projectPlatformSettings.Language = GenerationTargetLanguage.VB;
+                    projectPlatformSettings.LanguageVersion = new Version("9.0");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex, "ProjectPlatformSettings");
+            }
+            return projectPlatformSettings;
         }
     }
 }
