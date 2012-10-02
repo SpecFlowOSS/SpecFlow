@@ -2,6 +2,7 @@
 
 Fixed issues:
 + VS2012: Run specflow scenarios does not work: works as for RC, but still runs all scenarios from the file (Issue 210)
++ VS2010: VS stops showing context menus if code window contains C++ code (Issue 209)
 
 
 1.9.0 - 2012/08/06

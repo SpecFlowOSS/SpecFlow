@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
@@ -30,7 +31,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         protected override void BeforeQueryStatus(OleMenuCommand command, SelectedItems selection)
         {
             var activeDocument = dte.ActiveDocument;
-            if (activeDocument == null || activeDocument.ProjectItem == null || activeDocument.ProjectItem.FileCodeModel == null)
+            if (activeDocument == null || activeDocument.ProjectItem == null || IsCodeFile(activeDocument.ProjectItem))
             {
                 command.Visible = false;
                 return;
@@ -43,6 +44,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             }
 
             command.Enabled = IsEnabled(activeDocument);
+        }
+
+        public bool IsCodeFile(ProjectItem projectItem)
+        {
+            return VsProjectScope.IsCodeFileSupported(projectItem);
         }
 
         internal bool IsEnabled(Document activeDocument)
@@ -202,14 +208,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             if (codeModel == null)
                 return null;
 
-            try
-            {
-                return codeModel.CodeElementFromPoint(textSelection.ActivePoint, vsCMElement.vsCMElementFunction) as CodeFunction;
-            }
-            catch(Exception)
-            {
-                return null;
-            }
+            return VsxHelper.TryGetCodeElementFromActivePoint(codeModel, textSelection) as CodeFunction;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -168,6 +169,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 throw new NotSupportedException();
             }
 
+            [DebuggerStepThrough]
             public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
             {
                 if (!(typeToConvertTo is RuntimeBindingType))
@@ -456,6 +458,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (project.FullName.EndsWith(".vbproj"))
                 return ProgrammingLanguage.VB;
             if (project.FullName.EndsWith(".fsproj"))
+                return ProgrammingLanguage.FSharp;
+            return ProgrammingLanguage.Other;
+        }
+
+        public static bool IsCodeFileSupported(ProjectItem projectItem)
+        {
+            var codeFileLanguage = GetCodeFileLanguage(projectItem);
+            return codeFileLanguage != ProgrammingLanguage.Other && codeFileLanguage != ProgrammingLanguage.FSharp; //F# does not have code model
+        }
+
+        public static ProgrammingLanguage GetCodeFileLanguage(ProjectItem projectItem)
+        {
+            string name = projectItem.Name;
+            if (name.EndsWith(".cs"))
+                return ProgrammingLanguage.CSharp;
+            if (name.EndsWith(".vb"))
+                return ProgrammingLanguage.VB;
+            if (name.EndsWith(".fs"))
                 return ProgrammingLanguage.FSharp;
             return ProgrammingLanguage.Other;
         }

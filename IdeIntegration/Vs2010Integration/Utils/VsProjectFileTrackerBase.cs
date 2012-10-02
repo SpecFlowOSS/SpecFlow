@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void DocumentEventsOnDocumentSaved(Document document)
         {
-            ProjectItem item = document.ProjectItem;
+            ProjectItem item = VsxHelper.TryGetProjectItem(document);
             if (item == null || !IsItemRelevant(item))
                 return;
 

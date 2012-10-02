@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EnvDTE;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
@@ -35,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 command.Enabled = goToStepDefinitionCommand.IsEnabled(activeDocument);
                 command.Text = "Go To Step Definition";
             }
-            else if (IsCodeFile(activeDocument.ProjectItem))
+            else if (goToStepsCommand.IsCodeFile(activeDocument.ProjectItem))
             {
                 command.Enabled = goToStepsCommand.IsEnabled(activeDocument);
                 command.Text = "Go To SpecFlow Step Definition Usages";
@@ -54,7 +55,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             {
                 goToStepDefinitionCommand.Invoke(activeDocument);
             }
-            else if (IsCodeFile(activeDocument.ProjectItem))
+            else if (goToStepsCommand.IsCodeFile(activeDocument.ProjectItem))
             {
                 goToStepsCommand.Invoke(activeDocument);
             }
@@ -63,11 +64,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         internal static bool IsFeatureFile(ProjectItem projectItem)
         {
             return projectItem.Name.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private bool IsCodeFile(ProjectItem projectItem)
-        {
-            return projectItem.FileCodeModel != null;
         }
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.Utils;
 using VSLangProj;
 using Constants = EnvDTE.Constants;
+using DefGuidList = Microsoft.VisualStudio.Editor.DefGuidList;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
@@ -522,10 +523,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 return null;
 
             object holder;
-            Guid guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
+            Guid guidViewHost = DefGuidList.guidIWpfTextViewHost;
             userData.GetData(ref guidViewHost, out holder);
             IWpfTextViewHost viewHost = (IWpfTextViewHost) holder;
             return viewHost.TextView;
+        }
+
+        [DebuggerStepThrough]
+        public static ProjectItem TryGetProjectItem(Document document)
+        {
+            try
+            {
+                return document.ProjectItem;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static CodeElement TryGetCodeElementFromActivePoint(FileCodeModel codeModel, TextSelection textSelection)
+        {
+            try
+            {
+                return codeModel.CodeElementFromPoint(textSelection.ActivePoint, vsCMElement.vsCMElementFunction);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
