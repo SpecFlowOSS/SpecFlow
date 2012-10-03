@@ -36,6 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IGeneratorServices GeneratorServices { get; private set; }
 
         private bool initialized = false;
+        private bool initializing = false;
         
         // delay initialized members
         private SpecFlowProjectConfiguration specFlowProjectConfiguration = null;
@@ -140,7 +141,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 {
                     if (!initialized)
                     {
-                        Initialize();
+                        if (initializing)
+                        {
+                            tracer.Trace("ERROR: Nested VsProjectScope is triggered by the initialize. This is bad. Please record the following stack trace: {1}{0}", this, Environment.StackTrace, Environment.NewLine);
+                            return;
+                        }
+
+                        try
+                        {
+                            initializing = true;
+                            Initialize();
+                        }
+                        finally
+                        {
+                            initializing = false;
+                        }
                     }
                 }
             }
