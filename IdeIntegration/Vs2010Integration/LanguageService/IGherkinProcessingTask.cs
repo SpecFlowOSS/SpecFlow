@@ -1,5 +1,4 @@
 using System;
-using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -12,44 +11,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class DelegateTask : IGherkinProcessingTask
     {
         private readonly Action task;
-        private readonly IIdeTracer tracer;
 
-        public DelegateTask(Action task, IIdeTracer tracer)
+        public DelegateTask(Action task)
         {
             this.task = task;
-            this.tracer = tracer;
         }
 
         public void Apply()
         {
-            try
-            {
-                task();
-            }
-            catch(Exception exception)
-            {
-                tracer.Trace("Exception: " + exception, "DelegateTask");
-            }
+            task();
         }
 
         public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
         {
             return null;
-        }
-    }
-
-    internal class PingTask : IGherkinProcessingTask
-    {
-        public static readonly IGherkinProcessingTask Instance = new PingTask();
-
-        public void Apply()
-        {
-            //nop;
-        }
-
-        public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
-        {
-            return other;
         }
     }
 }

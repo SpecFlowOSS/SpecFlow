@@ -121,7 +121,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected void DoTaskAsynch(Action action)
         {
-            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.Tracer));
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action));
         }
 
         public virtual void Initialize()

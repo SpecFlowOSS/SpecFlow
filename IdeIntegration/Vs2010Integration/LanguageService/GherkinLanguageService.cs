@@ -121,9 +121,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
             {
-                if (other is PingTask)
-                    return this;
-
                 ParsingTask otherParsingTask = other as ParsingTask;
                 if (otherParsingTask == null || languageService != otherParsingTask.languageService)
                     return null;
@@ -162,9 +159,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
             {
-                if (other is PingTask)
-                    return this;
-
                 AnalyzingTask otherAnalyzingTask = other as AnalyzingTask;
                 if (otherAnalyzingTask == null || languageService != otherAnalyzingTask.languageService)
                     return null;
