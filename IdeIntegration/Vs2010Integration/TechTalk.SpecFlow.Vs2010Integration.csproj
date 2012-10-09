@@ -196,6 +196,7 @@
     <Compile Include="EditorCommands\GherkinEditorContext.cs" />
     <Compile Include="EditorCommands\GherkinTextViewCreationListener.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
+    <Compile Include="LanguageService\IGherkinProcessingTask.cs" />
     <Compile Include="TestRunner\VS2012RunnerGateway.cs" />
     <Compile Include="UI\ContextMenuBuilder.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
