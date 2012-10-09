@@ -9,6 +9,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class IdleTaskProcessingQueue : IDisposable
     {
         private readonly IIdeTracer tracer;
+        private readonly Action<IGherkinProcessingTask> doTask;
         public bool FlushFirstTask { get; private set; }
         private readonly ConcurrentQueue<IGherkinProcessingTask> tasks = new ConcurrentQueue<IGherkinProcessingTask>();
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -17,9 +18,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         readonly EventWaitHandle itemsAvailableEvent = new ManualResetEvent(false);
         public TimeSpan IdleTime { get; private set; }
 
-        public IdleTaskProcessingQueue(TimeSpan idleTime, bool flushFirstTask, IIdeTracer tracer)
+        public IdleTaskProcessingQueue(TimeSpan idleTime, bool flushFirstTask, IIdeTracer tracer, Action<IGherkinProcessingTask> doTask)
         {
             this.tracer = tracer;
+            this.doTask = doTask;
             FlushFirstTask = flushFirstTask;
             IdleTime = idleTime;
         }
@@ -74,7 +76,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     task = TryMergeWithNextEvents(task);
 
                     // perform the task
-                    DoTask(task);
+                    doTask(task);
 
                     // if there is a new event arrived in the meanwhile, 
                     // we stop processing the events. 
@@ -110,19 +112,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private bool IsFirstTask(DateTime lastProcessed)
         {
             return DateTime.Now - lastProcessed > TimeSpan.FromMilliseconds(1000);
-        }
-
-        private void DoTask(IGherkinProcessingTask task)
-        {
-            tracer.Trace("Applying task on thread: {0}", this, Thread.CurrentThread.ManagedThreadId);
-            try
-            {
-                task.Apply();
-            }
-            catch (Exception exception)
-            {
-                tracer.Trace("Task error: {0}", this, exception);
-            }
         }
 
         /// <summary>

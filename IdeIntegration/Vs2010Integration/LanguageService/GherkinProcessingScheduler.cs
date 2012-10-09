@@ -10,7 +10,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private static readonly TimeSpan parsingDelay = TimeSpan.FromMilliseconds(250);
         private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(500);
 
-
         private readonly IIdeTracer tracer;
         private IdleTaskProcessingQueue parserQueue;
         private IdleTaskProcessingQueue analyzerQueue;
@@ -19,22 +18,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             this.tracer = tracer;
 
-            parserQueue = new IdleTaskProcessingQueue(parsingDelay, true, tracer);
+            parserQueue = new IdleTaskProcessingQueue(parsingDelay, true, tracer, DoTask);
             parserQueue.Start();
 
             if (enableAnalysis)
             {
-                analyzerQueue = new IdleTaskProcessingQueue(analyzingDelay, false, tracer);
+                analyzerQueue = new IdleTaskProcessingQueue(analyzingDelay, false, tracer, DoTask);
                 analyzerQueue.Start();
             }
         }
 
         public void EnqueueParsingRequest(IGherkinProcessingTask change)
         {
-            tracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
+            //tracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
             if (parserQueue == null)
             {
-                tracer.Trace("Parser queue is not initialized!", this);
+                tracer.Trace("Unable to perform parsing request: Parser queue is not initialized!", this);
                 return;
             }
 
@@ -45,14 +44,27 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
         {
-            tracer.Trace("Analyzing request queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
+            tracer.Trace("Analyzing request queued on thread: {0}", this, Thread.CurrentThread.ManagedThreadId);
             if (analyzerQueue == null)
             {
-                tracer.Trace("Analyzer queue is not initialized!", this);
+                tracer.Trace("Unable to perform analyzing request: Analyzer queue is not initialized!", this);
                 return;
             }
 
             analyzerQueue.EnqueueTask(task);
+        }
+
+        private void DoTask(IGherkinProcessingTask task)
+        {
+            tracer.Trace("Applying task on thread: {0}", this, Thread.CurrentThread.ManagedThreadId);
+            try
+            {
+                task.Apply();
+            }
+            catch (Exception exception)
+            {
+                tracer.Trace("Task error: {0}", this, exception);
+            }
         }
 
         public void Dispose()
