@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
                 return null;
             }
 
-            string outputFileContent = Generate(inputFilePath, inputFileContent, generatorServices, codeDomHelper);
+            string outputFileContent = Generate(inputFilePath, inputFileContent, generatorServices, codeDomHelper, projectSettings);
 
             try
             {
@@ -62,12 +62,12 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             }
         }
 
-        private string Generate(string inputFilePath, string inputFileContent, GeneratorServices generatorServices, CodeDomHelper codeDomHelper)
+        private string Generate(string inputFilePath, string inputFileContent, GeneratorServices generatorServices, CodeDomHelper codeDomHelper, ProjectSettings projectSettings)
         {
             string outputFileContent;
             try
             {
-                TestGeneratorResult generationResult = GenerateCode(inputFilePath, inputFileContent, generatorServices);
+                TestGeneratorResult generationResult = GenerateCode(inputFilePath, inputFileContent, generatorServices, projectSettings);
 
                 if (generationResult.Success)
                     outputFileContent = generationResult.GeneratedTestCode;
@@ -81,10 +81,8 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             return outputFileContent;
         }
 
-        private TestGeneratorResult GenerateCode(string inputFilePath, string inputFileContent, GeneratorServices generatorServices)
+        private TestGeneratorResult GenerateCode(string inputFilePath, string inputFileContent, GeneratorServices generatorServices, ProjectSettings projectSettings)
         {
-            var projectSettings = generatorServices.GetProjectSettings();
-
             using (var testGenerator = generatorServices.CreateTestGenerator())
             {
                 var fullPath = Path.GetFullPath(Path.Combine(projectSettings.ProjectFolder, inputFilePath));
