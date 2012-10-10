@@ -249,7 +249,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         }
         protected abstract bool IsMatchingProjectItem(ProjectItem projectItem);
 
-
         protected virtual void AddFileInfo(ProjectItem projectItem)
         {
             var fileInfo = CreateFileInfo(projectItem);

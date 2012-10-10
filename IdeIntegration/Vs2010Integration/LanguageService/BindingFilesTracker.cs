@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Bindings;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.IdeIntegration.Bindings;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
@@ -223,16 +219,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             try
             {
-                var extension = Path.GetExtension(projectItem.Name);
-                if (!bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase)))
-                    return false;
-
-                return VsxHelper.GetClasses(projectItem).Any(VsBindingRegistryBuilder.IsPotentialBindingClass);
+                return IsMatchingExtension(projectItem);
             }
             catch (Exception)
             {
                 return false;
             }
+        }
+
+        // not used, because it slows down initialization
+//        private static bool IsPotentialBindingClass(ProjectItem projectItem)
+//        {
+//            return VsxHelper.GetClasses(projectItem).Any(VsBindingRegistryBuilder.IsPotentialBindingClass);
+//        }
+
+        private static bool IsMatchingExtension(ProjectItem projectItem)
+        {
+            var extension = Path.GetExtension(projectItem.Name);
+            return bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase));
         }
 
         protected override void SaveToStepMapInternal(StepMap stepMap)

@@ -246,14 +246,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 stepSuggestions.ForEach(RemoveStepSuggestion);
                 stepSuggestions.Clear();
             }
-            else
-            {
-                stepSuggestions = new List<IStepSuggestion<Completion>>();
-                fileSuggestions.Add(featureFileInfo, stepSuggestions);
-            }
             
             if (featureFileInfo.ParsedFeature != null)
             {
+                if (stepSuggestions == null)
+                {
+                    stepSuggestions = new List<IStepSuggestion<Completion>>();
+                    fileSuggestions.Add(featureFileInfo, stepSuggestions);
+                }
+
                 stepSuggestions.AddRange(GetStepSuggestions(featureFileInfo.ParsedFeature));
                 stepSuggestions.ForEach(AddStepSuggestion);
             }
@@ -282,14 +283,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 bindings.Clear();
                 isChanged = true;
             }
-            else
-            {
-                bindings = new List<IStepDefinitionBinding>();
-                bindingSuggestions.Add(bindingFileInfo, bindings);
-            }
 
             if (!bindingFileInfo.IsError && bindingFileInfo.StepBindings.Any())
             {
+                if (bindings == null)
+                {
+                    bindings = new List<IStepDefinitionBinding>();
+                    bindingSuggestions.Add(bindingFileInfo, bindings);
+                }
+
                 bindings.AddRange(bindingFileInfo.StepBindings);
                 bindings.ForEach(AddBinding);
                 isChanged = true;
