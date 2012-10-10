@@ -7,6 +7,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
     {
         void InvalidateSettings();
         ITestGenerator CreateTestGenerator();
+        ITestGenerator CreateTestGeneratorOfIDE();
         Version GetGeneratorVersion();
     }
 }
