@@ -119,19 +119,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker.Dispose();
         }
 
-        protected void DoTaskAsynch(Action action)
+        protected void DoTaskAsynch(Action action, string taskName)
         {
-            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action));
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, taskName));
         }
 
         public virtual void Initialize()
         {
-            DoTaskAsynch(InitializeInternally);
+            DoTaskAsynch(InitializeInternally, "Initialize " + GetType().Name);
         }
 
         public virtual void Run()
         {
-            DoTaskAsynch(AnalyzeInitially);
+            DoTaskAsynch(AnalyzeInitially, string.Format("Analyze all ({0})", GetType().Name));
         }
 
         protected virtual void InitializeInternally()
@@ -162,7 +162,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected void AnalyzeBackground(TFileInfo fileInfo)
         {
-            DoTaskAsynch(() => AnalyzeInternal(fileInfo, true));
+            DoTaskAsynch(() => AnalyzeInternal(fileInfo, true), string.Format("Analyze {1} ({0})", GetType().Name, fileInfo.ProjectRelativePath));
         }
 
         protected void AnalyzeFilesBackground()
@@ -173,7 +173,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                  {
                                      AnalyzeInternal(fileInfo, true);
                                  }
-                             });
+                             }, 
+                             string.Format("Re-analyze all ({0})", GetType().Name));
         }
 
         protected virtual bool HandleMissingProjectItem(TFileInfo fileInfo)
@@ -286,7 +287,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                              {
                                  LoadFromStepMapInternal(stepMap);
                                  IsStepMapDirty = false;
-                             });
+                             }, 
+                             string.Format("Load from step map ({0})", GetType().Name));
         }
 
         public void SaveToStepMap(StepMap stepMap)

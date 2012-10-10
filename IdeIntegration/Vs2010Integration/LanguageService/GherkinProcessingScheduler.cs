@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
         {
-            tracer.Trace("Analyzing request queued on thread: {0}", this, Thread.CurrentThread.ManagedThreadId);
+            tracer.Trace("Analyzing request '{1}' queued on thread: {0}", this, Thread.CurrentThread.ManagedThreadId, task);
             if (analyzerQueue == null)
             {
                 tracer.Trace("Unable to perform analyzing request: Analyzer queue is not initialized!", this);
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void DoTask(IGherkinProcessingTask task)
         {
-            tracer.Trace("Applying task on thread: {0}", this, Thread.CurrentThread.ManagedThreadId);
+            tracer.Trace("Applying task '{1}' on thread: {0}", this, Thread.CurrentThread.ManagedThreadId, task);
             try
             {
                 task.Apply();

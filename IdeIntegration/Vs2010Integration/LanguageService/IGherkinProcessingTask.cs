@@ -11,10 +11,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class DelegateTask : IGherkinProcessingTask
     {
         private readonly Action task;
+        private readonly string name;
 
-        public DelegateTask(Action task)
+        public DelegateTask(Action task, string name)
         {
             this.task = task;
+            this.name = name;
         }
 
         public void Apply()
@@ -25,6 +27,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
         {
             return null;
+        }
+
+        public override string ToString()
+        {
+            return name;
         }
     }
 }

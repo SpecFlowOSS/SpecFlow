@@ -128,6 +128,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return new ParsingTask(
                     languageService, GherkinTextBufferChange.Merge(change, otherParsingTask.change));
             }
+
+            public override string ToString()
+            {
+                return string.Format("Parse Gherkin: {0}", change.Type);
+            }
         }
 
         private void RegisterScopeChange(GherkinFileScopeChange scopeChange)
