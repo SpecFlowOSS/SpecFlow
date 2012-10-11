@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 using EnvDTE;
@@ -131,7 +132,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public virtual void Run()
         {
-            DoTaskAsynch(AnalyzeInitially, string.Format("Analyze all ({0})", GetType().Name));
+            DoTaskAsynch(RunInternal, string.Format("Analyze all starting ({0})", GetType().Name));
+        }
+
+        private void RunInternal()
+        {
+            foreach (var fileInfo in Files.Where(fi => !fi.IsAnalyzed).ToArray())
+            {
+                var fi = fileInfo;
+                DoTaskAsynch(() => AnalyzeInternal(fi, true), string.Format("Analyze {1} ({0})", GetType().Name, fi.ProjectRelativePath));
+            }
+            DoTaskAsynch(AnalyzeInitially, string.Format("Analyze all finishing ({0})", GetType().Name));
         }
 
         protected virtual void InitializeInternally()

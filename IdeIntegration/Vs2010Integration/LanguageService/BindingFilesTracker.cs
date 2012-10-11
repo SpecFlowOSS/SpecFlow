@@ -176,7 +176,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
         {
-            vsProjectScope.Tracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
+            vsProjectScope.Tracer.Trace("Analyzing binding file: {0}", this, fileInfo.ProjectRelativePath);
 
             if (fileInfo.IsAssembly)
             {
@@ -226,12 +226,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return false;
             }
         }
-
-        // not used, because it slows down initialization
-//        private static bool IsPotentialBindingClass(ProjectItem projectItem)
-//        {
-//            return VsxHelper.GetClasses(projectItem).Any(VsBindingRegistryBuilder.IsPotentialBindingClass);
-//        }
 
         private static bool IsMatchingExtension(ProjectItem projectItem)
         {
