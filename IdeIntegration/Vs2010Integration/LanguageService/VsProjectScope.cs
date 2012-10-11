@@ -239,7 +239,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     bindingFilesTracker.Run();
                     featureFilesTracker.Run();
 
-                    dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+                    dteWithEvents.OnBuildDone += BuildEventsOnOnBuildDone;
 
                     tracer.Trace("Analysis services started", "VsProjectScope");
                 }
@@ -373,7 +373,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Dispose()
         {
-            dteWithEvents.BuildEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
+            dteWithEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
             SaveStepMap();
 
             GherkinProcessingScheduler.Dispose();

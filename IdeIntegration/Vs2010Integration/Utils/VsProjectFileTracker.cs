@@ -30,13 +30,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         protected override void SubscribeToDteEvents()
         {
             base.SubscribeToDteEvents();
-            dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+            dteWithEvents.OnBuildDone += BuildEventsOnOnBuildDone;
         }
 
         protected override void UnsubscribeFromDteEvents()
         {
             base.UnsubscribeFromDteEvents();
-            dteWithEvents.BuildEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
+            dteWithEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
         }
 
         protected override void SetupListeningToFiles()
