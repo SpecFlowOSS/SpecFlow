@@ -126,12 +126,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Tracing
             if (!IsEnabled(category) || dispatcher == null)
                 return;
 
+            DateTime now = DateTime.Now;
             dispatcher.BeginInvoke(new Action(() =>
                 {
                     var outputWindow =
                         OutputWindowService.TryGetPane(OutputWindowDefinitions.SpecFlowOutputWindowName);
                     if (outputWindow != null)
-                        outputWindow.WriteLine(string.Format("{0}: {1}", category, message));
+                        outputWindow.WriteLine(string.Format("[{2}] {0}: {1}", category, message, now.TimeOfDay));
                 }), DispatcherPriority.ContextIdle);
         }
 
