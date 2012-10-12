@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
             filesTracker = CreateFilesTracker(this.vsProjectScope.Project, @"\.feature$");
-            testGeneratorForCodeBehindVersionDetection = new Lazy<ITestGenerator>(() => vsProjectScope.GeneratorServices.CreateTestGeneratorOfIDE());
+            testGeneratorForCodeBehindVersionDetection = new Lazy<ITestGenerator>(() => vsProjectScope.GeneratorServices.CreateTestGeneratorOfIDE(), true);
         }
 
         protected override FeatureFileInfo CreateFileInfo(ProjectItem projectItem)
