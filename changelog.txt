@@ -1,4 +1,4 @@
-1.9.1 - ???
+1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:
 + VS2012: Run specflow scenarios does not work: works as for RC, but still runs all scenarios from the file (Issue 210)
@@ -7,6 +7,9 @@ Fixed issues:
 + VS2010: SpecFlow incorrectly detected changes in the configuration (Issue 215)
 + VS2008: Support for VB code generation
 + VS2010: Exception during project load
++ VS2010: InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used. (Issue 230)
++ VS2010/VS2012: improve stability, more tracing
+
 
 1.9.0 - 2012/08/06
 
