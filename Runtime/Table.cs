@@ -7,6 +7,9 @@ using System.Text;
 
 namespace TechTalk.SpecFlow
 {
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class Table
     {
         internal const string ERROR_NO_CELLS_TO_ADD = "No cells to add";
@@ -145,6 +148,9 @@ namespace TechTalk.SpecFlow
         }
     }
 
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class TableRows : IEnumerable<TableRow>
     {
         private readonly List<TableRow> innerList = new List<TableRow>();
@@ -172,6 +178,9 @@ namespace TechTalk.SpecFlow
         }
     }
 
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class TableRow : IDictionary<string, string>
     {
         private readonly Table table;
