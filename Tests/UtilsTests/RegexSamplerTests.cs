@@ -15,7 +15,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"bla (.*) foo (.*) bar", new[] {"p1", "p2"});
 
-            Assert.AreEqual("bla {p1} foo {p2} bar", result);
+            Assert.AreEqual("bla <p1> foo <p2> bar", result);
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"bla (.*) foo (.*) bar", new[] {"p1"});
 
-            Assert.AreEqual("bla {p1} foo {param} bar", result);
+            Assert.AreEqual("bla <p1> foo <param> bar", result);
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"bla (a(.*)b) foo (.*) bar", new[] { "p1", "p2" });
 
-            Assert.AreEqual("bla {p1} foo {p2} bar", result);
+            Assert.AreEqual("bla <p1> foo <p2> bar", result);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"bla (?:.*) foo (.*) bar", new[] { "p1" });
 
-            StringAssert.EndsWith(" foo {p1} bar", result);
+            StringAssert.EndsWith(" foo <p1> bar", result);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"a card for an? ((?:actor-goal)|(?:user story)|(?:business goal)) '([^']*)' on the workspace", new[] { "requirementType", "key" });
 
-            Assert.AreEqual("a card for a {requirementType} '{key}' on the workspace", result);
+            Assert.AreEqual("a card for a <requirementType> '<key>' on the workspace", result);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace UtilsTests
         {
             var result = RegexSampler.GetRegexSample(@"bla (?:x(.*)y) foo", new[] { "p1" });
 
-            Assert.AreEqual("bla x{p1}y foo", result);
+            Assert.AreEqual("bla x<p1>y foo", result);
         }
     }
 }
