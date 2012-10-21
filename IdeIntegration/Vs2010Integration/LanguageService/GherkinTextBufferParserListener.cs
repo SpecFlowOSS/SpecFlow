@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -25,6 +26,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal abstract class GherkinTextBufferParserListenerBase : IGherkinListener
     {
+        /// <summary>
+        /// Tracks the step that is the "parent" of any table tracking below, for table outlining. Null denotes nothing being tracked.
+        /// </summary>
+        private GherkinStep _previousStep;
+        /// <summary>
+        /// Tracks the line where the table header appeared. -1 denotes nothing being tracked.
+        /// </summary>
+        private int _previousTableHeaderLine = -1;
+        /// <summary>
+        /// Tracks the line of the last row of the current table. -1 denotes nothing being tracked.
+        /// </summary>
+        private int _previousLastRowLine = -1;
+
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileScope gherkinFileScope;
         private readonly IProjectScope projectScope;
@@ -130,18 +144,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(textSpan, classificationType);
         }
 
-        private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
+        private void AddOutline(int startLine, int endLine, string collapseText, string hoverText = null)
         {
             int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start;
             int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
             var span = new Span(startPosition, endPosition - startPosition);
 
-            if (hooverText == null)
-                hooverText = textSnapshot.GetText(span);
+            if (hoverText == null)
+                hoverText = textSnapshot.GetText(span);
 
             CurrentFileBlockBuilder.OutliningRegions.Add(new TagSpan<IOutliningRegionTag>(
                              new SnapshotSpan(textSnapshot, span),
-                             new OutliningRegionTag(false, false, collapseText, hooverText)));
+                             new OutliningRegionTag(false, false, collapseText, hoverText)));
+        }
+
+        private void AddTableOutline(int startLine, int endLine, string collapseText, string hoverText = null)
+        {
+            int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start + 1;
+            int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
+            var span = new Span(startPosition, endPosition - startPosition);
+
+            if (hoverText == null)
+                hoverText = textSnapshot.GetText(span);
+
+            CurrentFileBlockBuilder.OutliningRegions.Add(new TagSpan<IOutliningRegionTag>(
+                             new SnapshotSpan(textSnapshot, span),
+                             new OutliningRegionTag(false, false, collapseText, hoverText)));
         }
         #endregion
 
@@ -334,6 +362,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
+            if (_previousLastRowLine != -1)
+            {
+                Debug.Assert(_previousTableHeaderLine != -1, "We should have a header tracked...");
+                Debug.Assert(_previousStep != null, "We should have a step tracked...");
+
+                var table = _previousStep.TableArgument;
+                Debug.Assert(table != null, "The step should have a table argument...");
+
+                // We have a table outline to create.
+                AddTableOutline(_previousTableHeaderLine, _previousLastRowLine, table.ToString(true, false), table.ToString(false, false));
+
+                // Reset the tracking values, the step is updated later so we ignore it here.
+                _previousLastRowLine = -1;
+                _previousTableHeaderLine = -1;
+            }
+
             var editorLine = stepSpan.StartPosition.Line;
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
             var stepContext = new StepContext(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray(), gherkinFileScope.GherkinDialect.CultureInfo);
@@ -377,10 +421,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (Match match in matches)
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
+
+            _previousStep = currentStep;
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
+            Debug.Assert(_previousTableHeaderLine == -1, "Multiple headers should not be encountered between starting and finishing a table outline.");
+            _previousTableHeaderLine = rowSpan.StartPosition.Line;
+
             foreach (var cellSpan in cellSpans)
             {
                 ColorizeSpan(cellSpan, classifications.TableHeader);
@@ -410,6 +459,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
+            Debug.Assert(_previousTableHeaderLine != -1, "If we are tracking the last row, I'd assume we have a header row!");
+            _previousLastRowLine = rowSpan.StartPosition.Line;
+
             foreach (var cellSpan in cellSpans)
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
