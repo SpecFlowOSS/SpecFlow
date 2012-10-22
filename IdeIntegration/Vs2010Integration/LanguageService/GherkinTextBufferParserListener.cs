@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -160,7 +160,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void AddTableOutline(int startLine, int endLine, string collapseText, string hoverText = null)
         {
-            const int NestedOutlineIndent = 1; // Magic number, but I don't know how to calculate it based on text position.
+            // RaringCoder: Magic number, but I don't know how to calculate it based on text position.
+            //              This is what causes the collapsed outline to appear one tab deeper than the parent Scenario outline.
+            const int NestedOutlineIndent = 1; 
 
             int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start + NestedOutlineIndent;
             int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
