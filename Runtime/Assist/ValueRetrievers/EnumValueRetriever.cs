@@ -2,6 +2,8 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
+    using System.Reflection;
+
     internal class EnumValueRetriever
     {
         public object GetValue(string value, Type enumType)
@@ -46,7 +48,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         private static bool ThisIsNotANullableEnum(Type enumType)
         {
+#if WINRT
+            return enumType.GetTypeInfo().IsGenericType == false;
+#else
             return enumType.IsGenericType == false;
+#endif
         }
 
         private string ParseTheValue(string value)

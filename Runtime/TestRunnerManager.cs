@@ -105,6 +105,12 @@ namespace TechTalk.SpecFlow
 
         #region Static Methods
 
+#if WINRT
+        public static ITestRunner GetTestRunner(Assembly testAssembly)
+        {
+            return Instance.GetTestRunner(testAssembly, false);
+        }
+#else
         public static ITestRunner GetTestRunner()
         {
             return Instance.GetTestRunner(Assembly.GetCallingAssembly(), false);
@@ -114,6 +120,7 @@ namespace TechTalk.SpecFlow
         {
             return Instance.GetTestRunner(Assembly.GetCallingAssembly(), true);
         }
+#endif
 
         internal static void Reset()
         {

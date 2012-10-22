@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             bindingRegistry.Ready = true;
 
             OnTestRunnerStart();
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !WINRT
             AppDomain.CurrentDomain.DomainUnload += 
                 delegate
                     {

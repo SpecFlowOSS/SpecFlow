@@ -4,7 +4,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     internal static class RegexFactory
     {
-#if SILVERLIGHT
+#if SILVERLIGHT || WINRT
         private static RegexOptions RegexOptions = RegexOptions.CultureInvariant;
 #else
         private static RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;

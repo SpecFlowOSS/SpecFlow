@@ -18,14 +18,22 @@ namespace TechTalk.SpecFlow.Infrastructure
             Assembly assembly;
             try
             {
+#if WINRT
+                assembly = Assembly.Load(new AssemblyName(assemblyName));
+#else
                 assembly = Assembly.Load(assemblyName);
+#endif
             }
             catch(Exception ex)
             {
                 throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check http://go.specflow.org/doc-plugins for details.", pluginDescriptor.Name), ex);
             }
 
+#if WINRT
+            var pluginAttribute = assembly.GetCustomAttribute<RuntimePluginAttribute>();
+#else
             var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
+#endif
             if (pluginAttribute == null)
                 throw new SpecFlowException(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
 

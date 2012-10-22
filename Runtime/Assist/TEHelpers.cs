@@ -93,8 +93,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             if (key.IsAssignableFrom(property.PropertyType))
                 return true;
+#if WINRT
+            if (property.PropertyType.GetTypeInfo().IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+#else
             if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
+#endif
+            return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
             return false;
         }
 
