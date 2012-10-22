@@ -173,5 +173,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetProperty(testMethod, "Parameter:" + pair.Key, pair.Value);
             }
         }
+
+        public void SetTestRunner(TestClassGenerationContext generationContext, CodeExpression testRunnerField)
+        {
+            var methodName = generationContext.GenerateAsynchTests ? "GetAsyncTestRunner" : "GetTestRunner";
+            generationContext.TestClassInitializeMethod.Statements.Add(
+                new CodeAssignStatement(
+                    testRunnerField,
+                    new CodeMethodInvokeExpression(
+                        new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
+                        methodName)));
+        }
     }
 }

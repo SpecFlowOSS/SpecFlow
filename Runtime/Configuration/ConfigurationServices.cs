@@ -4,12 +4,19 @@ using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Configuration
 {
+    using System.Linq;
+    using System.Reflection;
+
     public static class ConfigurationServices
     {
         public static TInterface CreateInstance<TInterface>(Type type)
         {
             //HACK: to provide backwards compatibility, until DI is fully introduced
+#if WINRT
+            if (type.GetPublicInstanceConstructors().FirstOrDefault(c => !c.GetParameters().Any()) == null)
+#else
             if (type.GetConstructor(new Type[0]) == null)
+#endif
             {
                 var container = TestRunContainerBuilder.CreateContainer();
                 return container.Resolve<TInterface>();

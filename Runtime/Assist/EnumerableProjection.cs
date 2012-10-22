@@ -5,6 +5,8 @@ using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
+    using System.Reflection;
+
     public class EnumerableProjection<T> : IEnumerable<Projection<T>>
     {
         private IEnumerable<T> collection;
@@ -143,8 +145,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             foreach (var property in properties)
             {
+#if WINRT
+                if (t1.GetType().GetTypeInfo().GetDeclaredProperty(property) == null || t2.GetType().GetTypeInfo().GetDeclaredProperty(property) == null)
+#else
                 if (t1.GetType().GetProperty(property) == null || t2.GetType().GetProperty(property) == null)
-                    return false;
+#endif
+                return false;
 
                 var thisValue = t1.GetPropertyValue(property);
                 var otherValue = t2.GetPropertyValue(property);

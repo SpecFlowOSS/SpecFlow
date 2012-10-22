@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 // the exceptions are part of the public API, keep them in TechTalk.SpecFlow namespace
 namespace TechTalk.SpecFlow
 {
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !WINRT
     [Serializable]
 #endif
     public class MissingStepDefinitionException : SpecFlowException
@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !WINRT
         protected MissingStepDefinitionException(
             SerializationInfo info,
             StreamingContext context)
