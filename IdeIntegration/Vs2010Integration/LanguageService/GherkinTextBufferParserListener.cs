@@ -160,7 +160,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void AddTableOutline(int startLine, int endLine, string collapseText, string hoverText = null)
         {
-            int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start + 1;
+            const int NestedOutlineIndent = 1; // Magic number, but I don't know how to calculate it based on text position.
+
+            int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start + NestedOutlineIndent;
             int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
             var span = new Span(startPosition, endPosition - startPosition);
 
@@ -224,6 +226,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         regionStartLine,
                         regionEndLine,
                         CurrentFileBlockBuilder.FullTitle);
+            }
+
+            if (currentFileBlockBuilder.Steps.Count > 0)
+            {
+                // If we have steps, we might have tables in need of outlining.
+                CheckOutlineTable();
             }
 
             BuildBlock(CurrentFileBlockBuilder, editorLine - 1, contentEndLine);
@@ -360,9 +368,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
 
-        public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
+        private void CheckOutlineTable()
         {
-            if (_previousLastRowLine != -1)
+            if (_previousLastRowLine != -1) // We use the last row line to denote a table outline in need of creation.
             {
                 Debug.Assert(_previousTableHeaderLine != -1, "We should have a header tracked...");
                 Debug.Assert(_previousStep != null, "We should have a step tracked...");
@@ -371,12 +379,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 Debug.Assert(table != null, "The step should have a table argument...");
 
                 // We have a table outline to create.
-                AddTableOutline(_previousTableHeaderLine, _previousLastRowLine, table.ToString(true, false), table.ToString(false, false));
+                var header = table.ToString(true, false);
+                string tooltip = null;
 
-                // Reset the tracking values, the step is updated later so we ignore it here.
+                var count = table.RowCount;
+
+                if (count == 1)
+                {
+                    tooltip = header + Environment.NewLine + "1 row";
+                }
+                else if (count > 1)
+                {
+                    tooltip = header + Environment.NewLine + count.ToString(CultureInfo.InvariantCulture) + " rows";
+                }
+                else
+                {
+                    tooltip = "No rows"; // This shouldn't happen because of checks above, it's here for completeness.
+                }
+
+                AddTableOutline(_previousTableHeaderLine, _previousLastRowLine, header, tooltip);
+
+                // Reset the tracking values.
                 _previousLastRowLine = -1;
                 _previousTableHeaderLine = -1;
+                _previousStep = null;
             }
+        }
+
+        public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
+        {
+            CheckOutlineTable();
 
             var editorLine = stepSpan.StartPosition.Line;
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
