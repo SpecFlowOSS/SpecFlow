@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Vs2010Integration.GherkinFileEditor;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Infrastructure;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -25,6 +26,19 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     internal abstract class GherkinTextBufferParserListenerBase : IGherkinListener
     {
+        /// <summary>
+        /// Tracks the step that is the "parent" of any table tracking below, for table outlining. Null denotes nothing being tracked.
+        /// </summary>
+        private Table _trackedTableForOutline;
+        /// <summary>
+        /// Tracks the line where the table header appeared. -1 denotes nothing being tracked.
+        /// </summary>
+        private int _trackedHeaderRowForOutline = -1;
+        /// <summary>
+        /// Tracks the line of the last row of the current table. -1 denotes nothing being tracked.
+        /// </summary>
+        private int _trackedLastRowForOutline = -1;
+
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileScope gherkinFileScope;
         private readonly IProjectScope projectScope;
@@ -130,18 +144,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(textSpan, classificationType);
         }
 
-        private void AddOutline(int startLine, int endLine, string collapseText, string hooverText = null)
+        private void AddOutline(int startLine, int endLine, string collapseText, string hoverText = null)
         {
             int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start;
             int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
             var span = new Span(startPosition, endPosition - startPosition);
 
-            if (hooverText == null)
-                hooverText = textSnapshot.GetText(span);
+            if (hoverText == null)
+                hoverText = textSnapshot.GetText(span);
 
             CurrentFileBlockBuilder.OutliningRegions.Add(new TagSpan<IOutliningRegionTag>(
                              new SnapshotSpan(textSnapshot, span),
-                             new OutliningRegionTag(false, false, collapseText, hooverText)));
+                             new OutliningRegionTag(false, false, collapseText, hoverText)));
+        }
+
+        private void AddTableOutline(int startLine, int endLine, string collapseText, string hoverText = null)
+        {
+            // RaringCoder: Magic number, but I don't know how to calculate it based on text position.
+            //              This is what causes the collapsed outline to appear one tab deeper than the parent Scenario outline.
+            const int NestedOutlineIndent = 1; 
+
+            int startPosition = textSnapshot.GetLineFromLineNumber(startLine).Start + NestedOutlineIndent;
+            int endPosition = textSnapshot.GetLineFromLineNumber(endLine).End;
+            var span = new Span(startPosition, endPosition - startPosition);
+
+            if (hoverText == null)
+                hoverText = textSnapshot.GetText(span);
+
+            CurrentFileBlockBuilder.OutliningRegions.Add(new TagSpan<IOutliningRegionTag>(
+                             new SnapshotSpan(textSnapshot, span),
+                             new OutliningRegionTag(false, false, collapseText, hoverText)));
         }
         #endregion
 
@@ -196,6 +228,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                         regionStartLine,
                         regionEndLine,
                         CurrentFileBlockBuilder.FullTitle);
+            }
+
+            if (currentFileBlockBuilder.Steps.Count > 0)
+            {
+                // If we have steps, we might have tables in need of outlining.
+                CheckTableOutline();
             }
 
             BuildBlock(CurrentFileBlockBuilder, editorLine - 1, contentEndLine);
@@ -272,6 +310,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
+            // RaringCoder: "Examples:" can occur in-line in a scenario block, so we have to check here to see if a 
+            //              table from a prior step needs creating.
+            CheckTableOutline();
+
             var editorLine = headerSpan.StartPosition.Line;
             OnCloseLevel2Outlinings(CalculateRegionEndLine(editorLine));
 
@@ -332,8 +374,48 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
 
+        private void CheckTableOutline()
+        {
+            if (_trackedTableForOutline != null) // We use the last row line to denote a table outline in need of creation.
+            {
+                Debug.Assert(_trackedLastRowForOutline != -1, "We should have tracked the last row of the table...");
+                Debug.Assert(_trackedHeaderRowForOutline != -1, "We should have a header tracked...");
+                Debug.Assert(_trackedTableForOutline != null, "We should have a table tracked...");
+
+                // We have a table outline to create.
+                var header = _trackedTableForOutline.ToString(true, false);
+                string tooltip = null;
+
+                var count = _trackedTableForOutline.RowCount;
+
+                // TODO RaringCoder: I'm not sure how localisation is handled, but the strings below are shown in 
+                //                   the UI and should likely be localised.
+
+                if (count == 1)
+                {
+                    tooltip = header + Environment.NewLine + "1 row";
+                }
+                else if (count > 1)
+                {
+                    tooltip = header + Environment.NewLine + count.ToString(CultureInfo.InvariantCulture) + " rows";
+                }
+                else
+                {
+                    tooltip = "No rows"; // This shouldn't happen because of checks above, it's here for completeness.
+                }
+
+                AddTableOutline(_trackedHeaderRowForOutline, _trackedLastRowForOutline, header, tooltip);
+
+                // Reset the tracking values.
+                ClearTableOutlineTracking();
+            }
+        }
+
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
+            // RaringCoder: When a new step is created, we check to see if the previous step had a table, if so we outline it.
+            CheckTableOutline();
+
             var editorLine = stepSpan.StartPosition.Line;
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
             var stepContext = new StepContext(FeatureTitle, CurrentFileBlockBuilder.BlockType == typeof(IBackgroundBlock) ? null : CurrentFileBlockBuilder.Title, tags.ToArray(), gherkinFileScope.GherkinDialect.CultureInfo);
@@ -399,6 +481,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (currentStep != null)
             {
+                // RaringCoder: We only track table outlining for step tables (not example tables).
+                Debug.Assert(_trackedHeaderRowForOutline == -1, "Multiple headers should not be encountered between starting and finishing a table outline.");
+                _trackedHeaderRowForOutline = rowSpan.StartPosition.Line;
+
                 currentStep.TableArgument = table;
             }
             else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
@@ -416,9 +502,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             Table table = null;
             if (currentStep != null)
+            {
+                // RaringCoder: We only track table outlining for step tables (not example tables).
+                Debug.Assert(_trackedHeaderRowForOutline != -1, "If we are tracking the last row, I'd assume we have a header row!");
+                _trackedLastRowForOutline = rowSpan.StartPosition.Line;
+
                 table = currentStep.TableArgument;
+                _trackedTableForOutline = table;
+            }
             else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
+            {
                 table = CurrentFileBlockBuilder.ExampleSets.Last().ExamplesTable;
+            }
 
             if (table == null)
             {
@@ -459,6 +554,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
             CurrentFileBlockBuilder.Errors.Add(new ErrorInfo(message, errorPosition.Line, errorPosition.LinePosition, exception));
+        }
+
+        private void ClearTableOutlineTracking()
+        {
+            _trackedLastRowForOutline = -1;
+            _trackedHeaderRowForOutline = -1;
+            _trackedTableForOutline = null;
         }
     }
 }
