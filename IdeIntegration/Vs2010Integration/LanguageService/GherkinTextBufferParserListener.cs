@@ -29,15 +29,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// <summary>
         /// Tracks the step that is the "parent" of any table tracking below, for table outlining. Null denotes nothing being tracked.
         /// </summary>
-        private GherkinStep _previousStep;
+        private Table _trackedTableForOutline;
         /// <summary>
         /// Tracks the line where the table header appeared. -1 denotes nothing being tracked.
         /// </summary>
-        private int _previousTableHeaderLine = -1;
+        private int _trackedHeaderRowForOutline = -1;
         /// <summary>
         /// Tracks the line of the last row of the current table. -1 denotes nothing being tracked.
         /// </summary>
-        private int _previousLastRowLine = -1;
+        private int _trackedLastRowForOutline = -1;
 
         private readonly GherkinFileEditorClassifications classifications;
         private readonly GherkinFileScope gherkinFileScope;
@@ -233,7 +233,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (currentFileBlockBuilder.Steps.Count > 0)
             {
                 // If we have steps, we might have tables in need of outlining.
-                CheckOutlineTable();
+                CheckTableOutline();
             }
 
             BuildBlock(CurrentFileBlockBuilder, editorLine - 1, contentEndLine);
@@ -310,6 +310,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Examples(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
+            // RaringCoder: "Examples:" can occur in-line in a scenario block, so we have to check here to see if a 
+            //              table from a prior step needs creating.
+            CheckTableOutline();
+
             var editorLine = headerSpan.StartPosition.Line;
             OnCloseLevel2Outlinings(CalculateRegionEndLine(editorLine));
 
@@ -370,21 +374,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private static readonly Regex placeholderRe = new Regex(@"\<.*?\>");
 
-        private void CheckOutlineTable()
+        private void CheckTableOutline()
         {
-            if (_previousLastRowLine != -1) // We use the last row line to denote a table outline in need of creation.
+            if (_trackedTableForOutline != null) // We use the last row line to denote a table outline in need of creation.
             {
-                Debug.Assert(_previousTableHeaderLine != -1, "We should have a header tracked...");
-                Debug.Assert(_previousStep != null, "We should have a step tracked...");
-
-                var table = _previousStep.TableArgument;
-                Debug.Assert(table != null, "The step should have a table argument...");
+                Debug.Assert(_trackedLastRowForOutline != -1, "We should have tracked the last row of the table...");
+                Debug.Assert(_trackedHeaderRowForOutline != -1, "We should have a header tracked...");
+                Debug.Assert(_trackedTableForOutline != null, "We should have a table tracked...");
 
                 // We have a table outline to create.
-                var header = table.ToString(true, false);
+                var header = _trackedTableForOutline.ToString(true, false);
                 string tooltip = null;
 
-                var count = table.RowCount;
+                var count = _trackedTableForOutline.RowCount;
+
+                // TODO RaringCoder: I'm not sure how localisation is handled, but the strings below are shown in 
+                //                   the UI and should likely be localised.
 
                 if (count == 1)
                 {
@@ -399,18 +404,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     tooltip = "No rows"; // This shouldn't happen because of checks above, it's here for completeness.
                 }
 
-                AddTableOutline(_previousTableHeaderLine, _previousLastRowLine, header, tooltip);
+                AddTableOutline(_trackedHeaderRowForOutline, _trackedLastRowForOutline, header, tooltip);
 
                 // Reset the tracking values.
-                _previousLastRowLine = -1;
-                _previousTableHeaderLine = -1;
-                _previousStep = null;
+                ClearTableOutlineTracking();
             }
         }
 
         public void Step(string keyword, StepKeyword stepKeyword, Parser.Gherkin.ScenarioBlock scenarioBlock, string text, GherkinBufferSpan stepSpan)
         {
-            CheckOutlineTable();
+            // RaringCoder: When a new step is created, we check to see if the previous step had a table, if so we outline it.
+            CheckTableOutline();
 
             var editorLine = stepSpan.StartPosition.Line;
             var tags = FeatureTags.Concat(CurrentFileBlockBuilder.Tags).Distinct();
@@ -455,15 +459,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 foreach (Match match in matches)
                     ColorizeLinePart(match.Value, stepSpan, classifications.Placeholder);
             }
-
-            _previousStep = currentStep;
         }
 
         public void TableHeader(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            Debug.Assert(_previousTableHeaderLine == -1, "Multiple headers should not be encountered between starting and finishing a table outline.");
-            _previousTableHeaderLine = rowSpan.StartPosition.Line;
-
             foreach (var cellSpan in cellSpans)
             {
                 ColorizeSpan(cellSpan, classifications.TableHeader);
@@ -482,6 +481,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (currentStep != null)
             {
+                // RaringCoder: We only track table outlining for step tables (not example tables).
+                Debug.Assert(_trackedHeaderRowForOutline == -1, "Multiple headers should not be encountered between starting and finishing a table outline.");
+                _trackedHeaderRowForOutline = rowSpan.StartPosition.Line;
+
                 currentStep.TableArgument = table;
             }
             else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
@@ -493,18 +496,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void TableRow(string[] cells, GherkinBufferSpan rowSpan, GherkinBufferSpan[] cellSpans)
         {
-            Debug.Assert(_previousTableHeaderLine != -1, "If we are tracking the last row, I'd assume we have a header row!");
-            _previousLastRowLine = rowSpan.StartPosition.Line;
-
             foreach (var cellSpan in cellSpans)
             {
                 ColorizeSpan(cellSpan, classifications.TableCell);
             }
             Table table = null;
             if (currentStep != null)
+            {
+                // RaringCoder: We only track table outlining for step tables (not example tables).
+                Debug.Assert(_trackedHeaderRowForOutline != -1, "If we are tracking the last row, I'd assume we have a header row!");
+                _trackedLastRowForOutline = rowSpan.StartPosition.Line;
+
                 table = currentStep.TableArgument;
+                _trackedTableForOutline = table;
+            }
             else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
+            {
                 table = CurrentFileBlockBuilder.ExampleSets.Last().ExamplesTable;
+            }
 
             if (table == null)
             {
@@ -545,6 +554,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public void Error(string message, GherkinBufferPosition errorPosition, Exception exception)
         {
             CurrentFileBlockBuilder.Errors.Add(new ErrorInfo(message, errorPosition.Line, errorPosition.LinePosition, exception));
+        }
+
+        private void ClearTableOutlineTracking()
+        {
+            _trackedLastRowForOutline = -1;
+            _trackedHeaderRowForOutline = -1;
+            _trackedTableForOutline = null;
         }
     }
 }
