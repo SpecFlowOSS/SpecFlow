@@ -112,11 +112,43 @@
             <xsl:sort select="@name"/>
           </xsl:apply-templates>
         </table>
+
+        <hr />
+        
+        <h2>Category Summary</h2>
+
+        <xsl:variable name="categories" select="//nunit:category[not(@name=following::nunit:category/@name)]" />
+
+        <table class="reportTable" cellpadding="0" cellspacing="0">
+          <tr>
+            <th class="top left">Category</th>
+            <th class="top" colspan="2">Success rate</th>
+            <th class="top">Scenarios</th>
+            <th class="top">Success</th>
+            <th class="top">Failed</th>
+            <th class="top">Pending</th>
+            <th class="top">Ignored</th>
+          </tr>
+          <xsl:apply-templates select="$categories" mode="summary">
+            <xsl:sort select="@name"/>
+          </xsl:apply-templates>
+        </table>
+        
+        <hr />
+
         <h2>Feature Execution Details</h2>
         <xsl:apply-templates select="//nunit:test-suite[@type='TestFixture']">
           <xsl:sort select="@description" />
           <xsl:sort select="@name"/>
         </xsl:apply-templates>
+
+        <hr />
+        
+        <h2>Category Execution Details</h2>
+        <xsl:apply-templates select="$categories">
+          <xsl:sort select="@name"/>
+        </xsl:apply-templates>
+
       </body>
     </html>
   </xsl:template>
@@ -185,16 +217,78 @@
     </table>
   </xsl:template>
 
+  <xsl:template match="nunit:category" mode="summary">
+    <xsl:variable name="categorySummary">
+      <xsl:call-template name="get-category-summary" >
+        <xsl:with-param name="category" select="@name" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="category-id" select="generate-id()" />
+    <tr>
+      <td class="left">
+        <a href="#{$category-id}">
+          <xsl:value-of select="@name"/>
+        </a>
+      </td>
+      <xsl:call-template name="summary-row">
+        <xsl:with-param name="summary" select="$categorySummary" />
+      </xsl:call-template>
+    </tr>
+  </xsl:template>
+
+  <xsl:template match="nunit:category">
+    <xsl:variable name="category" select="@name"/>
+    <xsl:variable name="category-id" select="generate-id()" />
+    <a name="{$category-id}" />
+    <h3>
+      <xsl:value-of select="$category"/>
+    </h3>
+    <table class="reportTable" cellpadding="0" cellspacing="0">
+      <tr>
+        <th class="top left">
+          <xsl:call-template name="get-keyword">
+            <xsl:with-param name="keyword" select="'Feature'" />
+          </xsl:call-template>
+        </th>
+        <th class="top">
+          <xsl:call-template name="get-keyword">
+            <xsl:with-param name="keyword" select="'Scenario'" />
+          </xsl:call-template>
+        </th>
+        <th class="top" style="width: 5em">Status</th>
+        <th class="top" style="width: 5em">Time(s)</th>
+      </tr>
+
+      <xsl:apply-templates select="//nunit:test-case[nunit:categories/nunit:category/@name=$category]">
+        <xsl:with-param name="category" select="$category" />
+      </xsl:apply-templates>
+    </table>
+  </xsl:template>
+
   <xsl:template match="nunit:test-case">
+    <xsl:param name="category"/>
+
+    <xsl:variable name="numcols">
+      <xsl:choose>
+        <xsl:when test="$category=''">3</xsl:when>
+        <xsl:otherwise>4</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:variable name="scenarioSummary">
       <xsl:call-template name="get-summary">
         <xsl:with-param name="nodes" select="." />
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="status" select="local-name(msxsl:node-set($scenarioSummary)/*/*[local-name()!='all' and text() = '1'])" />
-    <xsl:variable name="scenario-id" select="generate-id()" />
+    <xsl:variable name="scenario-id" select="concat($category, generate-id())" />
     <xsl:variable name="testName" select="@name" />
     <tr>
+      <xsl:if test="$category!=''">
+        <td class="left">
+          <xsl:value-of select="../../@description"/>
+        </td>
+      </xsl:if>
       <td class="left">
         <xsl:call-template name="get-name"/>
         <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
@@ -224,7 +318,7 @@
     </tr>
     <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
       <tr id="out{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
+        <td class="left subRow" colspan="{$numcols}">
           <div class="failurePanel">
             <pre>
               <xsl:call-template name="scenario-output">
@@ -237,7 +331,7 @@
     </xsl:if>
     <xsl:if test="$status = 'failure'">
       <tr id="err{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
+        <td class="left subRow" colspan="{$numcols}">
           <xsl:apply-templates select="nunit:failure" />
         </td>
       </tr>
@@ -347,6 +441,28 @@
 
   <xsl:template name="get-summary">
     <xsl:param name="nodes" select=".//nunit:test-case" />
+    <testCaseSummary>
+      <all>
+        <xsl:value-of select="count($nodes)"/>
+      </all>
+      <success>
+        <xsl:value-of select="count($nodes[@executed = 'True' and @success='True'])"/>
+      </success>
+      <failure>
+        <xsl:value-of select="count($nodes[@executed = 'True' and @success='False' and nunit:failure])"/>
+      </failure>
+      <pending>
+        <xsl:value-of select="count($nodes[@executed = 'True' and @success='False' and not(nunit:failure)])"/>
+      </pending>
+      <ignored>
+        <xsl:value-of select="count($nodes[@executed = 'False'])"/>
+      </ignored>
+    </testCaseSummary>
+  </xsl:template>
+
+  <xsl:template name="get-category-summary">
+    <xsl:param name="category" />
+    <xsl:param name="nodes" select="//nunit:test-case[nunit:categories/nunit:category/@name=$category]" />
     <testCaseSummary>
       <all>
         <xsl:value-of select="count($nodes)"/>

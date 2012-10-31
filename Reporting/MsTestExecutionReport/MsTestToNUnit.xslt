@@ -190,7 +190,23 @@
       <xsl:variable name="id" select="@id" />
       <!--<xsl:variable name="testResult" select="/mstest:TestRun/mstest:Results/mstest:UnitTestResult[@testId=$id]" />-->
       <xsl:variable name="testResult" select="key('unit-test-result', $id)" />
-      
+      <xsl:variable name="resultCategory" >
+        <xsl:choose>
+          <xsl:when test="$testResult/@outcome='Failed'">
+            <xsl:text>_FailedTests</xsl:text>
+          </xsl:when>
+          <xsl:when test="$testResult/@outcome='Inconclusive'">
+            <xsl:text>_InconclusiveTests</xsl:text>
+          </xsl:when>
+          <xsl:when test="$testResult/@outcome='Passed'">
+            <xsl:text>_SucceededTests</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>_UnknownTests</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
       <xsl:attribute name="name">
         <xsl:value-of select="substring-before(mstest:TestMethod/@className, ',')"/>.<xsl:value-of select="@name"></xsl:value-of>
       </xsl:attribute>
@@ -252,7 +268,14 @@
           </nunit:message>
         </nunit:reason>
       </xsl:if>
-      
+
+      <nunit:categories>
+        <nunit:category name="{$resultCategory}" />
+        <xsl:for-each select="mstest:TestCategory/mstest:TestCategoryItem">
+          <nunit:category name="{@TestCategory}" />
+        </xsl:for-each>
+      </nunit:categories>
+
       <xsl:if test="$testResult/@outcome='Failed'">
         <nunit:failure>
           <nunit:message>
