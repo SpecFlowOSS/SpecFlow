@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 return false;
 
 #if WINRT
-            foreach (var methodInfo in type.GetTypeInfo().DeclaredMethods)
+            foreach (var methodInfo in type.GetRuntimeMethods().Where(m => m.DeclaringType != typeof(object)))
 #else
             foreach (var methodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
 #endif
@@ -100,11 +100,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         {
 #if WINRT
             var attributeType = attribute.GetType();
-            var namedAttributeValues = attributeType.GetTypeInfo().DeclaredFields.Where(f => !f.IsStatic && f.IsPublic).Where(
+            var namedAttributeValues = attributeType.GetRuntimeFields().Where(f => !f.IsStatic && f.IsPublic).Where(
                 f => !f.IsSpecialName).Select(
                     f => new { f.Name, Value = new BindingSourceAttributeValueProvider(f.GetValue(attribute)) })
                 .Concat(
-                    attributeType.GetTypeInfo().DeclaredProperties.Where(p => !p.GetMethod.IsStatic && p.GetMethod.IsPublic).Where(
+                    attributeType.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.GetMethod.IsPublic && p.DeclaringType != typeof(Attribute)).Where(
                         p => !p.IsSpecialName && p.CanRead && p.GetIndexParameters().Length == 0).Select(
                             p =>
                             new { p.Name, Value = new BindingSourceAttributeValueProvider(p.GetValue(attribute, null)) })
