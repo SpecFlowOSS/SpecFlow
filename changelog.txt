@@ -1,8 +1,3 @@
-1.9.2 - 2012/11/19
-
-Fixed issues:
-+ Correct handling of empty strings in tables when converting to nullable enum types
-
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:

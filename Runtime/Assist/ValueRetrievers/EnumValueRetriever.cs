@@ -13,9 +13,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
         {
-            if (!ThisIsNotANullableEnum(enumType) && string.IsNullOrEmpty(value)) 
-                return null;
-
             return Enum.Parse(GetTheEnumType(enumType), ParseTheValue(value), true);
         }
 
