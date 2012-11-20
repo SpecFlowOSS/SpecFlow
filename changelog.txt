@@ -1,3 +1,8 @@
+1.9.2 - 2012/11/20
+
+Fixed issues:
++ Empty strings in tables get converted to null in case of nullable enum as target types when using CreateSet
+
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:
