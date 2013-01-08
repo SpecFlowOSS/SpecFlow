@@ -6,11 +6,13 @@ using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -25,12 +27,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
+
+        [Import]
+        IVisualStudioTracer Tracer = null;
+
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
             if (!IntegrationOptionsProvider.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
+            return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer), Tracer);
         }
     }
 
@@ -39,11 +45,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
         private readonly GherkinLanguageService languageService;
+        private readonly IIdeTracer tracer;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, GherkinLanguageService languageService)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, GherkinLanguageService languageService, IIdeTracer tracer)
         {
             this.textBuffer = textBuffer;
             this.languageService = languageService;
+            this.tracer = tracer;
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -102,7 +110,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         static private GherkinDialect GetDialect(GherkinLanguageService languageService)
         {
-            var fileScope = languageService.GetFileScope();
+            var fileScope = languageService.GetFileScope(waitForResult: false);
             return fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
         }
 
