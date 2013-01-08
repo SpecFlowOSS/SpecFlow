@@ -9,10 +9,12 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Options;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -33,6 +35,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
+        [Import]
+        IVisualStudioTracer Tracer = null;
+
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
             if (!IntegrationOptionsProvider.GetOptions().EnableIntelliSense)
@@ -45,7 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
             var languageService = GherkinLanguageServiceFactory.GetLanguageService(view.TextBuffer);
 
-            var commandFilter = new GherkinCompletionCommandFilter(view, CompletionBroker, languageService);
+            var commandFilter = new GherkinCompletionCommandFilter(view, CompletionBroker, languageService, Tracer);
 
             IOleCommandTarget next;
             textViewAdapter.AddCommandFilter(commandFilter, out next);
@@ -57,7 +62,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     {
         private readonly GherkinLanguageService languageService;
 
-        public GherkinCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker, GherkinLanguageService languageService) : base(textView, broker)
+        public GherkinCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker, GherkinLanguageService languageService, IIdeTracer tracer) : base(textView, broker, tracer)
         {
             this.languageService = languageService;
         }
