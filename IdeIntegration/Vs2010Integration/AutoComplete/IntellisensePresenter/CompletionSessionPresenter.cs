@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.IntellisensePresenter;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System.Windows;
@@ -12,14 +10,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter
 {
     internal class CompletionSessionPresenter : IPopupIntellisensePresenter, IIntellisenseCommandTarget
     {
-        private CompletionSessionView view;
-        private ICompletionSession session;
-        private IServiceProvider serviceProvider;
+        private readonly CompletionSessionView view;
+        private readonly ICompletionSession session;
+        private readonly IServiceProvider serviceProvider;
 
         internal CompletionSessionPresenter(IServiceProvider serviceProvider, ICompletionSession session)
         {
             this.session = session;
-            this.session.SelectedCompletionSet.SelectionStatusChanged += new EventHandler<ValueChangedEventArgs<CompletionSelectionStatus>>(OnSelectedCompletionSetSelectionStatusChanged);
+            this.session.SelectedCompletionSet.SelectionStatusChanged += OnSelectedCompletionSetSelectionStatusChanged;
 
             this.view = new CompletionSessionView(this);
             this.view.Select(this.SelectedCompletion);
@@ -70,9 +68,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter
         /// <summary>
         /// 
         /// </summary>
-        public Microsoft.VisualStudio.Text.Adornments.PopupStyles PopupStyles
+        public PopupStyles PopupStyles
         {
-            get { return Microsoft.VisualStudio.Text.Adornments.PopupStyles.PositionClosest; }
+            get { return PopupStyles.PositionClosest; }
         }
 
         /// <summary>

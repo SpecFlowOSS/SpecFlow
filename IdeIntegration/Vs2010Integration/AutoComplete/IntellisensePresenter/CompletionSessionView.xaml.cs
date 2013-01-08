@@ -1,29 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Controls.Primitives;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text.Editor;
-using TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter;
 
-namespace Microsoft.VisualStudio.IntellisensePresenter
+namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public partial class CompletionSessionView : UserControl
+    public partial class CompletionSessionView
     {
-        private CompletionSessionPresenter presenter;
+        private readonly CompletionSessionPresenter presenter;
 
         internal CompletionSessionView(CompletionSessionPresenter presenter)
         {
@@ -37,7 +23,7 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
 
         private void SubscribeToEvents()
         {
-            this.presenter.Session.Dismissed += new EventHandler(OnSessionDismissed);
+            this.presenter.Session.Dismissed += OnSessionDismissed;
         }
 
         private void OnSessionDismissed(object sender, EventArgs e)
@@ -48,7 +34,7 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
 
         private void UnsubscribeFromEvents()
         {
-            this.presenter.Session.Dismissed -= new EventHandler(OnSessionDismissed);
+            this.presenter.Session.Dismissed -= OnSessionDismissed;
         }
 
         private void SurrenderFocus()
@@ -74,7 +60,6 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
         internal void Select(Completion completion)
         {
             this.listViewCompletions.SelectedItem = completion;
-            //this.listViewCompletions.Focus();
             if (completion != null)
             {
                 this.listViewCompletions.ScrollIntoView(completion);
@@ -84,21 +69,6 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
         private void listViewCompletions_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.SurrenderFocus();
-        }
-
-        private void OnThumbDragDelta(object sender, DragDeltaEventArgs e)
-        {
-            double heightAdjust = this.Height + e.VerticalChange;
-            if (heightAdjust >= this.MinHeight)
-            {
-                this.Height = heightAdjust;
-            }
-
-            double widthAdjust = this.Width + e.HorizontalChange;
-            if (widthAdjust >= this.MinWidth)
-            {
-                this.Width = widthAdjust;
-            }
         }
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.Language.Intellisense;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using Microsoft.VisualStudio.Shell;
-using TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter;
 
-namespace Microsoft.VisualStudio.IntellisensePresenter
+namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter
 {
     [Export(typeof(IIntellisensePresenterProvider))]
     [ContentType("gherkin")]
