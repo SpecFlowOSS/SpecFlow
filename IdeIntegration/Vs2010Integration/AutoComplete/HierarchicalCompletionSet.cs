@@ -18,18 +18,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             PrefixMatch = false;
         }
 
-        protected override bool DoesCompletionMatchApplicabilityText(Completion completion)
+        protected override bool DoesCompletionMatchApplicabilityText(Completion completion, string filterText, CompletionMatchType matchType, bool caseSensitive)
         {
-            if (base.DoesCompletionMatchApplicabilityText(completion))
+            if (base.DoesCompletionMatchApplicabilityText(completion, filterText, matchType, caseSensitive))
                 return true;
 
-            object parentObject = null;
-            completion.Properties.TryGetProperty<object>("parentObject", out parentObject);
+            object parentObject;
+            completion.Properties.TryGetProperty("parentObject", out parentObject);
             IStepSuggestionGroup<Completion> parentObjectAsGroup = parentObject as IStepSuggestionGroup<Completion>;
             return 
                 parentObjectAsGroup != null && 
                 parentObjectAsGroup.Suggestions
-                    .Any(stepSuggestion => stepSuggestion.NativeSuggestionItem != null && DoesCompletionMatchApplicabilityText(stepSuggestion.NativeSuggestionItem));
+                    .Any(stepSuggestion => stepSuggestion.NativeSuggestionItem != null && DoesCompletionMatchApplicabilityText(stepSuggestion.NativeSuggestionItem, filterText, matchType, caseSensitive));
         }
     }
 }
