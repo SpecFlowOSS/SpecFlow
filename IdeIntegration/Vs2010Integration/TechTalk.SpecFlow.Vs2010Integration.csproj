@@ -169,6 +169,12 @@
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
+    <Compile Include="AutoComplete\IntellisensePresenter\CompletionSessionPresenter.cs" />
+    <Compile Include="AutoComplete\IntellisensePresenter\CompletionSessionView.xaml.cs">
+      <DependentUpon>CompletionSessionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AutoComplete\IntellisensePresenter\IntellisensePresenterProvider.cs" />
+    <Compile Include="AutoComplete\IntellisensePresenter\VisualStudioHelper.cs" />
     <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
     <Compile Include="Commands\GenerateStepDefinitionSkeletonCommand.cs" />
     <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
@@ -403,6 +409,12 @@
     </VSCTIncludePath>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Page Include="AutoComplete\IntellisensePresenter\CompletionSessionView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VsSDKInstall)\MsBuild\Microsoft.VsSDK.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
