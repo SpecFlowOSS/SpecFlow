@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         private GherkinStep GetCurrentStep(GherkinEditorContext editorContext)
         {
-            var fileScope = editorContext.LanguageService.GetFileScope();
+            var fileScope = editorContext.LanguageService.GetFileScope(waitForLatest: true);
             if (fileScope == null)
                 return null;
 
