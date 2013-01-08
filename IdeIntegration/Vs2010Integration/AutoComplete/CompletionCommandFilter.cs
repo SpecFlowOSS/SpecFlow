@@ -142,6 +142,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                     currentAutoCompleteSession.Dismiss();
                     return;
                 }
+                if (insertedText.TrimEnd().Equals(selectedText.TrimEnd(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    currentAutoCompleteSession.Commit();
+                    return;
+                }
             }
 
             if (!currentAutoCompleteSession.SelectedCompletionSet.SelectionStatus.IsSelected && ch == ' ' && IsPrefixMatch(currentAutoCompleteSession.SelectedCompletionSet))
