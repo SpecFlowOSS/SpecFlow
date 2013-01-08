@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -250,7 +250,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (isDisposed)
                 throw new ObjectDisposedException("GherkinLanguageService");
 
-            tracer.Trace("GetFileScope (waitForLatest: {0}, waitForParsingSnapshot: {1}, waitForResult: {2}", this, waitForLatest, waitForParsingSnapshot, waitForResult);
+            //tracer.Trace("GetFileScope (waitForLatest: {0}, waitForParsingSnapshot: {1}, waitForResult: {2}", this, waitForLatest, waitForParsingSnapshot, waitForResult);
 
             if (!waitForResult && lastGherkinFileScope == null)
                 return null;
@@ -260,24 +260,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (waitForLatest)
             {
-                while (lastRegisteredSnapshot == null)
+                if (lastRegisteredSnapshot == null)
                 {
-                    tracer.Trace("GetFileScope waiting for registered snapshot...", this);
-                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    tracer.Trace("GetFileScope - waiting for first registered snapshot... caller: {0}", this, new StackFrame(1, false).GetMethod().Name);
+                    while (lastRegisteredSnapshot == null)
+                    {
+                        Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    }
+                    tracer.Trace("GetFileScope - first registered snapshot received", this);
                 }
                 waitForParsingSnapshot = lastRegisteredSnapshot;
             }
 
             if (waitForParsingSnapshot != null)
             {
+                
+
                 int counter = 0;
-                while (counter < 10 && 
+                const int i = 10;
+                while (counter < i && 
                     (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot != waitForParsingSnapshot))
                 {
-                    tracer.Trace("GetFileScope waiting for expected snapshot...", this);
+                    if (counter == 0)
+                        tracer.Trace("GetFileScope - waiting for expected snapshot... caller: {0}", this, new StackFrame(1, false).GetMethod().Name);
                     Thread.Sleep(TimeSpan.FromMilliseconds(50));
                     counter++;
                 }
+                if (counter >= i)
+                    tracer.Trace("GetFileScope - failed to receive expected snapshot, using an older one", this);
+                else if (counter > 0)
+                    tracer.Trace("GetFileScope - expected snapshot received", this);
             }
 
             return lastGherkinFileScope;

@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         private IScenarioBlock GetCurrentScenario(GherkinLanguageService languageService, int currentLine, out IGherkinFileScope fileScope)
         {
-            fileScope = languageService.GetFileScope();
+            fileScope = languageService.GetFileScope(waitForLatest: true);
             if (fileScope == null)
                 return null;
 
