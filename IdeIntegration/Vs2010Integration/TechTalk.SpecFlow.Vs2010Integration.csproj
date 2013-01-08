@@ -169,6 +169,7 @@
     <Compile Include="AutoComplete\GherkinCompletionCommandFilter.cs" />
     <Compile Include="AutoComplete\GherkinStepCompletionSource.cs" />
     <Compile Include="AutoComplete\HierarchicalCompletionSet.cs" />
+    <Compile Include="AutoComplete\IntellisensePresenter\Text2Visibility.cs" />
     <Compile Include="AutoComplete\IntellisensePresenter\CompletionSessionPresenter.cs" />
     <Compile Include="AutoComplete\IntellisensePresenter\CompletionSessionView.xaml.cs">
       <DependentUpon>CompletionSessionView.xaml</DependentUpon>
