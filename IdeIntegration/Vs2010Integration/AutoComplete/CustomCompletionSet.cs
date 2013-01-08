@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     internal class CustomCompletionSet : CompletionSet
     {
         public bool PrefixMatch { get; set; }
+        public string StatusText { get; set; }
 
         public CustomCompletionSet()
         {

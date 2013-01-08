@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
             this.SurrenderFocus();
         }
 
-        private void OnThumbDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        private void OnThumbDragDelta(object sender, DragDeltaEventArgs e)
         {
             double heightAdjust = this.Height + e.VerticalChange;
             if (heightAdjust >= this.MinHeight)
@@ -100,10 +100,5 @@ namespace Microsoft.VisualStudio.IntellisensePresenter
                 this.Width = widthAdjust;
             }
         }
-
-        private void OnMsdnImageMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            presenter.Navigate(@"http://msdn.microsoft.com");
-        }        
     }
 }
