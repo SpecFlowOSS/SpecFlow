@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:IntellisensePresenter="clr-namespace:TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter"
-    x:Class="Microsoft.VisualStudio.IntellisensePresenter.CompletionSessionView"
+    x:Class="TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter.CompletionSessionView"
     mc:Ignorable="d" MinWidth="400" MinHeight="20" MaxHeight="350" MaxWidth="800" d:DesignHeight="200" d:DesignWidth="300">
     <UserControl.Resources>
         <DataTemplate x:Key="ItemDataTemplate">
@@ -41,7 +41,6 @@
                  SelectionChanged="ListView_SelectionChanged" 
                  MouseLeftButtonDown="listViewCompletions_MouseLeftButtonDown">
             </ListBox>
-            <Thumb Width="20" Height="20" Cursor="SizeNWSE" Opacity="0" DragDelta="OnThumbDragDelta" Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         </Grid>
     </Border>
 </UserControl>

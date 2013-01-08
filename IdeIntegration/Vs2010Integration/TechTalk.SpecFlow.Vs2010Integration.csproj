@@ -175,7 +175,6 @@
       <DependentUpon>CompletionSessionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AutoComplete\IntellisensePresenter\IntellisensePresenterProvider.cs" />
-    <Compile Include="AutoComplete\IntellisensePresenter\VisualStudioHelper.cs" />
     <Compile Include="Commands\ContextDependentNavigationCommand.cs" />
     <Compile Include="Commands\GenerateStepDefinitionSkeletonCommand.cs" />
     <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
