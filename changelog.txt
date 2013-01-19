@@ -1,3 +1,5 @@
++ VS2010: Linked app.config now works (Issue 255)
+
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:
