@@ -94,8 +94,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             if (piSolutionSearch != null && piSolutionSearch.ContainingProject.UniqueName.Equals(project.UniqueName))
                 return piSolutionSearch;
 
-            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
-                    pi => fullPath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+            var piProjectSearch = GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                       pi => fullPath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+            if (piProjectSearch != null)
+            {
+                return piProjectSearch;
+            }
+
+            return GetAllProjectItem(project).FirstOrDefault(
+                   pi => pi.FileCount > 0 && filePath.Equals(pi.Name, StringComparison.InvariantCultureIgnoreCase));
+
         }
 
         public static ProjectItem FindProjectItemByFilePath(Project project, string filePath)
