@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.UnitTestProvider
             Type assertType = msTestAssembly.GetType(typeName);
 
             MethodInfo method =
-                assertType.GetTypeInfo().DeclaredMethods.FirstOrDefault(
+                assertType.GetRuntimeMethods().FirstOrDefault(
                     m => m.IsPublic && m.IsStatic && m.GetParameters().Count() == 2 && m.GetParameters()[0].ParameterType == typeof(string) && m.GetParameters()[1].ParameterType == typeof(object[]));
 #else
             Assembly msTestAssembly = Assembly.Load(assemblyName);

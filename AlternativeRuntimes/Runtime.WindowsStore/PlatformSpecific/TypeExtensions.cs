@@ -14,7 +14,7 @@ namespace System
 
         public static IEnumerable<PropertyInfo> GetProperties(this Type self)
         {
-            return self.GetTypeInfo().DeclaredProperties;
+            return self.GetRuntimeProperties();
         }
 
         public static IEnumerable<ConstructorInfo> GetConstructors(this Type self)

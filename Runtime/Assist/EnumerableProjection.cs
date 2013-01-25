@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.Assist
             foreach (var property in properties)
             {
 #if WINRT
-                if (t1.GetType().GetTypeInfo().GetDeclaredProperty(property) == null || t2.GetType().GetTypeInfo().GetDeclaredProperty(property) == null)
+                if (t1.GetType().GetRuntimeProperty(property) == null || t2.GetType().GetTypeInfo().GetDeclaredProperty(property) == null)
 #else
                 if (t1.GetType().GetProperty(property) == null || t2.GetType().GetProperty(property) == null)
 #endif

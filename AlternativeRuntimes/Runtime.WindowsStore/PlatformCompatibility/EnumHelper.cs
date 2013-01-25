@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Compatibility
 
             var values = new List<object>();
 
-            var fields = from field in enumType.GetTypeInfo().DeclaredFields
+            var fields = from field in enumType.GetRuntimeFields()
                          where field.IsLiteral
                          select field;
 
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Compatibility
                 throw new ArgumentException("Type '" + enumType.Name + "' is not an enum");
             }
 
-            var fiArray = enumType.GetTypeInfo().DeclaredFields.Where(f => f.IsPublic && f.IsStatic);
+            var fiArray = enumType.GetRuntimeFields().Where(f => f.IsPublic && f.IsStatic);
             return fiArray.Select(fi => fi.Name).ToArray();
         }
     }
