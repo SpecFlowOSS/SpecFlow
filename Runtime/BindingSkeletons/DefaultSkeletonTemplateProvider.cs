@@ -4,11 +4,17 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
+    using System.Reflection;
+
     public class ResourceSkeletonTemplateProvider : FileBasedSkeletonTemplateProvider
     {
         protected override string GetTemplateFileContent()
         {
+#if WINRT
+            var resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("TechTalk.Specflow.WindowsStore.SharedRuntime.DefaultSkeletonTemplates.sftemplate");
+#else
             var resourceStream = GetType().Assembly.GetManifestResourceStream(GetType(), "DefaultSkeletonTemplates.sftemplate");
+#endif
             if (resourceStream == null)
                 throw new SpecFlowException("Missing resource: DefaultSkeletonTemplates.sftemplate");
 
@@ -28,7 +34,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         protected override string GetTemplateFileContent()
         {
-#if SILVERLIGHT
+#if SILVERLIGHT || WINRT
             return "";
 #else
             string templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"SpecFlow\SkeletonTemplates.sftemplate");

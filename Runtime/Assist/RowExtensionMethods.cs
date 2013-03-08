@@ -92,11 +92,19 @@ namespace TechTalk.SpecFlow.Assist
 
         private static Type GetTheEnumType<T>(string propertyName, string value)
         {
+#if WINRT
+            var propertyType = (from property in typeof (T).GetProperties()
+                                where property.Name == propertyName
+                                      && property.PropertyType.GetTypeInfo().IsEnum
+                                      && EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
+                                select property.PropertyType).FirstOrDefault();
+#else
             var propertyType = (from property in typeof (T).GetProperties()
                                 where property.Name == propertyName
                                       && property.PropertyType.IsEnum
                                       && EnumValueIsDefinedCaseInsensitve(property.PropertyType, value)
                                 select property.PropertyType).FirstOrDefault();
+#endif
 
             if (propertyType == null)
                 throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));

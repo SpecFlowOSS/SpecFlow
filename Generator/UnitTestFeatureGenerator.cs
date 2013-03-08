@@ -194,14 +194,8 @@ namespace TechTalk.SpecFlow.Generator
             testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
             //testRunner = TestRunnerManager.GetTestRunner();
-            var testRunnerField = GetTestRunnerExpression();
-            var methodName = generationContext.GenerateAsynchTests ? "GetAsyncTestRunner" : "GetTestRunner"; 
-            testClassInitializeMethod.Statements.Add(
-                new CodeAssignStatement(
-                    testRunnerField,
-                    new CodeMethodInvokeExpression(
-                        new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                        methodName)));
+            CodeExpression testRunnerField = GetTestRunnerExpression();
+            testGeneratorProvider.SetTestRunner(generationContext, testRunnerField);
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             testClassInitializeMethod.Statements.Add(

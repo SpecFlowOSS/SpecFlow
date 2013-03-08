@@ -117,5 +117,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             // doing nothing since we support RowTest
         }
+
+        public void SetTestRunner(TestClassGenerationContext generationContext, CodeExpression testRunnerField)
+        {
+            var methodName = generationContext.GenerateAsynchTests ? "GetAsyncTestRunner" : "GetTestRunner";
+            generationContext.TestClassInitializeMethod.Statements.Add(
+                new CodeAssignStatement(
+                    testRunnerField,
+                    new CodeMethodInvokeExpression(
+                        new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
+                        methodName)));
+        }
     }
 }

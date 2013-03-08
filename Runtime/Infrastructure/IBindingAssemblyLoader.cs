@@ -11,7 +11,11 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         public Assembly Load(string assemblyName)
         {
+#if WINRT
+            return Assembly.Load(new AssemblyName(assemblyName));
+#else
             return Assembly.Load(assemblyName);
+#endif
         }
     }
 }

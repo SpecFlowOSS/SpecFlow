@@ -1,3 +1,9 @@
+Win8 branch 2012/10/22
++ Added AlternativeRuntimes\Runtime.WindowsStore runtime for Windows Store test projects
++ Added a WINRT compilation symbol and associated conditional directives to handle the differences in the reflection API etc.
++ Added MsTestWinRTGeneratorProvider.cs (there is also a little refactoring of the interface and existing generators).
+
+
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:

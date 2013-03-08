@@ -3,6 +3,8 @@ using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
+    using System;
+
     internal static class PropertyExtensionMethods
     {
         public static object GetPropertyValue(this object @object, string propertyName)

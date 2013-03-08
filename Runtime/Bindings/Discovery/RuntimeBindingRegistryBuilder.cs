@@ -38,7 +38,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             if (!bindingSourceProcessor.ProcessType(bindingSourceType))
                 return false;
 
+#if WINRT
+            foreach (var methodInfo in type.GetRuntimeMethods().Where(m => m.DeclaringType != typeof(object)))
+#else
             foreach (var methodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+#endif
             {
                 bindingSourceProcessor.ProcessMethod(CreateBindingSourceMethod(methodInfo));
             }
@@ -66,6 +70,19 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private BindingSourceType CreateBindingSourceType(Type type, IEnumerable<Attribute> filteredAttributes)
         {
+#if WINRT
+            var typeInfo = type.GetTypeInfo();
+            return new BindingSourceType
+            {
+                BindingType = CreateBindingType(type),
+                IsAbstract = typeInfo.IsAbstract,
+                IsClass = typeInfo.IsClass,
+                IsPublic = typeInfo.IsPublic,
+                IsNested = TypeHelper.IsNested(type),
+                IsGenericTypeDefinition = typeInfo.IsGenericTypeDefinition,
+                Attributes = GetAttributes(filteredAttributes)
+            };
+#else
             return new BindingSourceType
                        {
                            BindingType = CreateBindingType(type),
@@ -76,10 +93,25 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                            IsGenericTypeDefinition = type.IsGenericTypeDefinition,
                            Attributes = GetAttributes(filteredAttributes)
                        };
+#endif
         }
 
         private BindingSourceAttribute CreateAttribute(Attribute attribute)
         {
+#if WINRT
+            var attributeType = attribute.GetType();
+            var namedAttributeValues = attributeType.GetRuntimeFields().Where(f => !f.IsStatic && f.IsPublic).Where(
+                f => !f.IsSpecialName).Select(
+                    f => new { f.Name, Value = new BindingSourceAttributeValueProvider(f.GetValue(attribute)) })
+                .Concat(
+                    attributeType.GetRuntimeProperties().Where(p => !p.GetMethod.IsStatic && p.GetMethod.IsPublic && p.DeclaringType != typeof(Attribute)).Where(
+                        p => !p.IsSpecialName && p.CanRead && p.GetIndexParameters().Length == 0).Select(
+                            p =>
+                            new { p.Name, Value = new BindingSourceAttributeValueProvider(p.GetValue(attribute, null)) })
+                ).ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
+
+            var mostComplexCtor = attributeType.GetTypeInfo().DeclaredConstructors.Where(c => !c.IsStatic && c.IsPublic).OrderByDescending(ctor => ctor.GetParameters().Length).FirstOrDefault();
+#else
             var attributeType = attribute.GetType();
             var namedAttributeValues = attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(
                 f => !f.IsSpecialName).Select(
@@ -92,6 +124,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 ).ToDictionary(na => na.Name, na => (IBindingSourceAttributeValueProvider)na.Value);
 
             var mostComplexCtor = attributeType.GetConstructors(BindingFlags.Instance | BindingFlags.Public).OrderByDescending(ctor => ctor.GetParameters().Length).FirstOrDefault();
+#endif
 
             return new BindingSourceAttribute
                        {

@@ -118,6 +118,22 @@ namespace TechTalk.SpecFlow.Bindings
                 var scenarioContextProperty = ExpressionMemberAccessor.GetPropertyInfo((IContextManager cm) => cm.ScenarioContext);
                 Debug.Assert(scenarioContextProperty != null, "ScenarioContext not found");
 
+#if WINRT 
+                lambda = Expression.Lambda(
+                    delegateType,
+                    Expression.Call(
+                        Expression.Convert(
+                            Expression.Call(
+                                Expression.Property(
+                                    contextManagerArg,
+                                    scenarioContextProperty),
+                                getInstanceMethod,
+                                Expression.Constant(method.DeclaringType, typeof(Type))),
+                            method.DeclaringType),
+                        method,
+                        methodArguments),
+                    parameters.ToArray());
+#else
                 lambda = Expression.Lambda(
                     delegateType,
                     Expression.Call(
@@ -132,6 +148,7 @@ namespace TechTalk.SpecFlow.Bindings
                         method, 
                         methodArguments),
                     parameters.ToArray());
+#endif
             }
 
 #if WINDOWS_PHONE

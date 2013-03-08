@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow
 
         public CultureInfoScope(CultureInfo cultureInfo)
         {
+#if !WINRT
             if (cultureInfo != null && !cultureInfo.Equals(Thread.CurrentThread.CurrentCulture))
             {
                 if (cultureInfo.IsNeutralCulture)
@@ -20,12 +21,15 @@ namespace TechTalk.SpecFlow
                 originalCultureInfo = Thread.CurrentThread.CurrentCulture;
                 Thread.CurrentThread.CurrentCulture = cultureInfo;
             }
+#endif
         }
 
         public void Dispose()
         {
+#if !WINRT
             if (originalCultureInfo != null)
                 Thread.CurrentThread.CurrentCulture = originalCultureInfo;
+#endif
         }
     }
 }

@@ -11,6 +11,8 @@ using TechTalk.SpecFlow.Compatibility;
 
 namespace TechTalk.SpecFlow.Tracing
 {
+    using System.Reflection;
+
     internal static class LanguageHelper
     {
         struct KeywordSet
@@ -79,8 +81,13 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
+#if WINRT
+            var assembly = typeof(LanguageHelper).GetTypeInfo().Assembly;
+            var docStream = assembly.GetManifestResourceStream("TechTalk.Specflow.WindowsStore.Languages.xml");
+#else
             var assembly = typeof(LanguageHelper).Assembly;
             var docStream = assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
+#endif
             if (docStream == null)
                 throw new InvalidOperationException("Language resource not found.");
 

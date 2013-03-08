@@ -9,6 +9,8 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
+    using System.Reflection;
+
     public interface IStepArgumentTypeConverter
     {
         object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
@@ -111,8 +113,12 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
+#if WINRT
+            if (typeToConvertTo.GetTypeInfo().IsEnum && value is string)
+#else
             if (typeToConvertTo.IsEnum && value is string)
-                return Enum.Parse(typeToConvertTo, (string)value, true);
+#endif
+            return Enum.Parse(typeToConvertTo, (string)value, true);
 
             if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))
                 return null;
