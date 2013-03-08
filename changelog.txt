@@ -1,3 +1,9 @@
+Proposed In Pull Request
+
+New features:
++ Report includes breakdown of test results by category
+
+
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
 Fixed issues:
