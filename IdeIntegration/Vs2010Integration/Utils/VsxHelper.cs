@@ -94,8 +94,23 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             if (piSolutionSearch != null && piSolutionSearch.ContainingProject.UniqueName.Equals(project.UniqueName))
                 return piSolutionSearch;
 
-            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
-                    pi => fullPath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+            var piProjectSearch = GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                       pi => fullPath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+            if (piProjectSearch != null)
+            {
+                return piProjectSearch;
+            }
+
+            ProjectItem projectItem = null;
+            foreach (var part in filePath.Split(Path.DirectorySeparatorChar))
+            {
+                var items = projectItem != null ? projectItem.ProjectItems : project.ProjectItems;
+                projectItem = items.Cast<ProjectItem>().FirstOrDefault(
+                    item => item.Name.Equals(part, StringComparison.InvariantCultureIgnoreCase));
+                if (projectItem == null)
+                    break;
+            }
+            return projectItem;
         }
 
         public static ProjectItem FindProjectItemByFilePath(Project project, string filePath)
@@ -267,12 +282,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static string GetProjectRelativePath(ProjectItem projectItem)
         {
+            bool isLink;
+            if (TryGetProperty(projectItem.Properties, "IsLink", out isLink) && isLink)
+            {
+                return BuildProjectItemPath(projectItem);
+            }
+
             string fileName = GetFileName(projectItem);
             if (fileName == null)
                 return null;
 
             string projectFolder = GetProjectFolder(projectItem.ContainingProject);
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
+        private static string BuildProjectItemPath(ProjectItem projectItem)
+        {
+            string path = projectItem.Name;
+            while (projectItem != null && 
+                projectItem.Collection != projectItem.ContainingProject.ProjectItems)
+            {
+                projectItem = projectItem.Collection.Parent as ProjectItem;
+                path = projectItem != null ?
+                    projectItem.Name + Path.DirectorySeparatorChar + path :
+                    path;
+            }
+            return path;
         }
 
         public static string GetProjectRelativePath(Reference reference)
@@ -303,6 +338,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             {
                 return file.ReadToEnd();
             }
+        }
+
+        public static bool TryGetProperty<T>(Properties props, string name, out T value)
+        {
+            var property = props.Cast<Property>().FirstOrDefault(p => p.Name == name);
+            if (property != null)
+            {
+                value = (T) property.Value;
+                return true;
+            }
+
+            value = default(T);
+            return false;
+
         }
 
         static public Guid? GetProjectGuid(Project project)
