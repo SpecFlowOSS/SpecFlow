@@ -8,7 +8,13 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             try
             {
-                return new Guid(value);
+				value = value.Replace("{", "").Replace("}", "");
+				var guid = new Guid(value);
+
+				if (guid.ToString().Replace("-", "") != value.Replace("-", ""))
+					throw new Exception("The parsed value is not what was expected.");
+
+				return guid;
             }
             catch
             {
