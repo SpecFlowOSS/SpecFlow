@@ -6,17 +6,17 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual Guid GetValue(string value)
         {
-			var cleanedValue = "";
+            var cleanedValue = "";
             try
             {
-				cleanedValue = RemoveUnnecessaryCharacters(value);
-				return AttempToBuildAGuidFromTheString(value);
+                cleanedValue = RemoveUnnecessaryCharacters(value);
+                return AttempToBuildAGuidFromTheString(value);
             }
             catch
             {
                 try
                 {
-					return AttemptToBuildAGuidByAddingTrailingZeroes(cleanedValue);
+                    return AttemptToBuildAGuidByAddingTrailingZeroes(cleanedValue);
                 }
                 catch
                 {
@@ -25,20 +25,20 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
         }
 
-		private static Guid AttempToBuildAGuidFromTheString(string value)
-		{
-			var guid = new Guid(value);
+        private static Guid AttempToBuildAGuidFromTheString(string value)
+        {
+            var guid = new Guid(value);
 
-			if (RemoveUnnecessaryCharacters(guid) != value)
-				throw new Exception("The parsed value is not what was expected.");
+            if (RemoveUnnecessaryCharacters(guid) != value)
+                throw new Exception("The parsed value is not what was expected.");
 
-			return guid;
-		}
+            return guid;
+        }
 
-		private static string RemoveUnnecessaryCharacters(object value)
-		{
-			return value.ToString().Replace("{", "").Replace("}", "").Replace("-", "");
-		}
+        private static string RemoveUnnecessaryCharacters(object value)
+        {
+            return value.ToString().Replace("{", "").Replace("}", "").Replace("-", "");
+        }
 
         private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
         {
