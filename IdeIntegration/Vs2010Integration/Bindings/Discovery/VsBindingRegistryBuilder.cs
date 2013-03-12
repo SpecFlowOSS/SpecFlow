@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
 
         private void ProcessCodeClass(CodeClass codeClass, IdeBindingSourceProcessor bindingSourceProcessor)
         {
-            var filteredAttributes = codeClass.Attributes.Cast<CodeAttribute2>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.FullName)).ToArray();
+            var filteredAttributes = codeClass.Attributes.Cast<CodeAttribute2>().Where(attr => CanProcessTypeAttribute(bindingSourceProcessor, attr)).ToArray();
             if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.FullName)))
                 return;
 
@@ -68,6 +68,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
             }
 
             bindingSourceProcessor.ProcessTypeDone();
+        }
+
+        private static bool CanProcessTypeAttribute(IdeBindingSourceProcessor bindingSourceProcessor, CodeAttribute2 attr)
+        {
+            string attributeTypeName;
+            try
+            {
+                attributeTypeName = attr.FullName;
+            }
+            catch (Exception)
+            {
+                // invalid attribute - ignore
+                return false;
+            }
+
+            return bindingSourceProcessor.CanProcessTypeAttribute(attributeTypeName);
         }
 
         private BindingSourceMethod CreateBindingSourceMethod(CodeFunction codeFunction, BindingSourceType bindingSourceType, IdeBindingSourceProcessor bindingSourceProcessor)
