@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
     internal class CustomCompletionSet : CompletionSet
     {
         public bool PrefixMatch { get; set; }
+        public string StatusText { get; set; }
 
         public CustomCompletionSet()
         {
@@ -29,56 +30,64 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         public override void SelectBestMatch()
         {
-            SelectBestMatch(CompletionMatchType.MatchInsertionText, false);
+            var filterText = ApplicableTo.GetText(ApplicableTo.TextBuffer.CurrentSnapshot).TrimEnd();
+            var directMatchItems = Completions.Where(c => DoesCompletionMatchApplicabilityTextDirect(c, filterText, CompletionMatchType.MatchInsertionText, false)).ToArray();
+            if (directMatchItems.Any())
+            {
+                this.SelectionStatus = new CompletionSelectionStatus(directMatchItems[0], true, directMatchItems.Length == 1);
+            }
+            else
+            {
+                this.SelectionStatus = new CompletionSelectionStatus(null, false, false);
+            }
         }
-
-        protected string _filterBufferText;
-        protected bool _filterCaseSensitive;
-        protected CompletionMatchType _filterMatchType;
 
         protected void CustomFilter(CompletionMatchType matchType, bool caseSensitive)
         {
             ITextSnapshot currentSnapshot = ApplicableTo.TextBuffer.CurrentSnapshot;
-            this._filterBufferText = ApplicableTo.GetText(currentSnapshot).TrimEnd();
-            if (string.IsNullOrEmpty(this._filterBufferText))
+            var filterText = ApplicableTo.GetText(currentSnapshot).TrimEnd();
+            if (string.IsNullOrEmpty(filterText))
             {
                 ((FilteredObservableCollection<Completion>)Completions).StopFiltering();
                 ((FilteredObservableCollection<Completion>)CompletionBuilders).StopFiltering();
             }
             else
             {
-                this._filterMatchType = matchType;
-                this._filterCaseSensitive = caseSensitive;
-                ((FilteredObservableCollection<Completion>)Completions).Filter(DoesCompletionMatchApplicabilityText);
-                ((FilteredObservableCollection<Completion>)CompletionBuilders).Filter(DoesCompletionMatchApplicabilityText);
+                ((FilteredObservableCollection<Completion>)Completions).Filter(completion => DoesCompletionMatchApplicabilityText(completion, filterText, matchType, caseSensitive));
+                ((FilteredObservableCollection<Completion>)CompletionBuilders).Filter(completion => DoesCompletionMatchApplicabilityText(completion, filterText, matchType, caseSensitive));
             }
         }
 
-        protected virtual bool DoesCompletionMatchApplicabilityText(Completion completion)
+        protected virtual bool DoesCompletionMatchApplicabilityText(Completion completion, string filterText, CompletionMatchType matchType, bool caseSensitive)
+        {
+            return DoesCompletionMatchApplicabilityTextDirect(completion, filterText, matchType, caseSensitive);
+        }
+
+        protected virtual bool DoesCompletionMatchApplicabilityTextDirect(Completion completion, string filterText, CompletionMatchType matchType, bool caseSensitive)
         {
             string displayText = string.Empty;
-            if (this._filterMatchType == CompletionMatchType.MatchDisplayText)
+            if (matchType == CompletionMatchType.MatchDisplayText)
             {
                 displayText = completion.DisplayText;
             }
-            else if (this._filterMatchType == CompletionMatchType.MatchInsertionText)
+            else if (matchType == CompletionMatchType.MatchInsertionText)
             {
                 displayText = completion.InsertionText;
             }
 
             if (PrefixMatch)
             {
-                return displayText.StartsWith(this._filterBufferText, !this._filterCaseSensitive, CultureInfo.CurrentCulture);
+                return displayText.StartsWith(filterText, !caseSensitive, CultureInfo.CurrentCulture);
             }
 
-            StringComparison comparison = _filterCaseSensitive
+            StringComparison comparison = caseSensitive
                                               ? StringComparison.CurrentCulture
                                               : StringComparison.CurrentCultureIgnoreCase;
 
-            if (string.IsNullOrWhiteSpace(_filterBufferText))
+            if (string.IsNullOrWhiteSpace(filterText))
                 return false;
 
-            var words = _filterBufferText.Split(new[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
+            var words = filterText.Split(new[] {' ', '\t'}, StringSplitOptions.RemoveEmptyEntries);
             if (words.Length < 1)
                 return false; // empty
 
