@@ -25,13 +25,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 // ReSharper disable NotAccessedField.Local
         private readonly IIdeTracer tracer;
 // ReSharper restore NotAccessedField.Local
-        private readonly GoToStepDefinitionCommand goToStepDefinitionCommand;
+        private readonly IGoToStepDefinitionCommand goToStepDefinitionCommand;
         private readonly DebugScenariosCommand debugScenariosCommand;
         private readonly RunScenariosCommand runScenariosCommand;
         private readonly FormatTableCommand formatTableCommand;
         private readonly CommentUncommentCommand commentUncommentCommand;
 
-        public EditorCommandFilter(IIdeTracer tracer, GoToStepDefinitionCommand goToStepDefinitionCommand, DebugScenariosCommand debugScenariosCommand, RunScenariosCommand runScenariosCommand, FormatTableCommand formatTableCommand, CommentUncommentCommand commentUncommentCommand)
+        public EditorCommandFilter(IIdeTracer tracer, IGoToStepDefinitionCommand goToStepDefinitionCommand, DebugScenariosCommand debugScenariosCommand, RunScenariosCommand runScenariosCommand, FormatTableCommand formatTableCommand, CommentUncommentCommand commentUncommentCommand)
         {
             this.goToStepDefinitionCommand = goToStepDefinitionCommand;
             this.debugScenariosCommand = debugScenariosCommand;

@@ -180,6 +180,7 @@
     <Compile Include="Commands\GoToStepDefinitionCommand.cs" />
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
+    <Compile Include="Commands\IEditorCommand.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
