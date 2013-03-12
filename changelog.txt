@@ -1,4 +1,12 @@
-+ VS2010: Linked app.config now works (Issue 255)
+1.9.2 - 2013/03/?? (Visual Studio Integration update)
+
+Fixed issues:
++ VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
++ VS2010/VS2012: Linked app.config now works (Issue 255, by ArildF)
+
+New Features:
++ VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
+
 
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
 
