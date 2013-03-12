@@ -3,6 +3,7 @@
 Fixed issues:
 + VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
 + VS2010/VS2012: Linked app.config now works (Issue 255, by ArildF)
++ VS2012: Run SpecFlow Scenarios didn't work in VS2012 Update 1 (Issue 273)
 
 New Features:
 + VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
