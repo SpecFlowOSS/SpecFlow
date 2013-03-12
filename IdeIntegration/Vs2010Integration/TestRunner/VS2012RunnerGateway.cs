@@ -41,7 +41,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 const string testWindowAssemblyName = "Microsoft.VisualStudio.TestWindow, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
                 const string testWindowInterfacesAssemblyName = "Microsoft.VisualStudio.TestWindow.Interfaces, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
                 var tIRunCommandsExecutor = Type.GetType("Microsoft.VisualStudio.TestWindow.Controller.IRunCommandsExecutor, " + testWindowAssemblyName, true);
-                var tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Extensibility.Model.HostContext, " + testWindowInterfacesAssemblyName, true);
+
+                Type tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Extensibility.Model.HostContext, " + testWindowInterfacesAssemblyName, false);
+                if (tHostContext == null)
+                    tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Host.HostContext, " + testWindowAssemblyName, true);
 
                 var runCommandsExecutor = VsxHelper.ResolveMefDependency(serviceProvider, tIRunCommandsExecutor);
                 var hostContext = Activator.CreateInstance(tHostContext, fileName, lineNumber, -1);
