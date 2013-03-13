@@ -434,7 +434,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 if (match.Success)
                 {
                     ColorizeKeywordLine(keyword, stepSpan, classifications.StepText);
-                    int linePos = stepSpan.StartPosition.LinePosition;
+                    int linePos = stepSpan.StartPosition.LinePosition + keyword.Length;
                     foreach (var stringArg in match.Arguments.OfType<string>())
                     {
                         linePos = ColorizeLinePart(stringArg, stepSpan, classifications.StepArgument, linePos);
