@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using EnvDTE;
 using EnvDTE80;
 using TechTalk.SpecFlow.Bindings;
@@ -25,49 +24,65 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
 
         public IEnumerable<IStepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
         {
-            var bindingProcessor = new IdeBindingSourceProcessor();
-            ProcessBindingsFromProjectItem(projectItem, bindingProcessor);
+            List<ProjectItem> relatedProjectItems;
+            return GetBindingsFromProjectItem(projectItem, out relatedProjectItems);
+        }
+
+        public IEnumerable<IStepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem, out List<ProjectItem> relatedProjectItems)
+        {
+            var bindingProcessor = new IdeBindingSourceProcessor(tracer);
+            relatedProjectItems = new List<ProjectItem>();
+            ProcessBindingsFromProjectItem(projectItem, bindingProcessor, relatedProjectItems);
             return bindingProcessor.ReadStepDefinitionBindings();
         }
 
-        private void ProcessBindingsFromProjectItem(ProjectItem projectItem, IdeBindingSourceProcessor bindingSourceProcessor)
+        private void ProcessBindingsFromProjectItem(ProjectItem projectItem, IdeBindingSourceProcessor bindingSourceProcessor, List<ProjectItem> relatedProjectItems)
         {
             foreach (CodeClass codeClass in VsxHelper.GetClasses(projectItem))
             {
                 CodeClass2 bindingClassIncludingParts = codeClass as CodeClass2;
                 if (bindingClassIncludingParts == null)
                 {
-                    ProcessCodeClass(codeClass, bindingSourceProcessor);
+                    ProcessCodeClass(codeClass, bindingSourceProcessor, codeClass);
                 }
                 else
                 {
-                    foreach (CodeClass2 partialClassParts in bindingClassIncludingParts.Parts)
-                    {
-                        ProcessCodeClass(partialClassParts, bindingSourceProcessor);
-                    }
+                    var parts = bindingClassIncludingParts.Parts.OfType<CodeClass>().ToArray();
+                    relatedProjectItems.AddRange(parts.Select(p => p.ProjectItem).Where(pi => pi != null && pi != projectItem));
+                    // we need to use the class parts to grab class-related information (e.g. [Binding] attribute)
+                    // but we need to process the binding methods only from the current part, otherwise these
+                    // methods would be registered to multiple file pathes, and the update tracking would not work
+                    ProcessCodeClass(codeClass, bindingSourceProcessor, parts.ToArray());
                 }
             }
         }
 
-        private void ProcessCodeClass(CodeClass codeClass, IdeBindingSourceProcessor bindingSourceProcessor)
+        private void ProcessCodeClass(CodeClass codeClass, IdeBindingSourceProcessor bindingSourceProcessor, params CodeClass[] classParts)
         {
-            var filteredAttributes = codeClass.Attributes.Cast<CodeAttribute2>().Where(attr => CanProcessTypeAttribute(bindingSourceProcessor, attr)).ToArray();
+            var filteredAttributes = classParts
+                .SelectMany(cc => cc.Attributes.Cast<CodeAttribute2>().Where(attr => CanProcessTypeAttribute(bindingSourceProcessor, attr))).ToArray();
+                
             if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.FullName)))
                 return;
 
-            var bindingSourceType = bindingReflectionFactory.CreateBindingSourceType(codeClass, filteredAttributes);
+            var bindingSourceType = bindingReflectionFactory.CreateBindingSourceType(classParts, filteredAttributes); //TODO: merge info from parts
 
             if (!bindingSourceProcessor.ProcessType(bindingSourceType))
                 return;
 
+            ProcessCodeFunctions(codeClass, bindingSourceType, bindingSourceProcessor);
+
+            bindingSourceProcessor.ProcessTypeDone();
+        }
+
+        private void ProcessCodeFunctions(CodeClass codeClass, BindingSourceType bindingSourceType, IdeBindingSourceProcessor bindingSourceProcessor)
+        {
             foreach (var codeFunction in codeClass.Children.OfType<CodeFunction>())
             {
                 var bindingSourceMethod = CreateBindingSourceMethod(codeFunction, bindingSourceType, bindingSourceProcessor);
                 if (bindingSourceMethod != null)
                     bindingSourceProcessor.ProcessMethod(bindingSourceMethod);
             }
-
-            bindingSourceProcessor.ProcessTypeDone();
         }
 
         private static bool CanProcessTypeAttribute(IdeBindingSourceProcessor bindingSourceProcessor, CodeAttribute2 attr)
@@ -97,19 +112,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
             {
                 tracer.Trace("CreateBindingSourceMethod error: {0}", this, ex);
                 return null;
-            }
-        }
-
-        static internal bool IsPotentialBindingClass(CodeClass codeClass)
-        {
-            try
-            {
-                var filteredAttributes = codeClass.Attributes.OfType<CodeAttribute2>();
-                return BindingSourceProcessor.IsPotentialBindingClass(filteredAttributes.Select(attr => attr.FullName));
-            }
-            catch(Exception)
-            {
-                return false;
             }
         }
     }
