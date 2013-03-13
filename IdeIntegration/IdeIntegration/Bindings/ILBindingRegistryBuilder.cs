@@ -5,11 +5,19 @@ using Mono.Cecil;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 {
     public class ILBindingRegistryBuilder
     {
+        private readonly IIdeTracer tracer;
+
+        public ILBindingRegistryBuilder(IIdeTracer tracer)
+        {
+            this.tracer = tracer;
+        }
+
         public void ProcessStepDefinitionsFromAssembly(string assemblyPath, IBindingSourceProcessor bindingSourceProcessor)
         {
             ModuleDefinition module = ModuleDefinition.ReadModule(assemblyPath);
@@ -37,7 +45,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 
         public IEnumerable<IStepDefinitionBinding> GetStepDefinitionsFromAssembly(string assemblyPath)
         {
-            var bindingProcessor = new IdeBindingSourceProcessor();
+            var bindingProcessor = new IdeBindingSourceProcessor(tracer);
             ProcessStepDefinitionsFromAssembly(assemblyPath, bindingProcessor);
             return bindingProcessor.ReadStepDefinitionBindings();
         }

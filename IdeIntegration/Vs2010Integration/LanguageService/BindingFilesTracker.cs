@@ -174,8 +174,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return base.HandleMissingProjectItem(fileInfo);
         }
 
-        protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
+        protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem, out List<BindingFileInfo> relatedFiles)
         {
+            relatedFiles = null;
             vsProjectScope.Tracer.Trace("Analyzing binding file: {0}", this, fileInfo.ProjectRelativePath);
 
             if (fileInfo.IsAssembly)
@@ -184,7 +185,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem).ToArray();
+                List<ProjectItem> relatedProjectItems;
+                fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem, out relatedProjectItems).ToArray();
+                relatedFiles = relatedProjectItems.Select(pi => FindFileInfo(VsxHelper.GetProjectRelativePath(pi))).Where(fi => fi != null).Distinct().ToList();
                 fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
             }
         }
@@ -197,7 +200,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             vsProjectScope.Tracer.Trace("Calculate step definitions from assembly: {0}", this, reference.Name);
 
-            ILBindingRegistryBuilder builder = new ILBindingRegistryBuilder();
+            ILBindingRegistryBuilder builder = new ILBindingRegistryBuilder(vsProjectScope.Tracer);
             fileInfo.StepBindings = builder.GetStepDefinitionsFromAssembly(reference.Path).ToArray();
 
             vsProjectScope.Tracer.Trace("Detected {0} step definitions from reference {1}", this, fileInfo.StepBindings.Count(), reference.Name);
