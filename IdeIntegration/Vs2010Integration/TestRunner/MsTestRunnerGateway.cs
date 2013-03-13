@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 
         protected override int GetFeatureCodeBehindLine(TextDocument codeBehindDoc)
         {
-            return GetCodeBehindLine(codeBehindDoc, 1);
+            return GetCodeBehindLine(codeBehindDoc, 1, null);
         }
     }
 }
