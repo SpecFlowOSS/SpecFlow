@@ -41,7 +41,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
             {
                 if (commandFilter.QueryStatus(editorContext, pguidCmdGroup, prgCmds[0]))
+                {
+                    prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                     return VSConstants.S_OK;
+                }
 
                 return Next.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
             }
