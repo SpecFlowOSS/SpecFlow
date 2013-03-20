@@ -1,4 +1,4 @@
-1.9.2 - 2013/03/?? (Visual Studio Integration update)
+1.9.2 - 2013/03/20 (Visual Studio Integration update)
 
 Fixed issues:
 + VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
