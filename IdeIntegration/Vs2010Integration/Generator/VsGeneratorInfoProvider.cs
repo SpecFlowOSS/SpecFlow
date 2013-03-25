@@ -47,9 +47,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
                 if (DetectFromConfig(generatorInfo, generatorConfiguration))
                     return generatorInfo;
 
-                if (DetectDirectGeneratorReference(generatorInfo))
-                    return generatorInfo;
-
                 if (!DetectFromRuntimeReference(generatorInfo))
                     tracer.Trace("Unable to detect generator path", "VsGeneratorInfoProvider");
                 
@@ -139,19 +136,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Generator
 
             generatorInfo.GeneratorAssemblyVersion = new Version(fileVersion.FileVersion);
             generatorInfo.GeneratorFolder = Path.GetDirectoryName(generatorPath);
-
-            return true;
-        }
-
-        private bool DetectDirectGeneratorReference(GeneratorInfo generatorInfo)
-        {
-            var specFlowGeneratorRef = VsxHelper.GetReference(project, generatorAssemblyName);
-            if (specFlowGeneratorRef == null)
-                return false;
-
-            tracer.Trace("Direct generator reference found", "VsGeneratorInfoProvider");
-            generatorInfo.GeneratorAssemblyVersion = new Version(specFlowGeneratorRef.Version);
-            generatorInfo.GeneratorFolder = Path.GetDirectoryName(specFlowGeneratorRef.Path);
 
             return true;
         }

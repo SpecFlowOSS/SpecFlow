@@ -1,4 +1,4 @@
-1.9.2 - 2013/03/20 (Visual Studio Integration update)
+1.9.2 - 2013/03/25 (Visual Studio Integration update)
 
 Fixed issues:
 + VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
@@ -9,6 +9,7 @@ Fixed issues:
 + VS2010/VS2012: Parameter is not colorized correctly when part of the keyword (Issue 276)
 + VS2010/VS2012: 'Go To Definition' does not work with partial classes (Issue 53)
 + VS2010/VS2012: ReSharper shortcuts (comment, go to definition, run test) do not work
++ VS2010/VS2012: Test class generation fails when installed SpecFlow and SpecFlow.CustomPlugin packages in one project (Issue 279)
 
 New Features:
 + VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
