@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var exceptionThrown = false;
             try
             {
-                var e = RowExtensionMethods.GetEnum<Person>(table.Rows.First(), "Sex");
+                RowExtensionMethods.GetEnum<Person>(table.Rows.First(), "Sex");
             }
             catch (InvalidOperationException exception)
             {
