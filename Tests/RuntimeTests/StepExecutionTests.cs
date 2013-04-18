@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TechTalk.SpecFlow.Infrastructure;
@@ -74,6 +76,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public virtual void DistinguishByTableParam2(Table table)
         {
 
+        }
+
+
+        [Given("Returns a Task")]
+        public virtual Task ReturnsATask()
+        {
+            throw new NotSupportedException("should be mocked");
         }
     }
 
@@ -274,6 +283,54 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(TestStatus.BindingError, GetLastTestStatus());
             MockRepository.VerifyAll();
         }
+
+        [Test]
+        public void SholdCallBindingThatReturnsTask()
+        {
+            StepExecutionTestsBindings bindingInstance;
+            TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
+
+            bool taskFinished = false;
+
+            bindingInstance.Expect(b => b.ReturnsATask()).Return(Task.Factory.StartNew(() =>
+                {
+                    Thread.Sleep(800);
+                    taskFinished = true;
+                }));
+
+            MockRepository.ReplayAll();
+
+            testRunner.Given("Returns a Task");
+            Assert.IsTrue(taskFinished);
+            Assert.AreEqual(TestStatus.OK, GetLastTestStatus());
+            MockRepository.VerifyAll();
+        }
+
+        [Test]
+        public void SholdCallBindingThatReturnsTaskAndReportError()
+        {
+            StepExecutionTestsBindings bindingInstance;
+            TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
+
+            bool taskFinished = false;
+
+            bindingInstance.Expect(b => b.ReturnsATask()).Return(Task.Factory.StartNew(() =>
+                {
+                    Thread.Sleep(800);
+                    taskFinished = true;
+                    throw new Exception("catch meee");
+                }));
+
+            MockRepository.ReplayAll();
+
+            testRunner.Given("Returns a Task");
+            Assert.IsTrue(taskFinished);
+            Assert.AreEqual(TestStatus.TestError, GetLastTestStatus());
+            Assert.AreEqual("catch meee", ContextManagerStub.ScenarioContext.TestError.Message);
+
+            MockRepository.VerifyAll();
+        }
+
 
 
     }
