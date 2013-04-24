@@ -228,6 +228,21 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void Will_handle_null_value_when_retrieving_with_try_get_value()
+        {
+            var scenarioContext = CreateScenarioContext();
+            string expected = null;
+
+            scenarioContext.Set(expected, "test");
+
+            string actual;
+            var retrieved = scenarioContext.TryGetValue("test", out actual);
+
+            Assert.IsTrue(retrieved);
+            Assert.AreSame(expected, actual);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
             return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null, null);

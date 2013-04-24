@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.Text;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -13,11 +15,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class GherkinLanguageService : IDisposable
     {
         private readonly IProjectScope projectScope;
-        private readonly IVisualStudioTracer visualStudioTracer;
+        private readonly IIdeTracer tracer;
         private readonly bool enableStepMatchColoring;
 
         private bool isDisposed = false;
-        private IGherkinFileScope lastGherkinFileScope = null;
+        private IGherkinFileScope _lastGherkinFileScope = null;
+        private readonly object lastGherkinFileScopeSynchRoot = new object();
+        private IGherkinFileScope lastGherkinFileScope
+        {
+            get
+            {
+                IGherkinFileScope result;
+                lock(lastGherkinFileScopeSynchRoot)
+                {
+                    result = _lastGherkinFileScope;
+                    Thread.MemoryBarrier();
+                }
+                return result;
+            }
+            set
+            {
+                lock(lastGherkinFileScopeSynchRoot)
+                {
+                    _lastGherkinFileScope = value;
+                }
+            }
+        }
         private ITextSnapshot lastRegisteredSnapshot = null;
 
         private bool isInitialized = false;
@@ -27,14 +50,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return projectScope; }
         }
 
-        public GherkinLanguageService(IProjectScope projectScope, IVisualStudioTracer visualStudioTracer, bool enableStepMatchColoring)
+        public GherkinLanguageService(IProjectScope projectScope, IVisualStudioTracer tracer, bool enableStepMatchColoring)
         {
             this.projectScope = projectScope;
-            this.visualStudioTracer = visualStudioTracer;
+            this.tracer = tracer;
             this.enableStepMatchColoring = enableStepMatchColoring && projectScope.StepSuggestionProvider != null;
             AnalyzingEnabled = projectScope.GherkinScopeAnalyzer != null;
 
-            visualStudioTracer.Trace("Language service created", "GherkinLanguageService");
+            tracer.Trace("Language service created", "GherkinLanguageService");
         }
 
         public void EnsureInitialized(ITextBuffer textBuffer)
@@ -220,11 +243,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         /// </summary>
         /// <param name="waitForLatest">If true, the caller is blocked until the most recent scope is produced.</param>
         /// <param name="waitForParsingSnapshot"></param>
+        /// <param name="waitForResult">Specifies whether the call should try waiting for any result.</param>
         /// <returns>The parsed file scope.</returns>
         public IGherkinFileScope GetFileScope(bool waitForLatest = false, ITextSnapshot waitForParsingSnapshot = null, bool waitForResult = true)
         {
             if (isDisposed)
                 throw new ObjectDisposedException("GherkinLanguageService");
+
+            //tracer.Trace("GetFileScope (waitForLatest: {0}, waitForParsingSnapshot: {1}, waitForResult: {2}", this, waitForLatest, waitForParsingSnapshot, waitForResult);
 
             if (!waitForResult && lastGherkinFileScope == null)
                 return null;
@@ -234,22 +260,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (waitForLatest)
             {
-                while (lastRegisteredSnapshot == null)
+                if (lastRegisteredSnapshot == null)
                 {
-                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    tracer.Trace("GetFileScope - waiting for first registered snapshot... caller: {0}", this, new StackFrame(1, false).GetMethod().Name);
+                    while (lastRegisteredSnapshot == null)
+                    {
+                        Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                    }
+                    tracer.Trace("GetFileScope - first registered snapshot received", this);
                 }
                 waitForParsingSnapshot = lastRegisteredSnapshot;
             }
 
             if (waitForParsingSnapshot != null)
             {
+                
+
                 int counter = 0;
-                while (counter < 10 && 
+                const int i = 10;
+                while (counter < i && 
                     (lastGherkinFileScope == null || lastGherkinFileScope.TextSnapshot != waitForParsingSnapshot))
                 {
+                    if (counter == 0)
+                        tracer.Trace("GetFileScope - waiting for expected snapshot... caller: {0}", this, new StackFrame(1, false).GetMethod().Name);
                     Thread.Sleep(TimeSpan.FromMilliseconds(50));
                     counter++;
                 }
+                if (counter >= i)
+                    tracer.Trace("GetFileScope - failed to receive expected snapshot, using an older one", this);
+                else if (counter > 0)
+                    tracer.Trace("GetFileScope - expected snapshot received", this);
             }
 
             return lastGherkinFileScope;
@@ -257,7 +297,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Dispose()
         {
-            visualStudioTracer.Trace("Language service disposed", "GherkinLanguageService");
+            tracer.Trace("Language service disposed", "GherkinLanguageService");
             isDisposed = true;
             projectScope.GherkinDialectServicesChanged -= ReParseEntireFile;
             if (enableStepMatchColoring)

@@ -17,10 +17,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"The following fields do not exist:
 AFieldThatDoesNotExist
-AnotherFieldThatDoesNotExist");
+AnotherFieldThatDoesNotExist".AgnosticLineBreak());
         }
 
         [Test]
@@ -32,11 +32,11 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"
   | StringProperty |
 + |                |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -48,12 +48,12 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"
   | StringProperty |
 + |                |
 + |                |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -66,12 +66,12 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
 @"
   | StringProperty |
 - | orange         |
 + | apple          |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -89,13 +89,13 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"
   | StringProperty |
   | orange         |
 - | apple          |
 + | rotten apple   |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -113,14 +113,14 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"
   | StringProperty |
 - | orange         |
 - | apple          |
 + | rotten orange  |
 + | rotten apple   |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -139,12 +139,12 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(@"
+            exception.Message.AgnosticLineBreak().ShouldEqual(@"
   | StringProperty |
   | orange         |
   | apple          |
 + | extra row      |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -162,12 +162,12 @@ AnotherFieldThatDoesNotExist");
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.ShouldEqual(@"
+            exception.Message.AgnosticLineBreak().ShouldEqual(@"
   | StringProperty |
   | orange         |
 + | apple          |
 + | banana         |
-");
+".AgnosticLineBreak());
         }
 
         private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)

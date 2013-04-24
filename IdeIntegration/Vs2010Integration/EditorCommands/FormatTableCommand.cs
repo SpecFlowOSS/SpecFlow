@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
             if (!editorContext.LanguageService.ProjectScope.IntegrationOptionsProvider.GetOptions().EnableTableAutoFormat)
                 return false;
 
-            var fileScope = editorContext.LanguageService.GetFileScope();
+            var fileScope = editorContext.LanguageService.GetFileScope(waitForLatest: true);
             if (fileScope == null)
                 return false;
 

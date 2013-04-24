@@ -103,5 +103,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
             TestRunnerTool = IntegrationOptionsProvider.TestRunnerToolDefaultValue;
             DisableRegenerateFeatureFilePopupOnConfigChange = IntegrationOptionsProvider.DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue;
         }
+
+        public override void SaveSettingsToStorage()
+        {
+            base.SaveSettingsToStorage();
+            IntegrationOptionsProvider.cachedOptions = null;
+        }
     }
 }

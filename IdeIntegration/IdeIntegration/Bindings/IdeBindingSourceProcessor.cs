@@ -2,15 +2,18 @@ using System.Collections.Generic;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 {
     public class IdeBindingSourceProcessor : BindingSourceProcessor
     {
+        private readonly IIdeTracer tracer;
         private List<IStepDefinitionBinding> stepDefinitionBindings = new List<IStepDefinitionBinding>();
 
-        public IdeBindingSourceProcessor() : base(new BindingFactory(new StepDefinitionRegexCalculator(new RuntimeConfiguration())))
+        public IdeBindingSourceProcessor(IIdeTracer tracer) : base(new BindingFactory(new StepDefinitionRegexCalculator(new RuntimeConfiguration())))
         {
+            this.tracer = tracer;
         }
 
         protected override void ProcessHooks(BindingSourceMethod bindingSourceMethod, BindingScope[] methodScopes)
@@ -43,6 +46,12 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
             var result = stepDefinitionBindings;
             stepDefinitionBindings = new List<IStepDefinitionBinding>();
             return result;
+        }
+
+        protected override bool OnValidationError(string messageFormat, params object[] arguments)
+        {
+            tracer.Trace(messageFormat, "Warning", arguments);
+            return base.OnValidationError(messageFormat, arguments);
         }
     }
 }

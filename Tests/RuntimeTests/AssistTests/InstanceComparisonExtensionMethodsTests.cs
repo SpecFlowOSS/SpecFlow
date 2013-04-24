@@ -123,9 +123,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"The following fields did not match:
-StringProperty: Expected <Howard Roark>, Actual <Peter Keating>");
+StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBreak());
         }
 
         [Test]
@@ -143,10 +143,10 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>");
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.ShouldEqual(
+            exception.Message.AgnosticLineBreak().ShouldEqual(
                 @"The following fields did not match:
 StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
-IntProperty: Expected <1>, Actual <2>");
+IntProperty: Expected <1>, Actual <2>".AgnosticLineBreak());
         }
 
         [Test]
@@ -159,8 +159,8 @@ IntProperty: Expected <1>, Actual <2>");
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.ShouldEqual(@"The following fields did not match:
-IDoNotExist: Property does not exist");
+            exception.Message.AgnosticLineBreak().ShouldEqual(@"The following fields did not match:
+IDoNotExist: Property does not exist".AgnosticLineBreak());
         }
 
         [Test]

@@ -43,10 +43,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            result.ShouldEqual(@"  | One     | Two | Three      |
+            result.AgnosticLineBreak().ShouldEqual(@"  | One     | Two | Three      |
   | 1234567 | 1   | 1234567890 |
 + | 1       | 2   | 3          |
-");
+".AgnosticLineBreak());
         }
 
         private static FormattingTableDiffExceptionBuilder<TestObject> GetABuilderThatReturnsThisString(string returnValue, TableDifferenceResults<TestObject> tableDifferenceResults)

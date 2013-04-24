@@ -72,6 +72,7 @@ namespace TechTalk.SpecFlow
 
         private static bool TheValueIsAFactoryMethod<T>(object value)
         {
+            if (value == null) return false;
             return value.GetType() == typeof(Func<T>);
         }
     }
