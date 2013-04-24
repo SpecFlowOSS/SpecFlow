@@ -153,6 +153,9 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Vs2008Integration\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
     <Compile Include="..\Vs2010Integration\AutoComplete\CompletionCommandFilter.cs">
       <Link>AutoComplete\CompletionCommandFilter.cs</Link>
     </Compile>
