@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="91a043db-a77e-4908-adf2-d3adeea3d60b" Version="1.0" Language="en-US" Publisher="Company" />
-    <DisplayName>VSPackage1</DisplayName>
-    <Description xml:space="preserve">Information about my package</Description>
+    <Identity Id="91a043db-a77e-4908-adf2-d3adeea3d60b" Version="1.9.3" Language="en-US" Publisher="TechTalk" />
+    <DisplayName>SpecFlow</DisplayName>
+    <Description xml:space="preserve">SpecFlow integration for Microsoft Visual Studio 2012. Sponsored by TechTalk (http://www.techtalk.at).</Description>
     <License>LICENSE.txt</License>
     <Icon>specflowpackage.ico</Icon>
     <PreviewImage>specflow_preview.png</PreviewImage>
   </Metadata>
   <Installation InstalledByMsi="false">
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
+    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Pro" />
+    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Premium" />
+    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Ultimate" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
