@@ -54,7 +54,7 @@ namespace System
 
         public static IEnumerable<Attribute> GetCustomAttributes(this Type self, Type attributeType, bool inherit)
         {
-            return self.GetTypeInfo().GetCustomAttributes(attributeType, inherit);
+            return (IEnumerable<Attribute>)self.GetTypeInfo().GetCustomAttributes(attributeType, inherit);
         }
     }
 }
