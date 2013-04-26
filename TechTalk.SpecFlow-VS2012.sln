@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
+	ProjectSection(SolutionItems) = preProject
+		changelog.txt = changelog.txt
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		LICENSE.txt = LICENSE.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlternativeRuntimes", "AlternativeRuntimes", "{01A98306-2E7F-42E5-A180-C31C4DC82C57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C4BDE8C-3363-4575-AAA4-E6D7AAA51C5B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\nuget.exe = .nuget\nuget.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.Specflow.WindowsStore", "AlternativeRuntimes\Runtime.WindowsStore\TechTalk.Specflow.WindowsStore.csproj", "{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.Specflow.WindowsPhone", "AlternativeRuntimes\Runtime.WindowsPhone\TechTalk.Specflow.WindowsPhone.csproj", "{7E666146-BFC8-44F1-8857-39113B6590C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+		VS2010IntegrationTest|Any CPU = VS2010IntegrationTest|Any CPU
+		VS2010IntegrationTest|ARM = VS2010IntegrationTest|ARM
+		VS2010IntegrationTest|x64 = VS2010IntegrationTest|x64
+		VS2010IntegrationTest|x86 = VS2010IntegrationTest|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|ARM.Build.0 = Debug|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|x64.ActiveCfg = Debug|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|x64.Build.0 = Debug|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|x86.ActiveCfg = Debug|x86
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Debug|x86.Build.0 = Debug|x86
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|ARM.ActiveCfg = Release|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|ARM.Build.0 = Release|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|x64.ActiveCfg = Release|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|x64.Build.0 = Release|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|x86.ActiveCfg = Release|x86
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.Release|x86.Build.0 = Release|x86
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|ARM.ActiveCfg = Release|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|ARM.Build.0 = Release|ARM
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|x64.ActiveCfg = Release|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|x64.Build.0 = Release|x64
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|x86.ActiveCfg = Release|x86
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73}.VS2010IntegrationTest|x86.Build.0 = Release|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|ARM.Build.0 = Debug|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|x86.ActiveCfg = Debug|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Debug|x86.Build.0 = Debug|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|ARM.ActiveCfg = Release|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|ARM.Build.0 = Release|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|x86.ActiveCfg = Release|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.Release|x86.Build.0 = Release|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|ARM.ActiveCfg = Release|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|ARM.Build.0 = Release|ARM
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|x64.ActiveCfg = Release|Any CPU
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|x86.ActiveCfg = Release|x86
+		{7E666146-BFC8-44F1-8857-39113B6590C7}.VS2010IntegrationTest|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8BE3373-0DF6-43C6-B89E-8AAD534A8F73} = {01A98306-2E7F-42E5-A180-C31C4DC82C57}
+		{7E666146-BFC8-44F1-8857-39113B6590C7} = {01A98306-2E7F-42E5-A180-C31C4DC82C57}
+	EndGlobalSection
+EndGlobal

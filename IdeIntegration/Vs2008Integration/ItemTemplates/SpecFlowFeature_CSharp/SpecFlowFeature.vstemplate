@@ -4,6 +4,8 @@
     <Name>SpecFlow Feature File</Name>
     <Description>SpecFlow Feature</Description>
     <ProjectType>CSharp</ProjectType>
+    <TemplateGroupID>WinRT-Managed</TemplateGroupID>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
     <SortOrder>10</SortOrder>
     <Icon>SpecFlowFeatureIcon.ico</Icon>
   </TemplateData>

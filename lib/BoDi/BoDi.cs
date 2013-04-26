@@ -199,8 +199,12 @@ namespace BoDi
 
                 if (obj == null)
                 {
+#if WINRT
+                    if (ImplementationType.GetTypeInfo().IsInterface)
+#else
                     if (ImplementationType.IsInterface)
-                        throw new ObjectContainerException("Interface cannot be resolved: " + keyToResolve, resolutionPath);
+#endif
+                    throw new ObjectContainerException("Interface cannot be resolved: " + keyToResolve, resolutionPath);
 
                     obj = container.CreateObject(ImplementationType, resolutionPath, keyToResolve);
                     container.objectPool.Add(pooledObjectKey, obj);
@@ -240,7 +244,11 @@ namespace BoDi
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, IEnumerable<Type> resolutionPath)
             {
                 var typeToResolve = keyToResolve.Type;
+#if WINRT
+                Debug.Assert(typeToResolve.GetTypeInfo().IsGenericType && typeToResolve.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+#else
                 Debug.Assert(typeToResolve.IsGenericType && typeToResolve.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+#endif
 
                 var genericArguments = typeToResolve.GetGenericArguments();
                 var keyType = genericArguments[0];
@@ -262,8 +270,12 @@ namespace BoDi
                 if (keyType == typeof(string))
                     return name;
 
+#if WINRT
+                if (keyType.GetTypeInfo().IsEnum)
+#else
                 if (keyType.IsEnum)
-                    return Enum.Parse(keyType, name, true);
+#endif
+                return Enum.Parse(keyType, name, true);
 
                 return Convert.ChangeType(name, keyType, CultureInfo.CurrentCulture);
             }
@@ -461,7 +473,11 @@ namespace BoDi
 
         private bool IsNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
+#if WINRT
+            return keyToResolve.Name == null && keyToResolve.Type.GetTypeInfo().IsGenericType && keyToResolve.Type.GetGenericTypeDefinition() == typeof(IDictionary<,>);
+#else
             return keyToResolve.Name == null && keyToResolve.Type.IsGenericType && keyToResolve.Type.GetGenericTypeDefinition() == typeof(IDictionary<,>);
+#endif
         }
 
         private object GetPooledObject(RegistrationKey pooledObjectKey)
@@ -478,8 +494,12 @@ namespace BoDi
 
         private object CreateObjectFor(RegistrationKey keyToResolve, IEnumerable<Type> resolutionPath)
         {
+#if WINRT
+            if (keyToResolve.Type.GetTypeInfo().IsPrimitive || keyToResolve.Type == typeof(string))
+#else
             if (keyToResolve.Type.IsPrimitive || keyToResolve.Type == typeof(string))
-                throw new ObjectContainerException("Primitive types cannot be resolved: " + keyToResolve.Type.FullName, resolutionPath);
+#endif
+            throw new ObjectContainerException("Primitive types cannot be resolved: " + keyToResolve.Type.FullName, resolutionPath);
 
             var registrationResult = GetRegistrationResult(keyToResolve) ?? new TypeRegistration(keyToResolve.Type);
 
@@ -488,10 +508,17 @@ namespace BoDi
 
         private object CreateObject(Type type, IEnumerable<Type> resolutionPath, RegistrationKey keyToResolve)
         {
+#if WINRT
+            var ctors = type.GetPublicInstanceConstructors().ToArray();
+#else
             var ctors = type.GetConstructors();
+#endif
             if (ctors.Length == 0)
+#if WINRT
+                ctors = type.GetPrivateInstanceConstructors().ToArray();
+#else
                 ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
-
+#endif
             if (ctors.Length == 0)
             {
                 throw new ObjectContainerException("Class must have a constructor! " + type.FullName, resolutionPath);

@@ -4,6 +4,7 @@
     <Name>SpecFlow Hooks (event bindings)</Name>
     <Description>SpecFlow Hooks (event bindings)</Description>
     <ProjectType>CSharp</ProjectType>
+    <TemplateGroupID>WinRT-Managed</TemplateGroupID>
     <SortOrder>10</SortOrder>
     <Icon>SpecFlowHooksIcon.ico</Icon>
   </TemplateData>
