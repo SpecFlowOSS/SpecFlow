@@ -98,12 +98,22 @@ namespace TechTalk.SpecFlow.Assist
     public class Projection<T>
     {
         private readonly T item;
-        private IEnumerable<string> properties;
+        private readonly IEnumerable<string> properties;
 
         public Projection(T item, IEnumerable<string> properties)
         {
             this.item = item;
             this.properties = properties;
+        }
+
+        public T Value
+        {
+            get { return item; }
+        }
+
+        public object this[string key]
+        {
+            get { return item.GetPropertyValue(key); }
         }
 
         public override bool Equals(object obj)
@@ -113,7 +123,7 @@ namespace TechTalk.SpecFlow.Assist
                 var otherProjection = obj as Projection<T>;
                 if (item != null && otherProjection.item != null)
                 {
-                    IEnumerable<string> properties = this.properties;
+                    var properties = this.properties;
                     if (otherProjection.properties != null)
                     {
                         if (properties == null)
