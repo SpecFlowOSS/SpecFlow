@@ -61,7 +61,7 @@
             };
 
             var result = this.BindingSourceProcessorUnderTest.ProcessType(stubType);
-            Assert.IsFalse(result, "Non-class should be a valid type");
+            Assert.IsFalse(result, "Non-class should be not a valid type");
         }
 
         [Test]
