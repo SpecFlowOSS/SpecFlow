@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -13,6 +16,7 @@ using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using Process = EnvDTE.Process;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
@@ -216,6 +220,142 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             return commandArgsBuilder.ToString();
         }
 
+        public class ExecutionContext
+        {
+            private readonly IOutputWindowPane pane;
+            private readonly Dispatcher dispatcher;
+            private readonly System.Diagnostics.Process process;
+            private readonly bool debug;
+            private readonly DTE2 dte;
+            private readonly IIdeTracer tracer;
+            private Version specRunVersion = new Version(1,1);
+            private bool? shouldAttachToMain = true;
+
+            public ExecutionContext(IOutputWindowPane pane, Dispatcher dispatcher, System.Diagnostics.Process process, bool debug, DTE2 dte, IIdeTracer tracer)
+            {
+                this.pane = pane;
+                this.dispatcher = dispatcher;
+                this.process = process;
+                this.debug = debug;
+                this.dte = dte;
+                this.tracer = tracer;
+
+                process.OutputDataReceived += OnMessageReceived;
+                process.ErrorDataReceived += OnMessageReceived;
+            }
+
+            private void OnMessageReceived(object sender, DataReceivedEventArgs args)
+            {
+                if (args.Data != null)
+                {
+                    string message = ProcessSpecRunMessage(args.Data);
+                    if (!string.IsNullOrWhiteSpace(message) && pane != null)
+                        dispatcher.BeginInvoke(new Action(() => pane.WriteLine(args.Data)), DispatcherPriority.ContextIdle);
+                }
+            }
+
+            class SpecRunMessage
+            {
+                public readonly string Command;
+                public readonly Dictionary<string, string> Args;
+
+                public SpecRunMessage(Match match)
+                {
+                    Command = match.Groups["command"].Value.ToLowerInvariant();
+                    Args = new Dictionary<string, string>();
+                    var argsStrings = match.Groups["args"].Value.Trim().Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var argString in argsStrings)
+                    {
+                        var keyValue = argString.Split(new[] {'='}, 2);
+                        if (keyValue.Length == 0 || string.IsNullOrWhiteSpace(keyValue[0]))
+                            continue;
+                        Args.Add(keyValue[0].Trim().ToLowerInvariant(), keyValue.Length == 1 || string.IsNullOrWhiteSpace(keyValue[1]) ? "" : keyValue[1]);
+                    }
+                }
+            }
+
+            static private Regex specrunMessageRe = new Regex(@"##specrun\[(?<command>\w+)( (?<args>.*?))?(?<![^\|](\|\|)*\|)\]");
+
+            private string ProcessSpecRunMessage(string message)
+            {
+                var matches = specrunMessageRe.Matches(message).Cast<Match>().ToArray();
+                foreach (var srMessage in matches.Select(m => new SpecRunMessage(m)))
+                {
+                    if (srMessage.Command == "info")
+                    {
+                        if (srMessage.Args.ContainsKey("version"))
+                        {
+                            specRunVersion = new Version(srMessage.Args["version"]);
+                            if (specRunVersion >= new Version(1, 2))
+                                shouldAttachToMain = null;
+                        }
+                    }
+                    if (srMessage.Command == "debug")
+                    {
+                        if (srMessage.Args.ContainsKey("skip"))
+                        {
+                            shouldAttachToMain = false;
+                        }
+                        else if (srMessage.Args.ContainsKey("ready"))
+                        {
+                            shouldAttachToMain = true;
+                        }
+                        else if (srMessage.Args.ContainsKey("pid"))
+                        {
+                            int pid = int.Parse(srMessage.Args["pid"], CultureInfo.InvariantCulture);
+                            //attach to another process
+                            AttachToProcess(pid);
+                        }
+                    }
+                }
+
+                foreach (var match in matches.OrderByDescending(m => m.Index))
+                {
+                    message = message.Remove(match.Index, match.Length);
+                }
+
+                return message;
+            }
+
+            public void Start()
+            {
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                if (debug)
+                {
+                    var maxWaitUntil = DateTime.Now.AddSeconds(30);
+                    System.Threading.Thread.Sleep(100);
+                    while (shouldAttachToMain == null && maxWaitUntil > DateTime.Now)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    if (shouldAttachToMain != null && shouldAttachToMain.Value)
+                        AttachToProcess(process.Id);
+                }
+            }
+
+            private void AttachToProcess(int pid)
+            {
+                try
+                {
+                    var processes = dte.Debugger.LocalProcesses;
+                    foreach (Process processToAttach in processes)
+                        if (processToAttach.ProcessID == pid)
+                        {
+                            processToAttach.Attach();
+                            return;
+                        }
+                    tracer.Trace("SpecRun process not found.", GetType().Name);
+                }
+                catch (Exception ex)
+                {
+                    tracer.Trace("Error attaching to SpecRun process. " + ex, GetType().Name);
+                }
+            }
+        }
+
         public void ExecuteTests(string consolePath, string commandArgs, bool debug)
         {
             string command = string.Format("{0} {1}", consolePath, commandArgs);
@@ -230,7 +370,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             process.StartInfo.Arguments = commandArgs;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
             process.StartInfo.CreateNoWindow = true;
+
+            var executionContext = new ExecutionContext(displayResult ? pane : null, dispatcher, process, debug, dte, tracer);
 
             if (displayResult)
             {
@@ -238,45 +381,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 pane.Activate();
                 dte.ToolWindows.OutputWindow.Parent.Activate();
                 pane.WriteLine(command);
-                process.OutputDataReceived += (sender, args) =>
-                                                  {
-                                                      if (args.Data != null)
-                                                      {
-                                                          dispatcher.BeginInvoke(new Action(() => pane.WriteLine(args.Data)), DispatcherPriority.ContextIdle);
-                                                      }
-                                                  };
             }
 
-            process.Start();
-
-            if (debug)
-                AttachToProcess(process.Id);
-
-            if (displayResult)
-            {
-                process.BeginOutputReadLine();
-            }
+            executionContext.Start();
 
             // async execution: we do not call 'process.WaitForExit();'
         }
 
-        private void AttachToProcess(int pid)
-        {
-            try
-            {
-                var processes = dte.Debugger.LocalProcesses;
-                foreach (Process process in processes)
-                    if (process.ProcessID == pid)
-                    {
-                        process.Attach();
-                        return;
-                    }
-                tracer.Trace("SpecRun process not found.", GetType().Name);
-            }
-            catch(Exception ex)
-            {
-                tracer.Trace("Error attaching to SpecRun process. " + ex, GetType().Name);
-            }
-        }
     }
 }
