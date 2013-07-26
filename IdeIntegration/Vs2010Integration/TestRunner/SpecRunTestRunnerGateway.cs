@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using EnvDTE;
 using EnvDTE80;
+using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
@@ -26,11 +27,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
         private readonly IIdeTracer tracer;
         private readonly IProjectScopeFactory projectScopeFactory;
         private readonly DTE2 dte;
+        private readonly InstallServices installServices;
 
-        public SpecRunTestRunnerGateway(IOutputWindowService outputWindowService, IIdeTracer tracer, IProjectScopeFactory projectScopeFactory, DTE2 dte)
+        public SpecRunTestRunnerGateway(IOutputWindowService outputWindowService, IIdeTracer tracer, IProjectScopeFactory projectScopeFactory, DTE2 dte, InstallServices installServices)
         {
             this.outputWindowService = outputWindowService;
             this.dte = dte;
+            this.installServices = installServices;
             this.projectScopeFactory = projectScopeFactory;
             this.tracer = tracer;
         }
@@ -171,13 +174,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return true;
             }
 
+            Version specRunVersion;
+            if (!Version.TryParse(FileVersionInfo.GetVersionInfo(consolePath).FileVersion, out specRunVersion))
+                specRunVersion = new Version(1, 1);
+
             var args = BuildCommandArgs(new ConsoleOptions
                                             {
                                                 BaseFolder = VsxHelper.GetProjectFolder(project) + @"\bin\Debug", //TODO
                                                 Target = VsxHelper.GetProjectAssemblyName(project) + ".dll",
                                                 Filter = filter
-                                            }, debug);
-            ExecuteTests(consolePath, args, debug);
+                                            }, debug, specRunVersion);
+            ExecuteTests(consolePath, args, debug, specRunVersion);
             return true;
         }
 
@@ -198,9 +205,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             public string Filter { get; set; }
         }
 
-        public string BuildCommandArgs(ConsoleOptions consoleOptions, bool debug)
+        static private readonly Version SpecRun12 = new Version(1, 2);
+
+        public string BuildCommandArgs(ConsoleOptions consoleOptions, bool debug, Version specRunVersion)
         {
-            StringBuilder commandArgsBuilder = new StringBuilder("run ");
+            var commandArgsBuilder = new StringBuilder("run ");
             if (consoleOptions.Target == null)
                 throw new InvalidOperationException();
             commandArgsBuilder.AppendFormat("\"{0}\" ", consoleOptions.Target);
@@ -213,7 +222,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (consoleOptions.Filter != null)
                 commandArgsBuilder.AppendFormat("\"/filter:{0}\" ", consoleOptions.Filter);
 
-            commandArgsBuilder.Append("/toolIntegration:vs2010 ");
+            string toolIntegration = specRunVersion >= SpecRun12 ? installServices.IdeIntegration.ToString().Replace("VisualStudio", "vs") : "vs2010";
+
+            commandArgsBuilder.AppendFormat("/toolIntegration:{0} ", toolIntegration);
             if (debug)
                 commandArgsBuilder.Append("/debug ");
 
@@ -228,10 +239,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             private readonly bool debug;
             private readonly DTE2 dte;
             private readonly IIdeTracer tracer;
-            private Version specRunVersion = new Version(1,1);
+            private Version specRunVersion;
             private bool? shouldAttachToMain = true;
 
-            public ExecutionContext(IOutputWindowPane pane, Dispatcher dispatcher, System.Diagnostics.Process process, bool debug, DTE2 dte, IIdeTracer tracer)
+            public ExecutionContext(IOutputWindowPane pane, Dispatcher dispatcher, System.Diagnostics.Process process, bool debug, DTE2 dte, IIdeTracer tracer, Version specRunVersion)
             {
                 this.pane = pane;
                 this.dispatcher = dispatcher;
@@ -239,6 +250,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 this.debug = debug;
                 this.dte = dte;
                 this.tracer = tracer;
+                this.specRunVersion = specRunVersion;
+
+                if (specRunVersion >= SpecRun12)
+                    shouldAttachToMain = null;
 
                 process.OutputDataReceived += OnMessageReceived;
                 process.ErrorDataReceived += OnMessageReceived;
@@ -274,7 +289,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 }
             }
 
-            static private Regex specrunMessageRe = new Regex(@"##specrun\[(?<command>\w+)( (?<args>.*?))?(?<![^\|](\|\|)*\|)\]");
+            static private readonly Regex specrunMessageRe = new Regex(@"##specrun\[(?<command>\w+)( (?<args>.*?))?(?<![^\|](\|\|)*\|)\]");
 
             private string ProcessSpecRunMessage(string message)
             {
@@ -286,7 +301,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                         if (srMessage.Args.ContainsKey("version"))
                         {
                             specRunVersion = new Version(srMessage.Args["version"]);
-                            if (specRunVersion >= new Version(1, 2))
+                            if (specRunVersion >= SpecRun12)
                                 shouldAttachToMain = null;
                         }
                     }
@@ -356,7 +371,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             }
         }
 
-        public void ExecuteTests(string consolePath, string commandArgs, bool debug)
+        public void ExecuteTests(string consolePath, string commandArgs, bool debug, Version specRunVersion)
         {
             string command = string.Format("{0} {1}", consolePath, commandArgs);
             tracer.Trace(command, GetType().Name);
@@ -365,15 +380,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             var displayResult = pane != null;
             var dispatcher = Dispatcher.CurrentDispatcher;
 
-            var process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = consolePath;
-            process.StartInfo.Arguments = commandArgs;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.CreateNoWindow = true;
+            var process = new System.Diagnostics.Process
+                {
+                    StartInfo =
+                        {
+                            FileName = consolePath,
+                            Arguments = commandArgs,
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            CreateNoWindow = true
+                        }
+                };
 
-            var executionContext = new ExecutionContext(displayResult ? pane : null, dispatcher, process, debug, dte, tracer);
+            var executionContext = new ExecutionContext(displayResult ? pane : null, dispatcher, process, debug, dte, tracer, specRunVersion);
 
             if (displayResult)
             {
