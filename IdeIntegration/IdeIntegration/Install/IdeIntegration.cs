@@ -7,6 +7,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
         VisualStudio2010 = 2000,
         VisualStudio2012 = 3000,
         MonoDevelop = 4000,
-        SharpDevelop = 5000
+        SharpDevelop = 5000,
+        VisualStudio2013 = 6000
     }
 }
