@@ -9,11 +9,7 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 
 == Contributing
 
-If you are interested in contributing,
-1. Get a Github account
-1. Fork the project
-1. Make your feature addition or bugfix. Please also update the [[changelog|https://github.com/techtalk/SpecFlow/edit/master/changelog.txt]].
-1. Send me a pull request via GitHub
+If you are interested in contributing, there are some useful information on this page: https://github.com/techtalk/SpecFlow/wiki/Contributing.
 
 == Copyright
 
