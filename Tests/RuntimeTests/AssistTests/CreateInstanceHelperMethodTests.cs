@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Should;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -34,6 +35,33 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = table.CreateInstance<Person>();
 
             person.FirstName.ShouldEqual("Howard");
+        }
+
+        [Test]
+        public void Create_instance_will_parse_and_set_empty_list()
+        {
+            var table = new Table("Holidays");
+            table.AddRow("");
+            var person = table.CreateInstance<Person>();
+            person.Holidays.ShouldBeEmpty();
+        }
+
+        [Test]
+        public void Create_instance_will_parse_and_set_list_of_dates()
+        {
+            var table = new Table("Holidays");
+            table.AddRow("2 September 2012, 3 November 2013, 2014-01-15");
+            var person = table.CreateInstance<Person>();
+            person.Holidays.ShouldEqual(new[] { new DateTime(2012, 9, 2), new DateTime(2013, 11, 3), new DateTime(2014, 1, 15) }.ToList());
+        }
+
+        [Test]
+        public void Create_instance_will_parse_and_set_list_of_numbers()
+        {
+            var table = new Table("FavoriteNumbers");
+            table.AddRow("1,7,42");
+            var person = table.CreateInstance<Person>();
+            person.FavoriteNumbers.ShouldEqual(new[] { 1,7,42 }.ToList());
         }
 
         [Test]

@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
 {
     public class Person
     {
+        public List<DateTime> Holidays { get; set; }
+        public List<int> FavoriteNumbers { get; set; }
+
         public Sex Sex { get; set; }
         public string FirstName { get; set; }
         public char MiddleInitial { get; set; }

@@ -95,7 +95,19 @@ namespace TechTalk.SpecFlow.Assist
                 return true;
             if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
+
+            if (GetGenericTypeDefinition(key) == GetGenericTypeDefinition(property.PropertyType))
+                return true; 
+
             return false;
+        }
+
+        static Type GetGenericTypeDefinition(Type type)
+        {
+            if (type.IsGenericType)
+                return type.GetGenericTypeDefinition();
+
+            return type;
         }
 
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
@@ -134,6 +146,7 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
+                           {typeof (List<>), (TableRow row) => new ListValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
                        };
         }
 
