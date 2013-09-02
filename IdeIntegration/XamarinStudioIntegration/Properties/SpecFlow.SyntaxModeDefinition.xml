@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SyntaxMode name="SpecFlow feature" mimeTypes="application/feature-template">
+
+    <Property name="LineComment">#</Property>
+    <EolSpan color = "Comment(Line)" rule="Comment">#</EolSpan>
+    <Span color = "Xml Name" rule="Comment">
+        <Begin>"""</Begin>
+        <End>"""</End>
+    </Span>
+
+    <Keywords color="Keyword(Selection)" >
+        <Word>Given</Word>
+        <Word>When</Word>
+        <Word>Then</Word>
+        <Word>And</Word>
+    </Keywords>
+    
+    <Span color = "String" stopateol = "true">
+        <Begin>"</Begin>
+        <End>"</End>
+    </Span>
+    
+    <Match color = "Keyword(Constants)">Feature:</Match>
+    <Match color = "Keyword(Constants)">Scenario:</Match>
+    <Match color = "Keyword(Constants)">Scenario Outline:</Match>
+    <Match color = "Keyword(Constants)">Background:</Match>
+    <Match color = "Keyword(Constants)">Examples:</Match>
+    
+    <Match color = "Keyword(Namespace)">(^|[^@\w\d])@\w[\w\d]*</Match>
+    
+    
+
+
+</SyntaxMode>
+

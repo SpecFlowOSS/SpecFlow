@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC567007-C48F-44F9-95D8-FC56FE2DA330}</ProjectGuid>
+    <ProjectTypeGuids>{7DBEB09D-BB9F-4D92-A141-A009135475EF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>XamarinStudio.TechTalk.SpecFlow</RootNamespace>
+    <AssemblyName>XamarinStudio.TechTalk.SpecFlow</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Addins" />
+    <Reference Include="MonoDevelop.Core">
+      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/MonoDevelop.Core.dll</Package>
+    </Reference>
+    <Reference Include="MonoDevelop.Ide">
+      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/MonoDevelop.Ide.dll</Package>
+    </Reference>
+    <Reference Include="Mono.TextEditor">
+      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/Mono.TextEditor.dll</Package>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/ICSharpCode.NRefactory.dll</Package>
+    </Reference>
+    <Reference Include="gtk-sharp" />
+    <Reference Include="glib-sharp" />
+    <Reference Include="gdk-sharp" />
+    <Reference Include="pango-sharp" />
+    <Reference Include="Mono.Cairo" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MonoDevelopGeneratorServices.cs" />
+    <Compile Include="MonoDevelopSpecFlowConfigurationReader.cs" />
+    <Compile Include="SingleFeatureFileGenerator.cs" />
+    <Compile Include="ThreadAsyncOperation.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\SpecFlow.SyntaxModeDefinition.xml">
+      <LogicalName>SpecFlow.SyntaxModeDefinition.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowEventDefinition.xft.xml">
+      <LogicalName>SpecFlowEventDefinition.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowFeature.xft.xml">
+      <LogicalName>SpecFlowFeature.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\SpecFlowStepDefinition.xft.xml">
+      <LogicalName>SpecFlowStepDefinition.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowEventDefinitionIcon.ico">
+      <LogicalName>SpecFlowEventDefinitionIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowFeatureIcon.ico">
+      <LogicalName>SpecFlowFeatureIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowStepDefinitionIcon.ico">
+      <LogicalName>SpecFlowStepDefinitionIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\XamarinStudio.TechTalk.SpecFlow.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
+      <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
+      <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
+      <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
+      <Name>TechTalk.SpecFlow.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
+      <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
+      <Name>TechTalk.SpecFlow.IdeIntegration</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
