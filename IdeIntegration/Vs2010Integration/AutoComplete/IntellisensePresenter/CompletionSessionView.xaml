@@ -1,0 +1,46 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:IntellisensePresenter="clr-namespace:TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter"
+    x:Class="TechTalk.SpecFlow.Vs2010Integration.AutoComplete.IntellisensePresenter.CompletionSessionView"
+    mc:Ignorable="d" MinWidth="400" MinHeight="20" MaxHeight="350" MaxWidth="800" d:DesignHeight="200" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding Path=IconSource}" Height="16" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding Path=DisplayText, Mode=Default}" Padding="5,0,5,0" />
+            </Grid>            
+        </DataTemplate>
+        <IntellisensePresenter:Text2Visibility x:Key="text2Visibility" />
+    </UserControl.Resources>
+    <Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <!--<ColumnDefinition />-->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Border Background="White" BorderBrush="#FF828790" BorderThickness="1,1,1,0" Visibility="{Binding Session.SelectedCompletionSet.StatusText, Mode=OneWay, Converter={StaticResource ResourceKey=text2Visibility}}">
+                <TextBlock Text="{Binding Session.SelectedCompletionSet.StatusText, Mode=OneWay}" Padding="5,3,5,3" FontStyle="Italic" />
+            </Border>
+            
+            <ListBox x:Name="listViewCompletions" Grid.Row="1"
+                     ItemTemplate="{DynamicResource ItemDataTemplate}"
+                 ItemsSource="{Binding Session.SelectedCompletionSet.Completions}"               
+                 MouseDoubleClick="ListView_MouseDoubleClick" 
+                 SelectionChanged="ListView_SelectionChanged" 
+                 MouseLeftButtonDown="listViewCompletions_MouseLeftButtonDown">
+            </ListBox>
+        </Grid>
+    </Border>
+</UserControl>

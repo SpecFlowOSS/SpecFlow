@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.Utils;
 using VSLangProj;
 using Constants = EnvDTE.Constants;
+using DefGuidList = Microsoft.VisualStudio.Editor.DefGuidList;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Utils
@@ -87,8 +88,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static ProjectItem FindProjectItemByProjectRelativePath(Project project, string filePath)
         {
-            return GetAllPhysicalFileProjectItem(project).FirstOrDefault(
-                    pi => filePath.Equals(GetProjectRelativePath(pi), StringComparison.InvariantCultureIgnoreCase));
+            var fullPath = Path.Combine(GetProjectFolder(project), filePath);
+
+            var piSolutionSearch = project.DTE.Solution.FindProjectItem(fullPath);
+            if (piSolutionSearch != null && piSolutionSearch.ContainingProject.UniqueName.Equals(project.UniqueName))
+                return piSolutionSearch;
+
+            var piProjectSearch = GetAllPhysicalFileProjectItem(project).FirstOrDefault(
+                       pi => fullPath.Equals(GetFileName(pi), StringComparison.InvariantCultureIgnoreCase));
+            if (piProjectSearch != null)
+            {
+                return piProjectSearch;
+            }
+
+            ProjectItem projectItem = null;
+            foreach (var part in filePath.Split(Path.DirectorySeparatorChar))
+            {
+                var items = projectItem != null ? projectItem.ProjectItems : project.ProjectItems;
+                projectItem = items.Cast<ProjectItem>().FirstOrDefault(
+                    item => item.Name.Equals(part, StringComparison.InvariantCultureIgnoreCase));
+                if (projectItem == null)
+                    break;
+            }
+            return projectItem;
         }
 
         public static ProjectItem FindProjectItemByFilePath(Project project, string filePath)
@@ -260,12 +282,32 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         public static string GetProjectRelativePath(ProjectItem projectItem)
         {
+            bool isLink;
+            if (TryGetProperty(projectItem.Properties, "IsLink", out isLink) && isLink)
+            {
+                return BuildProjectItemPath(projectItem);
+            }
+
             string fileName = GetFileName(projectItem);
             if (fileName == null)
                 return null;
 
             string projectFolder = GetProjectFolder(projectItem.ContainingProject);
             return FileSystemHelper.GetRelativePath(fileName, projectFolder);
+        }
+
+        private static string BuildProjectItemPath(ProjectItem projectItem)
+        {
+            string path = projectItem.Name;
+            while (projectItem != null && 
+                projectItem.Collection != projectItem.ContainingProject.ProjectItems)
+            {
+                projectItem = projectItem.Collection.Parent as ProjectItem;
+                path = projectItem != null ?
+                    projectItem.Name + Path.DirectorySeparatorChar + path :
+                    path;
+            }
+            return path;
         }
 
         public static string GetProjectRelativePath(Reference reference)
@@ -296,6 +338,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
             {
                 return file.ReadToEnd();
             }
+        }
+
+        public static bool TryGetProperty<T>(Properties props, string name, out T value)
+        {
+            var property = props.Cast<Property>().FirstOrDefault(p => p.Name == name);
+            if (property != null)
+            {
+                value = (T) property.Value;
+                return true;
+            }
+
+            value = default(T);
+            return false;
+
         }
 
         static public Guid? GetProjectGuid(Project project)
@@ -401,6 +457,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
         {
             IComponentModel componentModel = (IComponentModel)serviceProvider.GetService(typeof(SComponentModel));
             return componentModel.GetService<T>();
+        }
+
+        public static object ResolveMefDependency(System.IServiceProvider serviceProvider, Type typeToResolve)
+        {
+            IComponentModel componentModel = (IComponentModel)serviceProvider.GetService(typeof(SComponentModel));
+            var getServiceMethod = typeof (IComponentModel).GetMethod("GetService").MakeGenericMethod(typeToResolve);
+            return getServiceMethod.Invoke(componentModel, null);
         }
 
         public static Reference GetReference(Project project, string assemblyName)
@@ -515,10 +578,36 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
                 return null;
 
             object holder;
-            Guid guidViewHost = Microsoft.VisualStudio.Editor.DefGuidList.guidIWpfTextViewHost;
+            Guid guidViewHost = DefGuidList.guidIWpfTextViewHost;
             userData.GetData(ref guidViewHost, out holder);
             IWpfTextViewHost viewHost = (IWpfTextViewHost) holder;
             return viewHost.TextView;
+        }
+
+        [DebuggerStepThrough]
+        public static ProjectItem TryGetProjectItem(Document document)
+        {
+            try
+            {
+                return document.ProjectItem;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static CodeElement TryGetCodeElementFromActivePoint(FileCodeModel codeModel, TextSelection textSelection)
+        {
+            try
+            {
+                return codeModel.CodeElementFromPoint(textSelection.ActivePoint, vsCMElement.vsCMElementFunction);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

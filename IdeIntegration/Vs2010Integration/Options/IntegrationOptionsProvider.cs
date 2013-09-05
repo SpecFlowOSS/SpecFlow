@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
     [Export(typeof(IIntegrationOptionsProvider))]
     internal class IntegrationOptionsProvider : IIntegrationOptionsProvider
     {
+        internal static IntegrationOptions cachedOptions = null;
+
         public const string SPECFLOW_OPTIONS_CATEGORY = "SpecFlow";
         public const string SPECFLOW_GENERAL_OPTIONS_PAGE = "General";
 
@@ -23,6 +25,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
         public const bool EnableTracingDefaultValue = false;
         public const string TracingCategoriesDefaultValue = "all";
         public const TestRunnerTool TestRunnerToolDefaultValue = TestRunnerTool.Auto;
+        public const bool DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue = false;
 
         private DTE dte;
 
@@ -42,7 +45,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
 
         private static IntegrationOptions GetOptions(DTE dte)
         {
-            IntegrationOptions options = new IntegrationOptions
+            var options = cachedOptions;
+            if (options != null)
+                return options;
+
+            options = new IntegrationOptions
                                           {
                                               EnableSyntaxColoring = GetGeneralOption(dte, "EnableSyntaxColoring", EnableSyntaxColoringDefaultValue),
                                               EnableOutlining = GetGeneralOption(dte, "EnableOutlining", EnableOutliningDefaultValue),
@@ -53,7 +60,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Options
                                               EnableTracing = GetGeneralOption(dte, "EnableTracing", EnableTracingDefaultValue),
                                               TracingCategories = GetGeneralOption(dte, "TracingCategories", TracingCategoriesDefaultValue),
                                               TestRunnerTool = GetGeneralOption(dte, "TestRunnerTool", TestRunnerToolDefaultValue),
+                                              DisableRegenerateFeatureFilePopupOnConfigChange = GetGeneralOption(dte, "DisableRegenerateFeatureFilePopupOnConfigChange", DisableRegenerateFeatureFilePopupOnConfigChangeDefaultValue)
                                           };
+            cachedOptions = options;
             return options;
         }
 

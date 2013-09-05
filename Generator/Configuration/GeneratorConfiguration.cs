@@ -99,18 +99,16 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         #region Equality
 
-        public bool Equals(GeneratorConfiguration other)
+        protected bool Equals(GeneratorConfiguration other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(other.FeatureLanguage, FeatureLanguage) && Equals(other.ToolLanguage, ToolLanguage) && Equals(other.GeneratorUnitTestProvider, GeneratorUnitTestProvider) && other.AllowDebugGeneratedFiles.Equals(AllowDebugGeneratedFiles) && other.AllowRowTests.Equals(AllowRowTests);
+            return Equals(FeatureLanguage, other.FeatureLanguage) && Equals(ToolLanguage, other.ToolLanguage) && string.Equals(GeneratorUnitTestProvider, other.GeneratorUnitTestProvider) && AllowDebugGeneratedFiles.Equals(other.AllowDebugGeneratedFiles) && AllowRowTests.Equals(other.AllowRowTests) && GenerateAsyncTests.Equals(other.GenerateAsyncTests) && string.Equals(GeneratorPath, other.GeneratorPath) && UsesPlugins.Equals(other.UsesPlugins);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (GeneratorConfiguration)) return false;
+            if (obj.GetType() != this.GetType()) return false;
             return Equals((GeneratorConfiguration) obj);
         }
 
@@ -118,12 +116,15 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         {
             unchecked
             {
-                int result = (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
-                result = (result*397) ^ (ToolLanguage != null ? ToolLanguage.GetHashCode() : 0);
-                result = (result*397) ^ (GeneratorUnitTestProvider != null ? GeneratorUnitTestProvider.GetHashCode() : 0);
-                result = (result*397) ^ AllowDebugGeneratedFiles.GetHashCode();
-                result = (result*397) ^ AllowRowTests.GetHashCode();
-                return result;
+                int hashCode = (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (ToolLanguage != null ? ToolLanguage.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (GeneratorUnitTestProvider != null ? GeneratorUnitTestProvider.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ AllowDebugGeneratedFiles.GetHashCode();
+                hashCode = (hashCode*397) ^ AllowRowTests.GetHashCode();
+                hashCode = (hashCode*397) ^ GenerateAsyncTests.GetHashCode();
+                hashCode = (hashCode*397) ^ (GeneratorPath != null ? GeneratorPath.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ UsesPlugins.GetHashCode();
+                return hashCode;
             }
         }
 

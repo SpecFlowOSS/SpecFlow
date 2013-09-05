@@ -1,180 +1,87 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Concurrency;
 using System.Threading;
-using System.Windows.Threading;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public interface IGherkinProcessingTask
-    {
-        void Apply();
-        IGherkinProcessingTask Merge(IGherkinProcessingTask other);
-    }
-
-    public class DelegateTask : IGherkinProcessingTask
-    {
-        private readonly Action task;
-        private readonly IIdeTracer tracer;
-
-        public DelegateTask(Action task, IIdeTracer tracer)
-        {
-            this.task = task;
-            this.tracer = tracer;
-        }
-
-        public void Apply()
-        {
-            try
-            {
-                task();
-            }
-            catch(Exception exception)
-            {
-                tracer.Trace("Exception: " + exception, "DelegateTask");
-            }
-        }
-
-        public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
-        {
-            return null;
-        }
-    }
-
-    internal class PingTask : IGherkinProcessingTask
-    {
-        public static readonly IGherkinProcessingTask Instance = new PingTask();
-
-        public void Apply()
-        {
-            //nop;
-        }
-
-        public IGherkinProcessingTask Merge(IGherkinProcessingTask other)
-        {
-            return other;
-        }
-    }
-
-
     public class GherkinProcessingScheduler : IDisposable
     {
-        private readonly IVisualStudioTracer visualStudioTracer;
         private static readonly TimeSpan parsingDelay = TimeSpan.FromMilliseconds(250);
         private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(500);
 
-        private readonly Dispatcher parsingDispatcher;
-        private readonly IScheduler parsingScheduler;
-        private readonly Dispatcher analyzingDispatcher;
-        private readonly IScheduler analyzingScheduler;
-        private readonly Subject<IGherkinProcessingTask> parsingSubject; 
-        private readonly Subject<IGherkinProcessingTask> analyzingSubject; 
+        private readonly IIdeTracer tracer;
+        private IdleTaskProcessingQueue parserQueue;
+        private IdleTaskProcessingQueue analyzerQueue;
 
-        private Dispatcher CreateBackgroundThreadWithDispatcher(ThreadPriority priority)
+        public GherkinProcessingScheduler(IIdeTracer tracer, bool enableAnalysis)
         {
-            var thread = new Thread(Dispatcher.Run)
-                        {
-                            IsBackground = true, Priority = priority
-                        };
-            thread.Start();
+            this.tracer = tracer;
 
-            Dispatcher result;
-            while ((result = Dispatcher.FromThread(thread)) == null)
-            {
-                Thread.Sleep(10);
-            }
-
-            return result;
-        }
-
-        public GherkinProcessingScheduler(IVisualStudioTracer visualStudioTracer, bool enableAnalysis)
-        {
-            this.visualStudioTracer = visualStudioTracer;
-            
-            parsingDispatcher = CreateBackgroundThreadWithDispatcher(ThreadPriority.BelowNormal);
-            parsingScheduler = new DispatcherScheduler(parsingDispatcher);
-            parsingSubject = new Subject<IGherkinProcessingTask>(parsingScheduler);
-            parsingSubject.BufferWithTimeout(parsingDelay, parsingScheduler, flushFirst: true)
-                .Subscribe(ApplyTask);
+            parserQueue = new IdleTaskProcessingQueue(parsingDelay, true, tracer, DoTask);
+            parserQueue.Start();
 
             if (enableAnalysis)
             {
-                analyzingDispatcher = CreateBackgroundThreadWithDispatcher(ThreadPriority.BelowNormal);
-                analyzingScheduler = new DispatcherScheduler(analyzingDispatcher);
-                analyzingSubject = new Subject<IGherkinProcessingTask>(analyzingScheduler);
-                analyzingSubject.BufferWithTimeout(analyzingDelay, analyzingScheduler, flushFirst: false)
-                    .Subscribe(ApplyTask);
+                analyzerQueue = new IdleTaskProcessingQueue(analyzingDelay, false, tracer, DoTask);
+                analyzerQueue.Start();
             }
-        }
-
-        private void ApplyTask(IGherkinProcessingTask task)
-        {
-            if (!(task is PingTask))
-                visualStudioTracer.Trace("Applying task on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
-
-            try
-            {
-                task.Apply();
-            }
-            catch(Exception exception)
-            {
-                visualStudioTracer.Trace("Exception: " + exception, "GherkinProcessingScheduler");
-            }
-        }
-
-        private void ApplyTask(IEnumerable<IGherkinProcessingTask> tasks)
-        {
-            IGherkinProcessingTask currentTask = null;
-            foreach (var task in tasks)
-            {
-                if (currentTask == null)
-                    currentTask = task;
-                else
-                {
-                    var mergedTask = currentTask.Merge(task);
-                    if (mergedTask == null) // cannot merge
-                    {
-                        ApplyTask(currentTask);
-                        currentTask = task;
-                    }
-                    else
-                    {
-                        if (!(currentTask is PingTask || task is PingTask))
-                            visualStudioTracer.Trace("Task merged", "GherkinProcessingScheduler");
-                        currentTask = mergedTask;
-                    }
-                }
-            }
-            if (currentTask != null)
-                ApplyTask(currentTask);
         }
 
         public void EnqueueParsingRequest(IGherkinProcessingTask change)
         {
-            visualStudioTracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
-            parsingSubject.OnNext(change);
-            if (analyzingSubject != null)
-                analyzingSubject.OnNext(PingTask.Instance);
+            //tracer.Trace("Change queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
+            if (parserQueue == null)
+            {
+                tracer.Trace("Unable to perform parsing request: Parser queue is not initialized!", this);
+                return;
+            }
+
+            parserQueue.EnqueueTask(change);
+            if (analyzerQueue != null)
+                analyzerQueue.Ping();
         }
 
         public void EnqueueAnalyzingRequest(IGherkinProcessingTask task)
         {
-            if (analyzingSubject == null)
+            tracer.Trace("Analyzing request '{1}' queued on thread: {0}", this, Thread.CurrentThread.ManagedThreadId, task);
+            if (analyzerQueue == null)
+            {
+                tracer.Trace("Unable to perform analyzing request: Analyzer queue is not initialized!", this);
                 return;
+            }
 
-            visualStudioTracer.Trace("Analyzing request queued on thread: " + Thread.CurrentThread.ManagedThreadId, "GherkinProcessingScheduler");
-            analyzingSubject.OnNext(task);
+            analyzerQueue.EnqueueTask(task);
+        }
+
+        private void DoTask(IGherkinProcessingTask task)
+        {
+            tracer.Trace("Applying task '{1}' on thread: {0}", this, Thread.CurrentThread.ManagedThreadId, task);
+            try
+            {
+                task.Apply();
+            }
+            catch (Exception exception)
+            {
+                tracer.Trace("Task error: {0}", this, exception);
+            }
         }
 
         public void Dispose()
         {
-            parsingDispatcher.InvokeShutdown();
-            if (analyzingDispatcher != null)
-                analyzingDispatcher.InvokeShutdown();
+            if (analyzerQueue != null)
+            {
+                var queue = analyzerQueue;
+                analyzerQueue = null; // we set the field to null first, to avoid scheduling during dispose
+                queue.Dispose();
+            }
+
+            if (parserQueue != null)
+            {
+                var queue = parserQueue;
+                parserQueue = null; // we set the field to null first, to avoid scheduling during dispose
+                queue.Dispose();
+            }
         }
     }
 }

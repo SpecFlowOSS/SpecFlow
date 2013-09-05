@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
@@ -36,7 +35,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             {
                 // we don't know about the generator -> call the "current" directly
                 tracer.Trace("Unable to detect generator location: the generator bound to the IDE is used", "RemoteGeneratorServices");
-                return base.GetTestGeneratorFactoryForCreate();
+                return GetTestGeneratorFactoryOfIDE();
             }
 
             var currentGeneratorAssemblyVersion = GetCurrentGeneratorAssemblyVersion();
@@ -46,14 +45,14 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
             {
                 // old generator version -> call the "current" directly
                 tracer.Trace(string.Format("The project's generator ({0}) is older than v1.6: the generator bound to the IDE is used", generatorInfo.GeneratorAssemblyVersion), "RemoteGeneratorServices");
-                return base.GetTestGeneratorFactoryForCreate();
+                return GetTestGeneratorFactoryOfIDE();
             }
 
             if (generatorInfo.GeneratorAssemblyVersion == currentGeneratorAssemblyVersion && !generatorInfo.UsesPlugins)
             {
                 // uses the "current" generator (and no plugins) -> call it directly
                 tracer.Trace("The generator of the project is the same as the generator bound to the IDE: using it from the IDE", "RemoteGeneratorServices");
-                return base.GetTestGeneratorFactoryForCreate();
+                return GetTestGeneratorFactoryOfIDE();
             }
 
             try

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using EnvDTE;
-using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
@@ -16,45 +15,27 @@ using TextSelection = EnvDTE.TextSelection;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
-    public class GoToStepsCommand : MenuCommandHandler
+    public interface IGoToStepsCommand : IEditorCommand
     {
+    }
+
+    public class GoToStepsCommand : IGoToStepsCommand
+    {
+        private readonly DTE dte;
         private readonly IProjectScopeFactory projectScopeFactory;
         private readonly IIdeTracer tracer;
 
-        public GoToStepsCommand(IServiceProvider serviceProvider, DTE dte, IProjectScopeFactory projectScopeFactory, IIdeTracer tracer) : base(serviceProvider, dte)
+        public GoToStepsCommand(DTE dte, IProjectScopeFactory projectScopeFactory, IIdeTracer tracer)
         {
+            this.dte = dte;
             this.projectScopeFactory = projectScopeFactory;
             this.tracer = tracer;
         }
 
-        protected override void BeforeQueryStatus(OleMenuCommand command, SelectedItems selection)
-        {
-            var activeDocument = dte.ActiveDocument;
-            if (activeDocument == null || activeDocument.ProjectItem == null || activeDocument.ProjectItem.FileCodeModel == null)
-            {
-                command.Visible = false;
-                return;
-            }
-
-            if (selection.Count != 1)
-            {
-                command.Enabled = false;
-                return;
-            }
-
-            command.Enabled = IsEnabled(activeDocument);
-        }
-
-        internal bool IsEnabled(Document activeDocument)
+        public bool IsEnabled(Document activeDocument)
         {
             var bindingMethod = GetSelectedBindingMethod(activeDocument);
             return bindingMethod != null && IsStepDefinition(bindingMethod, activeDocument);
-        }
-
-        protected override void Invoke(OleMenuCommand command, SelectedItems selection)
-        {
-            var activeDocument = dte.ActiveDocument;
-            Invoke(activeDocument);
         }
 
         private class StepInstanceWithProjectScope
@@ -69,7 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             }
         }
 
-        internal void Invoke(Document activeDocument)
+        public void Invoke(Document activeDocument)
         {
             var bindingMethod = GetSelectedBindingMethod(activeDocument);
 
@@ -202,14 +183,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             if (codeModel == null)
                 return null;
 
-            try
-            {
-                return codeModel.CodeElementFromPoint(textSelection.ActivePoint, vsCMElement.vsCMElementFunction) as CodeFunction;
-            }
-            catch(Exception)
-            {
-                return null;
-            }
+            return VsxHelper.TryGetCodeElementFromActivePoint(codeModel, textSelection) as CodeFunction;
         }
     }
 }

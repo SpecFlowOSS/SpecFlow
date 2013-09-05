@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using EnvDTE;
-using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser;
@@ -32,10 +31,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     internal class ProjectFeatureFilesTracker : ProjectFilesTracker<FeatureFileInfo>, IDisposable
     {
         private readonly VsProjectFilesTracker filesTracker;
+        private readonly Lazy<ITestGenerator> testGeneratorForCodeBehindVersionDetection;
 
         public ProjectFeatureFilesTracker(VsProjectScope vsProjectScope) : base(vsProjectScope)
         {
             filesTracker = CreateFilesTracker(this.vsProjectScope.Project, @"\.feature$");
+            testGeneratorForCodeBehindVersionDetection = new Lazy<ITestGenerator>(() => vsProjectScope.GeneratorServices.CreateTestGeneratorOfIDE(), true);
         }
 
         protected override FeatureFileInfo CreateFileInfo(ProjectItem projectItem)
@@ -59,8 +60,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             AnalyzeFilesBackground();
         }
 
-        protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
+        protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem, out List<FeatureFileInfo> relatedFiles)
         {
+            relatedFiles = null;
             vsProjectScope.Tracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
             var codeBehindChangeDate = AnalyzeCodeBehind(featureFileInfo, projectItem);
 
@@ -107,14 +109,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             try
             {
-                using (var testGenerator = vsProjectScope.GeneratorServices.CreateTestGenerator())
-                {
-                    featureFileInfo.GeneratorVersion = testGenerator.DetectGeneratedTestVersion(
-                        new FeatureFileInput(featureFileInfo.ProjectRelativePath)
-                            {
-                                GeneratedTestFileContent = codeBehindContent
-                            });
-                }
+                var testGenerator = testGeneratorForCodeBehindVersionDetection.Value;
+                featureFileInfo.GeneratorVersion = testGenerator.DetectGeneratedTestVersion(
+                    new FeatureFileInput(featureFileInfo.ProjectRelativePath)
+                        {
+                            GeneratedTestFileContent = codeBehindContent
+                        });
             }
             catch(Exception ex)
             {

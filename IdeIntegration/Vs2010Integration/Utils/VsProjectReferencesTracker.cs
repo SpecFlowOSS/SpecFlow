@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using EnvDTE;
@@ -113,6 +114,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Utils
 
         private void FileChangedOnDisk(string filePath)
         {
+            var extension = Path.GetExtension(filePath);
+            if (extension == null || !extension.Equals(".dll", StringComparison.InvariantCultureIgnoreCase))
+                return;
+
             tracer.Trace("Reference changed on disk: {0}", this, filePath);
             QueueHandlingFileOnDiskChange(filePath);
         }

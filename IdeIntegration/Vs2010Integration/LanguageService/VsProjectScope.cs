@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public IGeneratorServices GeneratorServices { get; private set; }
 
         private bool initialized = false;
+        private bool initializing = false;
         
         // delay initialized members
         private SpecFlowProjectConfiguration specFlowProjectConfiguration = null;
@@ -139,7 +141,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 {
                     if (!initialized)
                     {
-                        Initialize();
+                        if (initializing)
+                        {
+                            tracer.Trace("ERROR: Nested VsProjectScope is triggered by the initialize. This is bad. Please record the following stack trace: {1}{0}", this, Environment.StackTrace, Environment.NewLine);
+                            return;
+                        }
+
+                        try
+                        {
+                            initializing = true;
+                            Initialize();
+                        }
+                        finally
+                        {
+                            initializing = false;
+                        }
                     }
                 }
             }
@@ -168,6 +184,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 throw new NotSupportedException();
             }
 
+            [DebuggerStepThrough]
             public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
             {
                 if (!(typeToConvertTo is RuntimeBindingType))
@@ -222,7 +239,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                     bindingFilesTracker.Run();
                     featureFilesTracker.Run();
 
-                    dteWithEvents.BuildEvents.OnBuildDone += BuildEventsOnOnBuildDone;
+                    dteWithEvents.OnBuildDone += BuildEventsOnOnBuildDone;
 
                     tracer.Trace("Analysis services started", "VsProjectScope");
                 }
@@ -263,8 +280,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         private void ConfirmReGenerateFilesOnConfigChange()
         {
+            if (integrationOptionsProvider.GetOptions().DisableRegenerateFeatureFilePopupOnConfigChange)
+                return;
+
             var questionResult = MessageBox.Show(
-                "SpecFlow detected changes in the configuration that might require re-generating the feature files. Do you want to re-generate them now?", 
+                "SpecFlow detected changes in the configuration that might require re-generating the feature files. You can disable this popup in the SpecFlow Visual Studio settings (\"Tools / Options / SpecFlow\")." + Environment.NewLine + "Do you want to re-generate them now?", 
                 "SpecFlow Configuration Changes",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question, 
@@ -353,7 +373,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public void Dispose()
         {
-            dteWithEvents.BuildEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
+            dteWithEvents.OnBuildDone -= BuildEventsOnOnBuildDone;
             SaveStepMap();
 
             GherkinProcessingScheduler.Dispose();
@@ -456,6 +476,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (project.FullName.EndsWith(".vbproj"))
                 return ProgrammingLanguage.VB;
             if (project.FullName.EndsWith(".fsproj"))
+                return ProgrammingLanguage.FSharp;
+            return ProgrammingLanguage.Other;
+        }
+
+        public static bool IsCodeFileSupported(ProjectItem projectItem)
+        {
+            var codeFileLanguage = GetCodeFileLanguage(projectItem);
+            return codeFileLanguage != ProgrammingLanguage.Other && codeFileLanguage != ProgrammingLanguage.FSharp; //F# does not have code model
+        }
+
+        public static ProgrammingLanguage GetCodeFileLanguage(ProjectItem projectItem)
+        {
+            string name = projectItem.Name;
+            if (name.EndsWith(".cs"))
+                return ProgrammingLanguage.CSharp;
+            if (name.EndsWith(".vb"))
+                return ProgrammingLanguage.VB;
+            if (name.EndsWith(".fs"))
                 return ProgrammingLanguage.FSharp;
             return ProgrammingLanguage.Other;
         }

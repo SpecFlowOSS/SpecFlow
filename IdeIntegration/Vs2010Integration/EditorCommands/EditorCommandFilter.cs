@@ -25,13 +25,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 // ReSharper disable NotAccessedField.Local
         private readonly IIdeTracer tracer;
 // ReSharper restore NotAccessedField.Local
-        private readonly GoToStepDefinitionCommand goToStepDefinitionCommand;
+        private readonly IGoToStepDefinitionCommand goToStepDefinitionCommand;
         private readonly DebugScenariosCommand debugScenariosCommand;
         private readonly RunScenariosCommand runScenariosCommand;
         private readonly FormatTableCommand formatTableCommand;
         private readonly CommentUncommentCommand commentUncommentCommand;
 
-        public EditorCommandFilter(IIdeTracer tracer, GoToStepDefinitionCommand goToStepDefinitionCommand, DebugScenariosCommand debugScenariosCommand, RunScenariosCommand runScenariosCommand, FormatTableCommand formatTableCommand, CommentUncommentCommand commentUncommentCommand)
+        public EditorCommandFilter(IIdeTracer tracer, IGoToStepDefinitionCommand goToStepDefinitionCommand, DebugScenariosCommand debugScenariosCommand, RunScenariosCommand runScenariosCommand, FormatTableCommand formatTableCommand, CommentUncommentCommand commentUncommentCommand)
         {
             this.goToStepDefinitionCommand = goToStepDefinitionCommand;
             this.debugScenariosCommand = debugScenariosCommand;
@@ -57,7 +57,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch (vsStd97CmdId)
                 {
                     case VSConstants.VSStd97CmdID.GotoDefn:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         if (goToStepDefinitionCommand.CanGoToDefinition(editorContext))
                             return true;
                         break;
@@ -75,7 +74,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                     case VSConstants.VSStd2KCmdID.COMMENTBLOCK:
                     case VSConstants.VSStd2KCmdID.UNCOMMENT_BLOCK:
                     case VSConstants.VSStd2KCmdID.UNCOMMENTBLOCK:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         return true;
                 }
             }
@@ -89,7 +87,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 {
                     case SpecFlowCmdSet.RunScenarios:
                     case SpecFlowCmdSet.DebugScenarios:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         return true;
                 }
             }
@@ -102,16 +99,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
                 switch (reSharperCmd)
                 {
                     case ReSharperCommand.GotoDeclaration:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         if (goToStepDefinitionCommand.CanGoToDefinition(editorContext))
                             return true;
                         break;
                     case ReSharperCommand.LineComment:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         return true;
                     case ReSharperCommand.UnitTestRunContext:
                     case ReSharperCommand.UnitTestDebugContext:
-                        prgCmd.cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
                         return true;
                 }
             }

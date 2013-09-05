@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             return true;
         }
 
-        public static bool IsPotentialBindingClass(IEnumerable<string> attributeTypeNames)
+        private static bool IsPotentialBindingClass(IEnumerable<string> attributeTypeNames)
         {
             return attributeTypeNames.Any(attr => attr.Equals(BINDING_ATTR, StringComparison.InvariantCulture));
         }

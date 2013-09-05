@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
@@ -10,16 +11,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
     internal class VsBindingReflectionFactory
     {
-        public BindingSourceType CreateBindingSourceType(CodeClass codeClass, CodeAttribute2[] filteredAttributes)
+        public BindingSourceType CreateBindingSourceType(CodeClass[] codeClasses, CodeAttribute2[] filteredAttributes)
         {
             return new BindingSourceType
                        {
-                           BindingType = CreateBindingType(codeClass),
-                           IsAbstract = codeClass.IsAbstract,
+                           BindingType = CreateBindingType(codeClasses.First()),
+                           IsAbstract = codeClasses.Any(cc => cc.IsAbstract),
                            IsClass = true,
-                           IsPublic = codeClass.Access == vsCMAccess.vsCMAccessPublic,
+                           IsPublic = codeClasses.Any(cc => cc.Access == vsCMAccess.vsCMAccessPublic),
                            IsNested = false, //TODO: codeClass.IsNested,
-                           IsGenericTypeDefinition = (codeClass is CodeClass2) && ((CodeClass2)codeClass).IsGeneric,
+                           IsGenericTypeDefinition = codeClasses.Any(cc => (cc is CodeClass2) && ((CodeClass2)cc).IsGeneric),
                            Attributes = GetAttributes(filteredAttributes)
                        };
         }

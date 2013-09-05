@@ -6,11 +6,12 @@ using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Utilities;
 using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
-using TechTalk.SpecFlow.Vs2010Integration.Options;
+using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
@@ -25,12 +26,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         [Import]
         IGherkinLanguageServiceFactory GherkinLanguageServiceFactory = null;
 
+
+        [Import]
+        IVisualStudioTracer Tracer = null;
+
         public ICompletionSource TryCreateCompletionSource(ITextBuffer textBuffer)
         {
             if (!IntegrationOptionsProvider.GetOptions().EnableIntelliSense)
                 return null;
 
-            return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer));
+            return new GherkinStepCompletionSource(textBuffer, GherkinLanguageServiceFactory.GetLanguageService(textBuffer), Tracer);
         }
     }
 
@@ -39,11 +44,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
         private bool disposed = false;
         private readonly ITextBuffer textBuffer;
         private readonly GherkinLanguageService languageService;
+        private readonly IIdeTracer tracer;
 
-        public GherkinStepCompletionSource(ITextBuffer textBuffer, GherkinLanguageService languageService)
+        public GherkinStepCompletionSource(ITextBuffer textBuffer, GherkinLanguageService languageService, IIdeTracer tracer)
         {
             this.textBuffer = textBuffer;
             this.languageService = languageService;
+            this.tracer = tracer;
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -77,19 +84,22 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                     return;
 
                 IEnumerable<Completion> completions;
-                IEnumerable<Completion> completionBuilders;
-                GetCompletionsForBindingType(bindingType.Value, out completions, out completionBuilders);
+                string statusText;
+                GetCompletionsForBindingType(bindingType.Value, out completions, out statusText);
 
                 ITrackingSpan applicableTo = GetApplicableToForStep(snapshot, triggerPoint.Value, parsedKeyword);
 
                 string displayName = string.Format("All {0} Steps", bindingType.Value);
-                completionSets.Add(
-                    new HierarchicalCompletionSet(
-                        displayName,
-                        displayName,
-                        applicableTo,
-                        completions,
-                        completionBuilders));
+                var completionSet = new HierarchicalCompletionSet(
+                    displayName, 
+                    displayName, 
+                    applicableTo, 
+                    completions, 
+                    null);
+
+                if (!string.IsNullOrEmpty(statusText))
+                    completionSet.StatusText = statusText;
+                completionSets.Add(completionSet);
             }
         }
 
@@ -102,7 +112,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         static private GherkinDialect GetDialect(GherkinLanguageService languageService)
         {
-            var fileScope = languageService.GetFileScope();
+            var fileScope = languageService.GetFileScope(waitForResult: false);
             return fileScope != null ? fileScope.GherkinDialect : languageService.ProjectScope.GherkinDialectServices.GetDefaultDialect();
         }
 
@@ -269,9 +279,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             return lastStep.StepDefinitionType;
         }
 
-        private void GetCompletionsForBindingType(StepDefinitionType stepDefinitionType, out IEnumerable<Completion> completions, out IEnumerable<Completion> completionBuilders)
+        private void GetCompletionsForBindingType(StepDefinitionType stepDefinitionType, out IEnumerable<Completion> completions, out string statusText)
         {
-            completionBuilders = null;
+            statusText = null;
 
             var suggestionProvider = languageService.ProjectScope.StepSuggestionProvider;
             if (suggestionProvider == null)
@@ -283,10 +293,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
             if (!suggestionProvider.Populated)
             {
                 string percentText = string.Format("({0}% completed)", suggestionProvider.GetPopulationPercent());
-                completionBuilders = new[] {new Completion(
-                    (!suggestionProvider.BindingsPopulated ? 
-                        "step suggestion list is being populated... " : 
-                        "step suggestion list from existing feature files is being populated... ") + percentText)};
+                statusText = (!suggestionProvider.BindingsPopulated ? "step suggestion list is being populated... " : "step suggestion list from existing feature files is being populated... ") + percentText;
             }
 
             try

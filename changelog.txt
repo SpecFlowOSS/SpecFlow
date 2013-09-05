@@ -1,3 +1,33 @@
+1.9.2 - 2013/03/25 (Visual Studio Integration update)
+
+Fixed issues:
++ VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
++ VS2010/VS2012: Linked app.config now works (Issue 255, by ArildF)
++ VS2012: Run SpecFlow Scenarios didn't work in VS2012 Update 1 (Issue 273)
++ VS2012: Support execution of scenarios from editor, that are generated with <generator allowDebugGeneratedFiles="true" /> setting. (related to Issue 275)
+  The generator setting above can be used as a workaround for VS2012 test runner issues, for example that Scenario Outline and Example tables show up as "External"
++ VS2010/VS2012: Parameter is not colorized correctly when part of the keyword (Issue 276)
++ VS2010/VS2012: 'Go To Definition' does not work with partial classes (Issue 53)
++ VS2010/VS2012: ReSharper shortcuts (comment, go to definition, run test) do not work
++ VS2010/VS2012: Test class generation fails when installed SpecFlow and SpecFlow.CustomPlugin packages in one project (Issue 279)
+
+New Features:
++ VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
+
+
+1.9.1 - 2012/10/12 (Visual Studio Integration update)
+
+Fixed issues:
++ VS2012: Run specflow scenarios does not work: works as for RC, but still runs all scenarios from the file (Issue 210)
++ VS2010: VS stops showing context menus if code window contains C++ code (Issue 209)
++ VS2010: Use < and > around variables in Intellisense for steps (Issue 203)
++ VS2010: SpecFlow incorrectly detected changes in the configuration (Issue 215)
++ VS2008: Support for VB code generation
++ VS2010: Exception during project load
++ VS2010: InvalidComObjectException: COM object that has been separated from its underlying RCW cannot be used. (Issue 230)
++ VS2010/VS2012: improve stability, more tracing
+
+
 1.9.0 - 2012/08/06
 
 See detailed feature summary at http://go.specflow.org/whatsnew-19

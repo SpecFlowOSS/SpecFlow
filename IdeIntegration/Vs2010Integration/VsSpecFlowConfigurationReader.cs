@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             if (projectItem == null)
                 return null;
 
-            return VsxHelper.GetFileContent(projectItem);
+            return VsxHelper.GetFileContent(projectItem, true);
         }
     }
 }

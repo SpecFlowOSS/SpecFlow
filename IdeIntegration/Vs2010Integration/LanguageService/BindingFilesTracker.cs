@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using EnvDTE;
 using TechTalk.SpecFlow.Bindings;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.IdeIntegration.Bindings;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
@@ -178,9 +174,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return base.HandleMissingProjectItem(fileInfo);
         }
 
-        protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem)
+        protected override void Analyze(BindingFileInfo fileInfo, ProjectItem projectItem, out List<BindingFileInfo> relatedFiles)
         {
-            vsProjectScope.Tracer.Trace("Analyzing binding file: " + fileInfo.ProjectRelativePath, "BindingFilesTracker");
+            relatedFiles = null;
+            vsProjectScope.Tracer.Trace("Analyzing binding file: {0}", this, fileInfo.ProjectRelativePath);
 
             if (fileInfo.IsAssembly)
             {
@@ -188,7 +185,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
             else
             {
-                fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem).ToArray();
+                List<ProjectItem> relatedProjectItems;
+                fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem, out relatedProjectItems).ToArray();
+                relatedFiles = relatedProjectItems.Select(pi => FindFileInfo(VsxHelper.GetProjectRelativePath(pi))).Where(fi => fi != null).Distinct().ToList();
                 fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
             }
         }
@@ -201,7 +200,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             vsProjectScope.Tracer.Trace("Calculate step definitions from assembly: {0}", this, reference.Name);
 
-            ILBindingRegistryBuilder builder = new ILBindingRegistryBuilder();
+            ILBindingRegistryBuilder builder = new ILBindingRegistryBuilder(vsProjectScope.Tracer);
             fileInfo.StepBindings = builder.GetStepDefinitionsFromAssembly(reference.Path).ToArray();
 
             vsProjectScope.Tracer.Trace("Detected {0} step definitions from reference {1}", this, fileInfo.StepBindings.Count(), reference.Name);
@@ -223,16 +222,18 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             try
             {
-                var extension = Path.GetExtension(projectItem.Name);
-                if (!bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase)))
-                    return false;
-
-                return VsxHelper.GetClasses(projectItem).Any(VsBindingRegistryBuilder.IsPotentialBindingClass);
+                return IsMatchingExtension(projectItem);
             }
             catch (Exception)
             {
                 return false;
             }
+        }
+
+        private static bool IsMatchingExtension(ProjectItem projectItem)
+        {
+            var extension = Path.GetExtension(projectItem.Name);
+            return bindingFileExtensions.Any(bindingExt => ("." + bindingExt).Equals(extension, StringComparison.InvariantCultureIgnoreCase));
         }
 
         protected override void SaveToStepMapInternal(StepMap stepMap)

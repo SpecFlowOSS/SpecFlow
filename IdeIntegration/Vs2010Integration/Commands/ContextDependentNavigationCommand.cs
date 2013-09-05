@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Linq;
 using EnvDTE;
+using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
     public class ContextDependentNavigationCommand : MenuCommandHandler
     {
-        private readonly GoToStepsCommand goToStepsCommand;
-        private readonly GoToStepDefinitionCommand goToStepDefinitionCommand;
+        private readonly IGoToStepsCommand goToStepsCommand;
+        private readonly IGoToStepDefinitionCommand goToStepDefinitionCommand;
 
-        public ContextDependentNavigationCommand(IServiceProvider serviceProvider, DTE dte, GoToStepsCommand goToStepsCommand, GoToStepDefinitionCommand goToStepDefinitionCommand) : base(serviceProvider, dte)
+        public ContextDependentNavigationCommand(IServiceProvider serviceProvider, DTE dte, IGoToStepsCommand goToStepsCommand, IGoToStepDefinitionCommand goToStepDefinitionCommand) : base(serviceProvider, dte)
         {
             this.goToStepsCommand = goToStepsCommand;
             this.goToStepDefinitionCommand = goToStepDefinitionCommand;
+        }
+
+        public bool IsCodeFile(ProjectItem projectItem)
+        {
+            return VsProjectScope.IsCodeFileSupported(projectItem);
         }
 
         protected override void BeforeQueryStatus(Microsoft.VisualStudio.Shell.OleMenuCommand command, SelectedItems selection)
@@ -63,11 +69,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         internal static bool IsFeatureFile(ProjectItem projectItem)
         {
             return projectItem.Name.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private bool IsCodeFile(ProjectItem projectItem)
-        {
-            return projectItem.FileCodeModel != null;
         }
     }
 }

@@ -15,18 +15,24 @@ using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
-    public class GoToStepDefinitionCommand : SpecFlowProjectSingleSelectionCommand
+    public interface IGoToStepDefinitionCommand : IEditorCommand
+    {
+        bool CanGoToDefinition(GherkinEditorContext editorContext);
+        bool GoToDefinition(GherkinEditorContext editorContext);
+    }
+
+    public class GoToStepDefinitionCommand : IGoToStepDefinitionCommand
     {
         private readonly IGherkinLanguageServiceFactory gherkinLanguageServiceFactory;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
-        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider) : base(serviceProvider, dte)
+        public GoToStepDefinitionCommand(IServiceProvider serviceProvider, DTE dte, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider) 
         {
             this.gherkinLanguageServiceFactory = gherkinLanguageServiceFactory;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
         }
 
-        internal bool IsEnabled(Document activeDocument)
+        public bool IsEnabled(Document activeDocument)
         {
             var editorContext = GherkinEditorContext.FromDocument(activeDocument, gherkinLanguageServiceFactory);
             if (editorContext == null) 
@@ -35,7 +41,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             return CanGoToDefinition(editorContext);
         }
 
-        internal void Invoke(Document activeDocument)
+        public void Invoke(Document activeDocument)
         {
             var editorContext = GherkinEditorContext.FromDocument(activeDocument, gherkinLanguageServiceFactory);
             if (editorContext == null) 
@@ -124,7 +130,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         private GherkinStep GetCurrentStep(GherkinEditorContext editorContext)
         {
-            var fileScope = editorContext.LanguageService.GetFileScope();
+            var fileScope = editorContext.LanguageService.GetFileScope(waitForLatest: true);
             if (fileScope == null)
                 return null;
 
@@ -132,7 +138,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             IStepBlock block;
             var step = fileScope.GetStepAtPosition(caret.GetContainingLine().LineNumber, out block);
 
-            if (block is IScenarioOutlineBlock)
+            if (step != null && block is IScenarioOutlineBlock)
                 step = step.GetSubstitutedStep((IScenarioOutlineBlock)block);
 
             return step;

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 using EnvDTE;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TracerExtensions = TechTalk.SpecFlow.IdeIntegration.Tracing.TracerExtensions;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -119,19 +121,29 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             filesTracker.Dispose();
         }
 
-        protected void DoTaskAsynch(Action action)
+        protected void DoTaskAsynch(Action action, string taskName)
         {
-            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, vsProjectScope.Tracer));
+            vsProjectScope.GherkinProcessingScheduler.EnqueueAnalyzingRequest(new DelegateTask(action, taskName));
         }
 
         public virtual void Initialize()
         {
-            DoTaskAsynch(InitializeInternally);
+            DoTaskAsynch(InitializeInternally, "Initialize " + GetType().Name);
         }
 
         public virtual void Run()
         {
-            DoTaskAsynch(AnalyzeInitially);
+            DoTaskAsynch(RunInternal, string.Format("Analyze all starting ({0})", GetType().Name));
+        }
+
+        private void RunInternal()
+        {
+            foreach (var fileInfo in Files.Where(fi => !fi.IsAnalyzed).ToArray())
+            {
+                var fi = fileInfo;
+                DoTaskAsynch(() => AnalyzeInternal(fi, true), string.Format("Analyze {1} ({0})", GetType().Name, fi.ProjectRelativePath));
+            }
+            DoTaskAsynch(AnalyzeInitially, string.Format("Analyze all finishing ({0})", GetType().Name));
         }
 
         protected virtual void InitializeInternally()
@@ -162,7 +174,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         protected void AnalyzeBackground(TFileInfo fileInfo)
         {
-            DoTaskAsynch(() => AnalyzeInternal(fileInfo, true));
+            DoTaskAsynch(() => AnalyzeInternal(fileInfo, true), string.Format("Analyze {1} ({0})", GetType().Name, fileInfo.ProjectRelativePath));
         }
 
         protected void AnalyzeFilesBackground()
@@ -173,7 +185,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                  {
                                      AnalyzeInternal(fileInfo, true);
                                  }
-                             });
+                             }, 
+                             string.Format("Re-analyze all ({0})", GetType().Name));
         }
 
         protected virtual bool HandleMissingProjectItem(TFileInfo fileInfo)
@@ -182,8 +195,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return true;
         }
 
-        private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent)
+        private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent, bool analyzeRelatedFiles = true)
         {
+            List<TFileInfo> relatedFiles = null;
+
             var pi = FindProjectItemByProjectRelativePath(fileInfo);
             if (pi == null)
             {
@@ -193,7 +208,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             try
             {
-                Analyze(fileInfo, pi);
+                Analyze(fileInfo, pi, out relatedFiles);
                 fileInfo.IsError = false;
 
                 if (fireUpdatedEvent)
@@ -208,6 +223,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 IsStepMapDirty = true;
                 fileInfo.IsAnalyzed = true;
+            }
+
+            if (analyzeRelatedFiles && relatedFiles != null)
+            {
+                foreach (var relatedFile in relatedFiles)
+                {
+                    TracerExtensions.Trace(vsProjectScope.Tracer, "Analyze related file {0}", GetType(), relatedFile.ProjectRelativePath);
+                    AnalyzeInternal(relatedFile, fireUpdatedEvent, false);
+                }
             }
         }
 
@@ -236,7 +260,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 FileRemoved(fileInfo);
         }
 
-        protected abstract void Analyze(TFileInfo fileInfo, ProjectItem projectItem);
+        protected abstract void Analyze(TFileInfo fileInfo, ProjectItem projectItem, out List<TFileInfo> relatedFiles);
         protected abstract TFileInfo CreateFileInfo(ProjectItem projectItem);
         protected virtual IEnumerable<ProjectItem> GetFileProjectItems()
         {
@@ -247,7 +271,6 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return new[] {vsProjectScope.Project};
         }
         protected abstract bool IsMatchingProjectItem(ProjectItem projectItem);
-
 
         protected virtual void AddFileInfo(ProjectItem projectItem)
         {
@@ -286,7 +309,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                              {
                                  LoadFromStepMapInternal(stepMap);
                                  IsStepMapDirty = false;
-                             });
+                             }, 
+                             string.Format("Load from step map ({0})", GetType().Name));
         }
 
         public void SaveToStepMap(StepMap stepMap)

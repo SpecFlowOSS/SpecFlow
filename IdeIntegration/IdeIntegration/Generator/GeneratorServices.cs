@@ -45,12 +45,23 @@ namespace TechTalk.SpecFlow.IdeIntegration.Generator
         
         protected virtual ITestGeneratorFactory GetTestGeneratorFactoryForCreate()
         {
-            return testGeneratorFactory; 
+            return GetTestGeneratorFactoryOfIDE(); 
+        }
+
+        protected ITestGeneratorFactory GetTestGeneratorFactoryOfIDE()
+        {
+            return testGeneratorFactory;
         }
 
         public ITestGenerator CreateTestGenerator()
         {
             var testGeneratorFactoryForCreate = GetTestGeneratorFactoryForCreate();
+            return testGeneratorFactoryForCreate.CreateGenerator(GetProjectSettingsCached());
+        }
+
+        public ITestGenerator CreateTestGeneratorOfIDE()
+        {
+            var testGeneratorFactoryForCreate = GetTestGeneratorFactoryOfIDE();
             return testGeneratorFactoryForCreate.CreateGenerator(GetProjectSettingsCached());
         }
 

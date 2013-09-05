@@ -149,5 +149,42 @@ namespace TechTalk.SpecFlow.Configuration
 
             this.CustomDependencies.Add(implementationType, interfaceType.AssemblyQualifiedName, name);
         }
+
+        #region Equality members
+
+        protected bool Equals(RuntimeConfiguration other)
+        {
+            return Equals(FeatureLanguage, other.FeatureLanguage) && Equals(ToolLanguage, other.ToolLanguage) && Equals(BindingCulture, other.BindingCulture) && string.Equals(RuntimeUnitTestProvider, other.RuntimeUnitTestProvider) && DetectAmbiguousMatches.Equals(other.DetectAmbiguousMatches) && StopAtFirstError.Equals(other.StopAtFirstError) && MissingOrPendingStepsOutcome.Equals(other.MissingOrPendingStepsOutcome) && TraceSuccessfulSteps.Equals(other.TraceSuccessfulSteps) && TraceTimings.Equals(other.TraceTimings) && MinTracedDuration.Equals(other.MinTracedDuration) && StepDefinitionSkeletonStyle.Equals(other.StepDefinitionSkeletonStyle) &&
+                (AdditionalStepAssemblies ?? new List<string>()).SequenceEqual(other.AdditionalStepAssemblies ?? new List<string>());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RuntimeConfiguration) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (ToolLanguage != null ? ToolLanguage.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (RuntimeUnitTestProvider != null ? RuntimeUnitTestProvider.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ DetectAmbiguousMatches.GetHashCode();
+                hashCode = (hashCode*397) ^ StopAtFirstError.GetHashCode();
+                hashCode = (hashCode*397) ^ MissingOrPendingStepsOutcome.GetHashCode();
+                hashCode = (hashCode*397) ^ TraceSuccessfulSteps.GetHashCode();
+                hashCode = (hashCode*397) ^ TraceTimings.GetHashCode();
+                hashCode = (hashCode*397) ^ MinTracedDuration.GetHashCode();
+                hashCode = (hashCode*397) ^ StepDefinitionSkeletonStyle.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        #endregion
     }
 }

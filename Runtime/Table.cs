@@ -7,6 +7,9 @@ using System.Text;
 
 namespace TechTalk.SpecFlow
 {
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class Table
     {
         internal const string ERROR_NO_CELLS_TO_ADD = "No cells to add";
@@ -104,20 +107,39 @@ namespace TechTalk.SpecFlow
 
         public override string ToString()
         {
+            return ToString(false, true);
+        }
+
+        public string ToString(bool headersOnly = false, bool withNewline = true)
+        {
             int[] columnWidths = new int[header.Length];
             for (int colIndex = 0; colIndex < header.Length; colIndex++)
                 columnWidths[colIndex] = header[colIndex].Length;
 
-            foreach (TableRow row in rows)
+            if (!headersOnly)
             {
-                for (int colIndex = 0; colIndex < header.Length; colIndex++)
-                    columnWidths[colIndex] = Math.Max(columnWidths[colIndex], row[colIndex].Length);
+                foreach (TableRow row in rows)
+                {
+                    for (int colIndex = 0; colIndex < header.Length; colIndex++)
+                        columnWidths[colIndex] = Math.Max(columnWidths[colIndex], row[colIndex].Length);
+                }
             }
 
             StringBuilder builder = new StringBuilder();
             AddTableRow(builder, header, columnWidths);
-            foreach (TableRow row in rows)
-                AddTableRow(builder, row.Select(pair => pair.Value), columnWidths);
+
+            if (!headersOnly)
+            {
+                foreach (TableRow row in rows)
+                    AddTableRow(builder, row.Select(pair => pair.Value), columnWidths);
+            }
+
+            if (!withNewline)
+            {
+                var newlineLength = Environment.NewLine.Length;
+                builder.Remove(builder.Length - newlineLength, newlineLength);
+            }
+
             return builder.ToString();
         }
 
@@ -145,6 +167,9 @@ namespace TechTalk.SpecFlow
         }
     }
 
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class TableRows : IEnumerable<TableRow>
     {
         private readonly List<TableRow> innerList = new List<TableRow>();
@@ -172,6 +197,9 @@ namespace TechTalk.SpecFlow
         }
     }
 
+#if !BODI_LIMITEDRUNTIME
+    [Serializable]
+#endif
     public class TableRow : IDictionary<string, string>
     {
         private readonly Table table;
