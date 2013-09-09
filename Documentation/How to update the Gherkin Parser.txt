@@ -1,0 +1,53 @@
+How to update the Gherkin Parser
+
+This guide assumes that internal stuff in the Gherkin Parser has not moved around since writing this (which was with Gherkin version 2.12.1).
+
+1. Create a clone of Specflow (if you haven't already got a working copy somehow, which you probably have, since you're reading this).
+
+  git clone https://github.com/thePathToYourSpecflowFork
+  
+You should probably create a branch for it:
+
+  git branch -m Gherkin
+  git checkout  
+
+Open the TechTalk.SpecFlow.sln in VS2010. Build the entire solution.
+
+3. In the Specflow solution locate the ImportGherkinParser project.
+
+Its in the "Setup" solution folder. 
+
+Update the Gherkin parser using Nuget:
+ 
+  Update-Package gherkin
+  
+If there are no updates available you are already running the latest Gherkin Parser.
+  
+If not then take note of the new Gherkin version. 
+
+Open Properties for the project, go to the Debug tab and in "Command line arguments" insert the following - of course substituting x.y.z for the version from above:
+
+..\..\..\..\packages\gherkin.x.y.z\lib\Gherkin.dll /key:..\..\..\..\specflow.snk /lngout:..\..\..\..\Languages.xml /out:..\..\..\..\lib\gherkin\Gherkin.dll
+
+Now run the project. You'll notice some errors about some weird languages. This is okay - the Gherkin people might find it funny, but we are serious people here, so we choose to ignore those ;)
+
+When the project has finished running, it has updated the languages.xml file.
+
+4. Update file references in SpecflowInstaller.
+
+Located in the "Setup" Solution folder.
+
+Open the "CoreFiles.wxs" - update the following lines:
+
+        <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.Runtime.dll" />
+        <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.OpenJDK.Core.dll" />
+        <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.OpenJDK.Text.dll" />
+
+The version numbers may have changed.
+
+5. Rebuild the entire solution to make it use the new languages.xml file and the new gherkin parser.
+ 
+
+
+
+
