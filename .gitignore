@@ -20,3 +20,7 @@ test-results
 
 *.docstates
 Tests/TechTalk.SpecFlow.Specs.Silverlight4.Web/ClientBin/*
+_UpgradeReport_Files/*
+Backup*/*
+
+UpgradeLog*
