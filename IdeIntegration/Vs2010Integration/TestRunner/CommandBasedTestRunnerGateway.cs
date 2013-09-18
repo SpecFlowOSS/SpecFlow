@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             }
         }
 
-        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
+        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, ScenarioOutlineExamplesRow examplesRow, IGherkinFileScope fileScope, bool debug)
         {
             int sourceLine = currentScenario.KeywordLine + 1; // keywordline is zero-indexed
             return RunFromCodeBehind(projectItem, codeBehindTextDocument => GetCodeBehindLine(codeBehindTextDocument, sourceLine), debug);

@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public static string FormatBlockFullTitle(string keyword, string text)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if (String.IsNullOrWhiteSpace(text))
                 return keyword;
             return keyword + ": " + text;
         }
@@ -129,6 +129,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         {
             return gherkinFileScope.GetAllBlocks().LastOrDefault(si => si.KeywordLine < lineNumber) as IStepBlock;
         }
+
+        public static IScenarioBlock GetScenarioBlockFromPosition(this IGherkinFileScope gherkinFileScope, int lineNumber)
+        {
+            return gherkinFileScope.GetAllBlocks().FirstOrDefault(si => si.KeywordLine <= lineNumber && si.KeywordLine + si.BlockRelativeContentEndLine >= lineNumber) as IScenarioBlock;
+        }
  
         public static IEnumerable<GherkinStep> GetAllSteps(this IGherkinFileScope gherkinFileScope)
         {
@@ -144,16 +149,16 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             if (position == null)
                 return simpleLabel;
 
-            return string.Format("{0} ({1}, line {2})", simpleLabel, position.SourceFile, position.FilePosition.Line);
+            return String.Format("{0} ({1}, line {2})", simpleLabel, position.SourceFile, position.FilePosition.Line);
         }
 
         public static string GetLabel(this StepInstance stepInstance)
         {
             string inFilePositionText = stepInstance.StepContext.ScenarioTitle == null
                                             ? "'Backround' section"
-                                            : string.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
+                                            : String.Format("scenario \"{0}\"", stepInstance.StepContext.ScenarioTitle);
 
-            return string.Format("\"{0}{1}\" in {2}", stepInstance.Keyword, stepInstance.Text, inFilePositionText);
+            return String.Format("\"{0}{1}\" in {2}", stepInstance.Keyword, stepInstance.Text, inFilePositionText);
         }
 
         public static IEnumerable<GherkinStep> GetAllStepsWithFirstExampleSubstituted(this IGherkinFileScope gherkinFileScope)
@@ -189,6 +194,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                                                        return exampleDictionary.TryGetValue(match.Groups["param"].Value, out value) ? value : match.Value;
                                                    });
             return new GherkinStep(step.StepDefinitionType, step.StepDefinitionKeyword, replacedText, step.StepContext, step.Keyword, step.BlockRelativeLine);
+        }
+
+        public static ScenarioOutlineExamplesRow GetExamplesRowFromPosition(this IScenarioOutlineBlock scenatioOutline, int line)
+        {
+            foreach (var scenarioOutlineExampleSet in scenatioOutline.ExampleSets)
+            {
+                var examplesRow = scenarioOutlineExampleSet.ExamplesTable.FindByBlockRelativeLine(line - scenatioOutline.KeywordLine);
+                if (examplesRow != null)
+                    return examplesRow;
+            }
+            return null;
         }
     }
 }

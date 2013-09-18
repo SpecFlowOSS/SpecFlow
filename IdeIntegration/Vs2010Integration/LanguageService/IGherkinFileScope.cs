@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -124,11 +125,56 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
     public interface IScenarioOutlineExampleSet : IKeywordLine
     {
-        Table ExamplesTable { get; set; }
+        ScenarioOutlineExamplesTable ExamplesTable { get; set; }
     }
 
     public interface IScenarioOutlineBlock : IScenarioBlock
     {
         IEnumerable<IScenarioOutlineExampleSet> ExampleSets { get; }
+    }
+
+    public interface ITableWithRowPositions
+    {
+        void SetBlockRelativePosition(int rowIndex, int blockRelativeLine);
+    }
+
+    public class ScenarioOutlineExamplesRow : Dictionary<string, string>
+    {
+        public int BlockRelativeLine { get; private set; }
+
+        public ScenarioOutlineExamplesRow(TableRow tableRow, int blockRelativeLine) : base(tableRow)
+        {
+            BlockRelativeLine = blockRelativeLine;
+        }
+    }
+
+    public class ScenarioOutlineExamplesTable : Table, ITableWithRowPositions
+    {
+        private readonly Dictionary<int, int> blockRelativeLines = new Dictionary<int, int>();
+
+        public ScenarioOutlineExamplesTable(string[] cells) : base(cells)
+        {
+        }
+
+        public ScenarioOutlineExamplesRow GetExamplesRow(int rowIndex)
+        {
+            int blockRelativeLine;
+            if (!blockRelativeLines.TryGetValue(rowIndex, out blockRelativeLine))
+                blockRelativeLine = -1;
+            return new ScenarioOutlineExamplesRow(Rows[rowIndex], blockRelativeLine);
+        }
+
+        public void SetBlockRelativePosition(int rowIndex, int blockRelativeLine)
+        {
+            blockRelativeLines[rowIndex] = blockRelativeLine;
+        }
+
+        public ScenarioOutlineExamplesRow FindByBlockRelativeLine(int blockRelativeLine)
+        {
+            var selectedLines = blockRelativeLines.Where(r2l => r2l.Value == blockRelativeLine).Select(r2l => r2l.Key).ToArray();
+            if (selectedLines.Length == 0)
+                return null;
+            return GetExamplesRow(selectedLines[0]);
+        }
     }
 }

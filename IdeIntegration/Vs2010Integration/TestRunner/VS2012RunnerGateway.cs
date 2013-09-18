@@ -20,9 +20,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             this.serviceProvider = serviceProvider;
         }
 
-        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
+        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, ScenarioOutlineExamplesRow examplesRow, IGherkinFileScope fileScope, bool debug)
         {
-            return RunInCurrentContext(VsxHelper.GetFileName(projectItem), debug, currentScenario.KeywordLine);
+            var line = currentScenario.KeywordLine;
+            if (examplesRow != null && examplesRow.BlockRelativeLine >= 0)
+                line += examplesRow.BlockRelativeLine;
+            return RunInCurrentContext(VsxHelper.GetFileName(projectItem), debug, line);
         }
 
         public bool RunFeatures(ProjectItem projectItem, bool debug)
@@ -39,12 +42,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             try
             {
                 const string testWindowAssemblyName = "Microsoft.VisualStudio.TestWindow, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-                const string testWindowInterfacesAssemblyName = "Microsoft.VisualStudio.TestWindow.Interfaces, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
                 var tIRunCommandsExecutor = Type.GetType("Microsoft.VisualStudio.TestWindow.Controller.IRunCommandsExecutor, " + testWindowAssemblyName, true);
-                var tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Extensibility.Model.HostContext, " + testWindowInterfacesAssemblyName, true);
+                var tHostContext = Type.GetType("Microsoft.VisualStudio.TestWindow.Host.HostContext, " + testWindowAssemblyName, true);
 
                 var runCommandsExecutor = VsxHelper.ResolveMefDependency(serviceProvider, tIRunCommandsExecutor);
-                var hostContext = Activator.CreateInstance(tHostContext, fileName, lineNumber, -1);
+                var hostContext = Activator.CreateInstance(tHostContext, fileName, lineNumber >= 0 ? lineNumber + 1 : lineNumber, -1);
 
                 string methodNameToInvoke = debug ? "OnInvokeDebugTestsInContext" : "OnInvokeRunTestsInContext";
 

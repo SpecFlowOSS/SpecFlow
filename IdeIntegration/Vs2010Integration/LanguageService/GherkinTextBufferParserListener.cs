@@ -386,10 +386,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 ColorizeSpan(cellSpan, classifications.TableHeader);
             }
 
+            var isStepArg = currentStep != null;
             Table table;
             try
             {
-                table = new Table(cells);
+                table = isStepArg ? new Table(cells) : new ScenarioOutlineExamplesTable(cells);
             }
             catch (Exception)
             {
@@ -397,14 +398,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 return;
             }
 
-            if (currentStep != null)
+            if (isStepArg)
             {
                 currentStep.TableArgument = table;
             }
             else if (CurrentFileBlockBuilder.BlockType == typeof(IScenarioOutlineBlock) && CurrentFileBlockBuilder.ExampleSets.Any())
             {
                 var exampleSet = CurrentFileBlockBuilder.ExampleSets.Last();
-                exampleSet.ExamplesTable = table;
+                exampleSet.ExamplesTable = (ScenarioOutlineExamplesTable)table;
             }
         }
 
@@ -429,6 +430,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             try
             {
                 table.AddRow(cells);
+                var tableWithRowPositions = table as ITableWithRowPositions;
+                if (tableWithRowPositions != null)
+                {
+                    tableWithRowPositions.SetBlockRelativePosition(table.RowCount - 1, rowSpan.StartPosition.Line - CurrentFileBlockBuilder.KeywordLine);
+                }
             }
             catch (Exception)
             {

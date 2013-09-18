@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             this.tracer = tracer;
         }
 
-        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, IGherkinFileScope fileScope, bool debug)
+        public bool RunScenario(ProjectItem projectItem, IScenarioBlock currentScenario, ScenarioOutlineExamplesRow examplesRow, IGherkinFileScope fileScope, bool debug)
         {
             if (fileScope.HeaderBlock == null)
                 return false;

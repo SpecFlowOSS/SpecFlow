@@ -38,13 +38,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return RunFromProjectItem(dte.ActiveDocument.ProjectItem, debug, runnerTool);
             }
 
-            //TODO: select the scenario outline example, if it was invoked from that line
+            var currentScenatioOutline = currentScenario as IScenarioOutlineBlock;
+            var examplesRow = currentScenatioOutline == null ? null : currentScenatioOutline.GetExamplesRowFromPosition(currentLine);
 
             var testRunnerGateway = testRunnerGatewayProvider.GetTestRunnerGateway(runnerTool);
             if (testRunnerGateway == null)
                 return false;
 
-            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario, fileScope, debug);
+            return testRunnerGateway.RunScenario(dte.ActiveDocument.ProjectItem, currentScenario, examplesRow, fileScope, debug);
         }
 
         public bool RunFromProjectItem(ProjectItem projectItem, bool debug, TestRunnerTool? runnerTool = null)
@@ -71,18 +72,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             if (fileScope == null)
                 return null;
 
-            var block = fileScope.GetStepBlockFromStepPosition(currentLine) as IScenarioBlock;
-            if (block != null && currentLine > block.KeywordLine + block.BlockRelativeContentEndLine)
-                return null; // between two scenarios
-
-            return block;
+            return fileScope.GetScenarioBlockFromPosition(currentLine);
         }
 
+        /// <summary>
+        /// Gets the 0-based line number of the document
+        /// </summary>
         private int GetCurrentLine(Document activeDocument)
         {
             var currentTextDocument = ((TextDocument) activeDocument.Object("TextDocument"));
             var currentLine = currentTextDocument.Selection.ActivePoint.Line;
-            return currentLine;
+            return currentLine - 1;
         }
     }
 }
