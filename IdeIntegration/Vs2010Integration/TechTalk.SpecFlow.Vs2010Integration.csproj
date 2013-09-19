@@ -157,6 +157,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecFlowPackage.cs" />
+    <Compile Include="VsContainerBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -165,9 +167,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-	<Resource Include="..\Vs2013Integration\Resources\**\*.ico">
-		<Link>Resources\%(Filename)%(Extension)</Link>
-	</Resource>
+    <Resource Include="..\Vs2013Integration\Resources\**\*.ico">
+      <Link>Resources\%(Filename)%(Extension)</Link>
+    </Resource>
     <EmbeddedResource Include="..\Vs2013Integration\VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.resources</LogicalName>
@@ -175,27 +177,33 @@
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+	<Compile Include="..\Vs2013Integration\Common\**\*.cs">
+      <Link>Common\%(Filename)%(Extension)</Link>
+    </Compile>    
+    <EmbeddedResource Include="..\Vs2013Integration\Common\**\*.resx">
+      <Link>Common\%(Filename)%(Extension)</Link>
+    </EmbeddedResource>
     <!--<Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**">
       <Link>SharedRuntime\%(Filename)%(Extension)</Link>
     </Compile>-->
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\changelog.txt">
-      <Link>changelog.txt</Link>
+      <Link>Shared\changelog.txt</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\..\Installer\Resources\gherkin.ico">
-      <Link>gherkin.ico</Link>
+      <Link>Shared\gherkin.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\..\Installer\Resources\specflowsetup.ico">
-      <Link>specflowsetup.ico</Link>
+      <Link>Shared\specflowsetup.ico</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\..\Installer\Resources\specflow_preview.png">
-      <Link>specflow_preview.png</Link>
+      <Link>Shared\specflow_preview.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -204,7 +212,7 @@
       <SubType>Designer</SubType>
     </VSCTCompile>
     <Content Include="..\..\LICENSE.txt">
-      <Link>LICENSE.txt</Link>
+      <Link>Shared\LICENSE.txt</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
@@ -256,6 +264,10 @@
     <Unzip ZipFileName="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix" TargetDirectory="$(TargetDir)\VSIX" />
     <Delete Files="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix.orig" />
     <Move SourceFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix" DestinationFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2010Integration.vsix.orig" />
+    <ItemGroup>
+      <SharedFiles Include="$(TargetDir)VSIX\Shared\*.*" />
+    </ItemGroup>
+    <Move SourceFiles="@(SharedFiles)" DestinationFolder="$(TargetDir)VSIX\" />
     <ItemGroup>
       <VsFiles Include="$(TargetDir)\VSIX\EnvDTE*.dll" />
       <VsFiles Include="$(TargetDir)\VSIX\VSLangProj*.dll" />
