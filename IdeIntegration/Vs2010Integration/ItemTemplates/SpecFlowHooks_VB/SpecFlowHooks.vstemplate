@@ -1,0 +1,13 @@
+<VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>Hooks.vb</DefaultName>
+    <Name>SpecFlow Hooks (event bindings)</Name>
+    <Description>SpecFlow Hooks (event bindings)</Description>
+    <ProjectType>VisualBasic</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>SpecFlowHooksIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem SubType="Code" TargetFileName="$fileinputname$.vb" ReplaceParameters="true">SpecFlowHooks1.vb</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

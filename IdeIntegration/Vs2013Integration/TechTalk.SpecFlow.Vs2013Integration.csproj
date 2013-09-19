@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;VS2013</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DeployExtension>False</DeployExtension>
@@ -160,6 +160,32 @@
       <HintPath>..\..\lib\VS2010SDK\VSLangProj80.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition1.vb" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks1.vb" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeatureIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature_VB.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeatureIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition1.fs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks1.fs" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature1.feature" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature1.feature" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\CommonAssemblyInfo.cs">
@@ -402,6 +428,10 @@
       <SharedFiles Include="$(TargetDir)VSIX\Shared\*.*" />
     </ItemGroup>
     <Move SourceFiles="@(SharedFiles)" DestinationFolder="$(TargetDir)VSIX\" />
+    <ItemGroup>
+      <ItemTemplates Include="$(TargetDir)ItemTemplates\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ItemTemplates)" DestinationFolder="$(TargetDir)VSIX\ItemTemplates" />
     <ItemGroup>
       <VsFiles Include="$(TargetDir)\VSIX\EnvDTE*.dll" />
       <VsFiles Include="$(TargetDir)\VSIX\VSLangProj*.dll" />

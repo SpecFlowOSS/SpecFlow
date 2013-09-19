@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;VS2010;VS2012</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DeployExtension>False</DeployExtension>
@@ -177,15 +177,41 @@
       <LastGenOutput>VSPackage.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-	<Compile Include="..\Vs2013Integration\Common\**\*.cs">
+    <Compile Include="..\Vs2013Integration\Common\**\*.cs">
       <Link>Common\%(Filename)%(Extension)</Link>
-    </Compile>    
+    </Compile>
     <EmbeddedResource Include="..\Vs2013Integration\Common\**\*.resx">
       <Link>Common\%(Filename)%(Extension)</Link>
     </EmbeddedResource>
     <!--<Compile Include="..\..\Runtime\**\*.cs" Exclude="..\..\Runtime\PlatformCompatibility\**;..\..\Runtime\PlatformSpecific\**;..\..\Runtime\Properties\**">
       <Link>SharedRuntime\%(Filename)%(Extension)</Link>
     </Compile>-->
+  </ItemGroup>
+  <ItemGroup>
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks1.cs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition1.vb" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks1.vb" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeatureIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_CSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_CSharp\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature_VB.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeatureIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_VB\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_VB\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinitionIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition1.fs" />
+    <ZipItem Include="ItemTemplates\SpecFlowStepDefinition_FSharp\SpecFlowStepDefinition.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks.vstemplate" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooksIcon.ico" />
+    <ZipItem Include="ItemTemplates\SpecFlowHooks_FSharp\SpecFlowHooks1.fs" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_CSharp\SpecFlowFeature1.feature" />
+    <ZipItem Include="ItemTemplates\SpecFlowFeature_VB\SpecFlowFeature1.feature" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\changelog.txt">
@@ -268,6 +294,10 @@
       <SharedFiles Include="$(TargetDir)VSIX\Shared\*.*" />
     </ItemGroup>
     <Move SourceFiles="@(SharedFiles)" DestinationFolder="$(TargetDir)VSIX\" />
+    <ItemGroup>
+      <ItemTemplates Include="$(TargetDir)ItemTemplates\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ItemTemplates)" DestinationFolder="$(TargetDir)VSIX\ItemTemplates" />
     <ItemGroup>
       <VsFiles Include="$(TargetDir)\VSIX\EnvDTE*.dll" />
       <VsFiles Include="$(TargetDir)\VSIX\VSLangProj*.dll" />
