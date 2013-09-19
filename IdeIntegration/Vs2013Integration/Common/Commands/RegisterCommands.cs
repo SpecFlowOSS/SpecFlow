@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using BoDi;
+using Microsoft.VisualStudio.Shell;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
@@ -19,6 +21,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             container.RegisterTypeAs<GoToStepsCommand, MenuCommandHandler>(SpecFlowCmdSet.GoToSteps.ToString());
             container.RegisterTypeAs<ContextDependentNavigationCommand, MenuCommandHandler>(SpecFlowCmdSet.ContextDependentNavigation.ToString());
             container.RegisterTypeAs<GenerateStepDefinitionSkeletonCommand, MenuCommandHandler>(SpecFlowCmdSet.GenerateStepDefinitionSkeleton.ToString());
+        }
+    }
+
+    public static class CommandRegistrationService
+    {
+        static public void RegisterCommands(IObjectContainer container, OleMenuCommandService menuCommandService)
+        {
+            if (menuCommandService != null)
+            {
+                foreach (var menuCommandHandler in container.Resolve<IDictionary<SpecFlowCmdSet, MenuCommandHandler>>())
+                {
+                    menuCommandHandler.Value.RegisterTo(menuCommandService, menuCommandHandler.Key);
+                }
+            }
         }
     }
 }

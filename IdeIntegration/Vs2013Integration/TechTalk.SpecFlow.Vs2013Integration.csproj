@@ -165,6 +165,7 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Common\BiDiContainerProvider.cs" />
     <Compile Include="Common\AutoComplete\CompletionCommandFilter.cs" />
     <Compile Include="Common\AutoComplete\CustomCompletionSet.cs" />
     <Compile Include="Common\AutoComplete\GherkinCompletionCommandFilter.cs" />
@@ -228,9 +229,10 @@
     <Compile Include="Common\Utils\VsProjectFilesTracker.cs" />
     <Compile Include="Common\Utils\VsProjectFileTrackerBase.cs" />
     <Compile Include="Common\Utils\VsProjectReferencesTracker.cs" />
+    <Compile Include="Common\DefaultDependencyProvider.cs" />
     <Compile Include="VsContainerBuilder.cs" />
-    <Compile Include="VsSpecFlowConfigurationReader.cs" />
-    <Compile Include="Guids.cs" />
+    <Compile Include="Common\VsSpecFlowConfigurationReader.cs" />
+    <Compile Include="Common\Guids.cs" />
     <Compile Include="Common\LanguageService\GherkinBufferServiceManager.cs" />
     <Compile Include="Common\LanguageService\NoProjectScope.cs" />
     <Compile Include="Common\LanguageService\VsProjectScope.cs" />
@@ -268,11 +270,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Common\Options\IntegrationOptionsProvider.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="SpecFlowPackage.cs" />
     <Compile Include="Common\Tracing\IVisualStudioTracer.cs" />
     <Compile Include="Common\Tracing\OutputWindow\IOutputWindowDefinitionMetadata.cs" />
@@ -364,10 +361,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Common\UI\GenerateStepDefinitionSkeletonForm.resx">
       <DependentUpon>GenerateStepDefinitionSkeletonForm.cs</DependentUpon>
     </EmbeddedResource>

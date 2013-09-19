@@ -86,18 +86,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration
             var currentIdeIntegration = CurrentIdeIntegration;
             if (currentIdeIntegration != null)
             {
-                InstallServices installServices = Container.Resolve<InstallServices>();
+                var installServices = Container.Resolve<InstallServices>();
                 installServices.OnPackageLoad(currentIdeIntegration.Value);
             }
 
-            OleMenuCommandService menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (menuCommandService != null)
-            {
-                foreach (var menuCommandHandler in Container.Resolve<IDictionary<SpecFlowCmdSet, MenuCommandHandler>>())
-                {
-                    menuCommandHandler.Value.RegisterTo(menuCommandService, menuCommandHandler.Key);
-                }
-            }
+            CommandRegistrationService.RegisterCommands(Container, GetService(typeof(IMenuCommandService)) as OleMenuCommandService);
         }
     }
 }
