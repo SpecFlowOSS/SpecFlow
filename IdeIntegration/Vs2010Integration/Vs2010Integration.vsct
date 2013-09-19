@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidSpecFlowPkgString">
+    <Groups>
+      <Group guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" priority="0x6F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" priority="0x06F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" priority="0x07A1">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+      </Group>
+      <Group guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" priority="0x06F0">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidReGenerateAll" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Regenerate Feature Files</ButtonText>
+          <CommandName>SpecFlow - Regenerate Feature Files</CommandName>
+          <CanonicalName>SpecFlow.RegenerateFeatureFiles</CanonicalName>
+          <LocCanonicalName>SpecFlow.RegenerateFeatureFiles</LocCanonicalName>
+          <ToolTipText>Regenerates the code behind files for all feature files in this project</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGenerateStepDefinitionSkeleton" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Generate Step Definitions</ButtonText>
+          <CommandName>SpecFlow - Generate Step Definitions</CommandName>
+          <CanonicalName>SpecFlow.GenerateStepDefinitions</CanonicalName>
+          <LocCanonicalName>SpecFlow.GenerateStepDefinitions</LocCanonicalName>
+          <ToolTipText>Generates step definition skeletons for all unbound steps in the current file</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGoToStepDefinition" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
+        <Strings>
+          <ButtonText>Go To Step Definition</ButtonText>
+          <CommandName>SpecFlow - Go To Step Definition</CommandName>
+          <CanonicalName>SpecFlow.GoToStepDefinition</CanonicalName>
+          <LocCanonicalName>SpecFlow.GoToStepDefinition</LocCanonicalName>
+          <ToolTipText>Jumps to the step definition matchig to the current step</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidGoToSteps" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag> <!-- it is hidden, as the cmdidContextDependentNavigation does the job -->
+        <Strings>
+          <ButtonText>Go To Steps</ButtonText>
+          <CommandName>SpecFlow - Go To Steps</CommandName>
+          <CanonicalName>SpecFlow.GoToSteps</CanonicalName>
+          <LocCanonicalName>SpecFlow.GoToSteps</LocCanonicalName>
+          <ToolTipText>Jumps to the step(s) matchig to the current step definition</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidContextDependentNavigation" priority="0x0100" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Navigate Between Step and Step Definition</ButtonText>
+          <CommandName>SpecFlow - Navigate Between Step and Step Definition</CommandName>
+          <CanonicalName>SpecFlow.NavigateBetweenStepAndStepDefinition</CanonicalName>
+          <LocCanonicalName>SpecFlow.NavigateBetweenStepAndStepDefinition</LocCanonicalName>
+          <ToolTipText>Jumps between the step definition and the matchig step(s)</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Run SpecFlow Scenarios</ButtonText>
+          <CommandName>SpecFlow - Run SpecFlow Scenarios</CommandName>
+          <CanonicalName>SpecFlow.RunSpecFlowScenarios</CanonicalName>
+          <LocCanonicalName>SpecFlow.RunSpecFlowScenarios</LocCanonicalName>
+          <ToolTipText>Executes the current scenario(s) with the configured runner</ToolTipText>
+        </Strings>
+      </Button>
+      <Button guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0111" type="Button">
+        <Parent guid="guidSpecFlowCmdSet" id="CodeWindowContextMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Debug SpecFlow Scenarios</ButtonText>
+          <CommandName>SpecFlow - Debug SpecFlow Scenarios</CommandName>
+          <CanonicalName>SpecFlow.DebugSpecFlowScenarios</CanonicalName>
+          <LocCanonicalName>SpecFlow.DebugSpecFlowScenarios</LocCanonicalName>
+          <ToolTipText>Debugs the current scenario(s) with the configured runner</ToolTipText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+  </Commands>
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidDebugScenarios" priority="0x0111">
+      <Parent guid="guidSpecFlowCmdSet" id="FileContextMenuGroup" />
+    </CommandPlacement>
+
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="FolderContextMenuGroup" />
+    </CommandPlacement>
+    
+    <CommandPlacement guid="guidSpecFlowCmdSet" id="cmdidRunScenarios" priority="0x0110">
+      <Parent guid="guidSpecFlowCmdSet" id="ProjectContextMenuGroup" />
+    </CommandPlacement>
+  </CommandPlacements>
+
+  <KeyBindings>
+    <KeyBinding guid="guidSpecFlowCmdSet" id="cmdidContextDependentNavigation" editor="guidVSStd97" key1="S" mod1="Alt Control Shift" />
+  </KeyBindings>
+  
+  <Symbols>
+    <GuidSymbol name="guidSpecFlowPkgString" value="{5d978b7f-8f91-41c1-b7ba-0b4c056118e8}" />
+    
+    <GuidSymbol name="guidSpecFlowCmdSet" value="{8c202d78-762d-4079-ac0e-282ee24b44b0}">
+      <IDSymbol name="FileContextMenuGroup" value="0x1020"/>
+      <IDSymbol name="ProjectContextMenuGroup" value="0x1021"/>
+      <IDSymbol name="CodeWindowContextMenuGroup" value="0x1022"/>
+      <IDSymbol name="FolderContextMenuGroup" value="0x1023"/>
+      
+      <IDSymbol name="cmdidGenerateStepDefinitionSkeleton" value="0x0100"/>
+      <IDSymbol name="cmdidRunScenarios" value="0x0101"/>
+      <IDSymbol name="cmdidDebugScenarios" value="0x0102"/>
+      <IDSymbol name="cmdidGoToStepDefinition" value="0x0103"/>
+      <IDSymbol name="cmdidReGenerateAll" value="0x0104"/>
+      <IDSymbol name="cmdidGoToSteps" value="0x0105"/>
+      <IDSymbol name="cmdidContextDependentNavigation" value="0x0106" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
