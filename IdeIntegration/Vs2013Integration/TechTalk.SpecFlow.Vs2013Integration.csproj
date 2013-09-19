@@ -55,7 +55,10 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0">
-      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestWindow">
+      <HintPath>..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestWindow.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.Data, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -83,9 +86,6 @@
     </Reference>
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="VSLangProj110, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="VSLangProj80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -203,7 +203,6 @@
     <Compile Include="Common\EditorCommands\ReSharperCommand.cs" />
     <Compile Include="Common\LanguageService\IdleTaskProcessingQueue.cs" />
     <Compile Include="Common\LanguageService\IGherkinProcessingTask.cs" />
-    <Compile Include="Common\TestRunner\VS2012RunnerGateway.cs" />
     <Compile Include="Common\UI\ContextMenuBuilder.cs" />
     <Compile Include="Common\Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="Common\Install\VsBrowserGuidanceNotificationService.cs" />
@@ -225,8 +224,6 @@
     <Compile Include="Common\TestRunner\CommandBasedTestRunnerGateway.cs" />
     <Compile Include="Common\TestRunner\ITestRunnerGateway.cs" />
     <Compile Include="Common\TestRunner\ITestRunnerGatewayProvider.cs" />
-    <Compile Include="Common\TestRunner\MsTestRunnerGateway.cs" />
-    <Compile Include="Common\TestRunner\ReSharper5TestRunnerGateway.cs" />
     <Compile Include="Common\TestRunner\ReSharper6TestRunnerGateway.cs" />
     <Compile Include="Common\TestRunner\SpecRunTestRunnerGateway.cs" />
     <Compile Include="Common\TestRunner\TestRunnerEngine.cs" />
@@ -243,6 +240,8 @@
     <Compile Include="Common\Utils\VsProjectFileTrackerBase.cs" />
     <Compile Include="Common\Utils\VsProjectReferencesTracker.cs" />
     <Compile Include="Common\DefaultDependencyProvider.cs" />
+    <Compile Include="VS2013\VS2013RunnerGateway.cs" />
+    <Compile Include="VS2013\Vs2013DependencyProvider.cs" />
     <Compile Include="VsContainerBuilder.cs" />
     <Compile Include="Common\VsSpecFlowConfigurationReader.cs" />
     <Compile Include="Common\Guids.cs" />
@@ -385,6 +384,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
     <MSBuildCommunityTasksPath>$(SolutionDir)\lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>

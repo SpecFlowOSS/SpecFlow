@@ -36,7 +36,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper.ToString());
             }
 
-            if (ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2012)
+            if (ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2012 ||
+                ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2013)
             {
                 return container.Resolve<ITestRunnerGateway>(TestRunnerTool.VisualStudio2012.ToString());
             }

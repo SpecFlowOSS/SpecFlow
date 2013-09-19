@@ -56,19 +56,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration
         {
             get
             {
-                Version vsVersion;
-                if (!Version.TryParse(Container.Resolve<EnvDTE.DTE>().Version, out vsVersion))
-                    return null;
-
-                switch (vsVersion.Major)
-                {
-                    case 10:
-                        return IdeIntegration.Install.IdeIntegration.VisualStudio2010;
-                    case 11:
-                        return IdeIntegration.Install.IdeIntegration.VisualStudio2012;
-                    default:
-                        return null;
-                }
+                return IdeIntegration.Install.IdeIntegration.VisualStudio2013;
             }
         }
 

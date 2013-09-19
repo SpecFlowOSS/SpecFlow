@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using BoDi;
 using Microsoft.VisualStudio.Shell;
+using TechTalk.SpecFlow.VsIntegration.VS2013;
 
 namespace TechTalk.SpecFlow.Vs2010Integration
 {
     public static class VsContainerBuilder
     {
-        internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+        internal static DefaultDependencyProvider DefaultDependencyProvider = new Vs2013DependencyProvider();
 
         public static IObjectContainer CreateContainer(SpecFlowPackagePackage package)
         {

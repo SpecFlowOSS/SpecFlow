@@ -158,6 +158,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecFlowPackage.cs" />
+    <Compile Include="VS2010\MsTestRunnerGateway.cs" />
+    <Compile Include="VS2010\ReSharper5TestRunnerGateway.cs" />
+    <Compile Include="VS2012\Vs2012DependencyProvider.cs" />
+    <Compile Include="VS2012\VS2012RunnerGateway.cs" />
     <Compile Include="VsContainerBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
