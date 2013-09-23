@@ -18,9 +18,24 @@ using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing.OutputWindow;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 using Process = EnvDTE.Process;
+using TechTalk.SpecFlow.IdeIntegration.Options;
+using TechTalk.SpecFlow.VsIntegration.Common.TestRunner;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
+    public class SpecRunGatewayLoader : AutoTestRunnerGatewayLoader
+    {
+        public SpecRunGatewayLoader()
+            : base(TestRunnerTool.SpecRun)
+        {
+        }
+
+        public override bool CanUse(Project project)
+        {
+            return VsxHelper.GetReference(project, "TechTalk.SpecRun") != null;
+        }
+    }
+
     public class SpecRunTestRunnerGateway : ITestRunnerGateway
     {
         private readonly IOutputWindowService outputWindowService;

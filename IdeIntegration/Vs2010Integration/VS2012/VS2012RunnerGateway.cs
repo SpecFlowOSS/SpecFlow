@@ -4,9 +4,27 @@ using EnvDTE;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.VsIntegration.Common.TestRunner;
+using TechTalk.SpecFlow.IdeIntegration.Options;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
+    public class VisualStudio2012GatewayLoader : AutoTestRunnerGatewayLoader
+    {
+        private readonly IdeIntegration.Install.IdeIntegration ideIntegration;
+
+        public VisualStudio2012GatewayLoader(IdeIntegration.Install.IdeIntegration ideIntegration)
+            : base(TestRunnerTool.VisualStudio2012)
+        {
+            this.ideIntegration = ideIntegration;
+        }
+
+        public override bool CanUse(Project project)
+        {
+            return ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2012;
+        }
+    }
+
     public class VS2012RunnerGateway : ITestRunnerGateway
     {
         private readonly DTE dte;

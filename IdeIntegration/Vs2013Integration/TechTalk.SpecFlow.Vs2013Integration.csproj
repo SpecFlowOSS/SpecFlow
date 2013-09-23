@@ -203,6 +203,7 @@
     <Compile Include="Common\EditorCommands\ReSharperCommand.cs" />
     <Compile Include="Common\LanguageService\IdleTaskProcessingQueue.cs" />
     <Compile Include="Common\LanguageService\IGherkinProcessingTask.cs" />
+    <Compile Include="Common\TestRunner\AutoTestRunnerGatewayLoader.cs" />
     <Compile Include="Common\UI\ContextMenuBuilder.cs" />
     <Compile Include="Common\Generator\VsGeneratorInfoProvider.cs" />
     <Compile Include="Common\Install\VsBrowserGuidanceNotificationService.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Common\Utils\VsProjectFileTrackerBase.cs" />
     <Compile Include="Common\Utils\VsProjectReferencesTracker.cs" />
     <Compile Include="Common\DefaultDependencyProvider.cs" />
+    <Compile Include="VS2013\VS2013AutoTestRunnerGateway.cs" />
     <Compile Include="VS2013\VS2013RunnerGateway.cs" />
     <Compile Include="VS2013\Vs2013DependencyProvider.cs" />
     <Compile Include="VsContainerBuilder.cs" />

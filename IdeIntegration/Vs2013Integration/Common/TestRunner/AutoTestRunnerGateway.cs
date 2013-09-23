@@ -7,6 +7,8 @@ using TechTalk.SpecFlow.IdeIntegration.Install;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.VsIntegration.Common.TestRunner;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
 {
@@ -21,29 +23,31 @@ namespace TechTalk.SpecFlow.Vs2010Integration.TestRunner
             ideIntegration = installServices.IdeIntegration;
         }
 
+        protected virtual IEnumerable<AutoTestRunnerGatewayLoader> GetLoaders()
+        {
+            yield return new SpecRunGatewayLoader();
+#if VS2010
+            yield return new ReSharper5GatewayLoader();
+#endif
+            yield return new ReSharper6GatewayLoader();
+#if VS2012
+            yield return new VisualStudio2012GatewayLoader(ideIntegration);
+#endif
+#if VS2013
+            yield return new VisualStudio2013GatewayLoader();
+#endif
+#if VS2010
+            yield return new VisualStudio2010MsTestGatewayLoader();
+#endif
+        }
+
         private ITestRunnerGateway GetCurrentTestRunnerGateway(Project project)
         {
-            if (VsxHelper.GetReference(project, "TechTalk.SpecRun") != null)
-                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.SpecRun.ToString());
-
-            var reSharperAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == "JetBrains.ReSharper.UnitTestFramework");
-
-            if (reSharperAssembly != null)
+            foreach (var loader in GetLoaders())
             {
-                if (reSharperAssembly.GetName().Version.Major <= 5)
-                    return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper5.ToString());
-
-                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.ReSharper.ToString());
+                if (loader.CanUse(project))
+                    return loader.CreateTestRunner(container);
             }
-
-            if (ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2012 ||
-                ideIntegration == IdeIntegration.Install.IdeIntegration.VisualStudio2013)
-            {
-                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.VisualStudio2012.ToString());
-            }
-
-            if (VsxHelper.GetReference(project, "Microsoft.VisualStudio.QualityTools.UnitTestFramework") != null)
-                return container.Resolve<ITestRunnerGateway>(TestRunnerTool.VisualStudio2010MsTest.ToString());
 
             MessageBox.Show(
                 "Could not find matching test runner. Please specify the test runner tool in 'Tools / Options / SpecFlow'",

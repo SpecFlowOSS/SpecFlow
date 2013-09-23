@@ -16,6 +16,7 @@ namespace TechTalk.SpecFlow.VsIntegration.VS2013
             base.RegisterDefaults(container);
 
             container.RegisterTypeAs<VS2013RunnerGateway, ITestRunnerGateway>(TestRunnerTool.VisualStudio2012.ToString());
+            container.RegisterTypeAs<VS2013AutoTestRunnerGateway, ITestRunnerGateway>(TestRunnerTool.Auto.ToString());
         }
     }
 }
