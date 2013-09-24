@@ -27,6 +27,9 @@ namespace TechTalk.SpecFlow.VsIntegration.VS2013
 
         public string GetCurrentTest(string filePath, int line, int lineCharOffset)
         {
+            if (filePath == null || !filePath.EndsWith(".feature", StringComparison.OrdinalIgnoreCase))
+                return null;
+
             var testsToRun = unitTestStorage.ActiveUnitTestReader.GetAllTestsWithProperties()
                 .Where(t => string.Equals(t.FilePath, filePath, StringComparison.OrdinalIgnoreCase) && t.LineNumber >= line)
                 .OrderBy(t => t.LineNumber);
