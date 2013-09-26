@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Install
     {
         private const int AFTER_RAMP_UP_DAYS = 10;
         private const int EXPERIENCED_DAYS = 100;
-        private const int VETERAN_DAYS = 300;
+        private const int VETERAN_DAYS = 200;
 
         private readonly IIdeTracer tracer;
         private readonly IGuidanceNotificationService notificationService;
