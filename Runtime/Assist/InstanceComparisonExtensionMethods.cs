@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 

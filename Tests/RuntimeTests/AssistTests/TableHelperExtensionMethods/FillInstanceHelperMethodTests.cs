@@ -29,5 +29,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             person.MiddleInitial.ShouldEqual('T');
             person.NullableChar.ShouldEqual('S');
         }
+
+        [Test]
+        public virtual void Can_populate_subtype_fields_with_FillInstance()
+        {
+            Person person = new PersonWithStyle();
+
+            var table = new Table("Property", "Value");
+            table.AddRow("Style", "VeryCool");
+
+            table.FillInstance(person);
+
+            // Create a variable of type PersonWithStyle to validate that Style was set properly.
+            PersonWithStyle personWithStyle = (PersonWithStyle)person;
+
+            Assert.That(personWithStyle.Style, Is.EqualTo(Style.VeryCool));
+        }
     }
 }
