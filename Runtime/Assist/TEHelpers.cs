@@ -21,15 +21,15 @@ namespace TechTalk.SpecFlow.Assist
             if (constructor == null)
                 throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
 
-            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet(table, typeof(T));
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, typeof(T));
 
             var constructorParameters = constructor.GetParameters();
             var parameterValues = new object[constructorParameters.Length];
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
                 var parameterName = constructorParameters[parameterIndex].Name;
-                var property = (from p in propertiesThatNeedToBeSet
-                                where p.PropertyName == parameterName
+                var property = (from p in membersThatNeedToBeSet
+                                where p.MemberName == parameterName
                                 select p).FirstOrDefault();
                 if (property != null)
                     parameterValues[parameterIndex] = property.Handler(property.Row);
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var projectedPropertyNames = from property in typeof(T).GetProperties()
                                          from row in table.Rows
-                                         where IsPropertyMatchingToColumnName(property, row.Id())
+                                         where IsMemberMatchingToColumnName(property, row.Id())
                                          select property.Name;
 
             return (from constructor in typeof(T).GetConstructors()
@@ -58,9 +58,9 @@ namespace TechTalk.SpecFlow.Assist
                     select constructor).FirstOrDefault();
         }
 
-        internal static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
+        internal static bool IsMemberMatchingToColumnName(MemberInfo member, string columnName)
         {
-            return property.Name.MatchesThisColumnName(columnName);
+            return member.Name.MatchesThisColumnName(columnName);
         }
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
@@ -71,30 +71,44 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
         {
-            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet(table, instance.GetType());
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
-            propertiesThatNeedToBeSet.ToList()
-                .ForEach(x => instance.SetPropertyValue(x.PropertyName, x.Handler(x.Row)));
+            membersThatNeedToBeSet.ToList()
+                .ForEach(x => x.Setter(instance, x.Handler(x.Row)));
         }
 
-        internal static IEnumerable<PropertyHandler> GetPropertiesThatNeedToBeSet(Table table, Type type)
+        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
             var handlers = GetTypeHandlersForFieldValuePairs(type);
 
-            return from property in type.GetProperties()
-                   from key in handlers.Keys
-                   from row in table.Rows
-                   where ThisPropertyMatchesTheType(property, key) 
-                         && IsPropertyMatchingToColumnName(property, row.Id())
-                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+            var properties = from property in type.GetProperties()
+                             from key in handlers.Keys
+                             from row in table.Rows
+                             where TheseTypesMatch(property.PropertyType, key)
+                                   && IsMemberMatchingToColumnName(property, row.Id())
+                             select new MemberHandler { Row = row, MemberName = property.Name, Handler = handlers[key], Setter = (i, v) => property.SetValue(i, v, null) };
+
+            var fields = from field in type.GetFields()
+                             from key in handlers.Keys
+                             from row in table.Rows
+                             where TheseTypesMatch(field.FieldType, key)
+                                   && IsMemberMatchingToColumnName(field, row.Id())
+                             select new MemberHandler { Row = row, MemberName = field.Name, Handler = handlers[key], Setter = (i, v) => field.SetValue(i, v) };
+
+            var memberHandlers = new List<MemberHandler>();
+
+            memberHandlers.AddRange(properties);
+            memberHandlers.AddRange(fields);
+
+            return memberHandlers;
         }
 
-        private static bool ThisPropertyMatchesTheType(PropertyInfo property, Type key)
+        private static bool TheseTypesMatch(Type memberType, Type handlerType)
         {
-            if (key.IsAssignableFrom(property.PropertyType))
+            if (handlerType.IsAssignableFrom(memberType))
                 return true;
-            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
+            if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return handlerType.IsAssignableFrom(memberType.GetGenericArguments()[0]);
             return false;
         }
 
@@ -137,11 +151,12 @@ namespace TechTalk.SpecFlow.Assist
                        };
         }
 
-        internal class PropertyHandler
+        internal class MemberHandler
         {
             public TableRow Row { get; set; }
-            public string PropertyName { get; set; }
+            public string MemberName { get; set; }
             public Func<TableRow, object> Handler { get; set; }
+            public Action<object, object> Setter { get; set; }
         }
 
         internal static Table GetTheProperInstanceTable(Table table, Type type)
@@ -172,7 +187,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
             return type.GetProperties()
-                .Any(property => IsPropertyMatchingToColumnName(property, firstRowValue));
+                .Any(property => IsMemberMatchingToColumnName(property, firstRowValue));
         }
     }
 }
