@@ -28,11 +28,11 @@ namespace TechTalk.SpecFlow.Assist
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
                 var parameterName = constructorParameters[parameterIndex].Name;
-                var property = (from p in membersThatNeedToBeSet
-                                where p.MemberName == parameterName
-                                select p).FirstOrDefault();
-                if (property != null)
-                    parameterValues[parameterIndex] = property.Handler(property.Row);
+                var member = (from m in membersThatNeedToBeSet
+                                where m.MemberName == parameterName
+                                select m).FirstOrDefault();
+                if (member != null)
+                    parameterValues[parameterIndex] = member.Handler(member.Row);
             }
             return (T)constructor.Invoke(parameterValues);
         }
