@@ -229,6 +229,7 @@
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">
       <Link>Languages.xml</Link>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

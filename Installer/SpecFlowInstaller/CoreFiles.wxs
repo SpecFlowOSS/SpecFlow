@@ -17,9 +17,9 @@
         <File Name="TechTalk.SpecFlow.tasks" Source="$(var.TechTalk.SpecFlow.Tools.ProjectDir)\MsBuild\TechTalk.SpecFlow.tasks" />
         <!-- files for the gherkin parser -->
         <File Name="Gherkin.dll" Source="$(var.SolutionDir)\lib\gherkin\Gherkin.dll" />
-        <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.Runtime.dll" />
-        <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Core.dll" />
-        <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\lib\gherkin\IKVM.OpenJDK.Text.dll" />
+        <File Name="IKVM.Runtime.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.Runtime.dll" />
+        <File Name="IKVM.OpenJDK.Core.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.OpenJDK.Core.dll" />
+        <File Name="IKVM.OpenJDK.Text.dll" Source="$(var.SolutionDir)\packages\IKVM.7.2.4630.5\lib\IKVM.OpenJDK.Text.dll" />
         <File Id="TechTalk.SpecFlow.IdeIntegration.dll" Name="TechTalk.SpecFlow.IdeIntegration.dll" Source="$(var.TechTalk.SpecFlow.IdeIntegration.TargetDir)\TechTalk.SpecFlow.IdeIntegration.dll" />
       </Component>
 

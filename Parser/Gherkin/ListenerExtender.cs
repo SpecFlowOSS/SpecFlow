@@ -3,8 +3,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using gherkin;
 using gherkin.lexer;
+using java.lang;
 using java.util;
 using System.Collections.Generic;
+using Math = System.Math;
 
 namespace TechTalk.SpecFlow.Parser.Gherkin
 {
@@ -45,9 +47,9 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             lastProcessedEditorLine = Math.Max(editorLine, lastProcessedEditorLine);
         }
 
-        private int GetEditorLine(int line)
+        private int GetEditorLine(Integer line)
         {
-            return line - 1 + LineOffset;
+            return line.intValue() - 1 + LineOffset;
         }
 
         private GherkinBufferPosition GetEOFPosition()
@@ -97,7 +99,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
         static private readonly Regex cellSeparatorRe = new Regex(@"\|");
         private GherkinBufferSpan[] GetCellSpans(int editorLine, string[] cells)
         {
-            var cellSeparatorPositions = 
+            var cellSeparatorPositions =
                 GherkinBuffer.GetMatchesForLine(cellSeparatorRe, editorLine).ToArray();
 
             var result = new GherkinBufferSpan[cells.Length];
@@ -181,7 +183,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return lastScenarioBlock;
         }
 
-        private GherkinBufferSpan ProcessSimpleLanguageElement(int line)
+        private GherkinBufferSpan ProcessSimpleLanguageElement(Integer line)
         {
             var editorLine = GetEditorLine(line);
             var bufferSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
@@ -190,7 +192,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return bufferSpan;
         }
 
-        private GherkinBufferSpan ProcessComplexLanguageElement(int line, string description, out GherkinBufferSpan descriptionSpan)
+        private GherkinBufferSpan ProcessComplexLanguageElement(Integer line, string description, out GherkinBufferSpan descriptionSpan)
         {
             var editorLine = GetEditorLine(line);
             var headerSpan = GetSingleLineSpanIgnoreWhitespace(editorLine);
@@ -202,7 +204,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return headerSpan;
         }
 
-        public void tag(string name, int line)
+        public void tag(string name, Integer line)
         {
             if (delayTagAndCommentCalls)
             {
@@ -220,7 +222,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                 gherkinListener.FeatureTag(name, bufferSpan);
         }
 
-        public void comment(string commentText, int line)
+        public void comment(string commentText, Integer line)
         {
             if (delayTagAndCommentCalls)
             {
@@ -238,7 +240,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             //nop
         }
 
-        public void docString(string doctype, string text, int line)
+        public void docString(string doctype, string text, Integer line)
         {
             FlushDelayedCalls();
 
@@ -250,7 +252,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.MultilineText(text, textSpan);
         }
 
-        public void feature(string keyword, string name, string description, int line)
+        public void feature(string keyword, string name, string description, Integer line)
         {
             FlushDelayedCalls();
 
@@ -270,7 +272,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.Feature(keyword, name, description, headerSpan, descriptionSpan);
         }
 
-        public void background(string keyword, string name, string description, int line)
+        public void background(string keyword, string name, string description, Integer line)
         {
             ResetScenarioBlocks();
 
@@ -280,7 +282,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.Background(keyword, name, description, headerSpan, descriptionSpan);
         }
 
-        public void scenario(string keyword, string name, string description, int line)
+        public void scenario(string keyword, string name, string description, Integer line)
         {
             ResetScenarioBlocks();
 
@@ -290,7 +292,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.Scenario(keyword, name, description, headerSpan, descriptionSpan);
         }
 
-        public void scenarioOutline(string keyword, string name, string description, int line)
+        public void scenarioOutline(string keyword, string name, string description, Integer line)
         {
             ResetScenarioBlocks();
             delayTagAndCommentCalls = true;
@@ -301,7 +303,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.ScenarioOutline(keyword, name, description, headerSpan, descriptionSpan);
         }
 
-        public void examples(string keyword, string name, string description, int line)
+        public void examples(string keyword, string name, string description, Integer line)
         {
             inExamplesHeader = true;
             FlushDelayedCalls();
@@ -315,7 +317,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.Examples(keyword, name, description, headerSpan, descriptionSpan);
         }
 
-        public void step(string keyword, string text, int line)
+        public void step(string keyword, string text, Integer line)
         {
             FlushDelayedCalls();
 
@@ -339,7 +341,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             inTable = false;
         }
 
-        public void row(List cellList, int line)
+        public void row(List cellList, Integer line)
         {
             FlushDelayedCalls();
 
@@ -370,7 +372,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.EOF(eofPosition);
         }
 
-        public void syntaxError(string state, string eventName, List legalEvents, int line)
+        public void syntaxError(string state, string eventName, List legalEvents, Integer line)
         {
             FlushDelayedCalls();
 
