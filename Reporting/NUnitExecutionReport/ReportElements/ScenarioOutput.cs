@@ -7,5 +7,6 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport.ReportElements
         [XmlAttribute("name")]
         public string Name;
         public string Text;
+        public string DebugText;
     }
 }

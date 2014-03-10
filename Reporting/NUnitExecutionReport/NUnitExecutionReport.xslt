@@ -202,8 +202,14 @@
           <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
               <xsl:with-param name="text-key" select="'Show'" />
             </xsl:call-template>]</a>
+            <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]/sfr:DebugText != ''">
+                <xsl:text> </xsl:text>
+                <a href="#" onclick="dbgOutputToggle('dbgout{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
+                        <xsl:with-param name="text-key" select="'DebugOutput'" />
+                    </xsl:call-template>]</a>
+            </xsl:if>
         </xsl:if>
-      </td>
+	  </td>
       <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
@@ -235,7 +241,20 @@
         </td>
       </tr>
     </xsl:if>
-    <xsl:if test="$status = 'failure'">
+      <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]/sfr:DebugText != ''">
+          <tr id="dbgout{$scenario-id}" class="hidden">
+              <td class="left subRow" colspan="3">
+                  <div class="failurePanel">
+                      <pre>
+                          <xsl:call-template name="scenario-output">
+                              <xsl:with-param name="word" select="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]/sfr:DebugText"/>
+                          </xsl:call-template>
+                      </pre>
+                  </div>
+              </td>
+          </tr>
+      </xsl:if>
+      <xsl:if test="$status = 'failure'">
       <tr id="err{$scenario-id}" class="hidden">
         <td class="left subRow" colspan="3">
           <xsl:apply-templates select="nunit:failure" />
