@@ -13,6 +13,7 @@ Fixed issues:
 
 New Features:
 + VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
++ Assist: Added overload to CreateSet<T> accepting a Func<TableRow,T> to create each instance
 
 
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
