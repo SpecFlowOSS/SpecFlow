@@ -63,7 +63,7 @@
             font-style:italic;
             margin-left: 2em;
             color: #888888;
-reportTable          }
+          }
           ]]>
         </style>
       </head>
@@ -178,7 +178,6 @@ reportTable          }
             <xsl:with-param name="keyword" select="'Scenario'" />
           </xsl:call-template>
         </th>
-        <th class="top" style="width: 10em">Category</th>
         <th class="top" style="width: 5em">Status</th>
         <th class="top" style="width: 5em">Time(s)</th>
       </tr>
@@ -205,10 +204,7 @@ reportTable          }
             </xsl:call-template>]</a>
         </xsl:if>
       </td>
-      <td>
-        <xsl:call-template name="get-category"/>
-      </td>
-        <td class="{$status}">
+      <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
           <xsl:text> </xsl:text>
@@ -227,8 +223,8 @@ reportTable          }
       </td>
     </tr>
     <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
-      <tr>
-        <td id="out{$scenario-id}" class="left subRow hidden" colspan="4">
+      <tr id="out{$scenario-id}" class="hidden">
+        <td class="left subRow" colspan="3">
           <div class="failurePanel">
             <pre>
               <xsl:call-template name="scenario-output">
@@ -240,8 +236,8 @@ reportTable          }
       </tr>
     </xsl:if>
     <xsl:if test="$status = 'failure'">
-      <tr>
-        <td id="err{$scenario-id}" class="left subRow hidden" colspan="4">
+      <tr id="err{$scenario-id}" class="hidden">
+        <td class="left subRow" colspan="3">
           <xsl:apply-templates select="nunit:failure" />
         </td>
       </tr>
@@ -429,28 +425,4 @@ reportTable          }
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  <xsl:template name="get-category">
-    <xsl:choose>
-      <xsl:when test="./nunit:categories">
-        <span>
-          <xsl:for-each select="./nunit:categories/nunit:category">
-            <xsl:value-of select="@name"/>
-            <xsl:choose>
-              <xsl:when test="position()=last()">
-                <xsl:text>&#10;</xsl:text>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:text>, </xsl:text>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:for-each>
-        </span>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
 </xsl:stylesheet>
