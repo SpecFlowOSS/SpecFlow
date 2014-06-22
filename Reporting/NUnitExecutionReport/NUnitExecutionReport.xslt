@@ -63,7 +63,7 @@
             font-style:italic;
             margin-left: 2em;
             color: #888888;
-          }
+reportTable          }
           ]]>
         </style>
       </head>
@@ -178,6 +178,7 @@
             <xsl:with-param name="keyword" select="'Scenario'" />
           </xsl:call-template>
         </th>
+        <th class="top" style="width: 10em">Category</th>
         <th class="top" style="width: 5em">Status</th>
         <th class="top" style="width: 5em">Time(s)</th>
       </tr>
@@ -204,7 +205,10 @@
             </xsl:call-template>]</a>
         </xsl:if>
       </td>
-      <td class="{$status}">
+      <td>
+        <xsl:call-template name="get-category"/>
+      </td>
+        <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
           <xsl:text> </xsl:text>
@@ -223,8 +227,8 @@
       </td>
     </tr>
     <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
-      <tr id="out{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
+      <tr>
+        <td id="out{$scenario-id}" class="left subRow hidden" colspan="4">
           <div class="failurePanel">
             <pre>
               <xsl:call-template name="scenario-output">
@@ -236,8 +240,8 @@
       </tr>
     </xsl:if>
     <xsl:if test="$status = 'failure'">
-      <tr id="err{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
+      <tr>
+        <td id="err{$scenario-id}" class="left subRow hidden" colspan="4">
           <xsl:apply-templates select="nunit:failure" />
         </td>
       </tr>
@@ -425,4 +429,28 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
+  <xsl:template name="get-category">
+    <xsl:choose>
+      <xsl:when test="./nunit:categories">
+        <span>
+          <xsl:for-each select="./nunit:categories/nunit:category">
+            <xsl:value-of select="@name"/>
+            <xsl:choose>
+              <xsl:when test="position()=last()">
+                <xsl:text>&#10;</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:text>, </xsl:text>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:for-each>
+        </span>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text> </xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

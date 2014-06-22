@@ -1,3 +1,8 @@
+1.9.3 - 2013/06/22 (Specflow Test Execution Report with Tags)
+New Features:
++ Specflow Test execution report derived through MSTest or NUnit displays the tags attached with each scenario or feature in a seperate column viz. "Category"
++ Minor fix for a toggle functionality in the XSLT file to make it work consistently with IE and Chrome.
+
 1.9.2 - 2013/03/25 (Visual Studio Integration update)
 
 Fixed issues:
