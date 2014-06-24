@@ -65,8 +65,11 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            return propertyName.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
-
+            return propertyName.Equals(
+                columnName
+                .Replace(" ", string.Empty)
+                .Replace("-", string.Empty)
+                .Replace("?", string.Empty), StringComparison.OrdinalIgnoreCase);
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
