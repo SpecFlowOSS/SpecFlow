@@ -1,0 +1,175 @@
+Gherkin parser import tool:
+  + adds signing for the assembly
+  + generates Language.xml from the parser
+
+Generating signed parser...
+Set platform to 'v2', using directory 'C:\Windows\Microsoft.NET\Framework64\v2.0
+.50727\..\v2.0.50727' for mscorlib.dll
+Running on Microsoft (R) .NET Framework v2.0.50727
+mscorlib.dll version = 2.0.0.0
+The list of input assemblies is:
+        E:\Projects\SpecFlow\packages\gherkin.2.12.1\lib\Gherkin.dll
+        E:\Projects\SpecFlow\lib\gherkin\com.googlecode.json-simple-json-simple.
+dll
+        E:\Projects\SpecFlow\lib\gherkin\net.iharder-base64.dll
+Trying to read assembly from the file 'E:\Projects\SpecFlow\packages\gherkin.2.1
+2.1\lib\Gherkin.dll'.
+Can not find PDB file. Debug info will not be available for assembly 'E:\Project
+s\SpecFlow\packages\gherkin.2.12.1\lib\Gherkin.dll'.
+        Successfully read in assembly.
+        There were no errors reported in gherkin's metadata.
+Trying to read assembly from the file 'E:\Projects\SpecFlow\lib\gherkin\com.goog
+lecode.json-simple-json-simple.dll'.
+Can not find PDB file. Debug info will not be available for assembly 'E:\Project
+s\SpecFlow\lib\gherkin\com.googlecode.json-simple-json-simple.dll'.
+        Successfully read in assembly.
+        There were no errors reported in com.googlecode.json-simple-json-simple'
+s metadata.
+Trying to read assembly from the file 'E:\Projects\SpecFlow\lib\gherkin\net.ihar
+der-base64.dll'.
+Can not find PDB file. Debug info will not be available for assembly 'E:\Project
+s\SpecFlow\lib\gherkin\net.iharder-base64.dll'.
+        Successfully read in assembly.
+        There were no errors reported in net.iharder-base64's metadata.
+Checking to see that all of the input assemblies have a compatible PeKind.
+        gherkin.PeKind = ILonly
+        com.googlecode.json-simple-json-simple.PeKind = ILonly
+        net.iharder-base64.PeKind = ILonly
+All input assemblies have a compatible PeKind value.
+AssemblyResolver: Assembly 'gherkin' is referencing assembly 'IKVM.OpenJDK.Core'
+.
+        AssemblyResolver: Attempting referencing assembly's directory.
+        AssemblyResolver: Did not find assembly in referencing assembly's direct
+ory.
+        AssemblyResolver: Attempting input directory.
+Resolved assembly reference 'IKVM.OpenJDK.Core' to 'IKVM.OpenJDK.Core.dll'. (Use
+d the original input directory.)
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Core'.
+AssemblyResolver: Assembly 'com.googlecode.json-simple-json-simple' is referenci
+ng assembly 'IKVM.OpenJDK.Core'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Core'.
+Resolved assembly reference 'IKVM.OpenJDK.Core' to 'E:\Projects\SpecFlow\lib\ghe
+rkin\IKVM.OpenJDK.Core.dll'. (Used referencing Module's directory.)
+Merging assembly 'gherkin' into target assembly.
+AssemblyResolver: Assembly 'gherkin' is referencing assembly 'IKVM.Runtime'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+        AssemblyResolver: Did not find assembly in referencing assembly's direct
+ory.
+        AssemblyResolver: Attempting input directory.
+Resolved assembly reference 'IKVM.Runtime' to 'IKVM.Runtime.dll'. (Used the orig
+inal input directory.)
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.Runti
+me'.
+AssemblyResolver: Assembly 'gherkin' is referencing assembly 'IKVM.OpenJDK.Text'
+.
+        AssemblyResolver: Attempting referencing assembly's directory.
+        AssemblyResolver: Did not find assembly in referencing assembly's direct
+ory.
+        AssemblyResolver: Attempting input directory.
+Resolved assembly reference 'IKVM.OpenJDK.Text' to 'IKVM.OpenJDK.Text.dll'. (Use
+d the original input directory.)
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Text'.
+AssemblyResolver: Assembly 'gherkin' is referencing assembly 'IKVM.OpenJDK.Jdbc'
+.
+        AssemblyResolver: Attempting referencing assembly's directory.
+        AssemblyResolver: Did not find assembly in referencing assembly's direct
+ory.
+        AssemblyResolver: Attempting input directory.
+Resolved assembly reference 'IKVM.OpenJDK.Jdbc' to 'IKVM.OpenJDK.Jdbc.dll'. (Use
+d the original input directory.)
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Jdbc'.
+Merging assembly 'com.googlecode.json-simple-json-simple' into target assembly.
+AssemblyResolver: Assembly 'com.googlecode.json-simple-json-simple' is referenci
+ng assembly 'IKVM.Runtime'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.Runti
+me'.
+Resolved assembly reference 'IKVM.Runtime' to 'E:\Projects\SpecFlow\lib\gherkin\
+IKVM.Runtime.dll'. (Used referencing Module's directory.)
+Merging assembly 'net.iharder-base64' into target assembly.
+Merging assembly-level attributes from assembly 'gherkin' into target assembly.
+Copying 1 Win32 Resources from assembly 'gherkin' into target assembly.
+ILMerge: Signing assembly with the key file 'E:\Projects\SpecFlow\specflow.snk'.
+
+        There were no errors reported in the target assembly's metadata.
+ILMerge: Writing target assembly 'E:\Projects\SpecFlow\lib\gherkin\Gherkin.dll'.
+
+AssemblyResolver: Assembly 'IKVM.OpenJDK.Core' is referencing assembly 'IKVM.Ope
+nJDK.Util'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Util'.
+Resolved assembly reference 'IKVM.OpenJDK.Util' to 'E:\Projects\SpecFlow\Install
+er\ImportGherkinParser\bin\Debug\IKVM.OpenJDK.Util.dll'. (Used referencing Modul
+e's directory.)
+AssemblyResolver: Assembly 'gherkin' is referencing assembly 'System'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+        AssemblyResolver: Did not find assembly in referencing assembly's direct
+ory.
+        AssemblyResolver: Attempting input directory.
+        AssemblyResolver: Did not find assembly in input directory.
+        AssemblyResolver: Attempting user-supplied directories.
+        AssemblyResolver: No user-supplied directories.
+        AssemblyResolver: Attempting framework directory.
+Can not find PDB file. Debug info will not be available for assembly 'System'.
+Resolved assembly reference 'System' to 'C:\Windows\Microsoft.NET\Framework64\v2
+.0.50727\..\v2.0.50727\System.dll'. (Used framework directory.)
+AssemblyResolver: Assembly 'net.iharder-base64' is referencing assembly 'IKVM.Op
+enJDK.Util'.
+        AssemblyResolver: Attempting referencing assembly's directory.
+Can not find PDB file. Debug info will not be available for assembly 'IKVM.OpenJ
+DK.Util'.
+Resolved assembly reference 'IKVM.OpenJDK.Util' to 'E:\Projects\SpecFlow\lib\ghe
+rkin\IKVM.OpenJDK.Util.dll'. (Used referencing Module's directory.)
+Location for referenced assembly 'IKVM.OpenJDK.Core' is 'E:\Projects\SpecFlow\In
+staller\ImportGherkinParser\bin\Debug\IKVM.OpenJDK.Core.dll'
+        There were no errors reported in  IKVM.OpenJDK.Core's metadata.
+Location for referenced assembly 'mscorlib' is 'C:\Windows\Microsoft.NET\Framewo
+rk64\v2.0.50727\mscorlib.dll'
+        There were no errors reported in  mscorlib's metadata.
+Location for referenced assembly 'IKVM.Runtime' is 'E:\Projects\SpecFlow\Install
+er\ImportGherkinParser\bin\Debug\IKVM.Runtime.dll'
+        There were no errors reported in  IKVM.Runtime's metadata.
+Location for referenced assembly 'IKVM.OpenJDK.Text' is 'E:\Projects\SpecFlow\In
+staller\ImportGherkinParser\bin\Debug\IKVM.OpenJDK.Text.dll'
+        There were no errors reported in  IKVM.OpenJDK.Text's metadata.
+Location for referenced assembly 'IKVM.OpenJDK.Jdbc' is 'E:\Projects\SpecFlow\In
+staller\ImportGherkinParser\bin\Debug\IKVM.OpenJDK.Jdbc.dll'
+        There were no errors reported in  IKVM.OpenJDK.Jdbc's metadata.
+Location for referenced assembly 'IKVM.OpenJDK.Util' is 'E:\Projects\SpecFlow\In
+staller\ImportGherkinParser\bin\Debug\IKVM.OpenJDK.Util.dll'
+        There were no errors reported in  IKVM.OpenJDK.Util's metadata.
+Location for referenced assembly 'IKVM.OpenJDK.Core' is 'E:\Projects\SpecFlow\li
+b\gherkin\IKVM.OpenJDK.Core.dll'
+        There were no errors reported in  IKVM.OpenJDK.Core's metadata.
+Location for referenced assembly 'IKVM.Runtime' is 'E:\Projects\SpecFlow\lib\ghe
+rkin\IKVM.Runtime.dll'
+        There were no errors reported in  IKVM.Runtime's metadata.
+Location for referenced assembly 'IKVM.OpenJDK.Util' is 'E:\Projects\SpecFlow\li
+b\gherkin\IKVM.OpenJDK.Util.dll'
+        There were no errors reported in  IKVM.OpenJDK.Util's metadata.
+Location for referenced assembly 'System' is 'C:\Windows\Microsoft.NET\Framework
+64\v2.0.50727\System.dll'
+        There were no errors reported in  System's metadata.
+ILMerge: Done.
+
+Loading imported parser from E:\Projects\SpecFlow\lib\gherkin\Gherkin.dll
+Multiple possible specific cultures: ar-SA, ar-IQ, ar-EG, ar-LY, ar-DZ, ar-MA, a
+r-TN, ar-OM, ar-YE, ar-SY, ar-JO, ar-LB, ar-KW, ar-AE, ar-BH, ar-QA
+Default specific culture for ar is ar-SA
+Invalid language: bm
+Possibly unusable language: en-lol
+Possibly unusable language: en-old
+Possibly unusable language: en-pirate
+Possibly unusable language: en-Scouse
+Possibly unusable language: en-tx
+Invalid language: eo
+Possibly unusable language: sr-Latn
+Possibly unusable language: sr-Cyrl
+Invalid language: tl
+Press any key to continue . . .

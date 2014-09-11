@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
 using System.Xml.Linq;
 using ILMerging;
+using java.util.jar;
 using NConsoler;
 
 namespace ImportGherkinParser
@@ -24,8 +28,6 @@ namespace ImportGherkinParser
             Consolery.Run(typeof(Program), args);
             return;
         }
-
-        static private readonly Regex parserVersionRe = new Regex(@"(?<version>[\d\.]+)");
 
         [Action("Imports official Gherkin parser to SpecFlow")]
         public static void ImportGherkinParser(
@@ -50,9 +52,10 @@ namespace ImportGherkinParser
             GenerateLanguageDescriptions(parserAssembly, languagesOutputFileFullPath);
         }
 
+        static private readonly Regex parserVersionRe = new Regex(@"\.(?<version>\d+(?:\.\d+)+)");
         private static Version GetParserVersion(string gherkinParserFullPath)
         {
-            var match = parserVersionRe.Match(Path.GetFileNameWithoutExtension(gherkinParserFullPath));
+            var match = parserVersionRe.Match(gherkinParserFullPath);
             if (!match.Success)
             {
                 Console.WriteLine("> Unable to detect parser version");
@@ -77,8 +80,8 @@ namespace ImportGherkinParser
             ilMerge.KeyFile = keyFullPath;
             ilMerge.Version = version;
 
-            string simpleJsonPath = Path.Combine(Path.GetDirectoryName(gherkinParserFullPath), "com.googlecode.json-simple-json-simple.dll");
-            string base46Path = Path.Combine(Path.GetDirectoryName(gherkinParserFullPath), "net.iharder-base64.dll");
+            string simpleJsonPath = Path.Combine(Path.GetDirectoryName(outputFileFullPath), "com.googlecode.json-simple-json-simple.dll");
+            string base46Path = Path.Combine(Path.GetDirectoryName(outputFileFullPath), "net.iharder-base64.dll");
 
             ilMerge.SetInputAssemblies(new[] { gherkinParserFullPath, simpleJsonPath, base46Path });
 
@@ -92,7 +95,7 @@ namespace ImportGherkinParser
             Console.WriteLine();
         }
 
-        private static readonly Dictionary<string, string> languageTranslations = 
+        private static readonly Dictionary<string, string> languageTranslations =
             new Dictionary<string, string>()
             {
                 {"se", "sv"},
@@ -121,7 +124,6 @@ namespace ImportGherkinParser
         private static void GenerateLanguageDescriptions(Assembly parserAssembly, string languagesOutputFile)
         {
             List<LanguageInfo> languages = CollectSupportedLanguages(parserAssembly);
-            CollectKeywordTranslations(parserAssembly, languages);
 
             //write languages.xml file
             XDocument document = new XDocument();
@@ -153,14 +155,27 @@ namespace ImportGherkinParser
             document.Save(languagesOutputFile);
         }
 
+        private const string Feature = "Feature";
+        private const string Background = "Background";
+        private const string Scenario = "Scenario";
+        private const string ScenarioOutline = "ScenarioOutline";
+        private const string Examples = "Examples";
+        private const string Given = "Given";
+        private const string When = "When";
+        private const string Then = "Then";
+        private const string And = "And";
+        private const string But = "But";
+        static private readonly string[] keywords = new[] { Feature, Background, Scenario, ScenarioOutline, Examples, Given, When, Then, And, But };
         private static void CollectKeywordTranslations(Assembly parserAssembly, List<LanguageInfo> languages)
         {
             Type i18NType = parserAssembly.GetType("gherkin.I18n", true);
             MethodInfo keywordMethod = i18NType.GetMethod("keywords");
             if (keywordMethod == null)
-                throw new InvalidOperationException("keywords method not found");
-
-            string[] keywords = new[] { "Feature", "Background", "Scenario", "ScenarioOutline", "Examples", "Given", "When", "Then", "And", "But" };
+            {
+                // it just might be that we are working on a never version of the gherkin.dll, which does not have these methods
+                return;
+            }
+            //throw new InvalidOperationException("keywords method not found");            
 
             foreach (var language in languages)
             {
@@ -187,6 +202,16 @@ namespace ImportGherkinParser
 
         private static List<LanguageInfo> CollectSupportedLanguages(Assembly parserAssembly)
         {
+            // From some time after gherkin version 2.6.5 the position and type of the language resource
+            // changed from an xml to a jar file with a json file in it.
+            // Check whether this is one of those versions.
+            const string i18nJsonResourceName = "gherkin.jar";
+            var i18nJsonResourceStream = parserAssembly.GetManifestResourceStream(i18nJsonResourceName);
+            if (i18nJsonResourceStream != null)
+            {
+                return HandleGherkinJarResource(i18nJsonResourceStream);
+            }
+
             var languages = new List<LanguageInfo>();
             var resourceNames = parserAssembly.GetManifestResourceNames();
             foreach (var resourceName in resourceNames)
@@ -197,27 +222,127 @@ namespace ImportGherkinParser
 
                 LanguageInfo languageInfo = new LanguageInfo();
                 languageInfo.Code = match.Groups["lang"].Value.Replace("_", "-");
-                if (languageTranslations.ContainsKey(languageInfo.Code))
-                {
-                    languageInfo.CompatibleGherkinCode = languageInfo.Code;
-                    languageInfo.Code = languageTranslations[languageInfo.Code];
-                }
 
-                CultureInfo cultureInfo = GetCultureInfo(languageInfo.Code);
-                if (cultureInfo == null)
+                if (!UpdateCultureInfo(languageInfo))
                     continue;
 
-                languageInfo.CultureInfo = cultureInfo.Name;
-                languageInfo.EnglishName = cultureInfo.EnglishName;
-                if (cultureInfo.IsNeutralCulture)
-                {
-                    CultureInfo defaultSpecificCulture = GetDefaultSpecificCulture(languageInfo.Code);
-                    if (defaultSpecificCulture != null)
-                        languageInfo.DefaultSpecificCulture = defaultSpecificCulture.Name;
-                }
                 languages.Add(languageInfo);
             }
+
+            CollectKeywordTranslations(parserAssembly, languages);
             return languages;
+        }
+
+        private static bool UpdateCultureInfo(LanguageInfo languageInfo)
+        {
+            if (languageTranslations.ContainsKey(languageInfo.Code))
+            {
+                languageInfo.CompatibleGherkinCode = languageInfo.Code;
+                languageInfo.Code = languageTranslations[languageInfo.Code];
+            }
+
+            CultureInfo cultureInfo = GetCultureInfo(languageInfo.Code);
+            if (cultureInfo == null)
+                return false;
+
+            languageInfo.CultureInfo = cultureInfo.Name;
+            languageInfo.EnglishName = cultureInfo.EnglishName;
+            if (cultureInfo.IsNeutralCulture)
+            {
+                CultureInfo defaultSpecificCulture = GetDefaultSpecificCulture(languageInfo.Code);
+                if (defaultSpecificCulture != null)
+                    languageInfo.DefaultSpecificCulture = defaultSpecificCulture.Name;
+            }
+
+            return true;
+        }
+
+        private static List<LanguageInfo> HandleGherkinJarResource(Stream i18NJsonResourceStream)
+        {
+            List<byte> fullBuffer = new List<byte>();
+            byte[] buffer = new byte[65536];
+
+            int bytesRead;
+            while ((bytesRead = i18NJsonResourceStream.Read(buffer, 0, 65536)) > 0)
+            {
+                fullBuffer.AddRange(buffer.Take(bytesRead));
+            }
+
+            List<byte> jsonFile;
+            var tempfile = Path.GetTempFileName();
+            try
+            {
+                File.WriteAllBytes(tempfile, fullBuffer.ToArray());
+                JarFile f = new JarFile(tempfile);
+
+                var i18nEntry = f.getEntry("gherkin/i18n.json");
+
+                var stream = f.getInputStream(i18nEntry);
+
+                jsonFile = new List<byte>();
+                while ((bytesRead = stream.read(buffer, 0, 65536)) > 0)
+                {
+                    jsonFile.AddRange(buffer.Take(bytesRead));
+                }
+                f.close();
+            }
+            finally
+            {
+                // Make sure we delete the file...
+                File.Delete(tempfile);
+            }
+
+            var jsonText = Encoding.UTF8.GetString(jsonFile.ToArray(), 0, jsonFile.Count);
+
+            return Deserializei18nJson(jsonText);
+        }
+
+        private static List<LanguageInfo> Deserializei18nJson(string jsonText)
+        {
+            var deserializer = new JavaScriptSerializer();
+
+            var languages = deserializer.DeserializeObject(jsonText) as Dictionary<string, object>;
+
+            var entries = new List<LanguageInfo>();
+            foreach (var entryObject in languages)
+            {
+                var entryData = (entryObject.Value as Dictionary<string, object>)
+                    .ToDictionary(v => v.Key, v => v.Value as string);
+
+                var keywordTranslations = new List<KeywordTranslation>();
+                keywordTranslations.AddRange(SplitTranslationList(Feature, entryData["feature"]));
+                keywordTranslations.AddRange(SplitTranslationList(Background, entryData["background"]));
+                keywordTranslations.AddRange(SplitTranslationList(Scenario, entryData["scenario"]));
+                keywordTranslations.AddRange(SplitTranslationList(ScenarioOutline, entryData["scenario_outline"]));
+                keywordTranslations.AddRange(SplitTranslationList(Examples, entryData["examples"]));
+                keywordTranslations.AddRange(SplitTranslationList(Given, entryData["given"]));
+                keywordTranslations.AddRange(SplitTranslationList(When, entryData["when"]));
+                keywordTranslations.AddRange(SplitTranslationList(Then, entryData["then"]));
+                keywordTranslations.AddRange(SplitTranslationList(And, entryData["and"]));
+                keywordTranslations.AddRange(SplitTranslationList(But, entryData["but"]));
+
+                var languageInfo = new LanguageInfo()
+                {
+                    Code = entryObject.Key,
+                    EnglishName = entryData["name"]
+                };
+                languageInfo.KeywordTranslations.AddRange(keywordTranslations);
+
+                if (!UpdateCultureInfo(languageInfo))
+                    continue;
+
+                entries.Add(languageInfo);
+            }
+
+            return entries;
+        }
+
+        private static IEnumerable<KeywordTranslation> SplitTranslationList(string keyword, string translationList)
+        {
+            var splitted = translationList.Split(new[] { '|' })
+                .Where(splittedTransation => splittedTransation.Trim() != "*")
+                .Select(splittedTransation => new KeywordTranslation { Keyword = keyword, Translation = splittedTransation });
+            return splitted.ToList();
         }
 
         private static CultureInfo GetCultureInfo(string code)
@@ -237,7 +362,7 @@ namespace ImportGherkinParser
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("invlid language: {0}", code);
+                    Console.WriteLine("Invalid language: {0}", code);
                     return null;
                 }
             }
