@@ -67,6 +67,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Table_with_all_columns_same_rows_but_different_order_should_throw_comparison_exception_for_sequence_equal()
+        {
+            var table = CreateTableWithAllColumns();
+            table.AddRow(DateTime.Today.ToString(), testGuid2.ToString(), 2.ToString(), "b");
+            table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
+
+            Assert.Throws<ComparisonException>(() => 
+                table.CompareToProjectionOfSet(testCollection, 
+                (x, y) => x.SequenceEqual(y)));
+        }
+
+        [Test]
         public void Intersection_of_matching_table_and_collection_should_have_the_size_of_the_table()
         {
             var table = CreateTableWithAllColumns();
@@ -91,6 +103,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableProjection = table.ToProjectionOfSet(query);
             var queryProjection = query.ToProjection();
             Assert.AreEqual(table.RowCount, tableProjection.Except(queryProjection).Count());
+        }
+
+        [Test]
+        public void Table_with_extra_columns_should_throw_comparison_exception_on_except()
+        {
+            var table = CreateTableWithAllColumns();
+            table.AddRow(DateTime.Today.AddDays(100).ToString(), Guid.NewGuid().ToString(), 1.ToString(), "a");
+            table.AddRow(DateTime.Today.AddDays(200).ToString(), Guid.NewGuid().ToString(), 2.ToString(), "b");
+
+            var query = from x in testCollection
+                        select new { x.IntProperty, x.StringProperty };
+
+            Assert.Throws<ComparisonException>(() => 
+                table.CompareToProjectionOfSet(query, 
+                (x, y) => x.Except(y), "StringProperty"));
         }
 
         [Test]
@@ -172,6 +199,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Table_with_single_element_and_all_columns_should_throw_comparison_exception_for_unmatching_instance()
+        {
+            var table = CreateTableWithAllColumns();
+            table.AddRow(DateTime.Today.ToString(), Guid.NewGuid().ToString(), 1.ToString(), "b");
+
+            Assert.Throws<ComparisonException>(() => table.CompareToProjectionOfInstance(testInstance));
+        }
+
+        [Test]
         public void Table_with_subset_of_columns_should_be_equal_to_matching_instance()
         {
             var table = CreateTableWithSubsetOfColumns();
@@ -193,6 +229,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var tableProjection = table.ToProjectionOfInstance(instance);
             Assert.AreNotEqual(tableProjection, instance);
+        }
+
+        [Test]
+        public void Table_with_subset_of_columns_should_throw_comparison_exception_for_unmatching_instance()
+        {
+            var table = CreateTableWithSubsetOfColumns();
+            table.AddRow(1.ToString(), "b");
+
+            var instance = new { IntProperty = testInstance.IntProperty, StringProperty = testInstance.StringProperty };
+
+            Assert.Throws<ComparisonException>(() => table.CompareToProjectionOfInstance(instance));
         }
 
         private Table CreateTableWithAllColumns()
