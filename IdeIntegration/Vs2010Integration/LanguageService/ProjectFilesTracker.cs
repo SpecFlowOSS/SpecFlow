@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using EnvDTE;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TracerExtensions = TechTalk.SpecFlow.IdeIntegration.Tracing.TracerExtensions;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -194,8 +195,10 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return true;
         }
 
-        private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent)
+        private void AnalyzeInternal(TFileInfo fileInfo, bool fireUpdatedEvent, bool analyzeRelatedFiles = true)
         {
+            List<TFileInfo> relatedFiles = null;
+
             var pi = FindProjectItemByProjectRelativePath(fileInfo);
             if (pi == null)
             {
@@ -205,7 +208,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             try
             {
-                Analyze(fileInfo, pi);
+                Analyze(fileInfo, pi, out relatedFiles);
                 fileInfo.IsError = false;
 
                 if (fireUpdatedEvent)
@@ -220,6 +223,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
                 IsStepMapDirty = true;
                 fileInfo.IsAnalyzed = true;
+            }
+
+            if (analyzeRelatedFiles && relatedFiles != null)
+            {
+                foreach (var relatedFile in relatedFiles)
+                {
+                    TracerExtensions.Trace(vsProjectScope.Tracer, "Analyze related file {0}", GetType(), relatedFile.ProjectRelativePath);
+                    AnalyzeInternal(relatedFile, fireUpdatedEvent, false);
+                }
             }
         }
 
@@ -248,7 +260,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 FileRemoved(fileInfo);
         }
 
-        protected abstract void Analyze(TFileInfo fileInfo, ProjectItem projectItem);
+        protected abstract void Analyze(TFileInfo fileInfo, ProjectItem projectItem, out List<TFileInfo> relatedFiles);
         protected abstract TFileInfo CreateFileInfo(ProjectItem projectItem);
         protected virtual IEnumerable<ProjectItem> GetFileProjectItems()
         {

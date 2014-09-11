@@ -60,8 +60,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             AnalyzeFilesBackground();
         }
 
-        protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem)
+        protected override void Analyze(FeatureFileInfo featureFileInfo, ProjectItem projectItem, out List<FeatureFileInfo> relatedFiles)
         {
+            relatedFiles = null;
             vsProjectScope.Tracer.Trace("Analyzing feature file: " + featureFileInfo.ProjectRelativePath, "ProjectFeatureFilesTracker");
             var codeBehindChangeDate = AnalyzeCodeBehind(featureFileInfo, projectItem);
 

@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\EntityWithPropertiesAndFields.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
+    <Compile Include="TableConverterTests.cs" />
+    <Compile Include="AssistTests\TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

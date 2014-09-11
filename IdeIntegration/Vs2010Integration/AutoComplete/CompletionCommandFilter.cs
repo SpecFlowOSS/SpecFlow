@@ -5,11 +5,13 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 {
     internal abstract class CompletionCommandFilter : IOleCommandTarget
     {
+        private readonly IIdeTracer tracer;
         private ICompletionSession currentAutoCompleteSession = null;
 
         public IWpfTextView TextView { get; private set; }
@@ -17,8 +19,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
 
         public IOleCommandTarget Next { get; set; }
 
-        protected CompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
+        protected CompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker, IIdeTracer tracer)
         {
+            this.tracer = tracer;
             TextView = textView;
             Broker = broker;
         }
@@ -140,6 +143,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.AutoComplete
                 if (insertedText.TrimEnd().Equals(selectedText.TrimEnd(), StringComparison.CurrentCulture))
                 {
                     currentAutoCompleteSession.Dismiss();
+                    return;
+                }
+                if (insertedText.TrimEnd().Equals(selectedText.TrimEnd(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    currentAutoCompleteSession.Commit();
                     return;
                 }
             }

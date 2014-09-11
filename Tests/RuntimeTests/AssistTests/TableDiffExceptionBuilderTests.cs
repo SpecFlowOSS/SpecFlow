@@ -17,8 +17,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, new TestObject[] {});
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.ShouldEqual(@"  | One | Two | Three |
-");
+            message.AgnosticLineBreak().ShouldEqual(@"  | One | Two | Three |
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -35,12 +35,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, new TestObject[] {});
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
   | testa | 1   | W     |
 - | testb | 2   | X     |
 - | testc | 3   | Y     |
   | testd | 4   | Z     |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -59,11 +59,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
   | testa | 1   | W     |
 + | A | 1 | Z |
 + | B1 | 1234567 | ZYXW |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
   | testa | 1   | W     |
 + | A | 1 | Z |
 + |  |  |  |
-");
+".AgnosticLineBreak());
         }
 
         [Test]
@@ -104,10 +104,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.ShouldEqual(@"  | one   | TWO | The fourth property |
+            message.AgnosticLineBreak().ShouldEqual(@"  | one   | TWO | The fourth property |
   | testa | 1   | W                   |
 + | A | 1 | Z |
-");
+".AgnosticLineBreak());
         }
 
         public class TestObject

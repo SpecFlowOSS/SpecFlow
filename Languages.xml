@@ -91,6 +91,7 @@
     <Examples>Beispiele</Examples>
     <Given>Angenommen</Given>
     <Given>Gegeben sei</Given>
+    <Given>Gegeben seien</Given>
     <When>Wenn</When>
     <Then>Dann</Then>
     <And>Und</And>
@@ -111,16 +112,16 @@
     <But>But</But>
   </Language>
   <Language code="en-AU" cultureInfo="en-AU" englishName="English (Australia)">
-    <Feature>Crikey</Feature>
-    <Background>Background</Background>
-    <Scenario>Mate</Scenario>
-    <ScenarioOutline>Blokes</ScenarioOutline>
-    <Examples>Cobber</Examples>
-    <Given>Ya know how</Given>
-    <When>When</When>
-    <Then>Ya gotta</Then>
-    <And>N</And>
-    <But>Cept</But>
+    <Feature>Pretty much</Feature>
+    <Background>First off</Background>
+    <Scenario>Awww, look mate</Scenario>
+    <ScenarioOutline>Reckon it's like</ScenarioOutline>
+    <Examples>You'll wanna</Examples>
+    <Given>Y'know</Given>
+    <When>It's just unbelievable</When>
+    <Then>But at the end of the day I reckon</Then>
+    <And>Too right</And>
+    <But>Yeah nah</But>
   </Language>
   <Language code="en-LOL" cultureInfo="en" englishName="English">
     <Feature>OH HAI</Feature>

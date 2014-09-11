@@ -68,6 +68,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void ShouldConvertStringToEnumerationTypeWithSpaces()
+        {
+            var result = _stepArgumentTypeConverter.Convert("Value 1", typeof(TestEnumeration), _enUSCulture);
+            Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
+        }
+
+        [Test]
         public void ShouldConvertStringToEnumerationTypeWithDifferingCase()
         {
             var result = _stepArgumentTypeConverter.Convert("vALUE1", typeof(TestEnumeration), _enUSCulture);

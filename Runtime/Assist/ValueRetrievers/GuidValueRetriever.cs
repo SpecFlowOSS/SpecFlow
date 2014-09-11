@@ -6,21 +6,38 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
     {
         public virtual Guid GetValue(string value)
         {
+            var cleanedValue = "";
             try
             {
-                return new Guid(value);
+                cleanedValue = RemoveUnnecessaryCharacters(value);
+                return AttempToBuildAGuidFromTheString(value);
             }
             catch
             {
                 try
                 {
-                    return AttemptToBuildAGuidByAddingTrailingZeroes(value);
+                    return AttemptToBuildAGuidByAddingTrailingZeroes(cleanedValue);
                 }
                 catch
                 {
                     return new Guid();
                 }
             }
+        }
+
+        private static Guid AttempToBuildAGuidFromTheString(string value)
+        {
+            var guid = new Guid(value);
+
+            if (RemoveUnnecessaryCharacters(guid) != value)
+                throw new Exception("The parsed value is not what was expected.");
+
+            return guid;
+        }
+
+        private static string RemoveUnnecessaryCharacters(object value)
+        {
+            return value.ToString().Replace("{", "").Replace("}", "").Replace("-", "");
         }
 
         private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)

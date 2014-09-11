@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <version>1.0.0</version>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
+    <dependencies>
+      <dependency id="SpecFlow" />
+    </dependencies>
+    <id>SpecFlow.MsTest</id>
+    <title>SpecFlow.MsTest</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package to setup SpecFlow for use with MsTest. Does not install MsTest and should be installed into a Test-project template</description>
+    <summary>Package to setup SpecFlow for use with MsTest. Does not install MsTest and should be installed into a Test-project template</summary>
+    <language>en-US</language>
+    <tags>specflow mstest</tags>
+  </metadata>
+  <files>
+    <file src="MsTest\App.config.transform" target="content\App.config.transform" />
+  </files>
+</package>
