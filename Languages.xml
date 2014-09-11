@@ -91,6 +91,7 @@
     <Examples>Beispiele</Examples>
     <Given>Angenommen</Given>
     <Given>Gegeben sei</Given>
+    <Given>Gegeben seien</Given>
     <When>Wenn</When>
     <Then>Dann</Then>
     <And>Und</And>
