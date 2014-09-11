@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
@@ -43,6 +44,12 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
                     result = bindingAction.DynamicInvoke(invokeArgs);
+
+                    if (result is Task)
+                    {
+                        ((Task) result).Wait();
+                    }
+
                     stopwatch.Stop();
                 }
 
@@ -61,6 +68,12 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
+                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
+                throw ex;
+            }
+            catch (AggregateException agEx)  //from Task.Wait();
+            {
+                var ex = agEx.InnerExceptions.First();
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 throw ex;
             }
