@@ -197,6 +197,7 @@
             // 
             // helpLinkLabel
             // 
+            this.helpLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.helpLinkLabel.AutoSize = true;
             this.helpLinkLabel.Location = new System.Drawing.Point(286, 312);
             this.helpLinkLabel.Name = "helpLinkLabel";
