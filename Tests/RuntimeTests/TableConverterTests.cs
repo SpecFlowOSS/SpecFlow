@@ -227,6 +227,32 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void Table_converters_will_support_nullable_types_as_property()
+        {
+            var table = new Table("FirstName", "MiddleInitial", "LastName", "NullableDouble");
+            table.AddRow("Homer", "J", "Simpson", null);
+            table.AddRow("Mona", "J", "Simpson", string.Empty);
+            table.AddRow("Mona", "J", "Simpson", "  ");
+            table.AddRow("Bart", "J", "Simpson", "3.1");
+
+            var result = PersonArrayConversionTest(table, true);
+            result.ShouldNotBeNull();
+            result.Length.ShouldEqual(4);
+            // null value
+            result[0].ShouldNotBeNull();
+            result[0].NullableDouble.ShouldBeNull();
+            //// empty string
+            result[1].ShouldNotBeNull();
+            result[1].NullableDouble.ShouldBeNull();
+            //// only white spaces
+            result[2].ShouldNotBeNull();
+            result[2].NullableDouble.ShouldBeNull();
+            //// double value
+            result[3].ShouldNotBeNull();
+            result[3].NullableDouble.ShouldEqual(3.1);
+        }
+
+        [Test]
         public void Table_converters_will_successfully_convert_an_horizontal_table_to_an_IEnumerable()
         {
             var table = new Table("Name");
