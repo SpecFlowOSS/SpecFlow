@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\specflow.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -128,10 +129,12 @@
     <Compile Include="Bindings\Discovery\RuntimeBindingRegistryBuilder.cs" />
     <Compile Include="Bindings\Discovery\RuntimeBindingSourceProcessor.cs" />
     <Compile Include="Bindings\ExpressionMemberAccessor.cs" />
+    <Compile Include="Bindings\HorizontalTableConverter.cs" />
     <Compile Include="Bindings\IBindingFactory.cs" />
     <Compile Include="Bindings\IHookBinding.cs" />
     <Compile Include="Bindings\IBindingInvoker.cs" />
     <Compile Include="Bindings\Discovery\IRuntimeBindingRegistryBuilder.cs" />
+    <Compile Include="Bindings\IndentityConverter.cs" />
     <Compile Include="Bindings\IScopedBinding.cs" />
     <Compile Include="Bindings\IStepArgumentTransformationBinding.cs" />
     <Compile Include="Bindings\IStepDefinitionBinding.cs" />
@@ -148,10 +151,14 @@
     <Compile Include="Bindings\Reflection\RuntimeBindingParameter.cs" />
     <Compile Include="Bindings\Reflection\RuntimeBindingType.cs" />
     <Compile Include="Bindings\RegexFactory.cs" />
+    <Compile Include="Bindings\SimpleConverter.cs" />
+    <Compile Include="Bindings\StepArgumentTransformationConverter.cs" />
     <Compile Include="Bindings\StepContext.cs" />
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
+    <Compile Include="Bindings\TableConverterBase.cs" />
+    <Compile Include="Bindings\VerticalTableConverter.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />

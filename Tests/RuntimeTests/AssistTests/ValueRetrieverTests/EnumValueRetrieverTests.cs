@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
-        public void Does_not_throw_an_exception_when_the_value_is_null_and_enum_type_is_not_nullable()
+        public void Does_not_throw_an_exception_when_the_value_is_null_and_enum_type_is_nullable()
         {
             var retriever = new EnumValueRetriever();
 
@@ -101,30 +101,35 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             {
                 retriever.GetValue(null, typeof (Sex?));
             }
-            catch (InvalidOperationException exception)
+            catch (InvalidOperationException)
             {
-                if (exception.Message == "No enum with value {null} found")
-                    exceptionThrown = true;
+                exceptionThrown = true;
             }
             exceptionThrown.ShouldBeFalse();
         }
 
         [Test]
-        public void Does_not_throw_an_exception_when_the_value_is_empty_and_enum_type_is_not_nullable()
+        public void Does_not_throw_an_exception_when_the_value_is_empty_and_enum_type_is_nullable()
         {
             var retriever = new EnumValueRetriever();
 
             var exceptionThrown = false;
             try
             {
-                retriever.GetValue(string.Empty, typeof (Sex));
+                retriever.GetValue(string.Empty, typeof (Sex?));
             }
-            catch (InvalidOperationException exception)
+            catch (InvalidOperationException)
             {
-                if (exception.Message == "No enum with value {empty} found")
-                    exceptionThrown = true;
+                exceptionThrown = true;
             }
-            exceptionThrown.ShouldBeTrue();
+            exceptionThrown.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_return_null_when_the_value_is_empty_and_enum_type_is_nullable()
+        {
+            var retriever = new EnumValueRetriever();
+            retriever.GetValue(string.Empty, typeof(Sex?)).ShouldBeNull();
         }
 
         [Test]

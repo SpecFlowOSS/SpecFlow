@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
+                xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 xmlns:sfr="urn:TechTalk:SpecFlow.Report"
                 xmlns:nunit="urn:NUnit"
                 xmlns:mstest="http://microsoft.com/schemas/VisualStudio/TeamTest/2006"
@@ -10,6 +10,7 @@
   <xsl:output method="xml" />
 
   <xsl:key name="unit-test-result" match="mstest:UnitTestResult" use="@testId"/>
+  <xsl:key name="unit-test-detail" match="mstest:UnitTest" use="@id"/>
 
   <xsl:template name="get-last-part">
     <xsl:param name="text" />
@@ -33,7 +34,8 @@
       <xsl:attribute name="name">
         <xsl:value-of select="@name"/>
       </xsl:attribute>
-      <xsl:variable name="startTime" select="mstest:Times/@start" /> <!-- start="2010-06-20T21:54:47.1619417+02:00" -->
+      <xsl:variable name="startTime" select="mstest:Times/@start" />
+      <!-- start="2010-06-20T21:54:47.1619417+02:00" -->
       <xsl:attribute name="date">
         <xsl:value-of select="substring($startTime, 1, 10)"/>
       </xsl:attribute>
@@ -46,7 +48,7 @@
         <xsl:variable name="className" select="mstest:TestMethod/@className" />
         <xsl:if test="not(preceding-sibling::mstest:UnitTest[mstest:TestMethod/@className=$className])">
           <xsl:variable name="unitTests" select="//mstest:UnitTest[mstest:TestMethod/@className=$className]"/>
-          
+
           <nunit:test-suite type="TestFixture" result="Failure" success="False">
             <xsl:attribute name="name">
               <xsl:call-template name="get-last-part">
@@ -89,12 +91,12 @@
 
             <xsl:attribute name="time">0.000</xsl:attribute>
             <xsl:attribute name="asserts">0</xsl:attribute>
-            
+
             <nunit:results>
               <xsl:apply-templates select="$unitTests" />
             </nunit:results>
           </nunit:test-suite>
-       </xsl:if>
+        </xsl:if>
       </xsl:for-each>
     </nunit:test-results>
   </xsl:template>
@@ -190,7 +192,8 @@
       <xsl:variable name="id" select="@id" />
       <!--<xsl:variable name="testResult" select="/mstest:TestRun/mstest:Results/mstest:UnitTestResult[@testId=$id]" />-->
       <xsl:variable name="testResult" select="key('unit-test-result', $id)" />
-      
+      <xsl:variable name="testDetail" select="key('unit-test-detail', $id)" />
+
       <xsl:attribute name="name">
         <xsl:value-of select="substring-before(mstest:TestMethod/@className, ',')"/>.<xsl:value-of select="@name"></xsl:value-of>
       </xsl:attribute>
@@ -252,7 +255,21 @@
           </nunit:message>
         </nunit:reason>
       </xsl:if>
-      
+
+      <xsl:if test="$testDetail/mstest:TestCategory">
+        <nunit:categories>
+          <xsl:for-each select="$testDetail/mstest:TestCategory/mstest:TestCategoryItem">
+            <nunit:category>
+              <xsl:attribute name="name">
+                <xsl:value-of select="@TestCategory"/>
+              </xsl:attribute>
+            </nunit:category>
+
+          </xsl:for-each>
+
+        </nunit:categories>
+      </xsl:if>
+
       <xsl:if test="$testResult/@outcome='Failed'">
         <nunit:failure>
           <nunit:message>
@@ -263,8 +280,8 @@
           </nunit:stack-trace>
         </nunit:failure>
       </xsl:if>
-      
+
     </nunit:test-case>
   </xsl:template>
-  
+
 </xsl:stylesheet>

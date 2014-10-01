@@ -66,9 +66,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.FullName.ShouldEqual("John Galt");
         }
 
+        [Test]
+        public void Can_set_the_value_on_the_property_regardless_of_hyphen()
+        {
+            var person = new Person { NoBreakSupplier = "Howard Roark" };
+            person.SetPropertyValue("No-Break Supplier", "John Galt");
+
+            person.NoBreakSupplier.ShouldEqual("John Galt");
+        }
+
+        [Test]
+        public void Can_set_the_value_on_the_property_regardless_of_question_mark()
+        {
+            var person = new Person { ClientProfile = true };
+            person.SetPropertyValue("Client Profile?", true);
+
+            person.ClientProfile.ShouldEqual(true);
+        }
+
         public class Person
         {
             public string FullName { get; set; }
+            public string NoBreakSupplier { get; set; }
+            public bool ClientProfile { get; set; }
         }
     }
 }

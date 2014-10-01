@@ -1,6 +1,12 @@
+1.9.3 - 2014/06/22 (Specflow Ms Test Report)
+New Features:
++ Specflow Test Execution report now includes the "tags" in the Nunit Report which can be displayed through a custom XSLT by the users.
+
+
 1.9.2 - 2013/03/25 (Visual Studio Integration update)
 
 Fixed issues:
++ Empty strings in tables get converted to null in case of nullable enum as target types when using CreateSet
 + VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
 + VS2010/VS2012: Linked app.config now works (Issue 255, by ArildF)
 + VS2012: Run SpecFlow Scenarios didn't work in VS2012 Update 1 (Issue 273)
@@ -13,6 +19,7 @@ Fixed issues:
 
 New Features:
 + VS2010/VS2012: Table outlining support in the editor (Issue 244, by RaringCoder)
++ Assist: Added overload to CreateSet<T> accepting a Func<TableRow,T> to create each instance
 
 
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
