@@ -464,9 +464,11 @@ namespace TechTalk.SpecFlow.Generator
                 ? string.Format("{0}_{1}", testMethod.Name, variantNameIdentifier)
                 : string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetIdentifier, variantNameIdentifier);
 
+            
+            AddLineDirective(testMethod.Statements, row.FilePosition);
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();
-
+            
             argumentExpressions.Add(GetStringArrayExpression(exampleSetTags));
 
             testMethod.Statements.Add(
@@ -474,7 +476,7 @@ namespace TechTalk.SpecFlow.Generator
                     new CodeThisReferenceExpression(),
                     scenatioOutlineTestMethod.Name,
                     argumentExpressions.ToArray()));
-
+            AddLineDirectiveHidden(testMethod.Statements);
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells[paramIndex].Value)).ToList();
             testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Title, exampleSetTitle, variantName, arguments);
         }
