@@ -11,6 +11,39 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Returns_the_names_of_any_fields_that_do_not_exist()
         {
+            var table = new Table("StringField", "AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
+
+            var items = new[] { new SetComparisonTestObjectWithFields(),  };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().ShouldEqual(
+               @"The following fields do not exist:
+AFieldThatDoesNotExist
+AnotherFieldThatDoesNotExist".AgnosticLineBreak());
+        }
+
+        [Test]
+        public void Returns_descriptive_message_when_two_results_exist_for_the_field_but_there_should_be_no_results()
+        {
+            var table = new Table("IntField");
+
+            var items = new[] { new SetComparisonTestObjectWithFields(), new SetComparisonTestObjectWithFields(),  };
+
+            var exception = GetTheExceptionThrowByComparingThese(table, items);
+
+            exception.Message.AgnosticLineBreak().ShouldEqual(
+                @"
+  | IntField |
++ | 0        |
++ | 0        |
+".AgnosticLineBreak());
+        }
+
+
+        [Test]
+        public void Returns_the_names_of_any_properties_that_do_not_exist()
+        {
             var table = new Table("StringProperty", "AFieldThatDoesNotExist", "AnotherFieldThatDoesNotExist");
 
             var items = new[] {new SetComparisonTestObject()};
@@ -171,6 +204,19 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
         }
 
         private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
+        {
+            try
+            {
+                table.CompareToSet(items);
+            }
+            catch (ComparisonException ex)
+            {
+                return ex;
+            }
+            return null;
+        }
+        
+        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObjectWithFields[] items)
         {
             try
             {

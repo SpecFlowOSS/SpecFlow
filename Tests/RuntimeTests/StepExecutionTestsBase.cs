@@ -10,7 +10,6 @@ using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.Utils;
 using MockRepository = Rhino.Mocks.MockRepository;
 using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 

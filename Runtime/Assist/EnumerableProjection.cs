@@ -113,7 +113,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public object this[string key]
         {
-            get { return item.GetPropertyValue(key); }
+            get { return item.GetMemberValue(key); }
         }
 
         public override bool Equals(object obj)
@@ -156,8 +156,8 @@ namespace TechTalk.SpecFlow.Assist
                 if (t1.GetType().GetProperty(property) == null || t2.GetType().GetProperty(property) == null)
                     return false;
 
-                var thisValue = t1.GetPropertyValue(property);
-                var otherValue = t2.GetPropertyValue(property);
+                var thisValue = t1.GetMemberValue(property);
+                var otherValue = t2.GetMemberValue(property);
                 if (thisValue != null)
                 {
                     if (otherValue == null)
