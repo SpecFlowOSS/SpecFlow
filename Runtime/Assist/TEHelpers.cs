@@ -151,8 +151,21 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], type.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
+                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], GetMemberType(type, row))},
                        };
+        }
+
+        private static Type GetMemberType(Type type, TableRow row)
+        {
+            // search for property matching on name
+            if (type.GetProperties().Any(x => x.Name.MatchesThisColumnName(row[0])))
+            {
+                return type.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType;
+            }
+
+            //search for matching field
+            return type.GetFields().First(x => x.Name.MatchesThisColumnName(row[0])).FieldType;
+
         }
 
         internal class MemberHandler
