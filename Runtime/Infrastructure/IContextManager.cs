@@ -9,16 +9,21 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
+    using System.Diagnostics;
+
     public interface IContextManager
     {
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
-
+        ScenarioStepContext StepContext { get; }
         void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
         void CleanupFeatureContext();
 
         void InitializeScenarioContext(ScenarioInfo scenarioInfo);
         void CleanupScenarioContext();
+
+        void InitializeStepContext(StepInfo scenarioInfo);
+        void CleanupStepContext();
     }
 
     internal static class ContextManagerExtensions
@@ -82,11 +87,13 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IObjectContainer parentContainer;
         private readonly InternalContextManager<ScenarioContext> scenarioContext;
         private readonly InternalContextManager<FeatureContext> featureContext;
+        private readonly InternalContextManager<ScenarioStepContext> stepContext;
 
         public ContextManager(ITestTracer testTracer, IObjectContainer parentContainer)
         {
             featureContext = new InternalContextManager<FeatureContext>(testTracer);
             scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
+            stepContext = new InternalContextManager<ScenarioStepContext>(testTracer);
             this.parentContainer = parentContainer;
         }
 
@@ -98,6 +105,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         public ScenarioContext ScenarioContext
         {
             get { return scenarioContext.Instance; }
+        }
+
+        public ScenarioStepContext StepContext 
+        {
+            get{return stepContext.Instance;} 
         }
 
         public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
@@ -125,6 +137,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             scenarioContext.Cleanup();
         }
 
+        public void InitializeStepContext(StepInfo stepInfo)
+        {
+            var newContext = new ScenarioStepContext(stepInfo);
+            stepContext.Init(newContext);
+            ScenarioStepContext.Current = newContext;
+        }
+
+        public void CleanupStepContext()
+        {
+            stepContext.Cleanup();
+        }
+
         public void Dispose()
         {
             if (featureContext != null)
@@ -135,6 +159,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 scenarioContext.Dispose();
             }
+            if (stepContext != null)
+            {
+                stepContext.Dispose();
+            }
         }
     }
+
+    
+    
 }

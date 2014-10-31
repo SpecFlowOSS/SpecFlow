@@ -24,3 +24,7 @@ _UpgradeReport_Files/*
 Backup*/*
 
 UpgradeLog*
+
+
+*.ncrunchproject
+*.ncrunchsolution
