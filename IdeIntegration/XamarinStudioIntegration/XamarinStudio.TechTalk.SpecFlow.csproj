@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CC567007-C48F-44F9-95D8-FC56FE2DA330}</ProjectGuid>
     <ProjectTypeGuids>{7DBEB09D-BB9F-4D92-A141-A009135475EF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -33,18 +33,20 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Addins" />
+    <Reference Include="Mono.Addins">
+      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/Mono.Addins.dll</Package>
+    </Reference>
     <Reference Include="MonoDevelop.Core">
-      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/MonoDevelop.Core.dll</Package>
+      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/MonoDevelop.Core.dll</Package>
     </Reference>
     <Reference Include="MonoDevelop.Ide">
-      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/MonoDevelop.Ide.dll</Package>
+      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/MonoDevelop.Ide.dll</Package>
     </Reference>
     <Reference Include="Mono.TextEditor">
-      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/Mono.TextEditor.dll</Package>
+      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/Mono.TextEditor.dll</Package>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory">
-      <Package>/Applications/Xamarin Studio.app/Contents/MacOS/lib/monodevelop/bin/ICSharpCode.NRefactory.dll</Package>
+      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/ICSharpCode.NRefactory.dll</Package>
     </Reference>
     <Reference Include="gtk-sharp" />
     <Reference Include="glib-sharp" />
@@ -83,15 +85,15 @@
       <LogicalName>SpecFlowStepDefinitionIcon.ico</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\XamarinStudio.TechTalk.SpecFlow.addin.xml" />
+    <EmbeddedResource Include="Templates\SpecFlowProject.xpt.xml">
+      <LogicalName>SpecFlowProject.xpt.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowProjectIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
-      <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
-      <Name>TechTalk.SpecFlow.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
-      <Name>TechTalk.SpecFlow.Parser</Name>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
