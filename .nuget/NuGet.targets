@@ -35,32 +35,7 @@
         <PackagesDir>$(SolutionDir)packages</PackagesDir>
     </PropertyGroup>
     
-    <PropertyGroup>
-        <!-- NuGet command -->
-        <NuGetExePath Condition=" '$(NuGetExePath)' == '' ">$(NuGetToolsPath)\nuget.exe</NuGetExePath>
-        <PackageSources Condition=" $(PackageSources) == '' ">@(PackageSource)</PackageSources>
-        
-        <NuGetCommand Condition=" '$(OS)' == 'Windows_NT'">"$(NuGetExePath)"</NuGetCommand>
-        <NuGetCommand Condition=" '$(OS)' != 'Windows_NT' ">mono --runtime=v4.0.30319 $(NuGetExePath)</NuGetCommand>
-
-        <PackageOutputDir Condition="$(PackageOutputDir) == ''">$(TargetDir.Trim('\\'))</PackageOutputDir>
-
-        <!-- Commands -->
-        <RestoreCommand>$(NuGetCommand) install "$(PackagesConfig)" -source "$(PackageSources)" -o "$(PackagesDir)"</RestoreCommand>
-        <BuildCommand>$(NuGetCommand) pack "$(ProjectPath)" -p Configuration=$(Configuration) -o "$(PackageOutputDir)" -symbols</BuildCommand>
-
-        <!-- Make the build depend on restore packages -->
-        <BuildDependsOn Condition="$(RestorePackages) == 'true'">
-            RestorePackages;
-            $(BuildDependsOn);
-        </BuildDependsOn>
-
-        <!-- Make the build depend on restore packages -->
-        <BuildDependsOn Condition="$(BuildPackage) == 'true'">
-            $(BuildDependsOn);
-            BuildPackage;
-        </BuildDependsOn>
-    </PropertyGroup>
+ 
 
     <Target Name="CheckPrerequisites">
         <!-- Raise an error if we're unable to locate nuget.exe  -->
