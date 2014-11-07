@@ -88,7 +88,12 @@
     <EmbeddedResource Include="Templates\SpecFlowProject.xpt.xml">
       <LogicalName>SpecFlowProject.xpt.xml</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\SpecFlowProjectIcon.ico" />
+    <EmbeddedResource Include="Gui\SpecFlowProjectIcon.ico">
+      <LogicalName>SpecFlowProjectIcon.ico</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SpecFlowFile.ico">
+      <LogicalName>SpecFlowFile.ico</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
