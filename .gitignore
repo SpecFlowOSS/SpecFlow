@@ -28,3 +28,4 @@ UpgradeLog*
 
 *.ncrunchproject
 *.ncrunchsolution
+/_NCrunch_TechTalk.SpecFlow_VS2013/StoredText

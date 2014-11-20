@@ -151,6 +151,7 @@
     <Compile Include="Infrastructure\TestExecutionEngineTests.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
     <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
+    <Compile Include="ScenarioStepContextTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />

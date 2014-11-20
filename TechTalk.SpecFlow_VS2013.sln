@@ -84,8 +84,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Specs", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.IntegrationTests", "Tests\TechTalk.SpecFlow.IntegrationTests\TechTalk.SpecFlow.IntegrationTests.csproj", "{33B3107E-666D-4C31-96C0-745697E51973}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Vs2010Integration", "IdeIntegration\Vs2010Integration\TechTalk.SpecFlow.Vs2010Integration.csproj", "{96294E6F-8875-4D12-8577-4EC83E602010}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,12 +204,6 @@ Global
 		{33B3107E-666D-4C31-96C0-745697E51973}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33B3107E-666D-4C31-96C0-745697E51973}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{33B3107E-666D-4C31-96C0-745697E51973}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
-		{96294E6F-8875-4D12-8577-4EC83E602010}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -232,6 +224,5 @@ Global
 		{C091E608-2A76-40B2-9548-AB5A2A77BD78} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 		{ADED3F39-1742-42E2-A55A-3043AC84BDAD} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{33B3107E-666D-4C31-96C0-745697E51973} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
-		{96294E6F-8875-4D12-8577-4EC83E602010} = {55E45533-9AAA-41AB-B44F-7530799C9337}
 	EndGlobalSection
 EndGlobal
