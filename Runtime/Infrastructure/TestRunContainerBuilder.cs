@@ -9,7 +9,23 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     internal class TestRunContainerBuilder
     {
-        internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+        [ThreadStatic]
+        private static DefaultDependencyProvider _defaultDependencyProvider;
+
+        internal static DefaultDependencyProvider DefaultDependencyProvider
+        {
+            get
+            {
+                if (_defaultDependencyProvider == null)
+                {
+                    _defaultDependencyProvider = new DefaultDependencyProvider();    
+                }
+
+                return _defaultDependencyProvider;
+            }
+            set { _defaultDependencyProvider = value; }
+        }
+
 
         public static IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
