@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -18,6 +19,7 @@ namespace TechTalk.SpecFlow
             FeatureInfo = featureInfo;
         }
 
+        [ThreadStatic]
         private static FeatureContext current;
         public static FeatureContext Current
         {
