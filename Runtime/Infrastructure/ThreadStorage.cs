@@ -92,5 +92,5 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         }
     }
-#endif
 }
+#endif
