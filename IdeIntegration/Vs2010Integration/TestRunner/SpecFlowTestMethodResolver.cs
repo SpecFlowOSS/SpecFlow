@@ -21,9 +21,9 @@ namespace TechTalk.SpecFlow.Vs2012Integration
         private readonly VsTestMethodResolver defaultResolver = null;
 
         [ImportingConstructor]
-        public SpecFlowTestMethodResolver(Lazy<ITestContainerProvider> testContainerProvider, SafeDispatcher safeDispatcher)
+        public SpecFlowTestMethodResolver(Lazy<ITestContainerProvider> testContainerProvider, SafeDispatcher safeDispatcher, ILogger logger)
         {
-            defaultResolver = new VsTestMethodResolver(testContainerProvider, safeDispatcher);
+            defaultResolver = new VsTestMethodResolver(testContainerProvider, safeDispatcher, logger);
         }
 
         public string GetCurrentTest(string filePath, int line, int lineCharOffset)

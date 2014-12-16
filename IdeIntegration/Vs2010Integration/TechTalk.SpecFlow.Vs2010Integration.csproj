@@ -71,6 +71,15 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0">
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestWindow">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestWindow.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestWindow.Core">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestWindow.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestWindow.Interfaces">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\Microsoft.VisualStudio.TestWindow.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Text.Data, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Text.Logic, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Text.UI, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -198,6 +207,7 @@
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="LanguageService\IdleTaskProcessingQueue.cs" />
     <Compile Include="LanguageService\IGherkinProcessingTask.cs" />
+    <Compile Include="TestRunner\SpecFlowTestMethodResolver.cs" />
     <Compile Include="TestRunner\VS2012RunnerGateway.cs" />
     <Compile Include="UI\ContextMenuBuilder.cs" />
     <Compile Include="Generator\VsGeneratorInfoProvider.cs" />
