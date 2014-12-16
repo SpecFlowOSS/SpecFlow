@@ -401,6 +401,7 @@
   </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\lib\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
   </PropertyGroup>
   <ItemGroup>
     <Page Include="AutoComplete\IntellisensePresenter\CompletionSessionView.xaml">
@@ -413,4 +414,21 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <Target Name="AfterBuild">
+    <RemoveDir Directories="$(TargetDir)\VSIX" />
+    <Unzip ZipFileName="$(TargetDir)\TechTalk.SpecFlow.Vs2013Integration.vsix" TargetDirectory="$(TargetDir)\VSIX" />
+    <Delete Files="$(TargetDir)\TechTalk.SpecFlow.Vs2013Integration.vsix.orig" />
+    <Move SourceFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2013Integration.vsix" DestinationFiles="$(TargetDir)\TechTalk.SpecFlow.Vs2013Integration.vsix.orig" />
+    <ItemGroup>
+      <VsFiles Include="$(TargetDir)\VSIX\EnvDTE*.dll" />
+      <VsFiles Include="$(TargetDir)\VSIX\VSLangProj*.dll" />
+      <VsFiles Include="$(TargetDir)\VSIX\Microsoft.VisualStudio.*.dll" />
+    </ItemGroup>
+    <Delete Files="@(VsFiles)" />
+    <ItemGroup>
+      <VsixFiles Include="$(TargetDir)\VSIX\**\*.*" />
+    </ItemGroup>
+    <Zip Files="@(VsixFiles)" Flatten="false" WorkingDirectory="$(TargetDir)\VSIX" ZipFileName="$(TargetDir)\TechTalk.SpecFlow.Vs2013Integration.vsix" />
+  </Target>
 </Project>
