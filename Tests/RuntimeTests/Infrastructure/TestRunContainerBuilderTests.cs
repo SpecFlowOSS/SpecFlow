@@ -34,6 +34,28 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
+        #region Fix: ReSharper test runner assemby loading issue workaround
+        [SetUp]
+        public void Setup()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainOnAssemblyResolve;
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomainOnAssemblyResolve;
+        }
+
+        private Assembly CurrentDomainOnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var thisAssembly = Assembly.GetExecutingAssembly();
+            if (args.Name.Contains(thisAssembly.GetName().Name))
+                return thisAssembly;
+            return null;
+        }
+        #endregion
+
         [Test]
         public void Should_be_able_to_customize_dependencies_from_config()
         {
