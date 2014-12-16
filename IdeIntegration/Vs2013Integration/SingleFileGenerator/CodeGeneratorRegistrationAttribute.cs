@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.Shell
 	/// 
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
-	public sealed class CodeGeneratorRegistrationAttribute : RegistrationAttribute
+	public sealed class CodeGeneratorRegistrationExAttribute : RegistrationAttribute
 	{
 		private string _contextGuid;
 	    private Type _generatorType;
@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.Shell
         /// <param name="generatorType">The type of Code generator. Type that implements IVsSingleFileGenerator</param>
         /// <param name="generatorName">The generator name</param>
         /// <param name="contextGuid">The context GUID this code generator would appear under.</param>
-        public CodeGeneratorRegistrationAttribute(Type generatorType, string generatorName, string contextGuid)
+        public CodeGeneratorRegistrationExAttribute(Type generatorType, string generatorName, string contextGuid)
 		{
             if (generatorType == null)
                 throw new ArgumentNullException("generatorType");
