@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.IdeIntegration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -50,7 +49,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             get { return projectScope; }
         }
 
-        public GherkinLanguageService(IProjectScope projectScope, IVisualStudioTracer tracer, bool enableStepMatchColoring)
+        public GherkinLanguageService(IProjectScope projectScope, IIdeTracer tracer, bool enableStepMatchColoring)
         {
             this.projectScope = projectScope;
             this.tracer = tracer;

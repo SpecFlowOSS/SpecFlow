@@ -52,7 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaretPosition.cs" />
+    <Compile Include="EditorContext.cs" />
     <Compile Include="GeneratorServicesTests.cs" />
+    <Compile Include="GoToDefinitionHelper.cs" />
+    <Compile Include="GoToStepDefinitionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteAppDomainTestGeneratorFactoryTests.cs" />
     <Compile Include="RemoteGeneratorServicesTests.cs" />

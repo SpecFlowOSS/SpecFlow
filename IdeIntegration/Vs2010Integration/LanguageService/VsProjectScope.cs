@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
-        public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+        public IGherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
         public IGeneratorServices GeneratorServices { get; private set; }
 
         private bool initialized = false;

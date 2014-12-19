@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.IdeIntegration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.Utils;
 using VSLangProj;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService

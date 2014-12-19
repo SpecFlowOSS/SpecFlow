@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     {
         public GherkinTextBufferParser GherkinTextBufferParser { get; private set; }
         public GherkinFileEditorClassifications Classifications { get; private set; }
-        public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+        public IGherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
         public SpecFlowProjectConfiguration SpecFlowProjectConfiguration { get; private set; }
         public GherkinDialectServices GherkinDialectServices { get; private set; }
         public IIntegrationOptionsProvider IntegrationOptionsProvider { get; private set; }

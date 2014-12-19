@@ -5,7 +5,7 @@ using TechTalk.SpecFlow.IdeIntegration.Tracing;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
-    public class GherkinProcessingScheduler : IDisposable
+    public class GherkinProcessingScheduler : IGherkinProcessingScheduler
     {
         private static readonly TimeSpan parsingDelay = TimeSpan.FromMilliseconds(250);
         private static readonly TimeSpan analyzingDelay = TimeSpan.FromMilliseconds(500);

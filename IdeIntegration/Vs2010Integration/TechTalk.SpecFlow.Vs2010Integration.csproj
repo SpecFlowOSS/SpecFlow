@@ -181,6 +181,8 @@
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\IEditorCommand.cs" />
+    <Compile Include="Commands\MatchResults.cs" />
+    <Compile Include="Commands\NoMatchHandler.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="EditorCommands\GherkinTextViewCreationListener.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="LanguageService\IdleTaskProcessingQueue.cs" />
+    <Compile Include="LanguageService\IGherkinProcessingScheduler.cs" />
     <Compile Include="LanguageService\IGherkinProcessingTask.cs" />
     <Compile Include="TestRunner\VS2012RunnerGateway.cs" />
     <Compile Include="UI\ContextMenuBuilder.cs" />
@@ -252,7 +255,6 @@
     <Compile Include="Utils\StringLiteralHelper.cs" />
     <Compile Include="Utils\VsProjectFileTracker.cs" />
     <Compile Include="Utils\DteWithEvents.cs" />
-    <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="LanguageService\GherkinFileBlockBuilder.cs" />
     <Compile Include="LanguageService\GherkinFileScope.cs" />
     <Compile Include="LanguageService\GherkinFileScopeChange.cs" />
@@ -367,14 +369,6 @@
     <ProjectReference Include="..\IdeIntegration\TechTalk.SpecFlow.IdeIntegration.csproj">
       <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
       <Name>TechTalk.SpecFlow.IdeIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Vs2008Integration\TechTalk.SpecFlow.Vs2008Integration.csproj">
-      <Project>{5703CA95-A08A-46AE-AE24-DB6B21FD6F7E}</Project>
-      <Name>TechTalk.SpecFlow.Vs2008Integration</Name>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <TemplateType>Item</TemplateType>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <VSIXSubPath>ItemTemplates</VSIXSubPath>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

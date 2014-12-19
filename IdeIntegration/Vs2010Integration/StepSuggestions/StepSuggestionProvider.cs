@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 {

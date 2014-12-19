@@ -10,6 +10,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Vs2010Integration.StepSuggestions;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
+using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {

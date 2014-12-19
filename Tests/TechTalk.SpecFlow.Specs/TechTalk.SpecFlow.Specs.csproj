@@ -267,7 +267,9 @@
     <EmbeddedResource Include="Drivers\Templates\TestProjectFile.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj" />
+    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
