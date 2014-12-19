@@ -11,7 +11,6 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.IdeIntegration.Bindings;
 using TechTalk.SpecFlow.IdeIntegration.Options;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
@@ -32,82 +31,6 @@ namespace Vs2010IntegrationUnitTests
         {
             this.bindingMethods = bindingMethods;
         }
-
-        //internal IEnumerable<MethodInfo> GetMethodsMatchingTextAtCaret(EditorContext editorContext)
-        //{
-        //    var tracerMock = new Mock<IVisualStudioTracer>();
-        //    tracerMock.Setup(x => x.Trace(It.IsAny<string>(), It.IsAny<string>())).Callback(
-        //        (string message, string category) => Console.WriteLine(message));
-            
-        //    var projectScopeMock = new Mock<IProjectScope>();
-        //    var gherkinProcessingScheduler = new SynchroneousScheduler();
-        //    projectScopeMock.Setup(x => x.GherkinProcessingScheduler)
-        //        .Returns(gherkinProcessingScheduler);
-        //    projectScopeMock.Setup(x => x.GherkinTextBufferParser)
-        //        .Returns(new GherkinTextBufferParser(projectScopeMock.Object, tracerMock.Object));
-        //    projectScopeMock.Setup(x => x.GherkinDialectServices).Returns(new GherkinDialectServices(CultureInfo.CreateSpecificCulture("en-US")));
-        //    var integrationOptionsProviderMock = new Mock<IIntegrationOptionsProvider>();
-        //    integrationOptionsProviderMock.Setup(x => x.GetOptions()).Returns(new IntegrationOptions());
-        //    projectScopeMock.Setup(x => x.IntegrationOptionsProvider).Returns(integrationOptionsProviderMock.Object);
-        //    var classificationTypeRegistryServiceMock = new Mock<IClassificationTypeRegistryService>();
-        //    classificationTypeRegistryServiceMock.Setup(x => x.GetClassificationType(It.IsAny<string>())).Returns(
-        //        new Mock<IClassificationType>().Object);
-        //    projectScopeMock.Setup(x => x.Classifications).Returns(new GherkinFileEditorClassifications(classificationTypeRegistryServiceMock.Object));
-
-        //    var absoluteCaretPosition = editorContext.GetAbsoluteCaretPosition();
-
-        //    var resultTextSnapshotMock = new Mock<ITextSnapshot>();
-        //    var editorText = editorContext.GetAllText();
-
-        //    resultTextSnapshotMock.Setup(x => x.GetText()).Returns(editorText);
-        //    resultTextSnapshotMock.Setup(x => x.GetLineNumberFromPosition(absoluteCaretPosition));
-        //    resultTextSnapshotMock.Setup(x => x.Length).Returns(editorText.Length);
-        //    resultTextSnapshotMock.Setup(x => x.GetLineFromPosition(It.IsAny<int>())).Returns(
-        //        (int position) =>
-        //        {
-        //            var lineNumber = editorContext.GetLineNumberFromPosition(position);
-        //            return CreateTextSnapshotLine(editorContext, lineNumber, resultTextSnapshotMock.Object);
-        //        });
-        //    resultTextSnapshotMock.Setup(x => x.GetLineFromLineNumber(It.IsAny<int>())).Returns(
-        //        (int lineNumber) => CreateTextSnapshotLine(editorContext, lineNumber, resultTextSnapshotMock.Object));
-        //    resultTextSnapshotMock.Setup(x => x.LineCount).Returns(editorContext.CountLines());
-
-        //    var gherkinLanguageService = new GherkinLanguageService(projectScopeMock.Object, tracerMock.Object, false);
-        //    var textViewMock = new Mock<IWpfTextView>();
-        //    var caretMock = new Mock<ITextCaret>();
-        //    var mappingPointMock = new Mock<IMappingPoint>();
-
-        //    caretMock.Setup(x => x.Position).Returns(
-        //        new Microsoft.VisualStudio.Text.Editor.CaretPosition(
-        //            new VirtualSnapshotPoint(resultTextSnapshotMock.Object, absoluteCaretPosition), mappingPointMock.Object, PositionAffinity.Successor));
-        //    textViewMock.Setup(x => x.Caret).Returns(caretMock.Object);
-        //    var gherkinEditorContext = new GherkinEditorContext(
-        //        gherkinLanguageService, textViewMock.Object);
-
-        //    const GherkinTextBufferChangeType type = new GherkinTextBufferChangeType();
-            
-        //    var change = new GherkinTextBufferChange(type, 0, 0, 0, 0, 0, 0, resultTextSnapshotMock.Object);
-        //    gherkinLanguageService.TextBufferChanged(change);
-
-        //    var matchResults = GoToStepDefinitionCommand.GetMatchingMethods(gherkinEditorContext, null, null);
-
-        //    if (matchResults.CandidatingMatches == null)
-        //        return Enumerable.Empty<MethodInfo>();
-
-        //    return from match in matchResults.CandidatingMatches
-        //        select match.StepBinding.Method.AssertMethodInfo();
-        //}
-
-        //private static ITextSnapshotLine CreateTextSnapshotLine(EditorContext context, int lineNumber, ITextSnapshot snapshot)
-        //{
-        //    var result = new Mock<ITextSnapshotLine>();
-        //    result.Setup(x => x.LineNumber).Returns(lineNumber);
-        //    result.Setup(x => x.GetText()).Returns(context.GetLineText(lineNumber));
-        //    result.Setup(x => x.Snapshot).Returns(snapshot);
-        //    result.Setup(x => x.Start)
-        //        .Returns(new SnapshotPoint(snapshot, context.GetAbsolutePositionFromLine(lineNumber)));
-        //    return result.Object;
-        //}
 
         private ITextSnapshotLine CreateTextSnapshotLine(GherkinBuffer gherkinBuffer, int lineNumber, ITextSnapshot snapshot)
         {
@@ -168,7 +91,6 @@ namespace Vs2010IntegrationUnitTests
         private Mock<IBindingRegistry> CreateBindingRegistryMock()
         {
             var result = new Mock<IBindingRegistry>();
-            //var bindingCollector = new IdeBindingSourceProcessor(null).ProcessMethod(new RuntimeBindingRegistryBuilder(new RuntimeBindingSourceProcessor()))
             result.Setup(x => x.Ready).Returns(true);
 
             var typeWithoutDefaultConstructor = typeof(string);
@@ -180,7 +102,7 @@ namespace Vs2010IntegrationUnitTests
                     (StepDefinitionType sdt, string stepText) =>
                         from method in bindingMethods
                         select
-                            CreateStepDefinitionBinding(method, fakeBindingSourceProcessor));//new StepDefinitionBinding(sdt, string.Empty, null, null));
+                            CreateStepDefinitionBinding(method, fakeBindingSourceProcessor));
             return result;
         }
 
