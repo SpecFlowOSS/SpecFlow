@@ -106,7 +106,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C4BDE
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs2010IntegrationUnitTests", "Tests\UtilsTests\Vs2010IntegrationUnitTests\Vs2010IntegrationUnitTests.csproj", "{E503C46E-999E-4934-AA44-15DEB19F3C21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vs2010IntegrationUnitTests", "Tests\vs2010IntegrationUnitTests\Vs2010IntegrationUnitTests.csproj", "{E503C46E-999E-4934-AA44-15DEB19F3C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
