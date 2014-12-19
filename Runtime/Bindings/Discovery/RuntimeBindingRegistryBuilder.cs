@@ -24,8 +24,8 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             }
         }
 
-        //public - for testing
-        public bool BuildBindingsFromType(Type type)
+        //internal - for testing
+        internal bool BuildBindingsFromType(Type type)
         {
 // ReSharper disable PossibleMultipleEnumeration
             var bindingSourceType = CreateBindingSourceType(type);
@@ -45,6 +45,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 // ReSharper restore PossibleMultipleEnumeration
         }
 
+        // public - for testing
         public BindingSourceType CreateBindingSourceType(Type type)
         {
             var filteredAttributes =

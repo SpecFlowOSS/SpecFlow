@@ -20,7 +20,8 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public Type BlockType { get; private set; }
         public Parser.Gherkin.GherkinBufferPosition BufferPosition { get; private set; }
-        public int KeywordLine
+        
+        public int KeywordLine // For backward compatibility
         {
             get
             {

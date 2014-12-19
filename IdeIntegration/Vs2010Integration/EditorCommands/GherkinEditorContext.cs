@@ -2,11 +2,10 @@ using EnvDTE;
 using Microsoft.VisualStudio.Text.Editor;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
-using TechTalk.SpecFlow.IdeIntegration.Bindings;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 {
-    public class GherkinEditorContext : ITextEditor
+    public class GherkinEditorContext
     {
         public GherkinLanguageService LanguageService { get; private set; }
         public IWpfTextView TextView { get; private set; }

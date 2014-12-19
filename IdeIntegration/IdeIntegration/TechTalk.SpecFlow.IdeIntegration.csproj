@@ -63,7 +63,6 @@
     <Compile Include="Bindings\GoToDefinitionHelper.cs" />
     <Compile Include="Bindings\IdeBindingSourceProcessor.cs" />
     <Compile Include="Bindings\ILBindingRegistryBuilder.cs" />
-    <Compile Include="Bindings\ITextEditor.cs" />
     <Compile Include="Generator\FileBasedSpecFlowConfigurationReader.cs" />
     <Compile Include="Generator\GeneratorServices.cs" />
     <Compile Include="Generator\IdeSingleFileGenerator.cs" />

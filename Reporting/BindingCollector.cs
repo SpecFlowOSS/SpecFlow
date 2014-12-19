@@ -47,18 +47,12 @@ namespace TechTalk.SpecFlow.Reporting
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                BuildBindingsFromMethod(method, bindings);
-            }
-        }
-
-        public void BuildBindingsFromMethod(MethodInfo method, List<BindingInfo> bindings)
-        {
-            var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof (StepDefinitionBaseAttribute));
-            if (scenarioStepAttrs != null)
-                foreach (var scenarioStepAttr in scenarioStepAttrs)
-                {
-                    BuildStepBindingFromMethod(method, scenarioStepAttr, bindings);
-                }
+                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof (StepDefinitionBaseAttribute));
+                if (scenarioStepAttrs != null)
+                    foreach (var scenarioStepAttr in scenarioStepAttrs)
+                    {
+                        BuildStepBindingFromMethod(method, scenarioStepAttr, bindings);
+                    }
 
 //                var bindingEventAttrs = Attribute.GetCustomAttributes(method, typeof(BindingEventAttribute));
 //                if (bindingEventAttrs != null)
@@ -66,6 +60,7 @@ namespace TechTalk.SpecFlow.Reporting
 //                    {
 //                        BuildEventBindingFromMethod(method, bindingEventAttr);
 //                    }
+            }
         }
 
         private void BuildStepBindingFromMethod(MethodInfo method, Attribute scenarioStepAttr, List<BindingInfo> bindings)
