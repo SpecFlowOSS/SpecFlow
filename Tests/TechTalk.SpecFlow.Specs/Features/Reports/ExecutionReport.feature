@@ -84,7 +84,8 @@ Scenario Outline: Pending test output is included in the HTML result
 Examples:
 	| unittest	|
 	| NUnit		|
-@mstest
+@mstest @ignore
+#report generator does not support newer MsTest
 Examples: MsTest
 	| unittest	|
 	| MsTest	|

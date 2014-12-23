@@ -116,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
 
-            result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton");
+            result.ShouldEqual("MyName.Space/MyClass/        step-definition-skeleton");
         }
 
         [Test]
@@ -126,8 +126,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen(), CreateSimpleWhen(), CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
 
-            result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton
-        other-step-definition-skeleton");
+            result.ShouldEqual(StringHelpers.ConsolidateVerbatimStringLineEndings(@"MyName.Space/MyClass/        step-definition-skeleton
+        other-step-definition-skeleton"));
         }
 
         [Test]
@@ -137,22 +137,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen(), CreateSimpleThen(), CreateSimpleGiven() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
 
-            result.ShouldEqual(@"MyName.Space/MyClass/        Given-skeleton
+            result.ShouldEqual(StringHelpers.ConsolidateVerbatimStringLineEndings(@"MyName.Space/MyClass/        Given-skeleton
         When-skeleton
-        Then-skeleton");
+        Then-skeleton"));
         }
 
         [Test]
         public void Should_GetBindingClassSkeleton_indent_step_definition_class()
         {
-            var sut = new StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(templateProviderMock.Object, stepTextAnalyzerMock.Object, @"step-definition-skeleton
+            var sut = new StepDefinitionSkeletonProviderStepDefinitionSkeletonStub(templateProviderMock.Object, stepTextAnalyzerMock.Object, StringHelpers.ConsolidateVerbatimStringLineEndings(@"step-definition-skeleton
     inner-line
-");
+"));
 
             var result = sut.GetBindingClassSkeleton(ProgrammingLanguage.CSharp, new[] { CreateSimpleWhen() }, "MyName.Space", "MyClass", StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
 
-            result.ShouldEqual(@"MyName.Space/MyClass/        step-definition-skeleton
-            inner-line");
+            result.ShouldEqual(StringHelpers.ConsolidateVerbatimStringLineEndings(@"MyName.Space/MyClass/        step-definition-skeleton
+            inner-line"));
         }
 
         [Test]

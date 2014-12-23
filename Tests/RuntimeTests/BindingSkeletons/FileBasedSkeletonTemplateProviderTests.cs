@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
 using Should;
@@ -18,7 +19,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 
             public FileBasedSkeletonTemplateProviderStub(string templateFileContent, string missingTemplateResult = null)
             {
-                this.templateFileContent = templateFileContent;
+                this.templateFileContent = StringHelpers.ConsolidateVerbatimStringLineEndings(templateFileContent);
                 this.missingTemplateResult = missingTemplateResult;
             }
 

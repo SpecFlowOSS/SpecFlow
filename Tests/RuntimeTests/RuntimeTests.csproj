@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow.RuntimeTests</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow.RuntimeTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
@@ -67,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\EntityWithPropertiesAndFields.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
@@ -142,6 +145,7 @@
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProviderTests.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderTests.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzerTests.cs" />
+    <Compile Include="BindingSkeletons\StringHelpers.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchServiceTest.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
     <Compile Include="BindingSourceProcessorStub.cs" />
@@ -167,6 +171,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
+    <Compile Include="AssistTests\TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
