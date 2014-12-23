@@ -76,8 +76,8 @@ namespace Vs2010IntegrationUnitTests
             var change = new GherkinTextBufferChange(type, 0, 0, 0, 0, 0, 0, resultTextSnapshotMock.Object);
             gherkinLanguageService.TextBufferChanged(change);
 
-            IStepDefinitionMatchService bindingMatchService = new StepDefinitionMatchService(
-                CreateBindingRegistryMock().Object, null);
+	        var bindingMatchService =
+		        new VsProjectScope.StepDefinitionMatchServiceWithOnlySimpleTypeConverter(CreateBindingRegistryMock().Object);
 
             var matchResults = GoToStepDefinitionCommand.GetMatchingMethods(gherkinEditorContext, bindingMatchService, null);
 

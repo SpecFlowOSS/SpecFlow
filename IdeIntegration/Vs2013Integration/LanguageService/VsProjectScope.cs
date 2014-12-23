@@ -161,7 +161,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private class StepDefinitionMatchServiceWithOnlySimpleTypeConverter : StepDefinitionMatchService
+	    public class StepDefinitionMatchServiceWithOnlySimpleTypeConverter : StepDefinitionMatchService
         {
             public StepDefinitionMatchServiceWithOnlySimpleTypeConverter(IBindingRegistry bindingRegistry) : base(bindingRegistry, new OnlySimpleConverter())
             {
