@@ -12,7 +12,6 @@ using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.IdeIntegration.Options;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Vs2010Integration.Commands;
@@ -67,9 +66,11 @@ namespace Vs2010IntegrationUnitTests
             caretMock.Setup(x => x.Position).Returns(
                 new Microsoft.VisualStudio.Text.Editor.CaretPosition(
                     new VirtualSnapshotPoint(resultTextSnapshotMock.Object, absoluteCaretPosition), mappingPointMock.Object, PositionAffinity.Successor));
+	        caretMock.Setup(x => x.Top).Returns(caretPosition.LineNumber);
             textViewMock.Setup(x => x.Caret).Returns(caretMock.Object);
             var gherkinEditorContext = new GherkinEditorContext(
                 gherkinLanguageService, textViewMock.Object);
+	        textViewMock.Setup(x => x.TextSnapshot).Returns(resultTextSnapshotMock.Object);
 
             const GherkinTextBufferChangeType type = new GherkinTextBufferChangeType();
 

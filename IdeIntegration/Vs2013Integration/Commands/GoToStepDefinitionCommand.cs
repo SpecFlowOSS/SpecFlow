@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
@@ -94,6 +95,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 			List<BindingMatch> candidatingMatches;
 			var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
 
+		    if (match.Success)
+		    {
+			    match = GetNestedMatch(match, editorContext, step);
+		    }
+
 		    if (candidatingMatches.Any())
 		    {
 			    resultHandler.StepsFound(candidatingMatches, match);
@@ -101,6 +107,24 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    }
 
 		    resultHandler.NoMatchFound(bindingCulture, step);
+	    }
+
+	    private static BindingMatch GetNestedMatch(BindingMatch bindingMatch, GherkinEditorContext editorContext, GherkinStep step)
+	    {
+			// TODO: handle multiline steps
+			var line = editorContext.TextView.TextSnapshot.GetLineFromLineNumber((int)editorContext.TextView.Caret.Top);
+		    var regexMatch = bindingMatch.StepBinding.Regex.Match(step.Text);
+		    var argumentMatches = regexMatch.Groups.Cast<Group>().Skip(1);
+
+			var lineStart = line.Start;
+			var column = editorContext.TextView.Caret.Position.BufferPosition - lineStart;
+
+		    var parameterIndex = argumentMatches.Select((arg, index) => new {arg, index})
+			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length > column);
+
+		    Console.WriteLine("Parameter index={0}", parameterIndex == null ? -1 : parameterIndex.index);
+			
+		    return bindingMatch;
 	    }
 
 	    public interface IMatchingMethodResultHandler
