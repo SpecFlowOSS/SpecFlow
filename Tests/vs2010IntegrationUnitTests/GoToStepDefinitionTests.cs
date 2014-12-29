@@ -53,7 +53,7 @@ namespace Vs2010IntegrationUnitTests
 		[TestCase]
 		public void Should_return_a_single_matching_method_with_simple_argument()
 		{
-			Action<int> @delegate = DummyBindingClass.StepMethodWithSimpleArgument;
+			Action<int> @delegate = DummyBindingClass.StepMethodWithSingleArgument;
 
 			var bindings = new List<MethodInfo>()
             {
@@ -69,6 +69,29 @@ namespace Vs2010IntegrationUnitTests
 
 			Assert.AreEqual(1, result.Count(), "Number of matching methods in result");
 			Assert.AreEqual(@delegate.Method, result.Single(), "MethodInfo");
+		}
+
+		[TestCase]
+		public void Should_return_a_single_matching_method_with_transformed_argument()
+		{
+			Action<int> @delegate = DummyBindingClass.StepMethodWithSingleArgument;
+			Func<int> argumentTransformDelegate = DummyBindingClass.ArgumentTransformationMethod;
+
+			var bindings = new List<MethodInfo>
+			{
+                @delegate.Method,
+				argumentTransformDelegate.Method
+            };
+
+			var input = CreateScenario("Given step with transformed arguments");
+			var caretPosition = FindWordPosition(input, "transformed");
+			var editor = new GherkinBuffer(input);
+
+			var helper = new GoToDefinitionHelper(bindings);
+			var result = helper.GetMethodsMatchingTextAtCaret(editor, caretPosition);
+
+			Assert.AreEqual(1, result.Count(), "Number of matching methods in result");
+			Assert.AreEqual(argumentTransformDelegate.Method, result.Single(), "MethodInfo");
 		}
 
 	    [TestCase]
@@ -130,8 +153,14 @@ Scenario: dummy scenario
             }
 
 			[Given("step with (.*) arguments")]
-			public static void StepMethodWithSimpleArgument(int dummyArgument)
+			public static void StepMethodWithSingleArgument(int dummyArgument)
 			{
+			}
+
+			[StepArgumentTransformation("transformed")]
+		    public static int ArgumentTransformationMethod()
+			{
+				throw new NotImplementedException();
 			}
         }
     }

@@ -79,16 +79,40 @@ namespace Vs2010IntegrationUnitTests
 	        var bindingMatchService =
 		        new VsProjectScope.StepDefinitionMatchServiceWithOnlySimpleTypeConverter(CreateBindingRegistryMock().Object);
 
-            var matchResults = GoToStepDefinitionCommand.GetMatchingMethods(gherkinEditorContext, bindingMatchService, null);
+	        var resultHandler = new MatchingMethodResultHandler();
+			GoToStepDefinitionCommand.GetMatchingMethods(gherkinEditorContext, bindingMatchService, null, resultHandler);
+			var candidatingMatches = resultHandler.CandidatingMatches;
 
-            if (matchResults.CandidatingMatches == null)
+			if (candidatingMatches == null)
                 return Enumerable.Empty<MethodInfo>();
 
-            return from match in matchResults.CandidatingMatches
+			return from match in candidatingMatches
                    select match.StepBinding.Method.AssertMethodInfo();
         }
 
-        private Mock<IBindingRegistry> CreateBindingRegistryMock()
+	    internal class MatchingMethodResultHandler : GoToStepDefinitionCommand.IMatchingMethodResultHandler
+	    {
+			public IEnumerable<BindingMatch> CandidatingMatches { get; private set; }
+
+		    public void NoCurrentStep()
+		    {
+		    }
+
+		    public void BindingServiceNotReady()
+		    {
+		    }
+
+		    public void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
+		    {
+			    CandidatingMatches = candidatingMatches;
+		    }
+
+		    public void NoMatchFound(CultureInfo bindingCulture, GherkinStep step)
+		    {
+		    }
+	    }
+
+	    private Mock<IBindingRegistry> CreateBindingRegistryMock()
         {
             var result = new Mock<IBindingRegistry>();
             result.Setup(x => x.Ready).Returns(true);
@@ -103,7 +127,8 @@ namespace Vs2010IntegrationUnitTests
                         from method in bindingMethods
                         select
                             CreateStepDefinitionBinding(method, fakeBindingSourceProcessor));
-            return result;
+            
+			return result;
         }
 
         private static IStepDefinitionBinding CreateStepDefinitionBinding(MethodInfo method, FakeBindingSourceProcessor fakeBindingSourceProcessor)
@@ -139,10 +164,10 @@ namespace Vs2010IntegrationUnitTests
                 throw new NotImplementedException();
             }
 
-            protected override void ProcessStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
-            {
-                throw new NotImplementedException();
-            }
+	        protected override void ProcessStepArgumentTransformationBinding(
+		        IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+	        {
+	        }
         }
 
         private Mock<ITextSnapshot> CreateTextSnapshotMock(GherkinBuffer gherkinBuffer, int absoluteCaretPosition)

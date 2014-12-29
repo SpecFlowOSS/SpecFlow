@@ -65,65 +65,97 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 return false;
 
             var projectCulture = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture;
-            
-            var matchResults = GetMatchingMethods(editorContext, bindingMatchService, projectCulture);
 
-            var exitReason = matchResults.ExitReason;
-            switch (exitReason)
-            {
-                case ExitReason.NoCurrentStep:
-                    return false;
+	        var resultHandler = new MatchingMethodResultHandler(noMatchHandler, editorContext);
 
-                case ExitReason.BindingServiceNotReady:
-                    {
-                        MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
-                        return true;
-                    }
-
-                case ExitReason.NoMatchFound:
-                    {
-                        noMatchHandler.HandleNoMatch(matchResults.Step, matchResults.BindingCulture);
-                        return true;
-                    }
-
-                default:
-                    var match = matchResults.BindingMatch;
-                    var binding = match.StepBinding;
-                    if (!match.Success)
-                    {
-                        var candidatingMatches = matchResults.CandidatingMatches;
-                        WarnAboutMultipleMatches(candidatingMatches);
-                        binding = candidatingMatches.First().StepBinding;
-                    }
-
-                    var method = binding.Method;
-                    NavigateToMethod(editorContext, method);
-
-                    return true;
-            }
+	        GetMatchingMethods(editorContext, bindingMatchService, projectCulture, resultHandler);
+	        return resultHandler.Result;
         }
 
-        // TODO: refactor this method to accept a handler class for the various possible results instead of returning the "MatchResults" object
-        // and get rid of MatchResults class because it's cohisiveness is very low
-        public static MatchResults GetMatchingMethods(GherkinEditorContext editorContext, IStepDefinitionMatchService bindingMatchService, CultureInfo projectCulture)
-        {
-            var step = GetCurrentStep(editorContext);
-            if (step == null)
-                return new MatchResults(ExitReason.NoCurrentStep);
+	    public static void GetMatchingMethods(GherkinEditorContext editorContext, IStepDefinitionMatchService bindingMatchService,
+		    CultureInfo projectCulture, IMatchingMethodResultHandler resultHandler)
+	    {
+			var step = GetCurrentStep(editorContext);
+		    if (step == null)
+		    {
+			    resultHandler.NoCurrentStep();
+			    return;
+		    }
+			
+			var bindingCulture = projectCulture ?? step.StepContext.Language;
 
-            var bindingCulture = projectCulture ?? step.StepContext.Language;
+		    if (!bindingMatchService.Ready)
+		    {
+			    resultHandler.BindingServiceNotReady();
+			    return;
+		    }
 
-            if (!bindingMatchService.Ready)
-                return new MatchResults(ExitReason.BindingServiceNotReady);
-            
-            StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
-            var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
-            return
-                candidatingMatches.Any() ? new MatchResults(candidatingMatches, match) : new MatchResults(bindingCulture, step);
-        }
+			StepDefinitionAmbiguityReason ambiguityReason;
+			List<BindingMatch> candidatingMatches;
+			var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
 
-        private static void WarnAboutMultipleMatches(IEnumerable<BindingMatch> candidatingMatches)
+		    if (candidatingMatches.Any())
+		    {
+			    resultHandler.StepsFound(candidatingMatches, match);
+				return;
+		    }
+
+		    resultHandler.NoMatchFound(bindingCulture, step);
+	    }
+
+	    public interface IMatchingMethodResultHandler
+	    {
+		    void NoCurrentStep();
+		    void BindingServiceNotReady();
+		    void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch);
+		    void NoMatchFound(CultureInfo bindingCulture, GherkinStep step);
+	    }
+
+	    private class MatchingMethodResultHandler : IMatchingMethodResultHandler
+	    {
+		    private readonly NoMatchHandler noMatchHandler;
+		    private readonly GherkinEditorContext editorContext;
+
+		    public MatchingMethodResultHandler(NoMatchHandler noMatchHandler, GherkinEditorContext editorContext)
+		    {
+			    Result = true;
+			    this.noMatchHandler = noMatchHandler;
+			    this.editorContext = editorContext;
+		    }
+
+		    public void NoCurrentStep()
+		    {
+			    Result = false;
+		    }
+
+		    public void BindingServiceNotReady()
+		    {
+				MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
+		    }
+
+		    public void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
+		    {
+				var match = bindingMatch;
+				var binding = match.StepBinding;
+				if (!match.Success)
+				{
+					WarnAboutMultipleMatches(candidatingMatches);
+					binding = candidatingMatches.First().StepBinding;
+				}
+
+				var method = binding.Method;
+				NavigateToMethod(editorContext, method);
+		    }
+
+		    public void NoMatchFound(CultureInfo bindingCulture, GherkinStep step)
+		    {
+			    noMatchHandler.HandleNoMatch(step, bindingCulture);
+		    }
+
+		    public bool Result { get; private set; }
+	    }
+
+	    private static void WarnAboutMultipleMatches(IEnumerable<BindingMatch> candidatingMatches)
         {
             string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.StepBinding.Method.GetShortDisplayText()));
             MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
