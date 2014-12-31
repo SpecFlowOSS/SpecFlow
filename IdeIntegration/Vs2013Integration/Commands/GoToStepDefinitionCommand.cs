@@ -97,6 +97,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
 		    if (match.Success)
 		    {
+				//bindingMatchService.GetBestMatch()
 			    match = GetNestedMatch(match, editorContext, step);
 		    }
 
@@ -122,9 +123,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    var parameterIndex = argumentMatches.Select((arg, index) => new {arg, index})
 			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length > column);
 
-		    Console.WriteLine("Parameter index={0}", parameterIndex == null ? -1 : parameterIndex.index);
-			
-		    return bindingMatch;
+			Console.WriteLine("Parameter index={0}", parameterIndex == null ? -1 : parameterIndex.index);
+		    if (parameterIndex == null)
+			    return bindingMatch;
+		    
+			return bindingMatch;
 	    }
 
 	    public interface IMatchingMethodResultHandler

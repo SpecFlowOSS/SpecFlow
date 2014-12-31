@@ -128,11 +128,29 @@ namespace Vs2010IntegrationUnitTests
                         from method in bindingMethods
                         select
                             CreateStepDefinitionBinding(method, fakeBindingSourceProcessor));
-            
+
+		    result.Setup(x => x.GetStepTransformations()).Returns(
+			    from method in bindingMethods
+			    select CreateArgumentTransformationBinding(method, fakeBindingSourceProcessor));
 			return result;
         }
 
-        private static IStepDefinitionBinding CreateStepDefinitionBinding(MethodInfo method, FakeBindingSourceProcessor fakeBindingSourceProcessor)
+	    private static IStepArgumentTransformationBinding CreateArgumentTransformationBinding(MethodInfo method, FakeBindingSourceProcessor fakeBindingSourceProcessor)
+	    {
+			// TODO: remove duplciation between this method and CreateStepDefinitionBinding
+            var bindingRegistryBuilder = new RuntimeBindingRegistryBuilder(fakeBindingSourceProcessor);
+
+			// TODO: change this method to call RuntimeBindingRegistryBuilder.BuildBindingsFromType
+            // and this class to take a Type instead of a list of methods...
+            // Also revert the changes made to the RuntimeBindingRegistryBuilder
+            var bindingSourceMethod = bindingRegistryBuilder.CreateBindingSourceMethod(method);
+            fakeBindingSourceProcessor.ProcessType(bindingRegistryBuilder.CreateBindingSourceType(method.DeclaringType));
+            fakeBindingSourceProcessor.ProcessMethod(bindingSourceMethod);
+            fakeBindingSourceProcessor.ProcessTypeDone();
+            return fakeBindingSourceProcessor.LastStepTransformationBinding;
+        }
+
+	    private static IStepDefinitionBinding CreateStepDefinitionBinding(MethodInfo method, FakeBindingSourceProcessor fakeBindingSourceProcessor)
         {
             var bindingRegistryBuilder = new RuntimeBindingRegistryBuilder(fakeBindingSourceProcessor);
 
@@ -154,8 +172,9 @@ namespace Vs2010IntegrationUnitTests
             }
 
             public IStepDefinitionBinding LastStepDefinitionBinding { get; private set; }
+	        public IStepArgumentTransformationBinding LastStepTransformationBinding { get; private set; }
 
-            protected override void ProcessStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+	        protected override void ProcessStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
             {
                 LastStepDefinitionBinding = stepDefinitionBinding;
             }
@@ -168,6 +187,7 @@ namespace Vs2010IntegrationUnitTests
 	        protected override void ProcessStepArgumentTransformationBinding(
 		        IStepArgumentTransformationBinding stepArgumentTransformationBinding)
 	        {
+		        LastStepTransformationBinding = stepArgumentTransformationBinding;
 	        }
         }
 
