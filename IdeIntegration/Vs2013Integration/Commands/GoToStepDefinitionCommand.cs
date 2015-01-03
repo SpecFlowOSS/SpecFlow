@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    if (match.Success)
 		    {
 				//bindingMatchService.GetBestMatch()
-			    match = GetNestedMatch(match, editorContext, step);
+				match = GetNestedMatch(match, editorContext, step);
 		    }
 
 		    if (candidatingMatches.Any())
@@ -120,14 +120,26 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 			var lineStart = line.Start;
 			var column = editorContext.TextView.Caret.Position.BufferPosition - lineStart;
 
-		    var parameterIndex = argumentMatches.Select((arg, index) => new {arg, index})
+		    var parameter = argumentMatches.Select((arg, index) => new {arg, index})
 			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length > column);
 
-			Console.WriteLine("Parameter index={0}", parameterIndex == null ? -1 : parameterIndex.index);
-		    if (parameterIndex == null)
+			if (parameter == null)
 			    return bindingMatch;
-		    
+
+		    var parameterValue = (string)bindingMatch.Arguments[parameter.index];
+		    var parameterType =
+			    bindingMatch.StepBinding.Method.AssertMethodInfo().GetParameters()[parameter.index].ParameterType.Name;
+
+		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType);
+		    if (candidateMatch != null)
+			    return candidateMatch;
+
 			return bindingMatch;
+	    }
+
+	    private static BindingMatch GetCandidateParameterMatch(string parameterValue, string parameterType)
+	    {
+		    var relevantTransformsMethods = service
 	    }
 
 	    public interface IMatchingMethodResultHandler
