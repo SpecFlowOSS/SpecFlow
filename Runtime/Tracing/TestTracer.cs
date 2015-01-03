@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceStepPending(BindingMatch match, object[] arguments);
         void TraceBindingError(BindingException ex);
         void TraceError(Exception ex);
-        void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck);
+        void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<StepBindingMatch> matchesWithoutScopeCheck);
         void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments);
         void TraceDuration(TimeSpan elapsed, string text);
     }
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.Tracing
             traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
-        public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
+        public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<StepBindingMatch> matchesWithoutScopeCheck)
         {
             StringBuilder message = new StringBuilder();
             if (matchesWithoutScopeCheck == null || matchesWithoutScopeCheck.Count == 0)

@@ -167,7 +167,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             {
             }
 
-            protected override IEnumerable<BindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
+            protected override IEnumerable<StepBindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
             {
                 var normalResult = base.GetCandidatingBindingsForBestMatch(stepInstance, bindingCulture).ToList();
                 if (normalResult.Count > 0)

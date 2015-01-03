@@ -97,8 +97,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
 		    if (match.Success)
 		    {
-				//bindingMatchService.GetBestMatch()
-				match = GetNestedMatch(match, editorContext, step);
+				match = GetNestedMatch(match, editorContext, step, bindingMatchService.Registry);
 		    }
 
 		    if (candidatingMatches.Any())
@@ -110,11 +109,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    resultHandler.NoMatchFound(bindingCulture, step);
 	    }
 
-	    private static BindingMatch GetNestedMatch(BindingMatch bindingMatch, GherkinEditorContext editorContext, GherkinStep step)
+	    private static BindingMatch GetNestedMatch(BindingMatch bindingMatch, GherkinEditorContext editorContext, GherkinStep step, IBindingRegistry registry)
 	    {
 			// TODO: handle multiline steps
 			var line = editorContext.TextView.TextSnapshot.GetLineFromLineNumber((int)editorContext.TextView.Caret.Top);
-		    var regexMatch = bindingMatch.StepBinding.Regex.Match(step.Text);
+		    var regexMatch = bindingMatch.Binding.Regex.Match(step.Text);
 		    var argumentMatches = regexMatch.Groups.Cast<Group>().Skip(1);
 
 			var lineStart = line.Start;
@@ -128,18 +127,25 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
 		    var parameterValue = (string)bindingMatch.Arguments[parameter.index];
 		    var parameterType =
-			    bindingMatch.StepBinding.Method.AssertMethodInfo().GetParameters()[parameter.index].ParameterType.Name;
+			    bindingMatch.Binding.Method.AssertMethodInfo().GetParameters()[parameter.index].ParameterType.FullName;
 
-		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType);
+		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType, registry);
 		    if (candidateMatch != null)
 			    return candidateMatch;
 
 			return bindingMatch;
 	    }
 
-	    private static BindingMatch GetCandidateParameterMatch(string parameterValue, string parameterType)
+	    private static BindingMatch GetCandidateParameterMatch(string parameterValue, string parameterType, IBindingRegistry registry)
 	    {
-		    var relevantTransformsMethods = service
+		    var allTransformations = registry.GetStepTransformations();
+		    var transformationsForRelevantType = from transformation in allTransformations
+			    where transformation.Method.ReturnType.FullName == parameterType
+			    select transformation;
+
+		    var matchingTransformation = transformationsForRelevantType.FirstOrDefault(x => x.Regex.Match(parameterValue).Success);
+
+		    return matchingTransformation;
 	    }
 
 	    public interface IMatchingMethodResultHandler
@@ -175,11 +181,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    public void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
 		    {
 				var match = bindingMatch;
-				var binding = match.StepBinding;
+				var binding = match.Binding;
 				if (!match.Success)
 				{
 					WarnAboutMultipleMatches(candidatingMatches);
-					binding = candidatingMatches.First().StepBinding;
+					binding = candidatingMatches.First().Binding;
 				}
 
 				var method = binding.Method;
@@ -196,7 +202,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
 	    private static void WarnAboutMultipleMatches(IEnumerable<BindingMatch> candidatingMatches)
         {
-            string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.StepBinding.Method.GetShortDisplayText()));
+            string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.Binding.Method.GetShortDisplayText()));
             MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
                 + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
         }

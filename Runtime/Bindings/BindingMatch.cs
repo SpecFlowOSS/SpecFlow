@@ -1,14 +1,20 @@
-using System;
-using System.Linq;
-
 namespace TechTalk.SpecFlow.Bindings
 {
-    public class BindingMatch
-    {
-        static public readonly BindingMatch NonMatching = new BindingMatch(null, 0, null, null);
+	public class StepBindingMatch : BindingMatch
+	{
+		static public readonly StepBindingMatch NonMatching = new StepBindingMatch(null, 0, null, null);
+		public IStepDefinitionBinding StepBinding { get { return (IStepDefinitionBinding)Binding; }}
 
-        public IStepDefinitionBinding StepBinding { get; private set; }
-        public bool Success { get { return StepBinding != null; } }
+		public StepBindingMatch(IStepDefinitionBinding stepBinding, int scopeMatches, object[] arguments, StepContext stepContext) 
+			: base(stepBinding, scopeMatches, arguments, stepContext)
+		{
+		}
+	}
+
+	public class BindingMatch
+    {
+		public IRegexBinding Binding { get; private set; }
+        public bool Success { get { return Binding != null; } }
         
         public int ScopeMatches { get; private set; }
         public bool IsScoped { get { return ScopeMatches > 0; } }
@@ -16,9 +22,9 @@ namespace TechTalk.SpecFlow.Bindings
         public object[] Arguments  { get; private set; }
         public StepContext StepContext { get; private set; }
 
-        public BindingMatch(IStepDefinitionBinding stepBinding, int scopeMatches, object[] arguments, StepContext stepContext)
+        public BindingMatch(IRegexBinding stepBinding, int scopeMatches, object[] arguments, StepContext stepContext)
         {
-            StepBinding = stepBinding;
+            Binding = stepBinding;
             ScopeMatches = scopeMatches;
             Arguments = arguments;
             StepContext = stepContext;

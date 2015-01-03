@@ -88,7 +88,7 @@ namespace Vs2010IntegrationUnitTests
                 return Enumerable.Empty<MethodInfo>();
 
 			return from match in candidatingMatches
-                   select match.StepBinding.Method.AssertMethodInfo();
+                   select match.Binding.Method.AssertMethodInfo();
         }
 
 	    internal class MatchingMethodResultHandler : GoToStepDefinitionCommand.IMatchingMethodResultHandler

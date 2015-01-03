@@ -20,18 +20,19 @@ namespace TechTalk.SpecFlow.Infrastructure
     public interface IStepDefinitionMatchService
     {
         bool Ready { get; }
-        BindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture, out StepDefinitionAmbiguityReason ambiguityReason, out List<BindingMatch> candidatingMatches);
-        BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
+	    IBindingRegistry Registry { get; }
+	    StepBindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture, out StepDefinitionAmbiguityReason ambiguityReason, out List<StepBindingMatch> candidatingMatches);
+        StepBindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true);
     }
 
     public class StepDefinitionMatchService : IStepDefinitionMatchService
     {
-        private readonly IBindingRegistry bindingRegistry;
-        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
+	    public IBindingRegistry Registry { get; private set; }
+	    private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
 
         public StepDefinitionMatchService(IBindingRegistry bindingRegistry, IStepArgumentTypeConverter stepArgumentTypeConverter)
         {
-            this.bindingRegistry = bindingRegistry;
+            this.Registry = bindingRegistry;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
         }
 
@@ -57,24 +58,30 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public bool Ready
         {
-            get { return bindingRegistry.Ready; }
+            get { return Registry.Ready; }
         }
 
-        public BindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
+	    public StepBindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture,
+		    out StepDefinitionAmbiguityReason ambiguityReason, out List<BindingMatch> candidatingMatches)
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public StepBindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
             if (useParamMatching)
                 useRegexMatching = true;
 
             if (stepDefinitionBinding.StepDefinitionType != stepInstance.StepDefinitionType)
-                return BindingMatch.NonMatching;
+                return StepBindingMatch.NonMatching;
 
             Match match = null;
             if (useRegexMatching && stepDefinitionBinding.Regex != null && !(match = stepDefinitionBinding.Regex.Match(stepInstance.Text)).Success)
-                return BindingMatch.NonMatching;
+                return StepBindingMatch.NonMatching;
 
             int scopeMatches = 0;
             if (useScopeMatching && stepDefinitionBinding.IsScoped && stepInstance.StepContext != null && !stepDefinitionBinding.BindingScope.Match(stepInstance.StepContext, out scopeMatches))
-                return BindingMatch.NonMatching;
+                return StepBindingMatch.NonMatching;
 
             var arguments = match == null ? new object[0] : CalculateArguments(match, stepInstance);
 
@@ -85,18 +92,18 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                 // check if the regex + extra arguments match to the binding method parameters
                 if (arguments.Length != bindingParameters.Length)
-                    return BindingMatch.NonMatching;
+                    return StepBindingMatch.NonMatching;
 
                 // Check if regex & extra arguments can be converted to the method parameters
                 //if (arguments.Zip(bindingParameters, (arg, parameter) => CanConvertArg(arg, parameter.Type)).Any(canConvert => !canConvert))
                 if (arguments.Where((arg, argIndex) => !CanConvertArg(arg, bindingParameters[argIndex].Type, bindingCulture)).Any())
-                    return BindingMatch.NonMatching;
+                    return StepBindingMatch.NonMatching;
             }
 
-            return new BindingMatch(stepDefinitionBinding, scopeMatches, arguments, stepInstance.StepContext);
+            return new StepBindingMatch(stepDefinitionBinding, scopeMatches, arguments, stepInstance.StepContext);
         }
 
-        public BindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture, out StepDefinitionAmbiguityReason ambiguityReason, out List<BindingMatch> candidatingMatches)
+        public StepBindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture, out StepDefinitionAmbiguityReason ambiguityReason, out List<StepBindingMatch> candidatingMatches)
         {
             candidatingMatches = GetCandidatingBindingsForBestMatch(stepInstance, bindingCulture).ToList();
             KeepMaxScopeMatches(candidatingMatches);
@@ -109,15 +116,15 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             if (candidatingMatches.Count == 1 && ambiguityReason == StepDefinitionAmbiguityReason.None)
                 return candidatingMatches[0];
-            return BindingMatch.NonMatching;
+            return StepBindingMatch.NonMatching;
         }
 
-        protected virtual IEnumerable<BindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
+        protected virtual IEnumerable<StepBindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
         {
             return GetCandidatingBindings(stepInstance, bindingCulture, useParamMatching: true);
         }
 
-        private static void KeepMaxScopeMatches(List<BindingMatch> matches)
+        private static void KeepMaxScopeMatches(List<StepBindingMatch> matches)
         {
             if (matches.Count > 1)
             {
@@ -127,7 +134,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        protected virtual StepDefinitionAmbiguityReason OnNoMatch(StepInstance stepInstance, CultureInfo bindingCulture, out List<BindingMatch> matches)
+        protected virtual StepDefinitionAmbiguityReason OnNoMatch(StepInstance stepInstance, CultureInfo bindingCulture, out List<StepBindingMatch> matches)
         {
             /*
             //HACK: since out param matching does not support agrument converters yet, we rather show more results than "no match"
@@ -162,11 +169,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             return StepDefinitionAmbiguityReason.None; // no ambiguouity: simple missing step definition
         }
 
-        protected IEnumerable<BindingMatch> GetCandidatingBindings(StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
+        protected IEnumerable<StepBindingMatch> GetCandidatingBindings(StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
-            var matches = bindingRegistry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
+            var matches = Registry.GetConsideredStepDefinitions(stepInstance.StepDefinitionType, stepInstance.Text).Select(b => Match(b, stepInstance, bindingCulture, useRegexMatching, useParamMatching, useScopeMatching)).Where(b => b.Success);
             // we remove duplicate maches for the same method (take the highest scope matches from each)
-            matches = matches.GroupBy(m => m.StepBinding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
+            matches = matches.GroupBy(m => m.Binding.Method, (methodInfo, methodMatches) => methodMatches.OrderByDescending(m => m.ScopeMatches).First(), BindingMethodComparer.Instance);
             return matches;
         }
     }

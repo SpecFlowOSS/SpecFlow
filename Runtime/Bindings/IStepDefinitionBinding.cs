@@ -7,9 +7,13 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IStepDefinitionBinding : IScopedBinding, IBinding
-    {
+	public interface IRegexBinding : IBinding
+	{
+		Regex Regex { get; }
+	}
+
+	public interface IStepDefinitionBinding : IScopedBinding, IRegexBinding
+	{
         StepDefinitionType StepDefinitionType { get; }
-        Regex Regex { get; }
-    }
+	}
 }
