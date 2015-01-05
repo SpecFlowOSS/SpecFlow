@@ -1,9 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
+﻿using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Bindings
 {

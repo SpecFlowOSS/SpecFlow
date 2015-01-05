@@ -24,14 +24,14 @@ namespace Vs2010IntegrationUnitTests
 {
     class GoToDefinitionHelper
     {
-        private readonly IEnumerable<MethodInfo> bindingMethods;
+	    private readonly IEnumerable<MethodInfo> bindingMethods;
 
-        public GoToDefinitionHelper(IEnumerable<MethodInfo> bindingMethods)
+	    public GoToDefinitionHelper(IEnumerable<MethodInfo> bindingMethods)
         {
             this.bindingMethods = bindingMethods;
         }
 
-        private ITextSnapshotLine CreateTextSnapshotLine(GherkinBuffer gherkinBuffer, int lineNumber, ITextSnapshot snapshot)
+	    private ITextSnapshotLine CreateTextSnapshotLine(GherkinBuffer gherkinBuffer, int lineNumber, ITextSnapshot snapshot)
         {
             var result = new Mock<ITextSnapshotLine>();
             result.Setup(x => x.LineNumber).Returns(lineNumber);
@@ -103,7 +103,7 @@ namespace Vs2010IntegrationUnitTests
 		    {
 		    }
 
-		    public void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
+		    public void StepsFound(IEnumerable<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
 		    {
 			    CandidatingMatches = candidatingMatches;
 		    }
@@ -126,12 +126,15 @@ namespace Vs2010IntegrationUnitTests
                 .Returns(
                     (StepDefinitionType sdt, string stepText) =>
                         from method in bindingMethods
-                        select
-                            CreateStepDefinitionBinding(method, fakeBindingSourceProcessor));
+                        let binding = CreateStepDefinitionBinding(method, fakeBindingSourceProcessor)
+						where binding != null
+                        select binding);
 
 		    result.Setup(x => x.GetStepTransformations()).Returns(
 			    from method in bindingMethods
-			    select CreateArgumentTransformationBinding(method, fakeBindingSourceProcessor));
+			    let binding = CreateArgumentTransformationBinding(method, fakeBindingSourceProcessor)
+				where binding != null
+			    select binding);
 			return result;
         }
 

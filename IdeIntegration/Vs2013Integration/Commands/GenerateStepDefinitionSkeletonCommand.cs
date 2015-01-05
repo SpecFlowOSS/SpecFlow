@@ -182,7 +182,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         private static bool IsListed(GherkinStep step, IStepDefinitionMatchService bindingMatchService, CultureInfo bindingCulture)
         {
-            List<BindingMatch> candidatingMatches;
+            List<StepBindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
             var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
             bool isListed = !match.Success;

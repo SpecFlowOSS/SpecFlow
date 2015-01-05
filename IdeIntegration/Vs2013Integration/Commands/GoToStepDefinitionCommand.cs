@@ -92,12 +92,17 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 		    }
 
 			StepDefinitionAmbiguityReason ambiguityReason;
-			List<BindingMatch> candidatingMatches;
-			var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
+			List<StepBindingMatch> candidatingMatches;
+			BindingMatch match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
 
 		    if (match.Success)
 		    {
 				match = GetNestedMatch(match, editorContext, step, bindingMatchService.Registry);
+			    if (match != null)
+			    {
+				    resultHandler.StepsFound(new[] {match}, match);
+				    return;
+			    }
 		    }
 
 		    if (candidatingMatches.Any())
@@ -130,29 +135,30 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 			    bindingMatch.Binding.Method.AssertMethodInfo().GetParameters()[parameter.index].ParameterType.FullName;
 
 		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType, registry);
-		    if (candidateMatch != null)
-			    return candidateMatch;
-
-			return bindingMatch;
+		    return candidateMatch ?? bindingMatch;
 	    }
 
 	    private static BindingMatch GetCandidateParameterMatch(string parameterValue, string parameterType, IBindingRegistry registry)
 	    {
 		    var allTransformations = registry.GetStepTransformations();
-		    var transformationsForRelevantType = from transformation in allTransformations
+		    // TODO: use Type.IsAssignableFrom instead of comparing the type names.
+			var transformationsForRelevantType = from transformation in allTransformations
 			    where transformation.Method.ReturnType.FullName == parameterType
 			    select transformation;
 
 		    var matchingTransformation = transformationsForRelevantType.FirstOrDefault(x => x.Regex.Match(parameterValue).Success);
 
-		    return matchingTransformation;
+		    return 
+				matchingTransformation == null 
+				? null 
+				: new BindingMatch(matchingTransformation, 0, null, null);
 	    }
 
 	    public interface IMatchingMethodResultHandler
 	    {
 		    void NoCurrentStep();
 		    void BindingServiceNotReady();
-		    void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch);
+		    void StepsFound(IEnumerable<BindingMatch> candidatingMatches, BindingMatch bindingMatch);
 		    void NoMatchFound(CultureInfo bindingCulture, GherkinStep step);
 	    }
 
@@ -178,7 +184,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 				MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
 		    }
 
-		    public void StepsFound(List<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
+		    public void StepsFound(IEnumerable<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
 		    {
 				var match = bindingMatch;
 				var binding = match.Binding;

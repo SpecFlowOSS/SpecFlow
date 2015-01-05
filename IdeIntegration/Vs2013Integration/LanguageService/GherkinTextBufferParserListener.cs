@@ -426,7 +426,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var bindingMatchService = projectScope.BindingMatchService;
             if (enableStepMatchColoring && bindingMatchService != null && bindingMatchService.Ready)
             {
-                List<BindingMatch> candidatingMatches;
+                List<StepBindingMatch> candidatingMatches;
                 StepDefinitionAmbiguityReason ambiguityReason;
                 CultureInfo bindingCulture = projectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? currentStep.StepContext.Language;
                 var match = bindingMatchService.GetBestMatch(currentStep, bindingCulture, out ambiguityReason, out candidatingMatches);
