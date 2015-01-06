@@ -17,8 +17,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         protected readonly INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory;
         protected readonly RegexDictionary<BoundStepSuggestions<TNativeSuggestionItem>> boundStepSuggestions;
         private readonly Dictionary<StepDefinitionType, BoundStepSuggestions<TNativeSuggestionItem>> notMatchingSteps;
+	    private readonly List<IStepArgumentTransformationBinding> boundArgumentTransformations;
 
-        protected abstract IStepDefinitionMatchService BindingMatchService { get; }
+	    protected abstract IStepDefinitionMatchService BindingMatchService { get; }
 
         public IEnumerable<TNativeSuggestionItem> GetNativeSuggestionItems(StepDefinitionType stepDefinitionType)
         {
@@ -49,6 +50,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
         protected StepSuggestionProvider(INativeSuggestionItemFactory<TNativeSuggestionItem> nativeSuggestionItemFactory, IProjectScope projectScope)
         {
             boundStepSuggestions = new RegexDictionary<BoundStepSuggestions<TNativeSuggestionItem>>(item => item.StepBinding == null ? null : item.StepBinding.Regex);
+	        boundArgumentTransformations = new List<IStepArgumentTransformationBinding>();
             notMatchingSteps = new Dictionary<StepDefinitionType, BoundStepSuggestions<TNativeSuggestionItem>>
                                     {
                                         {StepDefinitionType.Given, new BoundStepSuggestions<TNativeSuggestionItem>(StepDefinitionType.Given, nativeSuggestionItemFactory)},
@@ -84,7 +86,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public void RemoveBinding(IStepDefinitionBinding stepBinding)
+	    protected void AddArgumentTransformationBinding(IRegexBinding argumentBinding)
+	    {
+		    // TODO: change argumentBinding to be IStepArgumentTransformationBinding all the way up the call chain.
+			boundArgumentTransformations.Add(new StepArgumentTransformationBinding(argumentBinding.Regex, argumentBinding.Method));
+	    }
+
+	    public void RemoveBinding(IStepDefinitionBinding stepBinding)
         {
             var item = boundStepSuggestions.GetRelatedItems(stepBinding.Regex).FirstOrDefault(it => it.StepBinding == stepBinding);
             if (item == null)
@@ -202,12 +210,12 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
             }
         }
 
-        public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null)
+	    public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null)
         {
             return boundStepSuggestions.GetMatchingItems(stepText).Select(it => it.StepBinding).Where(sd => sd.StepDefinitionType == stepDefinitionType);
         }
 
-        public IEnumerable<StepInstance> GetMatchingInstances(IBindingMethod method)
+	    public IEnumerable<StepInstance> GetMatchingInstances(IBindingMethod method)
         {
             var instances = boundStepSuggestions
                 .Where(bss => bss.StepBinding.Method.MethodEquals(method))
@@ -219,5 +227,11 @@ namespace TechTalk.SpecFlow.Vs2010Integration.StepSuggestions
 
             return instances;
         }
+
+	    public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
+	    {
+		    return this.boundArgumentTransformations;
+		    //return Enumerable.Empty<IStepArgumentTransformationBinding>(); //not used in VS
+	    }
     }
 }

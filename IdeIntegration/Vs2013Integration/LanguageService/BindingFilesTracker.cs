@@ -57,6 +57,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
     public class BindingFileInfo : FileInfo
     {
         public IEnumerable<IStepDefinitionBinding> StepBindings { get; set; }
+		public IEnumerable<IRegexBinding> ArgumentTransformationBindings { get; set; } 
 
         public bool IsAssembly
         {
@@ -187,7 +188,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             else
             {
                 List<ProjectItem> relatedProjectItems;
-                fileInfo.StepBindings = stepSuggestionBindingCollector.GetBindingsFromProjectItem(projectItem, out relatedProjectItems).ToArray();
+                fileInfo.StepBindings = stepSuggestionBindingCollector.GetStepBindingsFromProjectItem(projectItem, out relatedProjectItems).ToArray();
+	            fileInfo.ArgumentTransformationBindings =
+		            stepSuggestionBindingCollector.GetArgumentTranformationBindingsFromProjectItem(projectItem, out relatedProjectItems).ToArray();
                 relatedFiles = relatedProjectItems.Select(pi => FindFileInfo(VsxHelper.GetProjectRelativePath(pi))).Where(fi => fi != null).Distinct().ToList();
                 fileInfo.LastChangeDate = VsxHelper.GetLastChangeDate(projectItem) ?? DateTime.MinValue;
             }

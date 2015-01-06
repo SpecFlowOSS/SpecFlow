@@ -22,13 +22,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
             this.tracer = tracer;
         }
 
-        public IEnumerable<IStepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem)
+        public IEnumerable<IStepDefinitionBinding> GetStepBindingsFromProjectItem(ProjectItem projectItem)
         {
             List<ProjectItem> relatedProjectItems;
-            return GetBindingsFromProjectItem(projectItem, out relatedProjectItems);
+            return GetStepBindingsFromProjectItem(projectItem, out relatedProjectItems);
         }
 
-        public IEnumerable<IStepDefinitionBinding> GetBindingsFromProjectItem(ProjectItem projectItem, out List<ProjectItem> relatedProjectItems)
+        public IEnumerable<IStepDefinitionBinding> GetStepBindingsFromProjectItem(ProjectItem projectItem, out List<ProjectItem> relatedProjectItems)
         {
             var bindingProcessor = new IdeBindingSourceProcessor(tracer);
             relatedProjectItems = new List<ProjectItem>();
@@ -36,7 +36,21 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery
             return bindingProcessor.ReadStepDefinitionBindings();
         }
 
-        private void ProcessBindingsFromProjectItem(ProjectItem projectItem, IdeBindingSourceProcessor bindingSourceProcessor, List<ProjectItem> relatedProjectItems)
+	    public IEnumerable<IRegexBinding> GetArgumentTranformationBindingsFromProjectItem(ProjectItem projectItem)
+	    {
+		    List<ProjectItem> relatedProjectItems;
+		    return GetArgumentTranformationBindingsFromProjectItem(projectItem, out relatedProjectItems);
+	    }
+
+	    public IEnumerable<IRegexBinding> GetArgumentTranformationBindingsFromProjectItem(ProjectItem projectItem, out List<ProjectItem> relatedProjectItems)
+	    {
+			var bindingProcessor = new IdeBindingSourceProcessor(tracer);
+			relatedProjectItems = new List<ProjectItem>();
+			ProcessBindingsFromProjectItem(projectItem, bindingProcessor, relatedProjectItems);
+			return bindingProcessor.ReadArgumentTransformationBindings();
+		}
+
+	    private void ProcessBindingsFromProjectItem(ProjectItem projectItem, IdeBindingSourceProcessor bindingSourceProcessor, List<ProjectItem> relatedProjectItems)
         {
             foreach (CodeClass codeClass in VsxHelper.GetClasses(projectItem))
             {

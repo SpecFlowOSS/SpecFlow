@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
     {
         private readonly IIdeTracer tracer;
         private List<IStepDefinitionBinding> stepDefinitionBindings = new List<IStepDefinitionBinding>();
+		private List<IRegexBinding> argumentTranformationBindings = new List<IRegexBinding>(); 
 
         public IdeBindingSourceProcessor(IIdeTracer tracer) : base(new BindingFactory(new StepDefinitionRegexCalculator(new RuntimeConfiguration())))
         {
@@ -17,11 +18,6 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
         }
 
         protected override void ProcessHooks(BindingSourceMethod bindingSourceMethod, BindingScope[] methodScopes)
-        {
-            //nop - not needed for IDE integration
-        }
-
-        protected override void ProcessStepArgumentTransformations(BindingSourceMethod bindingSourceMethod, BindingScope[] methodScopes)
         {
             //nop - not needed for IDE integration
         }
@@ -38,7 +34,7 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
 
         protected override void ProcessStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
         {
-            //nop - not needed for IDE integration
+	        argumentTranformationBindings.Add(stepArgumentTransformationBinding);
         }
 
         public IEnumerable<IStepDefinitionBinding> ReadStepDefinitionBindings()
@@ -47,6 +43,13 @@ namespace TechTalk.SpecFlow.IdeIntegration.Bindings
             stepDefinitionBindings = new List<IStepDefinitionBinding>();
             return result;
         }
+
+	    public IEnumerable<IRegexBinding> ReadArgumentTransformationBindings()
+	    {
+		    var result = argumentTranformationBindings;
+		    argumentTranformationBindings = new List<IRegexBinding>();
+		    return result;
+	    }
 
         protected override bool OnValidationError(string messageFormat, params object[] arguments)
         {

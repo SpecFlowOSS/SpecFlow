@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -14,6 +15,7 @@ using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.EditorCommands;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.IdeIntegration.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
@@ -45,14 +47,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         public void Invoke(Document activeDocument)
         {
-            var editorContext = GherkinEditorContext.FromDocument(activeDocument, gherkinLanguageServiceFactory);
+	        var vsTextView = VsxHelper.GetIVsTextView(activeDocument);
+	        var editorContext = GherkinEditorContext.FromVsTextView(gherkinLanguageServiceFactory, vsTextView);
             if (editorContext == null) 
                 return;
 
-            GoToDefinition(editorContext);
+            GoToDefinition(editorContext, vsTextView);
         }
 
-        public bool CanGoToDefinition(GherkinEditorContext editorContext)
+	    private void GoToDefinition(GherkinEditorContext editorContext, IVsTextView vsTextView)
+	    {
+		    GoToDefinition(editorContext);
+	    }
+
+	    public bool CanGoToDefinition(GherkinEditorContext editorContext)
         {
             return GetBindingMatchService(editorContext.LanguageService) != null && GetCurrentStep(editorContext) != null;
         }
@@ -117,7 +125,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 	    private static BindingMatch GetNestedMatch(BindingMatch bindingMatch, GherkinEditorContext editorContext, GherkinStep step, IBindingRegistry registry)
 	    {
 			// TODO: handle multiline steps
-			var line = editorContext.TextView.TextSnapshot.GetLineFromLineNumber((int)editorContext.TextView.Caret.Top);
+			var line = editorContext.TextView.Caret.Position.BufferPosition.GetContainingLine();
 		    var regexMatch = bindingMatch.Binding.Regex.Match(step.Text);
 		    var argumentMatches = regexMatch.Groups.Cast<Group>().Skip(1);
 
@@ -125,14 +133,14 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 			var column = editorContext.TextView.Caret.Position.BufferPosition - lineStart;
 
 		    var parameter = argumentMatches.Select((arg, index) => new {arg, index})
-			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length > column);
+			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length >= column);
 
 			if (parameter == null)
 			    return bindingMatch;
 
 		    var parameterValue = (string)bindingMatch.Arguments[parameter.index];
 		    var parameterType =
-			    bindingMatch.Binding.Method.AssertMethodInfo().GetParameters()[parameter.index].ParameterType.FullName;
+			    bindingMatch.Binding.Method.Parameters.ElementAt(parameter.index).Type.FullName;
 
 		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType, registry);
 		    return candidateMatch ?? bindingMatch;
