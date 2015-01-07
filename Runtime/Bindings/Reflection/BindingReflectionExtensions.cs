@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             //TODO: use this in .NET4: return params1.Zip(params2, (p1, p2) => p1.ParamEquals(p2)).All(eq => eq);
         }
 
-        internal static MethodInfo AssertMethodInfo(this IBindingMethod bindingMethod)
+        public static MethodInfo AssertMethodInfo(this IBindingMethod bindingMethod)
         {
             var reflectionBindingMethod = bindingMethod as RuntimeBindingMethod;
             if (reflectionBindingMethod == null)

@@ -91,10 +91,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+            List<StepBindingMatch> candidatingMatches;
             stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
                 .Returns(
-                    new BindingMatch(stepDefStub.Object, 0, new object[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
+                    new StepBindingMatch(stepDefStub.Object, 0, new object[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
 
             return stepDefStub;
         }

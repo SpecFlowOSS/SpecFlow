@@ -2,8 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-    public interface IStepArgumentTransformationBinding : IBinding
+    public interface IStepArgumentTransformationBinding : IRegexBinding
     {
-        Regex Regex { get; }
     }
 }

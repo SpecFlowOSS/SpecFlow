@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             return lineLengths[line - lineOffset];
         }
 
-        private int GetBufferPositionFromLine(int line)
+        public int GetBufferPositionFromLine(int line)
         {
             AssertLineInBuffer(line);
             return lineStarts[line - lineOffset];

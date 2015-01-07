@@ -4,6 +4,7 @@
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -194,6 +195,7 @@
     <Compile Include="Commands\GoToStepsCommand.cs" />
     <Compile Include="Bindings\Discovery\VsBindingRegistryBuilder.cs" />
     <Compile Include="Commands\IEditorCommand.cs" />
+    <Compile Include="Commands\NoMatchHandler.cs" />
     <Compile Include="Commands\ReGenerateAllCommand.cs" />
     <Compile Include="Commands\DebugScenariosCommand.cs" />
     <Compile Include="Commands\DelegateMenuCommandHandler.cs" />
@@ -207,6 +209,7 @@
     <Compile Include="EditorCommands\GherkinTextViewCreationListener.cs" />
     <Compile Include="EditorCommands\ReSharperCommand.cs" />
     <Compile Include="LanguageService\IdleTaskProcessingQueue.cs" />
+    <Compile Include="LanguageService\IGherkinProcessingScheduler.cs" />
     <Compile Include="LanguageService\IGherkinProcessingTask.cs" />
     <Compile Include="TestRunner\SpecFlowTestMethodResolver.cs" />
     <Compile Include="TestRunner\VS2012RunnerGateway.cs" />
@@ -266,7 +269,6 @@
     <Compile Include="Utils\StringLiteralHelper.cs" />
     <Compile Include="Utils\VsProjectFileTracker.cs" />
     <Compile Include="Utils\DteWithEvents.cs" />
-    <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="LanguageService\GherkinFileBlockBuilder.cs" />
     <Compile Include="LanguageService\GherkinFileScope.cs" />
     <Compile Include="LanguageService\GherkinFileScopeChange.cs" />

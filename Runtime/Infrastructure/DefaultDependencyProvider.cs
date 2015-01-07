@@ -29,8 +29,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
+			container.RegisterTypeAs<RuntimeBindingSourceProcessor, IBindingSourceProcessor>();
             container.RegisterTypeAs<RuntimeBindingRegistryBuilder, IRuntimeBindingRegistryBuilder>();
-            container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
+			container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();

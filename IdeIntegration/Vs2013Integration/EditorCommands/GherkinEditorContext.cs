@@ -1,5 +1,6 @@
 using EnvDTE;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
 using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
@@ -20,12 +21,20 @@ namespace TechTalk.SpecFlow.Vs2010Integration.EditorCommands
 
         public static GherkinEditorContext FromDocument(Document document, IGherkinLanguageServiceFactory gherkinLanguageServiceFactory)
         {
-            var textView = VsxHelper.GetWpfTextView(VsxHelper.GetIVsTextView(document));
-            if (textView == null)
-                return null;
+	        var vsTextView = VsxHelper.GetIVsTextView(document);
 
-            var languageService = gherkinLanguageServiceFactory.GetLanguageService(textView.TextBuffer);
-            return new GherkinEditorContext(languageService, textView);
+	        return FromVsTextView(gherkinLanguageServiceFactory, vsTextView);
         }
+
+	    public static GherkinEditorContext FromVsTextView(IGherkinLanguageServiceFactory gherkinLanguageServiceFactory,
+		    IVsTextView vsTextView)
+	    {
+		    var textView = VsxHelper.GetWpfTextView(vsTextView);
+		    if (textView == null)
+			    return null;
+
+		    var languageService = gherkinLanguageServiceFactory.GetLanguageService(textView.TextBuffer);
+		    return new GherkinEditorContext(languageService, textView);
+	    }
     }
 }

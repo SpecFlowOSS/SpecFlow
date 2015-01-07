@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public string GetMatchText(BindingMatch match, object[] arguments)
         {
-            return GetMatchText(match.StepBinding.Method, arguments);
+            return GetMatchText(match.Binding.Method, arguments);
         }
 
         public string GetMatchText(IBindingMethod method, object[] arguments)

@@ -256,7 +256,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
 
-            BindingMatch match = null;
+            StepBindingMatch match = null;
             object[] arguments = null;
             try
             {
@@ -320,9 +320,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepInstance stepInstance)
+        private StepBindingMatch GetStepMatch(StepInstance stepInstance)
         {
-            List<BindingMatch> candidatingMatches;
+            List<StepBindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
             var match = stepDefinitionMatchService.GetBestMatch(stepInstance, contextManager.FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
 
@@ -343,12 +343,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw errorProvider.GetMissingStepDefinitionError();
         }
 
-        private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        private TimeSpan ExecuteStepMatch(StepBindingMatch match, object[] arguments)
         {
             TimeSpan duration = TimeSpan.Zero;
             try
             {
-                bindingInvoker.InvokeBinding(match.StepBinding, contextManager, arguments, testTracer, out duration);
+                bindingInvoker.InvokeBinding(match.Binding, contextManager, arguments, testTracer, out duration);
             }
             catch(Exception ex)
             {
@@ -382,9 +382,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private object[] GetExecuteArguments(BindingMatch match)
+        private object[] GetExecuteArguments(StepBindingMatch match)
         {
-            var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
+            var bindingParameters = match.Binding.Method.Parameters.ToArray();
             if (match.Arguments.Length != bindingParameters.Length)
                 throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
 

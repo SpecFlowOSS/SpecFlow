@@ -292,7 +292,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
         public virtual void Feature(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
-            CurrentFileBlockBuilder.SetMainData(typeof(IHeaderBlock), headerSpan.StartPosition.Line, keyword, name);
+            CurrentFileBlockBuilder.SetMainData(typeof(IHeaderBlock), headerSpan.StartPosition, keyword, name);
 
             ColorizeKeywordLine(keyword, headerSpan, classifications.FeatureTitle);
             ColorizeSpan(descriptionSpan, classifications.Description);
@@ -301,7 +301,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public virtual void Background(string keyword, string name, string description, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan)
         {
             NewBlock(headerSpan.StartPosition.Line);
-            CurrentFileBlockBuilder.SetMainData(typeof(IBackgroundBlock), headerSpan.StartPosition.Line, keyword, name);
+            CurrentFileBlockBuilder.SetMainData(typeof(IBackgroundBlock), headerSpan.StartPosition, keyword, name);
             currentStep = null;
 
             RegisterKeyword(keyword, headerSpan);
@@ -348,7 +348,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private void ProcessScenario(string keyword, string name, GherkinBufferSpan headerSpan, GherkinBufferSpan descriptionSpan, Type blockType)
         {
             EnsureNewScenario(headerSpan.StartPosition.Line);
-            CurrentFileBlockBuilder.SetMainData(blockType, headerSpan.StartPosition.Line, keyword, name);
+            CurrentFileBlockBuilder.SetMainData(blockType, headerSpan.StartPosition, keyword, name);
 
             ColorizeKeywordLine(keyword, headerSpan, classifications.ScenarioTitle);
             ColorizeSpan(descriptionSpan, classifications.Description);
@@ -426,7 +426,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             var bindingMatchService = projectScope.BindingMatchService;
             if (enableStepMatchColoring && bindingMatchService != null && bindingMatchService.Ready)
             {
-                List<BindingMatch> candidatingMatches;
+                List<StepBindingMatch> candidatingMatches;
                 StepDefinitionAmbiguityReason ambiguityReason;
                 CultureInfo bindingCulture = projectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? currentStep.StepContext.Language;
                 var match = bindingMatchService.GetBestMatch(currentStep, bindingCulture, out ambiguityReason, out candidatingMatches);

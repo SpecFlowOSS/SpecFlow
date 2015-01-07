@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 
@@ -10,9 +9,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public class RuntimeBindingRegistryBuilder : IRuntimeBindingRegistryBuilder
     {
-        private readonly IRuntimeBindingSourceProcessor bindingSourceProcessor;
+        private readonly IBindingSourceProcessor bindingSourceProcessor;
 
-        public RuntimeBindingRegistryBuilder(IRuntimeBindingSourceProcessor bindingSourceProcessor)
+        public RuntimeBindingRegistryBuilder(IBindingSourceProcessor bindingSourceProcessor)
         {
             this.bindingSourceProcessor = bindingSourceProcessor;
         }
@@ -29,11 +28,9 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         internal bool BuildBindingsFromType(Type type)
         {
 // ReSharper disable PossibleMultipleEnumeration
-            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
-            if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
+            var bindingSourceType = CreateBindingSourceType(type);
+            if (bindingSourceType == null)
                 return false;
-
-            var bindingSourceType = CreateBindingSourceType(type, filteredAttributes);
 
             if (!bindingSourceProcessor.ProcessType(bindingSourceType))
                 return false;
@@ -48,7 +45,21 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 // ReSharper restore PossibleMultipleEnumeration
         }
 
-        private BindingSourceMethod CreateBindingSourceMethod(MethodInfo methodDefinition)
+        // public - for testing
+        public BindingSourceType CreateBindingSourceType(Type type)
+        {
+            var filteredAttributes =
+                type.GetCustomAttributes(typeof (Attribute), true)
+                    .Cast<Attribute>()
+                    .Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
+            if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
+                return null;
+
+            var bindingSourceType = CreateBindingSourceType(type, filteredAttributes);
+            return bindingSourceType;
+        }
+
+        public BindingSourceMethod CreateBindingSourceMethod(MethodInfo methodDefinition)
         {
             return new BindingSourceMethod
                        {
@@ -59,7 +70,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                        };
         }
 
-        private IBindingType CreateBindingType(Type type)
+        private static IBindingType CreateBindingType(Type type)
         {
             return new RuntimeBindingType(type);
         }
@@ -78,7 +89,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                        };
         }
 
-        private BindingSourceAttribute CreateAttribute(Attribute attribute)
+        private static BindingSourceAttribute CreateAttribute(Attribute attribute)
         {
             var attributeType = attribute.GetType();
             var namedAttributeValues = attributeType.GetFields(BindingFlags.Instance | BindingFlags.Public).Where(
@@ -101,7 +112,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                        };
         }
 
-        private IBindingSourceAttributeValueProvider FindAttributeConstructorArg(ParameterInfo parameterInfo, Dictionary<string, IBindingSourceAttributeValueProvider> namedAttributeValues)
+        private static IBindingSourceAttributeValueProvider FindAttributeConstructorArg(ParameterInfo parameterInfo, Dictionary<string, IBindingSourceAttributeValueProvider> namedAttributeValues)
         {
             IBindingSourceAttributeValueProvider result;
             var paramName = parameterInfo.Name;
@@ -113,7 +124,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             return new BindingSourceAttributeValueProvider(null);
         }
 
-        private BindingSourceAttribute[] GetAttributes(IEnumerable<Attribute> customAttributes)
+        private static BindingSourceAttribute[] GetAttributes(IEnumerable<Attribute> customAttributes)
         {
             return customAttributes.Select(CreateAttribute).ToArray();
         }

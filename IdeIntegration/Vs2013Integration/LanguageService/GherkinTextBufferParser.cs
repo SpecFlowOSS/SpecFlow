@@ -5,8 +5,8 @@ using System.Linq;
 using Microsoft.VisualStudio.Text;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.Gherkin;
+using TechTalk.SpecFlow.Utils;
 using TechTalk.SpecFlow.Vs2010Integration.Tracing;
-using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 {
@@ -183,7 +183,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
 
             if (firstUnchangedScenario != null)
             {
-                Tracing.VisualStudioTracer.Assert(partialResult.InvalidFileEndingBlock == null, "there is an invalid file ending block");
+                VisualStudioTracer.Assert(partialResult.InvalidFileEndingBlock == null, "there is an invalid file ending block");
 
                 // inserting the non-effected scenarios at the end
                 var shiftedScenarioBlocks = previousScope.ScenarioBlocks.SkipFromItemInclusive(firstUnchangedScenario)

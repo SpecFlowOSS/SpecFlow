@@ -284,24 +284,37 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
                 isChanged = true;
             }
 
-            if (!bindingFileInfo.IsError && bindingFileInfo.StepBindings.Any())
+            if (!bindingFileInfo.IsError)
             {
-                if (bindings == null)
-                {
-                    bindings = new List<IStepDefinitionBinding>();
-                    bindingSuggestions.Add(bindingFileInfo, bindings);
-                }
+	            if (bindingFileInfo.StepBindings.Any())
+	            {
+		            if (bindings == null)
+		            {
+			            bindings = new List<IStepDefinitionBinding>();
+			            bindingSuggestions.Add(bindingFileInfo, bindings);
+		            }
 
-                bindings.AddRange(bindingFileInfo.StepBindings);
-                bindings.ForEach(AddBinding);
-                isChanged = true;
+		            bindings.AddRange(bindingFileInfo.StepBindings);
+		            bindings.ForEach(AddBinding);
+		            isChanged = true;
+	            }
+
+	            if (bindingFileInfo.ArgumentTransformationBindings.Any())
+	            {
+		            var argumentBindings = bindingFileInfo.ArgumentTransformationBindings;
+		            foreach (var argumentBinding in argumentBindings)
+		            {
+			            AddArgumentTransformationBinding(argumentBinding);
+		            }
+					isChanged = true;
+	            }
             }
 
             if (isChanged)
                 FireBindingsChanged();
         }
 
-        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+	    public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
         {
             throw new NotSupportedException();
         }
@@ -321,12 +334,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             return Enumerable.Empty<IHookBinding>(); //not used in VS
         }
 
-        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
-        {
-            return Enumerable.Empty<IStepArgumentTransformationBinding>(); //not used in VS
-        }
-
-        public void Dispose()
+	    public void Dispose()
         {
             vsProjectScope.FeatureFilesTracker.Ready -= FeatureFilesTrackerOnReady;
             vsProjectScope.FeatureFilesTracker.FileUpdated -= FeatureFilesTrackerOnFeatureFileUpdated;

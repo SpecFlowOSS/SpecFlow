@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeTrue();
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+            List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeTrue();
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeTrue();
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeFalse();
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeFalse();
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeTrue(); 
@@ -150,7 +150,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeFalse();
@@ -166,7 +166,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+            List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeFalse();
@@ -182,7 +182,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeTrue();
@@ -196,7 +196,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var sut = CreateSUT();
 
             StepDefinitionAmbiguityReason ambiguityReason;
-            List<BindingMatch> candidatingMatches;
+			List<StepBindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
             result.Success.ShouldBeFalse();

@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Reporting
         {
             foreach (MethodInfo method in type.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
             {
-                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof(StepDefinitionBaseAttribute));
+                var scenarioStepAttrs = Attribute.GetCustomAttributes(method, typeof (StepDefinitionBaseAttribute));
                 if (scenarioStepAttrs != null)
                     foreach (var scenarioStepAttr in scenarioStepAttrs)
                     {

@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
         private bool IsStepDefinition(IBindingMethod bindingMethod, Document activeDocument)
         {
             var vsBindingRegistryBuilder = new VsBindingRegistryBuilder(tracer);
-            var stepDefinitionBinding = vsBindingRegistryBuilder.GetBindingsFromProjectItem(activeDocument.ProjectItem).FirstOrDefault(sdb => sdb.Method.MethodEquals(bindingMethod));
+            var stepDefinitionBinding = vsBindingRegistryBuilder.GetStepBindingsFromProjectItem(activeDocument.ProjectItem).FirstOrDefault(sdb => sdb.Method.MethodEquals(bindingMethod));
             return stepDefinitionBinding != null;
         }
 

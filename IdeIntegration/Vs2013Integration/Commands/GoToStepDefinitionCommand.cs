@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.TextManager.Interop;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -12,6 +14,8 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Vs2010Integration.Bindings.Discovery;
 using TechTalk.SpecFlow.Vs2010Integration.EditorCommands;
 using TechTalk.SpecFlow.Vs2010Integration.LanguageService;
+using TechTalk.SpecFlow.IdeIntegration.Bindings;
+using TechTalk.SpecFlow.Vs2010Integration.Utils;
 
 namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 {
@@ -43,67 +47,183 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
 
         public void Invoke(Document activeDocument)
         {
-            var editorContext = GherkinEditorContext.FromDocument(activeDocument, gherkinLanguageServiceFactory);
+	        var vsTextView = VsxHelper.GetIVsTextView(activeDocument);
+	        var editorContext = GherkinEditorContext.FromVsTextView(gherkinLanguageServiceFactory, vsTextView);
             if (editorContext == null) 
                 return;
 
-            GoToDefinition(editorContext);
+            GoToDefinition(editorContext, vsTextView);
         }
 
-        public bool CanGoToDefinition(GherkinEditorContext editorContext)
+	    private void GoToDefinition(GherkinEditorContext editorContext, IVsTextView vsTextView)
+	    {
+		    GoToDefinition(editorContext);
+	    }
+
+	    public bool CanGoToDefinition(GherkinEditorContext editorContext)
         {
             return GetBindingMatchService(editorContext.LanguageService) != null && GetCurrentStep(editorContext) != null;
         }
 
         public bool GoToDefinition(GherkinEditorContext editorContext)
         {
-            var step = GetCurrentStep(editorContext);
-            if (step == null)
-                return false;
+            var noMatchHandler = new NoMatchHandler(editorContext, stepDefinitionSkeletonProvider);
 
             var bindingMatchService = GetBindingMatchService(editorContext.LanguageService);
             if (bindingMatchService == null)
                 return false;
 
-            if (!bindingMatchService.Ready)
-            {
-                MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
-                return true;
-            }
+            var projectCulture = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture;
 
-            List<BindingMatch> candidatingMatches;
-            StepDefinitionAmbiguityReason ambiguityReason;
-            CultureInfo bindingCulture = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.BindingCulture ?? step.StepContext.Language;
-            var match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
-            var binding = match.StepBinding;
+	        var resultHandler = new MatchingMethodResultHandler(noMatchHandler, editorContext);
 
-            if (!match.Success)
-            {
-                if (candidatingMatches.Any())
-                {
-                    string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.StepBinding.Method.GetShortDisplayText()));
-                    MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
-                        + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
-                    binding = candidatingMatches.First().StepBinding;
-                }
-                else
-                {
-                    var language = editorContext.ProjectScope is VsProjectScope ? VsProjectScope.GetTargetLanguage(((VsProjectScope) editorContext.ProjectScope).Project) : ProgrammingLanguage.CSharp;
-                    var stepDefinitionSkeletonStyle = editorContext.ProjectScope.SpecFlowProjectConfiguration.RuntimeConfiguration.StepDefinitionSkeletonStyle;
-                    string skeleton = stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(language, step, stepDefinitionSkeletonStyle, bindingCulture);
+	        GetMatchingMethods(editorContext, bindingMatchService, projectCulture, resultHandler);
+	        return resultHandler.Result;
+        }
 
-                    var result = MessageBox.Show("No matching step binding found for this step! Do you want to copy the step binding skeleton to the clipboard?"
-                         + Environment.NewLine + Environment.NewLine + skeleton, "Go to binding", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                    if (result == DialogResult.Yes)
-                    {
-                        Clipboard.SetText(skeleton);
-                    }
-                    return true;
-                }
-            }
+	    public static void GetMatchingMethods(GherkinEditorContext editorContext, IStepDefinitionMatchService bindingMatchService,
+		    CultureInfo projectCulture, IMatchingMethodResultHandler resultHandler)
+	    {
+			var step = GetCurrentStep(editorContext);
+		    if (step == null)
+		    {
+			    resultHandler.NoCurrentStep();
+			    return;
+		    }
+			
+			var bindingCulture = projectCulture ?? step.StepContext.Language;
 
-            var method = binding.Method;
-            var codeFunction = new VsBindingMethodLocator().FindCodeFunction(((VsProjectScope) editorContext.ProjectScope), method);
+		    if (!bindingMatchService.Ready)
+		    {
+			    resultHandler.BindingServiceNotReady();
+			    return;
+		    }
+
+			StepDefinitionAmbiguityReason ambiguityReason;
+			List<StepBindingMatch> candidatingMatches;
+			BindingMatch match = bindingMatchService.GetBestMatch(step, bindingCulture, out ambiguityReason, out candidatingMatches);
+
+		    if (match.Success)
+		    {
+				match = GetNestedMatch(match, editorContext, step, bindingMatchService.Registry);
+			    if (match != null)
+			    {
+				    resultHandler.StepsFound(new[] {match}, match);
+				    return;
+			    }
+		    }
+
+		    if (candidatingMatches.Any())
+		    {
+			    resultHandler.StepsFound(candidatingMatches, match);
+				return;
+		    }
+
+		    resultHandler.NoMatchFound(bindingCulture, step);
+	    }
+
+	    private static BindingMatch GetNestedMatch(BindingMatch bindingMatch, GherkinEditorContext editorContext, GherkinStep step, IBindingRegistry registry)
+	    {
+			// TODO: handle multiline steps
+			var line = editorContext.TextView.Caret.Position.BufferPosition.GetContainingLine();
+		    var regexMatch = bindingMatch.Binding.Regex.Match(step.Text);
+		    var argumentMatches = regexMatch.Groups.Cast<Group>().Skip(1);
+
+			var lineStart = line.Start;
+			var column = editorContext.TextView.Caret.Position.BufferPosition - lineStart;
+
+		    var parameter = argumentMatches.Select((arg, index) => new {arg, index})
+			    .SingleOrDefault(x => x.arg.Index + step.Keyword.Length <= column && x.arg.Index + x.arg.Length + step.Keyword.Length >= column);
+
+			if (parameter == null)
+			    return bindingMatch;
+
+		    var parameterValue = (string)bindingMatch.Arguments[parameter.index];
+		    var parameterType =
+			    bindingMatch.Binding.Method.Parameters.ElementAt(parameter.index).Type.FullName;
+
+		    var candidateMatch = GetCandidateParameterMatch(parameterValue, parameterType, registry);
+		    return candidateMatch ?? bindingMatch;
+	    }
+
+	    private static BindingMatch GetCandidateParameterMatch(string parameterValue, string parameterType, IBindingRegistry registry)
+	    {
+		    var allTransformations = registry.GetStepTransformations();
+		    // TODO: use Type.IsAssignableFrom instead of comparing the type names.
+			var transformationsForRelevantType = from transformation in allTransformations
+			    where transformation.Method.ReturnType.FullName == parameterType
+			    select transformation;
+
+		    var matchingTransformation = transformationsForRelevantType.FirstOrDefault(x => x.Regex.Match(parameterValue).Success);
+
+		    return 
+				matchingTransformation == null 
+				? null 
+				: new BindingMatch(matchingTransformation, 0, null, null);
+	    }
+
+	    public interface IMatchingMethodResultHandler
+	    {
+		    void NoCurrentStep();
+		    void BindingServiceNotReady();
+		    void StepsFound(IEnumerable<BindingMatch> candidatingMatches, BindingMatch bindingMatch);
+		    void NoMatchFound(CultureInfo bindingCulture, GherkinStep step);
+	    }
+
+	    private class MatchingMethodResultHandler : IMatchingMethodResultHandler
+	    {
+		    private readonly NoMatchHandler noMatchHandler;
+		    private readonly GherkinEditorContext editorContext;
+
+		    public MatchingMethodResultHandler(NoMatchHandler noMatchHandler, GherkinEditorContext editorContext)
+		    {
+			    Result = true;
+			    this.noMatchHandler = noMatchHandler;
+			    this.editorContext = editorContext;
+		    }
+
+		    public void NoCurrentStep()
+		    {
+			    Result = false;
+		    }
+
+		    public void BindingServiceNotReady()
+		    {
+				MessageBox.Show("Step bindings are still being analyzed. Please wait.", "Go to binding");
+		    }
+
+		    public void StepsFound(IEnumerable<BindingMatch> candidatingMatches, BindingMatch bindingMatch)
+		    {
+				var match = bindingMatch;
+				var binding = match.Binding;
+				if (!match.Success)
+				{
+					WarnAboutMultipleMatches(candidatingMatches);
+					binding = candidatingMatches.First().Binding;
+				}
+
+				var method = binding.Method;
+				NavigateToMethod(editorContext, method);
+		    }
+
+		    public void NoMatchFound(CultureInfo bindingCulture, GherkinStep step)
+		    {
+			    noMatchHandler.HandleNoMatch(step, bindingCulture);
+		    }
+
+		    public bool Result { get; private set; }
+	    }
+
+	    private static void WarnAboutMultipleMatches(IEnumerable<BindingMatch> candidatingMatches)
+        {
+            string bindingsText = string.Join(Environment.NewLine, candidatingMatches.Select(b => b.Binding.Method.GetShortDisplayText()));
+            MessageBox.Show("Multiple matching bindings found. Navigating to the first match..."
+                + Environment.NewLine + Environment.NewLine + bindingsText, "Go to binding");
+        }
+
+        private static void NavigateToMethod(GherkinEditorContext editorContext, IBindingMethod method)
+        {
+            var codeFunction = new VsBindingMethodLocator().FindCodeFunction(((VsProjectScope)editorContext.ProjectScope), method);
 
             if (codeFunction != null)
             {
@@ -115,11 +235,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
                 navigatePoint.TryToShow();
                 navigatePoint.Parent.Selection.MoveToPoint(navigatePoint);
             }
-
-            return true;
         }
 
-        private IStepDefinitionMatchService GetBindingMatchService(GherkinLanguageService languageService)
+        private static IStepDefinitionMatchService GetBindingMatchService(GherkinLanguageService languageService)
         {
             var bindingMatchService = languageService.ProjectScope.BindingMatchService;
             if (bindingMatchService == null)
@@ -128,7 +246,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.Commands
             return bindingMatchService;
         }
 
-        private GherkinStep GetCurrentStep(GherkinEditorContext editorContext)
+        private static GherkinStep GetCurrentStep(GherkinEditorContext editorContext)
         {
             var fileScope = editorContext.LanguageService.GetFileScope(waitForLatest: true);
             if (fileScope == null)

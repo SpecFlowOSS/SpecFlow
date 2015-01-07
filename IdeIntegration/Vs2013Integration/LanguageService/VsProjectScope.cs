@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         private readonly GherkinTextBufferParser parser;
         private readonly GherkinScopeAnalyzer analyzer = null;
         public GherkinFileEditorClassifications Classifications { get; private set; }
-        public GherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
+        public IGherkinProcessingScheduler GherkinProcessingScheduler { get; private set; }
         public IGeneratorServices GeneratorServices { get; private set; }
 
         private bool initialized = false;
@@ -161,13 +161,13 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        private class StepDefinitionMatchServiceWithOnlySimpleTypeConverter : StepDefinitionMatchService
+	    public class StepDefinitionMatchServiceWithOnlySimpleTypeConverter : StepDefinitionMatchService
         {
             public StepDefinitionMatchServiceWithOnlySimpleTypeConverter(IBindingRegistry bindingRegistry) : base(bindingRegistry, new OnlySimpleConverter())
             {
             }
 
-            protected override IEnumerable<BindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
+            protected override IEnumerable<StepBindingMatch> GetCandidatingBindingsForBestMatch(StepInstance stepInstance, CultureInfo bindingCulture)
             {
                 var normalResult = base.GetCandidatingBindingsForBestMatch(stepInstance, bindingCulture).ToList();
                 if (normalResult.Count > 0)

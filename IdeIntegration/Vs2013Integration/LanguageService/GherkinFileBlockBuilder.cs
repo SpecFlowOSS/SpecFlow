@@ -19,7 +19,15 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
         public int StartLine { get; private set; }
 
         public Type BlockType { get; private set; }
-        public int KeywordLine { get; private set; }
+        public Parser.Gherkin.GherkinBufferPosition BufferPosition { get; private set; }
+        
+        public int KeywordLine // For backward compatibility
+        {
+            get
+            {
+                return BufferPosition.Line;
+            }
+        }
         public string Keyword { get; private set; }
         public string Title { get; private set; }
 
@@ -110,9 +118,9 @@ namespace TechTalk.SpecFlow.Vs2010Integration.LanguageService
             }
         }
 
-        public void SetMainData(Type blockType, int keywordLine, string keyword, string title)
+        public void SetMainData(Type blockType, Parser.Gherkin.GherkinBufferPosition gherkinBufferPosition, string keyword, string title)
         {
-            KeywordLine = keywordLine;
+            BufferPosition = gherkinBufferPosition;
             Title = title;
             Keyword = keyword;
             BlockType = blockType;
