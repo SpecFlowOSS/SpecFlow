@@ -61,12 +61,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             get { return Registry.Ready; }
         }
 
-	    public StepBindingMatch GetBestMatch(StepInstance stepInstance, CultureInfo bindingCulture,
-		    out StepDefinitionAmbiguityReason ambiguityReason, out List<BindingMatch> candidatingMatches)
-	    {
-		    throw new NotImplementedException();
-	    }
-
 	    public StepBindingMatch Match(IStepDefinitionBinding stepDefinitionBinding, StepInstance stepInstance, CultureInfo bindingCulture, bool useRegexMatching = true, bool useParamMatching = true, bool useScopeMatching = true)
         {
             if (useParamMatching)
