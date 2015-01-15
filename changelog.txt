@@ -1,3 +1,7 @@
+1.9.4 - 2015/01/14 (NUnit Generator)
++ NUnit generator adds tags to TestCase attributes generated from outline examples
+  This way the NUnit test adapter will display the tags
+
 1.9.3 - 2014/06/22 (Specflow Ms Test Report)
 New Features:
 + Specflow Test Execution report now includes the "tags" in the Nunit Report which can be displayed through a custom XSLT by the users.
