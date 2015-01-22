@@ -14,14 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE.txt = LICENSE.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{EF9D1EFD-574B-4A33-96CB-8885A6CEB227}"
-	ProjectSection(SolutionItems) = preProject
-		Installer\Resources\EULA.rtf = Installer\Resources\EULA.rtf
-		Installer\Resources\header.bmp = Installer\Resources\header.bmp
-		Installer\Resources\logo.png = Installer\Resources\logo.png
-		Installer\Resources\welcome_dialog.bmp = Installer\Resources\welcome_dialog.bmp
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Reporting", "Reporting\TechTalk.SpecFlow.Reporting.csproj", "{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow", "Runtime\TechTalk.SpecFlow.csproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
@@ -163,7 +155,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EF9D1EFD-574B-4A33-96CB-8885A6CEB227} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B} = {0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{27B6695E-7049-4C1B-8820-812722128D9E} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
