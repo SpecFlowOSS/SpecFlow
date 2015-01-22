@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using NUnit.Framework;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -16,7 +13,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly ProjectSteps projectSteps;
         private readonly ExecutionSteps executionSteps;
         private readonly SpecFlowConfigurationDriver specFlowConfigurationDriver;
-        private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
         private readonly ReportInfo reportInfo;
 
         public ReportingSteps(InputProjectDriver inputProjectDriver, ProjectSteps projectSteps, SpecFlowConfigurationDriver specFlowConfigurationDriver, ExecutionSteps executionSteps, ReportInfo reportInfo)
