@@ -69,7 +69,7 @@
   <PropertyGroup>
     <!--<SpecFlowPackageVersion>1.2.3</SpecFlowPackageVersion>-->
     <NuGetVersionSpec Condition="'$(SpecFlowPackageVersion)' != ''">-Version $(SpecFlowPackageVersion)</NuGetVersionSpec>
-    <NuGetVersion>1.7.0</NuGetVersion>
+    <NuGetVersion>2.8.3</NuGetVersion>
     <CreateSpecFlowPackageCommand>
       "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowPackageCommand>
