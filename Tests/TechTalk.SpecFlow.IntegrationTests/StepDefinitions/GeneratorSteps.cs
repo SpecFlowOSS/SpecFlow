@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
-using Should;
 
 namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
 {
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
         [Then(@"no generation error is reported")]
         public void ThenNoGenerationErrorIsReported()
         {
-            compilationError.ShouldBeNull();
+            compilationError.Should().BeNull();
         }
     }
 }
