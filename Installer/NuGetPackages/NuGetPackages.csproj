@@ -71,19 +71,19 @@
     <NuGetVersionSpec Condition="'$(SpecFlowPackageVersion)' != ''">-Version $(SpecFlowPackageVersion)</NuGetVersionSpec>
     <NuGetVersion>2.8.3</NuGetVersion>
     <CreateSpecFlowPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowPackageCommand>
     <CreateSpecFlowCustomPluginPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.CustomPlugin.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis $(NuGetVersionSpec)
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.CustomPlugin.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowCustomPluginPackageCommand>
     <CreateSpecFlowNUnitPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
     </CreateSpecFlowNUnitPackageCommand>
     <CreateSpecFlowNUnitRunnersPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.Runners.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.Runners.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
     </CreateSpecFlowNUnitRunnersPackageCommand>
     <CreateSpecFlowxUnitPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbose -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
     </CreateSpecFlowxUnitPackageCommand>
   </PropertyGroup>
   <Target Name="AfterBuild">
