@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields do not exist:
 AFieldThatDoesNotExist
 AnotherFieldThatDoesNotExist".AgnosticLineBreak());
@@ -32,7 +32,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"
   | StringProperty |
 + |                |
@@ -48,7 +48,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"
   | StringProperty |
 + |                |
@@ -66,7 +66,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
 @"
   | StringProperty |
 - | orange         |
@@ -89,7 +89,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"
   | StringProperty |
   | orange         |
@@ -113,7 +113,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"
   | StringProperty |
 - | orange         |
@@ -139,7 +139,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(@"
+            exception.Message.AgnosticLineBreak().Should().Be(@"
   | StringProperty |
   | orange         |
   | apple          |
@@ -162,7 +162,7 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 
             var exception = GetTheExceptionThrowByComparingThese(table, items);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(@"
+            exception.Message.AgnosticLineBreak().Should().Be(@"
   | StringProperty |
   | orange         |
 + | apple          |

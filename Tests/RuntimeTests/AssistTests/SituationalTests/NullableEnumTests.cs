@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
             table.AddRow("TestProperty", "Value2");
 
             var test = table.CreateInstance<TestEntity>();
-            test.TestProperty.ShouldEqual(TestEnum.Value2);
+            test.TestProperty.Should().Be(TestEnum.Value2);
         }
     }
 }

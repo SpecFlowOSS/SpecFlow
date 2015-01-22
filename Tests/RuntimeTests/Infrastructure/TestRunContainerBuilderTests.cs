@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -16,14 +16,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Should_create_a_container()
         {
             var container = TestRunContainerBuilder.CreateContainer();
-            container.ShouldNotBeNull();
+            container.Should().NotBeNull();
         }
 
         [Test]
         public void Should_register_runtime_configuration_with_default_config()
         {
             var container = TestRunContainerBuilder.CreateContainer();
-            container.Resolve<RuntimeConfiguration>().ShouldNotBeNull();
+            container.Resolve<RuntimeConfiguration>().Should().NotBeNull();
         }
 
         private class DummyTestRunnerFactory : ITestRunnerFactory
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            testRunnerFactory.ShouldBeType(typeof(DummyTestRunnerFactory));
+            testRunnerFactory.Should().BeOfType(typeof(DummyTestRunnerFactory));
         }
 
         public class CustomUnitTestProvider : IUnitTestRuntimeProvider
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
-            unitTestProvider.ShouldBeType(typeof(CustomUnitTestProvider));
+            unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
-            unitTestProvider.ShouldBeType(typeof(CustomUnitTestProvider));
+            unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
         }
     }
 }

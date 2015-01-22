@@ -6,7 +6,7 @@ using System.Text;
 using BoDi;
 using Moq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -137,7 +137,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomDependency());
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var customDependency = container.Resolve<ICustomDependency>();
-            customDependency.ShouldBeType(typeof(CustomDependency));
+            customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 conf => conf.StopAtFirstError = true));
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
-            runtimeConfiguration.StopAtFirstError.ShouldBeTrue();
+            runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             // with default unit test provider, the plugin should not change the default factory
             var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
             var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            testRunnerFactory.ShouldBeType<TestRunnerFactory>();
+            testRunnerFactory.Should().BeOfType<TestRunnerFactory>();
 
             // with StopAtFirstError == true, we should get a custom factory
             var specialConfiguratuion = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -176,7 +176,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
               </configuration>"));
             container = TestRunContainerBuilder.CreateContainer(specialConfiguratuion);
             var customTestRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            customTestRunnerFactory.ShouldBeType<CustomTestRunnerFactory>();
+            customTestRunnerFactory.Should().BeOfType<CustomTestRunnerFactory>();
         }
     }
 }

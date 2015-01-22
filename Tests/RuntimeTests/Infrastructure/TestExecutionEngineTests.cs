@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
-using Should;
+using FluentAssertions;
 using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -235,7 +235,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            scenarioContext.TestStatus.ShouldEqual(TestStatus.OK);
+            scenarioContext.TestStatus.Should().Be(TestStatus.OK);
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
-            scenarioContext.TestStatus.ShouldEqual(TestStatus.TestError);
+            scenarioContext.TestStatus.Should().Be(TestStatus.TestError);
         }
     }
 }

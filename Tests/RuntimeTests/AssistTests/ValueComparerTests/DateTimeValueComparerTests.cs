@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
@@ -13,16 +13,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             new DateTimeValueComparer()
                 .CanCompare(new DateTime())
-                .ShouldBeTrue();
+                .Should().BeTrue();
         }
 
         [Test]
         public void Cannot_compare_if_the_value_is_not_a_datetime()
         {
             var comparer = new DateTimeValueComparer();
-            comparer.CanCompare(3).ShouldBeFalse();
-            comparer.CanCompare("x").ShouldBeFalse();
-            comparer.CanCompare(4.3).ShouldBeFalse();
+            comparer.CanCompare(3).Should().BeFalse();
+            comparer.CanCompare("x").Should().BeFalse();
+            comparer.CanCompare(4.3).Should().BeFalse();
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             new DateTimeValueComparer()
                 .CanCompare(null)
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
@@ -38,9 +38,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             var comparer = new DateTimeValueComparer();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 1, 2).ToString(), new DateTime(2011, 1, 2))
-                .ShouldBeTrue();
+                .Should().BeTrue();
             comparer.TheseValuesAreTheSame(new DateTime(2020, 12, 31).ToString(), new DateTime(2020, 12, 31))
-                .ShouldBeTrue();
+                .Should().BeTrue();
         }
 
         [Test]
@@ -48,13 +48,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             var comparer = new DateTimeValueComparer();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 1, 3).ToString(), new DateTime(2011, 1, 2))
-                .ShouldBeFalse();
+                .Should().BeFalse();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 1, 2).ToString(), new DateTime(2011, 1, 3))
-                .ShouldBeFalse();
+                .Should().BeFalse();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 1, 1).ToString(), new DateTime(2012, 1, 1))
-                .ShouldBeFalse();
+                .Should().BeFalse();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 1, 1).ToString(), new DateTime(2011, 2, 1))
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
@@ -62,9 +62,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             var comparer = new DateTimeValueComparer();
             comparer.TheseValuesAreTheSame("x", new DateTime(2020, 1, 1))
-                .ShouldBeFalse();
+                .Should().BeFalse();
             comparer.TheseValuesAreTheSame("January1", new DateTime(2020, 1, 1))
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
@@ -72,9 +72,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             var comparer = new DateTimeValueComparer();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 2, 28).ToString().Replace("28", "29"), new DateTime(2011, 2, 28))
-                .ShouldBeFalse();
+                .Should().BeFalse();
             comparer.TheseValuesAreTheSame(new DateTime(2011, 12, 1).ToString().Replace("12", "13"), new DateTime(2011, 12, 1))
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
     }
 }

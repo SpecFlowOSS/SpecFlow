@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var table = new Table("Field", "Value");
             var person = table.CreateInstance<Person>();
-            person.ShouldNotBeNull();
+            person.Should().NotBeNull();
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("Howard");
             var person = table.CreateInstance<Person>();
 
-            person.FirstName.ShouldEqual("Howard");
+            person.FirstName.Should().Be("Howard");
         }
 
         [Test]
@@ -43,8 +43,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("x", "y");
 
             var test = table.CreateInstance<TestingVerticalTable>();
-            test.AnotherValue.ShouldEqual("x");
-            test.YetAnotherValue.ShouldEqual("y");
+            test.AnotherValue.Should().Be("x");
+            test.YetAnotherValue.Should().Be("y");
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("AnotherValue", "applesauce");
 
             var test = table.CreateInstance<TestingVerticalTable>();
-            test.AnotherValue.ShouldEqual("applesauce");
-            test.YetAnotherValue.ShouldBeNull();
+            test.AnotherValue.Should().Be("applesauce");
+            test.YetAnotherValue.Should().Be(null);
         }
 
         [Test]
@@ -65,8 +65,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("Another  value", "applesauce");
 
             var test = table.CreateInstance<TestingVerticalTable>();
-            test.AnotherValue.ShouldEqual("applesauce");
-            test.YetAnotherValue.ShouldBeNull();
+            test.AnotherValue.Should().Be("applesauce");
+            test.YetAnotherValue.Should().Be(null);
         }
 
         [Test]
@@ -76,9 +76,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.AddRow("one", "two", "three");
 
             var test = table.CreateInstance<TestingVerticalTable>();
-            test.Field.ShouldEqual("one");
-            test.Value.ShouldEqual("two");
-            test.AnotherValue.ShouldEqual("three");
+            test.Field.Should().Be("one");
+            test.Value.Should().Be("two");
+            test.AnotherValue.Should().Be("three");
         }
 
         public class TestingVerticalTable
@@ -98,8 +98,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.FirstName.ShouldEqual("John");
-            person.LastName.ShouldEqual("Galt");
+            person.FirstName.Should().Be("John");
+            person.LastName.Should().Be("Galt");
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NumberOfIdeas.ShouldEqual(3);
+            person.NumberOfIdeas.Should().Be(3);
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableInt.ShouldEqual(9);
+            person.NullableInt.Should().Be(9);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.UnsignedInt.ShouldEqual<uint>(3);
+            person.UnsignedInt.Should().Be(3);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableUnsignedInt.ShouldEqual<uint?>(9);
+            person.NullableUnsignedInt.Should().Be((uint?)9);
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.Salary.ShouldEqual(9.78M);
+            person.Salary.Should().Be(9.78M);
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableDecimal.ShouldEqual(19.78M);
+            person.NullableDecimal.Should().Be(19.78M);
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.IsRational.ShouldBeTrue();
+            person.IsRational.Should().BeTrue();
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableBool.ShouldEqual(true);
+            person.NullableBool.Should().Be(true);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.BirthDate.ShouldEqual(new DateTime(2010, 12, 31));
+            person.BirthDate.Should().Be(new DateTime(2010, 12, 31));
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableDateTime.ShouldEqual(new DateTime(2010, 11, 30));
+            person.NullableDateTime.Should().Be(new DateTime(2010, 11, 30));
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.Double.ShouldEqual(4.235);
+            person.Double.Should().Be(4.235);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableDouble.ShouldEqual(7.218);
+            person.NullableDouble.Should().Be(7.218);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.GuidId.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
+            person.GuidId.Should().Be(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableGuidId.ShouldEqual(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
+            person.NullableGuidId.Should().Be(new Guid("B48D8AF4-405F-4286-B83E-774EA773CFA3"));
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.Float.ShouldEqual(98.22F);
+            person.Float.Should().Be(98.22F);
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var person = table.CreateInstance<Person>();
 
-            person.NullableFloat.ShouldEqual(55.66F);
+            person.NullableFloat.Should().Be(55.66F);
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var test = table.CreateInstance<EnumPropertyTest>();
 
-            test.ThisIsAStyle.ShouldEqual(Style.Soft);
+            test.ThisIsAStyle.Should().Be(Style.Soft);
         }
 
         [Test]
@@ -297,7 +297,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var test = table.CreateInstance<EnumPropertyTest>();
 
-            test.ThisIsAStyle.ShouldEqual(Style.VeryCool);
+            test.ThisIsAStyle.Should().Be(Style.VeryCool);
         }
 
         private class EnumPropertyTest

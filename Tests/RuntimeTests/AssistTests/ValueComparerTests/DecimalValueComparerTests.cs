@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Can_compare_if_the_value_is_a_decimal()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.CanCompare(1.0M).ShouldBeTrue();
-            valueComparer.CanCompare(3.34M).ShouldBeTrue();
-            valueComparer.CanCompare(-1.24M).ShouldBeTrue();
+            valueComparer.CanCompare(1.0M).Should().BeTrue();
+            valueComparer.CanCompare(3.34M).Should().BeTrue();
+            valueComparer.CanCompare(-1.24M).Should().BeTrue();
         }
 
         [Test]
@@ -21,43 +21,43 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             new DecimalValueComparer()
                 .CanCompare(null)
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
         public void Cannot_compare_if_the_value_is_not_a_decimal()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.CanCompare("x").ShouldBeFalse();
-            valueComparer.CanCompare(1).ShouldBeFalse();
-            valueComparer.CanCompare(3.14).ShouldBeFalse();
+            valueComparer.CanCompare("x").Should().BeFalse();
+            valueComparer.CanCompare(1).Should().BeFalse();
+            valueComparer.CanCompare(3.14).Should().BeFalse();
         }
 
         [Test]
         public void Returns_true_when_the_decimal_values_match()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("3.14", 3.14M).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("0", 0M).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("-1", -1M).ShouldBeTrue();
+            valueComparer.TheseValuesAreTheSame("3.14", 3.14M).Should().BeTrue();
+            valueComparer.TheseValuesAreTheSame("0", 0M).Should().BeTrue();
+            valueComparer.TheseValuesAreTheSame("-1", -1M).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_when_the_decimal_values_do_not_match()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("-1", 1M).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("0", 1M).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873M).ShouldBeFalse();
+            valueComparer.TheseValuesAreTheSame("-1", 1M).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("0", 1M).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873M).Should().BeFalse();
         }
 
         [Test]
         public void Returns_false_when_the_expected_value_is_not_a_decimal()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("x", 0M).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("", 0M).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("-----3", 0M).ShouldBeFalse();
+            valueComparer.TheseValuesAreTheSame("x", 0M).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("", 0M).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("-----3", 0M).Should().BeFalse();
         }
     }
 }

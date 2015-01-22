@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using BoDi;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -26,8 +26,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var scenarioContext = CreateScenarioContext();
 
             var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
-            result.ShouldNotBeNull();
-            result.ShouldBeType(typeof (SimpleClass));
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof (SimpleClass));
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var scenarioContext = CreateScenarioContext();
 
             var result = scenarioContext.GetBindingInstance(typeof(ClassWithDependencies));
-            result.ShouldNotBeNull();
-            result.ShouldBeType(typeof(ClassWithDependencies));
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(ClassWithDependencies));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var dependency = (SimpleClass)scenarioContext.GetBindingInstance(typeof(SimpleClass));
             var result = (ClassWithDependencies)scenarioContext.GetBindingInstance(typeof(ClassWithDependencies));
 
-            result.TheDependency.ShouldBeSameAs(dependency);
+            result.TheDependency.Should().Be(dependency);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var result1 = scenarioContext.GetBindingInstance(typeof(SimpleClass));
             var result2 = scenarioContext.GetBindingInstance(typeof(SimpleClass));
-            result1.ShouldBeSameAs(result2);
+            result1.Should().Be(result2);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var expectedInstance = new SimpleClass();
             scenarioContext.SetBindingInstance(typeof(SimpleClass), expectedInstance);
             var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
-            result.ShouldBeSameAs(expectedInstance);
+            result.Should().Be(expectedInstance);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             ((IDisposable)scenarioContext).Dispose();
 
-            displosableInstance.WasDisposed.ShouldBeTrue();
+            displosableInstance.WasDisposed.Should().BeTrue();
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var result = (ClassDependsOnTestRunner)scenarioContext.GetBindingInstance(typeof(ClassDependsOnTestRunner));
 
-            result.TestRunner.ShouldBeSameAs(testRunner);
+            result.TestRunner.Should().Be(testRunner);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             ((IDisposable)scenarioContext).Dispose();
 
-            displosableInstance.WasDisposed.ShouldBeFalse();
+            displosableInstance.WasDisposed.Should().BeFalse();
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var result = scenarioContext.GetBindingInstance(typeof(ClassWithMultipleCtor));
 
-            result.ShouldNotBeNull();
+            result.Should().NotBeNull();
         }
 
         [Test, ExpectedException(typeof(ObjectContainerException))]

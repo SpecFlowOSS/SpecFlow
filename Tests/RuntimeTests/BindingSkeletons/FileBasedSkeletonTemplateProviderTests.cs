@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
-using Should;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
@@ -42,7 +42,7 @@ mytemplate
 >>>other");
 
             var result = sut.GetStepDefinitionClassTemplate(ProgrammingLanguage.CSharp);
-            result.ShouldEqual("mytemplate" + Environment.NewLine);
+            result.Should().Be("mytemplate" + Environment.NewLine);
         }
 
         [Test]
@@ -53,7 +53,7 @@ mytemplate
 >>>other");
 
             var result = sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, true);
-            result.ShouldEqual("mytemplate" + Environment.NewLine);
+            result.Should().Be("mytemplate" + Environment.NewLine);
         }
 
         [Test]
@@ -64,7 +64,7 @@ mytemplate
 >>>other");
 
             var result = sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, false);
-            result.ShouldEqual("mytemplate" + Environment.NewLine);
+            result.Should().Be("mytemplate" + Environment.NewLine);
         }
 
         [Test]
@@ -73,7 +73,7 @@ mytemplate
             var sut = new FileBasedSkeletonTemplateProviderStub(@">>>other", "missing");
 
             var result = sut.GetStepDefinitionClassTemplate(ProgrammingLanguage.CSharp);
-            result.ShouldEqual("missing");
+            result.Should().Be("missing");
         }
 
         [Test]
@@ -82,7 +82,7 @@ mytemplate
             var sut = new FileBasedSkeletonTemplateProviderStub(@">>>other", "missing");
 
             var result = sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, true);
-            result.ShouldEqual("missing");
+            result.Should().Be("missing");
         }
 
         [Test]
@@ -91,7 +91,7 @@ mytemplate
             var sut = new FileBasedSkeletonTemplateProviderStub(@">>>other", "missing");
 
             var result = sut.GetStepDefinitionTemplate(ProgrammingLanguage.CSharp, false);
-            result.ShouldEqual("missing");
+            result.Should().Be("missing");
         }
 
         [Test]
@@ -100,7 +100,7 @@ mytemplate
             var sut = new FileBasedSkeletonTemplateProviderStub(@">>>
 foo");
 
-            Should.Assertions.Assert.Throws<SpecFlowException>(
+            Assert.Throws<SpecFlowException>(
                 () => sut.GetStepDefinitionClassTemplate(ProgrammingLanguage.CSharp));
         }
 
@@ -112,7 +112,7 @@ foo
 >>>title1
 bar");
 
-            Should.Assertions.Assert.Throws<SpecFlowException>(
+            Assert.Throws<SpecFlowException>(
                 () => sut.GetStepDefinitionClassTemplate(ProgrammingLanguage.CSharp));
         }
 

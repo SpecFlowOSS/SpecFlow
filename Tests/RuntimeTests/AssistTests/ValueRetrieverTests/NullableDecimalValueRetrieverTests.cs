@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Returns_null_when_passed_null()
         {
             var retriever = new NullableDecimalValueRetriever(v => 23M);
-            retriever.GetValue(null).ShouldBeNull();
+            retriever.GetValue(null).Should().Be(null);
         }
 
         [Test]
@@ -26,15 +26,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
                                              };
 
             var retriever = new NullableDecimalValueRetriever(func);
-            retriever.GetValue("value 1").ShouldEqual(1M);
-            retriever.GetValue("value 2").ShouldEqual(2M);
+            retriever.GetValue("value 1").Should().Be(1M);
+            retriever.GetValue("value 2").Should().Be(2M);
         }
 
         [Test]
         public void Returns_null_when_passed_empty_string()
         {
             var retriever = new NullableDecimalValueRetriever(v => 3M);
-            retriever.GetValue("").ShouldBeNull();
+            retriever.GetValue("").Should().Be(null);
         }
     }
 }

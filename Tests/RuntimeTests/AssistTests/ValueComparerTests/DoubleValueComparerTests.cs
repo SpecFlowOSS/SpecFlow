@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Can_compare_if_the_value_is_a_double()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.CanCompare(1.0).ShouldBeTrue();
-            valueComparer.CanCompare(3.34).ShouldBeTrue();
-            valueComparer.CanCompare(-1.24).ShouldBeTrue();
+            valueComparer.CanCompare(1.0).Should().BeTrue();
+            valueComparer.CanCompare(3.34).Should().BeTrue();
+            valueComparer.CanCompare(-1.24).Should().BeTrue();
         }
 
         [Test]
@@ -21,43 +21,43 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             new DoubleValueComparer()
                 .CanCompare(null)
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
         public void Cannot_compare_if_the_value_is_not_a_double()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.CanCompare("x").ShouldBeFalse();
-            valueComparer.CanCompare(1).ShouldBeFalse();
-            valueComparer.CanCompare(3.14M).ShouldBeFalse();
+            valueComparer.CanCompare("x").Should().BeFalse();
+            valueComparer.CanCompare(1).Should().BeFalse();
+            valueComparer.CanCompare(3.14M).Should().BeFalse();
         }
 
         [Test]
         public void Returns_true_when_the_double_values_match()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("3.14", 3.14).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("0", 0.0).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("-1", -1.0).ShouldBeTrue();
+            valueComparer.TheseValuesAreTheSame("3.14", 3.14).Should().BeTrue();
+            valueComparer.TheseValuesAreTheSame("0", 0.0).Should().BeTrue();
+            valueComparer.TheseValuesAreTheSame("-1", -1.0).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_when_the_double_values_do_not_match()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("-1", 1.0).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("0", 1.0).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873).ShouldBeFalse();
+            valueComparer.TheseValuesAreTheSame("-1", 1.0).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("0", 1.0).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873).Should().BeFalse();
         }
 
         [Test]
         public void Returns_false_when_the_expected_value_is_not_a_double()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("x", 0.0).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("", 0.0).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("-----3", 0).ShouldBeFalse();
+            valueComparer.TheseValuesAreTheSame("x", 0.0).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("", 0.0).Should().BeFalse();
+            valueComparer.TheseValuesAreTheSame("-----3", 0).Should().BeFalse();
         }
     }
 }

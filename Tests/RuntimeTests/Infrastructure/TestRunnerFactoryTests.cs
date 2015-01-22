@@ -5,7 +5,7 @@ using System.Text;
 using BoDi;
 using Moq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var factory = CreateTestRunnerFactory();
 
             var testRunner = factory.Create(anAssembly);
-            testRunner.ShouldNotBeNull();
+            testRunner.Should().NotBeNull();
         }
 
         [Test]

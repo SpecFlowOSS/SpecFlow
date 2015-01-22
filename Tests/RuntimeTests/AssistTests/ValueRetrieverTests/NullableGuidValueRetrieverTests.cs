@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -20,8 +20,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var retriever = new NullableGuidValueRetriever(func);
 
-            retriever.GetValue("x").ShouldEqual(new Guid("{A235BE7F-AFEE-43E8-BF01-F279A371662B}"));
-            retriever.GetValue("y").ShouldEqual(new Guid("{08C91240-68EB-4B11-AFCC-95ED7D44EC67}"));
+            retriever.GetValue("x").Should().Be(new Guid("{A235BE7F-AFEE-43E8-BF01-F279A371662B}"));
+            retriever.GetValue("y").Should().Be(new Guid("{08C91240-68EB-4B11-AFCC-95ED7D44EC67}"));
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             var retriever = new NullableGuidValueRetriever(v => new Guid("{E9BC63B9-508F-44D6-BD56-B10989B9CCDC}"));
 
-            retriever.GetValue(null).ShouldBeNull();
+            retriever.GetValue(null).Should().Be(null);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             var retriever = new NullableGuidValueRetriever(v => new Guid("{E9BC63B9-508F-44D6-BD56-B10989B9CCDC}"));
 
-            retriever.GetValue("").ShouldBeNull();
+            retriever.GetValue("").Should().Be(null);
         }
     }
 }

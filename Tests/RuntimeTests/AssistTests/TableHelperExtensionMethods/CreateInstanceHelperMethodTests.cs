@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         {
             var table = new Table("Field", "Value");
             var person = GetThePerson(table);
-            person.ShouldNotBeNull();
+            person.Should().NotBeNull();
         }
 
         [Test]
@@ -32,10 +32,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var @class = table.CreateInstance<AClassWithMultipleEnums>();
 
-            @class.FirstColor.ShouldEqual(AClassWithMultipleEnums.Color.Red);
-            @class.SecondColor.ShouldEqual(AClassWithMultipleEnums.ColorAgain.Red);
-            @class.ThirdColor.ShouldEqual(AClassWithMultipleEnums.Color.Red);
-            @class.FourthColor.ShouldEqual(AClassWithMultipleEnums.ColorAgain.Green);
+            @class.FirstColor.Should().Be(AClassWithMultipleEnums.Color.Red);
+            @class.SecondColor.Should().Be(AClassWithMultipleEnums.ColorAgain.Red);
+            @class.ThirdColor.Should().Be(AClassWithMultipleEnums.Color.Red);
+            @class.FourthColor.Should().Be(AClassWithMultipleEnums.ColorAgain.Green);
         }
 
         public class AClassWithMultipleEnums
