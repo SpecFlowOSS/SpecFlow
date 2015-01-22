@@ -17,7 +17,7 @@
   </metadata>
   <files>
     <!-- common reference files -->
-    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net35" />
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.dll" target="lib\net45" />
 
     <!-- alternative runtimes -->
     <!--<file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\lib\TechTalk.SpecFlow.Silverlight3.dll" target="lib\sl3" />-->

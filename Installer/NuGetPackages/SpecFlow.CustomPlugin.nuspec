@@ -24,7 +24,7 @@
     </references>
   </metadata>
   <files>
-    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.dll" target="lib\net40"
+    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.dll" target="lib\net45"
           exclude="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.Reporting.dll;..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.dll"  />
   </files>
 </package>
