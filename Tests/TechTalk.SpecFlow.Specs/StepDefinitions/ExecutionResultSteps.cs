@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Assist;
-using Should;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -27,14 +27,14 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"all tests should pass")]
         public void ThenAllTestsShouldPass()
         {
-            testExecutionResult.LastExecutionSummary.ShouldNotBeNull();
-            testExecutionResult.LastExecutionSummary.Succeeded.ShouldEqual(testExecutionResult.LastExecutionSummary.Total);
+            testExecutionResult.LastExecutionSummary.Should().NotBeNull();
+            testExecutionResult.LastExecutionSummary.Succeeded.Should().Be(testExecutionResult.LastExecutionSummary.Total);
         }
 
         [Then(@"the execution summary should contain")]
         public void ThenTheExecutionSummaryShouldContain(Table expectedSummary)
         {
-            testExecutionResult.LastExecutionSummary.ShouldNotBeNull();
+            testExecutionResult.LastExecutionSummary.Should().NotBeNull();
             expectedSummary.CompareToInstance(testExecutionResult.LastExecutionSummary);
         }
 
@@ -47,35 +47,35 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the binding method '(.*)' is executed (.*)")]
         public void ThenTheBindingMethodIsExecuted(string methodName, int times)
         {
-            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
 
             var regex = new Regex(@"-> done: \S+\." + methodName);
             if (times > 0)
-                regex.Match(testExecutionResult.ExecutionLog).Success.ShouldBeTrue("method " + methodName + " was not executed.");
+                regex.Match(testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
 
             if (times != int.MaxValue)
-                regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
+                regex.Matches(testExecutionResult.ExecutionLog).Count.Should().Be(times);
         }
 
         [Then(@"the hook '(.*)' is executed (\D.*)")]
         [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
-            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
+            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
 
             var regex = new Regex(@"-> hook: " + methodName);
             if (times > 0)
-                regex.Match(testExecutionResult.ExecutionLog).Success.ShouldBeTrue("method " + methodName + " was not executed.");
+                regex.Match(testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
 
             if (times != int.MaxValue)
-                regex.Matches(testExecutionResult.ExecutionLog).Count.ShouldEqual(times);
+                regex.Matches(testExecutionResult.ExecutionLog).Count.Should().Be(times);
         }
 
         [Then(@"the execution log should contain text '(.*)'")]
         public void ThenTheExecutionLogShouldContainText(string text)
         {
-            testExecutionResult.ExecutionLog.ShouldNotBeNull("no execution log generated");
-            testExecutionResult.ExecutionLog.ShouldContain(text);
+            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            testExecutionResult.ExecutionLog.Should().Contain(text);
         }
     }
 }

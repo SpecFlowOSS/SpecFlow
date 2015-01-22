@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
-using Should;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            configurationDriver.UnitTestProviderName.ShouldEqual("NUnit");
+            configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 
             projectSteps.EnsureCompiled();
             nUnitTestExecutionDriver.Execute();
