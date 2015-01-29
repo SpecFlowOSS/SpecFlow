@@ -88,7 +88,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             ProjectName = "SpecFlow.TestProject";
             Language = "C#";
 
-            compilationFolder = Path.Combine(Path.GetTempPath(), Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["testProjectFolder"]));
+            var testProjectFolder = ConfigurationManager.AppSettings["testProjectFolder"] ?? "SpecFlowTestProject";
+            compilationFolder = Path.Combine(Path.GetTempPath(), Environment.ExpandEnvironmentVariables(testProjectFolder));
 
             FeatureFiles = new List<FeatureFileInput>();
             ContentFiles = new List<ContentFileInput>();
