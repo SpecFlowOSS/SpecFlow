@@ -25,8 +25,28 @@ namespace TechTalk.SpecFlow.Bindings
 
         public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            if (!(typeToConvertTo is RuntimeBindingType))
+            var runtimeType = typeToConvertTo as RuntimeBindingType;
+
+            if (runtimeType == null)
+            {
                 return false;
+            }
+
+            var targetType = runtimeType.Type;
+
+            if (value == null)
+            {
+                return !targetType.IsValueType;
+            }
+
+            if (!targetType.IsEnum || targetType != typeof(Guid) || targetType != typeof(Guid?))
+            {
+                var convertible = value as IConvertible;
+                if (convertible == null)
+                {
+                    return value.GetType() == targetType;
+                }
+            }
 
             try
             {
