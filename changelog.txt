@@ -1,3 +1,18 @@
+2.0.0
+
+Core changes:
++ All components upgraded to .NET 4.5
++ Visual Studio integration has been separated to a separate project: https://github.com/techtalk/SpecFlow.VisualStudio
++ Support for obsolete runtimes (Silverlight, WP7) have been removed
+
+Breaking changes:
++ The new release will not work with .NET runtimes older than .NET 4.5. 
+
+New Features:
+
+Fixed issues:
+
+
 1.9.2 - 2013/03/25 (Visual Studio Integration update)
 
 Fixed issues:
