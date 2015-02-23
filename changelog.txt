@@ -13,7 +13,18 @@ New Features:
 Fixed issues:
 
 
+1.9.3 - 2013/09/26 (Visual Studio 2013 Integration)
+
+Note: 1.9.3 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
+
+New Features:
++ Visual Studio 2013 support (see http://www.specflow.org/documentation/Visual-Studio-2013-Integration/)
++ SpecRun 1.2 support: run/debug tests from the feature file editor
+
+
 1.9.2 - 2013/03/25 (Visual Studio Integration update)
+
+Note: 1.9.2 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
 Fixed issues:
 + VS2010/VS2012: Visual Studio freezes while editing keywords (Issue 128)
@@ -31,6 +42,8 @@ New Features:
 
 
 1.9.1 - 2012/10/12 (Visual Studio Integration update)
+
+Note: 1.9.1 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
 Fixed issues:
 + VS2012: Run specflow scenarios does not work: works as for RC, but still runs all scenarios from the file (Issue 210)
