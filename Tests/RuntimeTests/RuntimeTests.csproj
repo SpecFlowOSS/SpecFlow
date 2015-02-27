@@ -105,9 +105,11 @@
     <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DateTimeOffsetValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_IsAValidGuidTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\LongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableByteValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDateTimeOffsetValueRetriever.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableFloatValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\FloatValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableLongValueRetrieverTests.cs" />

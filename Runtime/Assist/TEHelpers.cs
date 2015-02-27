@@ -149,6 +149,8 @@ namespace TechTalk.SpecFlow.Assist
                            {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
                            {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
+                           {typeof (DateTimeOffset), (TableRow row) => new DateTimeOffsetValueRetriever().GetValue(row[1])},
+                           {typeof (DateTimeOffset?), (TableRow row) => new NullableDateTimeOffsetValueRetriever(v => new DateTimeOffsetValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
                            {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
                            {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], type.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
