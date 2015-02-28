@@ -55,15 +55,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="MonoDevelop.Core, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Xml" />
+    <Reference Include="MonoDevelop.Core">
       <HintPath>..\..\lib\monodevelop\MonoDevelop.Core.dll</HintPath>
     </Reference>
-    <Reference Include="MonoDevelop.Ide, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MonoDevelop.Ide">
       <HintPath>..\..\lib\monodevelop\MonoDevelop.Ide.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MonoDevelopSpecFlowConfigurationReader.cs" />
