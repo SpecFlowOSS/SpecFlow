@@ -64,6 +64,7 @@
     <Compile Include="FeatureGeneratorProviderTests.cs" />
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
+    <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
@@ -94,7 +95,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\sampleCsProjectfile.csproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

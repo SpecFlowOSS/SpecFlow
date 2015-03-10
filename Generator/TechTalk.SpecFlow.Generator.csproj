@@ -36,7 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -66,6 +66,7 @@
     <Compile Include="Plugins\IGeneratorPlugin.cs" />
     <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
+    <Compile Include="Project\MsBuildProjectFileExtensions.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />
