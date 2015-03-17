@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     public class MsBuildProjectReaderTests
     {
         [Test]
-        public void Should_parse_csproj_file_correctly()
+        public void Should_parse_csproj_file_correctly() 
         {
             string text = Path.Combine(Directory.GetCurrentDirectory(), "Data\\sampleCsProjectfile.csproj");
             SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(text);
