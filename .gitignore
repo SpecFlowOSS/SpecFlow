@@ -9,10 +9,13 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 _ReSharper*/
+_NCrunch*/
 [Tt]est[Rr]esult*
 *.pidb
 *.userprefs
 *.resharper
+*.ncrunchproject
+*.ncrunchsolution
 *.cache
 *.gpState
 *.dotCover
