@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    internal partial class DefaultDependencyProvider
+    public partial class DefaultDependencyProvider : IDefaultDependencyProvider
     {
         partial void RegisterUnitTestProviders(ObjectContainer container);
 

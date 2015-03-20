@@ -126,7 +126,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new Mock<IRuntimePlugin>().Object);
-            TestRunContainerBuilder.CreateContainer(configurationHolder);
+            TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
 
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomDependency());
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
+            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
             var customDependency = container.Resolve<ICustomDependency>();
             customDependency.Should().BeOfType(typeof(CustomDependency));
         }
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(
                 conf => conf.StopAtFirstError = true));
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
+            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
             runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
@@ -160,7 +160,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomTestRunnerFactoryWhenStopAtFirstErrorIsTrue());
 
             // with default unit test provider, the plugin should not change the default factory
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
+            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
             var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
             testRunnerFactory.Should().BeOfType<TestRunnerFactory>();
 
@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                   <runtime stopAtFirstError=""true"" />
                 </specFlow>
               </configuration>"));
-            container = TestRunContainerBuilder.CreateContainer(specialConfiguratuion);
+            container = TestRunContainerBuilder.CreateDefaultContainer(specialConfiguratuion);
             var customTestRunnerFactory = container.Resolve<ITestRunnerFactory>();
             customTestRunnerFactory.Should().BeOfType<CustomTestRunnerFactory>();
         }

@@ -21,7 +21,14 @@ namespace TechTalk.SpecFlow
             Instance = new TestRunnerManager();
         }
 
-        private class TestRunnerKey
+        private readonly ITestRunContainerBuilder testRunContainerBuilder;
+
+        public TestRunnerManager(ITestRunContainerBuilder testRunContainerBuilder = null)
+        {
+            this.testRunContainerBuilder = testRunContainerBuilder ?? new TestRunContainerBuilder();
+        }
+
+        protected class TestRunnerKey
         {
             public readonly Assembly TestAssembly;
             public readonly bool Async;
@@ -64,9 +71,9 @@ namespace TechTalk.SpecFlow
             return CreateTestRunner(new TestRunnerKey(testAssembly, async));
         }
 
-        private ITestRunner CreateTestRunner(TestRunnerKey key)
+        protected virtual ITestRunner CreateTestRunner(TestRunnerKey key)
         {
-            var container = TestRunContainerBuilder.CreateContainer();
+            var container = testRunContainerBuilder.CreateContainer();
             if (key.Async)
             {
                 //TODO: better support this in the DI container
@@ -81,7 +88,7 @@ namespace TechTalk.SpecFlow
             return GetTestRunner(new TestRunnerKey(testAssembly, async));
         }
 
-        private ITestRunner GetTestRunner(TestRunnerKey key)
+        protected virtual ITestRunner GetTestRunner(TestRunnerKey key)
         {
             ITestRunner testRunner;
             if (!testRunnerRegistry.TryGetValue(key, out testRunner))
@@ -98,7 +105,7 @@ namespace TechTalk.SpecFlow
             return testRunner;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             testRunnerRegistry.Clear();
         }

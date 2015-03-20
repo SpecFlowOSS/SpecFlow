@@ -161,6 +161,7 @@
     <Compile Include="Infrastructure\GeneratorPluginAttribute.cs" />
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
+    <Compile Include="Infrastructure\IDefaultDependencyProvider.cs" />
     <Compile Include="Infrastructure\IRuntimePlugin.cs" />
     <Compile Include="Infrastructure\IRuntimePluginLoader.cs" />
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />

@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         static internal TestRunner CreateTestRunner(out IObjectContainer container, Action<IObjectContainer> registerMocks = null)
         {
-            container = TestRunContainerBuilder.CreateContainer();
+            container = TestRunContainerBuilder.CreateDefaultContainer();
 
             if (registerMocks != null)
                 registerMocks(container);
