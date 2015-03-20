@@ -174,7 +174,6 @@
     <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />
     <Compile Include="PlatformCompatibility\MonoHelper.cs" />
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
-    <Compile Include="Configuration\ConfigurationServices.cs" />
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="DictionaryHelpers.cs" />
