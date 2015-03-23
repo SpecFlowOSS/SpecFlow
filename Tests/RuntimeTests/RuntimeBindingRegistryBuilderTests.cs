@@ -92,6 +92,70 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
         }
 
+        [Binding]
+        public class PrioritisedHookExample
+        {
+            [BeforeScenario]
+            public void PriorityTenThousand()
+            {                
+            }
+
+            [Before(9000)]
+            public void PriorityNineThousand()
+            {
+            }
+
+            [BeforeScenarioBlock(10001)]
+            public void PriorityTenThousandAnd1()
+            {
+            }
+
+            [BeforeFeature(10002)]
+            public static void PriorityTenThousandAnd2()
+            {
+            }
+
+            [BeforeStep(10003)]
+            public void PriorityTenThousandAnd3()
+            {
+            }
+
+            [BeforeTestRun(10004)]
+            public static void PriorityTenThousandAnd4()
+            {
+            }
+
+            [AfterScenario]
+            public void AfterPriorityTenThousand()
+            {
+            }
+
+            [After(9000)]
+            public void AfterPriorityNineThousand()
+            {
+            }
+
+            [AfterScenarioBlock(10001)]
+            public void AfterPriorityTenThousandAnd1()
+            {
+            }
+
+            [AfterFeature(10002)]
+            public static void AfterPriorityTenThousandAnd2()
+            {
+            }
+
+            [AfterStep(10003)]
+            public void AfterPriorityTenThousandAnd3()
+            {
+            }
+
+            [AfterTestRun(10004)]
+            public static void AfterPriorityTenThousandAnd4()
+            {
+            }
+        }
+
         [Test]
         public void ShouldFindScopedHook_WithScopeAttribute()
         {
@@ -120,6 +184,38 @@ namespace TechTalk.SpecFlow.RuntimeTests
             builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
 
             Assert.AreEqual(2, bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag34BeforeScenario" && s.IsScoped));
+        }
+
+        [Test]
+        public void ShouldFindBinding_WithDefaultPriority()
+        {
+            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromType(typeof(ScopedHookExample));
+
+            Assert.AreEqual(4, bindingSourceProcessorStub.HookBindings.Count(s => s.HookPriority==10000));
+        }
+
+        [Test]
+        public void ShouldFindBinding_WithSpecifiedPriorities()
+        {
+            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromType(typeof(PrioritisedHookExample));
+
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType==HookType.BeforeScenario && s.Method.Name == "PriorityTenThousand" && s.HookPriority == 10000));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeScenario && s.Method.Name == "PriorityNineThousand" && s.HookPriority == 9000));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeScenarioBlock && s.Method.Name == "PriorityTenThousandAnd1" && s.HookPriority == 10001));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeFeature && s.Method.Name == "PriorityTenThousandAnd2" && s.HookPriority == 10002));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeStep && s.Method.Name == "PriorityTenThousandAnd3" && s.HookPriority == 10003));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeTestRun && s.Method.Name == "PriorityTenThousandAnd4" && s.HookPriority == 10004));
+
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenario && s.Method.Name == "AfterPriorityTenThousand" && s.HookPriority == 10000));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenario && s.Method.Name == "AfterPriorityNineThousand" && s.HookPriority == 9000));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenarioBlock && s.Method.Name == "AfterPriorityTenThousandAnd1" && s.HookPriority == 10001));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterFeature && s.Method.Name == "AfterPriorityTenThousandAnd2" && s.HookPriority == 10002));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterStep && s.Method.Name == "AfterPriorityTenThousandAnd3" && s.HookPriority == 10003));
+            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterTestRun && s.Method.Name == "AfterPriorityTenThousandAnd4" && s.HookPriority == 10004));
         }
     }
 }

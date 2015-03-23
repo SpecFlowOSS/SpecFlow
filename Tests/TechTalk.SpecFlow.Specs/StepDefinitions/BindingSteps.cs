@@ -49,10 +49,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.AddBindingCode(bindingCode);
         }
 
-        [Given(@"a hook '(.*)' for '(.*)'")]
+        [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
             inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName);
+        }
+
+        [Given(@"a hook '(.*)' for '([^']*)' with priority '([^']*)'")]
+        public void GivenAHookForWithOrder(string methodName, string eventType, int hookPriority)
+        {
+            inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName, hookPriority: hookPriority);
         }
 
         [Given(@"the following binding class")]

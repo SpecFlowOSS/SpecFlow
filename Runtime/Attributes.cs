@@ -98,32 +98,47 @@ namespace TechTalk.SpecFlow
     {
         internal HookType Event { get; private set; }
         public string[] Tags { get; private set; }
+        public int Priority { get; private set; }
+        public const int DefaultPriority = 10000;
 
-        internal HookAttribute(HookType bindingEvent, string[] tags)
+        internal HookAttribute(HookType bindingEvent, string[] tags, int priority)
         {
             Event = bindingEvent;
             Tags = tags;
+            Priority = priority;
         }
     }
 
     public class BeforeTestRunAttribute : HookAttribute
     {
-        public BeforeTestRunAttribute() : base(HookType.BeforeTestRun, null) {}
+        /// <summary>
+        /// Constructs a new BeforeTestRunAttribute with a default priority of 10000
+        /// </summary>
+        public BeforeTestRunAttribute() : base(HookType.BeforeTestRun, null, DefaultPriority) {}
+        /// <summary>
+        /// Constructs a new BeforeTestRunAttribute
+        /// </summary>
+        /// <param name="priority">The priority with which methods with this attribute should be executed. Lower numbers will be run first</param>
+        public BeforeTestRunAttribute(int priority) : base(HookType.BeforeTestRun, null, priority) {}
+        
     }
 
     public class AfterTestRunAttribute : HookAttribute
     {
-        public AfterTestRunAttribute() : base(HookType.AfterTestRun, null) { }
+        public AfterTestRunAttribute() : base(HookType.AfterTestRun, null, DefaultPriority) { }
+        public AfterTestRunAttribute(int priority) : base(HookType.AfterTestRun, null, priority) { }
     }
 
     public class BeforeFeatureAttribute : HookAttribute
     {
-        public BeforeFeatureAttribute(params string[] tags) : base(HookType.BeforeFeature, tags) { }
+        public BeforeFeatureAttribute(int priority, params string[] tags) : base(HookType.BeforeFeature, tags, priority) { }
+        public BeforeFeatureAttribute(params string[] tags) : base(HookType.BeforeFeature, tags, DefaultPriority) { }
     }
 
     public class AfterFeatureAttribute : HookAttribute
     {
-        public AfterFeatureAttribute(params string[] tags) : base(HookType.AfterFeature, tags) { }
+        public AfterFeatureAttribute(int priority, params string[] tags) : base(HookType.AfterFeature, tags, priority) { }
+        public AfterFeatureAttribute(params string[] tags) : base(HookType.AfterFeature, tags, DefaultPriority) { }
     }
 
     /// <summary>
@@ -131,7 +146,8 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class BeforeScenarioAttribute : HookAttribute
     {
-        public BeforeScenarioAttribute(params string[] tags) : base(HookType.BeforeScenario, tags) { }
+        public BeforeScenarioAttribute(int priority, params string[] tags) : base(HookType.BeforeScenario, tags, priority) { }
+        public BeforeScenarioAttribute(params string[] tags) : base(HookType.BeforeScenario, tags, DefaultPriority) { }
     }
 
     /// <summary>
@@ -139,6 +155,7 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class BeforeAttribute : BeforeScenarioAttribute
     {
+        public BeforeAttribute(int priority, params string[] tags) : base(priority, tags) { }
         public BeforeAttribute(params string[] tags) : base(tags) { }
     }
 
@@ -147,7 +164,8 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class AfterScenarioAttribute : HookAttribute
     {
-        public AfterScenarioAttribute(params string[] tags) : base(HookType.AfterScenario, tags) { }
+        public AfterScenarioAttribute(int priority,params string[] tags) : base(HookType.AfterScenario, tags, priority) { }
+        public AfterScenarioAttribute(params string[] tags) : base(HookType.AfterScenario, tags, DefaultPriority) { }
     }
 
     /// <summary>
@@ -155,27 +173,32 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class AfterAttribute : AfterScenarioAttribute
     {
+        public AfterAttribute(int priority, params string[] tags) : base(priority, tags) { }
         public AfterAttribute(params string[] tags) : base(tags) { }
     }
 
     public class BeforeScenarioBlockAttribute : HookAttribute
     {
-        public BeforeScenarioBlockAttribute(params string[] tags) : base(HookType.BeforeScenarioBlock, tags) { }
+        public BeforeScenarioBlockAttribute(int priority,params string[] tags) : base(HookType.BeforeScenarioBlock, tags,priority) { }
+        public BeforeScenarioBlockAttribute(params string[] tags) : base(HookType.BeforeScenarioBlock, tags,DefaultPriority) { }
     }
 
     public class AfterScenarioBlockAttribute : HookAttribute
     {
-        public AfterScenarioBlockAttribute(params string[] tags) : base(HookType.AfterScenarioBlock, tags) { }
+        public AfterScenarioBlockAttribute(int priority,params string[] tags) : base(HookType.AfterScenarioBlock, tags,priority) { }
+        public AfterScenarioBlockAttribute(params string[] tags) : base(HookType.AfterScenarioBlock, tags,DefaultPriority) { }
     }
 
     public class BeforeStepAttribute : HookAttribute
     {
-        public BeforeStepAttribute(params string[] tags) : base(HookType.BeforeStep, tags) { }
+        public BeforeStepAttribute(int priority=DefaultPriority,params string[] tags) : base(HookType.BeforeStep, tags, priority) { }
+        public BeforeStepAttribute(params string[] tags) : base(HookType.BeforeStep, tags, DefaultPriority) { }
     }
 
     public class AfterStepAttribute : HookAttribute
     {
-        public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags) { }
+        public AfterStepAttribute(int priority,params string[] tags) : base(HookType.AfterStep, tags,priority) { }
+        public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags,DefaultPriority) { }
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

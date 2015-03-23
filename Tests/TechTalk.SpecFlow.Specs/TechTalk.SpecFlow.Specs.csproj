@@ -101,6 +101,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\OrderedHookSupport.feature.cs">
+      <DependentUpon>OrderedHookSupport.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\HookSupport.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -207,6 +212,10 @@
     <None Include="Features\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\OrderedHookSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrderedHookSupport.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\HookSupport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

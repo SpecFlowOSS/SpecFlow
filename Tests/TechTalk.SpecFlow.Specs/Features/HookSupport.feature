@@ -88,4 +88,3 @@ Examples: Cucumber compatibility
 	| event  | count |
 	| Before | 3     |
 	| After  | 3     |
-

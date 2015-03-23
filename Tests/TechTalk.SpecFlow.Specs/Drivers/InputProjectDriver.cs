@@ -149,14 +149,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             DefaultBindingClass.OtherBindings.Add(bindingCode);
         }
 
-        public void AddEventBinding(string eventType, string code, string methodName = null)
+        public void AddEventBinding(string eventType, string code, string methodName = null, int hookPriority = 10000)
         {
             methodName = methodName ?? eventType;
-            AddBindingCode(string.Format(@"[{0}]{1}public void {3}() {{
+            AddBindingCode(string.Format(@"[{0}({4})]{1}public void {3}() {{
                 Console.WriteLine(""-> hook: {3}"");
                 {2}
             }}
-            ", eventType, IsStaticEvent(eventType) ? "static " : "", code, methodName));
+            ", eventType, IsStaticEvent(eventType) ? "static " : "", code, methodName, hookPriority));
         }
 
         private bool IsStaticEvent(string eventType)

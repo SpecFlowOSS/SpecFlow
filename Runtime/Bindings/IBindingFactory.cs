@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingFactory
     {
-        IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope);
+        IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope, int hookPriority);
         IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope);
         IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod);
     }
@@ -22,9 +22,9 @@ namespace TechTalk.SpecFlow.Bindings
             this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
         }
 
-        public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope)
+        public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope, int hookPriority)
         {
-            return new HookBinding(bindingMethod, hookType, bindingScope);
+            return new HookBinding(bindingMethod, hookType, bindingScope, hookPriority);
         }
 
         public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)

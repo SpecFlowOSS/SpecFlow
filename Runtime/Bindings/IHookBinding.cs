@@ -3,5 +3,6 @@
     public interface IHookBinding : IScopedBinding, IBinding
     {
         HookType HookType { get; }
+        int HookPriority { get; }
     }
 }

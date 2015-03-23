@@ -238,7 +238,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in bindingRegistry.GetHooks(bindingEvent))
+            foreach (IHookBinding eventBinding in GetOrderedHooks(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
@@ -246,6 +246,29 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                 bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
             }
+        }
+
+        private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
+        {
+            switch (bindingEvent)
+            {
+                case HookType.BeforeTestRun:
+                case HookType.BeforeFeature:
+                case HookType.BeforeScenario:
+                case HookType.BeforeScenarioBlock:
+                case HookType.BeforeStep:
+                    return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookPriority);
+                    
+                case HookType.AfterTestRun:
+                case HookType.AfterFeature:
+                case HookType.AfterScenario:
+                case HookType.AfterScenarioBlock:
+                case HookType.AfterStep:
+                    return bindingRegistry.GetHooks(bindingEvent).OrderByDescending(x => x.HookPriority);
+                default:
+                    throw new ArgumentOutOfRangeException("bindingEvent");
+            }
+            
         }
 
         private void ExecuteStep(StepInstance stepInstance)
