@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExecutionResultSteps
-    {
+    { 
         private readonly TestExecutionResult testExecutionResult;
 
         public ExecutionResultSteps(TestExecutionResult testExecutionResult)
