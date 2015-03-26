@@ -31,13 +31,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and fail")]
         public void GivenAllStepsAreBoundAndFail(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", code: "throw new System.Exception(\"simulated failure\");");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "throw new System.Exception(\"simulated failure\");");
         }
 
         [Given(@"all '(.*)' steps are bound and pass")]
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", code: "//pass");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "//pass");
         }
 
         [Given(@"the following hooks?")]
@@ -52,13 +52,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
-            inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName);
+            inputProjectDriver.AddEventBinding(eventType, "//pass", methodName);
         }
 
-        [Given(@"a hook '(.*)' for '([^']*)' with priority '([^']*)'")]
-        public void GivenAHookForWithOrder(string methodName, string eventType, int hookPriority)
+        [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)'")]
+        public void GivenAHookForWithOrder(string methodName, string eventType, int hookOrder)
         {
-            inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName, hookPriority: hookPriority);
+            inputProjectDriver.AddEventBinding(eventType, "//pass", methodName, hookOrder);
         }
 
         [Given(@"the following binding class")]

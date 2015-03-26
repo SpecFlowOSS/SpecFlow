@@ -1,7 +1,6 @@
-using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using System.Linq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 
@@ -10,6 +9,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [TestFixture]
     public class RuntimeBindingRegistryBuilderTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            bindingSourceProcessorStub = new BindingSourceProcessorStub();
+        }
+
         [Binding]
         public class StepTransformationExample
         {
@@ -20,22 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             }
         }
 
-        private BindingSourceProcessorStub bindingSourceProcessorStub = null;
-
-        [SetUp]
-        public void Setup()
-        {
-            bindingSourceProcessorStub = new BindingSourceProcessorStub();
-        }
-
-        [Test]
-        public void ShouldFindExampleConverter()
-        {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
-
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
-            Assert.AreEqual(1, bindingSourceProcessorStub.StepArgumentTransformationBindings.Count(s => s.Regex != null && s.Regex.Match("BindingRegistryTests").Success && s.Regex.Match("").Success == false));
-        }
+        private BindingSourceProcessorStub bindingSourceProcessorStub;
 
         /*        Steps that are feature scoped               */
 
@@ -59,17 +49,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             {
                 return 24;
             }
-        }
-
-        [Test]
-        public void ShouldFindScopedExampleConverter()
-        {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
-
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
-
-            Assert.AreEqual(2, bindingSourceProcessorStub.StepDefinitionBindings.Count(s => s.StepDefinitionType == StepDefinitionType.Then && s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped));
-            Assert.AreEqual(0, bindingSourceProcessorStub.StepDefinitionBindings.Count(s => s.StepDefinitionType == StepDefinitionType.Then && s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped == false));
         }
 
         [Binding]
@@ -96,126 +75,209 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public class PrioritisedHookExample
         {
             [BeforeScenario]
-            public void PriorityTenThousand()
-            {                
-            }
-
-            [Before(9000)]
-            public void PriorityNineThousand()
+            public void OrderTenThousand()
             {
             }
 
-            [BeforeScenarioBlock(10001)]
-            public void PriorityTenThousandAnd1()
+            [Before(Order = 9000)]
+            public void OrderNineThousand()
             {
             }
 
-            [BeforeFeature(10002)]
-            public static void PriorityTenThousandAnd2()
+            [BeforeScenarioBlock(Order = 10001)]
+            public void OrderTenThousandAnd1()
             {
             }
 
-            [BeforeStep(10003)]
-            public void PriorityTenThousandAnd3()
+            [BeforeFeature(Order = 10002)]
+            public static void OrderTenThousandAnd2()
             {
             }
 
-            [BeforeTestRun(10004)]
-            public static void PriorityTenThousandAnd4()
+            [BeforeStep(Order = 10003)]
+            public void OrderTenThousandAnd3()
+            {
+            }
+
+            [BeforeTestRun(Order = 10004)]
+            public static void OrderTenThousandAnd4()
             {
             }
 
             [AfterScenario]
-            public void AfterPriorityTenThousand()
+            public void AfterOrderTenThousand()
             {
             }
 
-            [After(9000)]
-            public void AfterPriorityNineThousand()
+            [After(Order = 9000)]
+            public void AfterOrderNineThousand()
             {
             }
 
-            [AfterScenarioBlock(10001)]
-            public void AfterPriorityTenThousandAnd1()
+            [AfterScenarioBlock(Order = 10001)]
+            public void AfterOrderTenThousandAnd1()
             {
             }
 
-            [AfterFeature(10002)]
-            public static void AfterPriorityTenThousandAnd2()
+            [AfterFeature(Order = 10002)]
+            public static void AfterOrderTenThousandAnd2()
             {
             }
 
-            [AfterStep(10003)]
-            public void AfterPriorityTenThousandAnd3()
+            [AfterStep(Order = 10003)]
+            public void AfterOrderTenThousandAnd3()
             {
             }
 
-            [AfterTestRun(10004)]
-            public static void AfterPriorityTenThousandAnd4()
+            [AfterTestRun(Order = 10004)]
+            public static void AfterOrderTenThousandAnd4()
             {
             }
         }
 
         [Test]
-        public void ShouldFindScopedHook_WithScopeAttribute()
+        public void ShouldFindBinding_WithDefaultOrder()
         {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
 
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.BuildBindingsFromType(typeof (ScopedHookExample));
 
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag1BeforeScenario" && s.IsScoped));
-        }
-
-        [Test]
-        public void ShouldFindScopedHook_WithCtorArg()
-        {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
-
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
-
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag2BeforeScenario" && s.IsScoped));
-        }
-
-        [Test]
-        public void ShouldFindScopedHook_WithMultipleCtorArg()
-        {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
-
-            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
-
-            Assert.AreEqual(2, bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag34BeforeScenario" && s.IsScoped));
-        }
-
-        [Test]
-        public void ShouldFindBinding_WithDefaultPriority()
-        {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
-
-            builder.BuildBindingsFromType(typeof(ScopedHookExample));
-
-            Assert.AreEqual(4, bindingSourceProcessorStub.HookBindings.Count(s => s.HookPriority==10000));
+            Assert.AreEqual(4, bindingSourceProcessorStub.HookBindings.Count(s => s.HookOrder == 10000));
         }
 
         [Test]
         public void ShouldFindBinding_WithSpecifiedPriorities()
         {
-            RuntimeBindingRegistryBuilder builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
 
-            builder.BuildBindingsFromType(typeof(PrioritisedHookExample));
+            builder.BuildBindingsFromType(typeof (PrioritisedHookExample));
 
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType==HookType.BeforeScenario && s.Method.Name == "PriorityTenThousand" && s.HookPriority == 10000));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeScenario && s.Method.Name == "PriorityNineThousand" && s.HookPriority == 9000));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeScenarioBlock && s.Method.Name == "PriorityTenThousandAnd1" && s.HookPriority == 10001));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeFeature && s.Method.Name == "PriorityTenThousandAnd2" && s.HookPriority == 10002));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeStep && s.Method.Name == "PriorityTenThousandAnd3" && s.HookPriority == 10003));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.BeforeTestRun && s.Method.Name == "PriorityTenThousandAnd4" && s.HookPriority == 10004));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeScenario && s.Method.Name == "OrderTenThousand" &&
+                        s.HookOrder == 10000));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeScenario && s.Method.Name == "OrderNineThousand" &&
+                        s.HookOrder == 9000));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeScenarioBlock && s.Method.Name == "OrderTenThousandAnd1" &&
+                        s.HookOrder == 10001));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeFeature && s.Method.Name == "OrderTenThousandAnd2" &&
+                        s.HookOrder == 10002));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeStep && s.Method.Name == "OrderTenThousandAnd3" &&
+                        s.HookOrder == 10003));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.BeforeTestRun && s.Method.Name == "OrderTenThousandAnd4" &&
+                        s.HookOrder == 10004));
 
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenario && s.Method.Name == "AfterPriorityTenThousand" && s.HookPriority == 10000));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenario && s.Method.Name == "AfterPriorityNineThousand" && s.HookPriority == 9000));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterScenarioBlock && s.Method.Name == "AfterPriorityTenThousandAnd1" && s.HookPriority == 10001));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterFeature && s.Method.Name == "AfterPriorityTenThousandAnd2" && s.HookPriority == 10002));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterStep && s.Method.Name == "AfterPriorityTenThousandAnd3" && s.HookPriority == 10003));
-            Assert.AreEqual(1, bindingSourceProcessorStub.HookBindings.Count(s => s.HookType == HookType.AfterTestRun && s.Method.Name == "AfterPriorityTenThousandAnd4" && s.HookPriority == 10004));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterScenario && s.Method.Name == "AfterOrderTenThousand" &&
+                        s.HookOrder == 10000));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterScenario && s.Method.Name == "AfterOrderNineThousand" &&
+                        s.HookOrder == 9000));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterScenarioBlock && s.Method.Name == "AfterOrderTenThousandAnd1" &&
+                        s.HookOrder == 10001));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterFeature && s.Method.Name == "AfterOrderTenThousandAnd2" &&
+                        s.HookOrder == 10002));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterStep && s.Method.Name == "AfterOrderTenThousandAnd3" &&
+                        s.HookOrder == 10003));
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(
+                    s =>
+                        s.HookType == HookType.AfterTestRun && s.Method.Name == "AfterOrderTenThousandAnd4" &&
+                        s.HookOrder == 10004));
+        }
+
+        [Test]
+        public void ShouldFindExampleConverter()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.StepArgumentTransformationBindings.Count(
+                    s =>
+                        s.Regex != null && s.Regex.Match("BindingRegistryTests").Success &&
+                        s.Regex.Match("").Success == false));
+        }
+
+        [Test]
+        public void ShouldFindScopedExampleConverter()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(2,
+                bindingSourceProcessorStub.StepDefinitionBindings.Count(
+                    s =>
+                        s.StepDefinitionType == StepDefinitionType.Then &&
+                        s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped));
+            Assert.AreEqual(0,
+                bindingSourceProcessorStub.StepDefinitionBindings.Count(
+                    s =>
+                        s.StepDefinitionType == StepDefinitionType.Then &&
+                        s.Regex.Match("SpecificBindingRegistryTests").Success && s.IsScoped == false));
+        }
+
+        [Test]
+        public void ShouldFindScopedHook_WithCtorArg()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag2BeforeScenario" && s.IsScoped));
+        }
+
+        [Test]
+        public void ShouldFindScopedHook_WithMultipleCtorArg()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(2,
+                bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag34BeforeScenario" && s.IsScoped));
+        }
+
+        [Test]
+        public void ShouldFindScopedHook_WithScopeAttribute()
+        {
+            var builder = new RuntimeBindingRegistryBuilder(bindingSourceProcessorStub);
+
+            builder.BuildBindingsFromAssembly(Assembly.GetExecutingAssembly());
+
+            Assert.AreEqual(1,
+                bindingSourceProcessorStub.HookBindings.Count(s => s.Method.Name == "Tag1BeforeScenario" && s.IsScoped));
         }
     }
 }

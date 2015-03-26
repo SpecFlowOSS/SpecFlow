@@ -1,16 +1,17 @@
-﻿using System;
-using System.Reflection;
-using BoDi;
-using TechTalk.SpecFlow.Bindings.Reflection;
-using System.Linq;
+﻿using TechTalk.SpecFlow.Bindings.Reflection;
 
 namespace TechTalk.SpecFlow.Bindings
 {
     public interface IBindingFactory
     {
-        IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope, int hookPriority);
-        IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope);
-        IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod);
+        IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope,
+            int hookOrder);
+
+        IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString,
+            IBindingMethod bindingMethod, BindingScope bindingScope);
+
+        IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
+            IBindingMethod bindingMethod);
     }
 
     public class BindingFactory : IBindingFactory
@@ -22,19 +23,22 @@ namespace TechTalk.SpecFlow.Bindings
             this.stepDefinitionRegexCalculator = stepDefinitionRegexCalculator;
         }
 
-        public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope, int hookPriority)
+        public IHookBinding CreateHookBinding(IBindingMethod bindingMethod, HookType hookType, BindingScope bindingScope,
+            int hookOrder)
         {
-            return new HookBinding(bindingMethod, hookType, bindingScope, hookPriority);
+            return new HookBinding(bindingMethod, hookType, bindingScope, hookOrder);
         }
 
-        public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString, IBindingMethod bindingMethod, BindingScope bindingScope)
+        public IStepDefinitionBinding CreateStepBinding(StepDefinitionType type, string regexString,
+            IBindingMethod bindingMethod, BindingScope bindingScope)
         {
             if (regexString == null)
                 regexString = stepDefinitionRegexCalculator.CalculateRegexFromMethod(type, bindingMethod);
             return new StepDefinitionBinding(type, regexString, bindingMethod, bindingScope);
         }
 
-        public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString, IBindingMethod bindingMethod)
+        public IStepArgumentTransformationBinding CreateStepArgumentTransformation(string regexString,
+            IBindingMethod bindingMethod)
         {
             return new StepArgumentTransformationBinding(regexString, bindingMethod);
         }
