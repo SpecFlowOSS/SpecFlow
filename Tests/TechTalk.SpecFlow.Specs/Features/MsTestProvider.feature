@@ -1,4 +1,5 @@
-﻿@mstest
+﻿@ignore
+@mstest
 Feature: MsTest unit test provider
 
 Scenario Outline: Should be able to execute scenarios with basic results

@@ -1,4 +1,5 @@
-﻿Feature: Basic scenario execution
+﻿@ignore
+Feature: Basic scenario execution
 
 Background: 
 	Given there is a feature file in the project as

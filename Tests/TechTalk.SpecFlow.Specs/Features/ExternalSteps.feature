@@ -1,4 +1,5 @@
-﻿Feature: External Step Definitions
+﻿@ignore
+Feature: External Step Definitions
 	In order to modularize my solution
 	As a bdd enthusiast
 	I want to use step definitions from other assemblies
