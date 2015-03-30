@@ -1,4 +1,5 @@
-﻿Feature: Scoping step definitions
+﻿@ignore
+Feature: Scoping step definitions
 	As a developer
 	I would like to be able to scope the step definitions (bindings) on method and class level
 	So that I can implement test logic differently depending on the usage context

@@ -1,4 +1,5 @@
-﻿Feature: NUnit unit test provider
+﻿@ignore
+Feature: NUnit unit test provider
 
 Scenario Outline: Should be able to execute scenarios with basic results
 	Given there is a SpecFlow project

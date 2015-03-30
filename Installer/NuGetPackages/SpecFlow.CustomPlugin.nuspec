@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>SpecFlow.CustomPlugin</id>
-    <version>1.0.0-alpha</version>
+    <version>$version$-alpha</version>
     <title>SpecFlow.CustomPlugin</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow bdd gherkin cucumber generator</tags>
     <dependencies>
-      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+      <dependency id="SpecFlow" version="[$version$-alpha]" />
     </dependencies>
     <references>
       <reference file="TechTalk.SpecFlow.Generator.dll" />

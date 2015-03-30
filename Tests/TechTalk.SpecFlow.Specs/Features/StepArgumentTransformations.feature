@@ -1,4 +1,5 @@
-﻿Feature: Step Argument Transformations
+﻿@ignore
+Feature: Step Argument Transformations
 	In order to reduce the amount of code and repetitive tasks in my steps
 	As a programmer
 	I want to define reusable transformations for my step arguments

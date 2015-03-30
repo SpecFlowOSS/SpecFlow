@@ -1,4 +1,5 @@
-﻿Feature: Different step arguments
+﻿@ignore
+Feature: Different step arguments
 
 Scenario: Steps can be defined without argument
 	Given the following step definition

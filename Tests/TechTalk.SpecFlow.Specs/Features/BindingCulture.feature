@@ -1,4 +1,5 @@
-﻿Feature: Specifying the culture to be used for argument conversions
+﻿@ignore
+Feature: Specifying the culture to be used for argument conversions
 
 Scenario: The default culture is used for bindings if not specified
 	Given a scenario 'Simple Scenario' as

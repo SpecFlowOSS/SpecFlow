@@ -1,4 +1,5 @@
-﻿Feature: Execute hooks
+﻿@ignore
+Feature: Execute hooks
 	As a developer
 	I would like to be able to hook into pre and post conditions in SpecFlow
 	So that I can set up and teardown my scenario accordingly

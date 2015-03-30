@@ -1,4 +1,5 @@
-﻿Feature: Tagging Scenario Outline Examples
+﻿@ignore
+Feature: Tagging Scenario Outline Examples
 	As a developer
 	I would like to be able to tag examples of the scenario outline
 	So that I can write bindings that behave differently for the variants

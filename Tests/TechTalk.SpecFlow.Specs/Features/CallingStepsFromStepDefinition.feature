@@ -1,4 +1,5 @@
-﻿Feature: Calling Steps from StepDefinitions
+﻿@ignore
+Feature: Calling Steps from StepDefinitions
 	In order to create steps of a higher abstraction
 	As a developer
 	I want reuse other steps in my step definitions
