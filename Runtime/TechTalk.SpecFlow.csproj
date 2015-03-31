@@ -58,7 +58,9 @@
       <Link>BoDi\BoDi.cs</Link>
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
+    <Compile Include="Assist\FindInSetExtensionMethods.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
+    <Compile Include="Assist\InstanceHelper.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
