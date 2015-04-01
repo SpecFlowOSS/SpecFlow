@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
     public class ExecutionResultSteps
-    {
+    { 
         private readonly TestExecutionResult testExecutionResult;
 
         public ExecutionResultSteps(TestExecutionResult testExecutionResult)
@@ -69,6 +69,19 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             if (times != int.MaxValue)
                 regex.Matches(testExecutionResult.ExecutionLog).Count.Should().Be(times);
+        }
+
+        [Then(@"the hooks are executed in the order")]
+        public void ThenTheHooksAreExecutedInTheOrder(Table table)
+        {
+            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            int lastPosition = -1;
+            foreach (var row in table.Rows)
+            {
+                int currentPosition = testExecutionResult.ExecutionLog.IndexOf(@"-> hook: " + row[0]);
+                currentPosition.Should().BeGreaterThan(lastPosition);
+                lastPosition = currentPosition;
+            }
         }
 
         [Then(@"the execution log should contain text '(.*)'")]

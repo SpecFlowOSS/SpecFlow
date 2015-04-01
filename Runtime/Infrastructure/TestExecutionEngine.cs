@@ -238,7 +238,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in bindingRegistry.GetHooks(bindingEvent))
+            foreach (IHookBinding eventBinding in GetOrderedHooks(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
@@ -246,6 +246,11 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                 bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
             }
+        }
+
+        private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
+        {
+            return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
         private void ExecuteStep(StepInstance stepInstance)
