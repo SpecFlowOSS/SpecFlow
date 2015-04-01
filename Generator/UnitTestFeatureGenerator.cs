@@ -475,6 +475,7 @@ namespace TechTalk.SpecFlow.Generator
                     scenatioOutlineTestMethod.Name,
                     argumentExpressions.ToArray()));
 
+            AddLineDirectiveHidden(testMethod.Statements);
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells[paramIndex].Value)).ToList();
             testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Title, exampleSetTitle, variantName, arguments);
         }
