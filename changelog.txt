@@ -1,3 +1,5 @@
+testing build for pull requests, do not merge!
+
 2.0.0
 
 Core changes:
