@@ -1,0 +1,46 @@
+version: 2.0.0-ci{build}
+branches:
+  only:
+  - v2
+environment:
+  BuildVersion: 2.0.0.42
+  SpecFlowPackageVersion: '{version}'
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+before_build:
+- ps: >-
+    function UpdateNuspecVersion([string]$nuspecFile,[string] $version)
+
+    {
+        Write-Host "updating nuspec file for $nuspecFile to version $version"
+        [xml] $nuspec = Get-Content $nuspecFile
+        $nuspec.package.metadata.version = $version
+        $nuspec.Save($nuspecFile);
+    }
+
+
+    $buildVersion = (Get-ChildItem Env:APPVEYOR_BUILD_VERSION).Value
+
+    UpdateNuspecVersion "$pwd\Installer\NuGetPackages\SpecFlow.nuspec" "$buildVersion-alpha"
+
+    UpdateNuspecVersion "$pwd\Installer\NuGetPackages\SpecFlow.CustomPlugin.nuspec" "$buildVersion-alpha"
+
+
+    nuget restore
+build:
+  project: TechTalk.SpecFlow.sln
+  verbosity: minimal
+test:
+  assemblies:
+  - TechTalk.SpecFlow.GeneratorTests.dll
+  - TechTalk.SpecFlow.RuntimeTests.dll
+  - '*UtilsTests.dll'
+  - TechTalk.SpecFlow.IntegrationTests.dll
+  - TechTalk.SpecFlow.Specs\bin\Debug\TechTalk.SpecFlow.Specs.dll
+artifacts:
+- path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
+- path: Installer\NuGetPackages\bin\SpecFlow.CustomPlugin.*.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.1.1.1.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.Runners.1.0.0.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.xUnit.1.0.2.nupkg
