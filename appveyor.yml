@@ -3,30 +3,12 @@ branches:
   only:
   - v2
 environment:
-  BuildVersion: 2.0.0.42
   SpecFlowPackageVersion: '{version}'
 nuget:
 #  project_feed: true
   disable_publish_on_pr: true
 before_build:
 - ps: >-
-    function UpdateNuspecVersion([string]$nuspecFile,[string] $version)
-
-    {
-        Write-Host "updating nuspec file for $nuspecFile to version $version"
-        [xml] $nuspec = Get-Content $nuspecFile
-        $nuspec.package.metadata.version = $version
-        $nuspec.Save($nuspecFile);
-    }
-
-
-    $buildVersion = (Get-ChildItem Env:APPVEYOR_BUILD_VERSION).Value
-
-    UpdateNuspecVersion "$pwd\Installer\NuGetPackages\SpecFlow.nuspec" "$buildVersion-alpha"
-
-    UpdateNuspecVersion "$pwd\Installer\NuGetPackages\SpecFlow.CustomPlugin.nuspec" "$buildVersion-alpha"
-
-
     nuget restore
 build:
   project: TechTalk.SpecFlow.sln
