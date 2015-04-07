@@ -225,7 +225,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void OnStepEnd()
         {
-            FireScenarioEvents(HookType.AfterStep);
+            FireScenarioEvents(HookType.AfterStep);            
         }
 
         #region Step/event execution
@@ -321,7 +321,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             finally
             {
                 if (!isStepSkipped)
+                {
                     OnStepEnd();
+                }
+                contextManager.CleanupStepContext();
             }
         }
 
@@ -419,7 +422,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
                                           : (StepDefinitionType) stepDefinitionKeyword;
-            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+            contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg)); 
+            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg,contextManager.GetStepContext()));
         }
 
         private StepDefinitionType GetCurrentBindingType()

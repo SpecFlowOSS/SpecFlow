@@ -180,6 +180,8 @@
     <Compile Include="DictionaryHelpers.cs" />
     <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
+    <Compile Include="ScenarioStepContext.cs" />
+    <Compile Include="StepInfo.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepArgumentTransformationBinding.cs" />
     <Compile Include="Bindings\StepArgumentTypeConverter.cs" />
