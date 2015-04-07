@@ -10,7 +10,7 @@ nuget:
 #  project_feed: true
   disable_publish_on_pr: true
 before_build:
-- ps: >-
+- ps: |-
     $test0 = (Get-ChildItem Env:APPVEYOR_BUILD_VERSION).Value
     $test1 = (Get-ChildItem Env:SpecFlowPackageVersion).Value
     $test2 = (Get-ChildItem Env:SpecFlowPackageVersion2).Value
