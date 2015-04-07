@@ -6,7 +6,7 @@ environment:
   BuildVersion: 2.0.0.42
   SpecFlowPackageVersion: '{version}'
 nuget:
-  project_feed: true
+#  project_feed: true
   disable_publish_on_pr: true
 before_build:
 - ps: >-
@@ -31,13 +31,13 @@ before_build:
 build:
   project: TechTalk.SpecFlow.sln
   verbosity: minimal
-test:
-  assemblies:
-  - TechTalk.SpecFlow.GeneratorTests.dll
-  - TechTalk.SpecFlow.RuntimeTests.dll
-  - '*UtilsTests.dll'
-  - TechTalk.SpecFlow.IntegrationTests.dll
-  - TechTalk.SpecFlow.Specs\bin\Debug\TechTalk.SpecFlow.Specs.dll
+#test:
+#  assemblies:
+#  - TechTalk.SpecFlow.GeneratorTests.dll
+#  - TechTalk.SpecFlow.RuntimeTests.dll
+#  - '*UtilsTests.dll'
+#  - TechTalk.SpecFlow.IntegrationTests.dll
+#  - TechTalk.SpecFlow.Specs\bin\Debug\TechTalk.SpecFlow.Specs.dll
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
 - path: Installer\NuGetPackages\bin\SpecFlow.CustomPlugin.*.nupkg
