@@ -11,6 +11,16 @@ nuget:
   disable_publish_on_pr: true
 before_build:
 - ps: >-
+	$test0 = (Get-ChildItem Env:APPVEYOR_BUILD_VERSION).Value
+	$test1 = (Get-ChildItem Env:SpecFlowPackageVersion).Value
+	$test2 = (Get-ChildItem Env:SpecFlowPackageVersion2).Value
+	$test3 = (Get-ChildItem Env:SpecFlowPackageVersion3).Value
+
+	Write-Host "Test0: $test0"
+	Write-Host "Test1: $test1"
+	Write-Host "Test2: $test2"
+	Write-Host "Test3: $test3"
+
     nuget restore
 build:
   project: TechTalk.SpecFlow.sln
