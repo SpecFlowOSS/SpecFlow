@@ -3,7 +3,9 @@ branches:
   only:
   - v2
 environment:
-  SpecFlowPackageVersion: '{version}'
+  SpecFlowPackageVersion: "{version}"
+  SpecFlowPackageVersion2: "test {APPVEYOR_BUILD_VERSION}"
+  SpecFlowPackageVersion3: "test $(APPVEYOR_BUILD_VERSION)"
 nuget:
 #  project_feed: true
   disable_publish_on_pr: true
