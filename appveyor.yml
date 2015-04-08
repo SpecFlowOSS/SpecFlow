@@ -13,7 +13,7 @@ assembly_info:
   file: '**\AssemblyInfo.*'
   assembly_version: "$(SpecFlowBaseVersion)"
   assembly_file_version: "$(SpecFlowBaseVersion)"
-  assembly_informational_version: '{version}'
+  assembly_informational_version: "$(SpecFlowPackageVersion)"
 
 nuget:
 #  project_feed: true
