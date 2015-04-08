@@ -11,7 +11,7 @@ environment:
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
-  assembly_version: "%SpecFlowBaseVersion%"
+  assembly_version: "$(SpecFlowBaseVersion)"
   assembly_file_version: "$(SpecFlowBaseVersion)"
   assembly_informational_version: '{version}'
 
