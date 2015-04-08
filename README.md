@@ -6,7 +6,7 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 - Documentation: [http://www.specflow.org/documentation/](http://www.specflow.org/documentation/)
 - Discussion group: [http://groups.google.com/group/SpecFlow](http://groups.google.com/group/SpecFlow)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/3mmmskfrqt74aijh?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow)
+[![Build status](https://ci.appveyor.com/api/projects/status/3mmmskfrqt74aijh/branch/v2?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow/branch/v2)
 
 ## Contributing
 
