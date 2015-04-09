@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindingValidationTests.cs" />
     <Compile Include="GeneratorServicesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteAppDomainTestGeneratorFactoryTests.cs" />
@@ -73,6 +74,10 @@
     <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuntimeTests\RuntimeTests.csproj">
+      <Project>{F8FACCF0-5497-4C6B-861F-78D72FD9561B}</Project>
+      <Name>RuntimeTests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

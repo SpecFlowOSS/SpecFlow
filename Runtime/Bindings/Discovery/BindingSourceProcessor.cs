@@ -219,22 +219,28 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         protected virtual bool ValidateType(BindingSourceType bindingSourceType)
         {
-            if (!bindingSourceType.IsClass && 
-                OnValidationError("Binding types must be classes: {0}", bindingSourceType))
-                    return false;
+            if (!bindingSourceType.IsClass)
+            {
+                OnValidationError("Binding types must be classes: {0}", bindingSourceType);
+                return false;
+            }
 
-            if (bindingSourceType.IsGenericTypeDefinition && 
-                OnValidationError("Binding types cannot be generic: {0}", bindingSourceType))
-                    return false;
+            if (bindingSourceType.IsGenericTypeDefinition)
+            {
+                OnValidationError("Binding types cannot be generic: {0}", bindingSourceType);
+                return false;
+            }
 
             return true;
         }
 
         protected virtual bool ValidateMethod(BindingSourceMethod bindingSourceMethod)
         {
-            if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic && 
-                OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod))
-                    return false;
+            if (currentBindingSourceType.IsAbstract && !bindingSourceMethod.IsStatic)
+            {
+                OnValidationError("Abstract binding types can have only static binding methods: {0}", bindingSourceMethod);
+                return false;
+            }
 
             return true;
         }
@@ -252,9 +258,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             if (!ValidateMethod(bindingSourceMethod))
                 return false;
 
-            if (!IsScenarioSpecificHook(hookType) && !bindingSourceMethod.IsStatic &&
-                OnValidationError("The binding methods for before/after feature and before/after test run events must be static! {0}", bindingSourceMethod))
+            if (!IsScenarioSpecificHook(hookType) && !bindingSourceMethod.IsStatic)
+            {
+                OnValidationError("The binding methods for before/after feature and before/after test run events must be static! {0}", bindingSourceMethod);
                 return false;
+            }
 
             return true;
         }
