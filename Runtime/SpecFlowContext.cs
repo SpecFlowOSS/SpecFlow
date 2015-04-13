@@ -4,7 +4,18 @@ using System.Collections.Generic;
 namespace TechTalk.SpecFlow
 {
     public abstract class SpecFlowContext : Dictionary<string, object>, IDisposable
-    {
+    { 
+        /// <summary>
+        /// The current SpecFlow context. Could be a feature or scenario context
+        /// </summary>
+        public static SpecFlowContext Current
+        {
+            get
+            {
+                return (SpecFlowContext)ScenarioContext.Current ?? (SpecFlowContext)FeatureContext.Current;
+            }
+        }
+
         protected virtual void Dispose()
         {
         }
