@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>b87cbc77</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,6 +85,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Tracing.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\XUnit2SmokeTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XUnit2SmokeTests.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnitSmokeTests.feature.cs">
       <DependentUpon>XUnitSmokeTests.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -131,6 +137,10 @@
     <None Include="Features\Tracing.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Tracing.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnit2SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnit2SmokeTests.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnitSmokeTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -264,7 +274,8 @@ xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
 xcopy $(SolutionDir)packages\NUnit.Runners.2.6.0.12051\*.* $(TargetDir)NUnit.Runners\ /s /y
 xcopy $(SolutionDir)packages\xunit.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
 xcopy $(SolutionDir)packages\xunit.extensions.1.8.0.1549\*.* $(TargetDir)xUnit\ /s /y
-xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y</PostBuildEvent>
+xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y
+xcopy $(SolutionDir)lib\xunit.2.0.0\*.* $(TargetDir)xUnit2\ /s /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
