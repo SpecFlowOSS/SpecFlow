@@ -9,6 +9,7 @@ Breaking changes:
 + The new release will not work with .NET runtimes older than .NET 4.5. 
 
 New Features:
++ NUnit generator adds tags to TestCase attributes generated from outline examples. This way the NUnit test adapter in Visual Studio will display the tags.
 
 Fixed issues:
 
