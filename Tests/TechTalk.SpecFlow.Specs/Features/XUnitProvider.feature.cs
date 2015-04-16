@@ -106,22 +106,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ShouldBeAbleToExecuteScenariosWithBasicResults("Failed", "fail", ((string[])(null)));
         }
         
-        public virtual void ShouldHandleScenarioOutlines(string @case, string rowTest, string[] exampleTags)
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should be able to ignore a scenario outline")]
+        public virtual void ShouldBeAbleToIgnoreAScenarioOutline()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should handle scenario outlines", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to ignore a scenario outline", ((string[])(null)));
 #line 21
-this.ScenarioSetup(scenarioInfo);
+ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.Given("there is a SpecFlow project");
 #line 23
  testRunner.And("the project is configured to use the xUnit provider");
-#line 24
- testRunner.And(string.Format("row testing is {0}", rowTest));
 #line hidden
-#line 25
- testRunner.Given("there is a feature file in the project as", "\tFeature: Simple Feature\r\n\tScenario Outline: Simple Scenario Outline\r\n\t\tGiven the" +
-                    "re is something\r\n\t\tWhen I do <what>\r\n\t\tThen something should happen\r\n\tExamples: " +
-                    "\r\n\t\t| what           |\r\n\t\t| something      |\r\n\t\t| somethign else |", ((TechTalk.SpecFlow.Table)(null)));
+#line 24
+ testRunner.And("there is a feature file in the project as", "\tFeature: Simple Feature\r\n\t@ignore\r\n\tScenario Outline: Simple Scenario Outline\r\n\t" +
+                    "\tGiven there is something\r\n\t\tWhen I do <what>\r\n\t\tThen something should happen\r\n\t" +
+                    "Examples: \r\n\t\t| what           |\r\n\t\t| something      |\r\n\t\t| somethign else |", ((TechTalk.SpecFlow.Table)(null)));
 #line 37
  testRunner.And("all steps are bound and pass");
 #line 38
@@ -130,9 +130,40 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Succeeded"});
             table2.AddRow(new string[] {
-                        "2"});
+                        "0"});
 #line 39
  testRunner.Then("the execution summary should contain", ((string)(null)), table2);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void ShouldHandleScenarioOutlines(string @case, string rowTest, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should handle scenario outlines", exampleTags);
+#line 43
+this.ScenarioSetup(scenarioInfo);
+#line 44
+ testRunner.Given("there is a SpecFlow project");
+#line 45
+ testRunner.And("the project is configured to use the xUnit provider");
+#line 46
+ testRunner.And(string.Format("row testing is {0}", rowTest));
+#line hidden
+#line 47
+ testRunner.Given("there is a feature file in the project as", "\tFeature: Simple Feature\r\n\tScenario Outline: Simple Scenario Outline\r\n\t\tGiven the" +
+                    "re is something\r\n\t\tWhen I do <what>\r\n\t\tThen something should happen\r\n\tExamples: " +
+                    "\r\n\t\t| what           |\r\n\t\t| something      |\r\n\t\t| somethign else |", ((TechTalk.SpecFlow.Table)(null)));
+#line 59
+ testRunner.And("all steps are bound and pass");
+#line 60
+ testRunner.When("I execute the tests with xUnit");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table3.AddRow(new string[] {
+                        "2"});
+#line 61
+ testRunner.Then("the execution summary should contain", ((string)(null)), table3);
 #line hidden
             this.ScenarioCleanup();
         }
@@ -158,27 +189,27 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to specify xUnit provider in the configuration", new string[] {
                         "config"});
-#line 49
+#line 71
 this.ScenarioSetup(scenarioInfo);
-#line 50
+#line 72
  testRunner.Given("there is a SpecFlow project");
 #line hidden
-#line 51
+#line 73
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something", ((TechTalk.SpecFlow.Table)(null)));
-#line 55
+#line 77
  testRunner.And("all steps are bound and pass");
 #line hidden
-#line 56
+#line 78
  testRunner.And("the specflow configuration is", "<specFlow>\r\n\t<unitTestProvider name=\"xUnit\"/>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)));
-#line 62
+#line 84
  testRunner.When("I execute the tests with xUnit");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Total"});
-            table3.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "1"});
-#line 63
- testRunner.Then("the execution summary should contain", ((string)(null)), table3);
+#line 85
+ testRunner.Then("the execution summary should contain", ((string)(null)), table4);
 #line hidden
             this.ScenarioCleanup();
         }

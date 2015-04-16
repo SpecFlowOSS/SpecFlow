@@ -18,6 +18,28 @@ Examples:
 	| Succeeded | pass                   |
 	| Failed    | fail                   |
 
+	Scenario: Should be able to ignore a scenario outline
+	Given there is a SpecFlow project
+	And the project is configured to use the xUnit provider
+	And there is a feature file in the project as
+		"""
+			Feature: Simple Feature
+			@ignore
+			Scenario Outline: Simple Scenario Outline
+				Given there is something
+				When I do <what>
+				Then something should happen
+			Examples: 
+				| what           |
+				| something      |
+				| somethign else |
+		"""
+	And all steps are bound and pass
+	When I execute the tests with xUnit
+	Then the execution summary should contain
+		| Succeeded |
+		| 0         |
+
 Scenario Outline: Should handle scenario outlines
 	Given there is a SpecFlow project
 	And the project is configured to use the xUnit provider
