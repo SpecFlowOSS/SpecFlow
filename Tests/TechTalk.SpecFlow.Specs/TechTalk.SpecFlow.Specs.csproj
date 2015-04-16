@@ -87,6 +87,7 @@
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
+    <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
