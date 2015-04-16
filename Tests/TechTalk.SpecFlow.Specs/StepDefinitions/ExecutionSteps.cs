@@ -15,7 +15,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver, ProjectSteps projectSteps)
+        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver,
+            SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
+            ProjectSteps projectSteps)
         {
             this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
             this.projectSteps = projectSteps;
