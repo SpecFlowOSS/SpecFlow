@@ -2,7 +2,7 @@
 
 Background: 
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit.2 provider
+	And the project is configured to use the xUnit provider
 	And all test files are inluded in the project
 
 Scenario Outline: Test files can be generated

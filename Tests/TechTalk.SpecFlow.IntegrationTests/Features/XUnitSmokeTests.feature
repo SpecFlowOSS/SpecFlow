@@ -1,8 +1,8 @@
-﻿Feature: xUnit Smoke Tests
+﻿Feature: xUnit v1 Smoke Tests
 
 Background: 
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit provider
+	And the project is configured to use the xUnit.1 provider
 	And all test files are inluded in the project
 
 Scenario Outline: Test files can be generated

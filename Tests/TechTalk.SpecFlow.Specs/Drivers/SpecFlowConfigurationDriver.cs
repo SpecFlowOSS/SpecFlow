@@ -66,11 +66,11 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     yield return @"mbUnit3\mbUnit.dll";
                     yield return @"mbUnit3\gallio.dll";
                     break;
-                case "xunit":
+                case "xunit.1":
                     yield return @"xUnit\lib\xUnit.dll";
                     yield return @"xUnit\lib\xunit.extensions.dll";
                     break;
-                case "xunit.2":
+                case "xunit":
                     yield return @"xUnit2\xunit.core.dll";
                     break;
             }
