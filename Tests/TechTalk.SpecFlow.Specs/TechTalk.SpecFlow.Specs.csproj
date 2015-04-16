@@ -108,6 +108,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\XUnitProvider.feature.cs">
+      <DependentUpon>XUnitProvider.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\OrderedHookSupport.feature.cs">
       <DependentUpon>OrderedHookSupport.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -219,6 +224,10 @@
     <None Include="Features\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnitProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnitProvider.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\OrderedHookSupport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
