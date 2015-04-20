@@ -1,0 +1,42 @@
+version: 2.0.0-ci{build}
+
+branches:
+  only:
+  - v2
+
+environment:
+  SpecFlowBaseVersion: 2.0.0
+  SpecFlowPackageVersion: "$(APPVEYOR_BUILD_VERSION)"
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: "$(SpecFlowBaseVersion)"
+  assembly_file_version: "$(SpecFlowBaseVersion)"
+  assembly_informational_version: "$(SpecFlowPackageVersion)"
+
+nuget:
+#  project_feed: true
+  disable_publish_on_pr: true
+before_build:
+- ps: |-
+    nuget restore
+
+build:
+  project: TechTalk.SpecFlow.sln
+  verbosity: minimal
+
+test:
+  assemblies:
+  - TechTalk.SpecFlow.GeneratorTests.dll
+  - TechTalk.SpecFlow.RuntimeTests.dll
+  - '*UtilsTests.dll'
+  - TechTalk.SpecFlow.IntegrationTests.dll
+  - TechTalk.SpecFlow.Specs\bin\Debug\TechTalk.SpecFlow.Specs.dll
+
+artifacts:
+- path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
+- path: Installer\NuGetPackages\bin\SpecFlow.CustomPlugin.*.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.1.1.1.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.Runners.1.0.0.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.xUnit.1.0.2.nupkg
