@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BoDi;
+using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 
@@ -13,10 +15,12 @@ namespace TechTalk.SpecFlow.Assist
     public class AssistService
     {
         private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
+        private readonly IDictionary<string, IValueComparer> comparers;
 
-        public AssistService(IStepArgumentTypeConverter stepArgumentTypeConverter)
+        public AssistService(IStepArgumentTypeConverter stepArgumentTypeConverter, IDictionary<string, IValueComparer> comparers)
         {
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
+            this.comparers = comparers;
         }
 
         public IEnumerable<T> CreateSet2<T>(Table table)
@@ -32,7 +36,12 @@ namespace TechTalk.SpecFlow.Assist
                 }
                 yield return obj;
             }
-        } 
+        }
+
+        public void CompareToSet<T>(Table table, IEnumerable<T> items)
+        {
+            //TODO: do comparison logic with "comparers"
+        }
     }
 
     public static class AssistServiceExtensions
@@ -44,5 +53,14 @@ namespace TechTalk.SpecFlow.Assist
             var assistService = (AssistService) ScenarioContext.Current.GetBindingInstance(typeof (AssistService));
             return assistService.CreateSet2<T>(table);
         } 
+    }
+
+    public class DefaultAssistServiceContainerBuilder
+    {
+        public virtual void Build(IObjectContainer container)
+        {
+            container.RegisterTypeAs<BoolValueComparer, IValueComparer>("bool");
+            container.RegisterTypeAs<DateTimeValueComparer, IValueComparer>("DateTime");
+        }
     }
 }

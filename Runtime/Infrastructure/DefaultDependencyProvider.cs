@@ -46,6 +46,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 
             RegisterUnitTestProviders(container);
+
+            new Assist.DefaultAssistServiceContainerBuilder().Build(container);
         }
     }
 }

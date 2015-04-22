@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist
 {
-    internal interface IValueComparer
+    public interface IValueComparer
     {
         bool CanCompare(object actualValue);
         bool TheseValuesAreTheSame(string expectedValue, object actualValue);
