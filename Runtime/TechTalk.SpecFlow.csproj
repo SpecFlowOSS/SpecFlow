@@ -57,6 +57,7 @@
     <Compile Include="..\lib\BoDi\BoDi.cs">
       <Link>BoDi\BoDi.cs</Link>
     </Compile>
+    <Compile Include="Assist\AssistService.cs" />
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
