@@ -21,31 +21,15 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public TestRunSummary Execute()
         {
-            string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
-            string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
+            string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "xunit-result.xml");
+            string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "xunit-result.txt");
             var xunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"xunit.runners\tools\xunit.console.clr4.exe");
 
-            var args = new List<string>
-            {
-                inputProjectDriver.CompiledAssemblyPath,
-                "/nunit",
-                resultFilePath
-            };
-
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(xunitConsolePath, string.Join(" ", args))
-                {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                }
-            };
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-
-            File.WriteAllText(logFilePath, output);
-
+            var provessHelper = new ProcessHelper();
+            provessHelper.RunProcess(xunitConsolePath, "\"{0}\" /nunit \"{1}\"",
+                inputProjectDriver.CompiledAssemblyPath, resultFilePath);
+           
+            File.WriteAllText(logFilePath, provessHelper.ConsoleOutput);
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
 
@@ -67,7 +51,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             testExecutionResult.LastExecutionSummary = summary;
             testExecutionResult.ExecutionLog = File.ReadAllText(logFilePath);
 
-            Console.WriteLine("NUnit (from xUnit) LOG:");
+            Console.WriteLine("xUnit LOG:");
             Console.WriteLine(testExecutionResult.ExecutionLog);
 
             return summary;
