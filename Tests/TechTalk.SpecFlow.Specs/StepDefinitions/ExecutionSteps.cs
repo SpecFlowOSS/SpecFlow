@@ -13,11 +13,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly ProjectSteps projectSteps;
         private readonly SpecFlowConfigurationDriver configurationDriver;
         private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
+        private readonly XUnitTestExecutionDriver xUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver, ProjectSteps projectSteps)
+        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
+            SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
+            ProjectSteps projectSteps)
         {
             this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
+            this.xUnitTestExecutionDriver = xUnitTestExecutionDriver;
             this.projectSteps = projectSteps;
             this.msTestTestExecutionDriver = msTestTestExecutionDriver;
             this.configurationDriver = configurationDriver;
@@ -51,6 +55,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                     break;
                 case "MsTest":
                     msTestTestExecutionDriver.Execute();
+                    break;
+                case "xUnit":
+                    xUnitTestExecutionDriver.Execute();
                     break;
                 default:
                     throw new NotSupportedException();
