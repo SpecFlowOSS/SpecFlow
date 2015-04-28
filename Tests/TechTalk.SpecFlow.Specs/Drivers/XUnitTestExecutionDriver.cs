@@ -23,6 +23,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         {
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
+            var xunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"xunit.runners\tools\xunit.console.clr4.exe");
 
             var args = new List<string>
             {
@@ -33,7 +34,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
             var process = new Process
             {
-                StartInfo = new ProcessStartInfo("xunit.console.clr4.exe", string.Join(" ", args))
+                StartInfo = new ProcessStartInfo(xunitConsolePath, string.Join(" ", args))
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
