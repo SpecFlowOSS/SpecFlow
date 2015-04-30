@@ -35,7 +35,7 @@ test:
   - TechTalk.SpecFlow.RuntimeTests.dll
   - '*UtilsTests.dll'
   - TechTalk.SpecFlow.IntegrationTests.dll
-  - TechTalk.SpecFlow.Specs\bin\Debug\TechTalk.SpecFlow.Specs.dll
+  - TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll
 
 artifacts:
 - path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
