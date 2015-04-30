@@ -7,6 +7,7 @@ branches:
 environment:
   SpecFlowBaseVersion: 2.0.0
   SpecFlowPackageVersion: "2.0.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  BuildConfiguration: Debug
 
 assembly_info:
   patch: true
@@ -18,6 +19,9 @@ assembly_info:
 nuget:
   project_feed: true
   disable_publish_on_pr: true
+  
+configuration: "$(BuildConfiguration)"
+  
 before_build:
 - ps: |-
     nuget restore
