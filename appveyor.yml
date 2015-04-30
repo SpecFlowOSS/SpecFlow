@@ -1,4 +1,4 @@
-version: 2.0.0-ci{build}
+version: build{build}
 
 branches:
   only:
@@ -6,7 +6,7 @@ branches:
 
 environment:
   SpecFlowBaseVersion: 2.0.0
-  SpecFlowPackageVersion: "$(APPVEYOR_BUILD_VERSION)"
+  SpecFlowPackageVersion: "2.0.0-ci$(APPVEYOR_BUILD_NUMBER)"
 
 assembly_info:
   patch: true
