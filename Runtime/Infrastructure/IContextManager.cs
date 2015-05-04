@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
@@ -36,58 +35,78 @@ namespace TechTalk.SpecFlow.Infrastructure
         private class InternalContextManager<TContext>: IDisposable where TContext : SpecFlowContext
         {
             private readonly ITestTracer testTracer;
-            private TContext instance;
 
             public InternalContextManager(ITestTracer testTracer)
             {
                 this.testTracer = testTracer;
             }
 
-            public TContext Instance
-            {
-                get { return instance; }
-            }
+            public TContext Instance { get; private set; }
+
 
             public void Init(TContext newInstance)
             {
-                if (instance != null)
+                if (Instance != null)
                 {
                     testTracer.TraceWarning(string.Format("The previous {0} was not disposed.", typeof(TContext).Name));
                     Dispose();
                 }
-                instance = newInstance;
+                Instance = newInstance;
             }
 
             public void Cleanup()
             {
-                if (instance == null)
+                if (Instance == null)
                 {
                     testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
                     return;
                 }
-                ((IDisposable)instance).Dispose();
-                instance = null;
+                ((IDisposable)Instance).Dispose();
+                Instance = null;
             }
 
             public void Dispose()
             {
-                if (instance != null)
+
+
+                if (Instance != null)
                 {
-                    ((IDisposable)instance).Dispose();
-                    instance = null;
+                    ((IDisposable)Instance).Dispose();
+                    Instance = null;
                 }
             }
         }
 
         private readonly IObjectContainer parentContainer;
-        private readonly InternalContextManager<ScenarioContext> scenarioContext;
+
+#if BODI_LIMITEDRUNTIME  
+        private InternalContextManager<ScenarioContext> _scenarioContext;
+#else
+        private ThreadStorage<InternalContextManager<ScenarioContext>> _scenarioContext;
+#endif
         private readonly InternalContextManager<FeatureContext> featureContext;
 
         public ContextManager(ITestTracer testTracer, IObjectContainer parentContainer)
         {
             featureContext = new InternalContextManager<FeatureContext>(testTracer);
-            scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
+
+#if BODI_LIMITEDRUNTIME  
+            _scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
+#else
+            _scenarioContext =new ThreadStorage<InternalContextManager<ScenarioContext>>(
+                () => new InternalContextManager<ScenarioContext>(testTracer));
+#endif
+
             this.parentContainer = parentContainer;
+        }
+
+        private InternalContextManager<ScenarioContext> scenarioContext
+        {
+#if BODI_LIMITEDRUNTIME  
+            get{ return _scenarioContext;}
+#else
+            get { return _scenarioContext.ThreadInstance; }
+#endif
         }
 
         public FeatureContext FeatureContext
@@ -137,4 +156,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
     }
+
+
+
+
 }

@@ -175,6 +175,7 @@
     <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="Infrastructure\TestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\ThreadStorage.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
     <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />

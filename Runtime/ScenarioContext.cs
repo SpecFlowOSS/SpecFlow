@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow
 {
     public class ScenarioContext : SpecFlowContext
     {
+        [ThreadStatic]
         private static ScenarioContext current;
         public static ScenarioContext Current
         {
