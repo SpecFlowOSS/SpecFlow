@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -14,11 +15,24 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor)
         {
-            var assemblyName = string.Format(ASSEMBLY_NAME_PATTERN, pluginDescriptor.Name);
             Assembly assembly;
+            string retroCompatibleAssemblyName = string.Format(ASSEMBLY_NAME_PATTERN, pluginDescriptor.Name);
+
             try
             {
-                assembly = Assembly.Load(assemblyName);
+                assembly = Assembly.Load(pluginDescriptor.Name);
+            }
+            catch (FileNotFoundException)
+            {
+                try
+                {
+                    assembly = Assembly.Load(retroCompatibleAssemblyName);
+                }
+                catch (Exception exception)
+                {
+                    throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check http://go.specflow.org/doc-plugins for details.", pluginDescriptor.Name), exception);                    
+                    
+                }
             }
             catch(Exception ex)
             {
