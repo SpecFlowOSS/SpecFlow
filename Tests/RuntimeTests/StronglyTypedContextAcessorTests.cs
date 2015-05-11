@@ -252,6 +252,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.IsNull(result);
         }
 
+        [Test]
+        public void Can_get_and_set_a_null_value_with_a_string()
+        {
+            var scenarioContext = CreateScenarioContext();
+            scenarioContext.Set<string>(null, "SomeKey");
+            var result = scenarioContext.Get<string>("SomeKey");
+            Assert.IsNull(result);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
             return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null, null);
