@@ -84,13 +84,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             person.ClientProfile.ShouldEqual(true);
         }
 
-        [Test]
-        public void Can_get_and_set_a_null_value()
-        {
-            ScenarioContext.Current.Set<object>(null, "SomeKey");
-            ScenarioContext.Current.Get<object>("SomeKey").ShouldBeNull();
-        }
-
         public class Person
         {
             public string FullName { get; set; }

@@ -243,6 +243,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreSame(expected, actual);
         }
 
+        [Test]
+        public void Can_get_and_set_a_null_value_with_an_object()
+        {
+            var scenarioContext = CreateScenarioContext();
+            scenarioContext.Set<object>(null, "SomeKey");
+            var result = scenarioContext.Get<object>("SomeKey");
+            Assert.IsNull(result);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
             return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null, null);
