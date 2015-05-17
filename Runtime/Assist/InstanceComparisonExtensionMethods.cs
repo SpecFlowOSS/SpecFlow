@@ -13,9 +13,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static IObjectContainer Container()
         {
-            var container = new ObjectContainer();
-            (new DefaultDependencyProvider()).RegisterDefaults(container);
-            return container;
+            return SpecFlow.Assist.Container.Setup();
         }
 
         public static void CompareToInstance<T>(this Table table, T instance)
