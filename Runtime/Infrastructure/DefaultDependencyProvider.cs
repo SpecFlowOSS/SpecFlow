@@ -48,13 +48,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 
-            container.RegisterInstanceAs<IValueComparer>(new DateTimeValueComparer(), "datetime");
-            container.RegisterInstanceAs<IValueComparer>(new BoolValueComparer(), "bool");
-            container.RegisterInstanceAs<IValueComparer>(new GuidValueComparer(new GuidValueRetriever()), "guid");
-            container.RegisterInstanceAs<IValueComparer>(new DecimalValueComparer(), "decimal");
-            container.RegisterInstanceAs<IValueComparer>(new DoubleValueComparer(), "double");
-            container.RegisterInstanceAs<IValueComparer>(new FloatValueComparer(), "float");
-            container.RegisterInstanceAs<IValueComparer>(new DefaultValueComparer(), "default");
 
             RegisterUnitTestProviders(container);
         }
