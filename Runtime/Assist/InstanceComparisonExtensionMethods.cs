@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Assist
 {
     public static class InstanceComparisonExtensionMethods
     {
+        public static IObjectContainer Container()
+        {
+            var container = new ObjectContainer();
+            (new DefaultDependencyProvider()).RegisterDefaults(container);
+            return container;
+        }
+
         public static void CompareToInstance<T>(this Table table, T instance)
         {
             AssertThatTheInstanceExists(instance);
@@ -70,16 +80,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = new IValueComparer[]
-                                     {
-                                         new DateTimeValueComparer(),
-                                         new BoolValueComparer(),
-                                         new GuidValueComparer(new GuidValueRetriever()),
-                                         new DecimalValueComparer(),
-                                         new DoubleValueComparer(),
-                                         new FloatValueComparer(),
-                                         new DefaultValueComparer()
-                                     };
+            var valueComparers = InstanceComparisonExtensionMethods.Container().ResolveAll<IValueComparer>();
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
