@@ -7,9 +7,17 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public static class Container
+    public class Container
     {
-        public static IObjectContainer Setup(IObjectContainer container = null)
+
+        public static Container Instance { get; internal set; }
+
+        static Container()
+        {
+            Instance = new Container();
+        }
+
+        public IObjectContainer Setup(IObjectContainer container = null)
         {
             if (container == null)
             {

@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static IObjectContainer Container()
         {
-            return SpecFlow.Assist.Container.Setup();
+            return SpecFlow.Assist.Container.Instance.Setup();
         }
 
         public static void CompareToInstance<T>(this Table table, T instance)
