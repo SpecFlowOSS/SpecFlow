@@ -3,7 +3,7 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class GuidValueComparer : IValueComparer
+    public class GuidValueComparer : IValueComparer
     {
         private readonly GuidValueRetriever guidValueRetriever;
 

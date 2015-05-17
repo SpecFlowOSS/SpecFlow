@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class DecimalValueRetriever
+    public class DecimalValueRetriever
     {
         public virtual decimal GetValue(string value)
         {

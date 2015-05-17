@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableLongValueRetriever
+    public class NullableLongValueRetriever
     {
         private readonly Func<string, long> longValueRetriever;
 

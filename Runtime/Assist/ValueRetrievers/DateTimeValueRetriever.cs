@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class DateTimeValueRetriever
+    public class DateTimeValueRetriever
     {
         public virtual DateTime GetValue(string value)
         {

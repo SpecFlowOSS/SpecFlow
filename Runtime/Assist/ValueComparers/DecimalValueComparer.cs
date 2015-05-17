@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class DecimalValueComparer : IValueComparer
+    public class DecimalValueComparer : IValueComparer
     {
         public bool CanCompare(object actualValue)
         {

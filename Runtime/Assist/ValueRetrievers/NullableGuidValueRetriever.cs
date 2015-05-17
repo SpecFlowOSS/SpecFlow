@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableGuidValueRetriever
+    public class NullableGuidValueRetriever
     {
         private readonly Func<string, Guid> guidValueRetriever;
 

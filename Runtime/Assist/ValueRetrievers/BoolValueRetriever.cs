@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class BoolValueRetriever
+    public class BoolValueRetriever
     {
         public virtual bool GetValue(string value)
         {

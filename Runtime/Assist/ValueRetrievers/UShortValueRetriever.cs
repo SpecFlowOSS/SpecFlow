@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class UShortValueRetriever
+    public class UShortValueRetriever
     {
         public virtual ushort GetValue(string value)
         {

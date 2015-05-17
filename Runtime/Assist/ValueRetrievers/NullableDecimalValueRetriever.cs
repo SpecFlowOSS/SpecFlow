@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableDecimalValueRetriever
+    public class NullableDecimalValueRetriever
     {
         private readonly Func<string, decimal> decimalValueRetriever;
 

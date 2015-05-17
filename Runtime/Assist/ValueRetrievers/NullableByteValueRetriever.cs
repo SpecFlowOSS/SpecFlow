@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableByteValueRetriever
+    public class NullableByteValueRetriever
     {
         private readonly Func<string, byte> byteValueRetriever;
 
