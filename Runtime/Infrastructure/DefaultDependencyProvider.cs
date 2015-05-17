@@ -5,9 +5,6 @@ using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.Assist;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -47,7 +44,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
-
 
             RegisterUnitTestProviders(container);
         }
