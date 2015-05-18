@@ -231,6 +231,7 @@
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />
     <Compile Include="Assist\Container.cs" />
+    <Compile Include="Assist\Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">
