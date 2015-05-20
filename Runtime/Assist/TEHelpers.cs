@@ -114,41 +114,11 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs(Type type)
         {
-            return new Dictionary<Type, Func<TableRow, object>>
-                       {
-                           {typeof(string),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(string)](row, type) },
-                           {typeof(byte),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(byte)](row, type) },
-                           {typeof(sbyte),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(sbyte)](row, type) },
-                           {typeof(int),       (TableRow row) => Service.Instance.ValueRetrievers[typeof(int)](row, type) },
-                           {typeof(uint),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(uint)](row, type) },
-                           {typeof(short),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(short)](row, type) },
-                           {typeof(ushort),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(ushort)](row, type) },
-                           {typeof(long),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(long)](row, type) },
-                           {typeof(ulong),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(ulong)](row, type) },
-                           {typeof(float),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(float)](row, type) },
-                           {typeof(double),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(double)](row, type) },
-                           {typeof(decimal),   (TableRow row) => Service.Instance.ValueRetrievers[typeof(decimal)](row, type) },
-                           {typeof(char),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(char)](row, type) },
-                           {typeof(bool),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(bool)](row, type) },
-                           {typeof(DateTime),  (TableRow row) => Service.Instance.ValueRetrievers[typeof(DateTime)](row, type) },
-                           {typeof(Guid),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(Guid)](row, type) },
-                           {typeof(Enum),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(Enum)](row, type) },
-                           {typeof(Guid?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(Guid?)](row, type) },
-                           {typeof(DateTime?), (TableRow row) => Service.Instance.ValueRetrievers[typeof(DateTime?)](row, type) },
-                           {typeof(bool?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(bool?)](row, type) },
-                           {typeof(char?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(char?)](row, type) },
-                           {typeof(decimal?),  (TableRow row) => Service.Instance.ValueRetrievers[typeof(decimal?)](row, type) },
-                           {typeof(double?),   (TableRow row) => Service.Instance.ValueRetrievers[typeof(double?)](row, type) },
-                           {typeof(float?),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(float?)](row, type) },
-                           {typeof(ulong?),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(ulong?)](row, type) },
-                           {typeof(byte?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(byte?)](row, type) },
-                           {typeof(sbyte?),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(sbyte?)](row, type) },
-                           {typeof(int?),      (TableRow row) => Service.Instance.ValueRetrievers[typeof(int?)](row, type) },
-                           {typeof(uint?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(uint?)](row, type) },
-                           {typeof(short?),    (TableRow row) => Service.Instance.ValueRetrievers[typeof(short?)](row, type) },
-                           {typeof(ushort?),   (TableRow row) => Service.Instance.ValueRetrievers[typeof(ushort?)](row, type) },
-                           {typeof(long?),     (TableRow row) => Service.Instance.ValueRetrievers[typeof(long?)](row, type) },
-                       };
+            return Service.Instance.ValueRetrievers.Keys
+                .Select (x => new KeyValuePair<Type, Func<TableRow, object>> (x,
+                    (TableRow row) => Service.Instance.ValueRetrievers[x](row, type))
+                )
+                .ToDictionary(x => x.Key, x => x.Value);
         }
 
         internal class MemberHandler
