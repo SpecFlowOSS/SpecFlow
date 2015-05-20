@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.Assist
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs(Type type)
         {
             return Service.Instance.ValueRetrievers.Keys
-                .Select (x => new KeyValuePair<Type, Func<TableRow, object>> (x,
+                .Select(x => new KeyValuePair<Type, Func<TableRow, object>>(x,
                     (TableRow row) => Service.Instance.ValueRetrievers[x](row, type))
                 )
                 .ToDictionary(x => x.Key, x => x.Value);
