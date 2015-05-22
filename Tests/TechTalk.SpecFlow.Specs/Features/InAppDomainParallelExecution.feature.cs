@@ -56,6 +56,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
+            this.FeatureBackground();
         }
         
         public virtual void ScenarioCleanup()
@@ -63,29 +64,19 @@ namespace TechTalk.SpecFlow.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Precondition: Tests run parallel with NUnit v3")]
-        public virtual void PreconditionTestsRunParallelWithNUnitV3()
+        public virtual void FeatureBackground()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Precondition: Tests run parallel with NUnit v3", ((string[])(null)));
 #line 3
-this.ScenarioSetup(scenarioInfo);
 #line 4
  testRunner.Given("there is a SpecFlow project");
 #line 5
  testRunner.And("the project is configured to use the NUnit3 provider");
 #line hidden
 #line 6
- testRunner.Given("there is a feature file in the project as", "Feature: Feature 1\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)));
+    testRunner.And("the following binding class", "[assembly: NUnit.Framework.Parallelizable(NUnit.Framework.ParallelScope.Fixtures)" +
+                    "]", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 20
- testRunner.Given("there is a feature file in the project as", "Feature: Feature 2\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)));
-#line hidden
-#line 34
+#line 10
  testRunner.And("the following step definition", @"public static int startIndex = 0;
 
 [When(@""I do something"")]
@@ -99,16 +90,55 @@ public void WhenIDoSomething()
        Console.WriteLine(""Was not parallel"");
    else
        Console.WriteLine(""Was parallel"");
-   NUnit.Framework.Assert.AreEqual(currentStartIndex, afterStartIndex);
 }", ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
-#line 52
-    testRunner.Given("the following binding class", "[assembly: NUnit.Framework.Parallelizable(NUnit.Framework.ParallelScope.Fixtures)" +
-                    "]", ((TechTalk.SpecFlow.Table)(null)));
+#line 27
+ testRunner.Given("there is a feature file in the project as", "Feature: Feature 1\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
+                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
+                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 41
+ testRunner.Given("there is a feature file in the project as", "Feature: Feature 2\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
+                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
+                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Precondition: Tests run parallel with NUnit v3")]
+        public virtual void PreconditionTestsRunParallelWithNUnitV3()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Precondition: Tests run parallel with NUnit v3", ((string[])(null)));
 #line 56
-    testRunner.When("I execute the tests with NUnit3");
+this.ScenarioSetup(scenarioInfo);
 #line 57
+    testRunner.When("I execute the tests with NUnit3");
+#line 58
     testRunner.Then("the execution log should contain text \'Was parallel\'");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Tests should be processed parallel without failure")]
+        public virtual void TestsShouldBeProcessedParallelWithoutFailure()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tests should be processed parallel without failure", ((string[])(null)));
+#line 60
+this.ScenarioSetup(scenarioInfo);
+#line 61
+    testRunner.When("I execute the tests with NUnit3");
+#line 62
+    testRunner.Then("the execution log should contain text \'Was parallel\'");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Total",
+                        "Succeeded"});
+            table1.AddRow(new string[] {
+                        "10",
+                        "10"});
+#line 63
+ testRunner.And("the execution summary should contain", ((string)(null)), table1);
 #line hidden
             this.ScenarioCleanup();
         }
