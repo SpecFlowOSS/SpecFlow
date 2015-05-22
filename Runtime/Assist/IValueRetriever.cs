@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TechTalk.SpecFlow
+namespace TechTalk.SpecFlow.Assist
 {
     public interface IValueRetriever
     {
