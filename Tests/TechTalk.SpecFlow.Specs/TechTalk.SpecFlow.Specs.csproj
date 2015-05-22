@@ -323,6 +323,10 @@ xcopy $(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.* $(TargetDir)xu
 xcopy $(SolutionDir)packages\xunit.runners.1.9.2\*.* $(TargetDir)xunit.runners\ /s /y
 
 xcopy "$(SolutionDir)lib\Microsoft F#\*.*" $(TargetDir)FSharp\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
+
+xcopy $(SolutionDir)lib\NUnit3-Runner\*.* $(TargetDir)NUnit3-Runner\ /s /y
+
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
