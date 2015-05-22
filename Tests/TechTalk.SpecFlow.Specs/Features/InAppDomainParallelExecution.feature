@@ -49,5 +49,9 @@ Scenario: Precondition: Tests run parallel with NUnit v3
             NUnit.Framework.Assert.AreEqual(currentStartIndex, afterStartIndex);
 		 }
          """
+    Given the following binding class
+        """
+        [assembly: NUnit.Framework.Parallelizable(NUnit.Framework.ParallelScope.Fixtures)]
+        """
     When I execute the tests with NUnit3
     Then the execution log should contain text 'Was parallel'

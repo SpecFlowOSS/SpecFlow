@@ -47,6 +47,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public void SetUnitTestProvider(string name)
         {
             UnitTestProviderName = name;
+            if (name == "NUnit3")
+                name = "NUnit";
             SpecFlowConfigurationElement.Add(new XElement("unitTestProvider", new XAttribute("name", name)));
         }
 
@@ -61,6 +63,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             {
                 case "nunit":
                     yield return @"NUnit\lib\nunit.framework.dll";
+                    break;
+                case "nunit3":
+                    yield return @"NUnit3-Runner\bin\nunit.framework.dll";
                     break;
                 case "mbunit.3":
                     yield return @"mbUnit3\mbUnit.dll";

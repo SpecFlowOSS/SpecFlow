@@ -101,9 +101,13 @@ public void WhenIDoSomething()
        Console.WriteLine(""Was parallel"");
    NUnit.Framework.Assert.AreEqual(currentStartIndex, afterStartIndex);
 }", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
 #line 52
+    testRunner.Given("the following binding class", "[assembly: NUnit.Framework.Parallelizable(NUnit.Framework.ParallelScope.Fixtures)" +
+                    "]", ((TechTalk.SpecFlow.Table)(null)));
+#line 56
     testRunner.When("I execute the tests with NUnit3");
-#line 53
+#line 57
     testRunner.Then("the execution log should contain text \'Was parallel\'");
 #line hidden
             this.ScenarioCleanup();

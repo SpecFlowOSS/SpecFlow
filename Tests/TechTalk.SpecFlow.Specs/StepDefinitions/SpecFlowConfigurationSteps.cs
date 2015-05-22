@@ -21,9 +21,6 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the project is configured to use the (.+) provider")]
         public void GivenTheProjectIsConfiguredToUseTheUnitTestProvider(string providerName)
         {
-            if (providerName == "NUnit3")
-                providerName = "NUnit";
-
             specFlowConfigurationDriver.SetUnitTestProvider(providerName);
         }
 
