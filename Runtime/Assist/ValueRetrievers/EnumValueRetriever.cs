@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -13,7 +14,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public object ExtractValueFromRow(TableRow row, Type targetType)
         {
-            return GetValue(row[1], targetType);
+            var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType;
+            return GetValue(row[1], propertyType);
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
