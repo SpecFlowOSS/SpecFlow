@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -20,6 +21,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
+        }
+
+        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        {
+            return new Type[]{ typeof(byte?) };
         }
     }
 }

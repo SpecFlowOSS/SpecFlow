@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -16,6 +17,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType;
             return GetValue(row[1], propertyType);
+        }
+
+        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        {
+            return new Type[]{ typeof(Enum) };
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
