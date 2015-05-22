@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class CharValueRetriever
+    public class CharValueRetriever : IValueRetriever
     {
         public virtual char GetValue(string value)
         {

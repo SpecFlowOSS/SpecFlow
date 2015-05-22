@@ -2,7 +2,7 @@ using System;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableUIntValueRetriever
+    public class NullableUIntValueRetriever : IValueRetriever
     {
         private readonly Func<string, uint> uintValueRetriever;
 

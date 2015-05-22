@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class EnumValueRetriever
+    public class EnumValueRetriever : IValueRetriever
     {
         public object GetValue(string value, Type enumType)
         {

@@ -1,6 +1,6 @@
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class UIntValueRetriever
+    public class UIntValueRetriever : IValueRetriever
     {
         public virtual uint GetValue(string value)
         {

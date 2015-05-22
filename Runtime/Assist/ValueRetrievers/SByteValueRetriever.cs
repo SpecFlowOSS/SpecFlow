@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class SByteValueRetriever
+    public class SByteValueRetriever : IValueRetriever
     {
         public virtual sbyte GetValue(string value)
         {

@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableBoolValueRetriever
+    public class NullableBoolValueRetriever : IValueRetriever
     {
         private readonly Func<string, bool> boolValueRetriever;
 

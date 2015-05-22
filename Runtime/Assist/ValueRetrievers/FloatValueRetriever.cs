@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class FloatValueRetriever
+    public class FloatValueRetriever : IValueRetriever
     {
         public virtual float GetValue(string value)
         {

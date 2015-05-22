@@ -1,6 +1,6 @@
 ﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class ULongValueRetriever
+    public class ULongValueRetriever : IValueRetriever
     {
         public virtual ulong GetValue(string value)
         {
