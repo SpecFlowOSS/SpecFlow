@@ -23,43 +23,10 @@ namespace TechTalk.SpecFlow.Assist
 
         public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrieversByType {
             get {
-                var someValueRetrievers = new IValueRetriever[]{
-                    new StringValueRetriever(),
-                    new ByteValueRetriever(),
-                    new SByteValueRetriever(),
-                    new IntValueRetriever(),
-                    new UIntValueRetriever(),
-                    new ShortValueRetriever(),
-                    new UShortValueRetriever(),
-                    new LongValueRetriever(),
-                    new ULongValueRetriever(),
-                    new FloatValueRetriever(),
-                    new DoubleValueRetriever(),
-                    new DecimalValueRetriever(),
-                    new CharValueRetriever(),
-                    new BoolValueRetriever(),
-                    new DateTimeValueRetriever(),
-                    new GuidValueRetriever(),
-                    new EnumValueRetriever(),
-                    new NullableGuidValueRetriever(),
-                    new NullableDateTimeValueRetriever(),
-                    new NullableBoolValueRetriever(),
-                    new NullableCharValueRetriever(),
-                    new NullableDecimalValueRetriever(),
-                    new NullableDoubleValueRetriever(),
-                    new NullableFloatValueRetriever(),
-                    new NullableULongValueRetriever(),
-                    new NullableByteValueRetriever(),
-                    new NullableSByteValueRetriever(),
-                    new NullableIntValueRetriever(),
-                    new NullableUIntValueRetriever(),
-                    new NullableShortValueRetriever(),
-                    new NullableUShortValueRetriever(),
-                    new NullableLongValueRetriever(),
-                };
 
+                var valueRetrievers = Container.Instance.Setup().ResolveAll<IValueRetriever>();
                 var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-                foreach(var valueRetriever in someValueRetrievers){
+                foreach(var valueRetriever in valueRetrievers){
                     foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
                         result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                     }
@@ -83,6 +50,38 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new FloatValueComparer(), "float");
             RegisterValueComparer(new DefaultValueComparer(), "default");
 
+            RegisterValueRetriever(new StringValueRetriever(), "vstring");
+            RegisterValueRetriever(new ByteValueRetriever(), "vbyte");
+            RegisterValueRetriever(new SByteValueRetriever(), "vsbyte");
+            RegisterValueRetriever(new IntValueRetriever(), "vint");
+            RegisterValueRetriever(new UIntValueRetriever(), "vuint");
+            RegisterValueRetriever(new ShortValueRetriever(), "vshort");
+            RegisterValueRetriever(new UShortValueRetriever(), "vushort");
+            RegisterValueRetriever(new LongValueRetriever(), "vlong");
+            RegisterValueRetriever(new ULongValueRetriever(), "vulong");
+            RegisterValueRetriever(new FloatValueRetriever(), "vfloat");
+            RegisterValueRetriever(new DoubleValueRetriever(), "vdouble");
+            RegisterValueRetriever(new DecimalValueRetriever(), "vdecimal");
+            RegisterValueRetriever(new CharValueRetriever(), "vchar");
+            RegisterValueRetriever(new BoolValueRetriever(), "vbool");
+            RegisterValueRetriever(new DateTimeValueRetriever(), "vdatetime");
+            RegisterValueRetriever(new GuidValueRetriever(), "vguid");
+            RegisterValueRetriever(new EnumValueRetriever(), "venum");
+            RegisterValueRetriever(new NullableGuidValueRetriever(), "vnullableguid");
+            RegisterValueRetriever(new NullableDateTimeValueRetriever(), "vnullabledatetime");
+            RegisterValueRetriever(new NullableBoolValueRetriever(), "vnullablebool");
+            RegisterValueRetriever(new NullableCharValueRetriever(), "vnullablechar");
+            RegisterValueRetriever(new NullableDecimalValueRetriever(), "vnullabledecimal");
+            RegisterValueRetriever(new NullableDoubleValueRetriever(), "vnullabledouble");
+            RegisterValueRetriever(new NullableFloatValueRetriever(), "vnullablefloat");
+            RegisterValueRetriever(new NullableULongValueRetriever(), "vnullableulong");
+            RegisterValueRetriever(new NullableByteValueRetriever(), "vnullablebyte");
+            RegisterValueRetriever(new NullableSByteValueRetriever(), "vnullablesbyte");
+            RegisterValueRetriever(new NullableIntValueRetriever(), "vnullableint");
+            RegisterValueRetriever(new NullableUIntValueRetriever(), "vnullableuint");
+            RegisterValueRetriever(new NullableShortValueRetriever(), "vnullableshort");
+            RegisterValueRetriever(new NullableUShortValueRetriever(), "vnullableushort");
+            RegisterValueRetriever(new NullableLongValueRetriever(), "vnullablelong");
  
         }
 
@@ -91,10 +90,17 @@ namespace TechTalk.SpecFlow.Assist
             _valueComparers[uniqueId] = valueComparer;
         }
 
+        public void RegisterValueRetriever(IValueRetriever valueRetriever, string uniqueId)
+        {
+            _valueRetrievers[uniqueId] = valueRetriever;
+        }
+
         public void LoadContainer(IObjectContainer container)
         {
             foreach (var key in _valueComparers.Keys)
-                container.RegisterInstanceAs<IValueComparer>(_valueComparers [key], key);
+                container.RegisterInstanceAs<IValueComparer>(_valueComparers[key], key);
+            foreach (var key in _valueRetrievers.Keys)
+                container.RegisterInstanceAs<IValueRetriever>(_valueRetrievers[key], key);
         }
 
     }
