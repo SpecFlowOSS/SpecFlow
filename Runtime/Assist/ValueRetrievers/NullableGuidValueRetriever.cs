@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableGuidValueRetriever : IValueRetriever
     {
-        private readonly Func<string, Guid> guidValueRetriever;
+        private readonly Func<string, Guid> guidValueRetriever = v => new GuidValueRetriever().GetValue(v);
 
-        public NullableGuidValueRetriever(Func<string, Guid> guidValueRetriever)
+        public NullableGuidValueRetriever(Func<string, Guid> guidValueRetriever = null)
         {
-            this.guidValueRetriever = guidValueRetriever;
+            if (guidValueRetriever != null)
+                this.guidValueRetriever = guidValueRetriever;
         }
 
         public Guid? GetValue(string value)

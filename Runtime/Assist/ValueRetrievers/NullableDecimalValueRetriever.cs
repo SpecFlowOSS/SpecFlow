@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableDecimalValueRetriever : IValueRetriever
     {
-        private readonly Func<string, decimal> decimalValueRetriever;
+        private readonly Func<string, decimal> decimalValueRetriever = v => new DecimalValueRetriever().GetValue(v);
 
-        public NullableDecimalValueRetriever(Func<string, decimal> decimalValueRetriever)
+        public NullableDecimalValueRetriever(Func<string, decimal> decimalValueRetriever = null)
         {
-            this.decimalValueRetriever = decimalValueRetriever;
+            if (decimalValueRetriever != null)
+                this.decimalValueRetriever = decimalValueRetriever;
         }
 
         public decimal? GetValue(string value)

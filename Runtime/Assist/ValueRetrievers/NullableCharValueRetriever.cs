@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableCharValueRetriever : IValueRetriever
     {
-        private readonly Func<string, char> charValueRetriever;
+        private readonly Func<string, char> charValueRetriever = v => new CharValueRetriever().GetValue(v);
 
-        public NullableCharValueRetriever(Func<string, char> charValueRetriever)
+        public NullableCharValueRetriever(Func<string, char> charValueRetriever = null)
         {
-            this.charValueRetriever = charValueRetriever;
+            if (charValueRetriever != null)
+                this.charValueRetriever = charValueRetriever;
         }
 
         public char? GetValue(string value)

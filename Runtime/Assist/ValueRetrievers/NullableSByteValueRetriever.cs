@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableSByteValueRetriever : IValueRetriever
     {
-        private readonly Func<string, sbyte> sbyteValueRetriever;
+        private readonly Func<string, sbyte> sbyteValueRetriever = v => new SByteValueRetriever().GetValue(v);
 
-        public NullableSByteValueRetriever(Func<string, sbyte> sbyteValueRetriever)
+        public NullableSByteValueRetriever(Func<string, sbyte> sbyteValueRetriever = null)
         {
-            this.sbyteValueRetriever = sbyteValueRetriever;
+            if (sbyteValueRetriever != null)
+                this.sbyteValueRetriever = sbyteValueRetriever;
         }
 
         public sbyte? GetValue(string value)

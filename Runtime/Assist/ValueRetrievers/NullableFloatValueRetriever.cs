@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableFloatValueRetriever : IValueRetriever
     {
-        private readonly Func<string, float> FloatValueRetriever;
+        private readonly Func<string, float> FloatValueRetriever = v => new FloatValueRetriever().GetValue(v);
 
-        public NullableFloatValueRetriever(Func<string, float> FloatValueRetriever)
+        public NullableFloatValueRetriever(Func<string, float> FloatValueRetriever = null)
         {
-            this.FloatValueRetriever = FloatValueRetriever;
+            if (FloatValueRetriever != null)
+                this.FloatValueRetriever = FloatValueRetriever;
         }
 
         public float? GetValue(string value)

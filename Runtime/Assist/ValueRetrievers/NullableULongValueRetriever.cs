@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableULongValueRetriever : IValueRetriever
     {
-        private readonly Func<string, ulong> ulongValueRetriever;
+        private readonly Func<string, ulong> ulongValueRetriever = v => new ULongValueRetriever().GetValue(v);
 
-        public NullableULongValueRetriever(Func<string, ulong> ulongValueRetriever)
+        public NullableULongValueRetriever(Func<string, ulong> ulongValueRetriever = null)
         {
-            this.ulongValueRetriever = ulongValueRetriever;
+            if (ulongValueRetriever != null)
+                this.ulongValueRetriever = ulongValueRetriever;
         }
 
         public ulong? GetValue(string value)

@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableUIntValueRetriever : IValueRetriever
     {
-        private readonly Func<string, uint> uintValueRetriever;
+        private readonly Func<string, uint> uintValueRetriever = v => new UIntValueRetriever().GetValue(v);
 
-        public NullableUIntValueRetriever(Func<string, uint> uintValueRetriever)
+        public NullableUIntValueRetriever(Func<string, uint> uintValueRetriever = null)
         {
-            this.uintValueRetriever = uintValueRetriever;
+            if (uintValueRetriever != null)
+                this.uintValueRetriever = uintValueRetriever;
         }
 
         public uint? GetValue(string value)

@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableBoolValueRetriever : IValueRetriever
     {
-        private readonly Func<string, bool> boolValueRetriever;
+        private readonly Func<string, bool> boolValueRetriever = v => new BoolValueRetriever().GetValue(v);
 
-        public NullableBoolValueRetriever(Func<string, bool> boolValueRetriever)
+        public NullableBoolValueRetriever(Func<string, bool> boolValueRetriever = null)
         {
-            this.boolValueRetriever = boolValueRetriever;
+            if (boolValueRetriever != null)
+                this.boolValueRetriever = boolValueRetriever;
         }
 
         public bool? GetValue(string thisValue)
