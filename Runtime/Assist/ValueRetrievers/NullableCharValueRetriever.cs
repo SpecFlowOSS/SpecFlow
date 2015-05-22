@@ -17,5 +17,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                 return null;
             return charValueRetriever(value);
         }
+
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return GetValue(row[1]);
+        }
     }
 }

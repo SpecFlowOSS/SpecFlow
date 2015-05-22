@@ -10,5 +10,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             DateTime.TryParse(value, out returnValue);
             return returnValue;
         }
+
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return GetValue(row[1]);
+        }
     }
 }

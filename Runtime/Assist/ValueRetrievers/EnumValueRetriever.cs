@@ -11,6 +11,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return ConvertTheStringToAnEnum(value, enumType);
         }
 
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return GetValue(row[1], targetType);
+        }
+
         private object ConvertTheStringToAnEnum(string value, Type enumType)
         {
             return Enum.Parse(GetTheEnumType(enumType), ParseTheValue(value), true);

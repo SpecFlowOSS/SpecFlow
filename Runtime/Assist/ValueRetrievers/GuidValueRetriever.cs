@@ -25,6 +25,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
         }
 
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return GetValue(row[1]);
+        }
+
         private static Guid AttempToBuildAGuidFromTheString(string value)
         {
             var guid = new Guid(value);

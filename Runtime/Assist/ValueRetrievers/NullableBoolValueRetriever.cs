@@ -16,5 +16,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (string.IsNullOrEmpty(thisValue)) return null;
             return boolValueRetriever(thisValue);
         }
+
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return GetValue(row[1]);
+        }
     }
 }
