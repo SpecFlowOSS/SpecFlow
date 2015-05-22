@@ -108,6 +108,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\InAppDomainParallelExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InAppDomainParallelExecution.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnitProvider.feature.cs">
       <DependentUpon>XUnitProvider.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -224,6 +229,10 @@
     <None Include="Features\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\InAppDomainParallelExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>InAppDomainParallelExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnitProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

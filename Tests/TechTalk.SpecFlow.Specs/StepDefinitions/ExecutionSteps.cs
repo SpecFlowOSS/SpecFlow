@@ -51,6 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             switch (unitTestProvider)
             {
                 case "NUnit":
+                case "NUnit3":
                     nUnitTestExecutionDriver.Execute();
                     break;
                 case "MsTest":
