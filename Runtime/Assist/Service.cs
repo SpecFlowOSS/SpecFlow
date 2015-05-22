@@ -13,14 +13,60 @@ namespace TechTalk.SpecFlow.Assist
     {
 
         private Dictionary<string, IValueComparer> _valueComparers = new Dictionary<string, IValueComparer>();
-        private Dictionary<string, IValueRetriever> _theValueRetrievers = new Dictionary<string, IValueRetriever>();
-        private IDictionary<Type, Func<TableRow, Type, object>> _valueRetrievers = new Dictionary<Type, Func<TableRow, Type, object>>();
+        private Dictionary<string, IValueRetriever> _valueRetrievers = new Dictionary<string, IValueRetriever>();
 
         public static Service Instance { get; internal set; }
 
         public IDictionary<string, IValueComparer> ValueComparers { get { return _valueComparers; } }
-        public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrievers { get { return _valueRetrievers; } }
-        public IDictionary<string, IValueRetriever> TheValueRetrievers { get { return _theValueRetrievers; } }
+
+        public IDictionary<string, IValueRetriever> ValueRetrievers { get { return _valueRetrievers; } }
+
+        public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrieversByType {
+            get {
+                var someValueRetrievers = new IValueRetriever[]{
+                    new StringValueRetriever(),
+                    new ByteValueRetriever(),
+                    new SByteValueRetriever(),
+                    new IntValueRetriever(),
+                    new UIntValueRetriever(),
+                    new ShortValueRetriever(),
+                    new UShortValueRetriever(),
+                    new LongValueRetriever(),
+                    new ULongValueRetriever(),
+                    new FloatValueRetriever(),
+                    new DoubleValueRetriever(),
+                    new DecimalValueRetriever(),
+                    new CharValueRetriever(),
+                    new BoolValueRetriever(),
+                    new DateTimeValueRetriever(),
+                    new GuidValueRetriever(),
+                    new EnumValueRetriever(),
+                    new NullableGuidValueRetriever(),
+                    new NullableDateTimeValueRetriever(),
+                    new NullableBoolValueRetriever(),
+                    new NullableCharValueRetriever(),
+                    new NullableDecimalValueRetriever(),
+                    new NullableDoubleValueRetriever(),
+                    new NullableFloatValueRetriever(),
+                    new NullableULongValueRetriever(),
+                    new NullableByteValueRetriever(),
+                    new NullableSByteValueRetriever(),
+                    new NullableIntValueRetriever(),
+                    new NullableUIntValueRetriever(),
+                    new NullableShortValueRetriever(),
+                    new NullableUShortValueRetriever(),
+                    new NullableLongValueRetriever(),
+                };
+
+                var result = new Dictionary<Type, Func<TableRow, Type, object>>();
+                foreach(var valueRetriever in someValueRetrievers){
+                    foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
+                        result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
+                    }
+                }
+                return result; 
+            }
+        }
 
         static Service()
         {
@@ -37,46 +83,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new FloatValueComparer(), "float");
             RegisterValueComparer(new DefaultValueComparer(), "default");
 
-            var someValueRetrievers = new IValueRetriever[]{
-                new StringValueRetriever(),
-                new ByteValueRetriever(),
-                new SByteValueRetriever(),
-                new IntValueRetriever(),
-                new UIntValueRetriever(),
-                new ShortValueRetriever(),
-                new UShortValueRetriever(),
-                new LongValueRetriever(),
-                new ULongValueRetriever(),
-                new FloatValueRetriever(),
-                new DoubleValueRetriever(),
-                new DecimalValueRetriever(),
-                new CharValueRetriever(),
-                new BoolValueRetriever(),
-                new DateTimeValueRetriever(),
-                new GuidValueRetriever(),
-                new EnumValueRetriever(),
-                new NullableGuidValueRetriever(),
-                new NullableDateTimeValueRetriever(),
-                new NullableBoolValueRetriever(),
-                new NullableCharValueRetriever(),
-                new NullableDecimalValueRetriever(),
-                new NullableDoubleValueRetriever(),
-                new NullableFloatValueRetriever(),
-                new NullableULongValueRetriever(),
-                new NullableByteValueRetriever(),
-                new NullableSByteValueRetriever(),
-                new NullableIntValueRetriever(),
-                new NullableUIntValueRetriever(),
-                new NullableShortValueRetriever(),
-                new NullableUShortValueRetriever(),
-                new NullableLongValueRetriever(),
-            };
-
-            foreach(var valueRetriever in someValueRetrievers){
-                foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
-                    _valueRetrievers[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
-                }
-            }
+ 
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
