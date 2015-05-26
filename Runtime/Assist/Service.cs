@@ -33,10 +33,7 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
-        public IEnumerable<IValueComparer> AllValueComparers()
-        {
-            return _registeredValueComparers.Values;
-        }
+        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers.Values; } }
 
         static Service()
         {
