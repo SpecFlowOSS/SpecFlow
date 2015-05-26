@@ -21,16 +21,15 @@ namespace TechTalk.SpecFlow.Assist
 
         public IDictionary<string, IValueRetriever> RegisteredValueRetrievers { get { return _registeredValueRetrievers; } }
 
-        public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrieversByType {
-            get {
-                var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-                foreach(var valueRetriever in _registeredValueRetrievers.Values){
-                    foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
-                        result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
-                    }
+        public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
+        {
+            var result = new Dictionary<Type, Func<TableRow, Type, object>>();
+            foreach(var valueRetriever in _registeredValueRetrievers.Values){
+                foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
+                    result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                 }
-                return result; 
             }
+            return result;
         }
 
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers.Values; } }
