@@ -15,24 +15,13 @@ namespace TechTalk.SpecFlow.Assist
         private Dictionary<string, IValueComparer> _registeredValueComparers = new Dictionary<string, IValueComparer>();
         private Dictionary<string, IValueRetriever> _registeredValueRetrievers = new Dictionary<string, IValueRetriever>();
 
-        public static Service Instance { get; internal set; }
-
         public IDictionary<string, IValueComparer> RegisteredValueComparers { get { return _registeredValueComparers; } }
 
         public IDictionary<string, IValueRetriever> RegisteredValueRetrievers { get { return _registeredValueRetrievers; } }
 
-        public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
-        {
-            var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-            foreach(var valueRetriever in _registeredValueRetrievers.Values){
-                foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
-                    result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
-                }
-            }
-            return result;
-        }
-
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers.Values; } }
+
+        public static Service Instance { get; internal set; }
 
         static Service()
         {
@@ -96,6 +85,17 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableShortValueRetriever(), "vnullableshort");
             RegisterValueRetriever(new NullableUShortValueRetriever(), "vnullableushort");
             RegisterValueRetriever(new NullableLongValueRetriever(), "vnullablelong");
+        }
+
+        public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
+        {
+            var result = new Dictionary<Type, Func<TableRow, Type, object>>();
+            foreach(var valueRetriever in _registeredValueRetrievers.Values){
+                foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
+                    result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
+                }
+            }
+            return result;
         }
 
     }
