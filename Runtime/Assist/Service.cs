@@ -42,6 +42,21 @@ namespace TechTalk.SpecFlow.Assist
 
         public Service()
         {
+            RegisterSpecFlowDefaults();
+        }
+
+        public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
+        {
+            _registeredValueComparers[uniqueId] = valueComparer;
+        }
+
+        public void RegisterValueRetriever(IValueRetriever valueRetriever, string uniqueId)
+        {
+            _registeredValueRetrievers[uniqueId] = valueRetriever;
+        }
+
+        public void RegisterSpecFlowDefaults()
+        {
             RegisterValueComparer(new DateTimeValueComparer(), "datetime");
             RegisterValueComparer(new BoolValueComparer(), "bool");
             RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()), "guid");
@@ -82,16 +97,6 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableShortValueRetriever(), "vnullableshort");
             RegisterValueRetriever(new NullableUShortValueRetriever(), "vnullableushort");
             RegisterValueRetriever(new NullableLongValueRetriever(), "vnullablelong");
-        }
-
-        public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
-        {
-            _registeredValueComparers[uniqueId] = valueComparer;
-        }
-
-        public void RegisterValueRetriever(IValueRetriever valueRetriever, string uniqueId)
-        {
-            _registeredValueRetrievers[uniqueId] = valueRetriever;
         }
 
     }
