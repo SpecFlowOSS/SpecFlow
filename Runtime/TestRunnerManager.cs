@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -63,7 +64,16 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        private readonly Dictionary<TestRunnerKey, ITestRunner> testRunnerRegistry = new Dictionary<TestRunnerKey, ITestRunner>();
+        private readonly ThreadLocal<Dictionary<TestRunnerKey, ITestRunner>> testRunnerRegistry = new ThreadLocal<Dictionary<TestRunnerKey, ITestRunner>>(() => new Dictionary<TestRunnerKey, ITestRunner>());
+
+        private Dictionary<TestRunnerKey, ITestRunner> TestRunnerRegistry
+        {
+            get
+            {   
+                return testRunnerRegistry.Value;
+            }
+        }
+
         private readonly object syncRoot = new object();
 
         public ITestRunner CreateTestRunner(Assembly testAssembly, bool async)
@@ -91,14 +101,14 @@ namespace TechTalk.SpecFlow
         protected virtual ITestRunner GetTestRunner(TestRunnerKey key)
         {
             ITestRunner testRunner;
-            if (!testRunnerRegistry.TryGetValue(key, out testRunner))
+            if (!TestRunnerRegistry.TryGetValue(key, out testRunner))
             {
                 lock(syncRoot)
                 {
-                    if (!testRunnerRegistry.TryGetValue(key, out testRunner))
+                    if (!TestRunnerRegistry.TryGetValue(key, out testRunner))
                     {
                         testRunner = CreateTestRunner(key);
-                        testRunnerRegistry.Add(key, testRunner);
+                        TestRunnerRegistry.Add(key, testRunner);
                     }
                 }
             }
@@ -107,7 +117,7 @@ namespace TechTalk.SpecFlow
 
         public virtual void Dispose()
         {
-            testRunnerRegistry.Clear();
+            TestRunnerRegistry.Clear();
         }
 
         #region Static Methods
