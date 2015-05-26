@@ -23,10 +23,8 @@ namespace TechTalk.SpecFlow.Assist
 
         public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrieversByType {
             get {
-
-                var valueRetrievers = Container.Instance.Setup().ResolveAll<IValueRetriever>();
                 var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-                foreach(var valueRetriever in valueRetrievers){
+                foreach(var valueRetriever in _valueRetrievers.Values){
                     foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
                         result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                     }
