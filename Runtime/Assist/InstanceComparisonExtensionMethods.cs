@@ -11,10 +11,6 @@ namespace TechTalk.SpecFlow.Assist
 {
     public static class InstanceComparisonExtensionMethods
     {
-        public static IObjectContainer Container()
-        {
-            return SpecFlow.Assist.Container.Instance.Setup();
-        }
 
         public static void CompareToInstance<T>(this Table table, T instance)
         {
@@ -78,7 +74,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = InstanceComparisonExtensionMethods.Container().ResolveAll<IValueComparer>();
+            var valueComparers = Assist.Service.Instance.AllValueComparers();
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))

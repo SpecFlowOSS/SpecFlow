@@ -35,6 +35,11 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
+        public IEnumerable<IValueComparer> AllValueComparers()
+        {
+            return _valueComparers.Values;
+        }
+
         static Service()
         {
             Instance = new Service();
