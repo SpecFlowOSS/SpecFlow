@@ -12,19 +12,19 @@ namespace TechTalk.SpecFlow.Assist
     public class Service
     {
 
-        private Dictionary<string, IValueComparer> _valueComparers = new Dictionary<string, IValueComparer>();
-        private Dictionary<string, IValueRetriever> _valueRetrievers = new Dictionary<string, IValueRetriever>();
+        private Dictionary<string, IValueComparer> _registeredValueComparers = new Dictionary<string, IValueComparer>();
+        private Dictionary<string, IValueRetriever> _registeredValueRetrievers = new Dictionary<string, IValueRetriever>();
 
         public static Service Instance { get; internal set; }
 
-        public IDictionary<string, IValueComparer> ValueComparers { get { return _valueComparers; } }
+        public IDictionary<string, IValueComparer> RegisteredValueComparers { get { return _registeredValueComparers; } }
 
-        public IDictionary<string, IValueRetriever> ValueRetrievers { get { return _valueRetrievers; } }
+        public IDictionary<string, IValueRetriever> RegisteredValueRetrievers { get { return _registeredValueRetrievers; } }
 
         public IDictionary<Type, Func<TableRow, Type, object>> ValueRetrieversByType {
             get {
                 var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-                foreach(var valueRetriever in _valueRetrievers.Values){
+                foreach(var valueRetriever in _registeredValueRetrievers.Values){
                     foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
                         result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                     }
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public IEnumerable<IValueComparer> AllValueComparers()
         {
-            return _valueComparers.Values;
+            return _registeredValueComparers.Values;
         }
 
         static Service()
@@ -90,20 +90,20 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
         {
-            _valueComparers[uniqueId] = valueComparer;
+            _registeredValueComparers[uniqueId] = valueComparer;
         }
 
         public void RegisterValueRetriever(IValueRetriever valueRetriever, string uniqueId)
         {
-            _valueRetrievers[uniqueId] = valueRetriever;
+            _registeredValueRetrievers[uniqueId] = valueRetriever;
         }
 
         public void LoadContainer(IObjectContainer container)
         {
-            foreach (var key in _valueComparers.Keys)
-                container.RegisterInstanceAs<IValueComparer>(_valueComparers[key], key);
-            foreach (var key in _valueRetrievers.Keys)
-                container.RegisterInstanceAs<IValueRetriever>(_valueRetrievers[key], key);
+            foreach (var key in _registeredValueComparers.Keys)
+                container.RegisterInstanceAs<IValueComparer>(_registeredValueComparers[key], key);
+            foreach (var key in _registeredValueRetrievers.Keys)
+                container.RegisterInstanceAs<IValueRetriever>(_registeredValueRetrievers[key], key);
         }
 
     }
