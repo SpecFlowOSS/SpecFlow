@@ -82,7 +82,6 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableShortValueRetriever(), "vnullableshort");
             RegisterValueRetriever(new NullableUShortValueRetriever(), "vnullableushort");
             RegisterValueRetriever(new NullableLongValueRetriever(), "vnullablelong");
- 
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
