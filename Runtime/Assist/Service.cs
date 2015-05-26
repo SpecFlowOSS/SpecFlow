@@ -94,14 +94,6 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueRetrievers[uniqueId] = valueRetriever;
         }
 
-        public void LoadContainer(IObjectContainer container)
-        {
-            foreach (var key in _registeredValueComparers.Keys)
-                container.RegisterInstanceAs<IValueComparer>(_registeredValueComparers[key], key);
-            foreach (var key in _registeredValueRetrievers.Keys)
-                container.RegisterInstanceAs<IValueRetriever>(_registeredValueRetrievers[key], key);
-        }
-
     }
 }
 
