@@ -61,6 +61,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
+
             generationContext.TestClassInitializeMethod.Parameters.Add(new CodeParameterDeclarationExpression(
                 TESTCONTEXT_TYPE, "testContext"));
 

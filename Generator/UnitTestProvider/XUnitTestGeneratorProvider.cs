@@ -46,6 +46,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit uses IUseFixture<T> on the class
 
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
 
             _currentFixtureDataTypeDeclaration = CodeDomHelper.CreateGeneratedTypeDeclaration("FixtureData");
             generationContext.TestClass.Members.Add(_currentFixtureDataTypeDeclaration);

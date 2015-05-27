@@ -67,6 +67,7 @@ namespace TechTalk.SpecFlow.Generator
                 feature,
                 codeNamespace, 
                 testClass,
+                DeclareTestRunnerMember(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
@@ -154,15 +155,13 @@ namespace TechTalk.SpecFlow.Generator
 
             if (featureCategories.Any())
                 testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
-
-            DeclareTestRunnerMember(generationContext);
         }
 
-        private void DeclareTestRunnerMember(TestClassGenerationContext generationContext)
+        private CodeMemberField DeclareTestRunnerMember(CodeTypeDeclaration type)
         {
             CodeMemberField testRunnerField = new CodeMemberField(typeof(ITestRunner), TESTRUNNER_FIELD);
-            testRunnerField.Attributes |= MemberAttributes.Static;
-            generationContext.TestClass.Members.Add(testRunnerField);
+            type.Members.Add(testRunnerField);
+            return testRunnerField;
         }
 
         private CodeExpression GetTestRunnerExpression()
