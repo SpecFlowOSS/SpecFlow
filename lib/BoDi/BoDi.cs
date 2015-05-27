@@ -125,13 +125,6 @@ namespace BoDi
         ///     <para>The container pools the objects, so if the interface is resolved twice or the same type is registered for multiple interfaces, a single instance is created and returned.</para>
         /// </remarks>
         object Resolve(Type typeToResolve, string name = null);
-
-        /// <summary>
-        /// Resolves all implementations of an interface or type.
-        /// </summary>
-        /// <typeparam name="T">The interface or type.</typeparam>
-        /// <returns>An object implementing <typeparamref name="T"/>.</returns>
-        IEnumerable<T> ResolveAll<T>() where T : class;
     }
 
     public interface IContainedInstance
@@ -418,13 +411,6 @@ namespace BoDi
         public object Resolve(Type typeToResolve, string name = null)
         {
             return Resolve(typeToResolve, Enumerable.Empty<Type>(), name);
-        }
-
-        public IEnumerable<T> ResolveAll<T>() where T : class
-        {
-            return registrations
-                       .Where(x => x.Key.Type == typeof(T))
-                       .Select(x => Resolve (x.Key.Type, x.Key.Name) as T);
         }
 
         private object Resolve(Type typeToResolve, IEnumerable<Type> resolutionPath, string name)
