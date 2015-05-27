@@ -12,10 +12,10 @@ namespace TechTalk.SpecFlow.Assist
     public class Service
     {
 
-        private Dictionary<string, IValueComparer> _registeredValueComparers = new Dictionary<string, IValueComparer>();
-        private Dictionary<string, IValueRetriever> _registeredValueRetrievers = new Dictionary<string, IValueRetriever>();
+        private List<IValueComparer> _registeredValueComparers = new List<IValueComparer>();
+        private List<IValueRetriever> _registeredValueRetrievers = new List<IValueRetriever>();
 
-        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers.Values; } }
+        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
 
         public static Service Instance { get; internal set; }
 
@@ -29,64 +29,64 @@ namespace TechTalk.SpecFlow.Assist
             RegisterSpecFlowDefaults();
         }
 
-        public void RegisterValueComparer(IValueComparer valueComparer, string uniqueId)
+        public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers[uniqueId] = valueComparer;
+            _registeredValueComparers.Add(valueComparer);
         }
 
-        public void RegisterValueRetriever(IValueRetriever valueRetriever, string uniqueId)
+        public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers[uniqueId] = valueRetriever;
+            _registeredValueRetrievers.Add(valueRetriever);
         }
 
         public void RegisterSpecFlowDefaults()
         {
-            RegisterValueComparer(new DateTimeValueComparer(), "datetime");
-            RegisterValueComparer(new BoolValueComparer(), "bool");
-            RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()), "guid");
-            RegisterValueComparer(new DecimalValueComparer(), "decimal");
-            RegisterValueComparer(new DoubleValueComparer(), "double");
-            RegisterValueComparer(new FloatValueComparer(), "float");
-            RegisterValueComparer(new DefaultValueComparer(), "default");
+            RegisterValueComparer(new DateTimeValueComparer());
+            RegisterValueComparer(new BoolValueComparer());
+            RegisterValueComparer(new GuidValueComparer(new GuidValueRetriever()));
+            RegisterValueComparer(new DecimalValueComparer());
+            RegisterValueComparer(new DoubleValueComparer());
+            RegisterValueComparer(new FloatValueComparer());
+            RegisterValueComparer(new DefaultValueComparer());
 
-            RegisterValueRetriever(new StringValueRetriever(), "vstring");
-            RegisterValueRetriever(new ByteValueRetriever(), "vbyte");
-            RegisterValueRetriever(new SByteValueRetriever(), "vsbyte");
-            RegisterValueRetriever(new IntValueRetriever(), "vint");
-            RegisterValueRetriever(new UIntValueRetriever(), "vuint");
-            RegisterValueRetriever(new ShortValueRetriever(), "vshort");
-            RegisterValueRetriever(new UShortValueRetriever(), "vushort");
-            RegisterValueRetriever(new LongValueRetriever(), "vlong");
-            RegisterValueRetriever(new ULongValueRetriever(), "vulong");
-            RegisterValueRetriever(new FloatValueRetriever(), "vfloat");
-            RegisterValueRetriever(new DoubleValueRetriever(), "vdouble");
-            RegisterValueRetriever(new DecimalValueRetriever(), "vdecimal");
-            RegisterValueRetriever(new CharValueRetriever(), "vchar");
-            RegisterValueRetriever(new BoolValueRetriever(), "vbool");
-            RegisterValueRetriever(new DateTimeValueRetriever(), "vdatetime");
-            RegisterValueRetriever(new GuidValueRetriever(), "vguid");
-            RegisterValueRetriever(new EnumValueRetriever(), "venum");
-            RegisterValueRetriever(new NullableGuidValueRetriever(), "vnullableguid");
-            RegisterValueRetriever(new NullableDateTimeValueRetriever(), "vnullabledatetime");
-            RegisterValueRetriever(new NullableBoolValueRetriever(), "vnullablebool");
-            RegisterValueRetriever(new NullableCharValueRetriever(), "vnullablechar");
-            RegisterValueRetriever(new NullableDecimalValueRetriever(), "vnullabledecimal");
-            RegisterValueRetriever(new NullableDoubleValueRetriever(), "vnullabledouble");
-            RegisterValueRetriever(new NullableFloatValueRetriever(), "vnullablefloat");
-            RegisterValueRetriever(new NullableULongValueRetriever(), "vnullableulong");
-            RegisterValueRetriever(new NullableByteValueRetriever(), "vnullablebyte");
-            RegisterValueRetriever(new NullableSByteValueRetriever(), "vnullablesbyte");
-            RegisterValueRetriever(new NullableIntValueRetriever(), "vnullableint");
-            RegisterValueRetriever(new NullableUIntValueRetriever(), "vnullableuint");
-            RegisterValueRetriever(new NullableShortValueRetriever(), "vnullableshort");
-            RegisterValueRetriever(new NullableUShortValueRetriever(), "vnullableushort");
-            RegisterValueRetriever(new NullableLongValueRetriever(), "vnullablelong");
+            RegisterValueRetriever(new StringValueRetriever());
+            RegisterValueRetriever(new ByteValueRetriever());
+            RegisterValueRetriever(new SByteValueRetriever());
+            RegisterValueRetriever(new IntValueRetriever());
+            RegisterValueRetriever(new UIntValueRetriever());
+            RegisterValueRetriever(new ShortValueRetriever());
+            RegisterValueRetriever(new UShortValueRetriever());
+            RegisterValueRetriever(new LongValueRetriever());
+            RegisterValueRetriever(new ULongValueRetriever());
+            RegisterValueRetriever(new FloatValueRetriever());
+            RegisterValueRetriever(new DoubleValueRetriever());
+            RegisterValueRetriever(new DecimalValueRetriever());
+            RegisterValueRetriever(new CharValueRetriever());
+            RegisterValueRetriever(new BoolValueRetriever());
+            RegisterValueRetriever(new DateTimeValueRetriever());
+            RegisterValueRetriever(new GuidValueRetriever());
+            RegisterValueRetriever(new EnumValueRetriever());
+            RegisterValueRetriever(new NullableGuidValueRetriever());
+            RegisterValueRetriever(new NullableDateTimeValueRetriever());
+            RegisterValueRetriever(new NullableBoolValueRetriever());
+            RegisterValueRetriever(new NullableCharValueRetriever());
+            RegisterValueRetriever(new NullableDecimalValueRetriever());
+            RegisterValueRetriever(new NullableDoubleValueRetriever());
+            RegisterValueRetriever(new NullableFloatValueRetriever());
+            RegisterValueRetriever(new NullableULongValueRetriever());
+            RegisterValueRetriever(new NullableByteValueRetriever());
+            RegisterValueRetriever(new NullableSByteValueRetriever());
+            RegisterValueRetriever(new NullableIntValueRetriever());
+            RegisterValueRetriever(new NullableUIntValueRetriever());
+            RegisterValueRetriever(new NullableShortValueRetriever());
+            RegisterValueRetriever(new NullableUShortValueRetriever());
+            RegisterValueRetriever(new NullableLongValueRetriever());
         }
 
         public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
         {
             var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-            foreach(var valueRetriever in _registeredValueRetrievers.Values){
+            foreach(var valueRetriever in _registeredValueRetrievers){
                 foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
                     result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                 }
