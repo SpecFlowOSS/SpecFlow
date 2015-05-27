@@ -61,6 +61,7 @@ namespace TechTalk.SpecFlow
             TestRunner.Pending();
         }
 
+        //TODO[thread-safety]: remove this method and expose container
         public object GetBindingInstance(Type bindingType)
         {
             return objectContainer.Resolve(bindingType);
