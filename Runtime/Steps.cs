@@ -1,18 +1,33 @@
-﻿namespace TechTalk.SpecFlow
+﻿using BoDi;
+using TechTalk.SpecFlow.Infrastructure;
+
+namespace TechTalk.SpecFlow
 {
-    public abstract class Steps
+    public abstract class Steps : IContainerDependentObject
     {
-        protected readonly ITestRunner testRunner;
+        private IObjectContainer objectContainer;
 
-        protected Steps(ITestRunner testRunner)
+        private ITestRunner testRunner;
+
+        protected ITestRunner TestRunner
         {
-            this.testRunner = testRunner;
+            get
+            {
+                if (testRunner == null)
+                    throw new SpecFlowException("Container of the steps class has not been initialized!");
+                return testRunner;
+            }
         }
 
-        protected Steps() : this(ScenarioContext.Current.TestRunner)  // This will be AsyncTestRunner for asynchronous tests
+        void IContainerDependentObject.SetObjectContainer(IObjectContainer container)
         {
-            testRunner = ScenarioContext.Current.TestRunner;
+            if (objectContainer != null)
+                throw new SpecFlowException("Container of the steps class has already initialized!");
+
+            objectContainer = container;
+            testRunner = objectContainer.Resolve<ITestRunner>();
         }
+
 
         #region Given
         public void Given(string step)
@@ -32,7 +47,7 @@
 
         public void Given(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Given(step, multilineTextArg, tableArg, null);
+            TestRunner.Given(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -54,7 +69,7 @@
 
         public void When(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.When(step, multilineTextArg, tableArg, null);
+            TestRunner.When(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -76,7 +91,7 @@
 
         public void Then(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Then(step, multilineTextArg, tableArg, null);
+            TestRunner.Then(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -98,7 +113,7 @@
 
         public void But(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.But(step, multilineTextArg, tableArg, null);
+            TestRunner.But(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -120,7 +135,7 @@
 
         public void And(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.And(step, multilineTextArg, tableArg, null);
+            TestRunner.And(step, multilineTextArg, tableArg, null);
         }
         #endregion
     }

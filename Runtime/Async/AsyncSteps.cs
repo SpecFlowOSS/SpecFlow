@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Async
     {
         protected readonly IAsyncTestExecutor asyncTestExecutor;
 
-        protected AsyncSteps(ITestRunner testRunner, IAsyncTestExecutor asyncTestExecutor) : base(testRunner)
+        protected AsyncSteps(IAsyncTestExecutor asyncTestExecutor)
         {
             this.asyncTestExecutor = asyncTestExecutor;
         }

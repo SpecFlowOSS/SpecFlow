@@ -187,6 +187,13 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             newContext.ScenarioContainer.RegisterInstanceAs(newContext);
             newContext.ScenarioContainer.RegisterInstanceAs(FeatureContext);
+
+            newContext.ScenarioContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(newContext.ScenarioContainer);
+            };
         }
 
         public void CleanupScenarioContext()
