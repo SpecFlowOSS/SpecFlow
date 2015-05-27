@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void GetTestRunner_should_be_able_to_create_synch_runner()
         {
-            var testRunner = testRunnerManager.GetTestRunner(anAssembly, async: false);
+            var testRunner = testRunnerManager.GetTestRunner(anAssembly, false, 0);
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<TestRunner>(testRunner);
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void GetTestRunner_should_be_able_to_create_asynch_runner()
         {
-            var testRunner = testRunnerManager.GetTestRunner(anAssembly, async: true);
+            var testRunner = testRunnerManager.GetTestRunner(anAssembly, async: true, managedThreadId: 0);
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<AsyncTestRunner>(testRunner);
@@ -76,8 +76,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void GetTestRunner_should_cache_instance()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false);
-            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, async: false);
+            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 0);
+            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 0);
 
             Assert.AreEqual(testRunner1, testRunner2);
         }
@@ -85,8 +85,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void Should_return_async_instance_even_if_sync_instance_was_already_cached()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false);
-            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, async: true);
+            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 0);
+            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, async: true, managedThreadId: 0);
 
             Assert.AreNotEqual(testRunner1, testRunner2);
         }
@@ -94,8 +94,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void Should_return_different_instances_for_different_assemblies()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false);
-            var testRunner2 = testRunnerManager.GetTestRunner(anotherAssembly, async: false);
+            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 0);
+            var testRunner2 = testRunnerManager.GetTestRunner(anotherAssembly, async: false, managedThreadId: 0);
+
+            Assert.AreNotEqual(testRunner1, testRunner2);
+        }
+
+        [Test]
+        public void Should_return_different_instances_for_different_thread_ids()
+        {
+            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 1);
+            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, async: false, managedThreadId: 2);
 
             Assert.AreNotEqual(testRunner1, testRunner2);
         }

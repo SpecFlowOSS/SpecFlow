@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow
     public interface ITestRunnerManager
     {
         ITestRunner CreateTestRunner(Assembly testAssembly, bool async);
-        ITestRunner GetTestRunner(Assembly testAssembly, bool async);
+        ITestRunner GetTestRunner(Assembly testAssembly, bool async, int managedThreadId);
     }
 
     public class TestRunnerManager : ITestRunnerManager, IDisposable
@@ -33,18 +33,20 @@ namespace TechTalk.SpecFlow
         {
             public readonly Assembly TestAssembly;
             public readonly bool Async;
+            private readonly int managedThreadId;
 
-            public TestRunnerKey(Assembly testAssembly, bool async)
+            public TestRunnerKey(Assembly testAssembly, bool async, int managedThreadId)
             {
                 TestAssembly = testAssembly;
                 Async = async;
+                this.managedThreadId = managedThreadId;
             }
 
             public bool Equals(TestRunnerKey other)
             {
                 if (ReferenceEquals(null, other)) return false;
                 if (ReferenceEquals(this, other)) return true;
-                return Equals(other.TestAssembly, TestAssembly) && other.Async.Equals(Async);
+                return Equals(other.TestAssembly, TestAssembly) && other.Async.Equals(Async) && managedThreadId == other.managedThreadId;
             }
 
             public override bool Equals(object obj)
@@ -59,26 +61,21 @@ namespace TechTalk.SpecFlow
             {
                 unchecked
                 {
-                    return (TestAssembly.GetHashCode()*397) ^ Async.GetHashCode();
+                    var hashCode = (TestAssembly != null ? TestAssembly.GetHashCode() : 0);
+                    hashCode = (hashCode*397) ^ Async.GetHashCode();
+                    hashCode = (hashCode*397) ^ managedThreadId;
+                    return hashCode;
                 }
             }
         }
 
-        private readonly ThreadLocal<Dictionary<TestRunnerKey, ITestRunner>> testRunnerRegistry = new ThreadLocal<Dictionary<TestRunnerKey, ITestRunner>>(() => new Dictionary<TestRunnerKey, ITestRunner>());
-
-        private Dictionary<TestRunnerKey, ITestRunner> TestRunnerRegistry
-        {
-            get
-            {   
-                return testRunnerRegistry.Value;
-            }
-        }
+        private readonly Dictionary<TestRunnerKey, ITestRunner> testRunnerRegistry = new Dictionary<TestRunnerKey, ITestRunner>();
 
         private readonly object syncRoot = new object();
 
         public ITestRunner CreateTestRunner(Assembly testAssembly, bool async)
         {
-            return CreateTestRunner(new TestRunnerKey(testAssembly, async));
+            return CreateTestRunner(new TestRunnerKey(testAssembly, async, Thread.CurrentThread.ManagedThreadId));
         }
 
         protected virtual ITestRunner CreateTestRunner(TestRunnerKey key)
@@ -93,22 +90,22 @@ namespace TechTalk.SpecFlow
             return factory.Create(key.TestAssembly);
         }
 
-        public ITestRunner GetTestRunner(Assembly testAssembly, bool async)
+        public ITestRunner GetTestRunner(Assembly testAssembly, bool async, int managedThreadId)
         {
-            return GetTestRunner(new TestRunnerKey(testAssembly, async));
+            return GetTestRunner(new TestRunnerKey(testAssembly, async, managedThreadId));
         }
 
         protected virtual ITestRunner GetTestRunner(TestRunnerKey key)
         {
             ITestRunner testRunner;
-            if (!TestRunnerRegistry.TryGetValue(key, out testRunner))
+            if (!testRunnerRegistry.TryGetValue(key, out testRunner))
             {
                 lock(syncRoot)
                 {
-                    if (!TestRunnerRegistry.TryGetValue(key, out testRunner))
+                    if (!testRunnerRegistry.TryGetValue(key, out testRunner))
                     {
                         testRunner = CreateTestRunner(key);
-                        TestRunnerRegistry.Add(key, testRunner);
+                        testRunnerRegistry.Add(key, testRunner);
                     }
                 }
             }
@@ -117,19 +114,19 @@ namespace TechTalk.SpecFlow
 
         public virtual void Dispose()
         {
-            TestRunnerRegistry.Clear();
+            testRunnerRegistry.Clear();
         }
 
         #region Static Methods
 
         public static ITestRunner GetTestRunner()
         {
-            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), false);
+            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), false, Thread.CurrentThread.ManagedThreadId);
         }
 
         public static ITestRunner GetAsyncTestRunner()
         {
-            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), true);
+            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), true, Thread.CurrentThread.ManagedThreadId);
         }
 
         internal static void Reset()
