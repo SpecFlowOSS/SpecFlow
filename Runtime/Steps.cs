@@ -7,27 +7,56 @@ namespace TechTalk.SpecFlow
     {
         private IObjectContainer objectContainer;
 
-        private ITestRunner testRunner;
-
-        protected ITestRunner TestRunner
-        {
-            get
-            {
-                if (testRunner == null)
-                    throw new SpecFlowException("Container of the steps class has not been initialized!");
-                return testRunner;
-            }
-        }
-
         void IContainerDependentObject.SetObjectContainer(IObjectContainer container)
         {
             if (objectContainer != null)
                 throw new SpecFlowException("Container of the steps class has already initialized!");
 
             objectContainer = container;
-            testRunner = objectContainer.Resolve<ITestRunner>();
         }
 
+        protected ITestRunner TestRunner
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<ITestRunner>();
+            }
+        }
+
+        public ScenarioContext ScenarioContext
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<ScenarioContext>();
+            }
+        }
+
+        public FeatureContext FeatureContext
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<FeatureContext>();
+            }
+        }
+
+        public ScenarioStepContext StepContext
+        {
+            get
+            {
+                AssertInitialized();
+                var contextManager = objectContainer.Resolve<IContextManager>();
+                return contextManager.StepContext;
+            }
+        }
+
+        protected void AssertInitialized()
+        {
+            if (objectContainer == null)
+                throw new SpecFlowException("Container of the steps class has not been initialized!");
+        }
 
         #region Given
         public void Given(string step)
