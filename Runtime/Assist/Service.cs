@@ -15,10 +15,6 @@ namespace TechTalk.SpecFlow.Assist
         private Dictionary<string, IValueComparer> _registeredValueComparers = new Dictionary<string, IValueComparer>();
         private Dictionary<string, IValueRetriever> _registeredValueRetrievers = new Dictionary<string, IValueRetriever>();
 
-        public IDictionary<string, IValueComparer> RegisteredValueComparers { get { return _registeredValueComparers; } }
-
-        public IDictionary<string, IValueRetriever> RegisteredValueRetrievers { get { return _registeredValueRetrievers; } }
-
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers.Values; } }
 
         public static Service Instance { get; internal set; }
