@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow
 
         internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
         {
-            this.objectContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
+            this.objectContainer = CreateScenarioContainer(parentContainer);
             TestRunner = testRunner;
 
             Stopwatch = new Stopwatch();
@@ -54,6 +54,15 @@ namespace TechTalk.SpecFlow
             TestStatus = TestStatus.OK;
             PendingSteps = new List<string>();
             MissingSteps = new List<StepInstance>();
+        }
+
+        private ObjectContainer CreateScenarioContainer(IObjectContainer parentContainer)
+        {
+            var scenarioContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
+
+            scenarioContainer.RegisterInstanceAs(this, dispose: false);
+
+            return scenarioContainer;
         }
 
         public void Pending()
