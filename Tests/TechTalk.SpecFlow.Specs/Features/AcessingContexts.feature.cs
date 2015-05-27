@@ -311,6 +311,116 @@ if (testValue != ""test-value"") throw new Exception(""Test value was not found 
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("ScenarioContext can be accessed from Steps base class")]
+        public virtual void ScenarioContextCanBeAccessedFromStepsBaseClass()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ScenarioContext can be accessed from Steps base class", ((string[])(null)));
+#line 200
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 201
+ testRunner.Given("the following binding class", "[Binding]\npublic class StepsWithScenarioContext : Steps\n{\n[Given(@\"I put somethin" +
+                    "g into the context\")]\npublic void GivenIPutSomethingIntoTheContext()\n{\nScenarioC" +
+                    "ontext.Set(\"test-value\", \"test-key\");\n}\n}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 213
+ testRunner.Given("the following binding class", @"[Binding]
+public class AnotherStepsWithScenarioContext : Steps
+{
+[Then(@""something should be found in the context"")]
+public void ThenSomethingShouldBeFoundInTheContext()
+{
+var testValue = ScenarioContext.Get<string>(""test-key"");
+if (testValue != ""test-value"") throw new Exception(""Test value was not found in the scenarioContext""); 
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 226
+ testRunner.And("a scenario \'Simple Scenario\' as", "Given I put something into the context         \nThen something should be found in" +
+                    " the context", ((TechTalk.SpecFlow.Table)(null)));
+#line 231
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table6.AddRow(new string[] {
+                        "1"});
+#line 232
+ testRunner.Then("the execution summary should contain", ((string)(null)), table6);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("FeatureContext can be accessed from Steps base class")]
+        public virtual void FeatureContextCanBeAccessedFromStepsBaseClass()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FeatureContext can be accessed from Steps base class", ((string[])(null)));
+#line 236
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 237
+ testRunner.Given("the following binding class", "[Binding]\npublic class StepsWithFeatureContext : Steps\n{\n[Given(@\"I put something" +
+                    " into the context\")]\npublic void GivenIPutSomethingIntoTheContext()\n{\nFeatureCon" +
+                    "text.Set(\"test-value\", \"test-key\");\n}\n}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 249
+ testRunner.Given("the following binding class", @"[Binding]
+public class AnotherStepsWithFeatureContext : Steps
+{
+[Then(@""something should be found in the context"")]
+public void ThenSomethingShouldBeFoundInTheContext()
+{
+var testValue = FeatureContext.Get<string>(""test-key"");
+if (testValue != ""test-value"") throw new Exception(""Test value was not found in the scenarioContext""); 
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 262
+ testRunner.And("there is a feature file in the project as", "Feature: Feature1\n\nScenario: Scenario1\nGiven I put something into the context  \n\n" +
+                    "Scenario: Scenario2\nThen something should be found in the context", ((TechTalk.SpecFlow.Table)(null)));
+#line 272
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table7.AddRow(new string[] {
+                        "2"});
+#line 273
+ testRunner.Then("the execution summary should contain", ((string)(null)), table7);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("StepContext can be accessed from Steps base class")]
+        public virtual void StepContextCanBeAccessedFromStepsBaseClass()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("StepContext can be accessed from Steps base class", ((string[])(null)));
+#line 277
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 278
+ testRunner.Given("the following binding class", "[Binding]\npublic class MySteps : Steps\n{\n[When(@\"I do something\")]\npublic void Gi" +
+                    "venIPutSomethingIntoTheContext()\n{\n        if (StepContext.StepInfo.Text != \"I d" +
+                    "o something\") \n            throw new Exception(\"Invalid StepContext\"); \n}\n}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 291
+ testRunner.And("a scenario \'Simple Scenario\' as", "When I do something", ((TechTalk.SpecFlow.Table)(null)));
+#line 295
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table8.AddRow(new string[] {
+                        "1"});
+#line 296
+ testRunner.Then("the execution summary should contain", ((string)(null)), table8);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #endregion

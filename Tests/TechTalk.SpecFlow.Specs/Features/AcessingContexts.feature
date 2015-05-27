@@ -197,3 +197,103 @@ Scenario: The same FeatureContext should be inject in the scenarios of the same 
          | Succeeded |
          | 2         |
 
+Scenario: ScenarioContext can be accessed from Steps base class
+	Given the following binding class
+        """
+		[Binding]
+		public class StepsWithScenarioContext : Steps
+		{
+			[Given(@"I put something into the context")]
+			public void GivenIPutSomethingIntoTheContext()
+			{
+				ScenarioContext.Set("test-value", "test-key");
+			}
+		}
+        """	
+	Given the following binding class
+        """
+		[Binding]
+		public class AnotherStepsWithScenarioContext : Steps
+		{
+			[Then(@"something should be found in the context")]
+			public void ThenSomethingShouldBeFoundInTheContext()
+			{
+				var testValue = ScenarioContext.Get<string>("test-key");
+				if (testValue != "test-value") throw new Exception("Test value was not found in the scenarioContext"); 
+			}
+		}
+        """	
+	And a scenario 'Simple Scenario' as
+         """
+		 Given I put something into the context         
+		 Then something should be found in the context
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
+
+Scenario: FeatureContext can be accessed from Steps base class
+	Given the following binding class
+        """
+		[Binding]
+		public class StepsWithFeatureContext : Steps
+		{
+			[Given(@"I put something into the context")]
+			public void GivenIPutSomethingIntoTheContext()
+			{
+				FeatureContext.Set("test-value", "test-key");
+			}
+		}
+        """	
+	Given the following binding class
+        """
+		[Binding]
+		public class AnotherStepsWithFeatureContext : Steps
+		{
+			[Then(@"something should be found in the context")]
+			public void ThenSomethingShouldBeFoundInTheContext()
+			{
+				var testValue = FeatureContext.Get<string>("test-key");
+				if (testValue != "test-value") throw new Exception("Test value was not found in the scenarioContext"); 
+			}
+		}
+        """	
+	And there is a feature file in the project as
+         """
+		 Feature: Feature1
+	
+		 Scenario: Scenario1
+			Given I put something into the context  
+
+		 Scenario: Scenario2
+			Then something should be found in the context
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 2         |
+
+Scenario: StepContext can be accessed from Steps base class
+	Given the following binding class
+        """
+		[Binding]
+		public class MySteps : Steps
+		{
+			[When(@"I do something")]
+			public void GivenIPutSomethingIntoTheContext()
+			{
+                if (StepContext.StepInfo.Text != "I do something") 
+                    throw new Exception("Invalid StepContext"); 
+			}
+		}
+        """	
+	And a scenario 'Simple Scenario' as
+         """
+		 When I do something
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
+
