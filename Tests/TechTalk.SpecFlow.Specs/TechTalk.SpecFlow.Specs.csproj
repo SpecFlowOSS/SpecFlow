@@ -88,6 +88,11 @@
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
     <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
+    <Compile Include="Features\AcessingContexts.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcessingContexts.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -210,6 +215,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="Drivers\Templates\App.config" />
+    <None Include="Features\AcessingContexts.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\BasicExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BasicExecution.feature.cs</LastGenOutput>
