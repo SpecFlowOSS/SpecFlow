@@ -527,6 +527,107 @@ scenarioContext.Set(""test-value"", ""test-key"");
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should be able to inject FeatureContext")]
+        public virtual void ShouldBeAbleToInjectFeatureContext()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to inject FeatureContext", ((string[])(null)));
+#line 373
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 374
+ testRunner.Given("the following binding class", @"[Binding]
+public class StepsWithScenarioContext
+{
+public StepsWithScenarioContext(FeatureContext featureContext)
+{
+if (featureContext == null) throw new ArgumentNullException(""featureContext"");
+}
+
+[When(@""I do something"")]
+public void WhenIDoSomething()
+{
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 390
+ testRunner.And("a scenario \'Simple Scenario\' as", "When I do something         ", ((TechTalk.SpecFlow.Table)(null)));
+#line 394
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table10.AddRow(new string[] {
+                        "1"});
+#line 395
+ testRunner.Then("the execution summary should contain", ((string)(null)), table10);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("The same FeatureContext should be inject in the scenarios of the same feature")]
+        public virtual void TheSameFeatureContextShouldBeInjectInTheScenariosOfTheSameFeature()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The same FeatureContext should be inject in the scenarios of the same feature", ((string[])(null)));
+#line 399
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 400
+ testRunner.Given("the following binding class", @"[Binding]
+public class StepsWithFeatureContext
+{
+private readonly FeatureContext featureContext;
+
+public StepsWithFeatureContext(FeatureContext featureContext)
+{
+if (featureContext == null) throw new ArgumentNullException(""featureContext"");
+this.featureContext = featureContext;
+}
+
+[Given(@""I put something into the context"")]
+public void GivenIPutSomethingIntoTheContext()
+{
+featureContext.Set(""test-value"", ""test-key"");
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 420
+ testRunner.Given("the following binding class", @"[Binding]
+public class AnotherStepsWithFeatureContext
+{
+private readonly FeatureContext featureContext;
+
+public AnotherStepsWithFeatureContext(FeatureContext featureContext)
+{
+if (featureContext == null) throw new ArgumentNullException(""featureContext"");
+this.featureContext = featureContext;
+}
+
+[Then(@""something should be found in the context"")]
+public void ThenSomethingShouldBeFoundInTheContext()
+{
+var testValue = featureContext.Get<string>(""test-key"");
+if (testValue != ""test-value"") throw new Exception(""Test value was not found in the scenarioContext""); 
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 441
+ testRunner.And("there is a feature file in the project as", "Feature: Feature1\n\nScenario: Scenario1\nGiven I put something into the context  \n\n" +
+                    "Scenario: Scenario2\nThen something should be found in the context", ((TechTalk.SpecFlow.Table)(null)));
+#line 451
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table11.AddRow(new string[] {
+                        "2"});
+#line 452
+ testRunner.Then("the execution summary should contain", ((string)(null)), table11);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #endregion

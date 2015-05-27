@@ -39,11 +39,16 @@ namespace TechTalk.SpecFlow
 
         internal ITestRunner TestRunner { get; private set; } 
 
-        private readonly IObjectContainer objectContainer;
+        private readonly IObjectContainer scenarioContainer;
+
+        internal IObjectContainer ScenarioContainer
+        {
+            get { return scenarioContainer; }
+        }
 
         internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
         {
-            this.objectContainer = CreateScenarioContainer(parentContainer);
+            this.scenarioContainer = CreateScenarioContainer(parentContainer);
             TestRunner = testRunner;
 
             Stopwatch = new Stopwatch();
@@ -58,11 +63,7 @@ namespace TechTalk.SpecFlow
 
         private ObjectContainer CreateScenarioContainer(IObjectContainer parentContainer)
         {
-            var scenarioContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
-
-            scenarioContainer.RegisterInstanceAs(this, dispose: false);
-
-            return scenarioContainer;
+            return parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
         }
 
         public void Pending()
@@ -73,19 +74,19 @@ namespace TechTalk.SpecFlow
         //TODO[thread-safety]: remove this method and expose container
         public object GetBindingInstance(Type bindingType)
         {
-            return objectContainer.Resolve(bindingType);
+            return scenarioContainer.Resolve(bindingType);
         }
 
         internal void SetBindingInstance(Type bindingType, object instance)
         {
-            objectContainer.RegisterInstanceAs(instance, bindingType);
+            scenarioContainer.RegisterInstanceAs(instance, bindingType);
         }
 
         protected override void Dispose()
         {
             base.Dispose();
 
-            objectContainer.Dispose();
+            scenarioContainer.Dispose();
         }
     }
 }
