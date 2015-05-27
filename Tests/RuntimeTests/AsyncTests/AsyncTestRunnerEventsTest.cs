@@ -53,17 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
 
             Assert.IsNotNull(CurrentScenarioContext.Get<IAsyncTestExecutor>());
         }
-
-        [Test]
-        public void OnScenarioStart_RegistersAsyncTestRunnerInScenarioContext()
-        {
-            asyncTestRunner.RegisterAsyncTestExecutor(fakeAsyncTestExecutor);
-            var scenarioInfo = new ScenarioInfo("title");
-            asyncTestRunner.OnScenarioStart(scenarioInfo);
-
-            Assert.AreEqual(asyncTestRunner, CurrentScenarioContext.TestRunner);
-        }
-
+       
         [Test]
         public void OnScenarioEnd_DefersToInnerSynchronousTestRunner()
         {

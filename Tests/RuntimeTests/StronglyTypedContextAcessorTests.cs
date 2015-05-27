@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BoDi;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -245,7 +246,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private static ScenarioContext CreateScenarioContext()
         {
-            return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null, null);
+            return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), new ObjectContainer());
         }
 
         public class ScenarioTestClass : IScenarioTestInterface

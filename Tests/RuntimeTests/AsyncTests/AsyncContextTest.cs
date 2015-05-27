@@ -13,9 +13,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
         [SetUp]
         public void Setup()
         {
-            IObjectContainer container;
-            var testRunner = TestTestRunnerFactory.CreateTestRunner(out container);
-            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), testRunner, container);
+            IObjectContainer container = new ObjectContainer();
+            ScenarioContext.Current = new ScenarioContext(new ScenarioInfo("sample scenario"), container);
         }
 
         [Test]

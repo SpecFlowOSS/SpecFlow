@@ -37,8 +37,6 @@ namespace TechTalk.SpecFlow
         internal List<StepInstance> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
-        internal ITestRunner TestRunner { get; private set; } 
-
         private readonly IObjectContainer scenarioContainer;
 
         internal IObjectContainer ScenarioContainer
@@ -46,10 +44,12 @@ namespace TechTalk.SpecFlow
             get { return scenarioContainer; }
         }
 
-        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
+        internal ScenarioContext(ScenarioInfo scenarioInfo, IObjectContainer parentContainer)
         {
-            this.scenarioContainer = CreateScenarioContainer(parentContainer);
-            TestRunner = testRunner;
+            if (parentContainer == null)
+                throw new ArgumentNullException("parentContainer");
+
+            this.scenarioContainer = new ObjectContainer(parentContainer);
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -61,14 +61,9 @@ namespace TechTalk.SpecFlow
             MissingSteps = new List<StepInstance>();
         }
 
-        private ObjectContainer CreateScenarioContainer(IObjectContainer parentContainer)
-        {
-            return parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
-        }
-
         public void Pending()
         {
-            TestRunner.Pending();
+            throw new PendingStepException();
         }
 
         //TODO[thread-safety]: remove this method and expose container

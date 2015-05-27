@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
             testExecutionEngineStub.Setup(tr => tr.ScenarioContext).Returns(() => contextManagerStub.Object.ScenarioContext);
             testExecutionEngineStub.Setup(tr => tr.FeatureContext).Returns(() => contextManagerStub.Object.FeatureContext);
             testExecutionEngineStub.Setup(m => m.OnScenarioStart(It.IsAny<ScenarioInfo>())).Callback(
-                (ScenarioInfo si) => contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(new ScenarioContext(si, asyncTestRunner, null))
+                (ScenarioInfo si) => contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(new ScenarioContext(si, new ObjectContainer()))
                 );
             fakeAsyncTestExecutor = new FakeAsyncTestExecutor();
 

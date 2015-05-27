@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
@@ -45,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
-            scenarioContext = new ScenarioContext(new ScenarioInfo("scenario_title"), null, null);
+            scenarioContext = new ScenarioContext(new ScenarioInfo("scenario_title"), new ObjectContainer());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
 

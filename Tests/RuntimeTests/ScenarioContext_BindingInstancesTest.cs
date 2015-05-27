@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using BoDi;
@@ -17,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             testRunner = TestTestRunnerFactory.CreateTestRunner(out container, registerMocks);
-            return new ScenarioContext(new ScenarioInfo("sample scenario", new string[0]), testRunner, container);
+            return new ScenarioContext(new ScenarioInfo("sample scenario", new string[0]), container);
         }
 
         [Test]
