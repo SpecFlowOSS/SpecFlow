@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private static TestClassGenerationContext CreateGenerationContext(string tag)
         {
-            return new TestClassGenerationContext(null, new Feature { Tags = new Tags(new Tag(tag)) }, null, null, null, null, null, null, null, null, null, true, false);
+            return new TestClassGenerationContext(null, new Feature { Tags = new Tags(new Tag(tag)) }, null, null, null, null, null, null, null, null, null, null, true, false);
         }
 
         [Test]
