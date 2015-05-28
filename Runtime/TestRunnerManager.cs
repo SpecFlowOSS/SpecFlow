@@ -1,102 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
 {
-    public interface ITestRunnerManager
+    public interface ITestRunnerManager : IDisposable
     {
-        ITestRunner CreateTestRunner(Assembly testAssembly);
-        ITestRunner GetTestRunner(Assembly testAssembly, int managedThreadId);
+        ITestRunner GetTestRunner(int managedThreadId);
+        void Initialize(Assembly testAssembly);
     }
 
-    public class TestRunnerManager : ITestRunnerManager, IDisposable
+    public class TestRunnerManager : ITestRunnerManager
     {
-        public static ITestRunnerManager Instance { get; internal set; }
-
-        static TestRunnerManager()
-        {
-            Instance = new TestRunnerManager();
-        }
-
         private readonly ITestRunContainerBuilder testRunContainerBuilder;
+        private Assembly testAssembly;
 
-        public TestRunnerManager(ITestRunContainerBuilder testRunContainerBuilder = null)
+        public TestRunnerManager(ITestRunContainerBuilder testRunContainerBuilder)
         {
-            this.testRunContainerBuilder = testRunContainerBuilder ?? new TestRunContainerBuilder();
+            this.testRunContainerBuilder = testRunContainerBuilder;
         }
 
-        protected class TestRunnerKey
-        {
-            public readonly Assembly TestAssembly;
-            private readonly int managedThreadId;
-
-            public TestRunnerKey(Assembly testAssembly, int managedThreadId)
-            {
-                TestAssembly = testAssembly;
-                this.managedThreadId = managedThreadId;
-            }
-
-            public bool Equals(TestRunnerKey other)
-            {
-                if (ReferenceEquals(null, other)) return false;
-                if (ReferenceEquals(this, other)) return true;
-                return Equals(other.TestAssembly, TestAssembly) && managedThreadId == other.managedThreadId;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(null, obj)) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != typeof (TestRunnerKey)) return false;
-                return Equals((TestRunnerKey) obj);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    var hashCode = (TestAssembly != null ? TestAssembly.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ managedThreadId;
-                    return hashCode;
-                }
-            }
-        }
-
-        private readonly Dictionary<TestRunnerKey, ITestRunner> testRunnerRegistry = new Dictionary<TestRunnerKey, ITestRunner>();
+        private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
 
         private readonly object syncRoot = new object();
 
-        public ITestRunner CreateTestRunner(Assembly testAssembly)
-        {
-            return CreateTestRunner(new TestRunnerKey(testAssembly, Thread.CurrentThread.ManagedThreadId));
-        }
-
-        protected virtual ITestRunner CreateTestRunner(TestRunnerKey key)
+        public virtual ITestRunner CreateTestRunner()
         {
             var container = testRunContainerBuilder.CreateContainer();
             var factory = container.Resolve<ITestRunnerFactory>();
-            return factory.Create(key.TestAssembly);
+            return factory.Create(testAssembly);
         }
 
-        public ITestRunner GetTestRunner(Assembly testAssembly, int managedThreadId)
+        public void Initialize(Assembly assignedTestAssembly)
         {
-            return GetTestRunner(new TestRunnerKey(testAssembly, managedThreadId));
+            this.testAssembly = assignedTestAssembly;
         }
 
-        protected virtual ITestRunner GetTestRunner(TestRunnerKey key)
+        public virtual ITestRunner GetTestRunner(int managedThreadId)
         {
             ITestRunner testRunner;
-            if (!testRunnerRegistry.TryGetValue(key, out testRunner))
+            if (!testRunnerRegistry.TryGetValue(managedThreadId, out testRunner))
             {
                 lock(syncRoot)
                 {
-                    if (!testRunnerRegistry.TryGetValue(key, out testRunner))
+                    if (!testRunnerRegistry.TryGetValue(managedThreadId, out testRunner))
                     {
-                        testRunner = CreateTestRunner(key);
-                        testRunnerRegistry.Add(key, testRunner);
+                        testRunner = CreateTestRunner();
+                        testRunnerRegistry.Add(managedThreadId, testRunner);
                     }
                 }
             }
@@ -108,18 +61,56 @@ namespace TechTalk.SpecFlow
             testRunnerRegistry.Clear();
         }
 
-        #region Static Methods
+        #region Static API
 
-        public static ITestRunner GetTestRunner()
+        private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new Dictionary<Assembly, ITestRunnerManager>(1);
+        private static readonly object testRunnerManagerRegistrySyncRoot = new object();
+
+        private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, ITestRunContainerBuilder testRunContainerBuilder = null)
         {
-            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), Thread.CurrentThread.ManagedThreadId);
+            ITestRunnerManager testRunnerManager;
+            if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
+            {
+                lock (testRunnerManagerRegistrySyncRoot)
+                {
+                    if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
+                    {
+                        testRunnerManager = CreateTestRunnerManager(testAssembly, testRunContainerBuilder);
+                        testRunnerManagerRegistry.Add(testAssembly, testRunnerManager);
+                    }
+                }
+            }
+            return testRunnerManager;
+        }
+
+        private static ITestRunnerManager CreateTestRunnerManager(Assembly testAssembly, ITestRunContainerBuilder testRunContainerBuilder = null)
+        {
+            testRunContainerBuilder = testRunContainerBuilder ?? new TestRunContainerBuilder();
+
+            var container = testRunContainerBuilder.CreateContainer();
+            var testRunnerManager = container.Resolve<ITestRunnerManager>();
+            testRunnerManager.Initialize(testAssembly); //TODO[thread-safety]: consider factory
+            return testRunnerManager;
+        }
+
+        public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
+        {
+            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+            managedThreadId = managedThreadId ?? Thread.CurrentThread.ManagedThreadId;
+            var testRunnerManager = GetTestRunnerManager(testAssembly);
+            return testRunnerManager.GetTestRunner(managedThreadId.Value);
         }
 
         internal static void Reset()
         {
-            if (Instance is IDisposable)
-                ((IDisposable)Instance).Dispose();
-            Instance = new TestRunnerManager();
+            lock (testRunnerManagerRegistrySyncRoot)
+            {
+                foreach (var testRunnerManager in testRunnerManagerRegistry.Values)
+                {
+                    testRunnerManager.Dispose();
+                }
+                testRunnerManagerRegistry.Clear();
+            }
         }
 
         #endregion

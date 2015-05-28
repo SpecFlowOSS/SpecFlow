@@ -26,6 +26,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
+            container.RegisterInstanceAs<ITestRunContainerBuilder>(this);
 
             RegisterDefaults(container);
 

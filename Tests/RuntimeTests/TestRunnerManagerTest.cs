@@ -1,8 +1,12 @@
 using System.Reflection;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
+    /// <summary>
+    /// Testing instance members of TestRunnerManager
+    /// </summary>
     [TestFixture]
     public class TestRunnerManagerTest
     {
@@ -13,33 +17,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void Setup()
         {
-            TestRunnerManager.Reset();
-
-            testRunnerManager = new TestRunnerManager();
+            testRunnerManager = new TestRunnerManager(new TestRunContainerBuilder());
+            testRunnerManager.Initialize(anAssembly);
         }
 
         [Test]
-        public void GetTestRunner_without_arguments_should_return_synchronous_TestRunner_instance()
+        public void CreateTestRunner_should_be_able_to_create_a_testrunner()
         {
-            var testRunner = TestRunnerManager.GetTestRunner();
+            var testRunner = testRunnerManager.CreateTestRunner();
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<TestRunner>(testRunner);
         }
 
         [Test]
-        public void CreateTestRunner_should_be_able_to_create_synch_runner()
+        public void GetTestRunner_should_be_able_to_create_a_testrunner()
         {
-            var testRunner = testRunnerManager.CreateTestRunner(anAssembly);
-
-            Assert.IsNotNull(testRunner);
-            Assert.IsInstanceOf<TestRunner>(testRunner);
-        }
-
-        [Test]
-        public void GetTestRunner_should_be_able_to_create_synch_runner()
-        {
-            var testRunner = testRunnerManager.GetTestRunner(anAssembly, 0);
+            var testRunner = testRunnerManager.GetTestRunner(0);
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<TestRunner>(testRunner);
@@ -48,34 +42,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void GetTestRunner_should_cache_instance()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, managedThreadId: 0);
-            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, managedThreadId: 0);
+            var testRunner1 = testRunnerManager.GetTestRunner(managedThreadId: 0);
+            var testRunner2 = testRunnerManager.GetTestRunner(managedThreadId: 0);
 
             Assert.AreEqual(testRunner1, testRunner2);
         }
 
         [Test]
-        public void Should_return_different_instances_for_different_assemblies()
-        {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, managedThreadId: 0);
-            var testRunner2 = testRunnerManager.GetTestRunner(anotherAssembly, managedThreadId: 0);
-
-            Assert.AreNotEqual(testRunner1, testRunner2);
-        }
-
-        [Test]
         public void Should_return_different_instances_for_different_thread_ids()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(anAssembly, managedThreadId: 1);
-            var testRunner2 = testRunnerManager.GetTestRunner(anAssembly, managedThreadId: 2);
+            var testRunner1 = testRunnerManager.GetTestRunner(managedThreadId: 1);
+            var testRunner2 = testRunnerManager.GetTestRunner(managedThreadId: 2);
 
             Assert.AreNotEqual(testRunner1, testRunner2);
-        }
-
-        [Test]
-        public void Should_provide_a_singleton_instance()
-        {
-            Assert.IsNotNull(TestRunnerManager.Instance);
         }
     }
 }

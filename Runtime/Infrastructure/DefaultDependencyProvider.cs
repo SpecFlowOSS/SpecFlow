@@ -16,6 +16,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             container.RegisterTypeAs<DefaultRuntimeConfigurationProvider, IRuntimeConfigurationProvider>();
 
+            container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
+
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
             container.RegisterTypeAs<TestRunner, ITestRunner>();
             container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
