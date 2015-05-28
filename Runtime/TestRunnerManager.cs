@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow
             var bindingAssemblies = GetBindingAssemblies();
             BuildBindingRegistry(bindingAssemblies);
 
-            testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
+            testRunner.OnTestRunStart();
 
 #if !SILVERLIGHT
             EventHandler domainUnload = delegate { OnTestRunnerEnd(); };

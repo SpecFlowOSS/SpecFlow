@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var factory = CreateTestRunnerFactory();
             factory.CreateTestRunner(0);
 
-            testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
+            testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             factory.CreateTestRunner(0);
 
-            testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anotherAssembly))));
+            testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             factory.CreateTestRunner(0);
 
-            testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
+            testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
         [Test]

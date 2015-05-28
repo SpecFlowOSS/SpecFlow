@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -28,14 +26,14 @@ namespace TechTalk.SpecFlow
             get { return executionEngine.ScenarioContext; }
         }
 
-        public void InitializeTestRunner(Assembly[] bindingAssemblies)
+        public void OnTestRunStart()
         {
-            executionEngine.Initialize(bindingAssemblies);
+            executionEngine.OnTestRunStart();
         }
 
         public void InitializeTestRunner(int threadId)
         {
-            this.ThreadId = threadId;
+            ThreadId = threadId;
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)
@@ -51,7 +49,6 @@ namespace TechTalk.SpecFlow
         public void OnScenarioStart(ScenarioInfo scenarioInfo)
         {
             executionEngine.OnScenarioStart(scenarioInfo);
-
         }
 
         public void CollectScenarioErrors()

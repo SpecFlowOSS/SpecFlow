@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
@@ -10,15 +9,16 @@ namespace TechTalk.SpecFlow
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
 
-        void InitializeTestRunner(Assembly[] bindingAssemblies); //TODO[thread-safety]: change to onstart
         void InitializeTestRunner(int threadId);
+
+        void OnTestRunStart();
+        void OnTestRunEnd();
 
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
         void OnScenarioStart(ScenarioInfo scenarioInfo);
         void CollectScenarioErrors();
         void OnScenarioEnd();
-        void OnTestRunEnd();
 
         void Given(string text, string multilineTextArg, Table tableArg, string keyword = null);
         void When(string text, string multilineTextArg, Table tableArg, string keyword = null);
