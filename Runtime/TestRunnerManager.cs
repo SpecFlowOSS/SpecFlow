@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow
 {
     public interface ITestRunnerManager : IDisposable
     {
+        bool IsMultiThreaded { get; }
         ITestRunner GetTestRunner(int threadId);
         void Initialize(Assembly testAssembly);
     }
@@ -28,6 +29,8 @@ namespace TechTalk.SpecFlow
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
         private readonly object syncRoot = new object();
         private bool isTestRunInitialized;
+
+        public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
         public TestRunnerManager(IObjectContainer globalContainer, ITestRunContainerBuilder testRunContainerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {

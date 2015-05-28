@@ -35,7 +35,6 @@ namespace TechTalk.SpecFlow.Tracing
         {
             this.traceListener = traceListener;
             this.testRunnerManager = testRunnerManager;
-            Start();
         }
 
         public void Start()
@@ -72,6 +71,22 @@ namespace TechTalk.SpecFlow.Tracing
         {
             if (error != null)
                 throw new SpecFlowException("Trace listener failed.", error);
+
+            if (!testRunnerManager.IsMultiThreaded)
+            {
+                // log synchronously
+                ForwardMessage(new TraceMessage(isToolMessgae, message));
+                return;
+            }
+
+            if (consumerTask == null)
+            {
+                lock (this)
+                {
+                    if (consumerTask == null)
+                        Start();
+                }
+            }
 
             messages.Add(new TraceMessage(isToolMessgae, string.Format("#{1}: {0}", message, sourceTestRunner.ThreadId)));
         }
