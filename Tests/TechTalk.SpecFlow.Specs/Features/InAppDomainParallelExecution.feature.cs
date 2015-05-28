@@ -247,22 +247,19 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("ScenarioContext.Currentcannot be used in multi-threaded execution")]
-        public virtual void ScenarioContext_CurrentcannotBeUsedInMulti_ThreadedExecution()
+        public virtual void CurrentContextCannotBeUsedInMulti_ThreadedExecution(string context, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ScenarioContext.Currentcannot be used in multi-threaded execution", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Current context cannot be used in multi-threaded execution", exampleTags);
 #line 156
 this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 157
- testRunner.Given("there is a feature file in the project as", "Feature: Feature with ScenarioContext.Current\nScenario: Simple Scenario\n     When" +
-                    " I use ScenarioContext.Current", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.Given("there is a feature file in the project as", string.Format("Feature: Feature with {0}.Current\nScenario: Simple Scenario\n     When I use {0}.C" +
+                        "urrent", context), ((TechTalk.SpecFlow.Table)(null)));
 #line hidden
 #line 163
- testRunner.And("the following step definition", "[When(@\"I use ScenarioContext.Current\")]\npublic void WhenIUseScenarioContextCurre" +
-                    "nt()\n{\n   System.Threading.Thread.Sleep(200);\n   Console.WriteLine(ScenarioConte" +
-                    "xt.Current);\r\n}", ((TechTalk.SpecFlow.Table)(null)));
+ testRunner.And("the following step definition", string.Format("[When(@\"I use {0}.Current\")]\npublic void WhenIUseContextCurrent()\n{{\n   System.Th" +
+                        "reading.Thread.Sleep(200);\n   Console.WriteLine({0}.Current);\r\n}}", context), ((TechTalk.SpecFlow.Table)(null)));
 #line 172
     testRunner.When("I execute the tests with NUnit3");
 #line 173
@@ -276,6 +273,27 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("the execution summary should contain", ((string)(null)), table3);
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Current context cannot be used in multi-threaded execution")]
+        public virtual void CurrentContextCannotBeUsedInMulti_ThreadedExecution_ScenarioContext()
+        {
+            this.CurrentContextCannotBeUsedInMulti_ThreadedExecution("ScenarioContext", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Current context cannot be used in multi-threaded execution")]
+        public virtual void CurrentContextCannotBeUsedInMulti_ThreadedExecution_FeatureContext()
+        {
+            this.CurrentContextCannotBeUsedInMulti_ThreadedExecution("FeatureContext", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Current context cannot be used in multi-threaded execution")]
+        public virtual void CurrentContextCannotBeUsedInMulti_ThreadedExecution_ScenarioStepContext()
+        {
+            this.CurrentContextCannotBeUsedInMulti_ThreadedExecution("ScenarioStepContext", ((string[])(null)));
         }
     }
 }

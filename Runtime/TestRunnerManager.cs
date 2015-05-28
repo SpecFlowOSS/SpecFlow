@@ -124,9 +124,12 @@ namespace TechTalk.SpecFlow
                         testRunner = CreateTestRunner(threadId);
                         testRunnerRegistry.Add(threadId, testRunner);
 
-                        if (testRunnerRegistry.Count > 1)
+                        if (IsMultiThreaded)
+                        {
+                            FeatureContext.DisableSingletonInstance();
                             ScenarioContext.DisableSingletonInstance();
-
+                            ScenarioStepContext.DisableSingletonInstance();
+                        }
                     }
                 }
             }

@@ -153,20 +153,20 @@ Scenario: TraceListener should be called synchronously
 		| 25    | 25        |
 
 
-Scenario: ScenarioContext.Currentcannot be used in multi-threaded execution
+Scenario Outline: Current context cannot be used in multi-threaded execution
 	Given there is a feature file in the project as
 		"""
-		Feature: Feature with ScenarioContext.Current
+		Feature: Feature with <context>.Current
 		Scenario: Simple Scenario
-	      When I use ScenarioContext.Current
+	      When I use <context>.Current
 		"""
 	And the following step definition
          """
-         [When(@"I use ScenarioContext.Current")]
-		 public void WhenIUseScenarioContextCurrent()
+         [When(@"I use <context>.Current")]
+		 public void WhenIUseContextCurrent()
 		 {
             System.Threading.Thread.Sleep(200);
-            Console.WriteLine(ScenarioContext.Current);
+            Console.WriteLine(<context>.Current);
 		 }
          """
     When I execute the tests with NUnit3
@@ -174,3 +174,9 @@ Scenario: ScenarioContext.Currentcannot be used in multi-threaded execution
 	And the execution summary should contain
 		| Failed |
 		| 1      |
+
+Examples: 
+    | context             |
+    | ScenarioContext     |
+    | FeatureContext      |
+    | ScenarioStepContext |

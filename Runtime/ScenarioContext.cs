@@ -15,6 +15,7 @@ namespace TechTalk.SpecFlow
 {
     public class ScenarioContext : SpecFlowContext
     {
+        #region Singleton
         private static bool isCurrentDisabled = false;
         private static ScenarioContext current;
         public static ScenarioContext Current
@@ -42,6 +43,7 @@ namespace TechTalk.SpecFlow
             Thread.MemoryBarrier();
             current = null;
         }
+        #endregion
 
         public ScenarioInfo ScenarioInfo { get; private set; }
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
