@@ -19,8 +19,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
 
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
-            container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
-            container.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>(); //TODO[thread-safety]: move to test runner container?
@@ -28,7 +26,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<DefaultListener, ITraceListener>(); //TODO[thread-safety]: move to test runner container?
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
-            container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
             container.RegisterTypeAs<RuntimeBindingRegistryBuilder, IRuntimeBindingRegistryBuilder>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
@@ -51,6 +48,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             testRunnerContainer.RegisterTypeAs<TestRunner, ITestRunner>();
             testRunnerContainer.RegisterTypeAs<ContextManager, IContextManager>();
+            testRunnerContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+
+            // needs to invoke methods so requires the context manager
+            testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
+            testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
         }
     }
 }
