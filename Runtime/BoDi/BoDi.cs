@@ -219,6 +219,11 @@ namespace BoDi
             {
                 return GetReverseEnumerable().Select(i => i.Value ?? i.Key.Type).Reverse().ToArray();
             }
+
+            public override string ToString()
+            {
+                return string.Join(",", GetReverseEnumerable().Select(n => string.Format("{0}:{1}", n.Key, n.Value)));
+            }
         }
 
         private struct RegistrationKey
@@ -642,9 +647,6 @@ namespace BoDi
             if (GetObjectFromPool(pooledObjectKey, out obj))
                 return obj;
 
-            if (baseContainer != null)
-                return baseContainer.GetPooledObject(pooledObjectKey);
-
             return null;
         }
 
@@ -668,7 +670,9 @@ namespace BoDi
             var registrationResult = GetRegistrationResult(keyToResolve) ?? 
                 new KeyValuePair<ObjectContainer, IRegistration>(this, new TypeRegistration(keyToResolve.Type));
 
-            return registrationResult.Value.Resolve(registrationResult.Key, keyToResolve, resolutionPath);
+            var resolutionPathForResolve = registrationResult.Key == this ? 
+                resolutionPath : new ResolutionList();
+            return registrationResult.Value.Resolve(registrationResult.Key, keyToResolve, resolutionPathForResolve);
         }
 
         private object CreateObject(Type type, ResolutionList resolutionPath, RegistrationKey keyToResolve)

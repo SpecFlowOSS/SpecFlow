@@ -54,15 +54,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
             testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
-            testRunnerContainer.RegisterTypeAs<AsyncTestTracer, ITestTracer>(); //TODO[thread-safety]: fix bodi error to avoid this
-        }
-
-        class AsyncTestTracer : TestTracer
-        {
-            public AsyncTestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, RuntimeConfiguration runtimeConfiguration)
-                : base(traceListener, stepFormatter, stepDefinitionSkeletonProvider, runtimeConfiguration)
-            {
-            }
+            testRunnerContainer.RegisterTypeAs<TestTracer, ITestTracer>();
         }
     }
 }

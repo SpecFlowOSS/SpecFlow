@@ -106,8 +106,6 @@ namespace TechTalk.SpecFlow
         public void Initialize(Assembly assignedTestAssembly)
         {
             testAssembly = assignedTestAssembly;
-
-            globalContainer.Resolve<ITraceListenerQueue>(); //TODO[thread-safety]: remove when bodi fixed
         }
 
         public virtual ITestRunner GetTestRunner(int managedThreadId)
