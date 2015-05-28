@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using BoDi;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
 
-namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
+namespace TechTalk.SpecFlow.RuntimeTests
 {
     [TestFixture]
-    public class TestRunnerFactoryTests
+    public class TestRunnerManagerRunnerCreationTests
     {
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
         private readonly Mock<IObjectContainer> objectContainerStub = new Mock<IObjectContainer>();
         private readonly Mock<IObjectContainer> globalObjectContainerStub = new Mock<IObjectContainer>();
         private readonly RuntimeConfiguration runtimeConfigurationStub = new RuntimeConfiguration();
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
-        private readonly Assembly anotherAssembly = typeof(TestRunnerFactory).Assembly;
+        private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
 
-        private TestRunnerFactory CreateTestRunnerFactory()
+        private TestRunnerManager CreateTestRunnerFactory()
         {
             objectContainerStub.Setup(o => o.Resolve<ITestRunner>()).Returns(testRunnerFake.Object);
             globalObjectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
@@ -30,7 +30,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             testRunContainerBuilderStub.Setup(b => b.CreateTestRunnerContainer(It.IsAny<IObjectContainer>()))
                 .Returns(objectContainerStub.Object);
 
-            return new TestRunnerFactory(globalObjectContainerStub.Object, runtimeConfigurationStub, testRunContainerBuilderStub.Object);
+            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, runtimeConfigurationStub);
+            testRunnerManager.Initialize(anAssembly);
+            return testRunnerManager;
         }
 
         [Test]
@@ -38,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             var factory = CreateTestRunnerFactory();
 
-            var testRunner = factory.Create(anAssembly);
+            var testRunner = factory.CreateTestRunner();
             testRunner.Should().NotBeNull();
         }
 
@@ -46,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Should_initialize_test_runner_with_the_provided_assembly()
         {
             var factory = CreateTestRunnerFactory();
-            factory.Create(anAssembly);
+            factory.CreateTestRunner();
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
         }
@@ -57,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var factory = CreateTestRunnerFactory();
             runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
-            factory.Create(anAssembly);
+            factory.CreateTestRunner();
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anotherAssembly))));
         }
@@ -68,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var factory = CreateTestRunnerFactory();
             runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
-            factory.Create(anAssembly);
+            factory.CreateTestRunner();
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
         }

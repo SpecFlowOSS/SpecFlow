@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
+using BoDi;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
@@ -14,12 +17,16 @@ namespace TechTalk.SpecFlow
 
     public class TestRunnerManager : ITestRunnerManager
     {
-        private readonly ITestRunnerFactory testRunnerFactory;
+        protected readonly IObjectContainer globalContainer;
+        protected readonly ITestRunContainerBuilder testRunContainerBuilder;
+        protected readonly RuntimeConfiguration runtimeConfiguration;
         private Assembly testAssembly;
 
-        public TestRunnerManager(ITestRunnerFactory testRunnerFactory)
+        public TestRunnerManager(IObjectContainer globalContainer, ITestRunContainerBuilder testRunContainerBuilder, RuntimeConfiguration runtimeConfiguration)
         {
-            this.testRunnerFactory = testRunnerFactory;
+            this.globalContainer = globalContainer;
+            this.testRunContainerBuilder = testRunContainerBuilder;
+            this.runtimeConfiguration = runtimeConfiguration;
         }
 
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
@@ -28,7 +35,24 @@ namespace TechTalk.SpecFlow
 
         public virtual ITestRunner CreateTestRunner()
         {
-            return testRunnerFactory.Create(testAssembly);
+            var testRunner = CreateTestRunnerInstance();
+
+            var bindingAssemblies = new List<Assembly> { testAssembly };
+
+            var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
+            bindingAssemblies.AddRange(
+                runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
+
+            testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
+
+            return testRunner;
+        }
+
+        protected virtual ITestRunner CreateTestRunnerInstance()
+        {
+            var testRunnerContainer = testRunContainerBuilder.CreateTestRunnerContainer(globalContainer);
+
+            return testRunnerContainer.Resolve<ITestRunner>();
         }
 
         public void Initialize(Assembly assignedTestAssembly)

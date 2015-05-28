@@ -18,8 +18,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
 
-            container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
-
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>(); //TODO[thread-safety]: move to test runner container?
 

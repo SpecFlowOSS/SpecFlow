@@ -16,9 +16,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void Setup()
         {
-            var testRunnerFactoryStub = new TestRunContainerBuilder().CreateContainer().Resolve<ITestRunnerFactory>();
-
-            testRunnerManager = new TestRunnerManager(testRunnerFactoryStub);
+            var globalContainer = new TestRunContainerBuilder().CreateContainer();
+            testRunnerManager = globalContainer.Resolve<TestRunnerManager>();
             testRunnerManager.Initialize(anAssembly);
         }
 

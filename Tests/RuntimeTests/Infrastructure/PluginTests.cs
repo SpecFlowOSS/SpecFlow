@@ -161,8 +161,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             // with default unit test provider, the plugin should not change the default factory
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
-            var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            testRunnerFactory.Should().BeOfType<TestRunnerFactory>();
+            var testRunnerFactory = container.Resolve<ITestRunnerManager>();
+            testRunnerFactory.Should().BeOfType<TestRunnerManager>();
 
             // with StopAtFirstError == true, we should get a custom factory
             var specialConfiguratuion = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>

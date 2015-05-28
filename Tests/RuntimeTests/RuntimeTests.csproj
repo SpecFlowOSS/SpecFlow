@@ -150,7 +150,7 @@
     <Compile Include="Infrastructure\StringConfigProvider.cs" />
     <Compile Include="Infrastructure\TestExecutionEngineTests.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
-    <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
+    <Compile Include="TestRunnerManagerRunnerCreationTests.cs" />
     <Compile Include="ScenarioStepContextTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
