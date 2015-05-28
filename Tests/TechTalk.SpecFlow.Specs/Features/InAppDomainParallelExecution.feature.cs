@@ -191,7 +191,7 @@ this.ScenarioSetup(scenarioInfo);
     {
         var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
         System.Diagnostics.Debug.WriteLine(""NonThreadSafeTraceListener: {0}"", message);
-        System.IO.File.AppendAllText(@""NonThreadSafeTraceListener.log"", ""NonThreadSafeTraceListener: "" + message + Environment.CurrentDirectory + Environment.NewLine);
+        System.IO.File.AppendAllText(@""NonThreadSafeTraceListener.log"", ""NonThreadSafeTraceListener: "" + message + Environment.NewLine);
         System.Threading.Thread.Sleep(100);
         var afterStartIndex = startIndex;
         if (afterStartIndex != currentStartIndex)
