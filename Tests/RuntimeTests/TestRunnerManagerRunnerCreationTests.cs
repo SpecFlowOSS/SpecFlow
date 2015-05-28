@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using BoDi;
@@ -8,6 +9,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -74,5 +76,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
         }
+
+        [Test]
+        public void Should_resolve_a_test_runner_specific_test_tracer()
+        {
+            var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0);
+            testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
+            testRunner1.OnScenarioStart(new ScenarioInfo("foo"));
+            var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
+
+            var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1);
+            testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
+            testRunner2.OnScenarioStart(new ScenarioInfo("foo"));
+            var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
+
+            tracer1.Should().NotBeSameAs(tracer2);
+        }
+
+
     }
 }

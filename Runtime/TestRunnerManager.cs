@@ -6,6 +6,7 @@ using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow
 {
@@ -71,6 +72,9 @@ namespace TechTalk.SpecFlow
         public void Initialize(Assembly assignedTestAssembly)
         {
             this.testAssembly = assignedTestAssembly;
+
+            var queue = globalContainer.Resolve<TraceListenerQueue>();
+            queue.Start();
         }
 
         public virtual ITestRunner GetTestRunner(int managedThreadId)

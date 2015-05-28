@@ -95,5 +95,18 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
             testExecutionResult.ExecutionLog.Should().Contain(text);
         }
+
+        [Given(@"the log file '(.*)' is empty")]
+        public void GivenTheLogFileIsEmpty(string logFilePath)
+        {
+            File.WriteAllText(logFilePath, "");
+        }
+
+        [Then(@"the log file '(.*)' should contain text '(.*)'")]
+        public void ThenTheLogFileShouldContainText(string logFilePath, string text)
+        {
+            var logContent = File.ReadAllText(logFilePath);
+            logContent.Should().Contain(text);
+        }
     }
 }

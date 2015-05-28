@@ -19,9 +19,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
-            container.RegisterTypeAs<TestTracer, ITestTracer>(); //TODO[thread-safety]: move to test runner container?
+            container.RegisterTypeAs<TestTracer, ITestTracer>();
 
-            container.RegisterTypeAs<DefaultListener, ITraceListener>(); //TODO[thread-safety]: move to test runner container?
+            container.RegisterTypeAs<DefaultListener, ITraceListener>();
+            container.RegisterTypeAs<TraceListenerQueue, TraceListenerQueue>(); 
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
@@ -51,6 +52,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             // needs to invoke methods so requires the context manager
             testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
+
+            testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
+            testRunnerContainer.RegisterTypeAs<AsyncTestTracer, ITestTracer>(); //TODO[thread-safety]: fix bodi error to avoid this
+        }
+
+        class AsyncTestTracer : TestTracer
+        {
+            public AsyncTestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, RuntimeConfiguration runtimeConfiguration)
+                : base(traceListener, stepFormatter, stepDefinitionSkeletonProvider, runtimeConfiguration)
+            {
+            }
         }
     }
 }

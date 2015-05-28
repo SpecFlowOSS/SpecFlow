@@ -199,6 +199,7 @@
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />
+    <Compile Include="Tracing\AsyncTraceListener.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
+    <Compile Include="Tracing\TraceListenerQueue.cs" />
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
