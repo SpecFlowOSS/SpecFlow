@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void CreateTestRunner_should_be_able_to_create_a_testrunner()
         {
-            var testRunner = testRunnerManager.CreateTestRunner();
+            var testRunner = testRunnerManager.CreateTestRunner(0);
 
             Assert.IsNotNull(testRunner);
             Assert.IsInstanceOf<TestRunner>(testRunner);
@@ -42,8 +42,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void GetTestRunner_should_cache_instance()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(managedThreadId: 0);
-            var testRunner2 = testRunnerManager.GetTestRunner(managedThreadId: 0);
+            var testRunner1 = testRunnerManager.GetTestRunner(threadId: 0);
+            var testRunner2 = testRunnerManager.GetTestRunner(threadId: 0);
 
             Assert.AreEqual(testRunner1, testRunner2);
         }
@@ -51,8 +51,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void Should_return_different_instances_for_different_thread_ids()
         {
-            var testRunner1 = testRunnerManager.GetTestRunner(managedThreadId: 1);
-            var testRunner2 = testRunnerManager.GetTestRunner(managedThreadId: 2);
+            var testRunner1 = testRunnerManager.GetTestRunner(threadId: 1);
+            var testRunner2 = testRunnerManager.GetTestRunner(threadId: 2);
 
             Assert.AreNotEqual(testRunner1, testRunner2);
         }

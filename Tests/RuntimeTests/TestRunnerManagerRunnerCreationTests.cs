@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var factory = CreateTestRunnerFactory();
 
-            var testRunner = factory.CreateTestRunner();
+            var testRunner = factory.CreateTestRunner(0);
             testRunner.Should().NotBeNull();
         }
 
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void Should_initialize_test_runner_with_the_provided_assembly()
         {
             var factory = CreateTestRunnerFactory();
-            factory.CreateTestRunner();
+            factory.CreateTestRunner(0);
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
         }
@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var factory = CreateTestRunnerFactory();
             runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
-            factory.CreateTestRunner();
+            factory.CreateTestRunner(0);
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anotherAssembly))));
         }
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var factory = CreateTestRunnerFactory();
             runtimeConfigurationStub.AddAdditionalStepAssembly(anotherAssembly);
 
-            factory.CreateTestRunner();
+            factory.CreateTestRunner(0);
 
             testRunnerFake.Verify(tr => tr.InitializeTestRunner(It.Is<Assembly[]>(assemblies => assemblies.Contains(anAssembly))));
         }

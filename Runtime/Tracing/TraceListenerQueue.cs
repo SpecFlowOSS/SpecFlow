@@ -26,13 +26,15 @@ namespace TechTalk.SpecFlow.Tracing
         }
 
         private readonly ITraceListener traceListener;
+        private readonly ITestRunnerManager testRunnerManager;
         private readonly BlockingCollection<TraceMessage> messages = new BlockingCollection<TraceMessage>();
         private Task consumerTask;
         private Exception error = null;
 
-        public TraceListenerQueue(ITraceListener traceListener)
+        public TraceListenerQueue(ITraceListener traceListener, ITestRunnerManager testRunnerManager)
         {
             this.traceListener = traceListener;
+            this.testRunnerManager = testRunnerManager;
             Start();
         }
 
@@ -45,10 +47,7 @@ namespace TechTalk.SpecFlow.Tracing
                     while (true)
                     {
                         var message = messages.Take();
-                        if (message.IsToolMessage)
-                            traceListener.WriteToolOutput(message.Message);
-                        else
-                            traceListener.WriteTestOutput(message.Message);
+                        ForwardMessage(message);
                     }
                 }
                 catch (InvalidOperationException)
@@ -61,12 +60,20 @@ namespace TechTalk.SpecFlow.Tracing
             });
         }
 
+        private void ForwardMessage(TraceMessage message)
+        {
+            if (message.IsToolMessage)
+                traceListener.WriteToolOutput(message.Message);
+            else
+                traceListener.WriteTestOutput(message.Message);
+        }
+
         public void EnqueueMessgage(ITestRunner sourceTestRunner, string message, bool isToolMessgae)
         {
             if (error != null)
-                throw new SpecFlowException("Trace lisener failed.", error);
+                throw new SpecFlowException("Trace listener failed.", error);
 
-            messages.Add(new TraceMessage(isToolMessgae, message));
+            messages.Add(new TraceMessage(isToolMessgae, string.Format("#{1}: {0}", message, sourceTestRunner.ThreadId)));
         }
 
         public void Dispose()

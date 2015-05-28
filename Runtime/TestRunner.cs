@@ -11,6 +11,8 @@ namespace TechTalk.SpecFlow
     {
         private readonly ITestExecutionEngine executionEngine;
 
+        public int ThreadId { get; private set; }
+
         public TestRunner(ITestExecutionEngine executionEngine)
         {
             this.executionEngine = executionEngine;
@@ -29,6 +31,11 @@ namespace TechTalk.SpecFlow
         public void InitializeTestRunner(Assembly[] bindingAssemblies)
         {
             executionEngine.Initialize(bindingAssemblies);
+        }
+
+        public void InitializeTestRunner(int threadId)
+        {
+            this.ThreadId = threadId;
         }
 
         public void OnFeatureStart(FeatureInfo featureInfo)

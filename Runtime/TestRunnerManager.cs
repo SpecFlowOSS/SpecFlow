@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow
 {
     public interface ITestRunnerManager : IDisposable
     {
-        ITestRunner GetTestRunner(int managedThreadId);
+        ITestRunner GetTestRunner(int threadId);
         void Initialize(Assembly testAssembly);
     }
 
@@ -37,9 +37,10 @@ namespace TechTalk.SpecFlow
             this.bindingRegistryBuilder = bindingRegistryBuilder;
         }
 
-        public virtual ITestRunner CreateTestRunner()
+        public virtual ITestRunner CreateTestRunner(int threadId)
         {
             var testRunner = CreateTestRunnerInstance();
+            testRunner.InitializeTestRunner(threadId);
 
             lock (this)
             {
@@ -108,17 +109,17 @@ namespace TechTalk.SpecFlow
             testAssembly = assignedTestAssembly;
         }
 
-        public virtual ITestRunner GetTestRunner(int managedThreadId)
+        public virtual ITestRunner GetTestRunner(int threadId)
         {
             ITestRunner testRunner;
-            if (!testRunnerRegistry.TryGetValue(managedThreadId, out testRunner))
+            if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
             {
                 lock(syncRoot)
                 {
-                    if (!testRunnerRegistry.TryGetValue(managedThreadId, out testRunner))
+                    if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
                     {
-                        testRunner = CreateTestRunner();
-                        testRunnerRegistry.Add(managedThreadId, testRunner);
+                        testRunner = CreateTestRunner(threadId);
+                        testRunnerRegistry.Add(threadId, testRunner);
                     }
                 }
             }

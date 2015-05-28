@@ -6,10 +6,12 @@ namespace TechTalk.SpecFlow
 {
     public interface ITestRunner
     {
+        int ThreadId { get; }
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
 
-        void InitializeTestRunner(Assembly[] bindingAssemblies);
+        void InitializeTestRunner(Assembly[] bindingAssemblies); //TODO[thread-safety]: change to onstart
+        void InitializeTestRunner(int threadId);
 
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
