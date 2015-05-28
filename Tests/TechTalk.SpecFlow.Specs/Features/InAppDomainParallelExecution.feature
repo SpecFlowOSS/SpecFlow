@@ -151,3 +151,26 @@ Scenario: TraceListener should be called synchronously
 	And the execution summary should contain
 		| Total | Succeeded |
 		| 25    | 25        |
+
+
+Scenario: ScenarioContext.Currentcannot be used in multi-threaded execution
+	Given there is a feature file in the project as
+		"""
+		Feature: Feature with ScenarioContext.Current
+		Scenario: Simple Scenario
+	      When I use ScenarioContext.Current
+		"""
+	And the following step definition
+         """
+         [When(@"I use ScenarioContext.Current")]
+		 public void WhenIUseScenarioContextCurrent()
+		 {
+            System.Threading.Thread.Sleep(200);
+            Console.WriteLine(ScenarioContext.Current);
+		 }
+         """
+    When I execute the tests with NUnit3
+    Then the execution log should contain text 'Was parallel'
+	And the execution summary should contain
+		| Failed |
+		| 1      |

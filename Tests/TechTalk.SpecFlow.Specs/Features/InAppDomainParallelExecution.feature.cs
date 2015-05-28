@@ -246,6 +246,37 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("ScenarioContext.Currentcannot be used in multi-threaded execution")]
+        public virtual void ScenarioContext_CurrentcannotBeUsedInMulti_ThreadedExecution()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ScenarioContext.Currentcannot be used in multi-threaded execution", ((string[])(null)));
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 157
+ testRunner.Given("there is a feature file in the project as", "Feature: Feature with ScenarioContext.Current\nScenario: Simple Scenario\n     When" +
+                    " I use ScenarioContext.Current", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 163
+ testRunner.And("the following step definition", "[When(@\"I use ScenarioContext.Current\")]\npublic void WhenIUseScenarioContextCurre" +
+                    "nt()\n{\n   System.Threading.Thread.Sleep(200);\n   Console.WriteLine(ScenarioConte" +
+                    "xt.Current);\r\n}", ((TechTalk.SpecFlow.Table)(null)));
+#line 172
+    testRunner.When("I execute the tests with NUnit3");
+#line 173
+    testRunner.Then("the execution log should contain text \'Was parallel\'");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Failed"});
+            table3.AddRow(new string[] {
+                        "1"});
+#line 174
+ testRunner.And("the execution summary should contain", ((string)(null)), table3);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #endregion
