@@ -108,5 +108,19 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             var logContent = File.ReadAllText(logFilePath);
             logContent.Should().Contain(text);
         }
+
+        [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
+        public void ThenTheLogFileShouldContainTHETextTimes(string logFilePath, string text, int times)
+        {
+            var logConent = File.ReadAllText(logFilePath);
+            logConent.Should().NotBeNullOrEmpty("no trace log is generated");
+
+            var regex = new Regex(text, RegexOptions.Multiline);
+            if (times > 0)
+                regex.Match(logConent).Success.Should().BeTrue(text + " was not found in the logs");
+
+            if (times != int.MaxValue) 
+                 regex.Matches(logConent).Count.Should().Be(times);
+        }
     }
 }
