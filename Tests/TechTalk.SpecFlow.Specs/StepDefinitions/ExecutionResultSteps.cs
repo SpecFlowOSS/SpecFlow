@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,10 +14,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class ExecutionResultSteps
     { 
         private readonly TestExecutionResult testExecutionResult;
+        private readonly HooksDriver hooksDriver;
 
-        public ExecutionResultSteps(TestExecutionResult testExecutionResult)
+        public ExecutionResultSteps(TestExecutionResult testExecutionResult, HooksDriver hooksDriver)
         {
             this.testExecutionResult = testExecutionResult;
+            this.hooksDriver = hooksDriver;
         }
 
         public TestRunSummary ConvertToSummary(Table table)
@@ -61,24 +64,26 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"the hook '(.*)' is executed (\d+) times")]
         public void ThenTheHookIsExecuted(string methodName, int times)
         {
-            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            var hookLog = hooksDriver.HookLog;
+            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
 
             var regex = new Regex(@"-> hook: " + methodName);
             if (times > 0)
-                regex.Match(testExecutionResult.ExecutionLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
+                regex.Match(hookLog).Success.Should().BeTrue("method " + methodName + " was not executed.");
 
             if (times != int.MaxValue)
-                regex.Matches(testExecutionResult.ExecutionLog).Count.Should().Be(times);
+                regex.Matches(hookLog).Count.Should().Be(times);
         }
 
         [Then(@"the hooks are executed in the order")]
         public void ThenTheHooksAreExecutedInTheOrder(Table table)
         {
-            testExecutionResult.ExecutionLog.Should().NotBeNull("no execution log generated");
+            var hookLog = hooksDriver.HookLog;
+            hookLog.Should().NotBeNullOrEmpty("no execution log generated");
             int lastPosition = -1;
             foreach (var row in table.Rows)
             {
-                int currentPosition = testExecutionResult.ExecutionLog.IndexOf(@"-> hook: " + row[0]);
+                int currentPosition = hookLog.IndexOf(@"-> hook: " + row[0]);
                 currentPosition.Should().BeGreaterThan(lastPosition);
                 lastPosition = currentPosition;
             }

@@ -72,6 +72,7 @@
     <Compile Include="Drivers\AssemblyFolderHelper.cs" />
     <Compile Include="Drivers\BindingClassInput.cs" />
     <Compile Include="Drivers\ContentFileInput.cs" />
+    <Compile Include="Drivers\HooksDriver.cs" />
     <Compile Include="Drivers\MsTestTestExecutionDriver.cs" />
     <Compile Include="Drivers\FeatureFileInput.cs" />
     <Compile Include="Drivers\FileInput.cs" />
