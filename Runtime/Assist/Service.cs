@@ -16,6 +16,7 @@ namespace TechTalk.SpecFlow.Assist
         private List<IValueRetriever> _registeredValueRetrievers = new List<IValueRetriever>();
 
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
+        public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
 
         public static Service Instance { get; internal set; }
 
@@ -86,7 +87,7 @@ namespace TechTalk.SpecFlow.Assist
         public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
         {
             var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-            foreach(var valueRetriever in _registeredValueRetrievers){
+            foreach(var valueRetriever in ValueRetrievers){
                 foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
                     result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
                 }
