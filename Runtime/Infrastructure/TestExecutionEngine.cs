@@ -67,25 +67,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public virtual void Initialize(Assembly[] bindingAssemblies)
         {
-            foreach (Assembly assembly in bindingAssemblies)
-            {
-                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
-            }
-            bindingRegistry.Ready = true;
-
             OnTestRunnerStart();
-#if !SILVERLIGHT
-            AppDomain.CurrentDomain.DomainUnload += 
-                delegate
-                    {
-                        OnTestRunEnd();
-                    };
-            AppDomain.CurrentDomain.ProcessExit += 
-                delegate
-                    {
-                        OnTestRunEnd();
-                    };
-#endif
         }
 
         protected virtual void OnTestRunnerStart()

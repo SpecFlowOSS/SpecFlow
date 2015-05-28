@@ -5,6 +5,7 @@ using System.Text;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -35,7 +36,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
         internal static IObjectContainer CreateDefaultTestRunnerContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var instance = new TestRunContainerBuilder();
-            return instance.CreateTestRunnerContainer(CreateDefaultGlobalContainer());
+            var globalContainer = CreateDefaultGlobalContainer();
+            globalContainer.Resolve<TraceListenerQueue>();
+            return instance.CreateTestRunnerContainer(globalContainer);
         }
     }
 }

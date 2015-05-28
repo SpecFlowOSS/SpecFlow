@@ -25,6 +25,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             }
         }
 
+        public void BuildingCompleted()
+        {
+            bindingSourceProcessor.BuildingCompleted();
+        }
+
         //internal - for testing
         internal bool BuildBindingsFromType(Type type)
         {

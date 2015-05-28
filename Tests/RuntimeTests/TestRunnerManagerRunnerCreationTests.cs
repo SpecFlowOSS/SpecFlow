@@ -6,6 +6,7 @@ using BoDi;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
@@ -28,11 +29,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
             objectContainerStub.Setup(o => o.Resolve<ITestRunner>()).Returns(testRunnerFake.Object);
             globalObjectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
             
-            Mock<ITestRunContainerBuilder> testRunContainerBuilderStub = new Mock<ITestRunContainerBuilder>();
+            var testRunContainerBuilderStub = new Mock<ITestRunContainerBuilder>();
             testRunContainerBuilderStub.Setup(b => b.CreateTestRunnerContainer(It.IsAny<IObjectContainer>()))
                 .Returns(objectContainerStub.Object);
 
-            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, runtimeConfigurationStub);
+            var runtimeBindingRegistryBuilderMock = new Mock<IRuntimeBindingRegistryBuilder>();
+
+            var testRunnerManager = new TestRunnerManager(globalObjectContainerStub.Object, testRunContainerBuilderStub.Object, runtimeConfigurationStub, runtimeBindingRegistryBuilderMock.Object);
             testRunnerManager.Initialize(anAssembly);
             return testRunnerManager;
         }
@@ -92,7 +95,5 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             tracer1.Should().NotBeSameAs(tracer2);
         }
-
-
     }
 }

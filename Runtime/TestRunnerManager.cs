@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using BoDi;
+using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
@@ -21,19 +22,20 @@ namespace TechTalk.SpecFlow
         protected readonly IObjectContainer globalContainer;
         protected readonly ITestRunContainerBuilder testRunContainerBuilder;
         protected readonly RuntimeConfiguration runtimeConfiguration;
-        private Assembly testAssembly;
+        protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
-        public TestRunnerManager(IObjectContainer globalContainer, ITestRunContainerBuilder testRunContainerBuilder, RuntimeConfiguration runtimeConfiguration)
+        private Assembly testAssembly;
+        private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
+        private readonly object syncRoot = new object();
+        private bool isTestRunInitialized;
+
+        public TestRunnerManager(IObjectContainer globalContainer, ITestRunContainerBuilder testRunContainerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.globalContainer = globalContainer;
             this.testRunContainerBuilder = testRunContainerBuilder;
             this.runtimeConfiguration = runtimeConfiguration;
+            this.bindingRegistryBuilder = bindingRegistryBuilder;
         }
-
-        private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
-
-        private readonly object syncRoot = new object();
-        private bool isTestRunInitialized;
 
         public virtual ITestRunner CreateTestRunner()
         {
@@ -53,13 +55,45 @@ namespace TechTalk.SpecFlow
 
         protected virtual void InitializeBindingRegistry(ITestRunner testRunner)
         {
+            var bindingAssemblies = GetBindingAssemblies();
+            BuildBindingRegistry(bindingAssemblies);
+
+            testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
+
+#if !SILVERLIGHT
+            EventHandler domainUnload = delegate { OnTestRunnerEnd(); };
+            AppDomain.CurrentDomain.DomainUnload += domainUnload;
+            AppDomain.CurrentDomain.ProcessExit += domainUnload;
+#endif
+        }
+
+        protected virtual List<Assembly> GetBindingAssemblies()
+        {
             var bindingAssemblies = new List<Assembly> {testAssembly};
 
             var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
                 runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
+            return bindingAssemblies;
+        }
 
-            testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
+        protected virtual void BuildBindingRegistry(IEnumerable<Assembly> bindingAssemblies)
+        {
+            foreach (Assembly assembly in bindingAssemblies)
+            {
+                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
+            }
+            bindingRegistryBuilder.BuildingCompleted();
+        }
+
+        protected virtual void OnTestRunnerEnd()
+        {
+            var onTestRunnerEndExecutionHost = testRunnerRegistry.Values.FirstOrDefault();
+            if (onTestRunnerEndExecutionHost != null)
+                onTestRunnerEndExecutionHost.OnTestRunEnd();
+
+            // this will dispose this object
+            globalContainer.Dispose();
         }
 
         protected virtual ITestRunner CreateTestRunnerInstance()
@@ -71,7 +105,7 @@ namespace TechTalk.SpecFlow
 
         public void Initialize(Assembly assignedTestAssembly)
         {
-            this.testAssembly = assignedTestAssembly;
+            testAssembly = assignedTestAssembly;
 
             var queue = globalContainer.Resolve<TraceListenerQueue>();
             queue.Start();
@@ -97,6 +131,7 @@ namespace TechTalk.SpecFlow
         public virtual void Dispose()
         {
             testRunnerRegistry.Clear();
+            OnTestRunnerManagerDisposed(this);
         }
 
         #region Static API
@@ -143,11 +178,21 @@ namespace TechTalk.SpecFlow
         {
             lock (testRunnerManagerRegistrySyncRoot)
             {
-                foreach (var testRunnerManager in testRunnerManagerRegistry.Values)
+                foreach (var testRunnerManager in testRunnerManagerRegistry.Values.ToArray())
                 {
                     testRunnerManager.Dispose();
                 }
                 testRunnerManagerRegistry.Clear();
+            }
+        }
+
+
+        private static void OnTestRunnerManagerDisposed(TestRunnerManager testRunnerManager)
+        {
+            lock (testRunnerManagerRegistrySyncRoot)
+            {
+                if (testRunnerManagerRegistry.ContainsKey(testRunnerManager.testAssembly))
+                    testRunnerManagerRegistry.Remove(testRunnerManager.testAssembly);
             }
         }
 
