@@ -30,11 +30,13 @@ namespace TechTalk.SpecFlow.Tracing
         private readonly BlockingCollection<TraceMessage> messages = new BlockingCollection<TraceMessage>();
         private Task consumerTask;
         private Exception error = null;
+        private bool isThreadSafeTraceListener;
 
         public TraceListenerQueue(ITraceListener traceListener, ITestRunnerManager testRunnerManager)
         {
             this.traceListener = traceListener;
             this.testRunnerManager = testRunnerManager;
+            isThreadSafeTraceListener = traceListener is IThreadSafeTraceListener;
         }
 
         public void Start()
@@ -72,7 +74,7 @@ namespace TechTalk.SpecFlow.Tracing
             if (error != null)
                 throw new SpecFlowException("Trace listener failed.", error);
 
-            if (!testRunnerManager.IsMultiThreaded)
+            if (isThreadSafeTraceListener || !testRunnerManager.IsMultiThreaded)
             {
                 // log synchronously
                 ForwardMessage(new TraceMessage(isToolMessgae, message));
