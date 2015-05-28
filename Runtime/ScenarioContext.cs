@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow
 
         private readonly IObjectContainer scenarioContainer;
 
-        internal IObjectContainer ScenarioContainer
+        public IObjectContainer ScenarioContainer
         {
             get { return scenarioContainer; }
         }
