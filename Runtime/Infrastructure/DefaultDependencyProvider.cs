@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestTracer, ITestTracer>();
 
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
-            container.RegisterTypeAs<TraceListenerQueue, TraceListenerQueue>(); 
+            container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>(); 
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();

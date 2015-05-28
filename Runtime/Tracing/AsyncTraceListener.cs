@@ -5,10 +5,10 @@ namespace TechTalk.SpecFlow.Tracing
 {
     public class AsyncTraceListener : ITraceListener
     {
-        private readonly TraceListenerQueue traceListenerQueue;
+        private readonly ITraceListenerQueue traceListenerQueue;
         private readonly ITestRunner testRunner;
 
-        public AsyncTraceListener(TraceListenerQueue traceListenerQueue)
+        public AsyncTraceListener(ITraceListenerQueue traceListenerQueue)
         {
             this.traceListenerQueue = traceListenerQueue;
             this.testRunner = null;

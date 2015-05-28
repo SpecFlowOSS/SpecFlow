@@ -107,7 +107,7 @@ namespace TechTalk.SpecFlow
         {
             testAssembly = assignedTestAssembly;
 
-            var queue = globalContainer.Resolve<TraceListenerQueue>();
+            var queue = globalContainer.Resolve<ITraceListenerQueue>();
             queue.Start();
         }
 

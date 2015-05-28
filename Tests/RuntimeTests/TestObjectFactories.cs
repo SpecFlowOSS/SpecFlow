@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         internal static IObjectContainer CreateDefaultTestRunnerContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var instance = new TestRunContainerBuilder();
-            var globalContainer = CreateDefaultGlobalContainer();
+            var globalContainer = CreateDefaultGlobalContainer(configurationProvider);
             globalContainer.Resolve<TraceListenerQueue>();
             return instance.CreateTestRunnerContainer(globalContainer);
         }

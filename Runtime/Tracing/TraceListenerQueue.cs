@@ -5,7 +5,13 @@ using System.Threading.Tasks;
 
 namespace TechTalk.SpecFlow.Tracing
 {
-    public class TraceListenerQueue : IDisposable
+    public interface ITraceListenerQueue : IDisposable
+    {
+        void Start();
+        void EnqueueMessgage(ITestRunner sourceTestRunner, string message, bool isToolMessgae);
+    }
+
+    public class TraceListenerQueue : ITraceListenerQueue
     {
         struct TraceMessage
         {
