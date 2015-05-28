@@ -115,7 +115,6 @@
     <Compile Include="UnitTestConverter\IFeatureGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestGeneratorProviders.cs" />
     <Compile Include="UnitTestProvider\MbUnit3TestGeneratorProvider.cs" />
-    <Compile Include="UnitTestProvider\MsTestSilverlightGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010GeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\XUnitTestGeneratorProvider.cs" />

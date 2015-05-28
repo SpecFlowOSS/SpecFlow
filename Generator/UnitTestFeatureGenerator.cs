@@ -75,8 +75,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 HasFeatureBackground(feature) ? CreateMethod(testClass) : null,
-                generateRowTests: testGeneratorProvider.SupportsRowTests && generatorConfiguration.AllowRowTests,
-                generateAsynchTests: generatorConfiguration.GenerateAsyncTests && testGeneratorProvider.SupportsAsyncTests);
+                generateRowTests: testGeneratorProvider.SupportsRowTests && generatorConfiguration.AllowRowTests);
         }
 
         private CodeNamespace CreateNamespace(string targetNamespace)
@@ -194,13 +193,12 @@ namespace TechTalk.SpecFlow.Generator
 
             //testRunner = TestRunnerManager.GetTestRunner();
             var testRunnerField = GetTestRunnerExpression();
-            var methodName = generationContext.GenerateAsynchTests ? "GetAsyncTestRunner" : "GetTestRunner"; 
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                        methodName)));
+                        "GetTestRunner")));
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             testClassInitializeMethod.Statements.Add(

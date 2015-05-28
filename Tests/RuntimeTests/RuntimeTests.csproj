@@ -137,11 +137,6 @@
     <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ULongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UShortValueRetrieverTests.cs" />
-    <Compile Include="AsyncTests\AsyncContextTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerTestBase.cs" />
-    <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
     <Compile Include="BindingSkeletons\ResourceSkeletonTemplateProviderTests.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProviderTests.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderTests.cs" />

@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
-using TechTalk.SpecFlow.Async;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow
 {
     public interface ITestRunnerManager
     {
-        ITestRunner CreateTestRunner(Assembly testAssembly, bool async);
-        ITestRunner GetTestRunner(Assembly testAssembly, bool async, int managedThreadId);
+        ITestRunner CreateTestRunner(Assembly testAssembly);
+        ITestRunner GetTestRunner(Assembly testAssembly, int managedThreadId);
     }
 
     public class TestRunnerManager : ITestRunnerManager, IDisposable
@@ -32,13 +31,11 @@ namespace TechTalk.SpecFlow
         protected class TestRunnerKey
         {
             public readonly Assembly TestAssembly;
-            public readonly bool Async;
             private readonly int managedThreadId;
 
-            public TestRunnerKey(Assembly testAssembly, bool async, int managedThreadId)
+            public TestRunnerKey(Assembly testAssembly, int managedThreadId)
             {
                 TestAssembly = testAssembly;
-                Async = async;
                 this.managedThreadId = managedThreadId;
             }
 
@@ -46,7 +43,7 @@ namespace TechTalk.SpecFlow
             {
                 if (ReferenceEquals(null, other)) return false;
                 if (ReferenceEquals(this, other)) return true;
-                return Equals(other.TestAssembly, TestAssembly) && other.Async.Equals(Async) && managedThreadId == other.managedThreadId;
+                return Equals(other.TestAssembly, TestAssembly) && managedThreadId == other.managedThreadId;
             }
 
             public override bool Equals(object obj)
@@ -62,7 +59,6 @@ namespace TechTalk.SpecFlow
                 unchecked
                 {
                     var hashCode = (TestAssembly != null ? TestAssembly.GetHashCode() : 0);
-                    hashCode = (hashCode*397) ^ Async.GetHashCode();
                     hashCode = (hashCode*397) ^ managedThreadId;
                     return hashCode;
                 }
@@ -73,26 +69,21 @@ namespace TechTalk.SpecFlow
 
         private readonly object syncRoot = new object();
 
-        public ITestRunner CreateTestRunner(Assembly testAssembly, bool async)
+        public ITestRunner CreateTestRunner(Assembly testAssembly)
         {
-            return CreateTestRunner(new TestRunnerKey(testAssembly, async, Thread.CurrentThread.ManagedThreadId));
+            return CreateTestRunner(new TestRunnerKey(testAssembly, Thread.CurrentThread.ManagedThreadId));
         }
 
         protected virtual ITestRunner CreateTestRunner(TestRunnerKey key)
         {
             var container = testRunContainerBuilder.CreateContainer();
-            if (key.Async)
-            {
-                //TODO: better support this in the DI container
-                container.RegisterTypeAs<AsyncTestRunner, ITestRunner>();
-            }
             var factory = container.Resolve<ITestRunnerFactory>();
             return factory.Create(key.TestAssembly);
         }
 
-        public ITestRunner GetTestRunner(Assembly testAssembly, bool async, int managedThreadId)
+        public ITestRunner GetTestRunner(Assembly testAssembly, int managedThreadId)
         {
-            return GetTestRunner(new TestRunnerKey(testAssembly, async, managedThreadId));
+            return GetTestRunner(new TestRunnerKey(testAssembly, managedThreadId));
         }
 
         protected virtual ITestRunner GetTestRunner(TestRunnerKey key)
@@ -121,12 +112,7 @@ namespace TechTalk.SpecFlow
 
         public static ITestRunner GetTestRunner()
         {
-            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), false, Thread.CurrentThread.ManagedThreadId);
-        }
-
-        public static ITestRunner GetAsyncTestRunner()
-        {
-            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), true, Thread.CurrentThread.ManagedThreadId);
+            return Instance.GetTestRunner(Assembly.GetCallingAssembly(), Thread.CurrentThread.ManagedThreadId);
         }
 
         internal static void Reset()

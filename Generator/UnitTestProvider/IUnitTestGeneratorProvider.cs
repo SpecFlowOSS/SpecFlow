@@ -8,7 +8,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     public interface IUnitTestGeneratorProvider
     {
         bool SupportsRowTests { get; }
-        bool SupportsAsyncTests { get; }
 
         void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription);
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);

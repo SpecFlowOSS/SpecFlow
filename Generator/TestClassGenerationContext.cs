@@ -22,11 +22,10 @@ namespace TechTalk.SpecFlow.Generator
         public CodeMemberField TestRunnerField { get; private set; }
 
         public bool GenerateRowTests { get; private set; }
-        public bool GenerateAsynchTests { get; private set; }
 
         public IDictionary<string, object> CustomData { get; private set; }
 
-        public TestClassGenerationContext(IUnitTestGeneratorProvider unitTestGeneratorProvider, Feature feature, CodeNamespace ns, CodeTypeDeclaration testClass, CodeMemberField testRunnerField, CodeMemberMethod testClassInitializeMethod, CodeMemberMethod testClassCleanupMethod, CodeMemberMethod testInitializeMethod, CodeMemberMethod testCleanupMethod, CodeMemberMethod scenarioInitializeMethod, CodeMemberMethod scenarioCleanupMethod, CodeMemberMethod featureBackgroundMethod, bool generateRowTests, bool generateAsynchTests)
+        public TestClassGenerationContext(IUnitTestGeneratorProvider unitTestGeneratorProvider, Feature feature, CodeNamespace ns, CodeTypeDeclaration testClass, CodeMemberField testRunnerField, CodeMemberMethod testClassInitializeMethod, CodeMemberMethod testClassCleanupMethod, CodeMemberMethod testInitializeMethod, CodeMemberMethod testCleanupMethod, CodeMemberMethod scenarioInitializeMethod, CodeMemberMethod scenarioCleanupMethod, CodeMemberMethod featureBackgroundMethod, bool generateRowTests)
         {
             UnitTestGeneratorProvider = unitTestGeneratorProvider;
             Feature = feature;
@@ -41,7 +40,6 @@ namespace TechTalk.SpecFlow.Generator
             ScenarioCleanupMethod = scenarioCleanupMethod;
             FeatureBackgroundMethod = featureBackgroundMethod;
             GenerateRowTests = generateRowTests;
-            GenerateAsynchTests = generateAsynchTests;
 
             CustomData = new Dictionary<string, object>();
         }
