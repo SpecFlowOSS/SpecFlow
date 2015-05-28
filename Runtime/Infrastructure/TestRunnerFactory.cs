@@ -8,13 +8,15 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     internal class TestRunnerFactory : ITestRunnerFactory
     {
-        protected readonly IObjectContainer objectContainer;
+        protected readonly IObjectContainer globalContainer;
         protected readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly ITestRunContainerBuilder testRunContainerBuilder;
 
-        public TestRunnerFactory(IObjectContainer objectContainer, RuntimeConfiguration runtimeConfiguration)
+        public TestRunnerFactory(IObjectContainer globalContainer, RuntimeConfiguration runtimeConfiguration, ITestRunContainerBuilder testRunContainerBuilder)
         {
-            this.objectContainer = objectContainer;
+            this.globalContainer = globalContainer;
             this.runtimeConfiguration = runtimeConfiguration;
+            this.testRunContainerBuilder = testRunContainerBuilder;
         }
 
         public ITestRunner Create(Assembly testAssembly)
@@ -23,7 +25,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var bindingAssemblies = new List<Assembly> { testAssembly };
 
-            var assemblyLoader = objectContainer.Resolve<IBindingAssemblyLoader>();
+            var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
                 runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
 
@@ -34,7 +36,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual ITestRunner CreateTestRunnerInstance()
         {
-            return objectContainer.Resolve<ITestRunner>();
+            var testRunnerContainer = testRunContainerBuilder.CreateTestRunnerContainer(globalContainer);
+
+            return testRunnerContainer.Resolve<ITestRunner>();
         }
     }
 }

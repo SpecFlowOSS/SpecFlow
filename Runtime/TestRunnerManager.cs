@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -15,12 +14,12 @@ namespace TechTalk.SpecFlow
 
     public class TestRunnerManager : ITestRunnerManager
     {
-        private readonly ITestRunContainerBuilder testRunContainerBuilder;
+        private readonly ITestRunnerFactory testRunnerFactory;
         private Assembly testAssembly;
 
-        public TestRunnerManager(ITestRunContainerBuilder testRunContainerBuilder)
+        public TestRunnerManager(ITestRunnerFactory testRunnerFactory)
         {
-            this.testRunContainerBuilder = testRunContainerBuilder;
+            this.testRunnerFactory = testRunnerFactory;
         }
 
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
@@ -29,9 +28,7 @@ namespace TechTalk.SpecFlow
 
         public virtual ITestRunner CreateTestRunner()
         {
-            var container = testRunContainerBuilder.CreateContainer();
-            var factory = container.Resolve<ITestRunnerFactory>();
-            return factory.Create(testAssembly);
+            return testRunnerFactory.Create(testAssembly);
         }
 
         public void Initialize(Assembly assignedTestAssembly)

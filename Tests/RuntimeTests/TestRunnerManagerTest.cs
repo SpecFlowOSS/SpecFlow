@@ -11,13 +11,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class TestRunnerManagerTest
     {
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
-        private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
         private TestRunnerManager testRunnerManager;
 
         [SetUp]
         public void Setup()
         {
-            testRunnerManager = new TestRunnerManager(new TestRunContainerBuilder());
+            var testRunnerFactoryStub = new TestRunContainerBuilder().CreateContainer().Resolve<ITestRunnerFactory>();
+
+            testRunnerManager = new TestRunnerManager(testRunnerFactoryStub);
             testRunnerManager.Initialize(anAssembly);
         }
 

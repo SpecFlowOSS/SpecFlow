@@ -19,14 +19,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
 
             container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
-            container.RegisterTypeAs<TestRunner, ITestRunner>();
             container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
             container.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
-            container.RegisterTypeAs<TestTracer, ITestTracer>();
+            container.RegisterTypeAs<TestTracer, ITestTracer>(); //TODO[thread-safety]: move to test runner container?
 
-            container.RegisterTypeAs<DefaultListener, ITraceListener>();
+            container.RegisterTypeAs<DefaultListener, ITraceListener>(); //TODO[thread-safety]: move to test runner container?
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
             container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
@@ -37,8 +36,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
 
-            container.RegisterTypeAs<ContextManager, IContextManager>();
-
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
             container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
             container.RegisterTypeAs<StepTextAnalyzer, IStepTextAnalyzer>();
@@ -48,6 +45,12 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 
             RegisterUnitTestProviders(container);
+        }
+
+        public void RegisterTestRunnerDefaults(ObjectContainer testRunnerContainer)
+        {
+            testRunnerContainer.RegisterTypeAs<TestRunner, ITestRunner>();
+            testRunnerContainer.RegisterTypeAs<ContextManager, IContextManager>();
         }
     }
 }

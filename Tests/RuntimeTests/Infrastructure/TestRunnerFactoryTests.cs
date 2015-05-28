@@ -16,6 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
         private readonly Mock<IObjectContainer> objectContainerStub = new Mock<IObjectContainer>();
+        private readonly Mock<IObjectContainer> globalObjectContainerStub = new Mock<IObjectContainer>();
         private readonly RuntimeConfiguration runtimeConfigurationStub = new RuntimeConfiguration();
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
         private readonly Assembly anotherAssembly = typeof(TestRunnerFactory).Assembly;
@@ -23,8 +24,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private TestRunnerFactory CreateTestRunnerFactory()
         {
             objectContainerStub.Setup(o => o.Resolve<ITestRunner>()).Returns(testRunnerFake.Object);
-            objectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
-            return new TestRunnerFactory(objectContainerStub.Object, runtimeConfigurationStub);
+            globalObjectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
+            
+            Mock<ITestRunContainerBuilder> testRunContainerBuilderStub = new Mock<ITestRunContainerBuilder>();
+            testRunContainerBuilderStub.Setup(b => b.CreateTestRunnerContainer(It.IsAny<IObjectContainer>()))
+                .Returns(objectContainerStub.Object);
+
+            return new TestRunnerFactory(globalObjectContainerStub.Object, runtimeConfigurationStub, testRunContainerBuilderStub.Object);
         }
 
         [Test]

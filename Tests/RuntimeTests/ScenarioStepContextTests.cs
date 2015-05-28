@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestTestRunnerFactory.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
             contextManager.CleanupStepContext();
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."));
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestTestRunnerFactory.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty));
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestTestRunnerFactory.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty));
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestTestRunnerFactory.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty));
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestTestRunnerFactory.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
             var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once",null,string.Empty);
             contextManager.InitializeStepContext(firstStepInfo);
