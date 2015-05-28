@@ -32,20 +32,33 @@ namespace TechTalk.SpecFlow
         private readonly Dictionary<int, ITestRunner> testRunnerRegistry = new Dictionary<int, ITestRunner>();
 
         private readonly object syncRoot = new object();
+        private bool isTestRunInitialized;
 
         public virtual ITestRunner CreateTestRunner()
         {
             var testRunner = CreateTestRunnerInstance();
 
-            var bindingAssemblies = new List<Assembly> { testAssembly };
+            lock (this)
+            {
+                if (!isTestRunInitialized)
+                {
+                    InitializeBindingRegistry(testRunner);
+                    isTestRunInitialized = true;
+                }
+            }
+
+            return testRunner;
+        }
+
+        protected virtual void InitializeBindingRegistry(ITestRunner testRunner)
+        {
+            var bindingAssemblies = new List<Assembly> {testAssembly};
 
             var assemblyLoader = globalContainer.Resolve<IBindingAssemblyLoader>();
             bindingAssemblies.AddRange(
                 runtimeConfiguration.AdditionalStepAssemblies.Select(assemblyLoader.Load));
 
             testRunner.InitializeTestRunner(bindingAssemblies.ToArray());
-
-            return testRunner;
         }
 
         protected virtual ITestRunner CreateTestRunnerInstance()
