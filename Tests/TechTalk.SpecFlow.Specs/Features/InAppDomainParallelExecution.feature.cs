@@ -173,6 +173,55 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.BeforeAfterTestRunHookShouldOnlyBeExecutedOnce("AfterTestRun", ((string[])(null)));
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("TraceListener should be called synchronously")]
+        public virtual void TraceListenerShouldBeCalledSynchronously()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TraceListener should be called synchronously", ((string[])(null)));
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 80
+    testRunner.Given("the following binding class", @"public class NonThreadSafeTraceListener : TechTalk.SpecFlow.Tracing.ITraceListener
+{
+    public int startIndex = 0;
+
+    public void WriteTestOutput(string message)
+    {
+        var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
+        Console.WriteLine(""Listener Start index: {0}"", currentStartIndex);
+        System.Threading.Thread.Sleep(200);
+        var afterStartIndex = startIndex;
+        if (afterStartIndex != currentStartIndex)
+            throw new Exception(""Listener was called in parallel"");
+    }
+
+    public void WriteToolOutput(string message)
+    {
+        WriteTestOutput(""-> "" + message);
+    }
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line 102
+    testRunner.And("the type \'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject\' " +
+                    "is registered as \'TechTalk.SpecFlow.Tracing.ITraceListener\' in SpecFlow runtime " +
+                    "configuration");
+#line 103
+    testRunner.When("I execute the tests with NUnit3");
+#line 104
+    testRunner.Then("the execution log should contain text \'Was parallel\'");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Total",
+                        "Succeeded"});
+            table2.AddRow(new string[] {
+                        "10",
+                        "10"});
+#line 105
+ testRunner.And("the execution summary should contain", ((string)(null)), table2);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #endregion

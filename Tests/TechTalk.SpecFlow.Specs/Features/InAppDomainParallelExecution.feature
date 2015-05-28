@@ -74,3 +74,34 @@ Examples:
 	| event               |
 	| BeforeTestRun       |
 	| AfterTestRun        |
+
+
+Scenario: TraceListener should be called synchronously
+    Given the following binding class
+        """
+        public class NonThreadSafeTraceListener : TechTalk.SpecFlow.Tracing.ITraceListener
+        {
+            public int startIndex = 0;
+
+            public void WriteTestOutput(string message)
+            {
+                var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
+                Console.WriteLine("Listener Start index: {0}", currentStartIndex);
+                System.Threading.Thread.Sleep(200);
+                var afterStartIndex = startIndex;
+                if (afterStartIndex != currentStartIndex)
+                    throw new Exception("Listener was called in parallel");
+            }
+
+            public void WriteToolOutput(string message)
+            {
+                WriteTestOutput("-> " + message);
+            }
+        }
+        """
+    And the type 'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration
+    When I execute the tests with NUnit3
+    Then the execution log should contain text 'Was parallel'
+	And the execution summary should contain
+		| Total | Succeeded |
+		| 10    | 10        |
