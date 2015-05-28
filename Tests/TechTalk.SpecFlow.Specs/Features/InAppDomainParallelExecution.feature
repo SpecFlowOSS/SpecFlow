@@ -63,3 +63,14 @@ Scenario: Tests should be processed parallel without failure
 	And the execution summary should contain
 		| Total | Succeeded |
 		| 10    | 10        |
+
+Scenario Outline: Before/After TestRun hook should only be executed once
+    Given a hook 'HookFor<event>' for '<event>'
+    When I execute the tests with NUnit3
+    Then the execution log should contain text 'Was parallel'
+    And the hook 'HookFor<event>' is executed once
+
+Examples: 
+	| event               |
+	| BeforeTestRun       |
+	| AfterTestRun        |

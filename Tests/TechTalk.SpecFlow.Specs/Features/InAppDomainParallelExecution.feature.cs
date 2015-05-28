@@ -142,6 +142,37 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        public virtual void BeforeAfterTestRunHookShouldOnlyBeExecutedOnce(string @event, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Before/After TestRun hook should only be executed once", exampleTags);
+#line 67
+this.ScenarioSetup(scenarioInfo);
+#line 68
+    testRunner.Given(string.Format("a hook \'HookFor{0}\' for \'{0}\'", @event));
+#line 69
+    testRunner.When("I execute the tests with NUnit3");
+#line 70
+    testRunner.Then("the execution log should contain text \'Was parallel\'");
+#line 71
+    testRunner.And(string.Format("the hook \'HookFor{0}\' is executed once", @event));
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Before/After TestRun hook should only be executed once")]
+        public virtual void BeforeAfterTestRunHookShouldOnlyBeExecutedOnce_BeforeTestRun()
+        {
+            this.BeforeAfterTestRunHookShouldOnlyBeExecutedOnce("BeforeTestRun", ((string[])(null)));
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Before/After TestRun hook should only be executed once")]
+        public virtual void BeforeAfterTestRunHookShouldOnlyBeExecutedOnce_AfterTestRun()
+        {
+            this.BeforeAfterTestRunHookShouldOnlyBeExecutedOnce("AfterTestRun", ((string[])(null)));
+        }
     }
 }
 #endregion
