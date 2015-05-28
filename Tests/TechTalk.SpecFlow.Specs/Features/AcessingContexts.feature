@@ -297,3 +297,33 @@ Scenario: StepContext can be accessed from Steps base class
          | Succeeded |
          | 1         |
 
+Scenario: StepContext can be accessed from the ScenarioContext
+	Given the following binding class
+        """
+		[Binding]
+		public class StepsWithScenarioContext
+		{
+			private readonly ScenarioContext scenarioContext;
+
+			public StepsWithScenarioContext(ScenarioContext scenarioContext)
+			{
+				if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+				this.scenarioContext = scenarioContext;
+			}
+
+			[When(@"I do something")]
+			public void GivenIPutSomethingIntoTheContext()
+			{
+                if (scenarioContext.StepContext.StepInfo.Text != "I do something") 
+                    throw new Exception("Invalid StepContext"); 
+			}
+		}
+        """	
+	And a scenario 'Simple Scenario' as
+         """
+		 When I do something
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |

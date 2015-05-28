@@ -61,6 +61,15 @@ namespace TechTalk.SpecFlow
             MissingSteps = new List<StepInstance>();
         }
 
+        public ScenarioStepContext StepContext
+        {
+            get
+            {
+                var contextManager = ScenarioContainer.Resolve<IContextManager>();
+                return contextManager.StepContext;
+            }
+        }
+
         public void Pending()
         {
             throw new PendingStepException();

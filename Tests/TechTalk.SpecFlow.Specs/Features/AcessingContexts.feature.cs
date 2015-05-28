@@ -421,6 +421,49 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("StepContext can be accessed from the ScenarioContext")]
+        public virtual void StepContextCanBeAccessedFromTheScenarioContext()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("StepContext can be accessed from the ScenarioContext", ((string[])(null)));
+#line 300
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 301
+ testRunner.Given("the following binding class", @"[Binding]
+public class StepsWithScenarioContext
+{
+private readonly ScenarioContext scenarioContext;
+
+public StepsWithScenarioContext(ScenarioContext scenarioContext)
+{
+if (scenarioContext == null) throw new ArgumentNullException(""scenarioContext"");
+this.scenarioContext = scenarioContext;
+}
+
+[When(@""I do something"")]
+public void GivenIPutSomethingIntoTheContext()
+{
+        if (scenarioContext.StepContext.StepInfo.Text != ""I do something"") 
+            throw new Exception(""Invalid StepContext""); 
+}
+}", ((TechTalk.SpecFlow.Table)(null)));
+#line hidden
+#line 322
+ testRunner.And("a scenario \'Simple Scenario\' as", "When I do something", ((TechTalk.SpecFlow.Table)(null)));
+#line 326
+ testRunner.When("I execute the tests");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Succeeded"});
+            table9.AddRow(new string[] {
+                        "1"});
+#line 327
+ testRunner.Then("the execution summary should contain", ((string)(null)), table9);
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #endregion
