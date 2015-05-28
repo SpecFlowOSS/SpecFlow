@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var instance = new TestRunContainerBuilder();
             var globalContainer = CreateDefaultGlobalContainer(configurationProvider);
-            globalContainer.Resolve<TraceListenerQueue>();
+            globalContainer.Resolve<TraceListenerQueue>(); //TODO[thread-safety]: remove when bodi fixed
             return instance.CreateTestRunnerContainer(globalContainer);
         }
     }

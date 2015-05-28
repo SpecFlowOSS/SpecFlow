@@ -33,6 +33,7 @@ namespace TechTalk.SpecFlow.Tracing
         public TraceListenerQueue(ITraceListener traceListener)
         {
             this.traceListener = traceListener;
+            Start();
         }
 
         public void Start()
