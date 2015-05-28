@@ -16,6 +16,7 @@
  * Change history
  * 
  * v1.2
+ *   - object should be created in the parent container, if the registration was applied there
  *   - should be able to customize object creation with a container event (ObjectCreated)
  *   - should be able to register factory delegates
  *   - should be able to retrieve all named instance as a list with container.ResolveAll<T>()
@@ -592,12 +593,12 @@ namespace BoDi
             return resolvedObject;
         }
 
-        private IRegistration GetRegistrationResult(RegistrationKey keyToResolve)
+        private KeyValuePair<ObjectContainer, IRegistration>? GetRegistrationResult(RegistrationKey keyToResolve)
         {
             IRegistration registration;
             if (registrations.TryGetValue(keyToResolve, out registration))
             {
-                return registration;
+                return new KeyValuePair<ObjectContainer, IRegistration>(this, registration);
             }
 
             if (baseContainer != null)
@@ -612,7 +613,7 @@ namespace BoDi
             // if there was no named registration, we still return an empty dictionary
             if (IsDefaultNamedInstanceDictionaryKey(keyToResolve))
             {
-                return new NamedInstanceDictionaryRegistration();
+                return new KeyValuePair<ObjectContainer, IRegistration>(this, new NamedInstanceDictionaryRegistration());
             }
 
             return null;
@@ -664,9 +665,10 @@ namespace BoDi
             if (keyToResolve.Type.IsPrimitive || keyToResolve.Type == typeof(string) || keyToResolve.Type.IsValueType)
                 throw new ObjectContainerException("Primitive types or structs cannot be resolved: " + keyToResolve.Type.FullName, resolutionPath.ToTypeList());
 
-            var registrationResult = GetRegistrationResult(keyToResolve) ?? new TypeRegistration(keyToResolve.Type);
+            var registrationResult = GetRegistrationResult(keyToResolve) ?? 
+                new KeyValuePair<ObjectContainer, IRegistration>(this, new TypeRegistration(keyToResolve.Type));
 
-            return registrationResult.Resolve(this, keyToResolve, resolutionPath);
+            return registrationResult.Value.Resolve(registrationResult.Key, keyToResolve, resolutionPath);
         }
 
         private object CreateObject(Type type, ResolutionList resolutionPath, RegistrationKey keyToResolve)
