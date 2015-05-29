@@ -170,7 +170,7 @@ namespace TechTalk.SpecFlow
 
             var container = testRunContainerBuilder.CreateContainer();
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
-            testRunnerManager.Initialize(testAssembly); //TODO[thread-safety]: consider factory
+            testRunnerManager.Initialize(testAssembly);
             return testRunnerManager;
         }
 

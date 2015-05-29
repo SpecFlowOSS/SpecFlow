@@ -92,7 +92,6 @@ namespace TechTalk.SpecFlow
             throw new PendingStepException();
         }
 
-        //TODO[thread-safety]: remove this method and expose container
         public object GetBindingInstance(Type bindingType)
         {
             return scenarioContainer.Resolve(bindingType);
