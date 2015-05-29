@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual UnitTestGeneratorTraits GetTraits()
         {
-            return UnitTestGeneratorTraits.RowTests | UnitTestGeneratorTraits.ParallelExecution; //TODO[thread-safety]: create nunit3
+            return UnitTestGeneratorTraits.RowTests;
         }
 
         public NUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)

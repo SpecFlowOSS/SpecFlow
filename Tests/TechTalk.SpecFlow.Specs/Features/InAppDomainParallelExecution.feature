@@ -2,7 +2,7 @@
 
 Background: 
 	Given there is a SpecFlow project
-	And the project is configured to use the NUnit3 provider
+	And the project is configured to use the NUnit.3 provider
     And the following binding class
         """
         [assembly: NUnit.Framework.Parallelizable(NUnit.Framework.ParallelScope.Fixtures)]
@@ -54,11 +54,11 @@ Background:
 		"""
 
 Scenario: Precondition: Tests run parallel with NUnit v3
-    When I execute the tests with NUnit3
+    When I execute the tests with NUnit.3
     Then the execution log should contain text 'Was parallel'
 
 Scenario: Tests should be processed parallel without failure
-    When I execute the tests with NUnit3
+    When I execute the tests with NUnit.3
     Then the execution log should contain text 'Was parallel'
 	And the execution summary should contain
 		| Total | Succeeded |
@@ -66,7 +66,7 @@ Scenario: Tests should be processed parallel without failure
 
 Scenario Outline: Before/After TestRun hook should only be executed once
     Given a hook 'HookFor<event>' for '<event>'
-    When I execute the tests with NUnit3
+    When I execute the tests with NUnit.3
     Then the execution log should contain text 'Was parallel'
     And the hook 'HookFor<event>' is executed once
 
@@ -144,7 +144,7 @@ Scenario: TraceListener should be called synchronously
 		"""
     And the type 'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject' is registered as 'TechTalk.SpecFlow.Tracing.ITraceListener' in SpecFlow runtime configuration
     And the log file 'NonThreadSafeTraceListener.log' is empty
-    When I execute the tests with NUnit3
+    When I execute the tests with NUnit.3
     Then the execution log should contain text 'Was parallel'
     Then the log file 'NonThreadSafeTraceListener.log' should contain text 'NonThreadSafeTraceListener:'
 	Then the log file 'NonThreadSafeTraceListener.log' should contain the text 'NonThreadSafeTraceListener:' 50 times
@@ -169,7 +169,7 @@ Scenario Outline: Current context cannot be used in multi-threaded execution
             Console.WriteLine(<context>.Current);
 		 }
          """
-    When I execute the tests with NUnit3
+    When I execute the tests with NUnit.3
     Then the execution log should contain text 'Was parallel'
 	And the execution summary should contain
 		| Failed |

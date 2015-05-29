@@ -212,6 +212,7 @@
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
+    <Compile Include="UnitTestProvider\NUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestRuntimeProviderHelper.cs" />
     <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestRuntimeProvider.cs" />
