@@ -21,7 +21,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public bool SupportsRowTests { get { return true; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.RowTests | UnitTestGeneratorTraits.ParallelExecution; //TODO[thread-safety]: create nunit3
+        }
 
         public NUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {

@@ -24,7 +24,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public virtual bool SupportsRowTests { get { return false; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.None;
+        }
 
         public MsTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {

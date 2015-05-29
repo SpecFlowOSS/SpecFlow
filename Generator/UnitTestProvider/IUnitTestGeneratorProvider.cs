@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public interface IUnitTestGeneratorProvider
     {
-        bool SupportsRowTests { get; }
+        UnitTestGeneratorTraits GetTraits();
 
         void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription);
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);

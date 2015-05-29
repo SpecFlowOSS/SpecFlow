@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 HasFeatureBackground(feature) ? CreateMethod(testClass) : null,
-                generateRowTests: testGeneratorProvider.SupportsRowTests && generatorConfiguration.AllowRowTests);
+                generateRowTests: testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests) && generatorConfiguration.AllowRowTests);
         }
 
         private CodeNamespace CreateNamespace(string targetNamespace)
@@ -191,14 +191,19 @@ namespace TechTalk.SpecFlow.Generator
 
             testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
-            //testRunner = TestRunnerManager.GetTestRunner();
+            //testRunner = TestRunnerManager.GetTestRunner(); if UnitTestGeneratorTraits.ParallelExecution
+            //testRunner = TestRunnerManager.GetTestRunner(null, 0); if not UnitTestGeneratorTraits.ParallelExecution
             var testRunnerField = GetTestRunnerExpression();
+
+            var testRunnerParameters = testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.ParallelExecution) ?
+                new CodeExpression[]{} : new []  {new CodePrimitiveExpression(null), new CodePrimitiveExpression(0) };
+
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                        "GetTestRunner")));
+                        "GetTestRunner", testRunnerParameters)));
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             testClassInitializeMethod.Statements.Add(

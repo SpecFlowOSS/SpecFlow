@@ -117,6 +117,7 @@
     <Compile Include="UnitTestProvider\MbUnit3TestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010GeneratorProvider.cs" />
+    <Compile Include="UnitTestProvider\UnitTestGeneratorTraits.cs" />
     <Compile Include="UnitTestProvider\XUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\IUnitTestGeneratorProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestGeneratorProvider.cs" />
