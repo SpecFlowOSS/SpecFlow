@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     break;
                 case "xunit.1":
                     yield return @"xUnit\lib\xUnit.dll";
-                    yield return @"xUnit\lib\xunit.extensions.dll";
+                    yield return @"xUnit.extensions\lib\xunit.extensions.dll";
                     break;
                 case "xunit":
                     yield return @"xUnit2\xunit.core.dll";

@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        private const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
         private const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
@@ -186,6 +187,18 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 factAttr.Arguments.Add
                     (
                         new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
+                    );
+            }
+
+            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
+
+            if (theoryAttr != null)
+            {
+                // set [TheoryAttribute(Skip="reason")]
+                theoryAttr.Arguments.Add
+                    (
+                        new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
                     );
             }
         }
