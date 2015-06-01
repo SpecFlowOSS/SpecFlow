@@ -124,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.Given("there is a feature file in the project as", "\tFeature: Simple Feature\r\n\tScenario Outline: Simple Scenario Outline\r\n\t\tGiven the" +
                     "re is something\r\n\t\tWhen I do <what>\r\n\t\tThen something should happen\r\n\tExamples: " +
-                    "\r\n\t\t| what           |\r\n\t\t| something      |\r\n\t\t| somethign else |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "\r\n\t\t| what           |\r\n\t\t| something      |\r\n\t\t| something else |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 37
  testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38

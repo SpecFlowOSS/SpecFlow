@@ -2,7 +2,7 @@
 
 Scenario Outline: Should be able to execute scenarios with basic results
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit provider
+	And the project is configured to use the xUnit.1 provider
 	And a scenario 'Simple Scenario' as
 		"""
 		When I do something
@@ -20,7 +20,7 @@ Examples:
 
 	Scenario: Should be able to ignore a scenario outline
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit provider
+	And the project is configured to use the xUnit.1 provider
 	And there is a feature file in the project as
 		"""
 			Feature: Simple Feature
@@ -32,7 +32,7 @@ Examples:
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 		"""
 	And all steps are bound and pass
 	When I execute the tests with xUnit
@@ -42,7 +42,7 @@ Examples:
 
 Scenario Outline: Should handle scenario outlines
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit provider
+	And the project is configured to use the xUnit.1 provider
 	And row testing is <row test>
 	Given there is a feature file in the project as
 		"""
@@ -54,7 +54,7 @@ Scenario Outline: Should handle scenario outlines
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 		"""
 	And all steps are bound and pass
 	When I execute the tests with xUnit
@@ -78,7 +78,7 @@ Scenario: Should be able to specify xUnit provider in the configuration
 	And the specflow configuration is
 		"""
 		<specFlow>
-			<unitTestProvider name="xUnit"/>
+			<unitTestProvider name="xUnit.1"/>
 		</specFlow>
 		"""
 	When I execute the tests with xUnit
