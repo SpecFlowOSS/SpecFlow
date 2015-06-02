@@ -111,6 +111,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\XUnit2Provider.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XUnit2Provider.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnitProvider.feature.cs">
       <DependentUpon>XUnitProvider.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -228,6 +233,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\XUnit2Provider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnit2Provider.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\XUnitProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>XUnitProvider.feature.cs</LastGenOutput>
@@ -314,7 +323,7 @@ xcopy $(SolutionDir)packages\xunit.1.9.2\lib\net20\*.* $(TargetDir)xunit\lib\ /s
 
 xcopy $(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.* $(TargetDir)xunit.extensions\lib\ /s /y
 
-xcopy $(SolutionDir)packages\xunit.runners.1.9.2\*.* $(TargetDir)xunit.runners\ /s /y
+xcopy $(SolutionDir)packages\xunit.runner.console.2.0.0\*.* $(TargetDir)xunit.runner.console\ /s /y
 
 xcopy $(SolutionDir)lib\xunit.2.0.0\*.* $(TargetDir)xUnit2\ /s /y
 xcopy "$(SolutionDir)lib\Microsoft F#\*.*" $(TargetDir)FSharp\ /s /y

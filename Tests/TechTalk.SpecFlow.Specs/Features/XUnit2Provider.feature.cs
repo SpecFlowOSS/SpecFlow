@@ -19,20 +19,20 @@ namespace TechTalk.SpecFlow.Specs.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("XUnit v1 unit test provider")]
-    public partial class XUnitV1UnitTestProviderFeature
+    [NUnit.Framework.DescriptionAttribute("XUnit v2 unit test provider")]
+    public partial class XUnitV2UnitTestProviderFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "XUnitProvider.feature"
+#line 1 "XUnit2Provider.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "XUnit v1 unit test provider", "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "XUnit v2 unit test provider", "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -72,7 +72,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 4
  testRunner.Given("there is a SpecFlow project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 5
- testRunner.And("the project is configured to use the xUnit.1 provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the project is configured to use the xUnit provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 6
  testRunner.And("a scenario \'Simple Scenario\' as", "When I do something", ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -117,7 +117,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.Given("there is a SpecFlow project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
- testRunner.And("the project is configured to use the xUnit.1 provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the project is configured to use the xUnit provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 24
  testRunner.And("there is a feature file in the project as", "\tFeature: Simple Feature\r\n\t@ignore\r\n\tScenario Outline: Simple Scenario Outline\r\n\t" +
@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
  testRunner.Given("there is a SpecFlow project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 45
- testRunner.And("the project is configured to use the xUnit.1 provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the project is configured to use the xUnit provider", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
  testRunner.And(string.Format("row testing is {0}", rowTest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -201,7 +201,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 78
- testRunner.And("the specflow configuration is", "<specFlow>\r\n\t<unitTestProvider name=\"xUnit.1\"/>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the specflow configuration is", "<specFlow>\r\n\t<unitTestProvider name=\"xUnit\"/>\r\n</specFlow>", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
  testRunner.When("I execute the tests with xUnit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden

@@ -1,8 +1,8 @@
-﻿Feature: XUnit v1 unit test provider
+﻿Feature: XUnit v2 unit test provider
 
 Scenario Outline: Should be able to execute scenarios with basic results
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit.1 provider
+	And the project is configured to use the xUnit provider
 	And a scenario 'Simple Scenario' as
 		"""
 		When I do something
@@ -20,7 +20,7 @@ Examples:
 
 	Scenario: Should be able to ignore a scenario outline
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit.1 provider
+	And the project is configured to use the xUnit provider
 	And there is a feature file in the project as
 		"""
 			Feature: Simple Feature
@@ -42,7 +42,7 @@ Examples:
 
 Scenario Outline: Should handle scenario outlines
 	Given there is a SpecFlow project
-	And the project is configured to use the xUnit.1 provider
+	And the project is configured to use the xUnit provider
 	And row testing is <row test>
 	Given there is a feature file in the project as
 		"""
@@ -78,7 +78,7 @@ Scenario: Should be able to specify xUnit provider in the configuration
 	And the specflow configuration is
 		"""
 		<specFlow>
-			<unitTestProvider name="xUnit.1"/>
+			<unitTestProvider name="xUnit"/>
 		</specFlow>
 		"""
 	When I execute the tests with xUnit

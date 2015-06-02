@@ -23,10 +23,10 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         {
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "xunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "xunit-result.txt");
-            var xunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"xunit.runners\tools\xunit.console.clr4.exe");
+            var xunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"xunit.runner.console\tools\xunit.console.exe");
 
             var provessHelper = new ProcessHelper();
-            provessHelper.RunProcess(xunitConsolePath, "\"{0}\" /nunit \"{1}\"",
+            provessHelper.RunProcess(xunitConsolePath, "\"{0}\" -nunit \"{1}\"",
                 inputProjectDriver.CompiledAssemblyPath, resultFilePath);
            
             File.WriteAllText(logFilePath, provessHelper.ConsoleOutput);

@@ -72,6 +72,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     break;
                 case "xunit":
                     yield return @"xUnit2\xunit.core.dll";
+                    yield return @"xUnit2\xunit.abstractions.dll";
+                    yield return @"xUnit2\xunit.assert.dll";
+                    yield return @"xUnit2\xunit.execution.desktop.dll";
                     break;
             }
         }

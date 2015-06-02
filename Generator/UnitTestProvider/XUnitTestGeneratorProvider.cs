@@ -176,7 +176,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //TODO: how to do class level ignore?
         }
 
-        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
                 .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);

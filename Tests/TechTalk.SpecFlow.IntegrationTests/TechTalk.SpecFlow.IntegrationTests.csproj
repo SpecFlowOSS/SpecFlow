@@ -284,7 +284,8 @@ xcopy $(SolutionDir)packages\xunit.1.9.2\lib\net20\*.* $(TargetDir)xunit\lib\ /s
 
 xcopy $(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.* $(TargetDir)xunit.extensions\lib\ /s /y
 
-xcopy $(SolutionDir)packages\xunit.runners.1.9.2\*.* $(TargetDir)xunit.runners\ /s /y
+xcopy $(SolutionDir)packages\xunit.runner.console.2.0.0\*.* $(TargetDir)xunit.runner.console\ /s /y
+
 
 xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y
 
