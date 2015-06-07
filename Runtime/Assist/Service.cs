@@ -35,6 +35,11 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueComparers.Add(valueComparer);
         }
 
+        public void UnregisterValueComparer(IValueComparer valueComparer)
+        {
+            _registeredValueComparers.Remove(valueComparer);
+        }
+
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
             _registeredValueRetrievers.Add(valueRetriever);

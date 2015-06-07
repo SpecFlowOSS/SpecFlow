@@ -68,5 +68,34 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableUShortValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableLongValueRetriever)).Count());
         }
+
+        [Test]
+        public void Should_allow_the_removal_and_addition_of_new_value_comparers()
+        {
+            var service = new Service();
+
+            foreach (var valueComparer in service.ValueComparers.ToArray())
+            {
+                service.UnregisterValueComparer(valueComparer);
+                Assert.IsFalse(service.ValueComparers.Contains(valueComparer));
+            }
+
+            var thing = new IExistsForTestingValueComparing();
+            service.RegisterValueComparer(thing);
+            Assert.AreEqual(1, service.ValueComparers.Count());
+            Assert.AreSame(thing, service.ValueComparers.First());
+        }
+    }
+
+    public class IExistsForTestingValueComparing : IValueComparer
+    {
+        public bool CanCompare(object actualValue)
+        {
+            throw new NotImplementedException();
+        }
+        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
