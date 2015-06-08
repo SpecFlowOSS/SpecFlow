@@ -39,7 +39,10 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Add(valueComparer);
+            if (valueComparer.GetType() == typeof(DefaultValueComparer))
+              _registeredValueComparers.Add(valueComparer);
+            else
+              _registeredValueComparers.Insert(0, valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
