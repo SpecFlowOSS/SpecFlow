@@ -14,6 +14,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     {
         public string FirstName { get; set; }
         public string LastName;
+
+        public override string ToString()
+        {
+            return String.Join(" ", new string[]{ FirstName, LastName });
+        }
     }
 
     public class FancyLad
@@ -40,6 +45,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             return FancyNameValueRetriever.Parse(row[1]);
         }
+
     }
 
     public class FancyNameValueComparer : IValueComparer
@@ -88,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
 
             var table = new Table("Field", "Value");
-            table.AddRow("Name", "John ignore these values in the middle Galt");
+            table.AddRow("Name", "John Galt");
 
             var expectedName = new FancyName() { FirstName = "John", LastName = "Galt" };
             var expectedLad  = new FancyLad() { Name = expectedName };
