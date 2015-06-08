@@ -12,8 +12,8 @@ namespace TechTalk.SpecFlow.Assist
     public class Service
     {
 
-        private List<IValueComparer> _registeredValueComparers = new List<IValueComparer>();
-        private List<IValueRetriever> _registeredValueRetrievers = new List<IValueRetriever>();
+        private List<IValueComparer> _registeredValueComparers;
+        private List<IValueRetriever> _registeredValueRetrievers;
 
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
         public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
@@ -27,6 +27,13 @@ namespace TechTalk.SpecFlow.Assist
 
         public Service()
         {
+            RestoreDefaults();
+        }
+
+        public void RestoreDefaults()
+        {
+            _registeredValueComparers = new List<IValueComparer>();
+            _registeredValueRetrievers = new List<IValueRetriever>();
             RegisterSpecFlowDefaults();
         }
 

@@ -103,6 +103,31 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, service.ValueRetrievers.Count());
             Assert.AreSame(thing, service.ValueRetrievers.First());
         }
+
+
+        [Test]
+        public void Should_allow_for_the_restoration_of_the_defaults()
+        {
+            var service = new Service();
+
+            foreach (var valueRetriever in service.ValueRetrievers.ToArray())
+            {
+                service.UnregisterValueRetriever(valueRetriever);
+                Assert.IsFalse(service.ValueRetrievers.Contains(valueRetriever));
+            }
+
+            foreach (var valueComparer in service.ValueComparers.ToArray())
+            {
+                service.UnregisterValueComparer(valueComparer);
+                Assert.IsFalse(service.ValueComparers.Contains(valueComparer));
+            }
+
+            service.RegisterValueRetriever(new IExistsForTestingValueRetrieving());
+            service.RegisterValueComparer(new IExistsForTestingValueComparing());
+
+            service.RestoreDefaults();
+        }
+
     }
 
     public class IExistsForTestingValueComparing : IValueComparer
