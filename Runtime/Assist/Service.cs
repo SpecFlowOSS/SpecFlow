@@ -45,6 +45,11 @@ namespace TechTalk.SpecFlow.Assist
             _registeredValueRetrievers.Add(valueRetriever);
         }
 
+        public void UnregisterValueRetriever(IValueRetriever valueRetriever)
+        {
+            _registeredValueRetrievers.Remove(valueRetriever);
+        }
+
         public void RegisterSpecFlowDefaults()
         {
             RegisterValueComparer(new DateTimeValueComparer());

@@ -4,6 +4,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -85,6 +86,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, service.ValueComparers.Count());
             Assert.AreSame(thing, service.ValueComparers.First());
         }
+
+        [Test]
+        public void Should_allow_the_removal_and_addition_of_new_value_retrievers()
+        {
+            var service = new Service();
+
+            foreach (var valueRetriever in service.ValueRetrievers.ToArray())
+            {
+                service.UnregisterValueRetriever(valueRetriever);
+                Assert.IsFalse(service.ValueRetrievers.Contains(valueRetriever));
+            }
+
+            var thing = new IExistsForTestingValueRetrieving();
+            service.RegisterValueRetriever(thing);
+            Assert.AreEqual(1, service.ValueRetrievers.Count());
+            Assert.AreSame(thing, service.ValueRetrievers.First());
+        }
     }
 
     public class IExistsForTestingValueComparing : IValueComparer
@@ -94,6 +112,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             throw new NotImplementedException();
         }
         public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class IExistsForTestingValueRetrieving : IValueRetriever
+    {
+        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        {
+            throw new NotImplementedException();
+        }
+        public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             throw new NotImplementedException();
         }
