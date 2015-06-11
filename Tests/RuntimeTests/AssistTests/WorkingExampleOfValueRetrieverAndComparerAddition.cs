@@ -102,4 +102,100 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table.CompareToInstance<FancyLad>(expectedLad);
         }
     }
+
+
+    /***************************************************/
+
+    public class Product
+    {
+        public string Name { get; set; }
+        public ProductCategory Category { get; set; }
+    }
+
+    public class ProductCategory
+    {
+        public string Name { get; set; }
+
+        public override string ToString()
+        {
+            return Name + "!!!";
+        }
+    }
+
+    public class ProductCategoryValueRetriever : IValueRetriever
+    {
+
+        public static ProductCategory Parse(string name)
+        {
+            return new ProductCategory() { Name = name };
+        }
+
+        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        {
+            return new Type[]{ typeof(ProductCategory) };
+        }
+
+        public object ExtractValueFromRow(TableRow row, Type targetType)
+        {
+            return ProductCategoryValueRetriever.Parse(row[1]);
+        }
+
+    }
+
+    public class ProductCategoryValueComparer : IValueComparer
+    {
+        public bool CanCompare(object actualValue)
+        {
+            return actualValue != null && actualValue.GetType() == typeof(ProductCategory);
+        }
+
+        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        {
+            var expected = ProductCategoryValueRetriever.Parse(expectedValue);
+            var actual = (ProductCategory)actualValue; 
+            return expected.Name == actual.Name;
+        }
+    }
+
+    [TestFixture]
+    public class AnotherWorkingExampleOfValueRetrieverAndComparerAddition
+    {
+        [TearDown]
+        public void Cleanup()
+        {
+            Service.Instance.RestoreDefaults();
+        }
+
+        [Test]
+        public void Should_be_able_to_retrieve_the_category()
+        {
+
+            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+
+            var table = new Table("Field", "Value");
+            table.AddRow("Name", "Apple");
+            table.AddRow("Category", "Fruit");
+
+            var lad = table.CreateInstance<Product>();
+
+            lad.Name.Should().Be("Apple");
+            lad.Category.Name.Should().Be("Fruit");
+        }
+
+        [Test]
+        public void Should_be_able_to_compare_the_category()
+        {
+            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            Service.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
+
+            var table = new Table("Field", "Value");
+            table.AddRow("Name", "Cucumber");
+            table.AddRow("Category", "Vegetable");
+
+            var expectedCategory = new ProductCategory() { Name = "Vegetable" };
+            var expectedProduct = new Product() { Name = "Cucumber", Category = expectedCategory };
+
+            table.CompareToInstance<Product>(expectedProduct);
+        }
+    }
 }
