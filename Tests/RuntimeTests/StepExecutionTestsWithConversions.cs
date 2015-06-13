@@ -9,11 +9,15 @@ using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
+    using System.Collections.Generic;
+
     internal static class LegacyStepArgumentTypeConverterExtensions
     {
         public static object Convert(this IStepArgumentTypeConverter converter, object value, Type typeToConvertTo, CultureInfo cultureInfo)
         {
-            return converter.Convert(value, new RuntimeBindingType(typeToConvertTo), cultureInfo);
+            Queue<object> values = new Queue<object>();
+            values.Enqueue(value);
+            return converter.Convert(values, new RuntimeBindingType(typeToConvertTo), cultureInfo);
         }
 
         public static Function<IStepArgumentTypeConverter, bool> GetCanConvertMethodFilter(object argument, Type type)
@@ -27,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public static Function<IStepArgumentTypeConverter, object> GetConvertMethodFilter(object argument, Type type)
         {
             return c => c.Convert(
-                Arg<string>.Is.Equal(argument),
+                Arg<Queue<object>>.Matches(q=>q.Dequeue().Equals(argument)),
                 Arg<IBindingType>.Matches(bt => bt.TypeEquals(type)), 
                 Arg<CultureInfo>.Is.Anything);
         }

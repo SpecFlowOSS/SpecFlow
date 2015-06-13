@@ -20,13 +20,59 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public string Name { get; set; }
     }
 
+    public class Employee
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public static bool operator ==(Employee left, Employee right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Employee left, Employee right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Employee)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((FirstName != null ? FirstName.GetHashCode() : 0) * 397) ^ (LastName != null ? LastName.GetHashCode() : 0);
+            }
+        }
+
+        protected bool Equals(Employee other)
+        {
+            return string.Equals(FirstName, other.FirstName) && string.Equals(LastName, other.LastName);
+        }
+    }
+
     [Binding]
     public class UserCreator
     {
         [StepArgumentTransformation("user (w+)")]
         public User Create(string name)
         {
-            return new User {Name = name};
+            return new User { Name = name };
         }
 
         [StepArgumentTransformation]
@@ -34,6 +80,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             return table.Rows.Select(tableRow =>
                 new User { Name = tableRow["Name"] });
+        }
+    }
+
+    [Binding]
+    public class EmployeeCreator
+    {
+        [StepArgumentTransformation]
+        public Employee CreateEmployee(string firstName, string lastName)
+        {
+            return new Employee { FirstName = firstName, LastName = lastName };
         }
     }
 
@@ -109,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void ShouldUseStepArgumentTransformationToConvertTable()
         {
             var table = new Table("Name");
-            
+
             UserCreator stepTransformationInstance = new UserCreator();
             var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
             var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
@@ -126,6 +182,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.EqualTo(resultUsers));
+        }
+
+        [Test]
+        public void EmployeeConverterShouldConvertMultipleStringsToEmployee()
+        {
+            var stepTransformationInstance = new EmployeeCreator();
+            MethodInfo transformMethod = stepTransformationInstance.GetType().GetMethod("CreateEmployee");
+            IStepArgumentTransformationBinding stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+
+            var invoker = new BindingInvoker(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            object result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { "John", "Smith" }, new Mock<ITestTracer>().Object, out duration);
+            Assert.NotNull(result);
+            Assert.That(result.GetType(), Is.EqualTo(typeof(Employee)));
+            Assert.That(((Employee)result).FirstName, Is.EqualTo("John"));
+            Assert.That(((Employee)result).LastName, Is.EqualTo("Smith"));
         }
     }
 
