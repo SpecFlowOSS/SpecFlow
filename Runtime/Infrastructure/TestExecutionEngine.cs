@@ -393,26 +393,32 @@ namespace TechTalk.SpecFlow.Infrastructure
         private object[] GetExecuteArguments(BindingMatch match)
         {
             var bindingParameters = match.StepBinding.Method.Parameters.ToArray();
-            if (match.Arguments.Length != bindingParameters.Length)
+            if (match.Arguments.Length < bindingParameters.Length)
                 throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
 
-            var arguments = match.Arguments.Select(
-                (arg, argIndex) => ConvertArg(arg, bindingParameters[argIndex].Type))
-                .ToArray();
+            var codeArguments = new List<object>();
+            var stepSpecifiedArguments = new Queue<object>(match.Arguments);
+            foreach (var bindingParameter in bindingParameters)
+            {
+                codeArguments.Add(ConvertSpecifiedArgumentsToCodeArguments(bindingParameter.Type,stepSpecifiedArguments));
+            }
 
-            return arguments;
+            if (codeArguments.Count != bindingParameters.Length || stepSpecifiedArguments.Any())
+                throw errorProvider.GetParameterCountError(match, match.Arguments.Length);
+
+            return codeArguments.ToArray();
         }
 
-        private object ConvertArg(object value, IBindingType typeToConvertTo)
+        private object ConvertSpecifiedArgumentsToCodeArguments(IBindingType typeToConvertTo, Queue<object> stepSpecifiedArguments)
         {
-            Debug.Assert(value != null);
+            Debug.Assert(stepSpecifiedArguments != null);
             Debug.Assert(typeToConvertTo != null);
-
+            var value = stepSpecifiedArguments.Peek();
             if (typeToConvertTo.IsAssignableTo(value.GetType()))
-                return value;
+                return stepSpecifiedArguments.Dequeue();
 
-            return stepArgumentTypeConverter.Convert(value, typeToConvertTo, FeatureContext.BindingCulture);
-        }
+            return stepArgumentTypeConverter.Convert(stepSpecifiedArguments, typeToConvertTo, FeatureContext.BindingCulture);
+        }        
 
         #endregion
 
