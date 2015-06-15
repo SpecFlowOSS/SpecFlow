@@ -32,7 +32,7 @@ Scenario: Should handle scenario outlines
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 		"""
 	And all steps are bound and pass
 	When I execute the tests with MsTest

@@ -14,6 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>b87cbc77</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,16 +36,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="FluentAssertions.Core">
-      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+    <Reference Include="FluentAssertions.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build" />
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,8 +56,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\..\packages\SpecFlow.1.7.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    <Reference Include="TechTalk.SpecFlow, Version=1.9.0.77, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="xunit, Version=1.9.2.1705, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +89,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Tracing.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\XUnit2SmokeTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XUnit2SmokeTests.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\XUnitSmokeTests.feature.cs">
       <DependentUpon>XUnitSmokeTests.feature</DependentUpon>
@@ -133,6 +142,10 @@
     <None Include="Features\Tracing.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Tracing.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnit2SmokeTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnit2SmokeTests.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnitSmokeTests.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -263,7 +276,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
 
-xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.6.4\*.* $(TargetDir)NUnit\ /s /y
 
 xcopy $(SolutionDir)packages\NUnit.Runners.2.6.0.12051\*.* $(TargetDir)NUnit.Runners\ /s /y
 
@@ -271,9 +284,12 @@ xcopy $(SolutionDir)packages\xunit.1.9.2\lib\net20\*.* $(TargetDir)xunit\lib\ /s
 
 xcopy $(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.* $(TargetDir)xunit.extensions\lib\ /s /y
 
-xcopy $(SolutionDir)packages\xunit.runners.1.9.2\*.* $(TargetDir)xunit.runners\ /s /y
+xcopy $(SolutionDir)packages\xunit.runner.console.2.0.0\*.* $(TargetDir)xunit.runner.console\ /s /y
 
-xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y</PostBuildEvent>
+
+xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y
+
+xcopy $(SolutionDir)lib\xunit.2.0.0\*.* $(TargetDir)xUnit2\ /s /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

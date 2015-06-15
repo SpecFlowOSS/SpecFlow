@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 ";
 
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
