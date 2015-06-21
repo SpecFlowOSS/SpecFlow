@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Assist
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
             return from row in table.Rows
-                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                   where InstanceHelper.ThereIsADifference(instance, row)
                    select CreateDifferenceForThisRow(instance, row);
         }
 
@@ -59,41 +59,9 @@ namespace TechTalk.SpecFlow.Assist
             return differences.Count() > 0;
         }
 
-        private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
-        {
-            return instance.GetType().GetProperties()
-                .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
-        }
-
-        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
-        {
-            var expected = GetTheExpectedValue(row);
-            var propertyValue = instance.GetPropertyValue(row.Id());
-
-            var valueComparers = new IValueComparer[]
-                                     {
-                                         new DateTimeValueComparer(),
-                                         new BoolValueComparer(),
-                                         new GuidValueComparer(new GuidValueRetriever()),
-                                         new DecimalValueComparer(),
-                                         new DoubleValueComparer(),
-                                         new FloatValueComparer(),
-                                         new DefaultValueComparer()
-                                     };
-
-            return valueComparers
-                .FirstOrDefault(x => x.CanCompare(propertyValue))
-                .TheseValuesAreTheSame(expected, propertyValue) == false;
-        }
-
-        private static string GetTheExpectedValue(TableRow row)
-        {
-            return row.Value().ToString();
-        }
-
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
-            if (ThePropertyDoesNotExist(instance, row))
+            if (InstanceHelper.ThePropertyDoesNotExist(instance, row))
                 return new Difference
                            {
                                Property = row.Id(),
