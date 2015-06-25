@@ -104,6 +104,11 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableLongValueRetriever());
         }
 
+        public IValueRetriever GetValueRetrieverFor(Type type)
+        {
+            return GetValueRetrieversByType()[type];
+        }
+
         public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
         {
             var result = new Dictionary<Type, Func<TableRow, Type, object>>();
