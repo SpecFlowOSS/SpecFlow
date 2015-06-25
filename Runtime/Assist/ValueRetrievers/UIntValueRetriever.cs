@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class UIntValueRetriever : IValueRetriever
+    public class UIntValueRetriever : ValueRetrieverBase
     {
         public virtual uint GetValue(string value)
         {
@@ -12,12 +12,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return returnValue;
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public override object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
         {
             return new Type[]{ typeof(uint) };
         }

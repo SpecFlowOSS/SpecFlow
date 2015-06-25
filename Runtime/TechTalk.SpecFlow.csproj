@@ -232,6 +232,7 @@
     <Compile Include="Tracing\ITraceListener.cs" />
     <Compile Include="Assist\Service.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrieverBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">

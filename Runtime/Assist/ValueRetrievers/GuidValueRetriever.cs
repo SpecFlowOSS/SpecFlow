@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class GuidValueRetriever : IValueRetriever
+    public class GuidValueRetriever : ValueRetrieverBase
     {
         public virtual Guid GetValue(string value)
         {
@@ -26,12 +26,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public override object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
         {
             return new Type[]{ typeof(Guid) };
         }

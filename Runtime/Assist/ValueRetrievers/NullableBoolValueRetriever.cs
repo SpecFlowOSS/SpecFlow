@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableBoolValueRetriever : IValueRetriever
+    public class NullableBoolValueRetriever : ValueRetrieverBase
     {
         private readonly Func<string, bool> boolValueRetriever = v => new BoolValueRetriever().GetValue(v);
 
@@ -19,12 +19,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return boolValueRetriever(thisValue);
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public override object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
         {
             return new Type[]{ typeof(bool?) };
         }

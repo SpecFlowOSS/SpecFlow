@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class EnumValueRetriever : IValueRetriever
+    public class EnumValueRetriever : ValueRetrieverBase
     {
         public object GetValue(string value, Type enumType)
         {
@@ -13,13 +13,13 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return ConvertTheStringToAnEnum(value, enumType);
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public override object ExtractValueFromRow(TableRow row, Type targetType)
         {
             var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType;
             return GetValue(row[1], propertyType);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
         {
             return new Type[]{ typeof(Enum) };
         }
