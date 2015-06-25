@@ -152,5 +152,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             throw new NotImplementedException();
         }
+        public bool CanRetrieve(Type type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

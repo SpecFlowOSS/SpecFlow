@@ -46,6 +46,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return FancyNameValueRetriever.Parse(row[1]);
         }
 
+        public bool CanRetrieve(Type type)
+        {
+            return this.TypesForWhichIRetrieveValues().Contains(type);
+        }
+
     }
 
     public class FancyNameValueComparer : IValueComparer
@@ -138,6 +143,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return ProductCategoryValueRetriever.Parse(row[1]);
+        }
+
+        public bool CanRetrieve(Type type)
+        {
+            return this.TypesForWhichIRetrieveValues().Contains(type);
         }
 
     }
