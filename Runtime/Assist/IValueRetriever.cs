@@ -7,5 +7,6 @@ namespace TechTalk.SpecFlow.Assist
     {
         IEnumerable<Type> TypesForWhichIRetrieveValues();
         object ExtractValueFromRow(TableRow row, Type targetType);
+        bool CanRetrieve(Type type);
     }
 }
