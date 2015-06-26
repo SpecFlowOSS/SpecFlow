@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist
         public abstract IEnumerable<Type> TypesForWhichIRetrieveValues();
         public abstract object ExtractValueFromRow(TableRow row, Type targetType);
 
-        public bool CanRetrieve(Type type)
+        public virtual bool CanRetrieve(Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }
