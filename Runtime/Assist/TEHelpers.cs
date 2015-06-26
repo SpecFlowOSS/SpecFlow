@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Assist
                                 where m.MemberName == parameterName
                                 select m).FirstOrDefault();
                 if (member != null)
-                    parameterValues[parameterIndex] = member.Handler(member.Row);
+                    parameterValues[parameterIndex] = member.Handler()(member.Row);
             }
             return (T)constructor.Invoke(parameterValues);
         }
@@ -74,26 +74,26 @@ namespace TechTalk.SpecFlow.Assist
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
             membersThatNeedToBeSet.ToList()
-                .ForEach(x => x.Setter(instance, x.Handler(x.Row)));
+                .ForEach(x => x.Setter(instance, x.Handler()(x.Row)));
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs(type);
+            //var handlers = GetTypeHandlersForFieldValuePairs(type);
 
             var properties = from property in type.GetProperties()
-                             from key in handlers.Keys
+                             //from key in handlers.Keys
                              from row in table.Rows
-                             where TheseTypesMatch(property.PropertyType, key)
+                             where TheseTypesMatch(property.PropertyType)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                             select new MemberHandler { Row = row, MemberName = property.Name, Handler = handlers[key], Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler { Type = property.PropertyType, Row = row, MemberName = property.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(property.PropertyType), Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
-                             from key in handlers.Keys
+                             //from key in handlers.Keys
                              from row in table.Rows
-                             where TheseTypesMatch(field.FieldType, key)
+                             where TheseTypesMatch(field.FieldType)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                             select new MemberHandler { Row = row, MemberName = field.Name, Handler = handlers[key], Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler { Type = field.FieldType, Row = row, MemberName = field.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(field.FieldType), Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
@@ -103,15 +103,18 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private static bool TheseTypesMatch(Type memberType, Type handlerType)
+        private static bool TheseTypesMatch(Type memberType)
         {
-            if (handlerType.IsAssignableFrom(memberType))
-                return true;
-            if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return handlerType.IsAssignableFrom(memberType.GetGenericArguments()[0]);
-            return false;
+            //if (handlerType.IsAssignableFrom(memberType))
+                //return true;
+            //if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                //return handlerType.IsAssignableFrom(memberType.GetGenericArguments()[0]);
+            //return false;
+            var handler = Assist.Service.Instance.GetValueRetrieverFor(memberType);
+            return handler != null;
         }
 
+        /*
         internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs(Type type)
         {
             var valueRetrievers = Service.Instance.GetValueRetrieversByType();
@@ -121,13 +124,20 @@ namespace TechTalk.SpecFlow.Assist
                 )
                 .ToDictionary(x => x.Key, x => x.Value);
         }
+        */
 
         internal class MemberHandler
         {
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
-            public Func<TableRow, object> Handler { get; set; }
+            public Func<TableRow, object> Handler()
+            { 
+                var valueRetriever = this.ValueRetriever;
+                return (TableRow row) => valueRetriever.ExtractValueFromRow(row, Type);
+            }
             public Action<object, object> Setter { get; set; }
+            public IValueRetriever ValueRetriever { get; set; }
+            public Type Type { get; set; }
         }
 
         internal static Table GetTheProperInstanceTable(Table table, Type type)

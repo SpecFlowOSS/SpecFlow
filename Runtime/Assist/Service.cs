@@ -106,7 +106,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public IValueRetriever GetValueRetrieverFor(Type type)
         {
-            return GetValueRetrieversByType()[type];
+            foreach(var valueRetriever in ValueRetrievers){
+                if (valueRetriever.CanRetrieve(type))
+                    return valueRetriever;
+            }
+            return null;
         }
 
         public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
