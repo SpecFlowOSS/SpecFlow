@@ -19,6 +19,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1], propertyType);
         }
 
+        public override bool CanRetrieve(Type type)
+        {
+            return type.IsEnum;
+        }
+
         public override IEnumerable<Type> TypesForWhichIRetrieveValues()
         {
             return new Type[]{ typeof(Enum) };
