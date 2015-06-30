@@ -113,17 +113,6 @@ namespace TechTalk.SpecFlow.Assist
             return null;
         }
 
-        public IDictionary<Type, Func<TableRow, Type, object>> GetValueRetrieversByType()
-        {
-            var result = new Dictionary<Type, Func<TableRow, Type, object>>();
-            foreach(var valueRetriever in ValueRetrievers){
-                foreach(var type in valueRetriever.TypesForWhichIRetrieveValues()){
-                    result[type] = (TableRow row, Type targetType) => valueRetriever.ExtractValueFromRow(row, targetType);
-                }
-            }
-            return result;
-        }
-
     }
 }
 
