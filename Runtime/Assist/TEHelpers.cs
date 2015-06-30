@@ -86,14 +86,14 @@ namespace TechTalk.SpecFlow.Assist
                              from row in table.Rows
                              where TheseTypesMatch(property.PropertyType)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                select new MemberHandler { Type = property.PropertyType, Row = row, MemberName = property.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(property.PropertyType), Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(property.PropertyType), Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              //from key in handlers.Keys
                              from row in table.Rows
                              where TheseTypesMatch(field.FieldType)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                select new MemberHandler { Type = field.FieldType, Row = row, MemberName = field.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(field.FieldType), Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(field.FieldType), Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
