@@ -17,9 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1]);
         }
 
-        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public override bool CanRetrieve(Type type)
         {
-            return new Type[]{ typeof(char) };
+            return type == typeof(char);
         }
 
         private bool ThisStringIsNotASingleCharacter(string value)

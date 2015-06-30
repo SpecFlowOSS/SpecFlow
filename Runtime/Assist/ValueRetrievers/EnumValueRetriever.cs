@@ -26,11 +26,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return type.IsEnum;
         }
 
-        public override IEnumerable<Type> TypesForWhichIRetrieveValues()
-        {
-            return new Type[]{ typeof(Enum) };
-        }
-
         private object ConvertTheStringToAnEnum(string value, Type enumType)
         {
             return Enum.Parse(GetTheEnumType(enumType), ParseTheValue(value), true);
