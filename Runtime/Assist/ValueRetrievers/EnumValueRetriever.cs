@@ -21,6 +21,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public override bool CanRetrieve(Type type)
         {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return typeof(Enum).IsAssignableFrom(type.GetGenericArguments()[0]);
             return type.IsEnum;
         }
 
