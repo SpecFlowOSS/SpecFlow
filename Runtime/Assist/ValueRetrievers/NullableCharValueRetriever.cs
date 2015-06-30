@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableCharValueRetriever : ValueRetrieverBase
+    public class NullableCharValueRetriever : IValueRetriever
     {
         private readonly Func<string, char> charValueRetriever = v => new CharValueRetriever().GetValue(v);
 
@@ -20,12 +20,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return charValueRetriever(value);
         }
 
-        public override object ExtractValueFromRow(TableRow row, Type targetType)
+        public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public override bool CanRetrieve(Type type)
+        public bool CanRetrieve(Type type)
         {
             return type == typeof(char?);
         }

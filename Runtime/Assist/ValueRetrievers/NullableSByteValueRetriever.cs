@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableSByteValueRetriever : ValueRetrieverBase
+    public class NullableSByteValueRetriever : IValueRetriever
     {
         private readonly Func<string, sbyte> sbyteValueRetriever = v => new SByteValueRetriever().GetValue(v);
 
@@ -19,12 +19,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return sbyteValueRetriever(value);
         }
 
-        public override object ExtractValueFromRow(TableRow row, Type targetType)
+        public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public override bool CanRetrieve(Type type)
+        public bool CanRetrieve(Type type)
         {
             return type == typeof(sbyte?);
         }

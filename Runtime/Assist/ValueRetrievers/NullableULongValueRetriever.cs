@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    public class NullableULongValueRetriever : ValueRetrieverBase
+    public class NullableULongValueRetriever : IValueRetriever
     {
         private readonly Func<string, ulong> ulongValueRetriever = v => new ULongValueRetriever().GetValue(v);
 
@@ -19,12 +19,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return ulongValueRetriever(value);
         }
 
-        public override object ExtractValueFromRow(TableRow row, Type targetType)
+        public object ExtractValueFromRow(TableRow row, Type targetType)
         {
             return GetValue(row[1]);
         }
 
-        public override bool CanRetrieve(Type type)
+        public bool CanRetrieve(Type type)
         {
             return type == typeof(ulong?);
         }
