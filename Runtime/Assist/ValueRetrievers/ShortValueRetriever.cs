@@ -17,9 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1]);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public bool CanRetrieve(Type type)
         {
-            return new Type[]{ typeof(short) };
+            return type == typeof(short);
         }
     }
 }

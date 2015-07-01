@@ -19,9 +19,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1], propertyType);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public bool CanRetrieve(Type type)
         {
-            return new Type[]{ typeof(Enum) };
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return typeof(Enum).IsAssignableFrom(type.GetGenericArguments()[0]);
+            return type.IsEnum;
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
