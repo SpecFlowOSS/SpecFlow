@@ -79,17 +79,13 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
-            //var handlers = GetTypeHandlersForFieldValuePairs(type);
-
             var properties = from property in type.GetProperties()
-                             //from key in handlers.Keys
                              from row in table.Rows
                              where TheseTypesMatch(property.PropertyType)
                                    && IsMemberMatchingToColumnName(property, row.Id())
                 select new MemberHandler { Type = type, Row = row, MemberName = property.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(property.PropertyType), Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
-                             //from key in handlers.Keys
                              from row in table.Rows
                              where TheseTypesMatch(field.FieldType)
                                    && IsMemberMatchingToColumnName(field, row.Id())
@@ -105,26 +101,8 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheseTypesMatch(Type memberType)
         {
-            //if (handlerType.IsAssignableFrom(memberType))
-                //return true;
-            //if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                //return handlerType.IsAssignableFrom(memberType.GetGenericArguments()[0]);
-            //return false;
-            var handler = Assist.Service.Instance.GetValueRetrieverFor(memberType);
-            return handler != null;
+            Assist.Service.Instance.GetValueRetrieverFor(memberType) != null;
         }
-
-        /*
-        internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs(Type type)
-        {
-            var valueRetrievers = Service.Instance.GetValueRetrieversByType();
-            return valueRetrievers.Keys
-                .Select(x => new KeyValuePair<Type, Func<TableRow, object>>(x,
-                    (TableRow row) => valueRetrievers[x](row, type))
-                )
-                .ToDictionary(x => x.Key, x => x.Value);
-        }
-        */
 
         internal class MemberHandler
         {
