@@ -13,12 +13,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         private IStepArgumentTypeConverter stepArgumentTypeConverter;
         private CultureInfo cultureInfo;
 
-        public StepTransformationValueRetriever()
-        {
-            this.stepArgumentTypeConverter = null; // static container call here
-            this.cultureInfo = null; // where can I get this?
-        }
-
         public StepTransformationValueRetriever(IStepArgumentTypeConverter stepArgumentTypeConverter, CultureInfo cultureInfo)
         {
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
@@ -32,7 +26,11 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public bool CanRetrieve(TableRow row, Type type)
         {
-            return stepArgumentTypeConverter.CanConvert(row[1], BindingTypeFor(type), cultureInfo);
+            try {
+                return stepArgumentTypeConverter.CanConvert(row[1], BindingTypeFor(type), cultureInfo);
+            } catch {
+                return false;
+            }
         }
 
         public IBindingType BindingTypeFor(Type type)

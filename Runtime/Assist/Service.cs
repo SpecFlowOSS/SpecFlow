@@ -6,6 +6,8 @@ using System.Linq;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using TechTalk.SpecFlow.Bindings;
+using System.Globalization;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -102,6 +104,10 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableShortValueRetriever());
             RegisterValueRetriever(new NullableUShortValueRetriever());
             RegisterValueRetriever(new NullableLongValueRetriever());
+
+            IStepArgumentTypeConverter stepArgumentTypeConverter = null;
+            CultureInfo cultureInfo = null;
+            RegisterValueRetriever(new StepTransformationValueRetriever(stepArgumentTypeConverter, cultureInfo));
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)
