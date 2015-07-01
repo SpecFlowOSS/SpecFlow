@@ -104,10 +104,10 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableLongValueRetriever());
         }
 
-        public IValueRetriever GetValueRetrieverFor(Type type)
+        public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)
         {
             foreach(var valueRetriever in ValueRetrievers){
-                if (valueRetriever.CanRetrieve(type))
+                if (valueRetriever.CanRetrieve(row, type))
                     return valueRetriever;
             }
             return null;

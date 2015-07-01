@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1]);
         }
 
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
             return type == typeof(long);
         }
