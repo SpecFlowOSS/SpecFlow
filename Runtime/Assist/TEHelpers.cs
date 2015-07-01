@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Assist
                                 where m.MemberName == parameterName
                                 select m).FirstOrDefault();
                 if (member != null)
-                    parameterValues[parameterIndex] = member.Handler()(member.Row);
+                    parameterValues[parameterIndex] = member.Handler()();
             }
             return (T)constructor.Invoke(parameterValues);
         }
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Assist
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
             membersThatNeedToBeSet.ToList()
-                .ForEach(x => x.Setter(instance, x.Handler()(x.Row)));
+                .ForEach(x => x.Setter(instance, x.Handler()()));
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
@@ -101,17 +101,17 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool TheseTypesMatch(Type memberType)
         {
-            Assist.Service.Instance.GetValueRetrieverFor(memberType) != null;
+            return Assist.Service.Instance.GetValueRetrieverFor(memberType) != null;
         }
 
         internal class MemberHandler
         {
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
-            public Func<TableRow, object> Handler()
+            public Func<object> Handler()
             { 
                 var valueRetriever = this.ValueRetriever;
-                return (TableRow row) => valueRetriever.ExtractValueFromRow(row, Type);
+                return () => valueRetriever.ExtractValueFromRow(Row, Type);
             }
             public Action<object, object> Setter { get; set; }
             public IValueRetriever ValueRetriever { get; set; }
