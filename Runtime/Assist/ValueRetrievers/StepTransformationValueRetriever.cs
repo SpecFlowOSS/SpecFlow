@@ -25,21 +25,16 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             this.cultureInfo = cultureInfo;
         }
 
-        public virtual object GetValue(string value, Type type)
-        {
-            IBindingType bindingType = null; // gotta get this from type?
-            return stepArgumentTypeConverter.Convert(value, bindingType, cultureInfo);
-        }
-
         public object ExtractValueFromRow(TableRow row, Type targetType)
         {
-            return GetValue(row[1], null /* UGH */);
+            var bindingType = new RuntimeBindingType(targetType);
+            return stepArgumentTypeConverter.Convert(row[1], bindingType, cultureInfo);
         }
 
-        public IEnumerable<Type> TypesForWhichIRetrieveValues()
+        public bool CanRetrieve(Type type)
         {
-            // UH OH!!!!!!!!!!
-            return new Type[]{};
+            var bindingType = new RuntimeBindingType(type);
+            return stepArgumentTypeConverter.CanConvert(null /* UGH */, bindingType, cultureInfo);
         }
     }
 }
