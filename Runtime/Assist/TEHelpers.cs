@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Assist
                                 where m.MemberName == parameterName
                                 select m).FirstOrDefault();
                 if (member != null)
-                    parameterValues[parameterIndex] = member.Value();
+                    parameterValues[parameterIndex] = member.GetValue();
             }
             return (T)constructor.Invoke(parameterValues);
         }
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Assist
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
             membersThatNeedToBeSet.ToList()
-                .ForEach(x => x.Setter(instance, x.Value()));
+                .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
@@ -83,13 +83,13 @@ namespace TechTalk.SpecFlow.Assist
                              from row in table.Rows
                              where TheseTypesMatch(property.PropertyType)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(property.PropertyType), Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              from row in table.Rows
                              where TheseTypesMatch(field.FieldType)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, ValueRetriever = Service.Instance.GetValueRetrieverFor(field.FieldType), Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
@@ -108,13 +108,15 @@ namespace TechTalk.SpecFlow.Assist
         {
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
-            public object Value()
-            {
-                return ValueRetriever.ExtractValueFromRow(Row, Type);
-            }
             public Action<object, object> Setter { get; set; }
-            public IValueRetriever ValueRetriever { get; set; }
             public Type Type { get; set; }
+            public Type PropertyType { get; set; }
+
+            public object GetValue()
+            {
+                var valueRetriever = Service.Instance.GetValueRetrieverFor(PropertyType);
+                return valueRetriever.ExtractValueFromRow(Row, Type);
+            }
         }
 
         internal static Table GetTheProperInstanceTable(Table table, Type type)
