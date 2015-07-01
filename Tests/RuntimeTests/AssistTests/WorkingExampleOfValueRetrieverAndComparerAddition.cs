@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return FancyNameValueRetriever.Parse(row[1]);
         }
 
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }
@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return ProductCategoryValueRetriever.Parse(row[1]);
         }
 
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }

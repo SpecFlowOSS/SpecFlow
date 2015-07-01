@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             throw new NotImplementedException();
         }
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
             throw new NotImplementedException();
         }

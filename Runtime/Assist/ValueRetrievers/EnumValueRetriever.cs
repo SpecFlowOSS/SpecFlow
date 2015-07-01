@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(row[1], propertyType);
         }
 
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return typeof(Enum).IsAssignableFrom(type.GetGenericArguments()[0]);
