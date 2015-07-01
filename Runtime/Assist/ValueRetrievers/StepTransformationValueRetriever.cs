@@ -27,14 +27,17 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public object ExtractValueFromRow(TableRow row, Type targetType)
         {
-            var bindingType = new RuntimeBindingType(targetType);
-            return stepArgumentTypeConverter.Convert(row[1], bindingType, cultureInfo);
+            return stepArgumentTypeConverter.Convert(row[1], BindingTypeFor(targetType), cultureInfo);
         }
 
-        public bool CanRetrieve(Type type)
+        public bool CanRetrieve(TableRow row, Type type)
         {
-            var bindingType = new RuntimeBindingType(type);
-            return stepArgumentTypeConverter.CanConvert(null /* UGH */, bindingType, cultureInfo);
+            return stepArgumentTypeConverter.CanConvert(row[1], BindingTypeFor(type), cultureInfo);
+        }
+
+        public IBindingType BindingTypeFor(Type type)
+        {
+            return new RuntimeBindingType(type);
         }
     }
 }
