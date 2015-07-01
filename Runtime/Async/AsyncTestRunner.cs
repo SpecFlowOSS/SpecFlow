@@ -2,6 +2,7 @@
 using System.Reflection;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Async
 {
@@ -18,10 +19,13 @@ namespace TechTalk.SpecFlow.Async
     {
         private readonly ITestExecutionEngine testExecutionEngine;
 
-        public AsyncTestRunner(ITestExecutionEngine testExecutionEngine)
+        public AsyncTestRunner(ITestExecutionEngine testExecutionEngine, IObjectContainer container)
         {
             this.testExecutionEngine = testExecutionEngine;
+            this.ObjectContainer = container;
         }
+
+        public IObjectContainer ObjectContainer { get; private set; }
 
         public FeatureContext FeatureContext
         {

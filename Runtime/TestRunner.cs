@@ -11,10 +11,13 @@ namespace TechTalk.SpecFlow
     {
         private readonly ITestExecutionEngine executionEngine;
 
-        public TestRunner(ITestExecutionEngine executionEngine)
+        public TestRunner(ITestExecutionEngine executionEngine, IObjectContainer container)
         {
             this.executionEngine = executionEngine;
+            this.ObjectContainer = container;
         }
+
+        public IObjectContainer ObjectContainer { get; private set; }
 
         public FeatureContext FeatureContext
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
+using BoDi;
 
 namespace TechTalk.SpecFlow
 {
@@ -25,6 +26,8 @@ namespace TechTalk.SpecFlow
         void But(string text, string multilineTextArg, Table tableArg, string keyword = null);
 
         void Pending();
+
+        IObjectContainer ObjectContainer { get; }
     }
 
     public static class TestRunnerDefaultArguments
