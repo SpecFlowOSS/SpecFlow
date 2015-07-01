@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableUShortValueRetriever());
             RegisterValueRetriever(new NullableLongValueRetriever());
 
-            IStepArgumentTypeConverter stepArgumentTypeConverter = null;
+            var stepArgumentTypeConverter = TestRunnerManager.GetTestRunner().ObjectContainer.Resolve<IStepArgumentTypeConverter>();
             CultureInfo cultureInfo = null;
             RegisterValueRetriever(new StepTransformationValueRetriever(stepArgumentTypeConverter, cultureInfo));
         }
