@@ -41,12 +41,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return new Type[]{ typeof(FancyName) };
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
-            return FancyNameValueRetriever.Parse(row[1]);
+            return FancyNameValueRetriever.Parse(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(TableRow row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }
@@ -140,12 +140,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return new Type[]{ typeof(ProductCategory) };
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
-            return ProductCategoryValueRetriever.Parse(row[1]);
+            return ProductCategoryValueRetriever.Parse(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(TableRow row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }

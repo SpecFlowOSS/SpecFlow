@@ -5,7 +5,7 @@ namespace TechTalk.SpecFlow.Assist
 {
     public interface IValueRetriever
     {
-        object ExtractValueFromRow(TableRow row, Type targetType);
-        bool CanRetrieve(TableRow row, Type type);
+        object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType);
+        bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type);
     }
 }

@@ -148,11 +148,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             throw new NotImplementedException();
         }
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
             throw new NotImplementedException();
         }
-        public bool CanRetrieve(TableRow row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
         {
             throw new NotImplementedException();
         }
