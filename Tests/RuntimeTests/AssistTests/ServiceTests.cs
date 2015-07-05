@@ -136,7 +136,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             throw new NotImplementedException();
         }
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             throw new NotImplementedException();
         }

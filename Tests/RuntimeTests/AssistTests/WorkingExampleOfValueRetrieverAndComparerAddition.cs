@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return actualValue != null && actualValue.GetType() == typeof(FancyName);
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             var expected = FancyNameValueRetriever.Parse(expectedValue);
             var actual = (FancyName)actualValue; 
@@ -159,7 +159,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return actualValue != null && actualValue.GetType() == typeof(ProductCategory);
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             var expected = ProductCategoryValueRetriever.Parse(expectedValue);
             var actual = (ProductCategory)actualValue; 

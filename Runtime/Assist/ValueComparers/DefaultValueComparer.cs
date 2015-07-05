@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             return true;
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             var actual = actualValue == null ? String.Empty : actualValue.ToString();
 
