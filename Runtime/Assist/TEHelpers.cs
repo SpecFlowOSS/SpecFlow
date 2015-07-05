@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -115,7 +116,7 @@ namespace TechTalk.SpecFlow.Assist
             public object GetValue()
             {
                 var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, PropertyType);
-                return valueRetriever.ExtractValueFromRow(Row, Type);
+                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type);
             }
         }
 

@@ -38,26 +38,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Returns_true_if_the_value_and_string_match()
         {
             var comparer = new BoolValueComparer();
-            comparer.TheseValuesAreTheSame("True", true).Should().BeTrue();
-            comparer.TheseValuesAreTheSame("False", false).Should().BeTrue();
+            comparer.Compare("True", true).Should().BeTrue();
+            comparer.Compare("False", false).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_if_the_value_and_string_do_not_match()
         {
             var comparer = new BoolValueComparer();
-            comparer.TheseValuesAreTheSame("True", false).Should().BeFalse();
-            comparer.TheseValuesAreTheSame("False", true).Should().BeFalse();
+            comparer.Compare("True", false).Should().BeFalse();
+            comparer.Compare("False", true).Should().BeFalse();
         }
 
         [Test]
         public void Ignores_casing_of_the_expected_value_when_matching()
         {
             var comparer = new BoolValueComparer();
-            comparer.TheseValuesAreTheSame("true", true).Should().BeTrue();
-            comparer.TheseValuesAreTheSame("FALSE", false).Should().BeTrue();
-            comparer.TheseValuesAreTheSame("truE", true).Should().BeTrue();
-            comparer.TheseValuesAreTheSame("false", false).Should().BeTrue();
+            comparer.Compare("true", true).Should().BeTrue();
+            comparer.Compare("FALSE", false).Should().BeTrue();
+            comparer.Compare("truE", true).Should().BeTrue();
+            comparer.Compare("false", false).Should().BeTrue();
         }
     }
 }

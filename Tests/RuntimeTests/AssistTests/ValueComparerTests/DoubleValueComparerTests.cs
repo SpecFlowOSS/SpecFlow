@@ -37,27 +37,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Returns_true_when_the_double_values_match()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("3.14", 3.14).Should().BeTrue();
-            valueComparer.TheseValuesAreTheSame("0", 0.0).Should().BeTrue();
-            valueComparer.TheseValuesAreTheSame("-1", -1.0).Should().BeTrue();
+            valueComparer.Compare("3.14", 3.14).Should().BeTrue();
+            valueComparer.Compare("0", 0.0).Should().BeTrue();
+            valueComparer.Compare("-1", -1.0).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_when_the_double_values_do_not_match()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("-1", 1.0).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("0", 1.0).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873).Should().BeFalse();
+            valueComparer.Compare("-1", 1.0).Should().BeFalse();
+            valueComparer.Compare("0", 1.0).Should().BeFalse();
+            valueComparer.Compare("100.2874", 100.2873).Should().BeFalse();
         }
 
         [Test]
         public void Returns_false_when_the_expected_value_is_not_a_double()
         {
             var valueComparer = new DoubleValueComparer();
-            valueComparer.TheseValuesAreTheSame("x", 0.0).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("", 0.0).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("-----3", 0).Should().BeFalse();
+            valueComparer.Compare("x", 0.0).Should().BeFalse();
+            valueComparer.Compare("", 0.0).Should().BeFalse();
+            valueComparer.Compare("-----3", 0).Should().BeFalse();
         }
     }
 }

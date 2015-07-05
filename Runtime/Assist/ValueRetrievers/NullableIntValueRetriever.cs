@@ -19,12 +19,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return intValueRetriever(value);
         }
 
-        public object ExtractValueFromRow(TableRow row, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
-            return GetValue(row[1]);
+            return GetValue(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(TableRow row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
         {
             return type == typeof(int?);
         }

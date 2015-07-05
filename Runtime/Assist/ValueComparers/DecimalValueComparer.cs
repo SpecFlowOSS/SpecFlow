@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             return actualValue != null && actualValue.GetType() == typeof (decimal);
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             Decimal expected;
             if (Decimal.TryParse(expectedValue, out expected) == false)
