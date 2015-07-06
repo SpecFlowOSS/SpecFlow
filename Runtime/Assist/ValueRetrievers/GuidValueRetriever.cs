@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class GuidValueRetriever
+    public class GuidValueRetriever : IValueRetriever
     {
         public virtual Guid GetValue(string value)
         {
@@ -23,6 +24,16 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
                     return new Guid();
                 }
             }
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(Guid);
         }
 
         private static Guid AttempToBuildAGuidFromTheString(string value)

@@ -1,20 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableDoubleValueRetriever
+    public class NullableDoubleValueRetriever : IValueRetriever
     {
-        private readonly Func<string, double> DoubleValueRetriever;
+        private readonly Func<string, double> DoubleValueRetriever = v => new DoubleValueRetriever().GetValue(v);
 
-        public NullableDoubleValueRetriever(Func<string, double> DoubleValueRetriever)
+        public NullableDoubleValueRetriever(Func<string, double> DoubleValueRetriever = null)
         {
-            this.DoubleValueRetriever = DoubleValueRetriever;
+            if (DoubleValueRetriever != null)
+                this.DoubleValueRetriever = DoubleValueRetriever;
         }
 
         public double? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return DoubleValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(double?);
         }
     }
 }

@@ -1,20 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableShortValueRetriever
+    public class NullableShortValueRetriever : IValueRetriever
     {
-        private readonly Func<string, short> shortValueRetriever;
+        private readonly Func<string, short> shortValueRetriever = v => new ShortValueRetriever().GetValue(v);
 
-        public NullableShortValueRetriever(Func<string, short> shortValueRetriever)
+        public NullableShortValueRetriever(Func<string, short> shortValueRetriever = null)
         {
-            this.shortValueRetriever = shortValueRetriever;
+            if (shortValueRetriever != null)
+                this.shortValueRetriever = shortValueRetriever;
         }
 
         public short? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return shortValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(short?);
         }
     }
 }

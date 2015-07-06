@@ -1,10 +1,23 @@
-﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
+﻿using System;
+using System.Collections.Generic;
+
+namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class BoolValueRetriever
+    public class BoolValueRetriever : IValueRetriever
     {
         public virtual bool GetValue(string value)
         {
             return value == "True" || value == "true";
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(bool);
         }
     }
 }

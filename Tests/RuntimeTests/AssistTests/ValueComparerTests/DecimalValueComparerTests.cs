@@ -37,27 +37,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Returns_true_when_the_decimal_values_match()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("3.14", 3.14M).Should().BeTrue();
-            valueComparer.TheseValuesAreTheSame("0", 0M).Should().BeTrue();
-            valueComparer.TheseValuesAreTheSame("-1", -1M).Should().BeTrue();
+            valueComparer.Compare("3.14", 3.14M).Should().BeTrue();
+            valueComparer.Compare("0", 0M).Should().BeTrue();
+            valueComparer.Compare("-1", -1M).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_when_the_decimal_values_do_not_match()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("-1", 1M).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("0", 1M).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873M).Should().BeFalse();
+            valueComparer.Compare("-1", 1M).Should().BeFalse();
+            valueComparer.Compare("0", 1M).Should().BeFalse();
+            valueComparer.Compare("100.2874", 100.2873M).Should().BeFalse();
         }
 
         [Test]
         public void Returns_false_when_the_expected_value_is_not_a_decimal()
         {
             var valueComparer = new DecimalValueComparer();
-            valueComparer.TheseValuesAreTheSame("x", 0M).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("", 0M).Should().BeFalse();
-            valueComparer.TheseValuesAreTheSame("-----3", 0M).Should().BeFalse();
+            valueComparer.Compare("x", 0M).Should().BeFalse();
+            valueComparer.Compare("", 0M).Should().BeFalse();
+            valueComparer.Compare("-----3", 0M).Should().BeFalse();
         }
     }
 }

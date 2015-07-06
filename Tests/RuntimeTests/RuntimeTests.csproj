@@ -176,6 +176,8 @@
     <Compile Include="TestRunnerManagerTest.cs" />
     <Compile Include="TestTestRunnerFactory.cs" />
     <Compile Include="AssistTests\TestHelpers.cs" />
+    <Compile Include="AssistTests\ServiceTests.cs" />
+    <Compile Include="AssistTests\WorkingExampleOfValueRetrieverAndComparerAddition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
