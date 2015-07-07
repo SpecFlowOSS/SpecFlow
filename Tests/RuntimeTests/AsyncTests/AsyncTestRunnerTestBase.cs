@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AsyncTests
                 );
             fakeAsyncTestExecutor = new FakeAsyncTestExecutor();
 
-            asyncTestRunner = new AsyncTestRunner(testExecutionEngineStub.Object);
+            asyncTestRunner = new AsyncTestRunner(testExecutionEngineStub.Object, new ObjectContainer());
         }
     }
 }
