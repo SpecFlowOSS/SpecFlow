@@ -14,11 +14,6 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
-    public class User
-    {
-        public string Name { get; set; }
-    }
-
     public class Employee
     {
         public string FirstName { get; set; }
@@ -65,11 +60,22 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
     }
 
-    [Binding]
-    public class UserCreator
+    public class User
     {
-        [StepArgumentTransformation("user (w+)")]
-        public User Create(string name)
+        public string Name { get; set; }
+        public BankAccount BankAccount { get; set; }
+    }
+
+    public class BankAccount
+    {
+        public int AccountNumber { get; set; }
+    }
+
+    [Binding]
+    public class UserConverter
+    {
+        [StepArgumentTransformation(@"user (\w+)")]
+        public User CreateUser(string name)
         {
             return new User { Name = name };
         }
@@ -79,6 +85,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             return table.Rows.Select(tableRow =>
                 new User { Name = tableRow["Name"] });
+        }
+
+        [StepArgumentTransformation(@"user (\w+) with account (\w+)")]
+        public User CreateUserWithBankAccount(string name, BankAccount bankAccount)
+        {
+            return new User { Name = name, BankAccount = bankAccount };
+        }
+
+        [StepArgumentTransformation]
+        public BankAccount CreateBankAccount(int accountNumber)
+        {
+            return new BankAccount { AccountNumber = accountNumber };
         }
     }
 
@@ -106,8 +124,16 @@ namespace TechTalk.SpecFlow.RuntimeTests
             // ScenarioContext is needed, because the [Binding]-instances live there
             var scenarioContext = new ScenarioContext(null, null, null);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
-
+            stepTransformations.Clear();
+            stepTransformations.AddRange(typeof(UserConverter).GetMethods().Where(x => x.GetCustomAttributes(typeof(StepArgumentTransformationAttribute), false).Length>0).Select(CreateStepTransformationBinding));
             bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);
+        }
+
+        private IStepArgumentTransformationBinding CreateStepTransformationBinding(MethodInfo transformMethod)
+        {
+            var regexString = transformMethod.GetCustomAttributes(typeof(StepArgumentTransformationAttribute), false)
+                .OfType<StepArgumentTransformationAttribute>().Select(x => x.Regex).FirstOrDefault();
+            return new StepArgumentTransformationBinding(regexString, new RuntimeBindingMethod(transformMethod));
         }
 
         private IStepArgumentTransformationBinding CreateStepTransformationBinding(string regexString, IBindingMethod transformMethod)
@@ -121,10 +147,41 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void StepArgumentTypeConverterShouldNotUseStepArgumentTransformationForStringConversionIfRegexDoesNotMatch()
+        {            
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+
+            Queue<object> values = new Queue<object>();
+            values.Enqueue("xyz");
+            var result = stepArgumentTypeConverter.CanConvert(values, new RuntimeBindingType(typeof(User)), new CultureInfo("en-US"));
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void StepArgumentTypeConverterShouldNotUseStepArgumentTransformationForStringConversionIfRegexMatchesButArgumentsCannotBeConvertedToParameterTypes()
+        {
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+            Queue<object> values = new Queue<object>();
+            values.Enqueue("user xyz with account abcd");
+            var result = stepArgumentTypeConverter.CanConvert(values, new RuntimeBindingType(typeof(User)), new CultureInfo("en-US"));
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void StepArgumentTypeConverterShouldUseStepArgumentTransformationForStringConversionIfRegexMatchesAndArgumentsCanBeConvertedToParameterTypes()
+        {
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+            Queue<object> values = new Queue<object>();
+            values.Enqueue("user xyz with account 1234");
+            var result = stepArgumentTypeConverter.CanConvert(values, new RuntimeBindingType(typeof(User)), new CultureInfo("en-US"));
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
         public void UserConverterShouldConvertStringToUser()
         {
-            UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = stepTransformationInstance.GetType().GetMethod("Create");
+            UserConverter stepTransformationInstance = new UserConverter();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateUser");
             var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
 
             Assert.True(stepTransformationBinding.Regex.IsMatch("user xyz"));
@@ -138,11 +195,47 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void StepArgumentTransformationShouldConvertNumberToBankAccount()
+        {
+            UserConverter stepTransformationInstance = new UserConverter();
+            var transformMethod = stepTransformationInstance.GetType().GetMethod("CreateBankAccount");
+            var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+
+            var invoker = new BindingInvoker(new RuntimeConfiguration(), new Mock<IErrorProvider>().Object);
+            TimeSpan duration;
+            var result = invoker.InvokeBinding(stepTransformationBinding, contextManagerStub.Object, new object[] { 1234 }, new Mock<ITestTracer>().Object, out duration);
+            Assert.NotNull(result);
+            Assert.That(result.GetType(), Is.EqualTo(typeof(BankAccount)));
+            Assert.That(((BankAccount)result).AccountNumber, Is.EqualTo(1234));
+        }
+
+        [Test]
+        public void StepArgumentTypeConverterShouldNotUseStepArgumentTransformationToConvertArgumentsOfOtherStepArgumentTransformation()
+        {
+            var bankAccountStepTransformationBinding = stepTransformations.First(x => x.Method.Name == "CreateBankAccount");
+            var userStepTransformationBinding = stepTransformations.First(x => x.Method.Name == "CreateUserWithBankAccount");
+
+            var resultBankAccount = new BankAccount { AccountNumber = 1234 };
+            var resultUser = new User { Name = "xyz", BankAccount = resultBankAccount };
+
+            TimeSpan duration;
+            
+            methodBindingInvokerStub.Setup(i => i.InvokeBinding(bankAccountStepTransformationBinding, It.IsAny<IContextManager>(), new object[] { 1234 }, It.IsAny<ITestTracer>(), out duration))
+                .Returns(resultBankAccount);
+            methodBindingInvokerStub.Setup(i => i.InvokeBinding(userStepTransformationBinding, It.IsAny<IContextManager>(), new object[] { "xyz", resultBankAccount }, It.IsAny<ITestTracer>(), out duration))
+                .Returns(resultUser);
+
+            var stepArgumentTypeConverter = CreateStepArgumentTypeConverter();
+            var result = stepArgumentTypeConverter.Convert("user xyz with account 1234", typeof(User), new CultureInfo("en-US"));
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(resultUser));
+        }
+
+        [Test]
         public void StepArgumentTypeConverterShouldUseUserConverterForConversion()
         {
-            UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("Create"));
-            var stepTransformationBinding = CreateStepTransformationBinding(@"user (\w+)", transformMethod);
+            var stepTransformationBinding = stepTransformations.First(x => x.Method.Name == "CreateUser");
             stepTransformations.Add(stepTransformationBinding);
             TimeSpan duration;
             var resultUser = new User();
@@ -165,9 +258,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var table = new Table("Name");
 
-            UserCreator stepTransformationInstance = new UserCreator();
-            var transformMethod = new RuntimeBindingMethod(stepTransformationInstance.GetType().GetMethod("CreateUsers"));
-            var stepTransformationBinding = CreateStepTransformationBinding(@"", transformMethod);
+            var stepTransformationBinding = stepTransformations.First(x => x.Method.Name == "CreateUsers");
             stepTransformations.Add(stepTransformationBinding);
             TimeSpan duration;
             var resultUsers = new User[3];

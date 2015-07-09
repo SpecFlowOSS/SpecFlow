@@ -582,7 +582,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldCallBindingWhenStepWithMultipleParamsOfDifferntTypesIsTransformed()
+        public void ShouldCallBindingWhenStepWithMultipleParamsOfDifferentTypesIsTransformed()
         {
             StepExecutionTestsStepArgumentTransformationWithMultipleParameters bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
