@@ -52,7 +52,14 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (typeToConvertTo.IsAssignableTo(value.GetType()))
                 return true;
 
-            return stepArgumentTypeConverter.CanConvert(value, typeToConvertTo, bindingCulture);
+            return stepArgumentTypeConverter.CanConvert(CreateQueue(value), typeToConvertTo, bindingCulture);
+        }
+
+        private static Queue<object> CreateQueue(object value)
+        {
+            Queue<Object> queue = new Queue<object>();
+            queue.Enqueue(value);
+            return queue;
         }
 
         public bool Ready
