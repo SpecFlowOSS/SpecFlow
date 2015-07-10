@@ -106,7 +106,7 @@ namespace TechTalk.SpecFlow.Bindings
             if (!(typeToConvertTo is RuntimeBindingType))
                 throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
 
-            return ConvertSimple(((RuntimeBindingType) typeToConvertTo).Type, value, cultureInfo);
+            return ConvertSimple(typeToConvertTo.Type, value, cultureInfo);
         }
 
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
