@@ -143,7 +143,6 @@
     <Compile Include="Bindings\Reflection\BindingMethodComparer.cs" />
     <Compile Include="Bindings\Reflection\BindingParameter.cs" />
     <Compile Include="Bindings\Reflection\BindingReflectionExtensions.cs" />
-    <Compile Include="Bindings\Reflection\BindingType.cs" />
     <Compile Include="Bindings\Reflection\IBindingMethod.cs" />
     <Compile Include="Bindings\Reflection\IBindingParameter.cs" />
     <Compile Include="Bindings\Reflection\IBindingType.cs" />
