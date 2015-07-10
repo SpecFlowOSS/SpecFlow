@@ -10,31 +10,6 @@ using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
 using FluentAssertions;
 
-namespace TechTalk.SpecFlow.Bindings.Reflection
-{
-    public class BindingType : IBindingType
-    {
-        public string Name { get; private set; }
-        public string FullName { get; private set; }
-
-        public Type Type { get { throw new NotImplementedException (); } }
-
-        public BindingType(string name, string fullName)
-        {
-            if (name == null) throw new ArgumentNullException("name");
-            if (fullName == null) throw new ArgumentNullException("fullName");
-
-            Name = name;
-            FullName = fullName;
-        }
-
-        public override string ToString()
-        {
-            return "[" + FullName + "]";
-        }
-    }
-}
-
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
     [TestFixture]
@@ -63,12 +38,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
         private static BindingMethod CreateBindingMethod(string name = "dummy")
         {
-            return new BindingMethod(new BindingType("dummy", "dummy"), name, new IBindingParameter[0], null);
+            return new BindingMethod(new TestingBindingType("dummy", "dummy"), name, new IBindingParameter[0], null);
         }
 
         private static BindingMethod CreateBindingMethodWithStrignParam(string name = "dummy")
         {
-            return new BindingMethod(new BindingType("dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(string)), "param1") }, null);
+            return new BindingMethod(new TestingBindingType("dummy", "dummy"), name, new IBindingParameter[] { new BindingParameter(new RuntimeBindingType(typeof(string)), "param1") }, null);
         }
 
         private StepInstance CreateSimpleWhen(string text = "I do something")
