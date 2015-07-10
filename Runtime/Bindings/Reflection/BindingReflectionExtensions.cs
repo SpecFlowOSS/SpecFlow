@@ -14,8 +14,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public static bool IsAssignableTo(this IBindingType baseType, Type type)
         {
-            if (baseType is RuntimeBindingType)
-                return type.IsAssignableFrom(((RuntimeBindingType)baseType).Type);
+            return type.IsAssignableFrom(baseType.Type);
 
             if (type.FullName == baseType.FullName)
                 return true;
@@ -44,10 +43,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 
         public static bool TypeEquals(this IBindingType type1, Type type2)
         {
-            if (type1 is RuntimeBindingType)
-                return ((RuntimeBindingType)type1).Type == type2;
-
-            return TypeEquals(type1, new RuntimeBindingType(type2));
+            return type1.Type == type2;
         }
 
         public static bool TypeEquals(this IBindingType type1, IBindingType type2)
@@ -58,10 +54,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             if (type1 == null || type2 == null)
                 return false;
 
-            if (type1 is RuntimeBindingType && type2 is RuntimeBindingType)
-                return ((RuntimeBindingType)type1).Type == ((RuntimeBindingType)type2).Type;
-
-            return type1.FullName == type2.FullName;
+            return type1.Type == type2.Type;
         }
 
         public static bool ParamEquals(this IBindingParameter param1, IBindingParameter param2)
