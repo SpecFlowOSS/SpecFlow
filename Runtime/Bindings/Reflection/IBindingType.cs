@@ -6,5 +6,6 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
     {
         string Name { get; }
         string FullName { get; }
+        Type Type { get; }
     }
 }

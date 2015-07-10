@@ -4,8 +4,6 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
 {
     public class RuntimeBindingType : IBindingType
     {
-        public readonly Type Type;
-
         public string Name
         {
             get { return Type.Name; }
@@ -15,6 +13,8 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             get { return Type.FullName; }
         }
+
+        public Type Type { get; private set; }
 
         public RuntimeBindingType(Type type)
         {

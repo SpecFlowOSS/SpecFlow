@@ -7,6 +7,8 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         public string Name { get; private set; }
         public string FullName { get; private set; }
 
+        public Type Type { get { throw new NotImplementedException (); } }
+
         public BindingType(string name, string fullName)
         {
             if (name == null) throw new ArgumentNullException("name");
