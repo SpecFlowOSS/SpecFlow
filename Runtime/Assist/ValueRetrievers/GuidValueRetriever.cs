@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             {
                 try
                 {
-                    return AttemptToBuildAGuidByAddingTrailingZeroes(cleanedValue);
+                    return AttemptToBuildAGuidByAddingHeadingZeroes(cleanedValue);
                 }
                 catch
                 {
@@ -40,10 +40,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return value.ToString().Replace("{", "").Replace("}", "").Replace("-", "");
         }
 
-        private static Guid AttemptToBuildAGuidByAddingTrailingZeroes(string value)
+        private static Guid AttemptToBuildAGuidByAddingHeadingZeroes(string value)
         {
             value = value.Replace("-", "");
-            value = value + "00000000000000000000000000000000".Substring(value.Length);
+            value = "00000000000000000000000000000000".Substring(value.Length) + value;
 
             return new Guid(value);
         }
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             {
                 try
                 {
-                    AttemptToBuildAGuidByAddingTrailingZeroes(value);
+                    AttemptToBuildAGuidByAddingHeadingZeroes(value);
                     return true;
                 }
                 catch
