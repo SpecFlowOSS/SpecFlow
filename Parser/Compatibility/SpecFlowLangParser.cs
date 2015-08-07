@@ -63,19 +63,37 @@ namespace TechTalk.SpecFlow.Parser
                 gherkin3Feature.Description, 
                 ConvertToCompatibleBackground(gherkin3Feature.Background, dialect), 
                 ConvertToCompatibleScenarios(gherkin3Feature.ScenarioDefinitions, dialect), 
-                ConvertToCompatibleComments(gherkin3Feature.Comments));
+                ConvertToCompatibleComments(gherkin3Feature.Comments))
+            {
+                FilePosition = ConvertToCompatibleFilePosition(gherkin3Feature.Location)
+            };
         }
 
         private Comment[] ConvertToCompatibleComments(IEnumerable<global::Gherkin.Ast.Comment> comments)
         {
-            return comments.Select(c => new Comment(c.Text, ConvertToCompatibleFilePosition(c.Location))).ToArray();
+            return comments.Select(ConvertToCompatibleComment).Where(c => c != null).ToArray();
+        }
+
+        private Comment ConvertToCompatibleComment(global::Gherkin.Ast.Comment c)
+        {
+            var trimmedText = c.Text.TrimStart('#', ' ', '\t');
+            if (trimmedText.Length == 0)
+                return null;
+            return new Comment(trimmedText, ConvertToCompatibleFilePosition(c.Location, c.Text.Length - trimmedText.Length));
         }
 
         private Scenario[] ConvertToCompatibleScenarios(IEnumerable<global::Gherkin.Ast.ScenarioDefinition> scenarioDefinitions, global::Gherkin.GherkinDialect dialect)
         {
-            return scenarioDefinitions.Select(sd => sd is global::Gherkin.Ast.ScenarioOutline
+            return scenarioDefinitions.Select(sd => ConvertToCompatibleScenario(dialect, sd)).ToArray();
+        }
+
+        private Scenario ConvertToCompatibleScenario(global::Gherkin.GherkinDialect dialect, global::Gherkin.Ast.ScenarioDefinition sd)
+        {
+            var result = sd is global::Gherkin.Ast.ScenarioOutline
                 ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps, dialect), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples)) //TODO[Gherkin3]: ScenarioOutline compatibility
-                : new Scenario(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps, dialect))).ToArray();
+                : new Scenario(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps, dialect));
+            result.FilePosition = ConvertToCompatibleFilePosition(sd.Location);
+            return result;
         }
 
         private Examples ConvertToCompatibleExamples(IEnumerable<global::Gherkin.Ast.Examples> examples)
@@ -90,7 +108,10 @@ namespace TechTalk.SpecFlow.Parser
 
         private GherkinTableRow ConvertToCompatibleRow(global::Gherkin.Ast.TableRow tableRow)
         {
-            return new GherkinTableRow(tableRow.Cells.Select(c => new GherkinTableCell(c.Value)).ToArray());
+            return new GherkinTableRow(tableRow.Cells.Select(c => new GherkinTableCell(c.Value)).ToArray())
+            {
+                FilePosition = ConvertToCompatibleFilePosition(tableRow.Location)
+            };
         }
 
         private ScenarioSteps ConvertToCompatibleSteps(IEnumerable<global::Gherkin.Ast.Step> steps, global::Gherkin.GherkinDialect dialect)
@@ -135,11 +156,11 @@ namespace TechTalk.SpecFlow.Parser
             return result;
         }
 
-        private FilePosition ConvertToCompatibleFilePosition(global::Gherkin.Ast.Location location)
+        private FilePosition ConvertToCompatibleFilePosition(global::Gherkin.Ast.Location location, int columnDiff = 0)
         {
             if (location == null)
                 return null;
-            return new FilePosition(location.Line, location.Column);
+            return new FilePosition(location.Line, location.Column + columnDiff);
         }
 
         private GherkinTable ConvertToCompatibleTable(IEnumerable<global::Gherkin.Ast.TableRow> rows)
@@ -153,14 +174,17 @@ namespace TechTalk.SpecFlow.Parser
             if (background == null)
                 return null;
 
-            return new Background(background.Keyword, background.Name, background.Description, ConvertToCompatibleSteps(background.Steps, dialect));
+            return new Background(background.Keyword, background.Name, background.Description, ConvertToCompatibleSteps(background.Steps, dialect))
+            {
+                FilePosition = ConvertToCompatibleFilePosition(background.Location)
+            };
         }
 
         private Tags ConvertToCompatibleTags(IEnumerable<global::Gherkin.Ast.Tag> tags)
         {
-            if (tags == null)
-                return new Tags();
-            return new Tags(tags.Select(t => new Tag(t.Name)).ToArray());
+            if (tags == null || !tags.Any())
+                return null;
+            return new Tags(tags.Select(t => new Tag(t.Name.TrimStart('@'))).ToArray());
         }
     }
 }

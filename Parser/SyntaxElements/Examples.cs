@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
             Keyword = keyword;
             Title = title ?? string.Empty;
-            Description = description;
+            Description = description ?? "";
             Tags = tags;
             Table = table;
         }

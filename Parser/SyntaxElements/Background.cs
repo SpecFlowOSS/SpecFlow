@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Parser.SyntaxElements
         {
             Keyword = keyword;
             Title = title ?? "";
-            Description = description;
+            Description = description ?? "";
             Steps = scenarioSteps ?? new ScenarioSteps();
         }
     }
