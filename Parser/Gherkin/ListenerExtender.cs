@@ -1,4 +1,5 @@
-﻿using System;
+﻿//TODO[Gherkin3]: Remove this
+/*using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using gherkin;
@@ -384,4 +385,4 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
             gherkinListener.Error(message, errorPosition, null);
         }
     }
-}
+}*/

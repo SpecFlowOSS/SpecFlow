@@ -1,4 +1,5 @@
-﻿using System;
+﻿//TODO[Gherkin3]: Remove this
+/*using System;
 using System.Text.RegularExpressions;
 using gherkin;
 using gherkin.lexer;
@@ -117,4 +118,4 @@ namespace TechTalk.SpecFlow.Parser.Gherkin
                 originalException);
         }
     }
-}
+}*/
