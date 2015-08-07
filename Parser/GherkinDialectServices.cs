@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
-using gherkin;
+using Gherkin3GherkinDialectProvider = Gherkin.GherkinDialectProvider;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -41,8 +41,9 @@ namespace TechTalk.SpecFlow.Parser
 
         internal GherkinDialect GetGherkinDialect(LanguageInfo language)
         {
+            var dialectProvider = new Gherkin3GherkinDialectProvider();
             return new GherkinDialect(language, 
-                new I18n(language.CompatibleGherkinLanguage ?? language.Language));
+                dialectProvider.GetDialect(language.CompatibleGherkinLanguage ?? language.Language, null));
         }
 
         public GherkinDialect GetGherkinDialect(Feature feature)
