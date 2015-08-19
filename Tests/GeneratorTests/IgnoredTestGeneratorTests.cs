@@ -128,5 +128,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.Is<IEnumerable<string>>(cats => !cats.Contains("ignore"))));
         }
+
+        [Test]
+        public void Should_call_SetTestMethodIgnore_when_scenario_outline_ignored()
+        {
+			unitTestGeneratorProviderMock.Setup(p=>p.SupportsRowTests).Returns(true); // e.g. xunit 
+            var generator = CreateUnitTestFeatureGenerator();
+
+			Scenario scenario1 = new ScenarioOutline("Scenario Outline", "scenario1 outline title", "", new Tags(new Tag("ignore")), new ScenarioSteps(), new Examples( new ExampleSet("some keywork", "some title", "some description", new Tags(), new GherkinTable(new GherkinTableRow(new GherkinTableCell("col1"))) )));
+			Feature theFeature = new Feature("feature", "title", new Tags(), "desc", null, new Scenario[] { scenario1 }, new Comment[0]);
+
+            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+
+            unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodIgnore(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
+        }
     }
 }
