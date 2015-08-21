@@ -132,11 +132,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_call_SetTestMethodIgnore_when_scenario_outline_ignored()
         {
-			unitTestGeneratorProviderMock.Setup(p=>p.SupportsRowTests).Returns(true); // e.g. xunit 
+            unitTestGeneratorProviderMock.Setup(p=>p.SupportsRowTests).Returns(true); // e.g. xunit 
             var generator = CreateUnitTestFeatureGenerator();
 
-			Scenario scenario1 = new ScenarioOutline("Scenario Outline", "scenario1 outline title", "", new Tags(new Tag("ignore")), new ScenarioSteps(), new Examples( new ExampleSet("some keywork", "some title", "some description", new Tags(), new GherkinTable(new GherkinTableRow(new GherkinTableCell("col1"))) )));
-			Feature theFeature = new Feature("feature", "title", new Tags(), "desc", null, new Scenario[] { scenario1 }, new Comment[0]);
+            Scenario scenario1 = new ScenarioOutline("Scenario Outline",
+                    "scenario1 outline title",
+                    "",
+                    new Tags(new Tag("ignore")),
+                    new ScenarioSteps(),
+                    new Examples(
+                        new ExampleSet("some keywork", "some title", "some description",
+                            new Tags(), new GherkinTable(new GherkinTableRow(new GherkinTableCell("col1"))))
+                        ));
+            Feature theFeature = new Feature("feature", "title", new Tags(), "desc", null, new Scenario[] { scenario1 }, new Comment[0]);
 
             generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
 
