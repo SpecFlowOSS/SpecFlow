@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
+        private const string CATEGORY_PROPERTY_NAME = "Category";
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
@@ -37,7 +38,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            // xUnit does not support caregories
+            // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
+            foreach (string str in featureCategories)
+                SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
         }
 
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
