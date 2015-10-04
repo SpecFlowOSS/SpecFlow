@@ -134,7 +134,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
-            // xUnit does not support caregories
+            foreach (string str in scenarioCategories)
+                SetProperty((CodeTypeMember)testMethod, "Category", str);
         }
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
