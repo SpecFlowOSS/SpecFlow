@@ -1,20 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableGuidValueRetriever
+    public class NullableGuidValueRetriever : IValueRetriever
     {
-        private readonly Func<string, Guid> guidValueRetriever;
+        private readonly Func<string, Guid> guidValueRetriever = v => new GuidValueRetriever().GetValue(v);
 
-        public NullableGuidValueRetriever(Func<string, Guid> guidValueRetriever)
+        public NullableGuidValueRetriever(Func<string, Guid> guidValueRetriever = null)
         {
-            this.guidValueRetriever = guidValueRetriever;
+            if (guidValueRetriever != null)
+                this.guidValueRetriever = guidValueRetriever;
         }
 
         public Guid? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return guidValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(Guid?);
         }
     }
 }

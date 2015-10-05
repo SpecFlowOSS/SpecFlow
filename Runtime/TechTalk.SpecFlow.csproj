@@ -214,6 +214,7 @@
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\NUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestRuntimeProviderHelper.cs" />
+    <Compile Include="UnitTestProvider\XUnit2RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTestRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\NUnitRuntimeProvider.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="Tracing\TestTracer.cs" />
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />
+    <Compile Include="Assist\Service.cs" />
+    <Compile Include="Assist\IValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">

@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableCharValueRetriever
+    public class NullableCharValueRetriever : IValueRetriever
     {
-        private readonly Func<string, char> charValueRetriever;
+        private readonly Func<string, char> charValueRetriever = v => new CharValueRetriever().GetValue(v);
 
-        public NullableCharValueRetriever(Func<string, char> charValueRetriever)
+        public NullableCharValueRetriever(Func<string, char> charValueRetriever = null)
         {
-            this.charValueRetriever = charValueRetriever;
+            if (charValueRetriever != null)
+                this.charValueRetriever = charValueRetriever;
         }
 
         public char? GetValue(string value)
@@ -16,6 +18,16 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             if (string.IsNullOrEmpty(value))
                 return null;
             return charValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(char?);
         }
     }
 }

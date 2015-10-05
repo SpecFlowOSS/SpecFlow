@@ -61,7 +61,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign else</Value>
+                      <Value>something else</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="10" column="2" />
@@ -127,7 +127,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign else</Value>
+                      <Value>something else</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="20" column="2" />
@@ -152,7 +152,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign different</Value>
+                      <Value>something different</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="24" column="2" />
@@ -177,7 +177,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign totally different</Value>
+                      <Value>something totally different</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="29" column="2" />
@@ -269,7 +269,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign else</Value>
+                      <Value>something else</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="40" column="2" />
@@ -336,7 +336,7 @@
                 <Row>
                   <Cells>
                     <Cell>
-                      <Value>somethign else</Value>
+                      <Value>something else</Value>
                     </Cell>
                   </Cells>
                   <FilePosition line="52" column="2" />

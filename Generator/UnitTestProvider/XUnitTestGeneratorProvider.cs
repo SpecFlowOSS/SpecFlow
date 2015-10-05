@@ -55,8 +55,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             var fixtureDataType =
                 CodeDomHelper.CreateNestedTypeReference(generationContext.TestClass, _currentFixtureDataTypeDeclaration.Name);
-            
-            var useFixtureType = new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+
+            var useFixtureType = CreateFixtureInterface(fixtureDataType);
+
             CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
@@ -109,7 +110,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetDescription(testMethod, scenarioTitle);
         }
 
-        public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE);
 
@@ -117,7 +118,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetDescription(testMethod, scenarioTitle);
         }
 
-        public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //TODO: better handle "ignored"
             if (isIgnored)
@@ -178,7 +179,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //TODO: how to do class level ignore?
         }
 
-        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
                 .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
@@ -205,17 +206,21 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
-        private void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
+        protected void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
         {
             CodeDomHelper.AddAttribute(codeTypeMember, TRAIT_ATTRIBUTE, name, value);
         }
 
-        private void SetDescription(CodeTypeMember codeTypeMember, string description)
+        protected void SetDescription(CodeTypeMember codeTypeMember, string description)
         {
             // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
             SetProperty(codeTypeMember, DESCRIPTION_PROPERTY_NAME, description);
         }
 
+        protected virtual CodeTypeReference CreateFixtureInterface(CodeTypeReference fixtureDataType)
+        {
+            return new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+        }
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {

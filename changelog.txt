@@ -10,6 +10,7 @@ Breaking changes:
 
 New Features:
 + NUnit generator adds tags to TestCase attributes generated from outline examples. This way the NUnit test adapter in Visual Studio will display the tags.
++ Support for xUnit 2.0 added (Issue 419)
 
 Fixed issues:
 
