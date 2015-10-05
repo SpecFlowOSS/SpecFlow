@@ -10,6 +10,8 @@ SpecFlow is a pragmatic BDD solution for .NET. It uses the Gherkin specification
 
 ## Contributing
 
+[![Join the chat at https://gitter.im/gasparnagy/specflow-dev](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gasparnagy/specflow-dev?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 We are currently prepare the v2 release, developed on the `v2` branch. Please review the activities there.
 
 If you are interested in contributing, there are some useful information on this page: [Contributing](https://github.com/techtalk/SpecFlow/wiki/Contributing).
