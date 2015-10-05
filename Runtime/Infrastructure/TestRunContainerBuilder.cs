@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     public interface ITestRunContainerBuilder
     {
         IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null);
+        IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer);
     }
 
     public class TestRunContainerBuilder : ITestRunContainerBuilder
@@ -26,6 +27,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public virtual IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
+            container.RegisterInstanceAs<ITestRunContainerBuilder>(this);
 
             RegisterDefaults(container);
 
@@ -61,6 +63,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
+        public IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer)
+        {
+            var testRunnerContainer = new ObjectContainer(globalContainer);
+
+            defaultDependencyProvider.RegisterTestRunnerDefaults(testRunnerContainer);
+
+            return testRunnerContainer;
+        }
+
         protected virtual IRuntimePlugin[] LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container)
         {
             var plugins = container.Resolve<IDictionary<string, IRuntimePlugin>>().Values.AsEnumerable();
@@ -79,13 +90,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         protected virtual void RegisterDefaults(ObjectContainer container)
         {
             defaultDependencyProvider.RegisterDefaults(container);
-        }
-
-        // used by tests
-        internal static IObjectContainer CreateDefaultContainer(IRuntimeConfigurationProvider configurationProvider = null)
-        {
-            var instance = new TestRunContainerBuilder();
-            return instance.CreateContainer(configurationProvider);
         }
     }
 }

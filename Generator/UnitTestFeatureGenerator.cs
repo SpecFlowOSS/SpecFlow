@@ -67,6 +67,7 @@ namespace TechTalk.SpecFlow.Generator
                 feature,
                 codeNamespace, 
                 testClass,
+                DeclareTestRunnerMember(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
@@ -74,8 +75,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 HasFeatureBackground(feature) ? CreateMethod(testClass) : null,
-                generateRowTests: testGeneratorProvider.SupportsRowTests && generatorConfiguration.AllowRowTests,
-                generateAsynchTests: generatorConfiguration.GenerateAsyncTests && testGeneratorProvider.SupportsAsyncTests);
+                generateRowTests: testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests) && generatorConfiguration.AllowRowTests);
         }
 
         private CodeNamespace CreateNamespace(string targetNamespace)
@@ -154,15 +154,13 @@ namespace TechTalk.SpecFlow.Generator
 
             if (featureCategories.Any())
                 testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
-
-            DeclareTestRunnerMember(generationContext);
         }
 
-        private void DeclareTestRunnerMember(TestClassGenerationContext generationContext)
+        private CodeMemberField DeclareTestRunnerMember(CodeTypeDeclaration type)
         {
             CodeMemberField testRunnerField = new CodeMemberField(typeof(ITestRunner), TESTRUNNER_FIELD);
-            testRunnerField.Attributes |= MemberAttributes.Static;
-            generationContext.TestClass.Members.Add(testRunnerField);
+            type.Members.Add(testRunnerField);
+            return testRunnerField;
         }
 
         private CodeExpression GetTestRunnerExpression()
@@ -193,15 +191,19 @@ namespace TechTalk.SpecFlow.Generator
 
             testGeneratorProvider.SetTestClassInitializeMethod(generationContext);
 
-            //testRunner = TestRunnerManager.GetTestRunner();
+            //testRunner = TestRunnerManager.GetTestRunner(); if UnitTestGeneratorTraits.ParallelExecution
+            //testRunner = TestRunnerManager.GetTestRunner(null, 0); if not UnitTestGeneratorTraits.ParallelExecution
             var testRunnerField = GetTestRunnerExpression();
-            var methodName = generationContext.GenerateAsynchTests ? "GetAsyncTestRunner" : "GetTestRunner"; 
+
+            var testRunnerParameters = testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.ParallelExecution) ?
+                new CodeExpression[]{} : new []  {new CodePrimitiveExpression(null), new CodePrimitiveExpression(0) };
+
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
                     testRunnerField,
                     new CodeMethodInvokeExpression(
                         new CodeTypeReferenceExpression(typeof(TestRunnerManager)),
-                        methodName)));
+                        "GetTestRunner", testRunnerParameters)));
 
             //FeatureInfo featureInfo = new FeatureInfo("xxxx");
             testClassInitializeMethod.Statements.Add(

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
-using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
@@ -24,7 +24,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private ScenarioContext scenarioContext;
         private RuntimeConfiguration runtimeConfiguration;
         private Mock<IBindingRegistry> bindingRegistryStub;
-        private Mock<IRuntimeBindingRegistryBuilder> runtimeBindingRegistryBuilderStub;
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
         private Mock<ITestTracer> testTracerStub;
@@ -45,11 +44,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
-            scenarioContext = new ScenarioContext(new ScenarioInfo("scenario_title"), null, null);
+            scenarioContext = new ScenarioContext(new ScenarioInfo("scenario_title"), new ObjectContainer());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
-
-            runtimeBindingRegistryBuilderStub = new Mock<IRuntimeBindingRegistryBuilder>();
 
             bindingRegistryStub = new Mock<IBindingRegistry>();
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeStep)).Returns(beforeStepEvents);
@@ -80,8 +77,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
-                methodBindingInvokerMock.Object, 
-                runtimeBindingRegistryBuilderStub.Object);
+                methodBindingInvokerMock.Object);
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()

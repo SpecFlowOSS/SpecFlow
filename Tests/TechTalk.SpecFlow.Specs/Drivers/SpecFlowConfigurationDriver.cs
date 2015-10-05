@@ -50,6 +50,23 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             SpecFlowConfigurationElement.Add(new XElement("unitTestProvider", new XAttribute("name", name)));
         }
 
+        public void AddRuntimeDependencyCustomization(string typeName, string interfaceName)
+        {
+            SpecFlowConfigurationElement.Add(
+                new XElement("runtime",
+                    new XElement("dependencies",
+                        new XElement("register", new XAttribute("type", typeName), new XAttribute("as", interfaceName)))
+                    ));
+/*
+                    <runtime>  
+                    <dependencies>
+                      <register type=""{0}"" as=""{1}"" name=""myprovider""/>
+                    </dependencies>
+                  </runtime>
+
+ */ 
+        }
+
         public void SaveConfigurationTo(string path)
         {
             parsedConfiguration.Save(path);
@@ -61,6 +78,9 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             {
                 case "nunit":
                     yield return @"NUnit\lib\nunit.framework.dll";
+                    break;
+                case "nunit.3":
+                    yield return @"NUnit3-Runner\bin\nunit.framework.dll";
                     break;
                 case "mbunit.3":
                     yield return @"mbUnit3\mbUnit.dll";

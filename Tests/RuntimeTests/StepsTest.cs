@@ -1,6 +1,8 @@
+using BoDi;
 using NUnit.Framework;
 
 using Rhino.Mocks;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -18,7 +20,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             mockTestRunner = MockRepository.GenerateMock<ITestRunner>();
-            steps = new StepsTestableHelper(mockTestRunner);
+            var container = new ObjectContainer();
+            container.RegisterInstanceAs(mockTestRunner);
+            steps = new StepsTestableHelper();
+            ((IContainerDependentObject)steps).SetObjectContainer(container);
         }
 
         [Test]
@@ -63,9 +68,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         public class StepsTestableHelper : Steps
         {
-            public StepsTestableHelper(ITestRunner testRunner) : base(testRunner)
-            {
-            }
         }
     }
 }

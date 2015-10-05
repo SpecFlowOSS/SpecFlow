@@ -20,6 +20,20 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public string Include { get; set; }
 
+        public TestRunSummary ExecuteWithNUnit3() //TODO: add NUnit3 as reference and use in-proc execution
+        {
+            string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
+            string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
+
+            var provessHelper = new ProcessHelper();
+            string nunitConsoleRunnerPath = @"NUnit3-Runner\bin\nunit-console.exe";
+            var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), nunitConsoleRunnerPath);
+            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"--result={1};format=nunit2\" --labels=All \"--out={2}\" {3}",
+                inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
+
+            return ProcessNUnitResult(logFilePath, resultFilePath);
+        }
+
         public TestRunSummary Execute()
         {
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");

@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Tracing
         void TraceDuration(TimeSpan elapsed, string text);
     }
 
-    internal class TestTracer : ITestTracer
+    public class TestTracer : ITestTracer
     {
         private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;

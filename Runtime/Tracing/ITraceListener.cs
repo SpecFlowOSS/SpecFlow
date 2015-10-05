@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -9,6 +7,13 @@ namespace TechTalk.SpecFlow.Tracing
     {
         void WriteTestOutput(string message);
         void WriteToolOutput(string message);
+    }
+
+    /// <summary>
+    /// Marker interface for trace listener that do not need queued execution
+    /// </summary>
+    public interface IThreadSafeTraceListener : ITraceListener
+    {
     }
 
     static public class TraceListenerHelper

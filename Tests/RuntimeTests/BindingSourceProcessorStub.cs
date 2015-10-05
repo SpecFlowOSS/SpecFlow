@@ -29,5 +29,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             StepArgumentTransformationBindings.Add(stepArgumentTransformationBinding);
         }
+
+        public void BuildingCompleted()
+        {
+            //nop
+        }
     }
 }

@@ -1,6 +1,6 @@
 namespace TechTalk.SpecFlow.Tracing
 {
-    public class NullListener : ITraceListener
+    public class NullListener : ITraceListener, IThreadSafeTraceListener
     {
         public void WriteTestOutput(string message)
         {
