@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
         {
-            return false;
+            return type == typeof(System.TimeSpan);
         }
     }
 }
