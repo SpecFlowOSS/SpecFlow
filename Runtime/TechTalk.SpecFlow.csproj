@@ -230,6 +230,7 @@
     <Compile Include="Tracing\ITraceListener.cs" />
     <Compile Include="Assist\Service.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">
