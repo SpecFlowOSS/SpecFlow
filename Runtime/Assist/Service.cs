@@ -103,6 +103,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableShortValueRetriever());
             RegisterValueRetriever(new NullableUShortValueRetriever());
             RegisterValueRetriever(new NullableLongValueRetriever());
+            RegisterValueRetriever(new NullableTimeSpanValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)
