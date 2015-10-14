@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     public class TimespanValueRetrieverTests
     {
         [Test]
-        public void Returns_an_integer_when_passed_an_integer_value()
+        public void Returns_a_timespan_when_passed_a_parsable_string_representation_of_a_timespan()
         {
             var retriever = new TimeSpanValueRetriever();
             retriever.GetValue("20:00:00").Should().Be(System.TimeSpan.Parse("20:00:00"));
