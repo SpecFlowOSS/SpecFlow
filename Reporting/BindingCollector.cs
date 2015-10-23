@@ -104,7 +104,6 @@ namespace TechTalk.SpecFlow.Reporting
 
         internal static List<BindingInfo> CollectBindings(SpecFlowProject specFlowProject, string basePath)
         {
-            List<BindingInfo> bindings = new List<BindingInfo>();
             var reportingFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             AppDomainSetup appDomainSetup = new AppDomainSetup();
@@ -118,10 +117,23 @@ namespace TechTalk.SpecFlow.Reporting
                                       Assembly.GetExecutingAssembly().GetName().FullName,
                                       typeof(BindingCollector).FullName);
 
-            bindings.AddRange(bindingCollector.CollectBindings(specFlowProject.ProjectSettings.AssemblyName));
+            var stepAssemblies = GetStepAssemblies(specFlowProject);
+
+            List<BindingInfo> bindings =
+                stepAssemblies.SelectMany(bindingCollector.CollectBindings).ToList();
 
             AppDomain.Unload(appDomain);
             return bindings;
+        }
+
+        private static IEnumerable<string> GetStepAssemblies(SpecFlowProject specFlowProject)
+        {
+            yield return specFlowProject.ProjectSettings.AssemblyName;
+
+            foreach (var stepAssembly in specFlowProject.Configuration.RuntimeConfiguration.AdditionalStepAssemblies)
+            {
+                yield return stepAssembly;
+            }
         }
     }
 }
