@@ -117,6 +117,7 @@
     <Compile Include="AssistTests\ValueRetrieverTests\FloatValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableLongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableShortValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableTimespanValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableULongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUShortValueRetrieverTests.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="AssistTests\TestHelpers.cs" />
     <Compile Include="AssistTests\ServiceTests.cs" />
     <Compile Include="AssistTests\WorkingExampleOfValueRetrieverAndComparerAddition.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\TimeSpanValueRetrieverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">

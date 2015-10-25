@@ -85,6 +85,7 @@
     <Compile Include="Assist\ValueRetrievers\NullableSByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableFloatValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableShortValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableTimeSpanValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUShortValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\SByteValueRetriever.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Tracing\ITraceListener.cs" />
     <Compile Include="Assist\Service.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">
