@@ -70,6 +70,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new FloatValueComparer());
             RegisterValueComparer(new DefaultValueComparer());
 
+            RegisterValueRetriever(new StepTransformationValueRetriever());
             RegisterValueRetriever(new StringValueRetriever());
             RegisterValueRetriever(new ByteValueRetriever());
             RegisterValueRetriever(new SByteValueRetriever());
