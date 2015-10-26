@@ -25,6 +25,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             stringResult.Should().Be("2009/10/06");
         }
 
+        [Test]
+        public void CanRetrieve_will_return_true_if_the_value_can_be_retrieved_from_a_step_argument_transformation()
+        {
+            Subject().CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+            Subject().CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
+            Subject().CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeTrue();
+        }
+
+        [Test]
+        public void CanRetrieve_will_return_false_if_the_step_argument_transformation_work_is_throwing()
+        {
+            var subject = Subject();
+
+            // removing the container here will cause the class to use the scenario context,
+            // which was not set, so... it will throw
+            subject.Container = null;
+
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeFalse();
+        }
+
+
         private KeyValuePair<string, string> KeyValueFor(string value)
         {
             // retrieving a value requires a key->value set, but this class
