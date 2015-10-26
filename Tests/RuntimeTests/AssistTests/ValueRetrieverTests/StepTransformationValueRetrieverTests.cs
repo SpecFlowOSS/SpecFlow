@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     {
 
         [Test]
-        public void Convert_will_return_the_value_from_the_step_argument_type_converter()
+        public void Retrieve_will_return_the_value_from_the_step_argument_type_converter()
         {
             var dateTimeResult = Subject().Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime));
             dateTimeResult.Should().Be(new DateTime(2009, 10, 6));
