@@ -5,11 +5,14 @@ using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using System.Collections.Generic;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StepTransformationValueRetriever : IValueRetriever
     {
+        private IObjectContainer container;
+
         public bool CanRetrieve(KeyValuePair<string, string> row, Type type)
         {
             try {
@@ -31,12 +34,25 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public IStepArgumentTypeConverter StepArgumentTypeConverter()
         {
-            return ScenarioContext.Current.ScenarioContainer.Resolve<IStepArgumentTypeConverter>();
+            return ObjectContainer().Resolve<IStepArgumentTypeConverter>();
         }
 
         public CultureInfo CultureInfo()
         {
-            return ScenarioContext.Current.ScenarioContainer.Resolve<CultureInfo>();
+            return ObjectContainer().Resolve<CultureInfo>();
+        }
+
+        public IObjectContainer Container {
+            get;
+            set;
+        }
+
+        public virtual IObjectContainer ObjectContainer()
+        {
+            if (Container != null)
+                return Container;
+            else
+                return ScenarioContext.Current.ScenarioContainer;
         }
     }
 }

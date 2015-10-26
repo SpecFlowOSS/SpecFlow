@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
+using System;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
@@ -14,7 +15,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
     public class StepTransformationValueRetrieverTests
     {
         [Test]
-        public void Returns_the_string_value_back()
+        public void Convert_will_return_the_value_from_the_step_argument_type_converter()
         {
             var retriever = new StepTransformationValueRetriever();
 
@@ -32,11 +33,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var cultureInfo = new CultureInfo("en-US");
 
             container.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter);
+            container.RegisterInstanceAs<CultureInfo>(cultureInfo);
 
-            var hit = stepArgumentTypeConverter.Convert ("testValue", typeof(string), cultureInfo);
+            var hit = stepArgumentTypeConverter.Convert("testValue", typeof(string), cultureInfo);
+            retriever.Container = container;
 
-            var result = retriever.Retrieve(new System.Collections.Generic.KeyValuePair<string, string>("", "test"), typeof(string));
+            var result = retriever.Retrieve(new System.Collections.Generic.KeyValuePair<string, string>("", "2009/10/06"), typeof(DateTime));
 
+            result.Should().Be(new DateTime(2009, 10, 6));
         }
     }
 }
