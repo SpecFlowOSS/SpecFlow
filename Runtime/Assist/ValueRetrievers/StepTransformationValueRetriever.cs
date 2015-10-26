@@ -11,8 +11,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StepTransformationValueRetriever : IValueRetriever
     {
-        private IObjectContainer container;
-
         public bool CanRetrieve(KeyValuePair<string, string> row, Type type)
         {
             try {
@@ -34,23 +32,20 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public IStepArgumentTypeConverter StepArgumentTypeConverter()
         {
-            return ObjectContainer().Resolve<IStepArgumentTypeConverter>();
+            return Container().Resolve<IStepArgumentTypeConverter>();
         }
 
         public CultureInfo CultureInfo()
         {
-            return ObjectContainer().Resolve<CultureInfo>();
+            return Container().Resolve<CultureInfo>();
         }
 
-        public IObjectContainer Container {
-            get;
-            set;
-        }
+        public IObjectContainer ContainerToUseForThePurposeOfTesting { get; set; }
 
-        public virtual IObjectContainer ObjectContainer()
+        public virtual IObjectContainer Container()
         {
-            if (Container != null)
-                return Container;
+            if (ContainerToUseForThePurposeOfTesting != null)
+                return ContainerToUseForThePurposeOfTesting;
             else
                 return ScenarioContext.Current.ScenarioContainer;
         }

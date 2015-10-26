@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             // removing the container here will cause the class to use the scenario context,
             // which was not set, so... it will throw
-            subject.Container = null;
+            subject.ContainerToUseForThePurposeOfTesting = null;
 
             subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
             subject.CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             // now we have what we need to get a our subject, loaded
             // with a fake source for all of its dependencies
             var retriever = new StepTransformationValueRetriever();
-            retriever.Container = container;
+            retriever.ContainerToUseForThePurposeOfTesting = container;
             return retriever;
         }
 
