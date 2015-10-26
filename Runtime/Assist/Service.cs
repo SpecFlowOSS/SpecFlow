@@ -70,7 +70,6 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueComparer(new FloatValueComparer());
             RegisterValueComparer(new DefaultValueComparer());
 
-            RegisterValueRetriever(new StepTransformationValueRetriever());
             RegisterValueRetriever(new StringValueRetriever());
             RegisterValueRetriever(new ByteValueRetriever());
             RegisterValueRetriever(new SByteValueRetriever());
@@ -105,6 +104,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableUShortValueRetriever());
             RegisterValueRetriever(new NullableLongValueRetriever());
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
+            RegisterValueRetriever(new StepTransformationValueRetriever());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)

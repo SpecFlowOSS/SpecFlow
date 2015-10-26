@@ -5,6 +5,7 @@ using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using System.Collections.Generic;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -71,6 +72,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableLongValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableTimeSpanValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StepTransformationValueRetriever)).Count());
+        }
+
+        [Test]
+        public void Should_put_the_step_transformation_value_retriever_last_so_it_will_not_interfere_with_preexisting_features_in_assist()
+        {
+            new Service().ValueRetrievers.Last().GetType().Should().Be(typeof(StepTransformationValueRetriever));
         }
 
         [Test]
