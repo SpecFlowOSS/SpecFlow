@@ -55,10 +55,10 @@ Feature: Addition
 
 @mytag
 Scenario: Add two numbers
-	Given I have entered 50 into the calculator
-	And I have entered 70 into the calculator
-	When I press add
-	Then the result should be 120 on the screen
+    Given I have entered 50 into the calculator
+    And I have entered 70 into the calculator
+    When I press add
+    Then the result should be 120 on the screen
 ");
         }
 
@@ -72,7 +72,7 @@ Scenario: Add two numbers
             return CreateSimpleFeatureFileInput(@"
 Feature: Addition
 Scenario: Add two numbers
-	Given I have entered 50 into the calculator
+    Given I have entered 50 into the calculator
     AndXXX the keyword is misspelled
 ");
         }

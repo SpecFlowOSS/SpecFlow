@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var result = testGenerator.GenerateTestFile(CreateSimpleFeatureFileInput(@"
                 Feature: Addition
                 Scenario: Add two numbers
-	                Given I have entered 50 into the calculator
+                    Given I have entered 50 into the calculator
                     AndXXX the keyword is misspelled
                     AndYYY this keyword is also misspelled"), defaultSettings);
             result.Errors.Should().NotBeNull();
