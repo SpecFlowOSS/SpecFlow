@@ -24,9 +24,9 @@ namespace TechTalk.SpecFlow.Parser
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
         {
-            var parser = new Gherkin3Parser();
+            var parser = new Gherkin3Parser(new AstBuilder<Feature>());
             var tokenMatcher = new TokenMatcher(dialectProvider);
-            var feature = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher, new AstBuilder<Feature>());
+            var feature = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
             //TODO[Gherkin3]: add source file path
             return feature;
         }
