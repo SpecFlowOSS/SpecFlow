@@ -319,7 +319,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Woks_with_snake_case()
+        public void Works_with_snake_case()
         {
             var table = new Table("Field", "Value");
             table.AddRow("Look at me", "hello");
