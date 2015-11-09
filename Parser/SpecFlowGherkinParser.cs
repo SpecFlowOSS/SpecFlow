@@ -12,6 +12,34 @@ namespace TechTalk.SpecFlow.Parser
     {
         private readonly GherkinDialectProvider dialectProvider;
 
+        private class SpecFlowGherkinDialectProvider : GherkinDialectProvider
+        {
+            public SpecFlowGherkinDialectProvider(string defaultLanguage) : base(defaultLanguage)
+            {
+            }
+
+            public override global::Gherkin.GherkinDialect GetDialect(string language, Location location)
+            {
+                location = location ?? new Location(); //TODO: fix in gherkin3, GetDialect needs a location for throwing NoSuchLanguageException
+
+                if (language.Contains("-"))
+                {
+                    try
+                    {
+                        return base.GetDialect(language, location);
+                    }
+                    catch (NoSuchLanguageException)
+                    {
+                        var languageBase = language.Split('-')[0];
+                        var languageBaseDialect = base.GetDialect(languageBase, location);
+                        return new global::Gherkin.GherkinDialect(language, languageBaseDialect.FeatureKeywords, languageBaseDialect.BackgroundKeywords, languageBaseDialect.ScenarioKeywords, languageBaseDialect.ScenarioOutlineKeywords, languageBaseDialect.ExamplesKeywords, languageBaseDialect.GivenStepKeywords, languageBaseDialect.WhenStepKeywords, languageBaseDialect.ThenStepKeywords, languageBaseDialect.AndStepKeywords, languageBaseDialect.ButStepKeywords);
+                    }
+                }
+
+                return base.GetDialect(language, location);
+            }
+        }
+
         internal GherkinDialectProvider DialectProvider
         {
             get { return dialectProvider; }
@@ -19,7 +47,7 @@ namespace TechTalk.SpecFlow.Parser
 
         public SpecFlowGherkinParser(CultureInfo defaultLanguage)
         {
-            this.dialectProvider = new GherkinDialectProvider("en"); //TODO[Gherkin3] downgrade defaultLanguage
+            this.dialectProvider = new SpecFlowGherkinDialectProvider("en-US"); //TODO[Gherkin3] downgrade defaultLanguage
         }
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
