@@ -3,9 +3,9 @@
   <Language>fr-FR</Language>
   <Keyword>Fonctionnalité</Keyword>
   <Title>French</Title>
-  <Description>Afin de gagner du temps lors du calcul de la facture
-En tant que commerçant
-Je souhaite pouvoir faire une addition</Description>
+  <Description>  Afin de gagner du temps lors du calcul de la facture
+  En tant que commerçant
+  Je souhaite pouvoir faire une addition</Description>
   <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">

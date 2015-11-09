@@ -3,9 +3,9 @@
   <Language>de-DE</Language>
   <Keyword>Funktionalität</Keyword>
   <Title>German</Title>
-  <Description>Um dumme Fehler zu vermeiden
-möchte ich als Matheidiot
-die Summe zweier Zahlen gesagt bekommen</Description>
+  <Description>  Um dumme Fehler zu vermeiden
+  möchte ich als Matheidiot
+  die Summe zweier Zahlen gesagt bekommen</Description>
   <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">
