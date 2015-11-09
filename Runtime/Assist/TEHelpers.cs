@@ -71,9 +71,9 @@ namespace TechTalk.SpecFlow.Assist
             Regex pattern = new Regex("[^a-zA-Z0-9_]");
 
             string normalizedColumnName = pattern.Replace(columnName, string.Empty);
+            string normalizedPropertyName = propertyName.Replace("_", "");
 
-            return propertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
-
+            return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
