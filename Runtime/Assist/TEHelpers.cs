@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Assist
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
             var normalizedColumnName = RemoveAllCharactersThatAreNotValidInAPropertyName(columnName);
-            var normalizedPropertyName = NormalizePropertyNamesForMatchingAgainstColumnHeaders(propertyName);
+            var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
             return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
         }
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.Assist
             return new Regex("[^a-zA-Z0-9_]").Replace(name, string.Empty);
         }
 
-        internal static string NormalizePropertyNamesForMatchingAgainstColumnHeaders(string name)
+        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
             return name.Replace("_", string.Empty);
         }
