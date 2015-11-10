@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Gherkin;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Parser.Compatibility;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Specs.Drivers.Parser
@@ -18,7 +19,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
         public Feature ParsedFeature { get; private set; }
         public ParserException[] ParsingErrors { get; private set; }
 
-        private readonly SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+        private readonly SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
 
         public void ParseFile()
         {
@@ -28,7 +29,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
             try
             {
-                ParsedFeature = parser.Parse(contentReader, "sample.feature");
+                var specFlowFeature = parser.Parse(contentReader, "sample.feature");
+                ParsedFeature = CompatibleAstConverter.ConvertToCompatibleFeature(specFlowFeature);
                 Assert.IsNotNull(ParsedFeature);
                 ParsedFeature.SourceFile = null;
             }

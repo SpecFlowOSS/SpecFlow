@@ -1,30 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
-// ReSharper disable once CheckNamespace
-namespace TechTalk.SpecFlow.Parser
+namespace TechTalk.SpecFlow.Parser.Compatibility
 {
-    public class SpecFlowLangParser
+    public class CompatibleAstConverter
     {
-        private readonly SpecFlowGherkinParser specFlowGherkinParser;
-
-        public SpecFlowLangParser(CultureInfo defaultLanguage)
-        {
-            specFlowGherkinParser = new SpecFlowGherkinParser(defaultLanguage);
-        }
-
-        public Feature Parse(TextReader featureFileReader, string sourceFilePath)
-        {
-            var gherkin3Feature = specFlowGherkinParser.Parse(featureFileReader, sourceFilePath);
-            return ConvertToCompatibleFeature(gherkin3Feature);
-        }
-
-        private Feature ConvertToCompatibleFeature(SpecFlowFeature gherkin3Feature)
+        public static Feature ConvertToCompatibleFeature(SpecFlowFeature gherkin3Feature)
         {
             return new Feature(gherkin3Feature.Keyword, gherkin3Feature.Name, 
                 ConvertToCompatibleTags(gherkin3Feature.Tags), 
@@ -39,12 +22,12 @@ namespace TechTalk.SpecFlow.Parser
             };
         }
 
-        private Comment[] ConvertToCompatibleComments(IEnumerable<global::Gherkin.Ast.Comment> comments)
+        private static Comment[] ConvertToCompatibleComments(IEnumerable<global::Gherkin.Ast.Comment> comments)
         {
             return comments.Select(ConvertToCompatibleComment).Where(c => c != null).ToArray();
         }
 
-        private Comment ConvertToCompatibleComment(global::Gherkin.Ast.Comment c)
+        private static Comment ConvertToCompatibleComment(global::Gherkin.Ast.Comment c)
         {
             var trimmedText = c.Text.TrimStart('#', ' ', '\t');
             if (trimmedText.Length == 0)
@@ -52,12 +35,12 @@ namespace TechTalk.SpecFlow.Parser
             return new Comment(trimmedText, ConvertToCompatibleFilePosition(c.Location, c.Text.Length - trimmedText.Length));
         }
 
-        private Scenario[] ConvertToCompatibleScenarios(IEnumerable<global::Gherkin.Ast.ScenarioDefinition> scenarioDefinitions)
+        private static Scenario[] ConvertToCompatibleScenarios(IEnumerable<global::Gherkin.Ast.ScenarioDefinition> scenarioDefinitions)
         {
             return scenarioDefinitions.Select(ConvertToCompatibleScenario).ToArray();
         }
 
-        private Scenario ConvertToCompatibleScenario(global::Gherkin.Ast.ScenarioDefinition sd)
+        private static Scenario ConvertToCompatibleScenario(global::Gherkin.Ast.ScenarioDefinition sd)
         {
             var result = sd is global::Gherkin.Ast.ScenarioOutline
                 ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples)) //TODO[Gherkin3]: ScenarioOutline compatibility
@@ -66,17 +49,17 @@ namespace TechTalk.SpecFlow.Parser
             return result;
         }
 
-        private Examples ConvertToCompatibleExamples(IEnumerable<global::Gherkin.Ast.Examples> examples)
+        private static Examples ConvertToCompatibleExamples(IEnumerable<global::Gherkin.Ast.Examples> examples)
         {
             return new Examples(examples.Select(e => new ExampleSet(e.Keyword, e.Name, e.Description, ConvertToCompatibleTags(e.Tags), ConvertToCompatibleExamplesTable(e))).ToArray());
         }
 
-        private GherkinTable ConvertToCompatibleExamplesTable(global::Gherkin.Ast.Examples examples)
+        private static GherkinTable ConvertToCompatibleExamplesTable(global::Gherkin.Ast.Examples examples)
         {
             return new GherkinTable(ConvertToCompatibleRow(examples.TableHeader), examples.TableBody.Select(ConvertToCompatibleRow).ToArray());
         }
 
-        private GherkinTableRow ConvertToCompatibleRow(global::Gherkin.Ast.TableRow tableRow)
+        private static GherkinTableRow ConvertToCompatibleRow(global::Gherkin.Ast.TableRow tableRow)
         {
             return new GherkinTableRow(tableRow.Cells.Select(c => new GherkinTableCell(c.Value)).ToArray())
             {
@@ -84,12 +67,12 @@ namespace TechTalk.SpecFlow.Parser
             };
         }
 
-        private ScenarioSteps ConvertToCompatibleSteps(IEnumerable<global::Gherkin.Ast.Step> steps)
+        private static ScenarioSteps ConvertToCompatibleSteps(IEnumerable<global::Gherkin.Ast.Step> steps)
         {
             return new ScenarioSteps(steps.Select(s => ConvertToCompatibleStep((SpecFlowStep)s)).ToArray());
         }
 
-        private ScenarioStep ConvertToCompatibleStep(SpecFlowStep step)
+        private static ScenarioStep ConvertToCompatibleStep(SpecFlowStep step)
         {
             ScenarioStep result = null;
             if (step.StepKeyword == StepKeyword.Given)
@@ -116,20 +99,20 @@ namespace TechTalk.SpecFlow.Parser
             return result;
         }
 
-        private FilePosition ConvertToCompatibleFilePosition(global::Gherkin.Ast.Location location, int columnDiff = 0)
+        private static FilePosition ConvertToCompatibleFilePosition(global::Gherkin.Ast.Location location, int columnDiff = 0)
         {
             if (location == null)
                 return null;
             return new FilePosition(location.Line, location.Column + columnDiff);
         }
 
-        private GherkinTable ConvertToCompatibleTable(IEnumerable<global::Gherkin.Ast.TableRow> rows)
+        private static GherkinTable ConvertToCompatibleTable(IEnumerable<global::Gherkin.Ast.TableRow> rows)
         {
             var rowsArray = rows.ToArray();
             return new GherkinTable(ConvertToCompatibleRow(rowsArray.First()), rowsArray.Skip(1).Select(ConvertToCompatibleRow).ToArray());
         }
 
-        private Background ConvertToCompatibleBackground(global::Gherkin.Ast.Background background)
+        private static Background ConvertToCompatibleBackground(global::Gherkin.Ast.Background background)
         {
             if (background == null)
                 return null;
@@ -140,7 +123,7 @@ namespace TechTalk.SpecFlow.Parser
             };
         }
 
-        private Tags ConvertToCompatibleTags(IEnumerable<global::Gherkin.Ast.Tag> tags)
+        private static Tags ConvertToCompatibleTags(IEnumerable<global::Gherkin.Ast.Tag> tags)
         {
             if (tags == null || !tags.Any())
                 return null;

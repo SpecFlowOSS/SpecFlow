@@ -48,7 +48,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpecFlowLangParser.cs" />
+    <Compile Include="CompatibleAstConverter.cs" />
     <Compile Include="SyntaxElements\And.cs" />
     <Compile Include="SyntaxElements\Background.cs" />
     <Compile Include="SyntaxElements\But.cs" />
