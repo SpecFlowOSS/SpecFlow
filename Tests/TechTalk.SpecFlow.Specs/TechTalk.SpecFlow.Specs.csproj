@@ -136,11 +136,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Features\Parser\HandlingParserErrors.feature.cs">
-      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Features\Parser\ParsingErrors.feature.cs">
       <DependentUpon>ParsingErrors.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -256,10 +251,6 @@
     <None Include="Features\MsTestProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MsTestProvider.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Features\Parser\HandlingParserErrors.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Parser\ParsingErrors.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
