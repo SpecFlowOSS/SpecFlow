@@ -79,6 +79,7 @@
     <Compile Include="Drivers\AssemblyFolderHelper.cs" />
     <Compile Include="Drivers\BindingClassInput.cs" />
     <Compile Include="Drivers\ContentFileInput.cs" />
+    <Compile Include="Drivers\HooksDriver.cs" />
     <Compile Include="Drivers\MsTestTestExecutionDriver.cs" />
     <Compile Include="Drivers\FeatureFileInput.cs" />
     <Compile Include="Drivers\FileInput.cs" />
@@ -95,6 +96,11 @@
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
     <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
+    <Compile Include="Features\AcessingContexts.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcessingContexts.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -114,6 +120,11 @@
       <DependentUpon>ExternalSteps.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\InAppDomainParallelExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InAppDomainParallelExecution.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\XUnit2Provider.feature.cs">
       <AutoGen>True</AutoGen>
@@ -212,6 +223,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="Drivers\Templates\App.config" />
+    <None Include="Features\AcessingContexts.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\BasicExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BasicExecution.feature.cs</LastGenOutput>
@@ -231,6 +246,10 @@
     <None Include="Features\ExternalSteps.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\InAppDomainParallelExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>InAppDomainParallelExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnit2Provider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -310,6 +329,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
@@ -326,6 +348,10 @@ xcopy $(SolutionDir)packages\xunit.runner.console.2.0.0\*.* $(TargetDir)xunit.ru
 
 xcopy $(SolutionDir)lib\xunit.2.0.0\*.* $(TargetDir)xUnit2\ /s /y
 xcopy "$(SolutionDir)lib\Microsoft F#\*.*" $(TargetDir)FSharp\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
+
+xcopy $(SolutionDir)lib\NUnit3-Runner\*.* $(TargetDir)NUnit3-Runner\ /s /y
+
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

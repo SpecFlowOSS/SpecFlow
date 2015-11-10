@@ -53,6 +53,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                 case "NUnit":
                     nUnitTestExecutionDriver.Execute();
                     break;
+                case "NUnit.3":
+                    nUnitTestExecutionDriver.ExecuteWithNUnit3();
+                    break;
                 case "MsTest":
                     msTestTestExecutionDriver.Execute();
                     break;

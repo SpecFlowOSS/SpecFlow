@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers;
+﻿using System.IO;
+using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -6,10 +7,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class BindingSteps
     {
         private readonly InputProjectDriver inputProjectDriver;
+        private readonly HooksDriver hooksDriver;
 
-        public BindingSteps(InputProjectDriver inputProjectDriver)
+        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
+            this.hooksDriver = hooksDriver;
         }
 
         [Given(@"all steps are bound and pass")]
@@ -52,13 +55,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
-            inputProjectDriver.AddEventBinding(eventType, "//pass", methodName);
+            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName);
         }
 
         [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)'")]
         public void GivenAHookForWithOrder(string methodName, string eventType, int hookOrder)
         {
-            inputProjectDriver.AddEventBinding(eventType, "//pass", methodName, hookOrder);
+            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName, hookOrder);
         }
 
         [Given(@"the following binding class")]

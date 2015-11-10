@@ -35,5 +35,11 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             specFlowConfigurationDriver.SetRowTest(enabled);
         }
+
+        [Given(@"the type '(.*)' is registered as '(.*)' in SpecFlow runtime configuration")]
+        public void GivenTheTypeIsRegisteredAsInSpecFlowRuntimeConfiguration(string typeName, string interfaceName)
+        {
+            specFlowConfigurationDriver.AddRuntimeDependencyCustomization(typeName, interfaceName);
+        }
     }
 }

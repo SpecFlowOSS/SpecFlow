@@ -24,8 +24,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public virtual bool SupportsRowTests { get { return false; } }
-        public virtual bool SupportsAsyncTests { get { return false; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.None;
+        }
 
         public MsTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -61,6 +63,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
+
             generationContext.TestClassInitializeMethod.Parameters.Add(new CodeParameterDeclarationExpression(
                 TESTCONTEXT_TYPE, "testContext"));
 
@@ -77,32 +81,31 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
-
-            //if (FeatureContext.Current != null && FeatureContext.Current.FeatureInfo.Title != "<current_feature_title>")
-            //  <TestClass>.<TestClassInitialize>(null);
-
             FixTestRunOrderingIssue(generationContext);
         }
 
         protected virtual void FixTestRunOrderingIssue(TestClassGenerationContext generationContext)
         {
             //see https://github.com/techtalk/SpecFlow/issues/96
+
+            //if (testRunner.FeatureContext != null && testRunner.FeatureContext.FeatureInfo.Title != "<current_feature_title>")
+            //  <TestClass>.<TestClassInitialize>(null);
+
+            var featureContextExpression = new CodePropertyReferenceExpression(
+                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name), 
+                "FeatureContext");
             generationContext.TestInitializeMethod.Statements.Add(
                 new CodeConditionStatement(
                     new CodeBinaryOperatorExpression(
                         new CodeBinaryOperatorExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeTypeReferenceExpression(typeof (FeatureContext)),
-                                "Current"),
+                            featureContextExpression,
                             CodeBinaryOperatorType.IdentityInequality,
                             new CodePrimitiveExpression(null)),
                         CodeBinaryOperatorType.BooleanAnd,
                         new CodeBinaryOperatorExpression(
                             new CodePropertyReferenceExpression(
                                 new CodePropertyReferenceExpression(
-                                    new CodePropertyReferenceExpression(
-                                        new CodeTypeReferenceExpression(typeof (FeatureContext)),
-                                        "Current"),
+                                    featureContextExpression,
                                     "FeatureInfo"),
                                 "Title"),
                             CodeBinaryOperatorType.IdentityInequality,

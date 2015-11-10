@@ -23,8 +23,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public bool SupportsRowTests { get { return true; } }
-        public bool SupportsAsyncTests { get { return false; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.RowTests;
+        }
 
         public XUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -46,6 +48,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit uses IUseFixture<T> on the class
 
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
 
             _currentFixtureDataTypeDeclaration = CodeDomHelper.CreateGeneratedTypeDeclaration("FixtureData");
             generationContext.TestClass.Members.Add(_currentFixtureDataTypeDeclaration);

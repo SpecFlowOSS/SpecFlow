@@ -176,10 +176,23 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var testRunner = parentContainer.Resolve<ITestRunner>(); // we need to delay-resolve the test runner to avoid circular dependencies
-            var newContext = new ScenarioContext(scenarioInfo, testRunner, parentContainer);
+            var newContext = new ScenarioContext(scenarioInfo, parentContainer);
+            SetupScenarioContainer(newContext);
             scenarioContext.Init(newContext);
             ScenarioContext.Current = newContext;
+        }
+
+        protected virtual void SetupScenarioContainer(ScenarioContext newContext)
+        {
+            newContext.ScenarioContainer.RegisterInstanceAs(newContext);
+            newContext.ScenarioContainer.RegisterInstanceAs(FeatureContext);
+
+            newContext.ScenarioContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(newContext.ScenarioContainer);
+            };
         }
 
         public void CleanupScenarioContext()

@@ -15,14 +15,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         [Test]
         public void Should_create_a_container()
         {
-            var container = TestRunContainerBuilder.CreateDefaultContainer();
+            var container = TestObjectFactories.CreateDefaultGlobalContainer();
             container.Should().NotBeNull();
         }
 
         [Test]
         public void Should_register_runtime_configuration_with_default_config()
         {
-            var container = TestRunContainerBuilder.CreateDefaultContainer();
+            var container = TestObjectFactories.CreateDefaultGlobalContainer();
             container.Resolve<RuntimeConfiguration>().Should().NotBeNull();
         }
 
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 typeof(DummyTestRunnerFactory).AssemblyQualifiedName,
                 typeof(ITestRunnerFactory).AssemblyQualifiedName));
 
-            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
             testRunnerFactory.Should().BeOfType(typeof(DummyTestRunnerFactory));
         }
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 typeof(CustomUnitTestProvider).AssemblyQualifiedName,
                 typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName));
 
-            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
             unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
         }
@@ -133,7 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
               </configuration>",
                 typeof(CustomUnitTestProvider).AssemblyQualifiedName));
 
-            var container = TestRunContainerBuilder.CreateDefaultContainer(configurationHolder);
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var unitTestProvider = container.Resolve<IUnitTestRuntimeProvider>();
             unitTestProvider.Should().BeOfType(typeof(CustomUnitTestProvider));
         }

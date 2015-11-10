@@ -54,9 +54,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\lib\BoDi\BoDi.cs">
-      <Link>BoDi\BoDi.cs</Link>
-    </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
@@ -88,6 +85,7 @@
     <Compile Include="Assist\ValueRetrievers\NullableSByteValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableFloatValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableShortValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\NullableTimeSpanValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\NullableUShortValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\SByteValueRetriever.cs" />
@@ -111,10 +109,6 @@
     <Compile Include="Assist\ValueRetrievers\StringValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\ULongValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
-    <Compile Include="Async\AsyncContext.cs" />
-    <Compile Include="Async\AsyncSteps.cs" />
-    <Compile Include="Async\AsyncTestRunner.cs" />
-    <Compile Include="Async\IAsyncTestExecutor.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
@@ -155,6 +149,8 @@
     <Compile Include="Bindings\StepDefinitionKeyword.cs" />
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
+    <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
     <Compile Include="Infrastructure\DefaultDependencyProvider.cs" />
@@ -169,7 +165,6 @@
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
     <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
-    <Compile Include="Infrastructure\TestRunnerFactory.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
     <Compile Include="PlatformCompatibility\ExceptionHelper.cs" />
@@ -205,6 +200,7 @@
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />
+    <Compile Include="Tracing\AsyncTraceListener.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
     <Compile Include="ErrorHandling\ErrorProvider.cs" />
@@ -213,9 +209,11 @@
     <Compile Include="Tracing\LanguageHelper.cs" />
     <Compile Include="Tracing\NullListener.cs" />
     <Compile Include="Tracing\StepFormatter.cs" />
+    <Compile Include="Tracing\TraceListenerQueue.cs" />
     <Compile Include="UnitTestProvider\MbUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MbUnitRuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\MsTest2010RuntimeProvider.cs" />
+    <Compile Include="UnitTestProvider\NUnit3RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\UnitTestRuntimeProviderHelper.cs" />
     <Compile Include="UnitTestProvider\XUnit2RuntimeProvider.cs" />
     <Compile Include="UnitTestProvider\XUnitRuntimeProvider.cs" />
@@ -233,6 +231,7 @@
     <Compile Include="Tracing\ITraceListener.cs" />
     <Compile Include="Assist\Service.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">
@@ -241,6 +240,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
