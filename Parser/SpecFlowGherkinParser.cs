@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Gherkin;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Parser.Compatibility;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -49,41 +50,68 @@ namespace TechTalk.SpecFlow.Parser
             dialectProvider = new SpecFlowGherkinDialectProvider(defaultLanguage.Name);
         }
 
-        private class SpecFlowAstBuilder : IAstBuilder<SpecFlowFeature>
+        private static StepKeyword GetStepKeyword(GherkinDialect dialect, string stepKeyword)
         {
-            //TODO: derive from AstBuilder<SpecFlowFeature> and override CreateFeature when Gherkin v3.1.3 is released
-            private readonly AstBuilder<Feature> baseAstBuilder = new AstBuilder<Feature>();
+            if (dialect.AndStepKeywords.Contains(stepKeyword)) // we need to check "And" first, as the '*' is also part of the Given, When and Then keywords
+                return StepKeyword.And;
+            if (dialect.GivenStepKeywords.Contains(stepKeyword))
+                return StepKeyword.Given;
+            if (dialect.WhenStepKeywords.Contains(stepKeyword))
+                return StepKeyword.When;
+            if (dialect.ThenStepKeywords.Contains(stepKeyword))
+                return StepKeyword.Then;
+            if (dialect.ButStepKeywords.Contains(stepKeyword))
+                return StepKeyword.But;
+
+            return StepKeyword.And;
+        }
+
+        private class SpecFlowAstBuilder : PatchedAstBuilder<SpecFlowFeature>
+        {
             private readonly string sourceFilePath;
+            private ScenarioBlock scenarioBlock = ScenarioBlock.Given;
 
             public SpecFlowAstBuilder(string sourceFilePath)
             {
                 this.sourceFilePath = sourceFilePath;
             }
 
-            public void Reset()
+            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description,
+                Background background, ScenarioDefinition[] scenariodefinitions, Comment[] comments)
             {
-                baseAstBuilder.Reset();
+                return new SpecFlowFeature(tags, location, language, keyword, name, description, background, scenariodefinitions, comments, sourceFilePath);
             }
 
-            public void Build(Token token)
+            protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
             {
-                baseAstBuilder.Build(token);
+                var token = node.GetToken(TokenType.StepLine);
+                var stepKeyword = GetStepKeyword(token.MatchedGherkinDialect, keyword);
+                scenarioBlock = stepKeyword.ToScenarioBlock() ?? scenarioBlock;
+
+                return new SpecFlowStep(location, keyword, text, argument, stepKeyword, scenarioBlock);
             }
 
-            public void StartRule(RuleType ruleType)
+            private void ResetBlock()
             {
-                baseAstBuilder.StartRule(ruleType);
+                scenarioBlock = ScenarioBlock.Given;
             }
 
-            public void EndRule(RuleType ruleType)
+            protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps)
             {
-                baseAstBuilder.EndRule(ruleType);
+                ResetBlock();
+                return base.CreateScenario(tags, location, keyword, name, description, steps);
             }
 
-            public SpecFlowFeature GetResult()
+            protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples)
             {
-                var baseFeature = baseAstBuilder.GetResult();
-                return new SpecFlowFeature(baseFeature.Tags.ToArray(), baseFeature.Location, baseFeature.Language, baseFeature.Keyword, baseFeature.Name, baseFeature.Description, baseFeature.Background, baseFeature.ScenarioDefinitions.ToArray(), baseFeature.Comments.ToArray(), sourceFilePath);
+                ResetBlock();
+                return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples);
+            }
+
+            protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps)
+            {
+                ResetBlock();
+                return base.CreateBackground(location, keyword, name, description, steps);
             }
         }
 

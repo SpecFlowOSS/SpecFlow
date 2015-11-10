@@ -1,4 +1,4 @@
-﻿namespace TechTalk.SpecFlow.Parser.Gherkin
+﻿namespace TechTalk.SpecFlow.Parser
 {
     public enum ScenarioBlock
     {

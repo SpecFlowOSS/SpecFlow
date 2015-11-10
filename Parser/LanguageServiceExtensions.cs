@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.Parser.Gherkin
+namespace TechTalk.SpecFlow.Parser
 {
     public static class LanguageServiceExtensions
     {

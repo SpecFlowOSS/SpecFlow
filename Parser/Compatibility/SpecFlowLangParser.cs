@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 // ReSharper disable once CheckNamespace
@@ -63,8 +62,8 @@ namespace TechTalk.SpecFlow.Parser
         private Scenario ConvertToCompatibleScenario(global::Gherkin.GherkinDialect dialect, global::Gherkin.Ast.ScenarioDefinition sd)
         {
             var result = sd is global::Gherkin.Ast.ScenarioOutline
-                ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps, dialect), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples)) //TODO[Gherkin3]: ScenarioOutline compatibility
-                : new Scenario(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps, dialect));
+                ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples)) //TODO[Gherkin3]: ScenarioOutline compatibility
+                : new Scenario(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps));
             result.FilePosition = ConvertToCompatibleFilePosition(sd.Location);
             return result;
         }
@@ -87,41 +86,31 @@ namespace TechTalk.SpecFlow.Parser
             };
         }
 
-        private ScenarioSteps ConvertToCompatibleSteps(IEnumerable<global::Gherkin.Ast.Step> steps, global::Gherkin.GherkinDialect dialect)
+        private ScenarioSteps ConvertToCompatibleSteps(IEnumerable<global::Gherkin.Ast.Step> steps)
         {
-            var block = ScenarioBlock.Given;
-            return new ScenarioSteps(steps.Select(s => ConvertToCompatibleStep(s, dialect, ref block)).ToArray());
+            return new ScenarioSteps(steps.Select(s => ConvertToCompatibleStep((SpecFlowStep)s)).ToArray());
         }
 
-        private ScenarioStep ConvertToCompatibleStep(global::Gherkin.Ast.Step step, global::Gherkin.GherkinDialect dialect, ref ScenarioBlock block)
+        private ScenarioStep ConvertToCompatibleStep(SpecFlowStep step)
         {
             ScenarioStep result = null;
-            if (dialect.AndStepKeywords.Contains(step.Keyword)) // we need to check "And" first, as the '*' is also part of the Given, When and Then keywords
-                result = new And { StepKeyword = StepKeyword.And };
-            else if (dialect.GivenStepKeywords.Contains(step.Keyword))
-            {
-                result = new Given {StepKeyword = StepKeyword.Given};
-                block = ScenarioBlock.Given;
-            }
-            else if (dialect.WhenStepKeywords.Contains(step.Keyword))
-            {
-                result = new When {StepKeyword = StepKeyword.When};
-                block = ScenarioBlock.When;
-            }
-            else if (dialect.ThenStepKeywords.Contains(step.Keyword))
-            {
-                result = new Then {StepKeyword = StepKeyword.Then};
-                block = ScenarioBlock.Then;
-            }
-            else if (dialect.ButStepKeywords.Contains(step.Keyword))
-                result = new But {StepKeyword = StepKeyword.But};
+            if (step.StepKeyword == StepKeyword.Given)
+                result = new Given {StepKeyword = step.StepKeyword };
+            else if (step.StepKeyword == StepKeyword.When)
+                result = new When {StepKeyword = step.StepKeyword };
+            else if (step.StepKeyword == StepKeyword.Then)
+                result = new Then {StepKeyword = step.StepKeyword };
+            else if (step.StepKeyword == StepKeyword.And)
+                result = new And { StepKeyword = step.StepKeyword };
+            else if (step.StepKeyword == StepKeyword.But)
+                result = new But {StepKeyword = step.StepKeyword };
 
             if (result == null)
                 throw new NotSupportedException();
 
             result.Keyword = step.Keyword;
             result.Text = step.Text;
-            result.ScenarioBlock = block;
+            result.ScenarioBlock = step.ScenarioBlock;
             result.MultiLineTextArgument = step.Argument is global::Gherkin.Ast.DocString ? ((global::Gherkin.Ast.DocString) step.Argument).Content : null;
             result.TableArg = step.Argument is global::Gherkin.Ast.DataTable ? ConvertToCompatibleTable(((global::Gherkin.Ast.DataTable) step.Argument).Rows) : null;
             result.FilePosition = ConvertToCompatibleFilePosition(step.Location);
@@ -147,7 +136,7 @@ namespace TechTalk.SpecFlow.Parser
             if (background == null)
                 return null;
 
-            return new Background(background.Keyword, background.Name, background.Description, ConvertToCompatibleSteps(background.Steps, dialect))
+            return new Background(background.Keyword, background.Name, background.Description, ConvertToCompatibleSteps(background.Steps))
             {
                 FilePosition = ConvertToCompatibleFilePosition(background.Location)
             };
