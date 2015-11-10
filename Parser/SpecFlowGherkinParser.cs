@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Parser
 
         public SpecFlowGherkinParser(CultureInfo defaultLanguage)
         {
-            this.dialectProvider = new SpecFlowGherkinDialectProvider("en-US"); //TODO[Gherkin3] downgrade defaultLanguage
+            this.dialectProvider = new SpecFlowGherkinDialectProvider(defaultLanguage.Name);
         }
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
