@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return tagFilterMatcher.Match(tagFilter, new string[] {tagName});
         }
 
-        public static bool MatchPrefix(this ITagFilterMatcher tagFilterMatcher, string tagFilter, Feature feature)
+        public static bool MatchPrefix(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature)
         {
             if (feature.Tags == null)
                 return false;
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return tagFilterMatcher.MatchPrefix(tagFilter, feature.Tags.Select(t => t.Name));
         }
 
-        public static bool GetTagValue(this ITagFilterMatcher tagFilterMatcher, string tagFilter, Feature feature, out string value)
+        public static bool GetTagValue(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature, out string value)
         {
             if (feature.Tags == null)
             {

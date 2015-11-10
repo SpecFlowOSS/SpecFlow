@@ -1,4 +1,4 @@
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -16,12 +16,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             get { return PriorityValues.Lowest; }
         }
 
-        public bool CanGenerate(Feature feature)
+        public bool CanGenerate(SpecFlowFeature feature)
         {
             return true;
         }
 
-        public IFeatureGenerator CreateGenerator(Feature feature)
+        public IFeatureGenerator CreateGenerator(SpecFlowFeature feature)
         {
             return unitTestFeatureGenerator;
         }

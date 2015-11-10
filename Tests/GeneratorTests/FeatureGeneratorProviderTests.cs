@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using FluentAssertions;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Utils;
 
@@ -35,7 +36,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_be_able_to_generate_anything()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            Feature anyFeature = new Feature();
+            var anyFeature = ParserHelper.CreateAnyFeature();
             generatorProvider.CanGenerate(anyFeature).Should().Be(true);
         }
 
@@ -43,7 +44,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_create_valid_instance()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            Feature anyFeature = new Feature();
+            var anyFeature = ParserHelper.CreateAnyFeature();
             var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().NotBeNull();
@@ -53,7 +54,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_create_UnitTestFeatureGenerator_instance()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            Feature anyFeature = new Feature();
+            var anyFeature = ParserHelper.CreateAnyFeature();
             var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();

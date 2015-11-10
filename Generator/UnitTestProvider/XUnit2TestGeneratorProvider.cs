@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE);
 
-            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Title);
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, scenarioTitle);
         }
 

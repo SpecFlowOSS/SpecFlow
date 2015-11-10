@@ -106,7 +106,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                                     "FeatureInfo"),
                                 "Title"),
                             CodeBinaryOperatorType.IdentityInequality,
-                            new CodePrimitiveExpression(generationContext.Feature.Title))),
+                            new CodePrimitiveExpression(generationContext.Feature.Name))),
                     new CodeExpressionStatement(
                         new CodeMethodInvokeExpression(
                             new CodeTypeReferenceExpression(
@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             //as in mstest, you cannot mark classes with the description attribute, we
             //just apply it for each test method as a property
-            SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Title);
+            SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Name);
         }
 
         public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
