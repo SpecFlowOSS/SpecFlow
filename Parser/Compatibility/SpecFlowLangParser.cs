@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.Parser
         {
             if (tags == null || !tags.Any())
                 return null;
-            return new Tags(tags.Select(t => new Tag(t.Name.TrimStart('@'))).ToArray());
+            return new Tags(tags.Select(t => new Tag(t.GetNameWithoutAt())).ToArray());
         }
     }
 }

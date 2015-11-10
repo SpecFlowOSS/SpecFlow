@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BoDi;
 using Gherkin.Ast;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -105,7 +106,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public void DecorateTestClass(TestClassGenerationContext generationContext, out List<string> unprocessedTags)
         {
-            Decorate(testClassDecorators, testClassTagDecorators, generationContext, null, generationContext.Feature.Tags == null ? Enumerable.Empty<Tag>() : generationContext.Feature.Tags, out unprocessedTags);
+            Decorate(testClassDecorators, testClassTagDecorators, generationContext, null, generationContext.Feature.Tags, out unprocessedTags);
         }
 
         public void DecorateTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<Tag> tags, out List<string> unprocessedTags)
@@ -124,7 +125,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
             if (tags != null)
             {
-                foreach (var tagName in tags.Select(t => t.Name))
+                foreach (var tagName in tags.Select(t => t.GetNameWithoutAt()))
                 {
                     bool removeProcessedTag = false;
                     foreach (var decorator in FindDecorators(tagDecorators, tagName, generationContext, testMethod))

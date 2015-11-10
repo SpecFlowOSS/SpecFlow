@@ -59,10 +59,9 @@
     </Compile>
     <Compile Include="Compatibility\PatchedAstBuilder.cs" />
     <Compile Include="Compatibility\SpecFlowLangParser.cs" />
-    <Compile Include="LanguageServiceExtensions.cs" />
+    <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="StepKeyword.cs" />
-    <Compile Include="ParserExceptionExtensions.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SpecFlowFeature.cs" />
     <Compile Include="SpecFlowStep.cs" />

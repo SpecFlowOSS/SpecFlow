@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Generator
         private const string DEFAULT_NAMESPACE = "SpecFlowTests";
         const string TESTCLASS_NAME_FORMAT = "{0}Feature";
         const string TEST_NAME_FORMAT = "{0}";
-        private const string IGNORE_TAG = "Ignore";
+        private const string IGNORE_TAG = "@Ignore";
         private const string SCENARIO_INITIALIZE_NAME = "ScenarioSetup";
         private const string SCENARIO_CLEANUP_NAME = "ScenarioCleanup";
         private const string TEST_INITIALIZE_NAME = "TestInitialize";
@@ -173,15 +173,11 @@ namespace TechTalk.SpecFlow.Generator
 
         private IEnumerable<string> GetNonIgnoreTags(IEnumerable<Tag> tags)
         {
-            if (tags == null)
-                return new string[0];
-            return tags.Where(t => !t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t.Name);
+            return tags.Where(t => !t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t.GetNameWithoutAt());
         }
 
         private bool HasIgnoreTag(IEnumerable<Tag> tags)
         {
-            if (tags == null)
-                return false;
             return tags.Any(t => t.Name.Equals(IGNORE_TAG, StringComparison.InvariantCultureIgnoreCase));
         }
 
@@ -227,10 +223,10 @@ namespace TechTalk.SpecFlow.Generator
 
         private CodeExpression GetStringArrayExpression(IEnumerable<Tag> tags)
         {
-            if (tags == null || tags.Count() == 0)
+            if (!tags.Any())
                 return new CodeCastExpression(typeof(string[]), new CodePrimitiveExpression(null));
 
-            return new CodeArrayCreateExpression(typeof(string[]), tags.Select(tag => new CodePrimitiveExpression(tag.Name)).Cast<CodeExpression>().ToArray());
+            return new CodeArrayCreateExpression(typeof(string[]), tags.Select(tag => new CodePrimitiveExpression(tag.GetNameWithoutAt())).Cast<CodeExpression>().ToArray());
         }
 
         private CodeExpression GetStringArrayExpression(IEnumerable<string> items, ParameterSubstitution paramToIdentifier)
@@ -492,7 +488,7 @@ namespace TechTalk.SpecFlow.Generator
             CodeExpression tagsExpression;
             if (additionalTagsExpression == null)
                 tagsExpression = GetStringArrayExpression(scenario.Tags);
-            else if (scenario.Tags == null)
+            else if (!scenario.HasTags())
                 tagsExpression = additionalTagsExpression;
             else
             {
@@ -626,9 +622,10 @@ namespace TechTalk.SpecFlow.Generator
                 formatArguments.ToArray());
         }
 
-        private void GenerateStep(CodeMemberMethod testMethod, Step scenarioStep, ParameterSubstitution paramToIdentifier)
+        private void GenerateStep(CodeMemberMethod testMethod, Step gherkinStep, ParameterSubstitution paramToIdentifier)
         {
             var testRunnerField = GetTestRunnerExpression();
+            var scenarioStep = AsSpecFlowStep(gherkinStep);
 
             //testRunner.Given("something");
             List<CodeExpression> arguments = new List<CodeExpression>();
@@ -646,8 +643,16 @@ namespace TechTalk.SpecFlow.Generator
             testMethod.Statements.Add(
                 new CodeMethodInvokeExpression(
                     testRunnerField,
-                    scenarioStep.GetType().Name,
+                    scenarioStep.StepKeyword.ToString(),
                     arguments.ToArray()));
+        }
+
+        private SpecFlowStep AsSpecFlowStep(Step step)
+        {
+            var specFlowStep = step as SpecFlowStep;
+            if (specFlowStep == null)
+                throw new TestGeneratorException("The step must be a SpecFlowStep.");
+            return specFlowStep;
         }
 
         private int tableCounter = 0;

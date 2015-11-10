@@ -25,21 +25,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public static bool MatchPrefix(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature)
         {
-            if (feature.Tags == null)
-                return false;
-
-            return tagFilterMatcher.MatchPrefix(tagFilter, feature.Tags.Select(t => t.Name));
+            return tagFilterMatcher.MatchPrefix(tagFilter, feature.Tags.Select(t => t.GetNameWithoutAt()));
         }
 
         public static bool GetTagValue(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature, out string value)
         {
-            if (feature.Tags == null)
-            {
-                value = null;
-                return false;
-            }
-
-            return tagFilterMatcher.GetTagValue(tagFilter, feature.Tags.Select(t => t.Name), out value);
+            return tagFilterMatcher.GetTagValue(tagFilter, feature.Tags.Select(t => t.GetNameWithoutAt()), out value);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public static Tag[] GetTags(params string[] tags)
         {
-            return tags == null ? null : tags.Select(t => new Tag(null, t)).ToArray();
+            return tags == null ? new Tag[0] : tags.Select(t => new Tag(null, t)).ToArray();
         }
 
         public static SpecFlowFeature CreateFeature(string[] tags = null, string[] scenarioTags = null)
