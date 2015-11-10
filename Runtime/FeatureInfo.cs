@@ -21,6 +21,7 @@ namespace TechTalk.SpecFlow
         {
             if (language.IsNeutralCulture)
             {
+                //TODO: as Gherkin parser does not provide the default specific culture for neutral languages (eg. 'sv' -> 'sv-SE'), this code will be required and has to be extended
                 // for backwards compatibility (execution of files that were generated with pre 1.3)
                 language = LanguageHelper.GetSpecificCultureInfo(language);
             }

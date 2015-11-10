@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Feature xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Language>sv-SE</Language>
+  <Language>sv</Language>
   <Keyword>Egenskap</Keyword>
   <Title>Swedish</Title>
   <Description>  För att slippa att göra dumma fel
