@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Gherkin;
 using TechTalk.SpecFlow.Parser.Gherkin;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
@@ -22,19 +21,7 @@ namespace TechTalk.SpecFlow.Parser
 
         public Feature Parse(TextReader featureFileReader, string sourceFilePath)
         {
-            global::Gherkin.Ast.Feature gherkin3Feature;
-            try
-            {
-                gherkin3Feature = specFlowGherkinParser.Parse(featureFileReader, sourceFilePath);
-            }
-            catch (CompositeParserException compositeParserException)
-            {
-                throw new SpecFlowParserException(compositeParserException.Errors.Select(ConvertToCompatibleErrorDetail).ToList());
-            }
-            catch (ParserException parserException)
-            {
-                throw new SpecFlowParserException(ConvertToCompatibleErrorDetail(parserException));
-            }
+            var gherkin3Feature = specFlowGherkinParser.Parse(featureFileReader, sourceFilePath);
             var dialect = specFlowGherkinParser.DialectProvider.GetDialect(gherkin3Feature.Language, null);
 
             Feature feature = ConvertToCompatibleFeature(gherkin3Feature, dialect);
@@ -44,16 +31,6 @@ namespace TechTalk.SpecFlow.Parser
             feature.SourceFile = sourceFilePath;
 
             return feature;
-        }
-
-        private ErrorDetail ConvertToCompatibleErrorDetail(ParserException parserException)
-        {
-            return new ErrorDetail
-            {
-                Message = parserException.Message,
-                Line = parserException.Location == null ? null : (int?)parserException.Location.Line,
-                Column = parserException.Location == null ? null : (int?)parserException.Location.Column
-            };
         }
 
         private Feature ConvertToCompatibleFeature(global::Gherkin.Ast.Feature gherkin3Feature, global::Gherkin.GherkinDialect dialect)

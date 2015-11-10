@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Gherkin;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
@@ -14,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
     {
         public string FileContent { get; set; }
         public Feature ParsedFeature { get; private set; }
-        public SpecFlowParserException ParsingErrors { get; private set; }
+        public ParserException[] ParsingErrors { get; private set; }
 
         private readonly SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
 
@@ -22,7 +24,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
         {
             var contentReader = new StringReader(FileContent);
             ParsedFeature = null;
-            ParsingErrors = null;
+            ParsingErrors = new ParserException[0];
 
             try
             {
@@ -30,13 +32,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
                 Assert.IsNotNull(ParsedFeature);
                 ParsedFeature.SourceFile = null;
             }
-            catch (SpecFlowParserException ex)
+            catch (ParserException ex)
             {
-                ParsingErrors = ex;
+                ParsingErrors = ex.GetParserExceptions();
                 Console.WriteLine("-> parsing errors");
-                foreach (ErrorDetail errorDetail in ParsingErrors.ErrorDetails)
+                foreach (var error in ParsingErrors)
                 {
-                    Console.WriteLine("-> {0}:{1} {2}", errorDetail.Line, errorDetail.Column, errorDetail.Message);
+                    Console.WriteLine("-> {0}:{1} {2}", error.Location == null ? 0 : error.Location.Line, error.Location == null ? 0 : error.Location.Column, error.Message);
                 }
             }
         }
@@ -56,14 +58,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
         {
             Assert.Greater(expectedErrors.Count, 0, "please specify expected errors");
 
-            Assert.IsNotNull(ParsingErrors, "The parsing was successful");
+            CollectionAssert.IsNotEmpty(ParsingErrors, "The parsing was successful");
 
             foreach (var expectedError in expectedErrors)
             {
                 string message = expectedError.Error.ToLower();
 
                 var errorDetail =
-                    ParsingErrors.ErrorDetails.Find(ed => ed.Line == expectedError.Line &&
+                    ParsingErrors.FirstOrDefault(ed => ed.Location != null && ed.Location.Line == expectedError.Line &&
                         ed.Message.ToLower().Contains(message));
 
                 Assert.IsNotNull(errorDetail, "no such error: {0}", message);

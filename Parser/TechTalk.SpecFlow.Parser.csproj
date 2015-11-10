@@ -58,15 +58,14 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Compatibility\SpecFlowLangParser.cs" />
-    <Compile Include="ErrorDetail.cs" />
     <Compile Include="Gherkin\LanguageServiceExtensions.cs" />
     <Compile Include="Gherkin\ScenarioBlock.cs" />
     <Compile Include="Gherkin\StepKeyword.cs" />
+    <Compile Include="ParserExceptionExtensions.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SyntaxElements\Comment.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowGherkinParser.cs" />
-    <Compile Include="SpecFlowParserException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyntaxElements\And.cs" />
     <Compile Include="SyntaxElements\Background.cs" />

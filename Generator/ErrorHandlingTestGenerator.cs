@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Gherkin;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Parser;
 
@@ -17,13 +18,10 @@ namespace TechTalk.SpecFlow.Generator
             {
                 return GenerateTestFileWithExceptions(featureFileInput, settings);
             }
-            catch (SpecFlowParserException parserException)
+            catch (ParserException parserException)
             {
-                if (parserException.ErrorDetails == null || parserException.ErrorDetails.Count == 0)
-                    return new TestGeneratorResult(new TestGenerationError(parserException));
-
-                return new TestGeneratorResult(parserException.ErrorDetails.Select(
-                    ed => new TestGenerationError(ed.ForcedLine - 1, ed.ForcedColumn - 1, ed.Message)));
+                return new TestGeneratorResult(parserException.GetParserExceptions().Select(
+                    ex => new TestGenerationError(ex.Location == null ? 0 : ex.Location.Line, ex.Location == null ? 0 : ex.Location.Column, ex.Message)));
             }
             catch (Exception exception)
             {
