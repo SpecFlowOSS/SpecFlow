@@ -123,7 +123,9 @@ namespace TechTalk.SpecFlow.Parser
         private ScenarioStep ConvertToCompatibleStep(global::Gherkin.Ast.Step step, global::Gherkin.GherkinDialect dialect, ref ScenarioBlock block)
         {
             ScenarioStep result = null;
-            if (dialect.GivenStepKeywords.Contains(step.Keyword))
+            if (dialect.AndStepKeywords.Contains(step.Keyword)) // we need to check "And" first, as the '*' is also part of the Given, When and Then keywords
+                result = new And { StepKeyword = StepKeyword.And };
+            else if (dialect.GivenStepKeywords.Contains(step.Keyword))
             {
                 result = new Given {StepKeyword = StepKeyword.Given};
                 block = ScenarioBlock.Given;
@@ -138,8 +140,6 @@ namespace TechTalk.SpecFlow.Parser
                 result = new Then {StepKeyword = StepKeyword.Then};
                 block = ScenarioBlock.Then;
             }
-            else if (dialect.AndStepKeywords.Contains(step.Keyword))
-                result = new And {StepKeyword = StepKeyword.And};
             else if (dialect.ButStepKeywords.Contains(step.Keyword))
                 result = new But {StepKeyword = StepKeyword.But};
 
