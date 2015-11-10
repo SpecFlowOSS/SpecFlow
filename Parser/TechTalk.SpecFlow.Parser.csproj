@@ -63,6 +63,7 @@
     <Compile Include="Gherkin\StepKeyword.cs" />
     <Compile Include="ParserExceptionExtensions.cs" />
     <Compile Include="SemanticParserException.cs" />
+    <Compile Include="SpecFlowFeature.cs" />
     <Compile Include="SyntaxElements\Comment.cs" />
     <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowGherkinParser.cs" />

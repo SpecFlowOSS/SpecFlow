@@ -24,16 +24,10 @@ namespace TechTalk.SpecFlow.Parser
             var gherkin3Feature = specFlowGherkinParser.Parse(featureFileReader, sourceFilePath);
             var dialect = specFlowGherkinParser.DialectProvider.GetDialect(gherkin3Feature.Language, null);
 
-            Feature feature = ConvertToCompatibleFeature(gherkin3Feature, dialect);
-
-            Debug.Assert(feature != null, "If there were no errors, the feature cannot be null");
-            feature.Language = gherkin3Feature.Language;
-            feature.SourceFile = sourceFilePath;
-
-            return feature;
+            return ConvertToCompatibleFeature(gherkin3Feature, dialect);
         }
 
-        private Feature ConvertToCompatibleFeature(global::Gherkin.Ast.Feature gherkin3Feature, global::Gherkin.GherkinDialect dialect)
+        private Feature ConvertToCompatibleFeature(SpecFlowFeature gherkin3Feature, global::Gherkin.GherkinDialect dialect)
         {
             return new Feature(gherkin3Feature.Keyword, gherkin3Feature.Name, 
                 ConvertToCompatibleTags(gherkin3Feature.Tags), 
@@ -42,7 +36,9 @@ namespace TechTalk.SpecFlow.Parser
                 ConvertToCompatibleScenarios(gherkin3Feature.ScenarioDefinitions, dialect), 
                 ConvertToCompatibleComments(gherkin3Feature.Comments))
             {
-                FilePosition = ConvertToCompatibleFilePosition(gherkin3Feature.Location)
+                FilePosition = ConvertToCompatibleFilePosition(gherkin3Feature.Location),
+                Language = gherkin3Feature.Language,
+                SourceFile = gherkin3Feature.SourceFilePath
             };
         }
 

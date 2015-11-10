@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using Gherkin;
 using Gherkin.Ast;
-using Gherkin3Parser=Gherkin.Parser;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -19,7 +17,7 @@ namespace TechTalk.SpecFlow.Parser
             {
             }
 
-            public override global::Gherkin.GherkinDialect GetDialect(string language, Location location)
+            public override GherkinDialect GetDialect(string language, Location location)
             {
                 location = location ?? new Location(); //TODO: fix in gherkin3, GetDialect needs a location for throwing NoSuchLanguageException
 
@@ -33,7 +31,7 @@ namespace TechTalk.SpecFlow.Parser
                     {
                         var languageBase = language.Split('-')[0];
                         var languageBaseDialect = base.GetDialect(languageBase, location);
-                        return new global::Gherkin.GherkinDialect(language, languageBaseDialect.FeatureKeywords, languageBaseDialect.BackgroundKeywords, languageBaseDialect.ScenarioKeywords, languageBaseDialect.ScenarioOutlineKeywords, languageBaseDialect.ExamplesKeywords, languageBaseDialect.GivenStepKeywords, languageBaseDialect.WhenStepKeywords, languageBaseDialect.ThenStepKeywords, languageBaseDialect.AndStepKeywords, languageBaseDialect.ButStepKeywords);
+                        return new GherkinDialect(language, languageBaseDialect.FeatureKeywords, languageBaseDialect.BackgroundKeywords, languageBaseDialect.ScenarioKeywords, languageBaseDialect.ScenarioOutlineKeywords, languageBaseDialect.ExamplesKeywords, languageBaseDialect.GivenStepKeywords, languageBaseDialect.WhenStepKeywords, languageBaseDialect.ThenStepKeywords, languageBaseDialect.AndStepKeywords, languageBaseDialect.ButStepKeywords);
                     }
                 }
 
@@ -48,15 +46,52 @@ namespace TechTalk.SpecFlow.Parser
 
         public SpecFlowGherkinParser(CultureInfo defaultLanguage)
         {
-            this.dialectProvider = new SpecFlowGherkinDialectProvider(defaultLanguage.Name);
+            dialectProvider = new SpecFlowGherkinDialectProvider(defaultLanguage.Name);
         }
 
-        public Feature Parse(TextReader featureFileReader, string sourceFilePath)
+        private class SpecFlowAstBuilder : IAstBuilder<SpecFlowFeature>
         {
-            var parser = new Gherkin3Parser(new AstBuilder<Feature>());
+            //TODO: derive from AstBuilder<SpecFlowFeature> and override CreateFeature when Gherkin v3.1.3 is released
+            private readonly AstBuilder<Feature> baseAstBuilder = new AstBuilder<Feature>();
+            private readonly string sourceFilePath;
+
+            public SpecFlowAstBuilder(string sourceFilePath)
+            {
+                this.sourceFilePath = sourceFilePath;
+            }
+
+            public void Reset()
+            {
+                baseAstBuilder.Reset();
+            }
+
+            public void Build(Token token)
+            {
+                baseAstBuilder.Build(token);
+            }
+
+            public void StartRule(RuleType ruleType)
+            {
+                baseAstBuilder.StartRule(ruleType);
+            }
+
+            public void EndRule(RuleType ruleType)
+            {
+                baseAstBuilder.EndRule(ruleType);
+            }
+
+            public SpecFlowFeature GetResult()
+            {
+                var baseFeature = baseAstBuilder.GetResult();
+                return new SpecFlowFeature(baseFeature.Tags.ToArray(), baseFeature.Location, baseFeature.Language, baseFeature.Keyword, baseFeature.Name, baseFeature.Description, baseFeature.Background, baseFeature.ScenarioDefinitions.ToArray(), baseFeature.Comments.ToArray(), sourceFilePath);
+            }
+        }
+
+        public SpecFlowFeature Parse(TextReader featureFileReader, string sourceFilePath)
+        {
+            var parser = new Parser<SpecFlowFeature>(new SpecFlowAstBuilder(sourceFilePath));
             var tokenMatcher = new TokenMatcher(dialectProvider);
             var feature = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
-            //TODO[Gherkin3]: add source file path
 
             CheckSemanticErrors(feature);
 
