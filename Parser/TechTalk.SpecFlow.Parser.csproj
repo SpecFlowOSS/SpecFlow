@@ -57,31 +57,15 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Compatibility\PatchedAstBuilder.cs" />
-    <Compile Include="Compatibility\SpecFlowLangParser.cs" />
+    <Compile Include="PatchedAstBuilder.cs" />
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
     <Compile Include="StepKeyword.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SpecFlowFeature.cs" />
     <Compile Include="SpecFlowStep.cs" />
-    <Compile Include="SyntaxElements\Comment.cs" />
-    <Compile Include="SyntaxElements\FilePosition.cs" />
     <Compile Include="SpecFlowGherkinParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyntaxElements\And.cs" />
-    <Compile Include="SyntaxElements\Background.cs" />
-    <Compile Include="SyntaxElements\But.cs" />
-    <Compile Include="SyntaxElements\Examples.cs" />
-    <Compile Include="SyntaxElements\Feature.cs" />
-    <Compile Include="SyntaxElements\Given.cs" />
-    <Compile Include="SyntaxElements\Scenario.cs" />
-    <Compile Include="SyntaxElements\ScenarioOutline.cs" />
-    <Compile Include="SyntaxElements\ScenarioStep.cs" />
-    <Compile Include="SyntaxElements\GherkinTable.cs" />
-    <Compile Include="SyntaxElements\Tag.cs" />
-    <Compile Include="SyntaxElements\Then.cs" />
-    <Compile Include="SyntaxElements\When.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
