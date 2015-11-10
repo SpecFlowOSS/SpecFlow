@@ -192,6 +192,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ParserSmokeTests.feature.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="TestFiles\and.feature">
+      <LastGenOutput>asterisks.feature.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\asterisks.feature.xml" />
@@ -271,6 +274,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Drivers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestFiles\and.feature.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
