@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -56,7 +57,29 @@ namespace TechTalk.SpecFlow.Parser
             var tokenMatcher = new TokenMatcher(dialectProvider);
             var feature = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
             //TODO[Gherkin3]: add source file path
+
+            CheckSemanticErrors(feature);
+
             return feature;
+        }
+
+        private void CheckSemanticErrors(Feature feature)
+        {
+            var errors = new List<ParserException>();
+
+            // duplicate scenario name
+            var duplicatedScenarios = feature.ScenarioDefinitions.GroupBy(sd => sd.Name, sd => sd).Where(g => g.Count() > 1).ToArray();
+            errors.AddRange(
+                duplicatedScenarios.Select(g =>
+                    new SemanticParserException(
+                        string.Format("Feature file already contains a scenario with name '{0}'", g.Key),
+                        g.ElementAt(1).Location)));
+
+            // collect
+            if (errors.Count == 1)
+                throw errors[0];
+            if (errors.Count > 1)
+                throw new CompositeParserException(errors.ToArray());
         }
     }
 }
