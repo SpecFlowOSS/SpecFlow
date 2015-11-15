@@ -88,6 +88,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new GuidValueRetriever());
             RegisterValueRetriever(new EnumValueRetriever());
             RegisterValueRetriever(new TimeSpanValueRetriever());
+            RegisterValueRetriever(new DateTimeOffsetValueRetriever());
             RegisterValueRetriever(new NullableGuidValueRetriever());
             RegisterValueRetriever(new NullableDateTimeValueRetriever());
             RegisterValueRetriever(new NullableBoolValueRetriever());
