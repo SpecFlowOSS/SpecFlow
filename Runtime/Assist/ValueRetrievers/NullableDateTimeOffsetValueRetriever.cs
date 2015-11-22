@@ -5,11 +5,12 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class NullableDateTimeOffsetValueRetriever : IValueRetriever
     {
-        private readonly Func<string, DateTimeOffset> dateTimeOffsetValueRetriever;
+        private readonly Func<string, DateTimeOffset> dateTimeOffsetValueRetriever = v => new DateTimeOffsetValueRetriever().GetValue(v);
 
-        public NullableDateTimeOffsetValueRetriever(Func<string, DateTimeOffset> dateTimeOffsetValueRetriever)
+        public NullableDateTimeOffsetValueRetriever(Func<string, DateTimeOffset> dateTimeOffsetValueRetriever = null)
         {
-            this.dateTimeOffsetValueRetriever = dateTimeOffsetValueRetriever;
+            if (dateTimeOffsetValueRetriever != null)
+                this.dateTimeOffsetValueRetriever = dateTimeOffsetValueRetriever;
         }
 
         public DateTimeOffset? GetValue(string value)
