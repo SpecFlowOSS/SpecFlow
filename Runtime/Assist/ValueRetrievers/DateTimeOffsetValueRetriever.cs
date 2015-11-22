@@ -21,6 +21,5 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             return type == typeof(DateTimeOffset);
         }
-
     }
 }
