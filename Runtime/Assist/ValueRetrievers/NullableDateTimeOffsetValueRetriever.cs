@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableDateTimeOffsetValueRetriever
+    public class NullableDateTimeOffsetValueRetriever : IValueRetriever
     {
         private readonly Func<string, DateTimeOffset> dateTimeOffsetValueRetriever;
 
@@ -15,6 +16,16 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             if (string.IsNullOrEmpty(value)) return null;
             return dateTimeOffsetValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        {
+            return type == typeof(DateTimeOffset);
         }
     }
 }
