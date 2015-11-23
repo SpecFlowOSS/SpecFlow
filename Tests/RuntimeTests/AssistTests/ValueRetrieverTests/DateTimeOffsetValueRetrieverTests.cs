@@ -49,6 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             retriever.GetValue("xxxx").Should().Be(DateTimeOffset.MinValue);
             retriever.GetValue("this is not a date").Should().Be(DateTimeOffset.MinValue);
             retriever.GetValue("Thursday").Should().Be(DateTimeOffset.MinValue);
+            retriever.GetValue("Friday too").Should().Be(DateTimeOffset.MinValue);
         }
     }
 }
