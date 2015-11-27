@@ -12,10 +12,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string DESCRIPTION_PROPERTY_NAME = "Description";
         private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        private const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
-        private const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
-        private const string SKIP_REASON = "Ignored";
+        internal const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
 

@@ -67,13 +67,20 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            // remove all characters that are not valid in a variable/property name
-            Regex pattern = new Regex("[^a-zA-Z0-9_]");
+            var normalizedColumnName = RemoveAllCharactersThatAreNotValidInAPropertyName(columnName);
+            var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
-            string normalizedColumnName = pattern.Replace(columnName, string.Empty);
+            return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
+        }
 
-            return propertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
+        internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
+        {
+            return new Regex("[^a-zA-Z0-9_]").Replace(name, string.Empty);
+        }
 
+        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
+        {
+            return name.Replace("_", string.Empty);
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)

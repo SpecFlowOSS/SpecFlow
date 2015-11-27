@@ -81,6 +81,7 @@
     <Compile Include="TestGeneratorTestsBase.cs" />
     <Compile Include="TestUpToDateCheckerTests.cs" />
     <Compile Include="UnitTestFeatureGeneratorTests.cs" />
+    <Compile Include="XUnitTestGeenratorProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
