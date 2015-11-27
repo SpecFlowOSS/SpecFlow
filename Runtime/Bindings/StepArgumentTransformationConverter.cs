@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
+            var stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, cultureInfo, true);
 
             if (stepTransformation == null)
                 throw new SpecFlowException("The StepTransformationConverter cannot convert the specified value.");
@@ -37,12 +37,12 @@ namespace TechTalk.SpecFlow.Bindings
 
         public bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
-            return GetMatchingStepTransformation(value, typeToConvertTo, false) != null;
+            return GetMatchingStepTransformation(value, typeToConvertTo, cultureInfo, false) != null;
         }
 
-        private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, IBindingType typeToConvertTo, bool traceWarning)
+        private IStepArgumentTransformationBinding GetMatchingStepTransformation(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo, bool traceWarning)
         {
-            var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo)).ToArray();
+            var stepTransformations = bindingRegistry.GetStepTransformations().Where(t => CanConvert(t, value, typeToConvertTo, cultureInfo)).ToArray();
 
             if (stepTransformations.Length > 1 && traceWarning)
             {
@@ -52,39 +52,59 @@ namespace TechTalk.SpecFlow.Bindings
             return stepTransformations.FirstOrDefault();
         }
 
-        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, IBindingType typeToConvertTo)
+        private bool CanConvert(IStepArgumentTransformationBinding stepTransformationBinding, object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (!stepTransformationBinding.Method.ReturnType.TypeEquals(typeToConvertTo))
                 return false;
 
-            if (stepTransformationBinding.Regex != null)
+            if (stepTransformationBinding.Regex != null && !(value is string))
             {
-                return value is string && stepTransformationBinding.Regex.IsMatch((string)value);
+                return false;
             }
 
-            return stepTransformationBinding.Method.Parameters.Count() == 1;
+            var arguments = GetStepTransformationArguments(stepTransformationBinding, value, cultureInfo);
+            var parameters = stepTransformationBinding.Method.Parameters.ToArray();
+
+            if (arguments == null || arguments.Length != parameters.Length)
+                return false;
+
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                if (!stepArgumentTypeConverter.CanConvert(arguments[i], parameters[i].Type, cultureInfo))
+                    return false;
+            }
+
+            return true;
         }
 
-        private object DoTransform(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
+        private object DoTransform(IStepArgumentTransformationBinding stepTransformationBinding, object value, CultureInfo cultureInfo)
         {
-            object[] arguments;
-            if (stepTransformation.Regex != null && value is string)
-                arguments = GetStepTransformationArgumentsFromRegex(stepTransformation, (string)value, cultureInfo);
-            else
-                arguments = new object[] { value };
+            var parameters = stepTransformationBinding.Method.Parameters.ToArray();
+            var arguments = GetStepTransformationArguments(stepTransformationBinding, value, cultureInfo)
+                .Select((arg, i) => stepArgumentTypeConverter.Convert(arg, parameters[i].Type, cultureInfo)).ToArray();
 
             TimeSpan duration;
-            return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments, testTracer, out duration);
+            return bindingInvoker.InvokeBinding(stepTransformationBinding, contextManager, arguments, testTracer, out duration);
+        }
+
+        private object[] GetStepTransformationArguments(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
+        {
+            if (stepTransformation.Regex != null && value is string)
+                return GetStepTransformationArgumentsFromRegex(stepTransformation, (string) value, cultureInfo);
+
+            return new[] {value};
         }
 
         private object[] GetStepTransformationArgumentsFromRegex(IStepArgumentTransformationBinding stepTransformation, string stepSnippet, CultureInfo cultureInfo)
         {
             var match = stepTransformation.Regex.Match(stepSnippet);
-            var argumentStrings = match.Groups.Cast<Group>().Skip(1).Select(g => g.Value);
-            var bindingParameters = stepTransformation.Method.Parameters.ToArray();
-            return argumentStrings
-                .Select((arg, argIndex) => stepArgumentTypeConverter.Convert(arg, bindingParameters[argIndex].Type, cultureInfo))
-                .ToArray();
+
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            return match.Groups.Cast<Group>().Skip(1).Select(g => g.Value).Cast<object>().ToArray();
         }
     }
 }
