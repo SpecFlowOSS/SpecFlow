@@ -7,6 +7,9 @@ branches:
 environment:
   SpecFlowBaseVersion: 2.0.0
   SpecFlowPackageVersion: "2.0.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  
+cache:
+  - packages -> **\packages.config
 
 assembly_info:
   patch: true
@@ -22,8 +25,9 @@ nuget:
 configuration: Release
 
 before_build:
-- ps: |-
-    nuget restore
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v3.2.0-rc/nuget.exe
+  - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/nuget-restore.cmd
+  - nuget-restore
 
 build:
   project: TechTalk.SpecFlow.sln
