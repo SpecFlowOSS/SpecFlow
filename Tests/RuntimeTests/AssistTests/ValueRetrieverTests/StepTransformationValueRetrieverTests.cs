@@ -48,14 +48,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
 
-        private KeyValuePair<string, string> KeyValueFor(string value)
+        private static KeyValuePair<string, string> KeyValueFor(string value)
         {
             // retrieving a value requires a key->value set, but this class
             // does not need the key... so we pass nothing for our tests
             return new System.Collections.Generic.KeyValuePair<string, string> ("", value);
         }
 
-        private StepTransformationValueRetriever Subject()
+        private static StepTransformationValueRetriever Subject()
         {
             // have to set up a container with a bunch of mocked stuff
             // in order to build a StepArgumentTypeConverter
