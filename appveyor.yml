@@ -33,7 +33,6 @@ test:
   assemblies:
   - TechTalk.SpecFlow.GeneratorTests.dll
   - TechTalk.SpecFlow.RuntimeTests.dll
-  - '*UtilsTests.dll'
   - TechTalk.SpecFlow.IntegrationTests.dll
   - TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll
 
