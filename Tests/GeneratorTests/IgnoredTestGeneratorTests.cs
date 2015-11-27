@@ -132,7 +132,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_call_SetTestMethodIgnore_when_scenario_outline_ignored()
         {
-            unitTestGeneratorProviderMock.Setup(p=>p.SupportsRowTests).Returns(true); // e.g. xunit 
+            unitTestGeneratorProviderMock.Setup(p=>p.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests)).Returns(true); // e.g. xunit 
             var generator = CreateUnitTestFeatureGenerator();
 
             Scenario scenario1 = new ScenarioOutline("Scenario Outline",
