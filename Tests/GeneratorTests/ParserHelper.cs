@@ -28,5 +28,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             return new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", null, new ScenarioDefinition[] {scenario1}, new Comment[0], null);
         }
+        public static SpecFlowFeature CreateFeatureWithScenarioOutline(string[] tags = null, string[] scenarioOutlineTags = null, string[] examplesTags = null)
+        {
+            tags = tags ?? new string[0];
+
+            var scenario1 = new ScenarioOutline(GetTags(scenarioOutlineTags), null, "Scenario Outline", "scenario outline1 title", "", new Step[0], new []
+            {
+                new Examples(GetTags(examplesTags), null, "Examples", "examples name", "", new Gherkin.Ast.TableRow(null, new []{ new TableCell(null, "col1"), }), new Gherkin.Ast.TableRow[0])
+            });
+
+            return new SpecFlowFeature(GetTags(tags), null, "en", "feature", "title", "desc", null, new ScenarioDefinition[] {scenario1}, new Comment[0], null);
+        }
     }
 }
