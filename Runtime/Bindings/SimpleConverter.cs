@@ -20,6 +20,19 @@ namespace TechTalk.SpecFlow.Bindings
             if (runtimeType.Type == typeof(Guid) || runtimeType.Type == typeof(Guid?))
                 return new GuidValueRetriever().GetValue(value as string);
 
+            var targetNullableType = Nullable.GetUnderlyingType(runtimeType.Type);
+            // if property is nullable type
+            if (targetNullableType != null)
+            {
+                var stringVal = value as string;
+
+                // When .NET 4.0 or higher use string.IsNullOrWhiteSpace instead
+                if (string.IsNullOrEmpty(stringVal) || stringVal.Trim() == string.Empty)
+                    return null;
+
+                return System.Convert.ChangeType(stringVal, targetNullableType, cultureInfo);
+            }
+
             return System.Convert.ChangeType(value, runtimeType.Type, cultureInfo);
         }
 
