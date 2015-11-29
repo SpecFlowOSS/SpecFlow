@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         public void Retriever_will_use_the_current_culture_info()
         {
             var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
+            var value = Guid.NewGuid().ToString();
 
             //one culture
             var frenchSubject = Subject();
@@ -40,8 +41,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(frenchCultureInfo);
 
             var french = new Object();
-            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
-            frenchSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(french);
+            stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
+            frenchSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(french);
 
             //another culture
             var usSubject = Subject();
@@ -51,8 +52,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
 
             var us = new Object();
-            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
-            usSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(us);
+            stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
+            usSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(us);
         }
 
         [Test]
