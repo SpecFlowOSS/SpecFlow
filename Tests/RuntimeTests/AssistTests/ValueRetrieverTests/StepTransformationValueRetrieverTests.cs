@@ -8,6 +8,8 @@ using System.Globalization;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using System;
+using TechTalk.SpecFlow.Bindings.Reflection;
+using BoDi;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
@@ -47,6 +49,35 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             subject.CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeFalse();
         }
 
+        [Test]
+        public void CanRetriever_will_use_the_current_culture_info()
+        {
+            var subject = Subject();
+
+            //one culture
+            var frenchCultureInfo = new CultureInfo("fr-FR");
+            var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
+            subject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            subject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(frenchCultureInfo);
+
+            stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(true);
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+
+            stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(false);
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+
+            //another culture
+            var subject2 = Subject();
+            var usCultureInfo = new CultureInfo("en-US");
+            subject2.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            subject2.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
+
+            stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(true);
+            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+
+            stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(false);
+            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+        }
 
         private static KeyValuePair<string, string> KeyValueFor(string value)
         {
@@ -56,6 +87,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         private static StepTransformationValueRetriever Subject()
+        {
+            var retriever = new StepTransformationValueRetriever();
+            retriever.ContainerToUseForThePurposeOfTesting = BuildAUseableContainerForTesting();
+            return retriever;
+        }
+
+        private static IObjectContainer BuildAUseableContainerForTesting()
         {
             // have to set up a container with a bunch of mocked stuff
             // in order to build a StepArgumentTypeConverter
@@ -78,11 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             container.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter);
             container.RegisterInstanceAs<CultureInfo>(cultureInfo);
 
-            // now we have what we need to get a our subject, loaded
-            // with a fake source for all of its dependencies
-            var retriever = new StepTransformationValueRetriever();
-            retriever.ContainerToUseForThePurposeOfTesting = container;
-            return retriever;
+            return container;
         }
 
     }
