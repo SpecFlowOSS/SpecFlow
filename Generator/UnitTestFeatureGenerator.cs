@@ -389,7 +389,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void GenerateScenarioOutlineExamplesAsRowTests(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, CodeMemberMethod scenatioOutlineTestMethod)
         {
-            SetupTestMethod(generationContext, scenatioOutlineTestMethod, scenarioOutline, null, rowTest: true);
+            SetupTestMethod(generationContext, scenatioOutlineTestMethod, scenarioOutline, null, null, null, rowTest: true);
 
             foreach (var examples in scenarioOutline.Examples)
             {
@@ -454,12 +454,8 @@ namespace TechTalk.SpecFlow.Generator
             IEnumerable<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, string exampleSetIdentifier,
             Gherkin.Ast.TableRow row, IEnumerable<Tag> exampleSetTags, string variantName)
         {
-            var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
-
-            CodeMemberMethod testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags);
-            testMethod.Name = string.IsNullOrEmpty(exampleSetIdentifier)
-                ? string.Format("{0}_{1}", testMethod.Name, variantNameIdentifier)
-                : string.Format("{0}_{1}_{2}", testMethod.Name, exampleSetIdentifier, variantNameIdentifier);
+            
+            CodeMemberMethod testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);            
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();
@@ -475,6 +471,15 @@ namespace TechTalk.SpecFlow.Generator
             AddLineDirectiveHidden(testMethod.Statements);
             var arguments = paramToIdentifier.Select((p2i, paramIndex) => new KeyValuePair<string, string>(p2i.Key, row.Cells.ElementAt(paramIndex).Value)).ToList();
             testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetTitle, variantName, arguments);
+        }
+
+        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, Scenario scenario, Tags additionalTags, string variantName, string exampleSetIdentifier)
+        {
+            CodeMemberMethod testMethod = CreateMethod(generationContext.TestClass);
+
+            SetupTestMethod(generationContext, testMethod, scenario, additionalTags,variantName,exampleSetIdentifier);
+
+            return testMethod;
         }
 
         private void GenerateTest(TestClassGenerationContext generationContext, Scenario scenario)
@@ -556,28 +561,45 @@ namespace TechTalk.SpecFlow.Generator
 
         private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags)
         {
-            CodeMemberMethod testMethod = CreateMethod(generationContext.TestClass);
-
+            return CreateTestMethod(generationContext, scenario, additionalTags, null, null);
             SetupTestMethod(generationContext, testMethod, scenarioDefinition, additionalTags);
-
-            return testMethod;
         }
 
         private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags, bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
-            testMethod.Name = string.Format(TEST_NAME_FORMAT, scenarioDefinition.Name.ToIdentifier());
+            testMethod.Name=GetTestMethodName(scenario, variantName, exampleSetIdentifier);
+            var friendlyTestName = scenario.Title;
+            if (variantName != null)
+            {
+                friendlyTestName = string.Format("{0}: {1}", scenario.Title, variantName);
+            }
 
             if (rowTest)
                 testGeneratorProvider.SetRowTest(generationContext, testMethod, scenarioDefinition.Name);
+                testGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName);
             else
-                testGeneratorProvider.SetTestMethod(generationContext, testMethod, scenarioDefinition.Name);
+                testGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName);
 
             List<string> scenarioCategories;
             decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.Tags, additionalTags), out scenarioCategories);
 
             if (scenarioCategories.Any())
                 testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
+        }
+
+        private static string GetTestMethodName(Scenario scenario, string variantName, string exampleSetIdentifier)
+        {
+            var methodName = string.Format(TEST_NAME_FORMAT, scenario.Title.ToIdentifier());
+            if (variantName != null)
+            {
+                var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');
+                methodName = string.IsNullOrEmpty(exampleSetIdentifier)
+                    ? string.Format("{0}_{1}", methodName, variantNameIdentifier)
+                    : string.Format("{0}_{1}_{2}", methodName, exampleSetIdentifier, variantNameIdentifier);
+            }
+
+            return methodName;
         }
 
         private IEnumerable<Tag> ConcatTags(params IEnumerable<Tag>[] tagLists)

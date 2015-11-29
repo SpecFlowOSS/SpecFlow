@@ -105,12 +105,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassCleanupMethod.Name));
         }
 
-        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE);
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
-            SetDescription(testMethod, scenarioTitle);
+            SetDescription(testMethod, friendlyTestName);
         }
 
         public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
