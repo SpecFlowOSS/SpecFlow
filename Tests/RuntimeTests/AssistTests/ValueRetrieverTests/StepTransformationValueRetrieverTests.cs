@@ -28,6 +28,34 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         }
 
         [Test]
+        public void Retriever_will_use_the_current_culture_info()
+        {
+            var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
+
+            //one culture
+            var frenchSubject = Subject();
+
+            var frenchCultureInfo = new CultureInfo("fr-FR");
+            frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(frenchCultureInfo);
+
+            var french = new Object();
+            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
+            frenchSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(french);
+
+            //another culture
+            var usSubject = Subject();
+
+            var usCultureInfo = new CultureInfo("fr-FR");
+            usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
+
+            var us = new Object();
+            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(us);
+            frenchSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(us);
+        }
+
+        [Test]
         public void CanRetrieve_will_return_true_if_the_value_can_be_retrieved_from_a_step_argument_transformation()
         {
             Subject().CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
