@@ -51,8 +51,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
 
             var us = new Object();
-            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(us);
-            frenchSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(us);
+            stepArgumentTypeConverter.Setup(x => x.Convert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
+            usSubject.Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeSameAs(us);
         }
 
         [Test]
