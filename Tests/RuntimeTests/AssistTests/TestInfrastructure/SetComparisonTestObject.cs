@@ -12,4 +12,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure
         public Guid GuidProperty { get; set; }
 
     }
+
+    class SetComparisonTestObjectWithFields
+    {
+        public string StringField;
+        public int IntField;
+
+    }
 }

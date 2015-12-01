@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             const string expectedValue = "John Galt";
 
             var person = new Person { FullName = expectedValue };
-            var value = person.GetPropertyValue("FullName");
+            var value = person.GetMemberValue("FullName");
 
             Assert.AreEqual(expectedValue, value);
         }
@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var person = new Person {FullName = "Howard Roark"};
 
-            person.GetPropertyValue("Full Name")
+            person.GetMemberValue("Full Name")
                 .ShouldEqual("Howard Roark");
         }
 
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             var person = new Person { FullName = "Howard Roark" };
 
-            person.GetPropertyValue("fullname")
+            person.GetMemberValue("fullname")
                 .ShouldEqual("Howard Roark");
         }
 
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             const string expectedValue = "John Galt";
 
             var person = new Person { FullName = "Howard Roark" };
-            person.SetPropertyValue("FullName", expectedValue);
+            person.SetMemberValue("FullName", expectedValue);
 
             Assert.AreEqual(expectedValue, person.FullName);
         }
@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Can_set_the_value_on_the_property_regardless_of_spaces()
         {
             var person = new Person { FullName = "Howard Roark" };
-            person.SetPropertyValue("Full Name", "John Galt");
+            person.SetMemberValue("Full Name", "John Galt");
 
             person.FullName.ShouldEqual("John Galt");
         }
@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Can_set_the_value_on_the_property_regardless_of_casing()
         {
             var person = new Person { FullName = "Howard Roark" };
-            person.SetPropertyValue("full name", "John Galt");
+            person.SetMemberValue("full name", "John Galt");
 
             person.FullName.ShouldEqual("John Galt");
         }
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Can_set_the_value_on_the_property_regardless_of_hyphen()
         {
             var person = new Person { NoBreakSupplier = "Howard Roark" };
-            person.SetPropertyValue("No-Break Supplier", "John Galt");
+            person.SetMemberValue("No-Break Supplier", "John Galt");
 
             person.NoBreakSupplier.ShouldEqual("John Galt");
         }
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void Can_set_the_value_on_the_property_regardless_of_question_mark()
         {
             var person = new Person { ClientProfile = true };
-            person.SetPropertyValue("Client Profile?", true);
+            person.SetMemberValue("Client Profile?", true);
 
             person.ClientProfile.ShouldEqual(true);
         }

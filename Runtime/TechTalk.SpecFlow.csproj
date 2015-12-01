@@ -66,7 +66,7 @@
     <Compile Include="Assist\IValueComparer.cs" />
     <Compile Include="Assist\PivotTable.cs" />
     <Compile Include="Assist\ProjectionExtensionMethods.cs" />
-    <Compile Include="Assist\PropertyExtensionMethods.cs" />
+    <Compile Include="Assist\MemberExtensionMethods.cs" />
     <Compile Include="Assist\RowExtensionMethods.cs" />
     <Compile Include="Assist\SetComparisonExtensionMethods.cs" />
     <Compile Include="Assist\TableExtensionMethods.cs" />

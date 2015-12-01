@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Assist.ValueComparers;
@@ -50,9 +50,21 @@ namespace TechTalk.SpecFlow.Assist
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
             return from row in table.Rows
-                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                   where TheMemberDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
                    select CreateDifferenceForThisRow(instance, row);
         }
+
+        private static bool TheMemberDoesNotExist<T>(T instance, TableRow row)
+        {
+            return ThePropertyDoesNotExist(instance, row) && TheFieldDoesNotExist(instance, row);
+        }
+
+        private static bool TheFieldDoesNotExist<T>(T instance, TableRow row)
+        {
+            return instance.GetType().GetFields()
+                .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
+        }
+
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
         {
@@ -68,7 +80,7 @@ namespace TechTalk.SpecFlow.Assist
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
             var expected = GetTheExpectedValue(row);
-            var propertyValue = instance.GetPropertyValue(row.Id());
+            var propertyValue = instance.GetMemberValue(row.Id());
 
             var valueComparers = new IValueComparer[]
                                      {
@@ -93,19 +105,19 @@ namespace TechTalk.SpecFlow.Assist
 
         private static Difference CreateDifferenceForThisRow<T>(T instance, TableRow row)
         {
-            if (ThePropertyDoesNotExist(instance, row))
+            if (TheMemberDoesNotExist(instance, row))
                 return new Difference
-                           {
-                               Property = row.Id(),
-                               DoesNotExist = true
-                           };
+                {
+                    Property = row.Id(),
+                    DoesNotExist = true
+                };
 
             return new Difference
-                       {
-                           Property = row.Id(),
-                           Expected = row.Value(),
-                           Actual = instance.GetPropertyValue(row.Id())
-                       };
+            {
+                Property = row.Id(),
+                Expected = row.Value(),
+                Actual = instance.GetMemberValue(row.Id())
+            };
         }
 
         private class Difference
@@ -138,3 +150,4 @@ namespace TechTalk.SpecFlow.Assist
         }
     }
 }
+

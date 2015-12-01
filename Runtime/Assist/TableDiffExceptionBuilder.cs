@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
-                    line += string.Format(" {0} |", item.GetPropertyValue(header));
+                    line += string.Format(" {0} |", item.GetMemberValue(header));
                 realData.AppendLine(line);
             }
 

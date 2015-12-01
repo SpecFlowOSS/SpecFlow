@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -141,14 +142,20 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
-            var propertiesThatDoNotExist = from columnHeader in table.Header
-                                           where (typeof (T).GetProperties().Any(property => TEHelpers.IsMemberMatchingToColumnName(property, columnHeader)) == false)
-                                           select columnHeader;
+            var type = typeof(T);
+            var memberList = new List<MemberInfo>();
+            memberList.AddRange(type.GetProperties());
+            memberList.AddRange(type.GetFields());
 
-            if (propertiesThatDoNotExist.Any())
+            var membersThatDontExist = from columnHeader in table.Header
+                                       where (memberList.Any(member => TEHelpers.IsMemberMatchingToColumnName(member, columnHeader)) == false)
+                                       select columnHeader;
+
+            if (membersThatDontExist.Any())
                 throw new ComparisonException(
-                    propertiesThatDoNotExist.Aggregate(@"The following fields do not exist:",
+                    membersThatDontExist.Aggregate(@"The following fields do not exist:",
                                                        (running, next) => running + string.Format("{0}{1}", Environment.NewLine, next)));
         }
+
     }
 }
