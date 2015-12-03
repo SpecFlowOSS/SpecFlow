@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -20,11 +20,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             this.registeredName = registeredName;
         }
 
-        public bool CanGenerate(Feature feature)
+        public bool CanGenerate(SpecFlowFeature feature)
         {
             return tagFilterMatcher.MatchPrefix(registeredName, feature);
         }
 
-        public abstract IFeatureGenerator CreateGenerator(Feature feature);
+        public abstract IFeatureGenerator CreateGenerator(SpecFlowFeature feature);
     }
 }

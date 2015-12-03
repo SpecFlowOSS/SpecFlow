@@ -10,8 +10,8 @@ Scenario: Wrongly spelled feature keyword
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error							|
-		| 1		| Parsing error near 'FeaturX	|
+		| line | error                        |
+		| 1    | got 'FeaturX: wrong feature' |
 
 Scenario: Wrongly spelled step keyword
 	Given there is a Gherkin file as
@@ -24,8 +24,8 @@ Scenario: Wrongly spelled step keyword
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error						|
-		| 5		| Parsing error near 'WhenX	|
+		| line | error                               |
+		| 5    | got 'WhenX something is misspelled' |
 
 Scenario: Wrongly spelled scenario outline
 	Given there is a Gherkin file as
@@ -41,8 +41,8 @@ Scenario: Wrongly spelled scenario outline
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error									|
-		| 4		| Parsing error near 'Scenario OutlinX	|
+		| line | error                                                    |
+		| 4    | got 'Scenario OutlinX: Wrongly spelled scenario outline' |
 
 Scenario: Table cell count mismatch
 	Given there is a Gherkin file as
@@ -56,8 +56,8 @@ Scenario: Table cell count mismatch
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error																			|
-		| 6		| Number of cells in the row does not match the number of cells in the header	|
+		| line | error                                    |
+		| 6    | inconsistent cell count within the table |
 
 Scenario: Scenario outline without examples
 	Given there is a Gherkin file as
@@ -72,8 +72,8 @@ Scenario: Scenario outline without examples
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error														|
-		| 3		| There are no examples defined for the scenario outline	|
+		| line | error                           |
+		| 6    | got 'Scenario: proper scenario' |
 
 Scenario: Empty example set
 	Given there is a Gherkin file as
@@ -87,8 +87,8 @@ Scenario: Empty example set
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error			|
-		| 7		| Parsing error	|
+		| line | error                  |
+		| 7    | unexpected end of file |
 
 Scenario: Language not supported
 	Given there is a Gherkin file as
@@ -98,8 +98,8 @@ Scenario: Language not supported
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error																|
-		| 1		| The specified feature file language ('invalid') is not supported.	|
+		| line | error                           |
+		| 1    | Language not supported: invalid |
 
 Scenario: Duplicated scenario name
 	Given there is a Gherkin file as
@@ -133,8 +133,8 @@ Scenario: Duplicated example set name
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error																				|
-		| 9		| Scenario outline already contains an example set name 'duplicated example set'	|
+		| line | error                                  |
+		| 9    | got 'Examples: duplicated example set' |
 
 Scenario: Duplicated background
 	Given there is a Gherkin file as
@@ -149,6 +149,6 @@ Scenario: Duplicated background
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line	| error													|
-		| 6		| Feature file already contains a background section.	|
+		| line | error             |
+		| 6    | got 'Background:' |
 

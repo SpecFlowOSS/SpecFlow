@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BoDi;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -14,13 +14,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             providers = objectContainer.Resolve<IDictionary<string, IFeatureGeneratorProvider>>().OrderBy(item => item.Value.Priority).ToList();
         }
 
-        public IFeatureGenerator CreateGenerator(Feature feature)
+        public IFeatureGenerator CreateGenerator(SpecFlowFeature feature)
         {
             var providerItem = FindProvider(feature);
             return providerItem.Value.CreateGenerator(feature);
         }
 
-        private KeyValuePair<string, IFeatureGeneratorProvider> FindProvider(Feature feature)
+        private KeyValuePair<string, IFeatureGeneratorProvider> FindProvider(SpecFlowFeature feature)
         {
             return providers.First(item => item.Value.CanGenerate(feature));
         }

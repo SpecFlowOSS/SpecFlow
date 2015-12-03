@@ -1,14 +1,14 @@
 ﻿using System.CodeDom;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator
 {
     public class TestClassGenerationContext
     {
         public IUnitTestGeneratorProvider UnitTestGeneratorProvider { get; private set; }
-        public Feature Feature { get; private set; }
+        public SpecFlowFeature Feature { get; private set; }
 
         public CodeNamespace Namespace { get; private set; }
         public CodeTypeDeclaration TestClass { get; private set; }
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Generator
 
         public IDictionary<string, object> CustomData { get; private set; }
 
-        public TestClassGenerationContext(IUnitTestGeneratorProvider unitTestGeneratorProvider, Feature feature, CodeNamespace ns, CodeTypeDeclaration testClass, CodeMemberField testRunnerField, CodeMemberMethod testClassInitializeMethod, CodeMemberMethod testClassCleanupMethod, CodeMemberMethod testInitializeMethod, CodeMemberMethod testCleanupMethod, CodeMemberMethod scenarioInitializeMethod, CodeMemberMethod scenarioCleanupMethod, CodeMemberMethod featureBackgroundMethod, bool generateRowTests)
+        public TestClassGenerationContext(IUnitTestGeneratorProvider unitTestGeneratorProvider, SpecFlowFeature feature, CodeNamespace ns, CodeTypeDeclaration testClass, CodeMemberField testRunnerField, CodeMemberMethod testClassInitializeMethod, CodeMemberMethod testClassCleanupMethod, CodeMemberMethod testInitializeMethod, CodeMemberMethod testCleanupMethod, CodeMemberMethod scenarioInitializeMethod, CodeMemberMethod scenarioCleanupMethod, CodeMemberMethod featureBackgroundMethod, bool generateRowTests)
         {
             UnitTestGeneratorProvider = unitTestGeneratorProvider;
             Feature = feature;

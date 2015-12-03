@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
     public interface IFeatureGeneratorProvider
     {
         int Priority { get; }
-        bool CanGenerate(Feature feature);
-        IFeatureGenerator CreateGenerator(Feature feature);
+        bool CanGenerate(SpecFlowFeature feature);
+        IFeatureGenerator CreateGenerator(SpecFlowFeature feature);
     }
 }
