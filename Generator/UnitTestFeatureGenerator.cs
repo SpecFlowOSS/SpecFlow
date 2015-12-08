@@ -473,7 +473,7 @@ namespace TechTalk.SpecFlow.Generator
             testGeneratorProvider.SetTestMethodAsRow(generationContext, testMethod, scenarioOutline.Name, exampleSetTitle, variantName, arguments);
         }
 
-        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, Scenario scenario, Tags additionalTags, string variantName, string exampleSetIdentifier)
+        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, ScenarioDefinition scenario, IEnumerable<Tag> additionalTags, string variantName = null, string exampleSetIdentifier = null)
         {
             CodeMemberMethod testMethod = CreateMethod(generationContext.TestClass);
 
@@ -559,24 +559,15 @@ namespace TechTalk.SpecFlow.Generator
                     generationContext.ScenarioCleanupMethod.Name));
         }
 
-        private CodeMemberMethod CreateTestMethod(TestClassGenerationContext generationContext, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags)
-        {
-            return CreateTestMethod(generationContext, scenario, additionalTags, null, null);
-            SetupTestMethod(generationContext, testMethod, scenarioDefinition, additionalTags);
-        }
-
-        private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags, bool rowTest = false)
+        private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags, string variantName, string exampleSetIdentifier, bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
-            testMethod.Name=GetTestMethodName(scenario, variantName, exampleSetIdentifier);
-            var friendlyTestName = scenario.Title;
+            testMethod.Name=GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
+            var friendlyTestName = scenarioDefinition.Name;
             if (variantName != null)
-            {
-                friendlyTestName = string.Format("{0}: {1}", scenario.Title, variantName);
-            }
+                friendlyTestName = string.Format("{0}: {1}", scenarioDefinition.Name, variantName);
 
             if (rowTest)
-                testGeneratorProvider.SetRowTest(generationContext, testMethod, scenarioDefinition.Name);
                 testGeneratorProvider.SetRowTest(generationContext, testMethod, friendlyTestName);
             else
                 testGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName);
@@ -588,9 +579,9 @@ namespace TechTalk.SpecFlow.Generator
                 testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
         }
 
-        private static string GetTestMethodName(Scenario scenario, string variantName, string exampleSetIdentifier)
+        private static string GetTestMethodName(ScenarioDefinition scenario, string variantName, string exampleSetIdentifier)
         {
-            var methodName = string.Format(TEST_NAME_FORMAT, scenario.Title.ToIdentifier());
+            var methodName = string.Format(TEST_NAME_FORMAT, scenario.Name.ToIdentifier());
             if (variantName != null)
             {
                 var variantNameIdentifier = variantName.ToIdentifier().TrimStart('_');

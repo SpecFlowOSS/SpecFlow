@@ -8,7 +8,6 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -118,10 +117,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenOnlyVariantName()
         {
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                Feature feature = parser.Parse(reader, null);
+                SpecFlowFeature feature = parser.Parse(reader, null);
                 Assert.IsNotNull(feature);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
@@ -140,10 +139,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsTheSame()
         {
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileSameFirstColumn))
             {
-                Feature feature = parser.Parse(reader, null);
+                SpecFlowFeature feature = parser.Parse(reader, null);
                 Assert.IsNotNull(feature);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
@@ -162,10 +161,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenVariantNameFirstColumnIsDifferentAndMultipleColumns()
         {
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileMultipleColumns))
             {
-                Feature feature = parser.Parse(reader, null);
+                SpecFlowFeature feature = parser.Parse(reader, null);
                 Assert.IsNotNull(feature);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
@@ -184,10 +183,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void MsTestGeneratorShouldSetDescriptionCorrectlyWhenExampleSetIdentifierIsUsed()
         {
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
             {
-                Feature feature = parser.Parse(reader, null);
+                SpecFlowFeature feature = parser.Parse(reader, null);
                 Assert.IsNotNull(feature);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
