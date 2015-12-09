@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Generator.Plugins
          * 
          * <nuget-package-version> = latest-of: n(.n)*[-tag]
          * 
-         * <plugin-generator-folder> = <plugin-folder> | <plugin-folder>\tools\SpecFlowPlugin[.<specflow-version>] | <plugin-folder>\tools | <plugin-folder>\lib\net40 | <plugin-folder>\lib\net35 | <plugin-folder>\lib
+         * <plugin-generator-folder> = <plugin-folder> | <plugin-folder>\tools\SpecFlowPlugin[.<specflow-version>] | <plugin-folder>\tools | <plugin-folder>\lib\net45 | <plugin-folder>\lib\net40 | <plugin-folder>\lib\net35 | <plugin-folder>\lib
          * 
          * <generator-plugin-assembly> = <plugin-generator-folder>\<plugin-name>.Generator.SpecFlowPlugin.dll | <generator-plugin-folder>\<plugin-name>.SpecFlowPlugin.dll
          */
@@ -95,7 +95,10 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         private IEnumerable<string> GetPluginGeneratorFolders(PluginDescriptor pluginDescriptor)
         {
-            var pluginGeneratorFolders = (new[] { @"" }).Concat(GetSpecFlowVersionSpecifiers().Select(v => @"tools\SpecFlowPlugin" + v)).Concat(new[] { @"tools", @"lib\net40", @"lib\net35", @"lib"});
+            var pluginGeneratorFolders = (new[] { @"" })
+                .Concat(GetSpecFlowVersionSpecifiers().Select(v => @"tools\SpecFlowPlugin" + v))
+                .Concat(new[] { @"tools", @"lib\net45", @"lib\net40", @"lib\net35", @"lib"});
+
             return GetPluginFolders(pluginDescriptor).SelectMany(pluginFolder => pluginGeneratorFolders, Path.Combine);
         }
 
