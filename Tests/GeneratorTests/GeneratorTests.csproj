@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeDomExtensions.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="DecoratorRegistryTests.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="IgnoredTestGeneratorTests.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="ParserHelper.cs" />
+    <Compile Include="MSestGeneratorProviderTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
