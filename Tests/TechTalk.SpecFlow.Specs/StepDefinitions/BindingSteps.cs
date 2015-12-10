@@ -52,6 +52,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.AddBindingCode(bindingCode);
         }
 
+        [Given(@"the '(.*)' namespace is added to the namespace usings")]
+        public void GivenTheNamespaceIsAddedToTheNamespaceUsings(string namespaceUsing)
+        {
+            inputProjectDriver.AdditionalUsings.Add(namespaceUsing);
+        }
+
         [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
