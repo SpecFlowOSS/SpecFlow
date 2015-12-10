@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using System.Collections.Generic;
 using BoDi;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -37,7 +38,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public CultureInfo CultureInfo()
         {
-            return Container().Resolve<CultureInfo>();
+            var contextManager = Container().Resolve<IContextManager>();
+            return contextManager.FeatureContext.BindingCulture;
         }
 
         public IObjectContainer ContainerToUseForThePurposeOfTesting { get; set; }
