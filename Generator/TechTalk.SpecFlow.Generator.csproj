@@ -36,6 +36,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gherkin.3.1.2\lib\net45\Gherkin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -141,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PlatformCompatibility\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

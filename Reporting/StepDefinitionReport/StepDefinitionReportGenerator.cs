@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
 
@@ -97,14 +98,14 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 if(stepDefinition.ScenarioStep.ScenarioBlock == 0)
                 {
                     stepDefinition.ScenarioStep.ScenarioBlock =
-                        (Parser.Gherkin.ScenarioBlock)
-                        Enum.Parse(typeof (Parser.Gherkin.ScenarioBlock), stepDefinition.Type);
+                        (Parser.ScenarioBlock)
+                        Enum.Parse(typeof (Parser.ScenarioBlock), stepDefinition.Type);
                 }
 
                 if(stepDefinition.ScenarioStep.StepKeyword == 0)
                 {
-                    stepDefinition.ScenarioStep.StepKeyword = (Parser.Gherkin.StepKeyword)
-                        Enum.Parse(typeof(Parser.Gherkin.StepKeyword), stepDefinition.Type);
+                    stepDefinition.ScenarioStep.StepKeyword = (StepKeyword)
+                        Enum.Parse(typeof(StepKeyword), stepDefinition.Type);
                 }
             }
 

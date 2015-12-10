@@ -10,8 +10,8 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using FluentAssertions;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -35,19 +35,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         protected IFeatureGenerator CreateUnitTestFeatureGenerator()
         {
-            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(new Feature());
+            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyFeature());
         }
 
-        protected Feature CreateFeature(string[] tags = null)
-        {
-            tags = tags ?? new string[0];
-
-            Scenario scenario1 = new Scenario("Scenario", "scenario1 title", "", new Tags(), new ScenarioSteps());
-
-            return new Feature("feature", "title", new Tags(tags.Select(t => new Tag(t)).ToArray()), "desc", null, new Scenario[] {scenario1}, new Comment[0]);
-        }
-
-        protected void GenerateFeature(IFeatureGenerator generator, Feature feature)
+        protected void GenerateFeature(IFeatureGenerator generator, SpecFlowFeature feature)
         {
             generator.GenerateUnitTestFixture(feature, "dummy", "dummyNS");
         }
@@ -64,7 +55,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestClassCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            Feature theFeature = CreateFeature(new string[] { "foo", "bar" });
+            var theFeature = ParserHelper.CreateFeature(new string[] { "foo", "bar" });
 
             GenerateFeature(generator, theFeature);
 
@@ -79,9 +70,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, CodeMemberMethod _, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("foo"), new Tag("bar"));
-
+            var theFeature = ParserHelper.CreateFeature(scenarioTags: new []{ "foo", "bar"});
 
             GenerateFeature(generator, theFeature);
 
@@ -96,8 +85,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, CodeMemberMethod _, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            Feature theFeature = CreateFeature(new string[] { "featuretag" });
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("foo"), new Tag("bar"));
+            var theFeature = ParserHelper.CreateFeature(tags: new []{ "featuretag"}, scenarioTags: new[] { "foo", "bar" });
 
             GenerateFeature(generator, theFeature);
 
@@ -112,7 +100,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] { "decorated", "other" });
+            var theFeature = ParserHelper.CreateFeature(new string[] { "decorated", "other" });
 
             GenerateFeature(generator, theFeature);
 
@@ -127,8 +115,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("decorated"), new Tag("other"));
+            var theFeature = ParserHelper.CreateFeature(scenarioTags: new[] { "decorated", "other" });
 
             GenerateFeature(generator, theFeature);
 

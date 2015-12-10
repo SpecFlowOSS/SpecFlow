@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var service = new Service();
 
             var results = service.ValueRetrievers;
-            Assert.AreEqual(35, results.Count());
+            Assert.AreEqual(37, results.Count());
 
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StringValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(ByteValueRetriever)).Count());
@@ -55,6 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(GuidValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(EnumValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(TimeSpanValueRetriever)).Count());
+            Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(DateTimeOffsetValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableGuidValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableDateTimeValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableBoolValueRetriever)).Count());
@@ -71,6 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableUShortValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableLongValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableTimeSpanValueRetriever)).Count());
+            Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(NullableDateTimeOffsetValueRetriever)).Count());
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StepTransformationValueRetriever)).Count());
         }
 

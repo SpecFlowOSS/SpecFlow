@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using System.Collections.Generic;
 
@@ -66,8 +67,20 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            return propertyName.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+            var normalizedColumnName = RemoveAllCharactersThatAreNotValidInAPropertyName(columnName);
+            var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
+            return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
+        {
+            return new Regex("[^a-zA-Z0-9_]").Replace(name, string.Empty);
+        }
+
+        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
+        {
+            return name.Replace("_", string.Empty);
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)

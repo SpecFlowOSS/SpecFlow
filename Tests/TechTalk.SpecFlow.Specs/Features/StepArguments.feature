@@ -53,29 +53,6 @@ Scenario: Steps can be defined with multiline text argument
 	When I execute the tests
 	Then all tests should pass
 
-
-Scenario: Steps can be defined with both table and multiline text argument
-	Given the following step definition
-        """
-		[When(@"I do something")]
-		public void WhenIDoSomething(string text, Table table)
-		{
-		}
-        """
-	And a scenario 'Simple Scenario' as
-         """
-         When I do something
-			'''
-				<Root>
-					<Child attr="value" />
-				</Root>
-			'''
-			| foo |
-			| bar |
-         """
-	When I execute the tests
-	Then all tests should pass
-
 Scenario: Step parameters in the step definitions have to be declared before the multiline text and table parameters
 	Given the following step definition
         """

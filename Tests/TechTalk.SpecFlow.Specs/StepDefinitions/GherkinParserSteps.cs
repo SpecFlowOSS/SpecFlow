@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"no parsing error is reported")]
         public void ThenNoParsingErrorIsReported()
         {
-            parserDriver.ParsingErrors.Should().Be(null, "There are parsing errors");
+            parserDriver.ParsingErrors.Should().BeEmpty("There are parsing errors");
         }
 
         [StepArgumentTransformation]

@@ -305,7 +305,43 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public Style ThisIsAStyle { get; set; }
         }
 
+        [Test]
+        public void Replaces_special_characters_when_matching_property_names()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Prop.1", "hello");
+            table.AddRow("Prop.2", "world");
 
+            var test = table.CreateInstance<Prop>();
+
+            test.Prop1.Should().Be("hello");
+            test.Prop2.Should().Be("world");
+        }
+
+        [Test]
+        public void Works_with_snake_case()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("Look at me", "hello");
+            table.AddRow("This is so long", "world");
+
+            var test = table.CreateInstance<Snake>();
+
+            test.Look_at_me.Should().Be("hello");
+            test.this_is_so_long.Should().Be("world");
+        }
+
+        private class Prop
+        {
+            public string Prop1 { get; set; }
+            public string Prop2 { get; set; }
+        }
+
+        private class Snake
+        {
+            public string Look_at_me { get; set; }
+            public string this_is_so_long { get; set; }
+        }
 
     }
 }

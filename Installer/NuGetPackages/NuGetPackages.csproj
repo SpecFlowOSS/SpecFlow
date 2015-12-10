@@ -46,6 +46,9 @@
     <None Include="NUnit.Runners\Install.ps1" />
     <None Include="NUnit.Runners\Uninstall.ps1" />
     <None Include="NUnit\App.config.transform" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="SpecFlow.CustomPlugin.nuspec">
       <SubType>Designer</SubType>
     </None>

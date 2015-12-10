@@ -12,12 +12,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string DESCRIPTION_PROPERTY_NAME = "Description";
         private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        private const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
-        private const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
+        internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
-        private const string SKIP_REASON = "Ignored";
+        internal const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
+        private const string CATEGORY_PROPERTY_NAME = "Category";
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
@@ -40,7 +41,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            // xUnit does not support caregories
+            // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
+            foreach (string str in featureCategories)
+                SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
         }
 
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
@@ -102,19 +105,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassCleanupMethod.Name));
         }
 
-        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE);
 
-            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Title);
-            SetDescription(testMethod, scenarioTitle);
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
+            SetDescription(testMethod, friendlyTestName);
         }
 
         public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE);
 
-            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Title);
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, scenarioTitle);
         }
 
@@ -136,7 +139,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
-            // xUnit does not support caregories
+            foreach (string str in scenarioCategories)
+                SetProperty((CodeTypeMember)testMethod, "Category", str);
         }
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)

@@ -9,7 +9,6 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -58,10 +57,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void GenerateScenarioExampleTests()
         {
-            SpecFlowLangParser parser = new SpecFlowLangParser(new CultureInfo("en-US"));
+            var parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                Feature feature = parser.Parse(reader, null);                    
+                var feature = parser.Parse(reader, null);                    
                 Assert.IsNotNull(feature);
 
                 var sampleTestGeneratorProvider = new SimpleTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
