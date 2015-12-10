@@ -57,9 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Runtime\PlatformCompatibility\ExceptionHelper.cs">
-      <Link>PlatformCompatibility\ExceptionHelper.cs</Link>
-    </Compile>
     <Compile Include="..\Runtime\PlatformCompatibility\MonoHelper.cs">
       <Link>PlatformCompatibility\MonoHelper.cs</Link>
     </Compile>
