@@ -96,16 +96,11 @@ this.FeatureBackground();
  testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
  testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Succeeded"});
-            table1.AddRow(new string[] {
-                        "1"});
 #line 34
- testRunner.Then("the execution summary should contain", ((string)(null)), table1, "Then ");
-#line 37
+ testRunner.Then("all tests should pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
  testRunner.And("the execution log should contain text \'John Galt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 36
  testRunner.And("the execution log should contain text \'Someone Else\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -116,16 +111,16 @@ this.FeatureBackground();
         public virtual void ShouldBeAbleToConvertATableToAListOfEntitiesWithDefaultValues()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should be able to convert a table to a list of entities with default values", ((string[])(null)));
-#line 41
+#line 39
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 42
+#line 40
  testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\n\t| Name         | Balance |\r\n\t| John Galt    | 1234." +
-                    "56 |\r\n\t| Someone Else | 45.6    |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 49
+#line 46
  testRunner.And("the following step definition", @"[Given(@""the following accounts"")]
 public void GivenTheFollowingAccounts(Table accountsTable)
 {
@@ -133,18 +128,49 @@ public void GivenTheFollowingAccounts(Table accountsTable)
 	foreach (var account in accounts)
 		Console.WriteLine(account.Birthdate);
 }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 56
  testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 57
  testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 58
+ testRunner.Then("all tests should pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 59
+ testRunner.And("the execution log should contain text \'1/1/2000\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Succeeded"});
-            table2.AddRow(new string[] {
-                        "1"});
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Should use step atgument transformations when converting a table to a list of ent" +
+            "ities")]
+        public virtual void ShouldUseStepAtgumentTransformationsWhenConvertingATableToAListOfEntities()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Should use step atgument transformations when converting a table to a list of ent" +
+                    "ities", ((string[])(null)));
 #line 61
- testRunner.Then("the execution summary should contain", ((string)(null)), table2, "Then ");
-#line 64
+this.ScenarioSetup(scenarioInfo);
+#line 3
+this.FeatureBackground();
+#line hidden
+#line 62
+ testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\n\t| Name      | Birthdate     | Balance |\r\n\t| John Ga" +
+                    "lt | my magic date | 1234.56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 68
+ testRunner.And("the following step argument transformation", "[StepArgumentTransformation(@\"my magic date\")]\npublic DateTime ConvertMagicDate()" +
+                    "\n{\nreturn new DateTime(2000,1,1);\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 76
+ testRunner.And("the following step definition", "[Given(@\"the following accounts\")]\npublic void GivenTheFollowingAccounts(Table ac" +
+                    "countsTable)\n{\n\tvar accounts = accountsTable.CreateSet<Account>();\n\tforeach (var" +
+                    " account in accounts)\n\t\tConsole.WriteLine(account.Birthdate);\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+ testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 88
+ testRunner.Then("all tests should pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 89
  testRunner.And("the execution log should contain text \'1/1/2000\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
