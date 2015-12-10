@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var frenchCultureInfo = new CultureInfo("fr-FR");
             frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(frenchCultureInfo);
+            RegisterBindingCulture(frenchCultureInfo, frenchSubject.ContainerToUseForThePurposeOfTesting);
 
             var french = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var usCultureInfo = new CultureInfo("fr-FR");
             usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
+            RegisterBindingCulture(usCultureInfo, usSubject.ContainerToUseForThePurposeOfTesting);
 
             var us = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var frenchCultureInfo = new CultureInfo("fr-FR");
             var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
             subject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            subject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(frenchCultureInfo);
+            RegisterBindingCulture(frenchCultureInfo, subject.ContainerToUseForThePurposeOfTesting);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(true);
             subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var subject2 = Subject();
             var usCultureInfo = new CultureInfo("en-US");
             subject2.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            subject2.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<CultureInfo>(usCultureInfo);
+            RegisterBindingCulture(usCultureInfo, subject2.ContainerToUseForThePurposeOfTesting);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(true);
             subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
@@ -139,14 +139,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var stepArgumentTypeConverter = new StepArgumentTypeConverter(new Mock<ITestTracer>().Object, bindingRegistryStub.Object, new Mock<IContextManager>().Object, methodBindingInvokerStub.Object);
 
             // need a culture info as well
-            var cultureInfo = new CultureInfo("en-US");
+            RegisterBindingCulture(new CultureInfo("en-US"), container);
 
             // load them into the container
             container.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter);
-            container.RegisterInstanceAs<CultureInfo>(cultureInfo);
+
 
             return container;
         }
 
+        private static void RegisterBindingCulture(CultureInfo cultureInfo, IObjectContainer container)
+        {
+            var contextManagerMock = new Mock<IContextManager>();
+            contextManagerMock.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(null, cultureInfo));
+            container.RegisterInstanceAs(contextManagerMock.Object);
+        }
     }
 }
