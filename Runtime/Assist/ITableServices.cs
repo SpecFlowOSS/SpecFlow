@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TechTalk.SpecFlow.Assist
+namespace TechTalk.SpecFlow
 {
     public interface ITableServices
     {

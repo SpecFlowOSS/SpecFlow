@@ -41,7 +41,6 @@ Scenario: Should be able to use assist table services with injected service inst
 			}
 		}
 		"""
-	And the 'TechTalk.SpecFlow.Assist' namespace is added to the namespace usings
 	When I execute the tests
 	Then all tests should pass
 	And the execution log should contain text 'John Galt'

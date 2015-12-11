@@ -109,14 +109,12 @@ public class AnotherStepsWithScenarioContext
 	}
 }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
- testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
  testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 46
+#line 45
  testRunner.Then("all tests should pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 47
+#line 46
  testRunner.And("the execution log should contain text \'John Galt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 47
  testRunner.And("the execution log should contain text \'Someone Else\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
