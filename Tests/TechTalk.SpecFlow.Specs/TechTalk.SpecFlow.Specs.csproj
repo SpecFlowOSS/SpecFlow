@@ -101,6 +101,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AcessingContexts.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\Assist\AssistUsingServiceInjection.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssistUsingServiceInjection.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\Assist\CreateSet.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -231,6 +236,10 @@
     <None Include="Features\AcessingContexts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\Assist\AssistUsingServiceInjection.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AssistUsingServiceInjection.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Assist\CreateSet.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

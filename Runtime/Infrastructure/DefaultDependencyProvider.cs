@@ -1,4 +1,5 @@
 ﻿using BoDi;
+using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -52,6 +53,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             // needs to invoke methods so requires the context manager
             testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
+            testRunnerContainer.RegisterTypeAs<TableServices, ITableServices>();
 
             testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
             testRunnerContainer.RegisterTypeAs<TestTracer, ITestTracer>();
