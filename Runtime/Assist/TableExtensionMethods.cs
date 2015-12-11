@@ -29,16 +29,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
-            var list = new List<T>();
-
-            var pivotTable = new PivotTable(table);
-            for (var index = 0; index < table.Rows.Count(); index++)
-            {
-                var instance = pivotTable.GetInstanceTable(index).CreateInstance<T>();
-                list.Add(instance);
-            }
-
-            return list;
+            return TableServices.Current.CreateSet<T>(table);
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)
