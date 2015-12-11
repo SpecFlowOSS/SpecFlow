@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using BoDi;
-using System.Linq;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -27,11 +24,6 @@ namespace TechTalk.SpecFlow.Assist
         public bool IsContainerBound //TODO[assistcont]: maybe find a better name
         {
             get { return container != null; }
-        }
-
-        //TODO[assistcont]: eliminate this ctor
-        public Service() : this(ScenarioContext.Current == null ? null : ScenarioContext.Current.ScenarioContainer)
-        {
         }
 
         public Service(IObjectContainer container)
