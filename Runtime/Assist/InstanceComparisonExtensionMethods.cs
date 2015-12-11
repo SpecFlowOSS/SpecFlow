@@ -11,6 +11,11 @@ namespace TechTalk.SpecFlow.Assist
 {
     public static class InstanceComparisonExtensionMethods
     {
+        private static Service GetCurrentService()
+        {
+            //TODO[assistcont]: this will be eliminated once the extension methods move into TableServices
+            return ((TableServices)TableServices.Current).Service;
+        }
 
         public static void CompareToInstance<T>(this Table table, T instance)
         {
@@ -18,7 +23,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
 
-            var differences = FindAnyDifferences(instanceTable, instance);
+            var differences = FindAnyDifferences(instanceTable, instance, GetCurrentService());
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
@@ -51,10 +56,10 @@ namespace TechTalk.SpecFlow.Assist
                                  difference.Actual);
         }
 
-        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
+        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance, Service service)
         {
             return from row in table.Rows
-                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row, service)
                    select CreateDifferenceForThisRow(instance, row);
         }
 
@@ -69,12 +74,12 @@ namespace TechTalk.SpecFlow.Assist
                 .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
-        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
+        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row, Service service)
         {
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = Assist.Service.Instance.ValueComparers;
+            var valueComparers = service.ValueComparers;
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
