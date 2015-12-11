@@ -33,27 +33,27 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
             var value = Guid.NewGuid().ToString();
 
-            //one culture
-            var frenchSubject = Subject();
+            var containerToUseForThePurposeOfTesting = BuildAUseableContainerForTesting();
 
+            //one culture
             var frenchCultureInfo = new CultureInfo("fr-FR");
-            frenchSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            RegisterBindingCulture(frenchCultureInfo, frenchSubject.ContainerToUseForThePurposeOfTesting);
+            containerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            RegisterBindingCulture(frenchCultureInfo, containerToUseForThePurposeOfTesting);
 
             var french = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
-            frenchSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(french);
+            Subject(containerToUseForThePurposeOfTesting).Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(french);
 
             //another culture
-            var usSubject = Subject();
+            var anotherCultureContainer = BuildAUseableContainerForTesting();
 
             var usCultureInfo = new CultureInfo("fr-FR");
-            usSubject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            RegisterBindingCulture(usCultureInfo, usSubject.ContainerToUseForThePurposeOfTesting);
+            anotherCultureContainer.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            RegisterBindingCulture(usCultureInfo, anotherCultureContainer);
 
             var us = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
-            usSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(us);
+            Subject(anotherCultureContainer).Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(us);
         }
 
         [Test]
@@ -64,14 +64,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             Subject().CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeTrue();
         }
 
+        //TODO[assistcont]: this test does not make sense anymore because StepTransformationValueRetriever will not even registered when there is not current context. We should replace this with a test in ServiceTests
         [Test]
         public void CanRetrieve_will_return_false_if_the_step_argument_transformation_work_is_throwing()
         {
-            var subject = Subject();
+            var containerToUseForThePurposeOfTesting = BuildAUseableContainerForTesting();
 
-            // removing the container here will cause the class to use the scenario context,
-            // which was not set, so... it will throw
-            subject.ContainerToUseForThePurposeOfTesting = null;
+            // setup IStepArgumentTypeConverter to thorw exceptions
+            var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
+            stepArgumentTypeConverter.Setup(c => c.CanConvert(It.IsAny<object>(), It.IsAny<IBindingType>(), It.IsAny<CultureInfo>()))
+                .Throws<Exception>();
+            stepArgumentTypeConverter.Setup(c => c.Convert(It.IsAny<object>(), It.IsAny<IBindingType>(), It.IsAny<CultureInfo>()))
+                .Throws<Exception>();
+            containerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+
+            var subject = Subject(containerToUseForThePurposeOfTesting);
 
             subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
             subject.CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
@@ -81,31 +88,31 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void CanRetriever_will_use_the_current_culture_info()
         {
-            var subject = Subject();
+            var containerToUseForThePurposeOfTesting = BuildAUseableContainerForTesting();
 
             //one culture
             var frenchCultureInfo = new CultureInfo("fr-FR");
             var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
-            subject.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            RegisterBindingCulture(frenchCultureInfo, subject.ContainerToUseForThePurposeOfTesting);
+            containerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            RegisterBindingCulture(frenchCultureInfo, containerToUseForThePurposeOfTesting);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(true);
-            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+            Subject(containerToUseForThePurposeOfTesting).CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(false);
-            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+            Subject(containerToUseForThePurposeOfTesting).CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
 
             //another culture
-            var subject2 = Subject();
+            var anotherCultureContainer = BuildAUseableContainerForTesting();
             var usCultureInfo = new CultureInfo("en-US");
-            subject2.ContainerToUseForThePurposeOfTesting.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
-            RegisterBindingCulture(usCultureInfo, subject2.ContainerToUseForThePurposeOfTesting);
+            anotherCultureContainer.RegisterInstanceAs<IStepArgumentTypeConverter>(stepArgumentTypeConverter.Object);
+            RegisterBindingCulture(usCultureInfo, anotherCultureContainer);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(true);
-            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+            Subject(anotherCultureContainer).CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(false);
-            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+            Subject(anotherCultureContainer).CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
         }
 
         private static KeyValuePair<string, string> KeyValueFor(string value)
@@ -115,11 +122,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             return new System.Collections.Generic.KeyValuePair<string, string> ("", value);
         }
 
+        private static StepTransformationValueRetriever Subject(IObjectContainer container)
+        {
+            return new StepTransformationValueRetriever(container);
+        }
+
         private static StepTransformationValueRetriever Subject()
         {
-            var retriever = new StepTransformationValueRetriever();
-            retriever.ContainerToUseForThePurposeOfTesting = BuildAUseableContainerForTesting();
-            return retriever;
+            return Subject(BuildAUseableContainerForTesting());
         }
 
         private static IObjectContainer BuildAUseableContainerForTesting()

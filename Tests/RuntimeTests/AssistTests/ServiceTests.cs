@@ -5,7 +5,11 @@ using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using System.Collections.Generic;
+using BoDi;
 using FluentAssertions;
+using Moq;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
@@ -32,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_load_the_value_retrievers_by_default()
         {
-            var service = new Service();
+            var service = CreateContainerBoundService();
 
             var results = service.ValueRetrievers;
             Assert.AreEqual(37, results.Count());
@@ -76,10 +80,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             Assert.AreEqual(1, results.Where(x => x.GetType() == typeof(StepTransformationValueRetriever)).Count());
         }
 
+        private static Service CreateContainerBoundService()
+        {
+            var container = new ObjectContainer();
+            container.RegisterInstanceAs(new Mock<IContextManager>().Object);
+            container.RegisterInstanceAs(new Mock<IStepArgumentTypeConverter>().Object);
+            return new Service(container);
+        }
+
         [Test]
         public void Should_put_the_step_transformation_value_retriever_last_so_it_will_not_interfere_with_preexisting_features_in_assist()
         {
-            new Service().ValueRetrievers.Last().GetType().Should().Be(typeof(StepTransformationValueRetriever));
+            CreateContainerBoundService().ValueRetrievers.Last().GetType().Should().Be(typeof(StepTransformationValueRetriever));
         }
 
         [Test]

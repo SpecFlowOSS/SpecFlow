@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
+        private readonly IObjectContainer container;
 
         private List<IValueComparer> _registeredValueComparers;
         private List<IValueRetriever> _registeredValueRetrievers;
@@ -18,15 +19,24 @@ namespace TechTalk.SpecFlow.Assist
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
         public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
 
-        public static Service Instance { get; internal set; }
-
-        static Service()
+        public static Service Instance //TODO[assistcont]: remove dependencies to this property
         {
-            Instance = new Service();
+            get { return ((TableServices) TableServices.Current).Service; }
         }
 
-        public Service()
+        public bool IsContainerBound //TODO[assistcont]: maybe find a better name
         {
+            get { return container != null; }
+        }
+
+        //TODO[assistcont]: eliminate this ctor
+        public Service() : this(ScenarioContext.Current == null ? null : ScenarioContext.Current.ScenarioContainer)
+        {
+        }
+
+        public Service(IObjectContainer container)
+        {
+            this.container = container;
             RestoreDefaults();
         }
 
@@ -106,7 +116,8 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableLongValueRetriever());
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
-            RegisterValueRetriever(new StepTransformationValueRetriever());
+            if (IsContainerBound)
+                RegisterValueRetriever(new StepTransformationValueRetriever(container));
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)

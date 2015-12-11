@@ -3,18 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BoDi;
 
 namespace TechTalk.SpecFlow.Assist
 {
     public class TableServices : ITableServices
     {
+        private static ITableServices currentTmp; //TODO[assistcont]: to be eliminated, should be stored in the container
         public static ITableServices Current
         {
             get
             {
-                //TODO: Get it from current scenario context
-                return new TableServices();
+                if (currentTmp == null)
+                    currentTmp = new TableServices();
+                //TODO[assistcont]: Get it from current scenario context
+                return currentTmp;
             }
+        }
+
+        internal Service Service { get; private set; } //TODO[assistcont]: Merge Service into TableServices
+
+        private TableServices() : this(ScenarioContext.Current == null ? null : ScenarioContext.Current.ScenarioContainer)
+        {
+        }
+
+        public TableServices(IObjectContainer container)
+        {
+            Service = new Service(container);
         }
 
         public IEnumerable<T> CreateSet<T>(Table table)

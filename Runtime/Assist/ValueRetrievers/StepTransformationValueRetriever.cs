@@ -12,10 +12,25 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StepTransformationValueRetriever : IValueRetriever
     {
+        private readonly IContextManager contextManager;
+        private readonly IStepArgumentTypeConverter stepArgumentTypeConverter;
+
+        public StepTransformationValueRetriever(IContextManager contextManager, IStepArgumentTypeConverter stepArgumentTypeConverter)
+        {
+            this.contextManager = contextManager;
+            this.stepArgumentTypeConverter = stepArgumentTypeConverter;
+        }
+
+        //TODO[assistcont]: elminiate this ctor by resolving StepTransformationValueRetriever directly from the container
+        public StepTransformationValueRetriever(IObjectContainer container) : 
+            this(container.Resolve<IContextManager>(), container.Resolve<IStepArgumentTypeConverter>())
+        {
+        }
+
         public bool CanRetrieve(KeyValuePair<string, string> row, Type type)
         {
             try {
-                return StepArgumentTypeConverter().CanConvert(row.Value, BindingTypeFor(type), CultureInfo());
+                return stepArgumentTypeConverter.CanConvert(row.Value, BindingTypeFor(type), GetBindingCulture());
             } catch {
                 return false;
             }
@@ -23,33 +38,17 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
-            return StepArgumentTypeConverter().Convert(keyValuePair.Value, BindingTypeFor(targetType), CultureInfo());
+            return stepArgumentTypeConverter.Convert(keyValuePair.Value, BindingTypeFor(targetType), GetBindingCulture());
         }
 
-        public IBindingType BindingTypeFor(Type type)
+        private IBindingType BindingTypeFor(Type type)
         {
             return new RuntimeBindingType(type);
         }
 
-        public IStepArgumentTypeConverter StepArgumentTypeConverter()
+        private CultureInfo GetBindingCulture()
         {
-            return Container().Resolve<IStepArgumentTypeConverter>();
-        }
-
-        public CultureInfo CultureInfo()
-        {
-            var contextManager = Container().Resolve<IContextManager>();
             return contextManager.FeatureContext.BindingCulture;
-        }
-
-        public IObjectContainer ContainerToUseForThePurposeOfTesting { get; set; }
-
-        public virtual IObjectContainer Container()
-        {
-            if (ContainerToUseForThePurposeOfTesting != null)
-                return ContainerToUseForThePurposeOfTesting;
-            else
-                return ScenarioContext.Current.ScenarioContainer;
         }
     }
 }
