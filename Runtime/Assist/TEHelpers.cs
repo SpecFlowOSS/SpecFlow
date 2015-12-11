@@ -95,13 +95,13 @@ namespace TechTalk.SpecFlow.Assist
         {
             var properties = from property in type.GetProperties()
                              from row in table.Rows
-                             where TheseTypesMatch(property.PropertyType, row)
+                             where TheseTypesMatch(property.PropertyType, row, service)
                                    && IsMemberMatchingToColumnName(property, row.Id())
                 select new MemberHandler(service) { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              from row in table.Rows
-                             where TheseTypesMatch(field.FieldType, row)
+                             where TheseTypesMatch(field.FieldType, row, service)
                                    && IsMemberMatchingToColumnName(field, row.Id())
                 select new MemberHandler(service) { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
@@ -113,9 +113,9 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private static bool TheseTypesMatch(Type memberType, TableRow row)
+        private static bool TheseTypesMatch(Type memberType, TableRow row, Service service)
         {
-            return Assist.Service.Instance.GetValueRetrieverFor(row, memberType) != null;
+            return service.GetValueRetrieverFor(row, memberType) != null;
         }
 
         internal class MemberHandler
