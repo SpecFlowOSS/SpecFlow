@@ -10,20 +10,20 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal static class TEHelpers
     {
-        internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
+        internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table, Service service)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
-            LoadInstanceWithKeyValuePairs(table, instance);
+            LoadInstanceWithKeyValuePairs(table, instance, service);
             return instance;
         }
 
-        internal static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
+        internal static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table, Service service)
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
                 throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
 
-            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, typeof(T));
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, typeof(T), service);
 
             var constructorParameters = constructor.GetParameters();
             var parameterValues = new object[constructorParameters.Length];
@@ -83,27 +83,27 @@ namespace TechTalk.SpecFlow.Assist
             return name.Replace("_", string.Empty);
         }
 
-        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
+        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance, Service service)
         {
-            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType(), service);
 
             membersThatNeedToBeSet.ToList()
                 .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
-        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type, Service service)
         {
             var properties = from property in type.GetProperties()
                              from row in table.Rows
                              where TheseTypesMatch(property.PropertyType, row)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler(service) { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              from row in table.Rows
                              where TheseTypesMatch(field.FieldType, row)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler(service) { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
@@ -120,15 +120,21 @@ namespace TechTalk.SpecFlow.Assist
 
         internal class MemberHandler
         {
+            private readonly Service service;
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
             public Action<object, object> Setter { get; set; }
             public Type Type { get; set; }
             public Type PropertyType { get; set; }
 
+            public MemberHandler(Service service)
+            {
+                this.service = service;
+            }
+
             public object GetValue()
             {
-                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, PropertyType);
+                var valueRetriever = service.GetValueRetrieverFor(Row, PropertyType);
                 return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type);
             }
         }

@@ -6,12 +6,18 @@ namespace TechTalk.SpecFlow.Assist
 {
     public static class TableHelperExtensionMethods
     {
+        private static Service GetCurrentService()
+        {
+            //TODO[assistcont]: this will be eliminated once the extension methods move into TableServices
+            return ((TableServices)TableServices.Current).Service;
+        }
+
         public static T CreateInstance<T>(this Table table)
         {
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
             return TEHelpers.ThisTypeHasADefaultConstructor<T>()
-                       ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
-                       : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
+                       ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable, GetCurrentService())
+                       : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable, GetCurrentService());
         }
 
         public static T CreateInstance<T>(this Table table, Func<T> methodToCreateTheInstance)
@@ -24,7 +30,7 @@ namespace TechTalk.SpecFlow.Assist
         public static void FillInstance(this Table table, object instance)
         {
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, instance.GetType());
-            TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
+            TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance, GetCurrentService());
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
