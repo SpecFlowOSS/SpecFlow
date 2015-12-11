@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using BoDi;
-using System.Linq;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -11,6 +8,7 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
+        private readonly IObjectContainer container;
 
         private List<IValueComparer> _registeredValueComparers;
         private List<IValueRetriever> _registeredValueRetrievers;
@@ -18,15 +16,14 @@ namespace TechTalk.SpecFlow.Assist
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
         public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
 
-        public static Service Instance { get; internal set; }
-
-        static Service()
+        public bool IsContainerBound //TODO[assistcont]: maybe find a better name
         {
-            Instance = new Service();
+            get { return container != null; }
         }
 
-        public Service()
+        public Service(IObjectContainer container)
         {
+            this.container = container;
             RestoreDefaults();
         }
 
@@ -106,7 +103,8 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableLongValueRetriever());
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
-            RegisterValueRetriever(new StepTransformationValueRetriever());
+            if (IsContainerBound)
+                RegisterValueRetriever(container.Resolve<StepTransformationValueRetriever>());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)
