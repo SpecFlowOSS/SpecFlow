@@ -9,22 +9,24 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class TableServices : ITableServices
     {
-        private static ITableServices currentTmp; //TODO[assistcont]: to be eliminated, should be stored in the container
+        private static readonly Lazy<ITableServices> contextIndependentInstance = new Lazy<ITableServices>(() => new TableServices(null), true);
         public static ITableServices Current
         {
             get
             {
-                if (currentTmp == null)
-                    currentTmp = new TableServices();
-                //TODO[assistcont]: Get it from current scenario context
-                return currentTmp;
+                var container = GetCurrentContainer();
+                if (container == null)
+                    return contextIndependentInstance.Value;
+                return container.Resolve<TableServices>();
             }
         }
 
         internal Service Service { get; private set; } //TODO[assistcont]: Merge Service into TableServices
 
-        private TableServices() : this(ScenarioContext.Current == null ? null : ScenarioContext.Current.ScenarioContainer)
+        private static IObjectContainer GetCurrentContainer()
         {
+            var scenarioContext = ScenarioContext.Current;
+            return scenarioContext == null ? null : scenarioContext.ScenarioContainer;
         }
 
         public TableServices(IObjectContainer container)
