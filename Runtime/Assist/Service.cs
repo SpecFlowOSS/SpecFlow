@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new NullableTimeSpanValueRetriever());
             RegisterValueRetriever(new NullableDateTimeOffsetValueRetriever());
             if (IsContainerBound)
-                RegisterValueRetriever(new StepTransformationValueRetriever(container));
+                RegisterValueRetriever(container.Resolve<StepTransformationValueRetriever>());
         }
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)

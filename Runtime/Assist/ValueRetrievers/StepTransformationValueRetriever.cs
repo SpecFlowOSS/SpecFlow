@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Globalization;
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using System.Collections.Generic;
-using BoDi;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
@@ -19,12 +17,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         {
             this.contextManager = contextManager;
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
-        }
-
-        //TODO[assistcont]: elminiate this ctor by resolving StepTransformationValueRetriever directly from the container
-        public StepTransformationValueRetriever(IObjectContainer container) : 
-            this(container.Resolve<IContextManager>(), container.Resolve<IStepArgumentTypeConverter>())
-        {
         }
 
         public bool CanRetrieve(KeyValuePair<string, string> row, Type type)

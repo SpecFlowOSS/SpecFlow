@@ -124,7 +124,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
         private static StepTransformationValueRetriever Subject(IObjectContainer container)
         {
-            return new StepTransformationValueRetriever(container);
+            return new StepTransformationValueRetriever(container.Resolve<IContextManager>(), container.Resolve<IStepArgumentTypeConverter>());
         }
 
         private static StepTransformationValueRetriever Subject()
