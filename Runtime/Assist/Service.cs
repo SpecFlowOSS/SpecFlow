@@ -16,11 +16,6 @@ namespace TechTalk.SpecFlow.Assist
         public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
         public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
 
-        public static Service Instance //TODO[assistcont]: remove dependencies to this property
-        {
-            get { return ((TableServices) TableServices.Current).Service; }
-        }
-
         public bool IsContainerBound //TODO[assistcont]: maybe find a better name
         {
             get { return container != null; }

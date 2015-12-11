@@ -71,17 +71,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     [TestFixture]
     public class WorkingExampleOfValueRetrieverAndComparerAddition
     {
+        private static Service GetCurrentService()
+        {
+            //TODO[assistcont]: this will be eliminated once the registration of comparers/retrievers is moved to container
+            return ((TableServices)TableServices.Current).Service;
+        }
+
         [TearDown]
         public void Cleanup()
         {
-            Service.Instance.RestoreDefaults();
+            GetCurrentService().RestoreDefaults();
         }
 
         [Test]
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
-
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            GetCurrentService().RegisterValueRetriever(new FancyNameValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -95,8 +100,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_be_able_to_compare_the_fancy_name()
         {
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
-            Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
+            GetCurrentService().RegisterValueRetriever(new FancyNameValueRetriever());
+            GetCurrentService().RegisterValueComparer(new FancyNameValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -170,17 +175,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
     [TestFixture]
     public class AnotherWorkingExampleOfValueRetrieverAndComparerAddition
     {
+        private static Service GetCurrentService()
+        {
+            //TODO[assistcont]: this will be eliminated once the registration of comparers/retrievers is moved to container
+            return ((TableServices)TableServices.Current).Service;
+        }
+
         [TearDown]
         public void Cleanup()
         {
-            Service.Instance.RestoreDefaults();
+            GetCurrentService().RestoreDefaults();
         }
 
         [Test]
         public void Should_be_able_to_retrieve_the_category()
         {
 
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            GetCurrentService().RegisterValueRetriever(new ProductCategoryValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Apple");
@@ -195,8 +206,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_be_able_to_compare_the_category()
         {
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
-            Service.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
+            GetCurrentService().RegisterValueRetriever(new ProductCategoryValueRetriever());
+            GetCurrentService().RegisterValueComparer(new ProductCategoryValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Cucumber");
