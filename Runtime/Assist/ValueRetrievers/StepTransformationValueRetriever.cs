@@ -12,18 +12,17 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StepTransformationValueRetriever : IValueRetriever
     {
-        public bool CanRetrieve(KeyValuePair<string, string> row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> row, Type targetType, Type propertyType)
         {
             try {
-                return StepArgumentTypeConverter().CanConvert(row.Value, BindingTypeFor(type), CultureInfo());
+                return StepArgumentTypeConverter().CanConvert(row.Value, BindingTypeFor(propertyType), CultureInfo());
             } catch {
                 return false;
             }
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(keyValuePair.Key)).PropertyType;
             return StepArgumentTypeConverter().Convert(keyValuePair.Value, BindingTypeFor(propertyType), CultureInfo());
         }
 

@@ -95,13 +95,13 @@ namespace TechTalk.SpecFlow.Assist
         {
             var properties = from property in type.GetProperties()
                              from row in table.Rows
-                             where TheseTypesMatch(property.PropertyType, row)
+                             where TheseTypesMatch(type, property.PropertyType, row)
                                    && IsMemberMatchingToColumnName(property, row.Id())
                 select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              from row in table.Rows
-                             where TheseTypesMatch(field.FieldType, row)
+                             where TheseTypesMatch(type, field.FieldType, row)
                                    && IsMemberMatchingToColumnName(field, row.Id())
                 select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
@@ -113,9 +113,9 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private static bool TheseTypesMatch(Type memberType, TableRow row)
+        private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
-            return Assist.Service.Instance.GetValueRetrieverFor(row, memberType) != null;
+            return Service.Instance.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
 
         internal class MemberHandler
@@ -128,8 +128,8 @@ namespace TechTalk.SpecFlow.Assist
 
             public object GetValue()
             {
-                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, PropertyType);
-                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type);
+                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, Type, PropertyType);
+                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
             }
         }
 
