@@ -13,8 +13,9 @@ namespace TechTalk.SpecFlow.Assist
         /// </summary>
         /// <returns><c>true</c> if this instance can retrieve the specified key->value; otherwise, <c>false</c>.</returns>
         /// <param name="keyValuePair">Key value pair.</param>
+        /// <param name="targetType"></param>
         /// <param name="propertyType">The type of the property or member that is being set.</param>
-        bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type propertyType);
+        bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType);
 
         /// <summary>
         /// Retrieve the value from a key-> value set, as the expected type on targetType.

@@ -21,9 +21,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             var retriever = new TimeSpanValueRetriever();
             var empty = new System.Collections.Generic.KeyValuePair<string, string>();
-            retriever.CanRetrieve(empty, typeof(System.TimeSpan)).Should().BeTrue();
-            retriever.CanRetrieve(empty, typeof(System.String)).Should().BeFalse();
-            retriever.CanRetrieve(empty, typeof(System.Boolean)).Should().BeFalse();
+            retriever.CanRetrieve(empty, null, typeof(System.TimeSpan)).Should().BeTrue();
+            retriever.CanRetrieve(empty, null, typeof(System.String)).Should().BeFalse();
+            retriever.CanRetrieve(empty, null, typeof(System.Boolean)).Should().BeFalse();
         }
     }
 }

@@ -65,9 +65,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void CanRetrieve_will_return_true_if_the_value_can_be_retrieved_from_a_step_argument_transformation()
         {
-            Subject().CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
-            Subject().CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
-            Subject().CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeTrue();
+            Subject().CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeTrue();
+            Subject().CanRetrieve(KeyValueFor("not a date"), null, typeof(DateTime)).Should().BeFalse();
+            Subject().CanRetrieve(KeyValueFor("not a date"), null, typeof(string)).Should().BeTrue();
         }
 
         [Test]
@@ -79,9 +79,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             // which was not set, so... it will throw
             subject.ContainerToUseForThePurposeOfTesting = null;
 
-            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
-            subject.CanRetrieve(KeyValueFor("not a date"), typeof(DateTime)).Should().BeFalse();
-            subject.CanRetrieve(KeyValueFor("not a date"), typeof(string)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("not a date"), null, typeof(DateTime)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("not a date"), null, typeof(string)).Should().BeFalse();
         }
 
         [Test]
@@ -96,10 +96,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             RegisterBindingCulture(frenchCultureInfo, subject.ContainerToUseForThePurposeOfTesting);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(true);
-            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeTrue();
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(false);
-            subject.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+            subject.CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeFalse();
 
             //another culture
             var subject2 = Subject();
@@ -108,10 +108,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             RegisterBindingCulture(usCultureInfo, subject2.ContainerToUseForThePurposeOfTesting);
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(true);
-            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeTrue();
+            subject2.CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeTrue();
 
             stepArgumentTypeConverter.Setup(x => x.CanConvert("2009/10/06", It.IsAny<IBindingType>(), usCultureInfo)).Returns(false);
-            subject2.CanRetrieve(KeyValueFor("2009/10/06"), typeof(DateTime)).Should().BeFalse();
+            subject2.CanRetrieve(KeyValueFor("2009/10/06"), null, typeof(DateTime)).Should().BeFalse();
         }
 
         private static KeyValuePair<string, string> KeyValueFor(string value)
