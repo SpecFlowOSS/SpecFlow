@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Assist
         /// </summary>
         /// <param name="keyValuePair">Key value pair.</param>
         /// <param name="targetType">The type of the ojbect that is being built from the table.</param>
-        /// <param name="propertyType"></param>
+        /// <param name="propertyType">The type of the property or member that is being set.</param>
         object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType);
     }
 }
