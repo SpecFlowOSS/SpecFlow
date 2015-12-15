@@ -67,7 +67,7 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            var normalizedColumnName = RemoveAllCharactersThatAreNotValidInAPropertyName(columnName);
+            var normalizedColumnName = NormalizePropertyNameToMatchAgainstAColumnName(RemoveAllCharactersThatAreNotValidInAPropertyName(columnName));
             var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
             return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
@@ -75,11 +75,13 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
         {
-            return new Regex("[^a-zA-Z0-9_]").Replace(name, string.Empty);
+            //Unicode groups allowed: Lu, Ll, Lt, Lm, Lo, Nl or Nd see https://msdn.microsoft.com/en-us/library/aa664670%28v=vs.71%29.aspx
+            return new Regex(@"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]").Replace(name, string.Empty);
         }
 
         internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
+            // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
             return name.Replace("_", string.Empty);
         }
 

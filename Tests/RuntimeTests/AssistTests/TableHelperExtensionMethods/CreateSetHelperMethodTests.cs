@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
-        public void Sets_properties_from_column_names_with_underscore_to_properties_with_umlaute()
+        public void Sets_properties_from_column_names_to_properties_with_umlaute()
         {
             var table = new Table("WithUmlauteäöü");
             table.AddRow("John");
