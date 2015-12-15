@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return new Type[]{ typeof(FancyName) };
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return FancyNameValueRetriever.Parse(keyValuePair.Value);
         }
@@ -140,7 +140,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return new Type[]{ typeof(ProductCategory) };
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return ProductCategoryValueRetriever.Parse(keyValuePair.Value);
         }

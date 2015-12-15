@@ -129,7 +129,7 @@ namespace TechTalk.SpecFlow.Assist
             public object GetValue()
             {
                 var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, Type, PropertyType);
-                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type);
+                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
             }
         }
 

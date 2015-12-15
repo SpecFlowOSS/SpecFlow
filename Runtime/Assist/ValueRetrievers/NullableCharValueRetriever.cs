@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return charValueRetriever(value);
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return GetValue(keyValuePair.Value);
         }
