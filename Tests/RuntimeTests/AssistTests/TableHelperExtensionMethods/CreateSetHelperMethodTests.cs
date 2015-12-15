@@ -68,6 +68,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_properties_from_column_names_with_underscore_to_properties_with_umlaute()
+        {
+            var table = new Table("WithUmlauteäöü");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().WithUmlauteäöü.Should().Be("John");
+        }
+
+        [Test]
         public void Returns_two_instances_when_there_are_two_rows()
         {
             var table = new Table("FirstName");
@@ -124,6 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
         }
 
+        
         [Test]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {

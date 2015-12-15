@@ -32,5 +32,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities
         public uint UnsignedInt { get; set; }
         public uint? NullableUnsignedInt { get; set; }
         public string With_Underscore { get; set; }
+
+        public string WithUmlauteäöü { get; set; }
     }
 }
