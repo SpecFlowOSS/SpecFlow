@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(keyValuePair.Value, propertyType);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type propertyType)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);

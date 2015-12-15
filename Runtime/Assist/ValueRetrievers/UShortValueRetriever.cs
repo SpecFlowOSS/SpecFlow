@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type propertyType)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return propertyType == typeof(ushort);
         }

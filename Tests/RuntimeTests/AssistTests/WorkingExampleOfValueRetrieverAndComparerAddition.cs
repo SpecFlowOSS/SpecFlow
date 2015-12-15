@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return FancyNameValueRetriever.Parse(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }
@@ -145,7 +145,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             return ProductCategoryValueRetriever.Parse(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
             return this.TypesForWhichIRetrieveValues().Contains(type);
         }
