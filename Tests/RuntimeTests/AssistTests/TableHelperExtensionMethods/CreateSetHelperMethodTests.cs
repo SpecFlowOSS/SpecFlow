@@ -76,6 +76,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().WithUmlauteäöü.Should().Be("John");
         }
 
+
+        [Test]
+        public void Does_not_sets_properties_from_column_names_to_properties_with_dash()
+        {
+            var table = new Table("first-name");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.Should().Be("John");
+        }
+
         [Test]
         public void Returns_two_instances_when_there_are_two_rows()
         {
