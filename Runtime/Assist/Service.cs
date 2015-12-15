@@ -109,10 +109,10 @@ namespace TechTalk.SpecFlow.Assist
             RegisterValueRetriever(new StepTransformationValueRetriever());
         }
 
-        public IValueRetriever GetValueRetrieverFor(TableRow row, Type type)
+        public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
             foreach(var valueRetriever in ValueRetrievers){
-                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), type))
+                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), propertyType))
                     return valueRetriever;
             }
             return null;
