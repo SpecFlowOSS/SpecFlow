@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
 
         [Test]
-        public void Does_not_sets_properties_from_column_names_to_properties_with_dash()
+        public void Sets_properties_from_column_names_to_properties_with_dash()
         {
             var table = new Table("first-name");
             table.AddRow("John");
