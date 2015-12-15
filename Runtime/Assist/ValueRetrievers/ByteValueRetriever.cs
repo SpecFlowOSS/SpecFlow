@@ -17,9 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type propertyType)
         {
-            return type == typeof(byte);
+            return propertyType == typeof(byte);
         }
     }
 }

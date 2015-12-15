@@ -12,10 +12,10 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
     public class StepTransformationValueRetriever : IValueRetriever
     {
-        public bool CanRetrieve(KeyValuePair<string, string> row, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> row, Type propertyType)
         {
             try {
-                return StepArgumentTypeConverter().CanConvert(row.Value, BindingTypeFor(type), CultureInfo());
+                return StepArgumentTypeConverter().CanConvert(row.Value, BindingTypeFor(propertyType), CultureInfo());
             } catch {
                 return false;
             }

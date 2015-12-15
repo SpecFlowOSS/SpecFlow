@@ -17,9 +17,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return GetValue(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type propertyType)
         {
-            if (type != typeof (DateTime)) return false;
+            if (propertyType != typeof (DateTime)) return false;
 
             DateTime ignore;
             return DateTime.TryParse(keyValuePair.Value, out ignore);
