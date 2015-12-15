@@ -85,13 +85,13 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 15
- testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\n\t| Name         | Birthdate | Balance |\r\n\t| John Gal" +
-                    "t    | 2/2/1902  | 1234.56 |\r\n\t| Someone Else | 10/9/2009 | 45.6    |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\r\n\t| Name         | Birthdate | Balance |\r\n\t| John Ga" +
+                    "lt    | 2/2/1902  | 1234.56 |\r\n\t| Someone Else | 10/9/2009 | 45.6    |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 22
- testRunner.And("the following step definition", "[Given(@\"the following accounts\")]\npublic void GivenTheFollowingAccounts(Table ac" +
-                    "countsTable)\n{\n\tvar accounts = accountsTable.CreateSet<Account>();\n\tforeach (var" +
-                    " account in accounts)\n\t\tConsole.WriteLine(account.Name);\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the following step definition", "[Given(@\"the following accounts\")]\r\npublic void GivenTheFollowingAccounts(Table a" +
+                    "ccountsTable)\r\n{\r\n\tvar accounts = accountsTable.CreateSet<Account>();\r\n\tforeach " +
+                    "(var account in accounts)\r\n\t\tConsole.WriteLine(account.Name);\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
  testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
@@ -117,8 +117,8 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 40
- testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\n\t| Name         | Balance |\r\n\t| John Galt    | 1234." +
-                    "56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\r\n\t| Name         | Balance |\r\n\t| John Galt    | 1234" +
+                    ".56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 46
  testRunner.And("the following step definition", @"[Given(@""the following accounts"")]
@@ -153,17 +153,17 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 62
- testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\n\t| Name      | Birthdate     | Balance |\r\n\t| John Ga" +
-                    "lt | my magic date | 1234.56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a scenario \'Simple Scenario\' as", "Given the following accounts\r\n\t| Name      | Birthdate     | Balance |\r\n\t| John G" +
+                    "alt | my magic date | 1234.56 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 68
- testRunner.And("the following step argument transformation", "[StepArgumentTransformation(@\"my magic date\")]\npublic DateTime ConvertMagicDate()" +
-                    "\n{\nreturn new DateTime(2000,1,1);\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the following step argument transformation", "[StepArgumentTransformation(@\"my magic date\")]\r\npublic DateTime ConvertMagicDate(" +
+                    ")\r\n{\r\nreturn new DateTime(2000,1,1);\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 76
- testRunner.And("the following step definition", "[Given(@\"the following accounts\")]\npublic void GivenTheFollowingAccounts(Table ac" +
-                    "countsTable)\n{\n\tvar accounts = accountsTable.CreateSet<Account>();\n\tforeach (var" +
-                    " account in accounts)\n\t\tConsole.WriteLine(account.Birthdate);\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the following step definition", "[Given(@\"the following accounts\")]\r\npublic void GivenTheFollowingAccounts(Table a" +
+                    "ccountsTable)\r\n{\r\n\tvar accounts = accountsTable.CreateSet<Account>();\r\n\tforeach " +
+                    "(var account in accounts)\r\n\t\tConsole.WriteLine(account.Birthdate);\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
  testRunner.And("the \'TechTalk.SpecFlow.Assist\' namespace is added to the namespace usings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87

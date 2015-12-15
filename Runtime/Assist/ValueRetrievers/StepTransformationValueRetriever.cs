@@ -23,7 +23,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
         {
-            return StepArgumentTypeConverter().Convert(keyValuePair.Value, BindingTypeFor(targetType), CultureInfo());
+            var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(keyValuePair.Key)).PropertyType;
+            return StepArgumentTypeConverter().Convert(keyValuePair.Value, BindingTypeFor(propertyType), CultureInfo());
         }
 
         public IBindingType BindingTypeFor(Type type)

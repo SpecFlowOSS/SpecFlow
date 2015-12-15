@@ -13,6 +13,12 @@ using BoDi;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 {
+    public class StepTransformationValueRetrieverExample
+    {
+        public DateTime TheDate { get; set; } 
+        public string TheString { get; set; }
+    }
+
     [TestFixture]
     public class StepTransformationValueRetrieverTests
     {
@@ -20,15 +26,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Retrieve_will_return_the_value_from_the_step_argument_type_converter()
         {
-            var dateTimeResult = Subject().Retrieve(KeyValueFor("2009/10/06"), typeof(DateTime));
+            var dateTimeResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheDate", "2009/10/06"), typeof(StepTransformationValueRetrieverExample));
             dateTimeResult.Should().Be(new DateTime(2009, 10, 6));
 
-            var stringResult = Subject().Retrieve(KeyValueFor("2009/10/06"), typeof(string));
+            var stringResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheString", "2009/10/06"), typeof(StepTransformationValueRetrieverExample));
             stringResult.Should().Be("2009/10/06");
         }
 
         [Test]
-        public void Retriever_will_use_the_current_culture_info()
+        public void Retrieve_will_use_the_current_culture_info()
         {
             var stepArgumentTypeConverter = new Mock<IStepArgumentTypeConverter>();
             var value = Guid.NewGuid().ToString();
@@ -42,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var french = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
-            frenchSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(french);
+            frenchSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample)).Should().BeSameAs(french);
 
             //another culture
             var usSubject = Subject();
@@ -53,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var us = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
-            usSubject.Retrieve(KeyValueFor(value), typeof(DateTime)).Should().BeSameAs(us);
+            usSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample)).Should().BeSameAs(us);
         }
 
         [Test]
@@ -112,7 +118,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         {
             // retrieving a value requires a key->value set, but this class
             // does not need the key... so we pass nothing for our tests
-            return new System.Collections.Generic.KeyValuePair<string, string> ("", value);
+            return new System.Collections.Generic.KeyValuePair<string, string> ("TheDate", value);
         }
 
         private static StepTransformationValueRetriever Subject()
