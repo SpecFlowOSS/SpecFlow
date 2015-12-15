@@ -26,10 +26,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
         [Test]
         public void Retrieve_will_return_the_value_from_the_step_argument_type_converter()
         {
-            var dateTimeResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheDate", "2009/10/06"), typeof(StepTransformationValueRetrieverExample));
+            var dateTimeResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheDate", "2009/10/06"), typeof(StepTransformationValueRetrieverExample), typeof(DateTime));
             dateTimeResult.Should().Be(new DateTime(2009, 10, 6));
 
-            var stringResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheString", "2009/10/06"), typeof(StepTransformationValueRetrieverExample));
+            var stringResult = Subject().Retrieve(new KeyValuePair<string, string> ("TheString", "2009/10/06"), typeof(StepTransformationValueRetrieverExample), typeof(string));
             stringResult.Should().Be("2009/10/06");
         }
 
@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var french = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), frenchCultureInfo)).Returns(french);
-            frenchSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample)).Should().BeSameAs(french);
+            frenchSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample), typeof(DateTime)).Should().BeSameAs(french);
 
             //another culture
             var usSubject = Subject();
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
 
             var us = new Object();
             stepArgumentTypeConverter.Setup(x => x.Convert(value, It.IsAny<IBindingType>(), usCultureInfo)).Returns(us);
-            usSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample)).Should().BeSameAs(us);
+            usSubject.Retrieve(KeyValueFor(value), typeof(StepTransformationValueRetrieverExample), typeof(DateTime)).Should().BeSameAs(us);
         }
 
         [Test]
