@@ -13,9 +13,8 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return ConvertTheStringToAnEnum(value, enumType);
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType1)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(keyValuePair.Key)).PropertyType;
             return GetValue(keyValuePair.Value, propertyType);
         }
 
