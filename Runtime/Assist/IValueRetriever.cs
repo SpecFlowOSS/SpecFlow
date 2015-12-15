@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist
         /// </summary>
         /// <returns><c>true</c> if this instance can retrieve the specified key->value; otherwise, <c>false</c>.</returns>
         /// <param name="keyValuePair">Key value pair.</param>
-        /// <param name="targetType"></param>
+        /// <param name="targetType">The type of the object that is being built from the table.</param>
         /// <param name="propertyType">The type of the property or member that is being set.</param>
         bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType);
 
@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Assist
         /// Retrieve the value from a key-> value set, as the expected type on targetType.
         /// </summary>
         /// <param name="keyValuePair">Key value pair.</param>
-        /// <param name="targetType">The type of the ojbect that is being built from the table.</param>
+        /// <param name="targetType">The type of the object that is being built from the table.</param>
         /// <param name="propertyType">The type of the property or member that is being set.</param>
         object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType);
     }
