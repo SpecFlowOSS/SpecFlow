@@ -19,14 +19,14 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return uintValueRetriever(value);
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             return GetValue(keyValuePair.Value);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return type == typeof(uint?);
+            return propertyType == typeof(uint?);
         }
     }
 }

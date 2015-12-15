@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             {
                 SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
-                                                                                        { "AdditionalUsings", "" },
+                                                                                        { "AdditionalUsings", GetAdditionalUsings(inputProjectDriver) },
                                                                                         { "BindingClass", bindingClassInput.RawClass },
                                                                                     });
             }
@@ -108,11 +108,17 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             {
                 SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "Bindings." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
+                                                                                        { "AdditionalUsings", GetAdditionalUsings(inputProjectDriver) },
                                                                                         { "ClassName", bindingClassInput.Name },
                                                                                         { "Bindings", GetBindingsCode(bindingClassInput) },
                                                                                     });
             }
             project.AddItem("Compile", bindingClassInput.ProjectRelativePath);
+        }
+
+        private string GetAdditionalUsings(InputProjectDriver inputProjectDriver)
+        {
+            return string.Join(Environment.NewLine, inputProjectDriver.AdditionalUsings.Select(u => string.Format("using {0};", u)));
         }
 
         private string GetBindingsCode(BindingClassInput bindingClassInput)

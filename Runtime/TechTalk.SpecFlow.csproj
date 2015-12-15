@@ -234,6 +234,7 @@
     <Compile Include="Assist\Service.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
+    <Compile Include="Assist\ValueRetrievers\StepTransformationValueRetriever.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Languages.xml">

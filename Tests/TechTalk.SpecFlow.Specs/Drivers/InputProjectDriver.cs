@@ -82,6 +82,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             }
         }
 
+        public List<string> AdditionalUsings { get; private set; }
+
         public InputProjectDriver(SpecFlowConfigurationDriver configurationDriver)
         {
             ConfigurationDriver = configurationDriver;
@@ -96,6 +98,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             BindingClasses = new List<BindingClassInput>();
 
             References = new List<string>();
+
+            AdditionalUsings = new List<string>();
         }
 
         public void Reset()
