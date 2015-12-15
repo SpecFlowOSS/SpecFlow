@@ -59,6 +59,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         }
 
         [Test]
+        public void Sets_properties_from_column_names_with_underscore_to_properties_with_underscore()
+        {
+            var table = new Table("With_Underscore");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().With_Underscore.Should().Be("John");
+        }
+
+        [Test]
         public void Returns_two_instances_when_there_are_two_rows()
         {
             var table = new Table("FirstName");
