@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            configurationDriver.UnitTestProviderName.Should().Be("NUnit");
+            configurationDriver.UnitTestProviderName.Should().Be("NUnit.2");
 
             projectSteps.EnsureCompiled();
             nUnitTestExecutionDriver.Execute();
@@ -50,10 +50,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             switch (unitTestProvider)
             {
-                case "NUnit":
+                case "NUnit.2":
                     nUnitTestExecutionDriver.Execute();
                     break;
-                case "NUnit.3":
+                case "NUnit":
                     nUnitTestExecutionDriver.ExecuteWithNUnit3();
                     break;
                 case "MsTest":
