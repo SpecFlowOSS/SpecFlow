@@ -19,7 +19,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return type == typeof(DateTime);
+            return propertyType == typeof(DateTime);
         }
     }
 }
