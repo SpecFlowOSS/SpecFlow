@@ -14,6 +14,7 @@ New Features:
 + Removing all characters that are not valid in a variable/property name when matching with column names (Issue 511)
 
 Fixed issues:
++ remove .net runtime version from generated file header to avoid unwanted changes
 
 
 1.9.3 - 2013/09/26 (Visual Studio 2013 Integration)
