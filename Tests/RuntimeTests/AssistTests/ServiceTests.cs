@@ -152,11 +152,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             throw new NotImplementedException();
         }
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
             throw new NotImplementedException();
         }
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type type)
         {
             throw new NotImplementedException();
         }

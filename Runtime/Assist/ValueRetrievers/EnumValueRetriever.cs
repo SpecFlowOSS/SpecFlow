@@ -13,17 +13,16 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return ConvertTheStringToAnEnum(value, enumType);
         }
 
-        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType)
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            var propertyType = targetType.GetProperties().First(x => x.Name.MatchesThisColumnName(keyValuePair.Key)).PropertyType;
             return GetValue(keyValuePair.Value, propertyType);
         }
 
-        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type type)
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return typeof(Enum).IsAssignableFrom(type.GetGenericArguments()[0]);
-            return type.IsEnum;
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);
+            return propertyType.IsEnum;
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
