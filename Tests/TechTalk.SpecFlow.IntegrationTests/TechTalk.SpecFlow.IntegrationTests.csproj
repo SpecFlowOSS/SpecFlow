@@ -301,6 +301,7 @@ xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
 
 xcopy $(SolutionDir)lib\NUnit3-Runner\*.* $(TargetDir)NUnit3-Runner\ /s /y
 
+xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
