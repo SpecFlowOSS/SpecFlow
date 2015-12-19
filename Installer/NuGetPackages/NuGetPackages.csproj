@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config.transform" />
+    <None Include="MsTest\App.config.transform" />
     <None Include="NUnit.Runners\Install.ps1" />
     <None Include="NUnit.Runners\Uninstall.ps1" />
     <None Include="NUnit\App.config.transform" />
@@ -52,6 +53,7 @@
     <None Include="SpecFlow.CustomPlugin.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="SpecFlow.MsTest.nuspec" />
     <None Include="SpecFlow.NUnit.nuspec">
       <SubType>Designer</SubType>
     </None>
