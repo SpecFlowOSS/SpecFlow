@@ -8,16 +8,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class NUnitTestGeneratorProvider : IUnitTestGeneratorProvider
     {
-        private const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
-        private const string TEST_ATTR = "NUnit.Framework.TestAttribute";
-        private const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
-        private const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
-        private const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
-        private const string TESTFIXTURESETUP_ATTR = "NUnit.Framework.TestFixtureSetUpAttribute";
-        private const string TESTFIXTURETEARDOWN_ATTR = "NUnit.Framework.TestFixtureTearDownAttribute";
-        private const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
-        private const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
-        private const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
+        protected const string TESTFIXTURE_ATTR = "NUnit.Framework.TestFixtureAttribute";
+        protected const string TEST_ATTR = "NUnit.Framework.TestAttribute";
+        protected const string ROW_ATTR = "NUnit.Framework.TestCaseAttribute";
+        protected const string CATEGORY_ATTR = "NUnit.Framework.CategoryAttribute";
+        protected const string TESTSETUP_ATTR = "NUnit.Framework.SetUpAttribute";
+        protected const string TESTFIXTURESETUP_ATTR = "NUnit.Framework.TestFixtureSetUpAttribute";
+        protected const string TESTFIXTURETEARDOWN_ATTR = "NUnit.Framework.TestFixtureTearDownAttribute";
+        protected const string TESTTEARDOWN_ATTR = "NUnit.Framework.TearDownAttribute";
+        protected const string IGNORE_ATTR = "NUnit.Framework.IgnoreAttribute";
+        protected const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, CATEGORY_ATTR, featureCategories);
         }
 
-        public void SetTestClassIgnore(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassIgnore(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, IGNORE_ATTR);
         }
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttributeForEachValue(testMethod, CATEGORY_ATTR, scenarioCategories);
         }
 
-        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             CodeDomHelper.AddAttribute(testMethod, IGNORE_ATTR);
         }
