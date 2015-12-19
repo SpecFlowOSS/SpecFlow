@@ -58,8 +58,8 @@ Scenario Outline: Successful test output is included in the HTML result
 		-> done: 
 	"""
 Examples:
-	| unittest	|
-	| NUnit		|
+	| unittest |
+	| NUnit.2  |
 @mstest
 Examples: MsTest
 	| unittest	|
@@ -82,8 +82,8 @@ Scenario Outline: Pending test output is included in the HTML result
          }
     """
 Examples:
-	| unittest	|
-	| NUnit		|
+	| unittest |
+	| NUnit.2  |
 @mstest @ignore
 #report generator does not support newer MsTest
 Examples: MsTest
@@ -103,8 +103,8 @@ Scenario Outline: Failing test output is included in the HTML result
 		simulated failure
 	"""
 Examples:
-	| unittest	|
-	| NUnit		|
+	| unittest |
+	| NUnit.2  |
 @mstest
 Examples: MsTest
 	| unittest	|
@@ -122,8 +122,8 @@ Scenario Outline: Failing test exception is included in the HTML result
 		simulated failure
 	"""
 Examples:
-	| unittest	|
-	| NUnit		|
+	| unittest |
+	| NUnit.2  |
 @mstest
 Examples: MsTest
 	| unittest	|
