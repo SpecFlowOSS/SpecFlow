@@ -23,6 +23,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper = codeDomHelper;
         }
 
+        public override UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.RowTests | UnitTestGeneratorTraits.ParallelExecution;
+        }
+
         protected override CodeTypeReference CreateFixtureInterface(CodeTypeReference fixtureDataType)
         {
             return new CodeTypeReference(ICLASSFIXTURE_INTERFACE, fixtureDataType);
