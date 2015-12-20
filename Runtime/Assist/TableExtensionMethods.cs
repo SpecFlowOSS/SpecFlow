@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public static T CreateInstance<T>(this Table table, Func<T> methodToCreateTheInstance)
         {
-            return new TableStuff().CreateInstance<T>(table);
+            return new TableStuff().CreateInstance<T>(table, methodToCreateTheInstance);
         }
 
         public static void FillInstance(this Table table, object instance)
