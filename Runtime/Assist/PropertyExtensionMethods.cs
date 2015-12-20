@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var type = @object.GetType();
             return type.GetProperties()
-                .FirstOrDefault(x => TEHelpers.IsMemberMatchingToColumnName(x, propertyName));
+                .FirstOrDefault(x => (new TEHelpers()).IsMemberMatchingToColumnName(x, propertyName));
         }
     }
 }

@@ -8,10 +8,11 @@ namespace TechTalk.SpecFlow.Assist
     {
         public T CreateInstance<T>(Table table)
         {
-            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof (T));
-            return TEHelpers.ThisTypeHasADefaultConstructor<T>()
-                ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
-                : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
+            var helpers = new TEHelpers();
+            var instanceTable = helpers.GetTheProperInstanceTable(table, typeof (T));
+            return helpers.ThisTypeHasADefaultConstructor<T>()
+                ? helpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
+                : helpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
         }
 
         public T CreateInstance<T>(Table table, Func<T> methodToCreateTheInstance)
@@ -23,8 +24,9 @@ namespace TechTalk.SpecFlow.Assist
 
         public void FillInstance(Table table, object instance)
         {
-            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, instance.GetType());
-            TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
+            var helpers = new TEHelpers();
+            var instanceTable = helpers.GetTheProperInstanceTable(table, instance.GetType());
+            helpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
 
         public IEnumerable<T> CreateSet<T>(Table table)
@@ -69,7 +71,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = (new TEHelpers()).GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -119,7 +121,7 @@ namespace TechTalk.SpecFlow.Assist
         private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
-                .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
+                .Any(property => (new TEHelpers()).IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)

@@ -8,16 +8,16 @@ using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal static class TEHelpers
+    internal class TEHelpers
     {
-        internal static T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
+        internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
             LoadInstanceWithKeyValuePairs(table, instance);
             return instance;
         }
 
-        internal static T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
+        internal T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
@@ -39,14 +39,14 @@ namespace TechTalk.SpecFlow.Assist
             return (T)constructor.Invoke(parameterValues);
         }
 
-        internal static bool ThisTypeHasADefaultConstructor<T>()
+        internal bool ThisTypeHasADefaultConstructor<T>()
         {
             return typeof(T).GetConstructors()
                        .Where(c => c.GetParameters().Length == 0)
                        .Count() > 0;
         }
 
-        internal static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
+        internal ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
         {
             var projectedPropertyNames = from property in typeof(T).GetProperties()
                                          from row in table.Rows
@@ -60,12 +60,12 @@ namespace TechTalk.SpecFlow.Assist
                     select constructor).FirstOrDefault();
         }
 
-        internal static bool IsMemberMatchingToColumnName(MemberInfo member, string columnName)
+        internal bool IsMemberMatchingToColumnName(MemberInfo member, string columnName)
         {
-            return member.Name.MatchesThisColumnName(columnName);
+            return MatchesThisColumnName(member.Name, columnName);
         }
 
-        internal static bool MatchesThisColumnName(this string propertyName, string columnName)
+        internal bool MatchesThisColumnName(string propertyName, string columnName)
         {
             var normalizedColumnName = NormalizePropertyNameToMatchAgainstAColumnName(RemoveAllCharactersThatAreNotValidInAPropertyName(columnName));
             var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
@@ -73,19 +73,19 @@ namespace TechTalk.SpecFlow.Assist
             return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
         }
 
-        internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
+        internal string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
         {
             //Unicode groups allowed: Lu, Ll, Lt, Lm, Lo, Nl or Nd see https://msdn.microsoft.com/en-us/library/aa664670%28v=vs.71%29.aspx
             return new Regex(@"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]").Replace(name, string.Empty);
         }
 
-        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
+        internal string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
             // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
             return name.Replace("_", string.Empty);
         }
 
-        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
+        internal void LoadInstanceWithKeyValuePairs(Table table, object instance)
         {
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.Assist
                 .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
-        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+        internal IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
             var properties = from property in type.GetProperties()
                              from row in table.Rows
@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
+        private bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
             return Service.Instance.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
@@ -135,31 +135,31 @@ namespace TechTalk.SpecFlow.Assist
             }
         }
 
-        internal static Table GetTheProperInstanceTable(Table table, Type type)
+        internal Table GetTheProperInstanceTable(Table table, Type type)
         {
             return ThisIsAVerticalTable(table, type)
                        ? table
                        : FlipThisHorizontalTableToAVerticalTable(table);
         }
 
-        private static Table FlipThisHorizontalTableToAVerticalTable(Table table)
+        private Table FlipThisHorizontalTableToAVerticalTable(Table table)
         {
             return new PivotTable(table).GetInstanceTable(0);
         }
 
-        private static bool ThisIsAVerticalTable(Table table, Type type)
+        private bool ThisIsAVerticalTable(Table table, Type type)
         {
             if (TheHeaderIsTheOldFieldValuePair(table))
                 return true;
             return (table.Rows.Count() != 1) || (table.Header.Count() == 2 && TheFirstRowValueIsTheNameOfAProperty(table, type));
         }
 
-        private static bool TheHeaderIsTheOldFieldValuePair(Table table)
+        private bool TheHeaderIsTheOldFieldValuePair(Table table)
         {
             return table.Header.Count() == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
         }
 
-        private static bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)
+        private bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
             return type.GetProperties()
