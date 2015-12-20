@@ -6,16 +6,16 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class TableStuff
     {
-        private readonly Service service;
+        private readonly Config config;
 
-        public TableStuff(Service service)
+        public TableStuff(Config config)
         {
-            this.service = service;
+            this.config = config;
         }
 
         public T CreateInstance<T>(Table table)
         {
-            var helpers = new TEHelpers(service);
+            var helpers = new TEHelpers(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, typeof (T));
             return helpers.ThisTypeHasADefaultConstructor<T>()
                 ? helpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void FillInstance(Table table, object instance)
         {
-            var helpers = new TEHelpers(service);
+            var helpers = new TEHelpers(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, instance.GetType());
             helpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
@@ -68,16 +68,16 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ComparisonTableStuff
     {
-        private Service service;
+        private Config config;
 
-        public ComparisonTableStuff(Service service)
+        public ComparisonTableStuff(Config config)
         {
-            this.service = service;
+            this.config = config;
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table, service);
+            var checker = new SetComparer<T>(table, config);
             checker.CompareToSet(set);
         }
 
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = (new TEHelpers(service)).GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = (new TEHelpers(config)).GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -134,7 +134,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
-            var helpers = new TEHelpers(service);
+            var helpers = new TEHelpers(config);
             return instance.GetType().GetProperties()
                 .Any(property => helpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
@@ -144,7 +144,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            return service.ValueComparers
+            return config.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
                 .Compare(expected, propertyValue) == false;
         }

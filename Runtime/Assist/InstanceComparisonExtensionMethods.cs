@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToInstance<T>(this Table table, T instance)
         {
-            new ComparisonTableStuff(Service.Instance).CompareToInstance(table, instance);
+            new ComparisonTableStuff(Config.Instance).CompareToInstance(table, instance);
         }
     }
 

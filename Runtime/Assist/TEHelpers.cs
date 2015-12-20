@@ -8,11 +8,11 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal class TEHelpers
     {
-        private readonly Service service;
+        private readonly Config config;
 
-        public TEHelpers(Service service)
+        public TEHelpers(Config config)
         {
-            this.service = service;
+            this.config = config;
         }
 
         internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.Assist
                 where TheseTypesMatch(type, property.PropertyType, row)
                       && IsMemberMatchingToColumnName(property, row.Id())
                 select
-                    new MemberHandler(service)
+                    new MemberHandler(config)
                     {
                         Type = type,
                         Row = row,
@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.Assist
                 where TheseTypesMatch(type, field.FieldType, row)
                       && IsMemberMatchingToColumnName(field, row.Id())
                 select
-                    new MemberHandler(service)
+                    new MemberHandler(config)
                     {
                         Type = type,
                         Row = row,
@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
-            return service.GetValueRetrieverFor(row, targetType, memberType) != null;
+            return config.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
 
         internal Table GetTheProperInstanceTable(Table table, Type type)
@@ -178,11 +178,11 @@ namespace TechTalk.SpecFlow.Assist
 
         internal class MemberHandler
         {
-            private readonly Service service;
+            private readonly Config config;
 
-            public MemberHandler(Service service)
+            public MemberHandler(Config config)
             {
-                this.service = service;
+                this.config = config;
             }
 
             public TableRow Row { get; set; }
@@ -193,7 +193,7 @@ namespace TechTalk.SpecFlow.Assist
 
             public object GetValue()
             {
-                var valueRetriever = service.GetValueRetrieverFor(Row, Type, PropertyType);
+                var valueRetriever = config.GetValueRetrieverFor(Row, Type, PropertyType);
                 return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
             }
         }

@@ -6,17 +6,17 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class Service
+    public class Config
     {
         private List<IValueComparer> registeredValueComparers;
         private List<IValueRetriever> registeredValueRetrievers;
 
-        static Service()
+        static Config()
         {
-            Instance = new Service();
+            Instance = new Config();
         }
 
-        public Service()
+        public Config()
         {
             RestoreDefaults();
         }
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Assist
             get { return registeredValueRetrievers; }
         }
 
-        public static Service Instance { get; internal set; }
+        public static Config Instance { get; internal set; }
 
         public void RestoreDefaults()
         {

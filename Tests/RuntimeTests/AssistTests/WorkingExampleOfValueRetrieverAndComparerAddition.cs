@@ -74,14 +74,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [TearDown]
         public void Cleanup()
         {
-            Service.Instance.RestoreDefaults();
+            Config.Instance.RestoreDefaults();
         }
 
         [Test]
         public void Should_be_able_to_retrieve_the_fancy_name()
         {
 
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            Config.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -95,8 +95,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_be_able_to_compare_the_fancy_name()
         {
-            Service.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
-            Service.Instance.RegisterValueComparer(new FancyNameValueComparer());
+            Config.Instance.RegisterValueRetriever(new FancyNameValueRetriever());
+            Config.Instance.RegisterValueComparer(new FancyNameValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "John Galt");
@@ -173,14 +173,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [TearDown]
         public void Cleanup()
         {
-            Service.Instance.RestoreDefaults();
+            Config.Instance.RestoreDefaults();
         }
 
         [Test]
         public void Should_be_able_to_retrieve_the_category()
         {
 
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            Config.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Apple");
@@ -195,8 +195,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_be_able_to_compare_the_category()
         {
-            Service.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
-            Service.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
+            Config.Instance.RegisterValueRetriever(new ProductCategoryValueRetriever());
+            Config.Instance.RegisterValueComparer(new ProductCategoryValueComparer());
 
             var table = new Table("Field", "Value");
             table.AddRow("Name", "Cucumber");
