@@ -9,10 +9,17 @@ namespace TechTalk.SpecFlow.Assist
     public class TableService
     {
         private readonly Config config;
+        private readonly TableComparisonLogic tableComparisonLogic;
 
         public TableService(Config config)
         {
             this.config = config;
+            tableComparisonLogic = new TableComparisonLogic(this);
+        }
+
+        public void CompareToSet<T>(Table table, IEnumerable<T> set)
+        {
+            tableComparisonLogic.CompareToSet(table, set);
         }
 
         internal IEnumerable<IValueComparer> ValueComparers
