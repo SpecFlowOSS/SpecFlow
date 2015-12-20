@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = Assist.Service.Instance.ValueComparers;
+            var valueComparers = Service.Instance.ValueComparers;
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
