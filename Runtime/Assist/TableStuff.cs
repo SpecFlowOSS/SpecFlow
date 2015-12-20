@@ -61,6 +61,13 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ComparisonTableStuff
     {
+        private IEnumerable<IValueComparer> valueComparers;
+
+        public ComparisonTableStuff()
+        {
+            valueComparers = Service.Instance.ValueComparers;
+        }
+
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
             var checker = new SetComparer<T>(table);
@@ -106,7 +113,7 @@ namespace TechTalk.SpecFlow.Assist
                 difference.Actual);
         }
 
-        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
+        private IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
             return from row in table.Rows
                 where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
@@ -124,12 +131,10 @@ namespace TechTalk.SpecFlow.Assist
                 .Any(property => (new TEHelpers()).IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
-        private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
+        private bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
-
-            var valueComparers = Service.Instance.ValueComparers;
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
