@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set)
         {
-            var utility = new Utility(Config.Instance);
+            var utility = new TableService(Config.Instance);
             new ComparisonTableStuff(utility).CompareToSet(table, set);
         }
     }

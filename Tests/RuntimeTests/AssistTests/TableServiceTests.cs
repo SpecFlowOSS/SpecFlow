@@ -11,7 +11,7 @@ using TechTalk.SpecFlow.Assist;
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
     [TestFixture]
-    public class UtilityTests
+    public class TableServiceTests
     {
         [SetUp]
         public void TestSetup()
@@ -49,8 +49,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 .Returns(expectedValue);
             config.RegisterValueRetriever(fakeValueRetriever.Object);
 
-            var utility = new Utility(config);
-            var result = utility.CreateTheInstanceWithTheDefaultConstructor<UtilityTestA>(table);
+            var tableService = new TableService(config);
+            var result = tableService.CreateTheInstanceWithTheDefaultConstructor<UtilityTestA>(table);
 
             // we expect the object that is built to have the expected name
             result.Name.ShouldBeEquivalentTo(expectedValue);
@@ -60,7 +60,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         public void I_can_create_a_new_utility_class_with_a_new_config()
         {
             var config = new Config();
-            new Utility(config);
+            new TableService(config);
         }
     }
 }

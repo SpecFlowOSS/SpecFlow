@@ -61,7 +61,7 @@
     <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\TableStuff.cs" />
-    <Compile Include="Assist\Utility.cs" />
+    <Compile Include="Assist\TableService.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\IValueComparer.cs" />
     <Compile Include="Assist\PivotTable.cs" />

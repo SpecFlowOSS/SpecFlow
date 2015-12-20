@@ -6,11 +6,11 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class Utility
+    public class TableService
     {
         private readonly Config config;
 
-        public Utility(Config config)
+        public TableService(Config config)
         {
             this.config = config;
         }

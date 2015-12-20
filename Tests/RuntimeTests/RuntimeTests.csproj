@@ -71,7 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssistTests\UtilityTests.cs" />
+    <Compile Include="AssistTests\TableServiceTests.cs" />
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\ExampleEntities\EntityWithPropertiesAndFields.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />

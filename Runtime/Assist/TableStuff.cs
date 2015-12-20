@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public T CreateInstance<T>(Table table)
         {
-            var helpers = new Utility(config);
+            var helpers = new TableService(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, typeof (T));
             return helpers.ThisTypeHasADefaultConstructor<T>()
                 ? helpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void FillInstance(Table table, object instance)
         {
-            var helpers = new Utility(config);
+            var helpers = new TableService(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, instance.GetType());
             helpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
@@ -68,16 +68,16 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ComparisonTableStuff
     {
-        private readonly Utility utility;
+        private readonly TableService tableService;
 
-        public ComparisonTableStuff(Utility utility)
+        public ComparisonTableStuff(TableService tableService)
         {
-            this.utility = utility;
+            this.tableService = tableService;
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table, utility);
+            var checker = new SetComparer<T>(table, tableService);
             checker.CompareToSet(set);
         }
 
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = utility.GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = tableService.GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -135,7 +135,7 @@ namespace TechTalk.SpecFlow.Assist
         private bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
-                .Any(property => utility.IsMemberMatchingToColumnName(property, row.Id())) == false;
+                .Any(property => tableService.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
         private bool TheValuesDoNotMatch<T>(T instance, TableRow row)
@@ -143,7 +143,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            return utility.ValueComparers
+            return tableService.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
                 .Compare(expected, propertyValue) == false;
         }
