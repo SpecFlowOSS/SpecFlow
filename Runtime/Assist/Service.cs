@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using BoDi;
-using System.Linq;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -11,14 +7,8 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
-
         private List<IValueComparer> _registeredValueComparers;
         private List<IValueRetriever> _registeredValueRetrievers;
-
-        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
-        public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
-
-        public static Service Instance { get; internal set; }
 
         static Service()
         {
@@ -30,6 +20,18 @@ namespace TechTalk.SpecFlow.Assist
             RestoreDefaults();
         }
 
+        public IEnumerable<IValueComparer> ValueComparers
+        {
+            get { return _registeredValueComparers; }
+        }
+
+        public IEnumerable<IValueRetriever> ValueRetrievers
+        {
+            get { return _registeredValueRetrievers; }
+        }
+
+        public static Service Instance { get; internal set; }
+
         public void RestoreDefaults()
         {
             _registeredValueComparers = new List<IValueComparer>();
@@ -39,10 +41,10 @@ namespace TechTalk.SpecFlow.Assist
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
-            if (valueComparer.GetType() == typeof(DefaultValueComparer))
-              _registeredValueComparers.Add(valueComparer);
+            if (valueComparer.GetType() == typeof (DefaultValueComparer))
+                _registeredValueComparers.Add(valueComparer);
             else
-              _registeredValueComparers.Insert(0, valueComparer);
+                _registeredValueComparers.Insert(0, valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
@@ -110,13 +112,13 @@ namespace TechTalk.SpecFlow.Assist
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
-            foreach(var valueRetriever in ValueRetrievers){
-                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType, propertyType))
+            foreach (var valueRetriever in ValueRetrievers)
+            {
+                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType,
+                    propertyType))
                     return valueRetriever;
             }
             return null;
         }
-
     }
 }
-
