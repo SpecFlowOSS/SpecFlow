@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -7,8 +8,8 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class Service
     {
-        private List<IValueComparer> _registeredValueComparers;
-        private List<IValueRetriever> _registeredValueRetrievers;
+        private List<IValueComparer> registeredValueComparers;
+        private List<IValueRetriever> registeredValueRetrievers;
 
         static Service()
         {
@@ -22,44 +23,44 @@ namespace TechTalk.SpecFlow.Assist
 
         public IEnumerable<IValueComparer> ValueComparers
         {
-            get { return _registeredValueComparers; }
+            get { return registeredValueComparers; }
         }
 
         public IEnumerable<IValueRetriever> ValueRetrievers
         {
-            get { return _registeredValueRetrievers; }
+            get { return registeredValueRetrievers; }
         }
 
         public static Service Instance { get; internal set; }
 
         public void RestoreDefaults()
         {
-            _registeredValueComparers = new List<IValueComparer>();
-            _registeredValueRetrievers = new List<IValueRetriever>();
+            registeredValueComparers = new List<IValueComparer>();
+            registeredValueRetrievers = new List<IValueRetriever>();
             RegisterSpecFlowDefaults();
         }
 
         public void RegisterValueComparer(IValueComparer valueComparer)
         {
             if (valueComparer.GetType() == typeof (DefaultValueComparer))
-                _registeredValueComparers.Add(valueComparer);
+                registeredValueComparers.Add(valueComparer);
             else
-                _registeredValueComparers.Insert(0, valueComparer);
+                registeredValueComparers.Insert(0, valueComparer);
         }
 
         public void UnregisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Remove(valueComparer);
+            registeredValueComparers.Remove(valueComparer);
         }
 
         public void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Add(valueRetriever);
+            registeredValueRetrievers.Add(valueRetriever);
         }
 
         public void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Remove(valueRetriever);
+            registeredValueRetrievers.Remove(valueRetriever);
         }
 
         public void RegisterSpecFlowDefaults()
@@ -112,13 +113,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
-            foreach (var valueRetriever in ValueRetrievers)
+            return ValueRetrievers.FirstOrDefault(r =>
             {
-                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType,
-                    propertyType))
-                    return valueRetriever;
-            }
-            return null;
+                var keyValuePair = new KeyValuePair<string, string>(row[0], row[1]);
+                return r.CanRetrieve(keyValuePair, targetType, propertyType);
+            });
         }
     }
 }
