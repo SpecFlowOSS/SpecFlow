@@ -3,17 +3,29 @@
 Core changes:
 + All components upgraded to .NET 4.5
 + Visual Studio integration has been separated to a separate project: https://github.com/techtalk/SpecFlow.VisualStudio
-+ Support for obsolete runtimes (Silverlight, WP7) have been removed
++ Using the new Gherkin 3 parser (see https://github.com/cucumber/gherkin3)
++ Allow running SpecFlow tests parallel within the same AppDomain
 
 Breaking changes:
 + The new release will not work with .NET runtimes older than .NET 4.5. 
++ Because of the new Gherkin parser, some feature files might not be able to parse
++ Support for obsolete runtimes (Silverlight, WP7) have been removed, they will be re-added in a better way soon.
 
 New Features:
-+ NUnit generator adds tags to TestCase attributes generated from outline examples. This way the NUnit test adapter in Visual Studio will display the tags.
-+ Support for xUnit 2.0 added (Issue 419)
-+ Removing all characters that are not valid in a variable/property name when matching with column names (Issue 511)
++ Support for xUnit 2.0, including parallel support. The old provider is renamed to xunit.1. (Issue 419)
++ Support for NUnit 3.0, including parallel support. The old provider is renamed to nunit.2.
++ Hook (e.g. [BeforeScenario]) execution order can be controlled with an Order parameter of the attribute
 
-Fixed issues:
+Smaller Improvements/fixes:
++ ScenarioContext.StepContext can be used to access the details of the step currently being executed
++ NUnit generator adds tags to TestCase attributes generated from outline examples. This way the NUnit test adapter in Visual Studio will display the tags.
++ Better regular expression suggestions generated for missing steps with quoted parameters
++ Steps base class provides properties to access the feature, scenario and step contexts in a thread-safe way
++ Scenario and feature context can be injected to the binding class to avoid the ScenarioContext.Current and FeatureContext.Current static accessors
++ Assist: better matching of column names to preperty names by removing any character from the header name that is not valid in property names (Issue 511)
++ Small improvements in the DI framework, see https://github.com/gasparnagy/BoDi/blob/master/BoDi/BoDi.cs for details.
++ SpecFlow.MsTest NuGet package can be used to easily configure SpecFlow with MsTest
++ Specflow Test Execution report now includes the "tags" in the Nunit Report which can be displayed through a custom XSLT by the users.
 + remove .net runtime version from generated file header to avoid unwanted changes
 
 
