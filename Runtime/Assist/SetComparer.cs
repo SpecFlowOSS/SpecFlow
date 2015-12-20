@@ -8,17 +8,15 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
-        private readonly Config config;
         private List<T> actualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
-        private Utility utility;
+        private readonly Utility utility;
 
-        public SetComparer(Table table, Config config)
+        public SetComparer(Table table, Utility utility)
         {
             this.table = table;
-            this.config = config;
+            this.utility = utility;
             tableDiffExceptionBuilder = BuildTheTableDiffExceptionBuilder();
-            utility = new Utility(config);
         }
 
         private SafetyTableDiffExceptionBuilder<T> BuildTheTableDiffExceptionBuilder()

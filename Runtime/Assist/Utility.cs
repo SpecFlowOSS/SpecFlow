@@ -6,13 +6,23 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal class Utility
+    public class Utility
     {
         private readonly Config config;
 
         public Utility(Config config)
         {
             this.config = config;
+        }
+
+        internal IEnumerable<IValueComparer> ValueComparers
+        {
+            get { return config.ValueComparers; }
+        }
+
+        internal IEnumerable<IValueRetriever> ValueRetrievers
+        {
+            get { return config.ValueRetrievers; }
         }
 
         internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)

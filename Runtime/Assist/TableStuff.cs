@@ -68,16 +68,16 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ComparisonTableStuff
     {
-        private Config config;
+        private readonly Utility utility;
 
-        public ComparisonTableStuff(Config config)
+        public ComparisonTableStuff(Utility utility)
         {
-            this.config = config;
+            this.utility = utility;
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table, config);
+            var checker = new SetComparer<T>(table, utility);
             checker.CompareToSet(set);
         }
 
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = (new Utility(config)).GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = utility.GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -134,9 +134,8 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
-            var helpers = new Utility(config);
             return instance.GetType().GetProperties()
-                .Any(property => helpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
+                .Any(property => utility.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
         private bool TheValuesDoNotMatch<T>(T instance, TableRow row)
@@ -144,7 +143,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            return config.ValueComparers
+            return utility.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
                 .Compare(expected, propertyValue) == false;
         }
