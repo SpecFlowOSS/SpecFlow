@@ -55,22 +55,21 @@ namespace TechTalk.SpecFlow.Assist
 
             return list;
         }
+    }
 
+    public class ComparisonTableStuff
+    {
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
             var checker = new SetComparer<T>(table);
             checker.CompareToSet(set);
         }
-    }
-
-    public class ComparisonTableStuff
-    {
 
         public void CompareToInstance<T>(Table table, T instance)
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
+            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -92,7 +91,7 @@ namespace TechTalk.SpecFlow.Assist
         private static string CreateDescriptiveErrorMessage(IEnumerable<Difference> differences)
         {
             return differences.Aggregate(@"The following fields did not match:",
-                                         (sum, next) => sum + (Environment.NewLine + DescribeTheErrorForThisDifference(next)));
+                (sum, next) => sum + (Environment.NewLine + DescribeTheErrorForThisDifference(next)));
         }
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
@@ -101,15 +100,15 @@ namespace TechTalk.SpecFlow.Assist
                 return string.Format("{0}: Property does not exist", difference.Property);
 
             return string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                 difference.Property, difference.Expected,
-                                 difference.Actual);
+                difference.Property, difference.Expected,
+                difference.Actual);
         }
 
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
         {
             return from row in table.Rows
-                   where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
-                   select CreateDifferenceForThisRow(instance, row);
+                where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
+                select CreateDifferenceForThisRow(instance, row);
         }
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
@@ -144,17 +143,17 @@ namespace TechTalk.SpecFlow.Assist
         {
             if (ThePropertyDoesNotExist(instance, row))
                 return new Difference
-                           {
-                               Property = row.Id(),
-                               DoesNotExist = true
-                           };
+                {
+                    Property = row.Id(),
+                    DoesNotExist = true
+                };
 
             return new Difference
-                       {
-                           Property = row.Id(),
-                           Expected = row.Value(),
-                           Actual = instance.GetPropertyValue(row.Id())
-                       };
+            {
+                Property = row.Id(),
+                Expected = row.Value(),
+                Actual = instance.GetPropertyValue(row.Id())
+            };
         }
 
         private class Difference
@@ -164,6 +163,5 @@ namespace TechTalk.SpecFlow.Assist
             public object Actual { get; set; }
             public bool DoesNotExist { get; set; }
         }
-        
     }
 }
