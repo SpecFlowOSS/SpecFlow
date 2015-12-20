@@ -10,6 +10,7 @@
   <xsl:output method="xml" />
 
   <xsl:key name="unit-test-result" match="mstest:UnitTestResult" use="@testId"/>
+  <xsl:key name="unit-test-detail" match="mstest:UnitTest" use="@id"/>
 
   <xsl:template name="get-last-part">
     <xsl:param name="text" />
@@ -190,7 +191,8 @@
       <xsl:variable name="id" select="@id" />
       <!--<xsl:variable name="testResult" select="/mstest:TestRun/mstest:Results/mstest:UnitTestResult[@testId=$id]" />-->
       <xsl:variable name="testResult" select="key('unit-test-result', $id)" />
-      
+      <xsl:variable name="testDetail" select="key('unit-test-detail', $id)" />
+
       <xsl:attribute name="name">
         <xsl:value-of select="substring-before(mstest:TestMethod/@className, ',')"/>.<xsl:value-of select="@name"></xsl:value-of>
       </xsl:attribute>
@@ -252,7 +254,21 @@
           </nunit:message>
         </nunit:reason>
       </xsl:if>
-      
+
+      <xsl:if test="$testDetail/mstest:TestCategory">
+        <nunit:categories>
+          <xsl:for-each select="$testDetail/mstest:TestCategory/mstest:TestCategoryItem">
+            <nunit:category>
+              <xsl:attribute name="name">
+                <xsl:value-of select="@TestCategory"/>
+              </xsl:attribute>
+            </nunit:category>
+
+          </xsl:for-each>
+
+        </nunit:categories>
+      </xsl:if>
+
       <xsl:if test="$testResult/@outcome='Failed'">
         <nunit:failure>
           <nunit:message>
