@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Assist
         private static PropertyInfo GetThePropertyOnThisObject(object @object, string propertyName)
         {
             var type = @object.GetType();
-            var helpers = new TEHelpers(Config.Instance);
+            var helpers = new Utility(Config.Instance);
             return type.GetProperties()
                 .FirstOrDefault(x => helpers.IsMemberMatchingToColumnName(x, propertyName));
         }

@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public T CreateInstance<T>(Table table)
         {
-            var helpers = new TEHelpers(config);
+            var helpers = new Utility(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, typeof (T));
             return helpers.ThisTypeHasADefaultConstructor<T>()
                 ? helpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public void FillInstance(Table table, object instance)
         {
-            var helpers = new TEHelpers(config);
+            var helpers = new Utility(config);
             var instanceTable = helpers.GetTheProperInstanceTable(table, instance.GetType());
             helpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = (new TEHelpers(config)).GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = (new Utility(config)).GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -134,7 +134,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
-            var helpers = new TEHelpers(config);
+            var helpers = new Utility(config);
             return instance.GetType().GetProperties()
                 .Any(property => helpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
