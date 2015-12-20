@@ -61,11 +61,11 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ComparisonTableStuff
     {
-        private IEnumerable<IValueComparer> valueComparers;
+        private Service service;
 
-        public ComparisonTableStuff()
+        public ComparisonTableStuff(Service service)
         {
-            valueComparers = Service.Instance.ValueComparers;
+            this.service = service;
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
@@ -136,7 +136,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            return valueComparers
+            return service.ValueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
                 .Compare(expected, propertyValue) == false;
         }
