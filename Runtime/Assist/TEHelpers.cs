@@ -12,9 +12,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         private Service service;
 
-        public TEHelpers()
+        public TEHelpers(Service service)
         {
-            service = Service.Instance;
+            this.service = service;
         }
 
         internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
