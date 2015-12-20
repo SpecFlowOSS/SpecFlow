@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             return typeof (T).GetConstructors()
                 .Where(c => c.GetParameters().Length == 0)
-                .Count() > 0;
+                .Any();
         }
 
         internal ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
