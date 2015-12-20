@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="MsTest\App.config.transform" target="content\App.config.transform" />
+    <file src="..\MsTest\App.config.transform" target="content\App.config.transform" />
   </files>
 </package>

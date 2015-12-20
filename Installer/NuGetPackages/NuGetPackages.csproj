@@ -90,6 +90,9 @@
     <CreateSpecFlowxUnitPackageCommand>
       "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
     </CreateSpecFlowxUnitPackageCommand>
+    <CreateSpecFlowMsTestPackageCommand>
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.MsTest.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
+    </CreateSpecFlowMsTestPackageCommand>
   </PropertyGroup>
   <Target Name="AfterBuild">
     <ItemGroup>
@@ -102,5 +105,6 @@
     <Exec Command="$(CreateSpecFlowNUnitPackageCommand)" />
     <Exec Command="$(CreateSpecFlowNUnitRunnersPackageCommand)" />
     <Exec Command="$(CreateSpecFlowxUnitPackageCommand)" />
+    <Exec Command="$(CreateSpecFlowMsTestPackageCommand)" />
   </Target>
 </Project>
