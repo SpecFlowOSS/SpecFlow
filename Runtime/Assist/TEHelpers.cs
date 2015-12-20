@@ -10,6 +10,13 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal class TEHelpers
     {
+        private Service service;
+
+        public TEHelpers()
+        {
+            service = Service.Instance;
+        }
+
         internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
         {
             var instance = (T)Activator.CreateInstance(typeof(T));
@@ -99,13 +106,13 @@ namespace TechTalk.SpecFlow.Assist
                              from row in table.Rows
                              where TheseTypesMatch(type, property.PropertyType, row)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler(service) { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
                              from row in table.Rows
                              where TheseTypesMatch(type, field.FieldType, row)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler(service) { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
@@ -117,20 +124,26 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
-            return Service.Instance.GetValueRetrieverFor(row, targetType, memberType) != null;
+            return service.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
 
         internal class MemberHandler
         {
+            private Service service;
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
             public Action<object, object> Setter { get; set; }
             public Type Type { get; set; }
             public Type PropertyType { get; set; }
 
+            public MemberHandler(Service service)
+            {
+                this.service = service;
+            }
+
             public object GetValue()
             {
-                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, Type, PropertyType);
+                var valueRetriever = service.GetValueRetrieverFor(Row, Type, PropertyType);
                 return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
             }
         }
