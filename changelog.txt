@@ -15,6 +15,7 @@ New Features:
 + Support for xUnit 2.0, including parallel support. The old provider is renamed to xunit.1. (Issue 419)
 + Support for NUnit 3.0, including parallel support. The old provider is renamed to nunit.2.
 + Hook (e.g. [BeforeScenario]) execution order can be controlled with an Order parameter of the attribute
++ Assist: extensible table conversions and comparisons for CreateSet, CreateInstance, CompareToSet, CompareToInstance
 
 Smaller Improvements/fixes:
 + ScenarioContext.StepContext can be used to access the details of the step currently being executed
