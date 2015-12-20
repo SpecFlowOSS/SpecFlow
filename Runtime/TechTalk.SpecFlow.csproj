@@ -54,7 +54,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Assist\ComparisonTableStuff.cs" />
+    <Compile Include="Assist\TableComparisonLogic.cs" />
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />

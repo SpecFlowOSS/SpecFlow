@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class ComparisonTableStuff
+    internal class TableComparisonLogic
     {
         private readonly TableService tableService;
 
-        public ComparisonTableStuff(TableService tableService)
+        public TableComparisonLogic(TableService tableService)
         {
             this.tableService = tableService;
         }
