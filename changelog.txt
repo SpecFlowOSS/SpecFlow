@@ -4,7 +4,7 @@ Core changes:
 + All components upgraded to .NET 4.5
 + Visual Studio integration has been separated to a separate project: https://github.com/techtalk/SpecFlow.VisualStudio
 + Using the new Gherkin 3 parser (see https://github.com/cucumber/gherkin3)
-+ Allow running SpecFlow tests parallel within the same AppDomain
++ Allow running SpecFlow tests parallel within the same AppDomain. See http://go.specflow.org/doc-multithreaded for details.
 
 Breaking changes:
 + The new release will not work with .NET runtimes older than .NET 4.5. 
