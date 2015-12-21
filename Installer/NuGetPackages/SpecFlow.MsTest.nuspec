@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SpecFlow.MsTest</id>
-    <version>1.0.0</version>
+    <version>1.0.0-alpha</version>
     <title>SpecFlow.MsTest</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow mstest</tags>
     <dependencies>
-      <dependency id="SpecFlow" />
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
     </dependencies>
   </metadata>
   <files>

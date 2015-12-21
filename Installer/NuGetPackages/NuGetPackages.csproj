@@ -82,16 +82,16 @@
       "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.CustomPlugin.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowCustomPluginPackageCommand>
     <CreateSpecFlowNUnitPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowNUnitPackageCommand>
     <CreateSpecFlowNUnitRunnersPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.Runners.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.NUnit.Runners.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowNUnitRunnersPackageCommand>
     <CreateSpecFlowxUnitPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.xUnit.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowxUnitPackageCommand>
     <CreateSpecFlowMsTestPackageCommand>
-      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.MsTest.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis
+      "$(SolutionDir)packages\NuGet.CommandLine.$(NuGetVersion)\tools\NuGet.exe" pack "$(TargetDir)SpecFlow.MsTest.nuspec" -o "$(TargetDir)." -Verbosity detailed -NoPackageAnalysis $(NuGetVersionSpec)
     </CreateSpecFlowMsTestPackageCommand>
   </PropertyGroup>
   <Target Name="AfterBuild">

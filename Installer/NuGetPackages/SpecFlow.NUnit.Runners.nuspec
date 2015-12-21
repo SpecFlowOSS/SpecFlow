@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>SpecFlow.NUnit.Runners</id>
-    <version>1.0.0</version>
+    <version>1.0.0-alpha</version>
     <title>SpecFlow.NUnit.Runners</title>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>specflow nunit nunit.runners nunit-console</tags>
     <dependencies>
-      <dependency id="SpecFlow.NUnit" version="1.1" />
+      <dependency id="SpecFlow.NUnit" version="[1.0.0-alpha]" />
       <dependency id="NUnit.Runners" />
     </dependencies>
   </metadata>
