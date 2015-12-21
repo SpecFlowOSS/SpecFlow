@@ -96,10 +96,16 @@
   </PropertyGroup>
   <Target Name="AfterBuild">
     <ItemGroup>
-      <NuSpecFlies Include="$(ProjectDir)*.nuspec" />
+      <NuSpecFiles Include="$(ProjectDir)*.nuspec" />
     </ItemGroup>
-    <Copy SourceFiles="@(NuSpecFlies)" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true" />
-    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.CustomPlugin.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow']/@version" Value="[$(SpecFlowPackageVersion)]" />
+    <Copy SourceFiles="@(NuSpecFiles)" DestinationFolder="$(TargetDir)" OverwriteReadOnlyFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="NuSpecTargetDirFiles" />
+    </Copy>
+    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" 
+             XmlInputPath="%(NuSpecTargetDirFiles.FullPath)"
+             Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" 
+             Query="//ng:dependency[@id='SpecFlow']/@version" 
+             Value="[$(SpecFlowPackageVersion)]" />
     <Exec Command="$(CreateSpecFlowPackageCommand)" />
     <Exec Command="$(CreateSpecFlowCustomPluginPackageCommand)" />
     <Exec Command="$(CreateSpecFlowNUnitPackageCommand)" />
