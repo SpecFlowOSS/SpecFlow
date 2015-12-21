@@ -16,7 +16,7 @@
     <tags>specflow nunit nunit.runners nunit-console</tags>
     <dependencies>
       <dependency id="SpecFlow.NUnit" version="[1.0.0-alpha]" />
-      <dependency id="NUnit.Runners" />
+      <dependency id="NUnit.Runners" version="[3.0,)" />
     </dependencies>
   </metadata>
   <files>
