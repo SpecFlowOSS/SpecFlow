@@ -106,6 +106,7 @@
              Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" 
              Query="//ng:dependency[@id='SpecFlow']/@version" 
              Value="[$(SpecFlowPackageVersion)]" />
+    <XmlPoke Condition="'$(SpecFlowPackageVersion)' != ''" XmlInputPath="$(TargetDir)SpecFlow.NUnit.Runners.nuspec" Namespaces="&lt;Namespace Prefix='ng' Uri='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd' /&gt;" Query="//ng:dependency[@id='SpecFlow.NUnit']/@version" Value="[$(SpecFlowPackageVersion)]" />
     <Exec Command="$(CreateSpecFlowPackageCommand)" />
     <Exec Command="$(CreateSpecFlowCustomPluginPackageCommand)" />
     <Exec Command="$(CreateSpecFlowNUnitPackageCommand)" />
