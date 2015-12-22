@@ -10,12 +10,12 @@ namespace TechTalk.SpecFlow.Assist
         private readonly Table table;
         private List<T> actualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
-        private readonly TableService tableService;
+        private readonly TableCreationLogic tableCreationLogic;
 
-        public SetComparer(Table table, TableService tableService)
+        public SetComparer(Table table, TableCreationLogic tableCreationLogic)
         {
             this.table = table;
-            this.tableService = tableService;
+            this.tableCreationLogic = tableCreationLogic;
             tableDiffExceptionBuilder = BuildTheTableDiffExceptionBuilder();
         }
 
@@ -144,7 +144,7 @@ namespace TechTalk.SpecFlow.Assist
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
             var propertiesThatDoNotExist = from columnHeader in table.Header
-                                           where (typeof (T).GetProperties().Any(property => tableService.IsMemberMatchingToColumnName(property, columnHeader)) == false)
+                                           where (typeof (T).GetProperties().Any(property => TableCreationLogic.IsMemberMatchingToColumnName(property, columnHeader)) == false)
                                            select columnHeader;
 
             if (propertiesThatDoNotExist.Any())

@@ -62,7 +62,7 @@
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />
-    <Compile Include="Assist\TableStuff.cs" />
+    <Compile Include="Assist\TableCreationLogic.cs" />
     <Compile Include="Assist\TableService.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\IValueComparer.cs" />

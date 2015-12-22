@@ -7,15 +7,17 @@ namespace TechTalk.SpecFlow.Assist
     internal class TableComparisonLogic : ITableComparisonLogic
     {
         private readonly TableService tableService;
+        private readonly TableCreationLogic tableCreationLogic;
 
-        public TableComparisonLogic(TableService tableService)
+        public TableComparisonLogic(TableService tableService, TableCreationLogic tableCreationLogic)
         {
             this.tableService = tableService;
+            this.tableCreationLogic = tableCreationLogic;
         }
 
         public virtual void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table, tableService);
+            var checker = new SetComparer<T>(table, tableCreationLogic);
             checker.CompareToSet(set);
         }
 
@@ -28,7 +30,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = tableService.GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = tableCreationLogic.GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 
@@ -78,7 +80,7 @@ namespace TechTalk.SpecFlow.Assist
         private bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
-                .Any(property => tableService.IsMemberMatchingToColumnName(property, row.Id())) == false;
+                .Any(property => TableCreationLogic.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
         private bool TheValuesDoNotMatch<T>(T instance, TableRow row)

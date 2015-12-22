@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 config.RegisterValueRetriever(fakeValueRetriever.Object);
 
                 var tableService = new TableService(config);
-                var result = tableService.CreateTheInstanceWithTheDefaultConstructor<UtilityTestA>(table);
+                var result = tableService.CreateInstance<UtilityTestA>(table);
 
                 // we expect the object that is built to have the expected name
                 result.Name.ShouldBeEquivalentTo(expectedValue);
@@ -113,6 +113,36 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 service.CompareToSet(table, set);
                 tableComparisonLogic.Verify();
             }
+        }
+
+        [TestFixture]
+        public class CreationTests
+        {
+            [SetUp]
+            public void TestSetup()
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            }
+
+            [Test]
+            public void CompareToInstance_uses_the_table_comparison_logic()
+            {
+                var service = new TableService(new Config());
+
+                var table = new Table("Name");
+                var name = Guid.NewGuid().ToString();
+                table.AddRow(name);
+
+                var result = service.CreateInstance<UtilityTestB>(table);
+
+                result.Should().NotBeNull();
+                result.Name.Should().BeEquivalentTo(name);
+            }
+        }
+
+        public class UtilityTestB
+        {
+            public string Name { get; set; }
         }
     }
 }
