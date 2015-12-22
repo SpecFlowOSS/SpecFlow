@@ -8,6 +8,8 @@ namespace TechTalk.SpecFlow.Assist
 {
     public interface ITableService
     {
+        void CompareToSet<T>(Table table, IEnumerable<T> set);
+        void CompareToInstance<T>(Table table, T instance);
     }
 
     public class TableService : ITableService
