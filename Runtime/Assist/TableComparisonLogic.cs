@@ -7,9 +7,9 @@ namespace TechTalk.SpecFlow.Assist
     internal class TableComparisonLogic : ITableComparisonLogic
     {
         private readonly TableService tableService;
-        private readonly TableCreationLogic tableCreationLogic;
+        private readonly ITableCreationLogic tableCreationLogic;
 
-        public TableComparisonLogic(TableService tableService, TableCreationLogic tableCreationLogic)
+        public TableComparisonLogic(TableService tableService, ITableCreationLogic tableCreationLogic)
         {
             this.tableService = tableService;
             this.tableCreationLogic = tableCreationLogic;
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public virtual void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table, tableCreationLogic);
+            var checker = new SetComparer<T>(table);
             checker.CompareToSet(set);
         }
 
@@ -30,7 +30,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             AssertThatTheInstanceExists(instance);
 
-            var instanceTable = tableCreationLogic.GetTheProperInstanceTable(table, typeof (T));
+            var instanceTable = TableCreationLogic.GetTheProperInstanceTable(table, typeof (T));
 
             var differences = FindAnyDifferences(instanceTable, instance);
 

@@ -17,13 +17,13 @@ namespace TechTalk.SpecFlow.Assist
     {
         private readonly Config config;
         internal ITableComparisonLogic TableComparisonLogic;
-        private readonly TableCreationLogic tableCreationLogic;
+        internal ITableCreationLogic TableCreationLogic;
 
         public TableService(Config config)
         {
             this.config = config;
-            tableCreationLogic = new TableCreationLogic(config);
-            TableComparisonLogic = new TableComparisonLogic(this, tableCreationLogic);
+            TableCreationLogic = new TableCreationLogic(config, this);
+            TableComparisonLogic = new TableComparisonLogic(this, TableCreationLogic);
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public T CreateInstance<T>(Table table)
         {
-            return tableCreationLogic.CreateInstance<T>(table);
+            return TableCreationLogic.CreateInstance<T>(table);
         }
 
         internal IEnumerable<IValueComparer> ValueComparers

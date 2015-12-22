@@ -6,14 +6,27 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class TableCreationLogic
+    public interface ITableCreationLogic
+    {
+        T CreateInstance<T>(Table table);
+        T CreateInstance<T>(Table table, Func<T> methodToCreateTheInstance);
+        void FillInstance(Table table, object instance);
+        IEnumerable<T> CreateSet<T>(Table table);
+        IEnumerable<T> CreateSet<T>(Table table, Func<T> methodToCreateEachInstance);
+        ITableService Service { get; }
+    }
+
+    public class TableCreationLogic : ITableCreationLogic
     {
         private readonly Config config;
 
-        public TableCreationLogic(Config config)
+        public TableCreationLogic(Config config, ITableService tableService)
         {
             this.config = config;
+            this.Service = tableService;
         }
+
+        public ITableService Service { get; }
 
         public T CreateInstance<T>(Table table)
         {
@@ -65,14 +78,14 @@ namespace TechTalk.SpecFlow.Assist
             return list;
         }
 
-        internal T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
+        public T CreateTheInstanceWithTheDefaultConstructor<T>(Table table)
         {
             var instance = (T) Activator.CreateInstance(typeof (T));
             LoadInstanceWithKeyValuePairs(table, instance);
             return instance;
         }
 
-        internal T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
+        public T CreateTheInstanceWithTheValuesFromTheTable<T>(Table table)
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
@@ -95,14 +108,14 @@ namespace TechTalk.SpecFlow.Assist
             return (T) constructor.Invoke(parameterValues);
         }
 
-        internal bool ThisTypeHasADefaultConstructor<T>()
+        public bool ThisTypeHasADefaultConstructor<T>()
         {
             return typeof (T).GetConstructors()
                 .Where(c => c.GetParameters().Length == 0)
                 .Any();
         }
 
-        internal ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
+        public ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
         {
             var projectedPropertyNames = from property in typeof (T).GetProperties()
                 from row in table.Rows
@@ -143,7 +156,7 @@ namespace TechTalk.SpecFlow.Assist
             return name.Replace("_", string.Empty);
         }
 
-        internal void LoadInstanceWithKeyValuePairs(Table table, object instance)
+        public void LoadInstanceWithKeyValuePairs(Table table, object instance)
         {
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
@@ -151,7 +164,7 @@ namespace TechTalk.SpecFlow.Assist
                 .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
-        internal IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
+        public IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
             var properties = from property in type.GetProperties()
                 from row in table.Rows
@@ -189,12 +202,12 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
+        public bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
             return config.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
 
-        internal Table GetTheProperInstanceTable(Table table, Type type)
+        public static Table GetTheProperInstanceTable(Table table, Type type)
         {
             return ThisIsAVerticalTable(table, type)
                 ? table
@@ -206,7 +219,7 @@ namespace TechTalk.SpecFlow.Assist
             return new PivotTable(table).GetInstanceTable(0);
         }
 
-        private bool ThisIsAVerticalTable(Table table, Type type)
+        public static bool ThisIsAVerticalTable(Table table, Type type)
         {
             if (TheHeaderIsTheOldFieldValuePair(table))
                 return true;
@@ -219,14 +232,14 @@ namespace TechTalk.SpecFlow.Assist
             return table.Header.Count() == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
         }
 
-        private bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)
+        public static bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
             return type.GetProperties()
                 .Any(property => IsMemberMatchingToColumnName(property, firstRowValue));
         }
 
-        internal class MemberHandler
+        public class MemberHandler
         {
             private readonly Config config;
 

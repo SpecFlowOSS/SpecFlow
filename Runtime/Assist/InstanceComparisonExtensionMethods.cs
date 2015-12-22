@@ -6,9 +6,9 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToInstance<T>(this Table table, T instance)
         {
-            var utility = new TableService(Config.Instance);
-            var tableCreationLogic = new TableCreationLogic(Config.Instance);
-            new TableComparisonLogic(utility, tableCreationLogic).CompareToInstance(table, instance);
+            var tableService = new TableService(Config.Instance);
+            var tableCreationLogic = new TableCreationLogic(Config.Instance, tableService);
+            new TableComparisonLogic(tableService, tableCreationLogic).CompareToInstance(table, instance);
         }
     }
 

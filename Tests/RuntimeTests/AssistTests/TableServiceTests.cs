@@ -73,6 +73,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 service.TableComparisonLogic.Should().NotBeNull();
                 service.TableComparisonLogic.Service.Should().BeSameAs(service);
             }
+
+            [Test]
+            public void Creating_a_new_service_sets_up_the_table_creation_logic()
+            {
+                var service = new TableService(new Config());
+                service.TableCreationLogic.Should().NotBeNull();
+                service.TableCreationLogic.Service.Should().BeSameAs(service);
+            }
         }
 
         [TestFixture]

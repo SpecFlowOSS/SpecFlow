@@ -10,12 +10,10 @@ namespace TechTalk.SpecFlow.Assist
         private readonly Table table;
         private List<T> actualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
-        private readonly TableCreationLogic tableCreationLogic;
 
-        public SetComparer(Table table, TableCreationLogic tableCreationLogic)
+        public SetComparer(Table table)
         {
             this.table = table;
-            this.tableCreationLogic = tableCreationLogic;
             tableDiffExceptionBuilder = BuildTheTableDiffExceptionBuilder();
         }
 
