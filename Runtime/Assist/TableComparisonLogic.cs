@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    internal class TableComparisonLogic
+    internal class TableComparisonLogic : ITableComparisonLogic
     {
         private readonly TableService tableService;
 
@@ -13,13 +13,13 @@ namespace TechTalk.SpecFlow.Assist
             this.tableService = tableService;
         }
 
-        public void CompareToSet<T>(Table table, IEnumerable<T> set)
+        public virtual void CompareToSet<T>(Table table, IEnumerable<T> set)
         {
             var checker = new SetComparer<T>(table, tableService);
             checker.CompareToSet(set);
         }
 
-        public void CompareToInstance<T>(Table table, T instance)
+        public virtual void CompareToInstance<T>(Table table, T instance)
         {
             AssertThatTheInstanceExists(instance);
 
