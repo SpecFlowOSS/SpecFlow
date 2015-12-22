@@ -6,7 +6,11 @@ using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class TableService
+    public interface ITableService
+    {
+    }
+
+    public class TableService : ITableService
     {
         private readonly Config config;
         internal ITableComparisonLogic TableComparisonLogic;

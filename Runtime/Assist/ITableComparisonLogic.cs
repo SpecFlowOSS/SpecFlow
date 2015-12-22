@@ -6,5 +6,6 @@ namespace TechTalk.SpecFlow.Assist
     {
         void CompareToInstance<T>(Table table, T instance);
         void CompareToSet<T>(Table table, IEnumerable<T> set);
+        ITableService Service { get; }
     }
 }

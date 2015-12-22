@@ -65,6 +65,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 var config = new Config();
                 new TableService(config);
             }
+
+            [Test]
+            public void Creating_a_new_service_sets_up_the_table_comparison_logic()
+            {
+                var service = new TableService(new Config());
+                service.TableComparisonLogic.Should().NotBeNull();
+                service.TableComparisonLogic.Service.Should().BeSameAs(service);
+            }
         }
 
         [TestFixture]
@@ -88,6 +96,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 service.TableComparisonLogic = tableComparisonLogic.Object;
 
                 service.CompareToInstance(table, instance);
+                tableComparisonLogic.Verify();
+            }
+
+            [Test]
+            public void CompareToSet_uses_the_table_comparison_logic()
+            {
+                var tableComparisonLogic = new Mock<ITableComparisonLogic>();
+                var table = new Table("ignore");
+                var set = new Object[] { new Object() };
+                tableComparisonLogic.Setup(x => x.CompareToSet(table, set)).Verifiable();
+
+                var service = new TableService(new Config());
+                service.TableComparisonLogic = tableComparisonLogic.Object;
+
+                service.CompareToSet(table, set);
                 tableComparisonLogic.Verify();
             }
         }

@@ -19,6 +19,11 @@ namespace TechTalk.SpecFlow.Assist
             checker.CompareToSet(set);
         }
 
+        public ITableService Service
+        {
+            get { return tableService; }
+        }
+
         public virtual void CompareToInstance<T>(Table table, T instance)
         {
             AssertThatTheInstanceExists(instance);
