@@ -55,6 +55,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Assist\ITableComparisonLogic.cs" />
+    <Compile Include="Assist\ITableService.cs" />
     <Compile Include="Assist\TableComparisonLogic.cs" />
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
