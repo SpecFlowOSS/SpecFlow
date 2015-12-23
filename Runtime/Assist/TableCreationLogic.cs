@@ -13,20 +13,16 @@ namespace TechTalk.SpecFlow.Assist
         void FillInstance(Table table, object instance);
         IEnumerable<T> CreateSet<T>(Table table);
         IEnumerable<T> CreateSet<T>(Table table, Func<T> methodToCreateEachInstance);
-        ITableService Service { get; }
     }
 
     public class TableCreationLogic : ITableCreationLogic
     {
         private readonly Config config;
 
-        public TableCreationLogic(Config config, ITableService tableService)
+        public TableCreationLogic(Config config)
         {
             this.config = config;
-            this.Service = tableService;
         }
-
-        public ITableService Service { get; }
 
         public T CreateInstance<T>(Table table)
         {

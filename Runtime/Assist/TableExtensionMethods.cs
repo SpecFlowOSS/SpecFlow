@@ -8,31 +8,31 @@ namespace TechTalk.SpecFlow.Assist
         public static T CreateInstance<T>(this Table table)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance, tableService).CreateInstance<T>(table);
+            return new TableCreationLogic(Config.Instance).CreateInstance<T>(table);
         }
 
         public static T CreateInstance<T>(this Table table, Func<T> methodToCreateTheInstance)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance, tableService).CreateInstance<T>(table, methodToCreateTheInstance);
+            return new TableCreationLogic(Config.Instance).CreateInstance<T>(table, methodToCreateTheInstance);
         }
 
         public static void FillInstance(this Table table, object instance)
         {
             var tableService = new TableService(Config.Instance);
-            new TableCreationLogic(Config.Instance, tableService).FillInstance(table, instance);
+            new TableCreationLogic(Config.Instance).FillInstance(table, instance);
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance, tableService).CreateSet<T>(table);
+            return new TableCreationLogic(Config.Instance).CreateSet<T>(table);
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance, tableService).CreateSet(table, methodToCreateEachInstance);
+            return new TableCreationLogic(Config.Instance).CreateSet(table, methodToCreateEachInstance);
         }
     }
 }

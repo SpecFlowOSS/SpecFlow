@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Assist
         public TableService(Config config)
         {
             this.config = config;
-            TableCreationLogic = new TableCreationLogic(config, this);
+            TableCreationLogic = new TableCreationLogic(config);
             TableComparisonLogic = new TableComparisonLogic(this);
         }
 
