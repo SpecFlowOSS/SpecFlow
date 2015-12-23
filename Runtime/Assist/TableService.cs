@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             this.config = config;
             TableCreationLogic = new TableCreationLogic(config, this);
-            TableComparisonLogic = new TableComparisonLogic(this, TableCreationLogic);
+            TableComparisonLogic = new TableComparisonLogic(this);
         }
 
         public void CompareToSet<T>(Table table, IEnumerable<T> set)

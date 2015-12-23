@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var tableService = new TableService(Config.Instance);
             var tableCreationLogic = new TableCreationLogic(Config.Instance, tableService);
-            new TableComparisonLogic(tableService, tableCreationLogic).CompareToInstance(table, instance);
+            new TableComparisonLogic(tableService).CompareToInstance(table, instance);
         }
     }
 

@@ -7,12 +7,10 @@ namespace TechTalk.SpecFlow.Assist
     internal class TableComparisonLogic : ITableComparisonLogic
     {
         private readonly TableService tableService;
-        private readonly ITableCreationLogic tableCreationLogic;
 
-        public TableComparisonLogic(TableService tableService, ITableCreationLogic tableCreationLogic)
+        public TableComparisonLogic(TableService tableService)
         {
             this.tableService = tableService;
-            this.tableCreationLogic = tableCreationLogic;
         }
 
         public virtual void CompareToSet<T>(Table table, IEnumerable<T> set)
