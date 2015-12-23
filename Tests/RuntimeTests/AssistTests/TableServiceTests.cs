@@ -126,7 +126,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             }
 
             [Test]
-            public void CompareToInstance_uses_the_table_comparison_logic()
+            public void Create_instance_uses_the_table_creation_logic()
             {
                 var service = new TableService(new Config());
 
@@ -138,6 +138,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
                 result.Should().NotBeNull();
                 result.Name.Should().BeEquivalentTo(name);
+            }
+
+            [Test]
+            public void Create_set_uses_the_table_creation_logic()
+            {
+                var service = new TableService(new Config());
+
+                var table = new Table("Name");
+                var name1 = Guid.NewGuid().ToString();
+                var name2 = Guid.NewGuid().ToString();
+                table.AddRow(name1);
+                table.AddRow(name2);
+
+                var results = service.CreateSet<UtilityTestB>(table);
+
+                results.Count().Should().Be(2);
+                results.ToArray()[0].Name.Should().Be(name1);
+                results.ToArray()[1].Name.Should().Be(name2);
             }
         }
 

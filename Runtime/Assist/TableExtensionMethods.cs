@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Assist
         public static IEnumerable<T> CreateSet<T>(this Table table)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance).CreateSet<T>(table);
+            return tableService.CreateSet<T>(table);
         }
 
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)

@@ -36,6 +36,11 @@ namespace TechTalk.SpecFlow.Assist
             TableComparisonLogic.CompareToInstance(table, instance);
         }
 
+        public IEnumerable<T> CreateSet<T>(Table table)
+        {
+            return TableCreationLogic.CreateSet<T>(table);
+        }
+
         public T CreateInstance<T>(Table table)
         {
             return TableCreationLogic.CreateInstance<T>(table);
@@ -50,6 +55,5 @@ namespace TechTalk.SpecFlow.Assist
         {
             get { return config.ValueRetrievers; }
         }
-
     }
 }
