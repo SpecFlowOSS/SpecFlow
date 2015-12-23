@@ -41,6 +41,11 @@ namespace TechTalk.SpecFlow.Assist
             return TableCreationLogic.CreateSet<T>(table);
         }
 
+        public IEnumerable<T> CreateSet<T>(Table table, Func<T> methodToCreateEachInstance)
+        {
+            return TableCreationLogic.CreateSet<T>(table, methodToCreateEachInstance);
+        }
+
         public T CreateInstance<T>(Table table)
         {
             return TableCreationLogic.CreateInstance<T>(table);

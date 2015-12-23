@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Assist
         public static IEnumerable<T> CreateSet<T>(this Table table, Func<T> methodToCreateEachInstance)
         {
             var tableService = new TableService(Config.Instance);
-            return new TableCreationLogic(Config.Instance).CreateSet(table, methodToCreateEachInstance);
+            return tableService.CreateSet(table, methodToCreateEachInstance);
         }
     }
 }
