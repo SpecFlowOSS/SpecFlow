@@ -172,6 +172,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 results.Count().Should().Be(1);
                 results.ToArray()[0].Name.Should().Be(name);
             }
+
+            [Test]
+            public void Fill_set_uses_the_table_creation_logic()
+            {
+                var service = new TableService(new Config());
+
+                var name = Guid.NewGuid().ToString();
+
+                var table = new Table("Name");
+                table.AddRow(name);
+
+                var instance = new UtilityTestB();
+
+                service.FillInstance(table, instance);
+
+                instance.Name.Should().Be(name);
+            }
         }
 
         public class UtilityTestB

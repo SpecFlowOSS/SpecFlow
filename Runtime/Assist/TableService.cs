@@ -44,6 +44,11 @@ namespace TechTalk.SpecFlow.Assist
             return TableCreationLogic.CreateInstance<T>(table);
         }
 
+        public void FillInstance<T>(Table table, T instance)
+        {
+            TableCreationLogic.FillInstance(table, instance);
+        }
+
         internal IEnumerable<IValueComparer> ValueComparers
         {
             get { return config.ValueComparers; }

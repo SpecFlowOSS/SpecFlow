@@ -10,5 +10,6 @@ namespace TechTalk.SpecFlow.Assist
         T CreateInstance<T>(Table table);
         IEnumerable<T> CreateSet<T>(Table table, Func<T> methodToCreateEachInstance);
         IEnumerable<T> CreateSet<T>(Table table);
+        void FillInstance<T>(Table table, T instance);
     }
 }
