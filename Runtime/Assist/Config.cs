@@ -33,14 +33,14 @@ namespace TechTalk.SpecFlow.Assist
 
         public static Config Instance { get; internal set; }
 
-        public void RestoreDefaults()
+        public virtual void RestoreDefaults()
         {
             registeredValueComparers = new List<IValueComparer>();
             registeredValueRetrievers = new List<IValueRetriever>();
             RegisterSpecFlowDefaults();
         }
 
-        public void RegisterValueComparer(IValueComparer valueComparer)
+        public virtual void RegisterValueComparer(IValueComparer valueComparer)
         {
             if (valueComparer.GetType() == typeof (DefaultValueComparer))
                 registeredValueComparers.Add(valueComparer);
@@ -48,17 +48,17 @@ namespace TechTalk.SpecFlow.Assist
                 registeredValueComparers.Insert(0, valueComparer);
         }
 
-        public void UnregisterValueComparer(IValueComparer valueComparer)
+        public virtual void UnregisterValueComparer(IValueComparer valueComparer)
         {
             registeredValueComparers.Remove(valueComparer);
         }
 
-        public void RegisterValueRetriever(IValueRetriever valueRetriever)
+        public virtual void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
             registeredValueRetrievers.Add(valueRetriever);
         }
 
-        public void UnregisterValueRetriever(IValueRetriever valueRetriever)
+        public virtual void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
             registeredValueRetrievers.Remove(valueRetriever);
         }
