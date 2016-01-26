@@ -21,6 +21,7 @@
       <reference file="TechTalk.SpecFlow.Generator.dll" />
       <reference file="TechTalk.SpecFlow.Utils.dll" />
       <reference file="TechTalk.SpecFlow.Parser.dll" />
+      <reference file="Gherkin.dll" />
     </references>
   </metadata>
   <files>
