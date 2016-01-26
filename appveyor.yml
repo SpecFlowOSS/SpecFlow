@@ -47,3 +47,5 @@ artifacts:
 - path: Installer\NuGetPackages\bin\SpecFlow.NUnit.Runners.1.0.0.nupkg
 - path: Installer\NuGetPackages\bin\SpecFlow.xUnit.1.0.2.nupkg
 - path: Installer\NuGetPackages\bin\SpecFlow.MsTest.1.0.0.nupkg
+- path: Installer\SpecFlowBinPackage\bin\SpecFlowBinPackage.zip
+- path: Installer\SpecFlowBinPackage\bin\SpecFlowSymbolPackage.zip
