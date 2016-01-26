@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Gherkin;
 using Gherkin.Ast;
-using TechTalk.SpecFlow.Parser.Compatibility;
 
 namespace TechTalk.SpecFlow.Parser
 {
@@ -20,8 +19,6 @@ namespace TechTalk.SpecFlow.Parser
 
             public override GherkinDialect GetDialect(string language, Location location)
             {
-                location = location ?? new Location(); //TODO: fix in gherkin3, GetDialect needs a location for throwing NoSuchLanguageException
-
                 if (language.Contains("-"))
                 {
                     try
@@ -66,7 +63,7 @@ namespace TechTalk.SpecFlow.Parser
             return StepKeyword.And;
         }
 
-        private class SpecFlowAstBuilder : PatchedAstBuilder<SpecFlowFeature>
+        private class SpecFlowAstBuilder : AstBuilder<SpecFlowFeature>
         {
             private readonly string sourceFilePath;
             private ScenarioBlock scenarioBlock = ScenarioBlock.Given;
@@ -77,7 +74,7 @@ namespace TechTalk.SpecFlow.Parser
             }
 
             protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description,
-                Background background, ScenarioDefinition[] scenariodefinitions, Comment[] comments)
+                Background background, ScenarioDefinition[] scenariodefinitions, Comment[] comments, AstNode node)
             {
                 return new SpecFlowFeature(tags, location, language, keyword, name, description, background, scenariodefinitions, comments, sourceFilePath);
             }
@@ -96,22 +93,22 @@ namespace TechTalk.SpecFlow.Parser
                 scenarioBlock = ScenarioBlock.Given;
             }
 
-            protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps)
+            protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, AstNode node)
             {
                 ResetBlock();
-                return base.CreateScenario(tags, location, keyword, name, description, steps);
+                return base.CreateScenario(tags, location, keyword, name, description, steps, node);
             }
 
-            protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples)
+            protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
             {
                 ResetBlock();
-                return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples);
+                return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples, node);
             }
 
-            protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps)
+            protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)
             {
                 ResetBlock();
-                return base.CreateBackground(location, keyword, name, description, steps);
+                return base.CreateBackground(location, keyword, name, description, steps, node);
             }
         }
 

@@ -24,22 +24,22 @@
         <ScenarioStep xsi:type="And">
           <ScenarioBlock>Given</ScenarioBlock>
           <StepKeyword>And</StepKeyword>
-          <Keyword>Et </Keyword>
-          <Text>que j'entre &lt;a&gt; pour le premier nombre</Text>
+          <Keyword>Et que </Keyword>
+          <Text>j'entre &lt;a&gt; pour le premier nombre</Text>
           <FilePosition line="9" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <ScenarioBlock>Given</ScenarioBlock>
           <StepKeyword>And</StepKeyword>
-          <Keyword>Et </Keyword>
-          <Text>que je tape sur la touche "+"</Text>
+          <Keyword>Et que </Keyword>
+          <Text>je tape sur la touche "+"</Text>
           <FilePosition line="10" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="And">
           <ScenarioBlock>Given</ScenarioBlock>
           <StepKeyword>And</StepKeyword>
-          <Keyword>Et </Keyword>
-          <Text>que j'entre &lt;b&gt; pour le second nombre</Text>
+          <Keyword>Et que </Keyword>
+          <Text>j'entre &lt;b&gt; pour le second nombre</Text>
           <FilePosition line="11" column="5" />
         </ScenarioStep>
         <ScenarioStep xsi:type="When">

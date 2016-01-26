@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.Parser.Compatibility
         private static Scenario ConvertToCompatibleScenario(global::Gherkin.Ast.ScenarioDefinition sd)
         {
             var result = sd is global::Gherkin.Ast.ScenarioOutline
-                ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples)) //TODO[Gherkin3]: ScenarioOutline compatibility
+                ? new ScenarioOutline(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps), ConvertToCompatibleExamples(((global::Gherkin.Ast.ScenarioOutline)sd).Examples))
                 : new Scenario(sd.Keyword, sd.Name, sd.Description, ConvertToCompatibleTags(sd.Tags), ConvertToCompatibleSteps(sd.Steps));
             result.FilePosition = ConvertToCompatibleFilePosition(sd.Location);
             return result;

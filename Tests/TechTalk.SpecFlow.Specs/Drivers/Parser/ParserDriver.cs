@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
     public class ParserDriver
     {
         public string FileContent { get; set; }
-        public Feature ParsedFeature { get; private set; }
+        public SpecFlowFeature ParsedFeature { get; private set; }
         public ParserException[] ParsingErrors { get; private set; }
 
         private readonly SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
@@ -29,10 +29,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
             try
             {
-                var specFlowFeature = parser.Parse(contentReader, "sample.feature");
-                ParsedFeature = CompatibleAstConverter.ConvertToCompatibleFeature(specFlowFeature);
+                ParsedFeature = parser.Parse(contentReader, "sample.feature");
                 Assert.IsNotNull(ParsedFeature);
-                ParsedFeature.SourceFile = null;
             }
             catch (ParserException ex)
             {
@@ -74,10 +72,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             }
         }
 
-        private void SerializeFeature(Feature feature, TextWriter writer)
+        private void SerializeFeature(SpecFlowFeature feature, TextWriter writer)
         {
+            var oldFeature = CompatibleAstConverter.ConvertToCompatibleFeature(feature);
+            oldFeature.SourceFile = null;
             XmlSerializer serializer = new XmlSerializer(typeof(Feature));
-            serializer.Serialize(writer, feature);
+            serializer.Serialize(writer, oldFeature);
         }
 
         public void SaveSerializedFeatureTo(string fileName)
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             SerializeFeature(ParsedFeature, fileName);
         }
 
-        private void SerializeFeature(Feature feature, string fileName)
+        private void SerializeFeature(SpecFlowFeature feature, string fileName)
         {
             using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             }
         }
 
-        private string SerializeFeature(Feature feature)
+        private string SerializeFeature(SpecFlowFeature feature)
         {
             using (var writer = new Utf8StringWriter())
             {
