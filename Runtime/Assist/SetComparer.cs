@@ -142,7 +142,7 @@ namespace TechTalk.SpecFlow.Assist
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
             var propertiesThatDoNotExist = from columnHeader in table.Header
-                                           where (typeof (T).GetProperties().Any(property => TEHelpers.IsMemberMatchingToColumnName(property, columnHeader)) == false)
+                                           where (typeof (T).GetProperties().Any(property => TableCreationLogic.IsMemberMatchingToColumnName(property, columnHeader)) == false)
                                            select columnHeader;
 
             if (propertiesThatDoNotExist.Any())

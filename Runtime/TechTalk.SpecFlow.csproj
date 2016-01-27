@@ -54,13 +54,17 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Assist\ITableComparisonLogic.cs" />
+    <Compile Include="Assist\ITableService.cs" />
+    <Compile Include="Assist\TableComparisonLogic.cs" />
     <Compile Include="Assist\EnumerableProjection.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SetComparer.cs" />
     <Compile Include="Assist\TableDifferenceResults.cs" />
     <Compile Include="Assist\TableDiffExceptionBuilder.cs" />
-    <Compile Include="Assist\TEHelpers.cs" />
+    <Compile Include="Assist\TableCreationLogic.cs" />
+    <Compile Include="Assist\TableService.cs" />
     <Compile Include="Assist\InstanceComparisonExtensionMethods.cs" />
     <Compile Include="Assist\IValueComparer.cs" />
     <Compile Include="Assist\PivotTable.cs" />
@@ -231,7 +235,7 @@
     <Compile Include="Tracing\TestTracer.cs" />
     <Compile Include="UnitTestProvider\IUnitTestRuntimeProvider.cs" />
     <Compile Include="Tracing\ITraceListener.cs" />
-    <Compile Include="Assist\Service.cs" />
+    <Compile Include="Assist\Config.cs" />
     <Compile Include="Assist\IValueRetriever.cs" />
     <Compile Include="Assist\ValueRetrievers\TimeSpanValueRetriever.cs" />
   </ItemGroup>

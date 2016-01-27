@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_load_the_value_comparers_by_default()
         {
-            var service = new Service();
+            var service = new Config();
 
             var results = service.ValueComparers;
             Assert.AreEqual(7, results.Count());
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_load_the_value_retrievers_by_default()
         {
-            var service = new Service();
+            var service = new Config();
 
             var results = service.ValueRetrievers;
             Assert.AreEqual(36, results.Count());
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_allow_the_removal_and_addition_of_new_value_comparers()
         {
-            var service = new Service();
+            var service = new Config();
 
             foreach (var valueComparer in service.ValueComparers.ToArray())
             {
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_allow_the_removal_and_addition_of_new_value_retrievers()
         {
-            var service = new Service();
+            var service = new Config();
 
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {
@@ -112,7 +112,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         [Test]
         public void Should_allow_for_the_restoration_of_the_defaults()
         {
-            var service = new Service();
+            var service = new Config();
 
             foreach (var valueRetriever in service.ValueRetrievers.ToArray())
             {

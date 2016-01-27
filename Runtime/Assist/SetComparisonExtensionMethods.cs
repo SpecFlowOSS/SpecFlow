@@ -6,8 +6,8 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set)
         {
-            var checker = new SetComparer<T>(table);
-            checker.CompareToSet(set);
+            var tableService = new TableService(Config.Instance);
+            new TableComparisonLogic(tableService).CompareToSet(table, set);
         }
     }
 }

@@ -1,63 +1,66 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using BoDi;
 using System.Linq;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist
 {
-    public class Service
+    public class Config
     {
+        private List<IValueComparer> registeredValueComparers;
+        private List<IValueRetriever> registeredValueRetrievers;
 
-        private List<IValueComparer> _registeredValueComparers;
-        private List<IValueRetriever> _registeredValueRetrievers;
-
-        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
-        public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
-
-        public static Service Instance { get; internal set; }
-
-        static Service()
+        static Config()
         {
-            Instance = new Service();
+            Instance = new Config();
         }
 
-        public Service()
+        public Config()
         {
             RestoreDefaults();
         }
 
-        public void RestoreDefaults()
+        public IEnumerable<IValueComparer> ValueComparers
         {
-            _registeredValueComparers = new List<IValueComparer>();
-            _registeredValueRetrievers = new List<IValueRetriever>();
+            get { return registeredValueComparers; }
+        }
+
+        public IEnumerable<IValueRetriever> ValueRetrievers
+        {
+            get { return registeredValueRetrievers; }
+        }
+
+        public static Config Instance { get; internal set; }
+
+        public virtual void RestoreDefaults()
+        {
+            registeredValueComparers = new List<IValueComparer>();
+            registeredValueRetrievers = new List<IValueRetriever>();
             RegisterSpecFlowDefaults();
         }
 
-        public void RegisterValueComparer(IValueComparer valueComparer)
+        public virtual void RegisterValueComparer(IValueComparer valueComparer)
         {
-            if (valueComparer.GetType() == typeof(DefaultValueComparer))
-              _registeredValueComparers.Add(valueComparer);
+            if (valueComparer.GetType() == typeof (DefaultValueComparer))
+                registeredValueComparers.Add(valueComparer);
             else
-              _registeredValueComparers.Insert(0, valueComparer);
+                registeredValueComparers.Insert(0, valueComparer);
         }
 
-        public void UnregisterValueComparer(IValueComparer valueComparer)
+        public virtual void UnregisterValueComparer(IValueComparer valueComparer)
         {
-            _registeredValueComparers.Remove(valueComparer);
+            registeredValueComparers.Remove(valueComparer);
         }
 
-        public void RegisterValueRetriever(IValueRetriever valueRetriever)
+        public virtual void RegisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Add(valueRetriever);
+            registeredValueRetrievers.Add(valueRetriever);
         }
 
-        public void UnregisterValueRetriever(IValueRetriever valueRetriever)
+        public virtual void UnregisterValueRetriever(IValueRetriever valueRetriever)
         {
-            _registeredValueRetrievers.Remove(valueRetriever);
+            registeredValueRetrievers.Remove(valueRetriever);
         }
 
         public void RegisterSpecFlowDefaults()
@@ -110,13 +113,11 @@ namespace TechTalk.SpecFlow.Assist
 
         public IValueRetriever GetValueRetrieverFor(TableRow row, Type targetType, Type propertyType)
         {
-            foreach(var valueRetriever in ValueRetrievers){
-                if (valueRetriever.CanRetrieve(new KeyValuePair<string, string>(row[0], row[1]), targetType, propertyType))
-                    return valueRetriever;
-            }
-            return null;
+            return ValueRetrievers.FirstOrDefault(r =>
+            {
+                var keyValuePair = new KeyValuePair<string, string>(row[0], row[1]);
+                return r.CanRetrieve(keyValuePair, targetType, propertyType);
+            });
         }
-
     }
 }
-
