@@ -71,23 +71,5 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             people.First().FirstName.Should().Be("John");
             people.Last().FirstName.Should().Be("Howard");
         }
-
-        [Test]
-        public void Calls_instance_creation_method_using_row_as_parameter()
-        {
-            var table = new Table("FullName", "Sex", "IsRational");
-            table.AddRow("John Smith", "Male", "False");
-            table.AddRow("Howard Jones", "Male", "True");
-            
-            var people = table.CreateSet(row => new Person { FirstName = row.GetString("FullName").Split(' ').First() });
-
-            var john = people.First();
-            var howard = people.Last();
-
-            ObjectAssertExtensions.ShouldEqual(john.FirstName, "John");
-            ObjectAssertExtensions.ShouldEqual(john.IsRational, false);
-            ObjectAssertExtensions.ShouldEqual(howard.FirstName, "Howard");
-            ObjectAssertExtensions.ShouldEqual(howard.IsRational, true);
-        }
     }
 }

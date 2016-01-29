@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="1.0" 
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+                xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
                 xmlns:sfr="urn:TechTalk:SpecFlow.Report"
                 xmlns:nunit="urn:NUnit"
                 xmlns:mstest="http://microsoft.com/schemas/VisualStudio/TeamTest/2006"
@@ -34,8 +34,7 @@
       <xsl:attribute name="name">
         <xsl:value-of select="@name"/>
       </xsl:attribute>
-      <xsl:variable name="startTime" select="mstest:Times/@start" />
-      <!-- start="2010-06-20T21:54:47.1619417+02:00" -->
+      <xsl:variable name="startTime" select="mstest:Times/@start" /> <!-- start="2010-06-20T21:54:47.1619417+02:00" -->
       <xsl:attribute name="date">
         <xsl:value-of select="substring($startTime, 1, 10)"/>
       </xsl:attribute>
@@ -48,7 +47,7 @@
         <xsl:variable name="className" select="mstest:TestMethod/@className" />
         <xsl:if test="not(preceding-sibling::mstest:UnitTest[mstest:TestMethod/@className=$className])">
           <xsl:variable name="unitTests" select="//mstest:UnitTest[mstest:TestMethod/@className=$className]"/>
-
+          
           <nunit:test-suite type="TestFixture" result="Failure" success="False">
             <xsl:attribute name="name">
               <xsl:call-template name="get-last-part">
@@ -91,12 +90,12 @@
 
             <xsl:attribute name="time">0.000</xsl:attribute>
             <xsl:attribute name="asserts">0</xsl:attribute>
-
+            
             <nunit:results>
               <xsl:apply-templates select="$unitTests" />
             </nunit:results>
           </nunit:test-suite>
-        </xsl:if>
+       </xsl:if>
       </xsl:for-each>
     </nunit:test-results>
   </xsl:template>
@@ -280,8 +279,8 @@
           </nunit:stack-trace>
         </nunit:failure>
       </xsl:if>
-
+      
     </nunit:test-case>
   </xsl:template>
-
+  
 </xsl:stylesheet>
