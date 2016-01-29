@@ -2,6 +2,6 @@
 <configuration>
   <specFlow>
     <!-- For additional details on SpecFlow configuration options see http://go.specflow.org/doc-config -->
-    <unitTestProvider name="msTest" />
+    <unitTestProvider name="MsTest" />
   </specFlow>
 </configuration>

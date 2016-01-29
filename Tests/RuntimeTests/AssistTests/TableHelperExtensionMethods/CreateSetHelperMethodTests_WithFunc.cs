@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
-using ObjectAssertExtensions = Should.ObjectAssertExtensions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 {
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             
             var people = table.CreateSet(() => expectedPerson);
 
-            ObjectAssertExtensions.ShouldBeSameAs(people.Single(), expectedPerson);
+            people.Single().Should().Be(expectedPerson);
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet(queue.Dequeue);
 
-            ObjectAssertExtensions.ShouldEqual(people.Count(), 2);
-            ObjectAssertExtensions.ShouldBeSameAs(people.First(), first);
-            ObjectAssertExtensions.ShouldBeSameAs(people.Last(), second);
+            people.Count().Should().Be(2);
+            people.First().Should().Be(first);
+            people.Last().Should().Be(second);
         }
 
         [Test]
@@ -68,8 +68,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet(queue.Dequeue);
 
-            ObjectAssertExtensions.ShouldEqual(people.First().FirstName, "John");
-            ObjectAssertExtensions.ShouldEqual(people.Last().FirstName, "Howard");
+            people.First().FirstName.Should().Be("John");
+            people.Last().FirstName.Should().Be("Howard");
         }
 
         [Test]

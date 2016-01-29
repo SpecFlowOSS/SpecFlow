@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
         {
             var table = new Table("FirstName");
             var people = table.CreateSet<Person>();
-            people.Count().ShouldEqual(0);
+            people.Count().Should().Be(0);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var table = new Table("FirstName");
             table.AddRow("John");
             var people = table.CreateSet<Person>();
-            people.Count().ShouldEqual(1);
+            people.Count().Should().Be(1);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var table = new Table("firstname");
             table.AddRow("John");
             var people = table.CreateSet<Person>();
-            people.First().FirstName.ShouldEqual("John");
+            people.First().FirstName.Should().Be("John");
         }
 
         [Test]
@@ -55,7 +55,35 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var table = new Table("first name");
             table.AddRow("John");
             var people = table.CreateSet<Person>();
-            people.First().FirstName.ShouldEqual("John");
+            people.First().FirstName.Should().Be("John");
+        }
+
+        [Test]
+        public void Sets_properties_from_column_names_with_underscore_to_properties_with_underscore()
+        {
+            var table = new Table("With_Underscore");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().With_Underscore.Should().Be("John");
+        }
+
+        [Test]
+        public void Sets_properties_from_column_names_to_properties_with_umlaute()
+        {
+            var table = new Table("WithUmlauteäöü");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().WithUmlauteäöü.Should().Be("John");
+        }
+
+
+        [Test]
+        public void Sets_properties_from_column_names_to_properties_with_dash()
+        {
+            var table = new Table("first-name");
+            table.AddRow("John");
+            var people = table.CreateSet<Person>();
+            people.First().FirstName.Should().Be("John");
         }
 
         [Test]
@@ -65,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             table.AddRow("John");
             table.AddRow("Howard");
             var people = table.CreateSet<Person>();
-            people.Count().ShouldEqual(2);
+            people.Count().Should().Be(2);
         }
 
         [Test]
@@ -76,8 +104,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().FirstName.ShouldEqual("John");
-            people.First().LastName.ShouldEqual("Galt");
+            people.First().FirstName.Should().Be("John");
+            people.First().LastName.Should().Be("Galt");
         }
 
         [Test]
@@ -88,7 +116,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().NumberOfIdeas.ShouldEqual(3);
+            people.First().NumberOfIdeas.Should().Be(3);
         }
 
 
@@ -101,7 +129,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().Sex.ShouldEqual(Sex.Male);
+            people.First().Sex.Should().Be(Sex.Male);
         }
 
         [Test]
@@ -112,9 +140,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().BirthDate.ShouldEqual(new DateTime(2009, 4, 28));
+            people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
         }
 
+        
         [Test]
         public void Sets_decimal_on_the_instance_when_type_is_decimal()
         {
@@ -123,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().Salary.ShouldEqual(9997.43M);
+            people.First().Salary.Should().Be(9997.43M);
         }
 
         [Test]
@@ -134,7 +163,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().IsRational.ShouldBeTrue();
+            people.First().IsRational.Should().BeTrue();
         }
 
         [Test]
@@ -145,8 +174,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().Double.ShouldEqual(4.193);
-            people.First().NullableDouble.ShouldEqual(7.28);
+            people.First().Double.Should().Be(4.193);
+            people.First().NullableDouble.Should().Be(7.28);
         }
 
         [Test]
@@ -157,8 +186,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().Float.ShouldEqual(2.698F);
-            people.First().NullableFloat.ShouldEqual(8.954F);
+            people.First().Float.Should().Be(2.698F);
+            people.First().NullableFloat.Should().Be(8.954F);
         }
 
         [Test]
@@ -169,8 +198,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().GuidId.ShouldEqual(new Guid("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82"));
-            people.First().NullableGuidId.ShouldEqual(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
+            people.First().GuidId.Should().Be(new Guid("8A6F6A2F-4EF8-4D6A-BCCE-749E8513BA82"));
+            people.First().NullableGuidId.Should().Be(new Guid("11116FB0-3E49-473A-B79F-A77D0A5A1526"));
         }
 
         [Test]
@@ -181,8 +210,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().UnsignedInt.ShouldEqual<uint>(1);
-            people.First().NullableUnsignedInt.ShouldEqual<uint?>(2);
+            people.First().UnsignedInt.Should().Be(1);
+            people.First().NullableUnsignedInt.Should().Be((uint?)2);
         }
 
         [Test]
@@ -193,8 +222,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<Person>();
 
-            people.First().MiddleInitial.ShouldEqual('O');
-            people.First().NullableChar.ShouldEqual('K');
+            people.First().MiddleInitial.Should().Be('O');
+            people.First().NullableChar.Should().Be('K');
         }
     }
 }

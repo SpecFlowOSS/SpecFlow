@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
@@ -36,7 +36,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.FirstName.ShouldEqual("John");
+            person.FirstName.Should().Be("John");
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.FirstName.ShouldEqual("John");
+            person.FirstName.Should().Be("John");
         }
 
         [Test]
@@ -59,8 +59,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.FirstName.ShouldEqual("John");
-            person.LastName.ShouldEqual("Galt");
+            person.FirstName.Should().Be("John");
+            person.LastName.Should().Be("Galt");
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.Sex.ShouldEqual(Sex.Male);
+            person.Sex.Should().Be(Sex.Male);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.NumberOfIdeas.ShouldEqual(3);
+            person.NumberOfIdeas.Should().Be(3);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.UnsignedInt.ShouldEqual<uint>(3);
+            person.UnsignedInt.Should().Be(3);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.Salary.ShouldEqual(9.78M);
+            person.Salary.Should().Be(9.78M);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.IsRational.ShouldBeTrue();
+            person.IsRational.Should().BeTrue();
         }
 
         [Test]
@@ -127,8 +127,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.BirthDate.ShouldEqual(new DateTime(2010, 12, 31));
-            person.NullableDateTime.ShouldEqual(new DateTime(2011, 11, 30));
+            person.BirthDate.Should().Be(new DateTime(2010, 12, 31));
+            person.NullableDateTime.Should().Be(new DateTime(2011, 11, 30));
         }
 
         [Test]
@@ -140,8 +140,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.MiddleInitial.ShouldEqual('T');
-            person.NullableChar.ShouldEqual('S');
+            person.MiddleInitial.Should().Be('T');
+            person.NullableChar.Should().Be('S');
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person {FullName = "Howard Roark"};
 
             person.GetPropertyValue("Full Name")
-                .ShouldEqual("Howard Roark");
+                .Should().Be("Howard Roark");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person { FullName = "Howard Roark" };
 
             person.GetPropertyValue("fullname")
-                .ShouldEqual("Howard Roark");
+                .Should().Be("Howard Roark");
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person { FullName = "Howard Roark" };
             person.SetPropertyValue("Full Name", "John Galt");
 
-            person.FullName.ShouldEqual("John Galt");
+            person.FullName.Should().Be("John Galt");
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var person = new Person { FullName = "Howard Roark" };
             person.SetPropertyValue("full name", "John Galt");
 
-            person.FullName.ShouldEqual("John Galt");
+            person.FullName.Should().Be("John Galt");
         }
 
         [Test]

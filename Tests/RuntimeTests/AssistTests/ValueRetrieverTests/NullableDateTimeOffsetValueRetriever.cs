@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -19,22 +19,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             };
 
             var retriever = new NullableDateTimeOffsetValueRetriever(func);
-            retriever.GetValue("one").ShouldEqual(new DateTimeOffset(2011, 1, 2, 2, 0, 0, TimeSpan.Zero));
-            retriever.GetValue("two").ShouldEqual(new DateTimeOffset(2015, 12, 31, 2, 0, 0, TimeSpan.Zero));
+            retriever.GetValue("one").Should().Be(new DateTimeOffset(2011, 1, 2, 2, 0, 0, TimeSpan.Zero));
+            retriever.GetValue("two").Should().Be(new DateTimeOffset(2015, 12, 31, 2, 0, 0, TimeSpan.Zero));
         }
 
         [Test]
         public void Returns_null_when_value_is_null()
         {
             var retriever = new NullableDateTimeOffsetValueRetriever(v => DateTimeOffset.Parse("1/1/2016"));
-            retriever.GetValue(null).ShouldBeNull();
+            retriever.GetValue(null).Should().NotHaveValue();
         }
 
         [Test]
         public void Returns_null_when_string_is_empty()
         {
             var retriever = new NullableDateTimeOffsetValueRetriever(v => DateTimeOffset.Parse("1/1/2017"));
-            retriever.GetValue(string.Empty).ShouldBeNull();
+            retriever.GetValue(string.Empty).Should().NotHaveValue();
         }
     }
 }

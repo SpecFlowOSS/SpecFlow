@@ -209,7 +209,8 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["allowRowTests"] = value; }
         }
 
-        [ConfigurationProperty("generateAsyncTests", DefaultValue = ConfigDefaults.GenerateAsyncTests, IsRequired = false)]
+        [Obsolete("Async tests are not part of the core library from v2")]
+        [ConfigurationProperty("generateAsyncTests", DefaultValue = false, IsRequired = false)]
         public bool GenerateAsyncTests
         {
             get { return (bool)this["generateAsyncTests"]; }

@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Bindings
         void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding);
     }
 
-    internal class BindingRegistry : IBindingRegistry
+    public class BindingRegistry : IBindingRegistry
     {
         private readonly List<IStepDefinitionBinding> stepDefinitions = new List<IStepDefinitionBinding>();
         private readonly List<IStepArgumentTransformationBinding> stepArgumentTransformations = new List<IStepArgumentTransformationBinding>();
@@ -31,7 +31,31 @@ namespace TechTalk.SpecFlow.Bindings
             return stepDefinitions.Where(sd => sd.StepDefinitionType == stepDefinitionType);
         }
 
-        private List<IHookBinding> GetHookList(HookType bindingEvent)
+        public virtual IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
+        {
+            return GetHookList(bindingEvent);
+        }
+
+        private IEnumerable<IHookBinding> GetHookList(HookType bindingEvent)
+        {
+            List<IHookBinding> list;
+            if (hooks.TryGetValue(bindingEvent, out list))
+                return list;
+
+            return Enumerable.Empty<IHookBinding>();
+        }
+
+        public virtual IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
+        {
+            return stepArgumentTransformations;
+        }
+
+        public virtual void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
+        {
+            stepDefinitions.Add(stepDefinitionBinding);
+        }
+
+        private List<IHookBinding> GetHookListForRegister(HookType bindingEvent)
         {
             List<IHookBinding> list;
             if (!hooks.TryGetValue(bindingEvent, out list))
@@ -43,27 +67,12 @@ namespace TechTalk.SpecFlow.Bindings
             return list;
         }
 
-        public IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
+        public virtual void RegisterHookBinding(IHookBinding hookBinding)
         {
-            return GetHookList(bindingEvent);
+            GetHookListForRegister(hookBinding.HookType).Add(hookBinding);
         }
 
-        public IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations()
-        {
-            return stepArgumentTransformations;
-        }
-
-        public void RegisterStepDefinitionBinding(IStepDefinitionBinding stepDefinitionBinding)
-        {
-            stepDefinitions.Add(stepDefinitionBinding);
-        }
-
-        public void RegisterHookBinding(IHookBinding hookBinding)
-        {
-            GetHookList(hookBinding.HookType).Add(hookBinding);
-        }
-
-        public void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
+        public virtual void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)
         {
             stepArgumentTransformations.Add(stepArgumentTransformationBinding);
         }

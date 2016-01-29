@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.Should().BeTrue();
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue();
+            comparisonResult.ExceptionWasThrown.Should().BeTrue();
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             ComparisonTestResult comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
 StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBreak());
         }
@@ -143,7 +143,7 @@ StringProperty: Expected <Howard Roark>, Actual <Peter Keating>".AgnosticLineBre
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(
+            exception.Message.AgnosticLineBreak().Should().Be(
                 @"The following fields did not match:
 StringProperty: Expected <Howard Roark>, Actual <Peter Keating>
 IntProperty: Expected <1>, Actual <2>".AgnosticLineBreak());
@@ -159,7 +159,7 @@ IntProperty: Expected <1>, Actual <2>".AgnosticLineBreak());
 
             var exception = GetExceptionThrownByThisComparison(table, test);
 
-            exception.Message.AgnosticLineBreak().ShouldEqual(@"The following fields did not match:
+            exception.Message.AgnosticLineBreak().Should().Be(@"The following fields did not match:
 IDoNotExist: Property does not exist".AgnosticLineBreak());
         }
 
@@ -174,14 +174,14 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
                                                                                                             BoolProperty = true
                                                                                                         });
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
 
             comparisonResult = ExceptionWasThrownByThisComparison(table, new InstanceComparisonTestObject
                                                                                                     {
                                                                                                         BoolProperty = false
                                                                                                     });
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -195,7 +195,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
                                                                                                             GuidProperty = new Guid("DFFC3F4E-670A-400A-8212-C6841E2EA055")
                                                                                                         });
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -208,7 +208,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
                                                                                      DecimalProperty = 4.23000000M
                                                                                  });
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
 
         [Test]
@@ -218,7 +218,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, (InstanceComparisonTestObject)null);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -228,7 +228,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
 
             var exception = GetExceptionThrownByThisComparison(table, (InstanceComparisonTestObject)null);
 
-            exception.Message.ShouldEqual("The item to compare was null.");
+            exception.Message.Should().Be("The item to compare was null.");
         }
 
         [Test]
@@ -241,7 +241,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -254,7 +254,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -272,7 +272,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
                            };
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -353,7 +353,7 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             };
 
             var comparisonResult = ExceptionWasThrownByThisComparison(table, test);
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         private static ComparisonException GetExceptionThrownByThisComparison(Table table, InstanceComparisonTestObject test)

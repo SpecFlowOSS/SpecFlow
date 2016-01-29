@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class EnumValueRetriever
+    public class EnumValueRetriever : IValueRetriever
     {
         public object GetValue(string value, Type enumType)
         {
             CheckThatTheValueIsAnEnum(value, enumType);
 
             return ConvertTheStringToAnEnum(value, enumType);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return GetValue(keyValuePair.Value, propertyType);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);
+            return propertyType.IsEnum;
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)

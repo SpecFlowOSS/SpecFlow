@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -32,7 +34,7 @@ namespace TechTalk.SpecFlow.Assist
                                 where m.MemberName == parameterName
                                 select m).FirstOrDefault();
                 if (member != null)
-                    parameterValues[parameterIndex] = member.Handler(member.Row);
+                    parameterValues[parameterIndex] = member.GetValue();
             }
             return (T)constructor.Invoke(parameterValues);
         }
@@ -65,12 +67,22 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            var cleanedColumnName = columnName
-                .Replace(" ", string.Empty)
-                .Replace("-", string.Empty)
-                .Replace("?", string.Empty);
+            var normalizedColumnName = NormalizePropertyNameToMatchAgainstAColumnName(RemoveAllCharactersThatAreNotValidInAPropertyName(columnName));
+            var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
-            return propertyName.Equals(cleanedColumnName, StringComparison.OrdinalIgnoreCase);
+            return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
+        {
+            //Unicode groups allowed: Lu, Ll, Lt, Lm, Lo, Nl or Nd see https://msdn.microsoft.com/en-us/library/aa664670%28v=vs.71%29.aspx
+            return new Regex(@"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]").Replace(name, string.Empty);
+        }
+
+        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
+        {
+            // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
+            return name.Replace("_", string.Empty);
         }
 
         internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
@@ -78,26 +90,22 @@ namespace TechTalk.SpecFlow.Assist
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
 
             membersThatNeedToBeSet.ToList()
-                .ForEach(x => x.Setter(instance, x.Handler(x.Row)));
+                .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
         internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs(type);
-
             var properties = from property in type.GetProperties()
-                             from key in handlers.Keys
                              from row in table.Rows
-                             where TheseTypesMatch(property.PropertyType, key)
+                             where TheseTypesMatch(type, property.PropertyType, row)
                                    && IsMemberMatchingToColumnName(property, row.Id())
-                             select new MemberHandler { Row = row, MemberName = property.Name, Handler = handlers[key], Setter = (i, v) => property.SetValue(i, v, null) };
+                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
 
             var fields = from field in type.GetFields()
-                             from key in handlers.Keys
                              from row in table.Rows
-                             where TheseTypesMatch(field.FieldType, key)
+                             where TheseTypesMatch(type, field.FieldType, row)
                                    && IsMemberMatchingToColumnName(field, row.Id())
-                             select new MemberHandler { Row = row, MemberName = field.Name, Handler = handlers[key], Setter = (i, v) => field.SetValue(i, v) };
+                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
 
             var memberHandlers = new List<MemberHandler>();
 
@@ -107,62 +115,24 @@ namespace TechTalk.SpecFlow.Assist
             return memberHandlers;
         }
 
-        private static bool TheseTypesMatch(Type memberType, Type handlerType)
+        private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
         {
-            if (handlerType.IsAssignableFrom(memberType))
-                return true;
-            if (memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return handlerType.IsAssignableFrom(memberType.GetGenericArguments()[0]);
-            return false;
-        }
-
-        internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs(Type type)
-        {
-            return new Dictionary<Type, Func<TableRow, object>>
-                       {
-                           {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
-                           {typeof (byte), (TableRow row) => new ByteValueRetriever().GetValue(row[1])},
-                           {typeof (byte?), (TableRow row) => new NullableByteValueRetriever(v => new ByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (sbyte), (TableRow row) => new SByteValueRetriever().GetValue(row[1])},
-                           {typeof (sbyte?), (TableRow row) => new NullableSByteValueRetriever(v => new SByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
-                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (uint), (TableRow row) => new UIntValueRetriever().GetValue(row[1])},
-                           {typeof (uint?), (TableRow row) => new NullableUIntValueRetriever(v => new UIntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (short), (TableRow row) => new ShortValueRetriever().GetValue(row[1])},
-                           {typeof (short?), (TableRow row) => new NullableShortValueRetriever(v => new ShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ushort), (TableRow row) => new UShortValueRetriever().GetValue(row[1])},
-                           {typeof (ushort?), (TableRow row) => new NullableUShortValueRetriever(v => new UShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (long), (TableRow row) => new LongValueRetriever().GetValue(row[1])},
-                           {typeof (long?), (TableRow row) => new NullableLongValueRetriever(v => new LongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ulong), (TableRow row) => new ULongValueRetriever().GetValue(row[1])},
-                           {typeof (ulong?), (TableRow row) => new NullableULongValueRetriever(v => new ULongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (float), (TableRow row) => new FloatValueRetriever().GetValue(row[1])},
-                           {typeof (float?), (TableRow row) => new NullableFloatValueRetriever(v => new FloatValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {typeof (double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (DateTimeOffset), (TableRow row) => new DateTimeOffsetValueRetriever().GetValue(row[1])},
-                           {typeof (DateTimeOffset?), (TableRow row) => new NullableDateTimeOffsetValueRetriever(v => new DateTimeOffsetValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], type.GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
-                       };
+            return Service.Instance.GetValueRetrieverFor(row, targetType, memberType) != null;
         }
 
         internal class MemberHandler
         {
             public TableRow Row { get; set; }
             public string MemberName { get; set; }
-            public Func<TableRow, object> Handler { get; set; }
             public Action<object, object> Setter { get; set; }
+            public Type Type { get; set; }
+            public Type PropertyType { get; set; }
+
+            public object GetValue()
+            {
+                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, Type, PropertyType);
+                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
+            }
         }
 
         internal static Table GetTheProperInstanceTable(Table table, Type type)

@@ -8,7 +8,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
-using Should;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeTrue();
+            result.Success.Should().BeTrue();
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeTrue();
+            result.Success.Should().BeTrue();
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeTrue();
+            result.Success.Should().BeTrue();
         }
 
         [Test]
@@ -107,8 +107,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeFalse();
-            ambiguityReason.ShouldEqual(StepDefinitionAmbiguityReason.AmbiguousScopes);
+            result.Success.Should().BeFalse();
+            ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
         }
 
         [Test]
@@ -123,8 +123,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeFalse();
-            ambiguityReason.ShouldEqual(StepDefinitionAmbiguityReason.AmbiguousScopes);
+            result.Success.Should().BeFalse();
+            ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousScopes);
         }
 
         [Test] // in case of single parameter error, we pretend success - the error will be displayed runtime
@@ -138,7 +138,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeTrue(); 
+            result.Success.Should().BeTrue(); 
         }
 
         [Test]
@@ -153,8 +153,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeFalse();
-            ambiguityReason.ShouldEqual(StepDefinitionAmbiguityReason.ParameterErrors);
+            result.Success.Should().BeFalse();
+            ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.ParameterErrors);
         }
 
         [Test]
@@ -169,8 +169,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeFalse();
-            ambiguityReason.ShouldEqual(StepDefinitionAmbiguityReason.AmbiguousSteps);
+            result.Success.Should().BeFalse();
+            ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.AmbiguousSteps);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeTrue();
+            result.Success.Should().BeTrue();
         }
 
         [Test]
@@ -199,8 +199,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             List<BindingMatch> candidatingMatches;
             var result = sut.GetBestMatch(CreateSimpleWhen(), bindingCulture, out ambiguityReason, out candidatingMatches);
 
-            result.Success.ShouldBeFalse();
-            ambiguityReason.ShouldEqual(StepDefinitionAmbiguityReason.None);
+            result.Success.Should().BeFalse();
+            ambiguityReason.Should().Be(StepDefinitionAmbiguityReason.None);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
@@ -11,9 +11,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         public void Can_compare_if_the_value_is_a_single()
         {
             var valueComparer = new FloatValueComparer();
-            valueComparer.CanCompare(1.0F).ShouldBeTrue();
-            valueComparer.CanCompare(3.34F).ShouldBeTrue();
-            valueComparer.CanCompare(-1.24F).ShouldBeTrue();
+            valueComparer.CanCompare(1.0F).Should().BeTrue();
+            valueComparer.CanCompare(3.34F).Should().BeTrue();
+            valueComparer.CanCompare(-1.24F).Should().BeTrue();
         }
 
         [Test]
@@ -21,43 +21,43 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueComparerTests
         {
             new FloatValueComparer()
                 .CanCompare(null)
-                .ShouldBeFalse();
+                .Should().BeFalse();
         }
 
         [Test]
         public void Cannot_compare_if_the_value_is_not_a_single()
         {
             var valueComparer = new FloatValueComparer();
-            valueComparer.CanCompare("x").ShouldBeFalse();
-            valueComparer.CanCompare(1).ShouldBeFalse();
-            valueComparer.CanCompare(3.14M).ShouldBeFalse();
+            valueComparer.CanCompare("x").Should().BeFalse();
+            valueComparer.CanCompare(1).Should().BeFalse();
+            valueComparer.CanCompare(3.14M).Should().BeFalse();
         }
 
         [Test]
         public void Returns_true_when_the_single_values_match()
         {
             var valueComparer = new FloatValueComparer();
-            valueComparer.TheseValuesAreTheSame("3.14", 3.14F).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("0", 0.0F).ShouldBeTrue();
-            valueComparer.TheseValuesAreTheSame("-1", -1.0F).ShouldBeTrue();
+            valueComparer.Compare("3.14", 3.14F).Should().BeTrue();
+            valueComparer.Compare("0", 0.0F).Should().BeTrue();
+            valueComparer.Compare("-1", -1.0F).Should().BeTrue();
         }
 
         [Test]
         public void Returns_false_when_the_single_values_do_not_match()
         {
             var valueComparer = new FloatValueComparer();
-            valueComparer.TheseValuesAreTheSame("-1", 1.0F).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("0", 1.0F).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("100.2874", 100.2873F).ShouldBeFalse();
+            valueComparer.Compare("-1", 1.0F).Should().BeFalse();
+            valueComparer.Compare("0", 1.0F).Should().BeFalse();
+            valueComparer.Compare("100.2874", 100.2873F).Should().BeFalse();
         }
 
         [Test]
         public void Returns_false_when_the_expected_value_is_not_a_single()
         {
             var valueComparer = new FloatValueComparer();
-            valueComparer.TheseValuesAreTheSame("x", 0.0F).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("", 0.0F).ShouldBeFalse();
-            valueComparer.TheseValuesAreTheSame("-----3", 0F).ShouldBeFalse();
+            valueComparer.Compare("x", 0.0F).Should().BeFalse();
+            valueComparer.Compare("", 0.0F).Should().BeFalse();
+            valueComparer.Compare("-----3", 0F).Should().BeFalse();
         }
     }
 }

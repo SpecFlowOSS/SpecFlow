@@ -1,7 +1,7 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(parentResults);
 
-            result.ShouldEqual("Expected Results");
+            result.Should().Be("Expected Results");
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(parentResults);
 
-            result.ShouldEqual("Expected Results Times Two");
+            result.Should().Be("Expected Results Times Two");
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(parentResults);
 
-            result.ShouldEqual("The table and the set not match.");
+            result.Should().Be("The table and the set not match.");
         }
 
         public class TestClass{}

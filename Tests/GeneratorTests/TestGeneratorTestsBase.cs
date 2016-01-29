@@ -7,7 +7,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -89,7 +89,7 @@ Scenario: Add two numbers
             UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
 
             var generatorRegistryStub = new Mock<IFeatureGeneratorRegistry>();
-            generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<Feature>())).Returns(unitTestFeatureGenerator);
+            generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(unitTestFeatureGenerator);
 
             return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, generatorRegistryStub.Object, codeDomHelper);
         }

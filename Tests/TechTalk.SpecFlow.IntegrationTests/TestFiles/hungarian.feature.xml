@@ -3,9 +3,9 @@
   <Language>hu-HU</Language>
   <Keyword>Jellemző</Keyword>
   <Title>Hungarian</Title>
-  <Description>Azért, hogy elkerüljem a buta hibákat
-amit diszkalkúliásként elkövethetek,
-két szám összegét szeretném kiszámoltatni.</Description>
+  <Description>  Azért, hogy elkerüljem a buta hibákat
+  amit diszkalkúliásként elkövethetek,
+  két szám összegét szeretném kiszámoltatni.</Description>
   <FilePosition line="2" column="1" />
   <Scenarios>
     <Scenario xsi:type="ScenarioOutline">

@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow.Specs.Drivers;
+﻿using System.IO;
+using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -6,10 +7,12 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     public class BindingSteps
     {
         private readonly InputProjectDriver inputProjectDriver;
+        private readonly HooksDriver hooksDriver;
 
-        public BindingSteps(InputProjectDriver inputProjectDriver)
+        public BindingSteps(InputProjectDriver inputProjectDriver, HooksDriver hooksDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
+            this.hooksDriver = hooksDriver;
         }
 
         [Given(@"all steps are bound and pass")]
@@ -31,13 +34,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and fail")]
         public void GivenAllStepsAreBoundAndFail(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", code: "throw new System.Exception(\"simulated failure\");");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "throw new System.Exception(\"simulated failure\");");
         }
 
         [Given(@"all '(.*)' steps are bound and pass")]
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", code: "//pass");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "//pass");
         }
 
         [Given(@"the following hooks?")]
@@ -49,10 +52,16 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.AddBindingCode(bindingCode);
         }
 
-        [Given(@"a hook '(.*)' for '(.*)'")]
+        [Given(@"a hook '(.*)' for '([^']*)'")]
         public void GivenAnEventBindingFor(string methodName, string eventType)
         {
-            inputProjectDriver.AddEventBinding(eventType, code: "//pass", methodName: methodName);
+            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName);
+        }
+
+        [Given(@"a hook '(.*)' for '([^']*)' with order '([^']*)'")]
+        public void GivenAHookForWithOrder(string methodName, string eventType, int hookOrder)
+        {
+            inputProjectDriver.AddEventBinding(eventType, hooksDriver.GetHookLogStatement(methodName), methodName, hookOrder);
         }
 
         [Given(@"the following binding class")]

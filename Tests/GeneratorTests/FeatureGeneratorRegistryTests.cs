@@ -7,7 +7,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            Feature anyFeature = new Feature();
+            var anyFeature = ParserHelper.CreateAnyFeature();
             var generator = featureGeneratorRegistry.CreateGenerator(anyFeature);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();
@@ -44,15 +44,15 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowFeature>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            Feature anyFeature = new Feature();
+            var anyFeature = ParserHelper.CreateAnyFeature();
             var generator = featureGeneratorRegistry.CreateGenerator(anyFeature);
 
             generator.Should().Be(dummyGenerator);
@@ -64,15 +64,15 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<Feature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowFeature>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            Feature theFeature = new Feature();
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
             featureGeneratorRegistry.CreateGenerator(theFeature);
 
             genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature), Times.Once());
@@ -83,10 +83,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
-            Feature theFeature = new Feature();
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<Feature>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
             genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature)).Returns(false); // not applicable for aFeature
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
             }
 
-            public override IFeatureGenerator CreateGenerator(Feature feature)
+            public override IFeatureGenerator CreateGenerator(SpecFlowFeature feature)
             {
                 return DummyGenerator;
             }
@@ -128,8 +128,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag"));
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] {"mytag"});
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
@@ -143,8 +142,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("@mytag");
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("mytag"));
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] { "mytag" });
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
@@ -158,8 +156,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags(new Tag("othertag"));
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] { "othertag" });
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
@@ -173,8 +170,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            Feature theFeature = new Feature();
-            theFeature.Tags = new Tags();
+            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 

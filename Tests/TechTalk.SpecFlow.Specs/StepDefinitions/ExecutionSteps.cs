@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
-using Should;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -13,11 +13,15 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly ProjectSteps projectSteps;
         private readonly SpecFlowConfigurationDriver configurationDriver;
         private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
+        private readonly XUnitTestExecutionDriver xUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver, ProjectSteps projectSteps)
+        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
+            SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
+            ProjectSteps projectSteps)
         {
             this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
+            this.xUnitTestExecutionDriver = xUnitTestExecutionDriver;
             this.projectSteps = projectSteps;
             this.msTestTestExecutionDriver = msTestTestExecutionDriver;
             this.configurationDriver = configurationDriver;
@@ -26,7 +30,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            configurationDriver.UnitTestProviderName.ShouldEqual("NUnit");
+            configurationDriver.UnitTestProviderName.Should().Be("NUnit.2");
 
             projectSteps.EnsureCompiled();
             nUnitTestExecutionDriver.Execute();
@@ -46,11 +50,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             switch (unitTestProvider)
             {
-                case "NUnit":
+                case "NUnit.2":
                     nUnitTestExecutionDriver.Execute();
+                    break;
+                case "NUnit":
+                    nUnitTestExecutionDriver.ExecuteWithNUnit3();
                     break;
                 case "MsTest":
                     msTestTestExecutionDriver.Execute();
+                    break;
+                case "xUnit":
+                    xUnitTestExecutionDriver.Execute();
                     break;
                 default:
                     throw new NotSupportedException();

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
@@ -210,7 +210,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var testObject = table.CreateInstance<StandardTypesComparisonTestObject>();
 
-            propertyFunc(testObject).ShouldEqual(value);
+            propertyFunc(testObject).Should().Be(value);
         }
     }
 }

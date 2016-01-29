@@ -7,13 +7,27 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    internal class TestRunContainerBuilder
+    public interface ITestRunContainerBuilder
     {
-        internal static DefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+        IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null);
+        IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer);
+    }
 
-        public static IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
+    public class TestRunContainerBuilder : ITestRunContainerBuilder
+    {
+        public static IDefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
+
+        private readonly IDefaultDependencyProvider defaultDependencyProvider;
+
+        public TestRunContainerBuilder(IDefaultDependencyProvider defaultDependencyProvider = null)
+        {
+            this.defaultDependencyProvider = defaultDependencyProvider ?? DefaultDependencyProvider;
+        }
+
+        public virtual IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
+            container.RegisterInstanceAs<ITestRunContainerBuilder>(this);
 
             RegisterDefaults(container);
 
@@ -49,7 +63,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
-        private static IRuntimePlugin[] LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container)
+        public IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer)
+        {
+            var testRunnerContainer = new ObjectContainer(globalContainer);
+
+            defaultDependencyProvider.RegisterTestRunnerDefaults(testRunnerContainer);
+
+            return testRunnerContainer;
+        }
+
+        protected virtual IRuntimePlugin[] LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container)
         {
             var plugins = container.Resolve<IDictionary<string, IRuntimePlugin>>().Values.AsEnumerable();
 
@@ -59,14 +82,14 @@ namespace TechTalk.SpecFlow.Infrastructure
             return plugins.ToArray();
         }
 
-        private static IRuntimePlugin LoadPlugin(IRuntimePluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
+        protected virtual IRuntimePlugin LoadPlugin(IRuntimePluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
         {
             return pluginLoader.LoadPlugin(pluginDescriptor);
         }
 
-        private static void RegisterDefaults(ObjectContainer container)
+        protected virtual void RegisterDefaults(ObjectContainer container)
         {
-            DefaultDependencyProvider.RegisterDefaults(container);
+            defaultDependencyProvider.RegisterDefaults(container);
         }
     }
 }

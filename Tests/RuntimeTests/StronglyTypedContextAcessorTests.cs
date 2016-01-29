@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BoDi;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -243,9 +244,27 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreSame(expected, actual);
         }
 
+        [Test]
+        public void Can_get_and_set_a_null_value_with_an_object()
+        {
+            var scenarioContext = CreateScenarioContext();
+            scenarioContext.Set<object>(null, "SomeKey");
+            var result = scenarioContext.Get<object>("SomeKey");
+            Assert.IsNull(result);
+        }
+
+        [Test]
+        public void Can_get_and_set_a_null_value_with_a_string()
+        {
+            var scenarioContext = CreateScenarioContext();
+            scenarioContext.Set<string>(null, "SomeKey");
+            var result = scenarioContext.Get<string>("SomeKey");
+            Assert.IsNull(result);
+        }
+
         private static ScenarioContext CreateScenarioContext()
         {
-            return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), null, null);
+            return new ScenarioContext(new ScenarioInfo("Test", new string[] {}), new ObjectContainer());
         }
 
         public class ScenarioTestClass : IScenarioTestInterface

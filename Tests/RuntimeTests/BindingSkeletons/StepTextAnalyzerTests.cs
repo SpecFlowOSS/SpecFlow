@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
-using Should;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
@@ -20,9 +20,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I do something", bindingCulture);
-            result.Parameters.ShouldBeEmpty();
-            result.TextParts.Count.ShouldEqual(1);
-            result.TextParts[0].ShouldEqual("I do something");
+            result.Parameters.Should().BeEmpty();
+            result.TextParts.Count.Should().Be(1);
+            result.TextParts[0].Should().Be("I do something");
         }
 
         [Test]
@@ -31,10 +31,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I \"do\" something", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I \"");
-            result.TextParts[1].ShouldEqual("\" something");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I \"");
+            result.TextParts[1].Should().Be("\" something");
         }
 
         [Test]
@@ -43,10 +43,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I 'do' something", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I '");
-            result.TextParts[1].ShouldEqual("' something");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I '");
+            result.TextParts[1].Should().Be("' something");
         }
 
         [Test]
@@ -55,10 +55,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I <do> something", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I ");
-            result.TextParts[1].ShouldEqual(" something");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I ");
+            result.TextParts[1].Should().Be(" something");
         }
 
         [Test]
@@ -67,10 +67,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I 'do \" something' really \" strange", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I '");
-            result.TextParts[1].ShouldEqual("' really \" strange");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I '");
+            result.TextParts[1].Should().Be("' really \" strange");
         }
 
         [Test]
@@ -79,10 +79,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I 'do 42 something' foo", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I '");
-            result.TextParts[1].ShouldEqual("' foo");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I '");
+            result.TextParts[1].Should().Be("' foo");
         }
 
         [Test]
@@ -91,11 +91,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I have 42 bars", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I have ");
-            result.TextParts[1].ShouldEqual(" bars");
-            result.Parameters[0].Type.ShouldEqual("Int32");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I have ");
+            result.TextParts[1].Should().Be(" bars");
+            result.Parameters[0].Type.Should().Be("Int32");
         }
 
         [Test]
@@ -104,11 +104,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             var sut = new StepTextAnalyzer();
 
             var result = sut.Analyze("I have 4.2 bars", bindingCulture);
-            result.Parameters.Count.ShouldEqual(1);
-            result.TextParts.Count.ShouldEqual(2);
-            result.TextParts[0].ShouldEqual("I have ");
-            result.TextParts[1].ShouldEqual(" bars");
-            result.Parameters[0].Type.ShouldEqual("Decimal");
+            result.Parameters.Count.Should().Be(1);
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I have ");
+            result.TextParts[1].Should().Be(" bars");
+            result.Parameters[0].Type.Should().Be("Decimal");
         }
     }
 }

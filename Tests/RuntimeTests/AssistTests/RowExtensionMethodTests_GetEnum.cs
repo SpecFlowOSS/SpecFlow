@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 using RowExtensionMethods = TechTalk.SpecFlow.Assist.RowExtensionMethods;
@@ -17,8 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Sex");
             table.AddRow("Male");
 
-            ObjectAssertExtensions.ShouldEqual<Enum>(table.Rows.First()
-                                                              .GetEnum<Person>("Sex"), Sex.Male);
+            table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.Male);
         }
 
         [Test]
@@ -27,8 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Sex");
             table.AddRow("Unknown Sex");
 
-            ObjectAssertExtensions.ShouldEqual<Enum>(table.Rows.First()
-                                                              .GetEnum<Person>("Sex"), Sex.UnknownSex);
+            table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.UnknownSex);
         }
 
         [Test]
@@ -37,8 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Sex");
             table.AddRow("feMale");
 
-            ObjectAssertExtensions.ShouldEqual<Enum>(table.Rows.First()
-                                                              .GetEnum<Person>("Sex"), Sex.Female);
+            table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.Female);
         }
 
         [Test]
@@ -47,8 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var table = new Table("Sex");
             table.AddRow("unknown sex");
 
-            ObjectAssertExtensions.ShouldEqual<Enum>(table.Rows.First()
-                                                              .GetEnum<Person>("Sex"), Sex.UnknownSex);
+            table.Rows.First().GetEnum<Person>("Sex").Should().Be(Sex.UnknownSex);
         }
 
         [Test]
@@ -67,7 +63,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 if (exception.Message == "No enum with value NotDefinied found in type Person")
                     exceptionThrown = true;
             }
-            exceptionThrown.ShouldBeTrue();
+            exceptionThrown.Should().BeTrue();
         }
 
         [Test]
@@ -79,10 +75,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var row = table.Rows.First();
 
             row.GetEnum<AClassWithTwoEnumsOfTheSameType>("Color")
-                .ShouldEqual(Colors.Red);
+                .Should().Be(Colors.Red);
 
             row.GetEnum<AClassWithTwoEnumsOfTheSameType>("AnotherColor")
-                .ShouldEqual(Colors.Green);
+                .Should().Be(Colors.Green);
         }
 
         [Test]
@@ -94,13 +90,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var row = table.Rows.First();
 
             row.GetEnum<AClassWithSimilarEnums>("ColorsAgain1")
-                .ShouldEqual(ColorsAgain.Green);
+                .Should().Be(ColorsAgain.Green);
 
             row.GetEnum<AClassWithSimilarEnums>("Color")
-                .ShouldEqual(Colors.Green);
+                .Should().Be(Colors.Green);
 
             row.GetEnum<AClassWithSimilarEnums>("ColorsAgain2")
-                .ShouldEqual(ColorsAgain.Green);
+                .Should().Be(ColorsAgain.Green);
         }
 
         public class AClassWithTwoEnumsOfTheSameType

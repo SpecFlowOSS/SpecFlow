@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Infrastructure;
@@ -14,19 +15,35 @@ namespace TechTalk.SpecFlow
 {
     public class ScenarioContext : SpecFlowContext
     {
+        #region Singleton
+        private static bool isCurrentDisabled = false;
         private static ScenarioContext current;
         public static ScenarioContext Current
         {
             get
             {
+                if (isCurrentDisabled)
+                    throw new SpecFlowException("The ScenarioContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the scenario context to the binding class. See http://go.specflow.org/doc-multithreaded for details.");
                 if (current == null)
                 {
                     Debug.WriteLine("Accessing NULL ScenarioContext");
                 }
                 return current;
             }
-            internal set { current = value; }
+            internal set
+            {
+                if (!isCurrentDisabled)
+                    current = value;
+            }
         }
+
+        internal static void DisableSingletonInstance()
+        {
+            isCurrentDisabled = true;
+            Thread.MemoryBarrier();
+            current = null;
+        }
+        #endregion
 
         public ScenarioInfo ScenarioInfo { get; private set; }
         public ScenarioBlock CurrentScenarioBlock { get; internal set; }
@@ -37,14 +54,19 @@ namespace TechTalk.SpecFlow
         internal List<StepInstance> MissingSteps { get; private set; }
         internal Stopwatch Stopwatch { get; private set; }
 
-        internal ITestRunner TestRunner { get; private set; } 
+        private readonly IObjectContainer scenarioContainer;
 
-        private readonly IObjectContainer objectContainer;
-
-        internal ScenarioContext(ScenarioInfo scenarioInfo, ITestRunner testRunner, IObjectContainer parentContainer)
+        public IObjectContainer ScenarioContainer
         {
-            this.objectContainer = parentContainer == null ? new ObjectContainer() : new ObjectContainer(parentContainer);
-            TestRunner = testRunner;
+            get { return scenarioContainer; }
+        }
+
+        internal ScenarioContext(ScenarioInfo scenarioInfo, IObjectContainer parentContainer)
+        {
+            if (parentContainer == null)
+                throw new ArgumentNullException("parentContainer");
+
+            this.scenarioContainer = new ObjectContainer(parentContainer);
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -56,26 +78,35 @@ namespace TechTalk.SpecFlow
             MissingSteps = new List<StepInstance>();
         }
 
+        public ScenarioStepContext StepContext
+        {
+            get
+            {
+                var contextManager = ScenarioContainer.Resolve<IContextManager>();
+                return contextManager.StepContext;
+            }
+        }
+
         public void Pending()
         {
-            TestRunner.Pending();
+            throw new PendingStepException();
         }
 
         public object GetBindingInstance(Type bindingType)
         {
-            return objectContainer.Resolve(bindingType);
+            return scenarioContainer.Resolve(bindingType);
         }
 
         internal void SetBindingInstance(Type bindingType, object instance)
         {
-            objectContainer.RegisterInstanceAs(instance, bindingType);
+            scenarioContainer.RegisterInstanceAs(instance, bindingType);
         }
 
         protected override void Dispose()
         {
             base.Dispose();
 
-            objectContainer.Dispose();
+            scenarioContainer.Dispose();
         }
     }
 }

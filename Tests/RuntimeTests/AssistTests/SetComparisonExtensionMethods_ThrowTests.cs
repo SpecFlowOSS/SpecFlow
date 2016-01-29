@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse();
+            comparisonResult.ExceptionWasThrown.Should().BeFalse();
         }
 
         [Test]
@@ -204,7 +204,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
 
         }
 
@@ -218,7 +218,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -267,7 +267,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -326,7 +326,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeTrue(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeTrue(comparisonResult.ExceptionMessage);
         }
 
         [Test]
@@ -342,7 +342,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var comparisonResult = DetermineIfExceptionWasThrownByComparingThese(table, items);
 
-            comparisonResult.ExceptionWasThrown.ShouldBeFalse(comparisonResult.ExceptionMessage);
+            comparisonResult.ExceptionWasThrown.Should().BeFalse(comparisonResult.ExceptionMessage);
         }
 
         private static ComparisonTestResult DetermineIfExceptionWasThrownByComparingThese(Table table, SetComparisonTestObject[] items)

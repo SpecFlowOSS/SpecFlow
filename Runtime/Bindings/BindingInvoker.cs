@@ -17,8 +17,8 @@ namespace TechTalk.SpecFlow.Bindings
 {
     public class BindingInvoker : IBindingInvoker
     {
-        private readonly RuntimeConfiguration runtimeConfiguration;
-        private readonly IErrorProvider errorProvider;
+        protected readonly RuntimeConfiguration runtimeConfiguration;
+        protected readonly IErrorProvider errorProvider;
 
         public BindingInvoker(RuntimeConfiguration runtimeConfiguration, IErrorProvider errorProvider)
         {
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Bindings
             this.errorProvider = errorProvider;
         }
 
-        public object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
+        public virtual object InvokeBinding(IBinding binding, IContextManager contextManager, object[] arguments, ITestTracer testTracer, out TimeSpan duration)
         {
             MethodInfo methodInfo;
             Delegate bindingAction;
@@ -79,7 +79,7 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
+        protected virtual CultureInfoScope CreateCultureInfoScope(IContextManager contextManager)
         {
             var cultureInfo = CultureInfo.CurrentCulture;
             if (contextManager.FeatureContext != null)
@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.Bindings
             return new CultureInfoScope(cultureInfo);
         }
 
-        private void EnsureReflectionInfo(IBinding binding, out MethodInfo methodInfo, out Delegate bindingAction)
+        protected void EnsureReflectionInfo(IBinding binding, out MethodInfo methodInfo, out Delegate bindingAction)
         {
             var methodBinding = binding as MethodBinding;
             if (methodBinding == null)
@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.Bindings
             bindingAction = methodBinding.cachedBindingDelegate;
         }
 
-        protected Delegate CreateMethodDelegate(MethodInfo method)
+        protected virtual Delegate CreateMethodDelegate(MethodInfo method)
         {
             List<ParameterExpression> parameters = new List<ParameterExpression>();
             parameters.Add(Expression.Parameter(typeof(IContextManager), "__contextManager"));
@@ -121,7 +121,7 @@ namespace TechTalk.SpecFlow.Bindings
             {
                 lambda = Expression.Lambda(
                     delegateType,
-                    Expression.Call(method, methodArguments),
+                    GetBindingMethodCallExpression(null, method, methodArguments),
                     parameters.ToArray());
             }
             else
@@ -131,9 +131,12 @@ namespace TechTalk.SpecFlow.Bindings
                 var scenarioContextProperty = ExpressionMemberAccessor.GetPropertyInfo((IContextManager cm) => cm.ScenarioContext);
                 Debug.Assert(scenarioContextProperty != null, "ScenarioContext not found");
 
+                // this generates an expression call, like
+                // ((MyBingingClass)__contextManager.ScenarioContext.GetBindingInstance(typeof(MyBingingClass))).MyBindingMethod(...)
+
                 lambda = Expression.Lambda(
                     delegateType,
-                    Expression.Call(
+                    GetBindingMethodCallExpression(
                         Expression.Convert(
                             Expression.Call(
                                 Expression.Property(
@@ -152,6 +155,11 @@ namespace TechTalk.SpecFlow.Bindings
 #else
             return lambda.Compile();
 #endif
+        }
+
+        protected virtual Expression GetBindingMethodCallExpression(Expression instance, MethodInfo method, Expression[] argumentsExpressions)
+        {
+            return Expression.Call(instance, method, argumentsExpressions);
         }
 
 
@@ -180,7 +188,7 @@ namespace TechTalk.SpecFlow.Bindings
         public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>       (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19);
         public delegate void ExtendedAction<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>  (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19, T20 arg20);
 
-        private Type GetActionType(Type[] typeArgs)
+        protected Type GetActionType(Type[] typeArgs)
         {
             if (typeArgs.Length >= actionTypes.Length)
             {
@@ -219,7 +227,7 @@ namespace TechTalk.SpecFlow.Bindings
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, TResult>         (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19);
         public delegate TResult ExtendedFunc<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, TResult>    (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7, T8 arg8, T9 arg9, T10 arg10, T11 arg11, T12 arg12, T13 arg13, T14 arg14, T15 arg15, T16 arg16, T17 arg17, T18 arg18, T19 arg19, T20 arg20);
 
-        private Type GetFuncType(Type[] typeArgs, Type resultType)
+        protected Type GetFuncType(Type[] typeArgs, Type resultType)
         {
             if (typeArgs.Length >= actionTypes.Length)
             {
@@ -233,7 +241,7 @@ namespace TechTalk.SpecFlow.Bindings
             return funcTypes[typeArgs.Length].MakeGenericType(genericTypeArgs);
         }
 
-        private Type GetDelegateType(Type[] typeArgs, Type resultType)
+        protected Type GetDelegateType(Type[] typeArgs, Type resultType)
         {
             if (resultType == typeof(void))
                 return GetActionType(typeArgs);

@@ -22,7 +22,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
-        public bool GenerateAsyncTests { get; set; }
         public string GeneratorPath { get; set; }
 
         public bool UsesPlugins { get; private set; }
@@ -36,7 +35,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
-            GenerateAsyncTests = ConfigDefaults.GenerateAsyncTests;
             GeneratorPath = ConfigDefaults.GeneratorPath;
 
             UsesPlugins = false;
@@ -58,7 +56,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
-                GenerateAsyncTests = configSection.Generator.GenerateAsyncTests;
                 GeneratorPath = configSection.Generator.GeneratorPath;
 
                 if (IsSpecified(configSection.Generator.Dependencies))
@@ -101,7 +98,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         protected bool Equals(GeneratorConfiguration other)
         {
-            return Equals(FeatureLanguage, other.FeatureLanguage) && Equals(ToolLanguage, other.ToolLanguage) && string.Equals(GeneratorUnitTestProvider, other.GeneratorUnitTestProvider) && AllowDebugGeneratedFiles.Equals(other.AllowDebugGeneratedFiles) && AllowRowTests.Equals(other.AllowRowTests) && GenerateAsyncTests.Equals(other.GenerateAsyncTests) && string.Equals(GeneratorPath, other.GeneratorPath) && UsesPlugins.Equals(other.UsesPlugins);
+            return Equals(FeatureLanguage, other.FeatureLanguage) && Equals(ToolLanguage, other.ToolLanguage) && string.Equals(GeneratorUnitTestProvider, other.GeneratorUnitTestProvider) && AllowDebugGeneratedFiles.Equals(other.AllowDebugGeneratedFiles) && AllowRowTests.Equals(other.AllowRowTests) && string.Equals(GeneratorPath, other.GeneratorPath) && UsesPlugins.Equals(other.UsesPlugins);
         }
 
         public override bool Equals(object obj)
@@ -121,7 +118,6 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                 hashCode = (hashCode*397) ^ (GeneratorUnitTestProvider != null ? GeneratorUnitTestProvider.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ AllowDebugGeneratedFiles.GetHashCode();
                 hashCode = (hashCode*397) ^ AllowRowTests.GetHashCode();
-                hashCode = (hashCode*397) ^ GenerateAsyncTests.GetHashCode();
                 hashCode = (hashCode*397) ^ (GeneratorPath != null ? GeneratorPath.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ UsesPlugins.GetHashCode();
                 return hashCode;

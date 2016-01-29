@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var table = new Table("Field", "Value");
             var expectedPerson = new Person();
             var person = table.CreateInstance(() => expectedPerson);
-            person.ShouldBeSameAs(expectedPerson);
+            person.Should().Be(expectedPerson);
         }
 
         [Test]
@@ -27,8 +27,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             var expectedPerson = new Person { FirstName = "Ellsworth", LastName = "Toohey" };
             var person = table.CreateInstance(() => expectedPerson);
 
-            person.FirstName.ShouldEqual("John");
-            person.LastName.ShouldEqual("Galt");
+            person.FirstName.Should().Be("John");
+            person.LastName.Should().Be("Galt");
         }
     }
 }

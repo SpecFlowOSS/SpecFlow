@@ -30,8 +30,8 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<IgnoreDecorator, ITestClassTagDecorator>("ignore");
             container.RegisterTypeAs<IgnoreDecorator, ITestMethodTagDecorator>("ignore");
 
-            container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp);
-            container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB);
+            container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp, dispose: true);
+            container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB, dispose: true);
 
             RegisterUnitTestGeneratorProviders(container);
         }

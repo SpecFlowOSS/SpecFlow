@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using BoDi;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
@@ -47,7 +48,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
-            var scenarioContext = new ScenarioContext(null, null, null);
+            var scenarioContext = new ScenarioContext(null,new ObjectContainer());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
 
             bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);

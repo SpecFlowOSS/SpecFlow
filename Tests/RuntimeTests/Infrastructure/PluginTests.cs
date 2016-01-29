@@ -6,7 +6,7 @@ using System.Text;
 using BoDi;
 using Moq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -126,7 +126,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new Mock<IRuntimePlugin>().Object);
-            TestRunContainerBuilder.CreateContainer(configurationHolder);
+            TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
         }
 
         [Test]
@@ -135,9 +135,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
 
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomDependency());
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var customDependency = container.Resolve<ICustomDependency>();
-            customDependency.ShouldBeType(typeof(CustomDependency));
+            customDependency.Should().BeOfType(typeof(CustomDependency));
         }
 
         [Test]
@@ -147,9 +147,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(
                 conf => conf.StopAtFirstError = true));
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
-            runtimeConfiguration.StopAtFirstError.ShouldBeTrue();
+            runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
         [Test]
@@ -160,9 +160,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomTestRunnerFactoryWhenStopAtFirstErrorIsTrue());
 
             // with default unit test provider, the plugin should not change the default factory
-            var container = TestRunContainerBuilder.CreateContainer(configurationHolder);
-            var testRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            testRunnerFactory.ShouldBeType<TestRunnerFactory>();
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
+            var testRunnerFactory = container.Resolve<ITestRunnerManager>();
+            testRunnerFactory.Should().BeOfType<TestRunnerManager>();
 
             // with StopAtFirstError == true, we should get a custom factory
             var specialConfiguratuion = new StringConfigProvider(string.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -174,9 +174,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                   <runtime stopAtFirstError=""true"" />
                 </specFlow>
               </configuration>"));
-            container = TestRunContainerBuilder.CreateContainer(specialConfiguratuion);
+            container = TestObjectFactories.CreateDefaultGlobalContainer(specialConfiguratuion);
             var customTestRunnerFactory = container.Resolve<ITestRunnerFactory>();
-            customTestRunnerFactory.ShouldBeType<CustomTestRunnerFactory>();
+            customTestRunnerFactory.Should().BeOfType<CustomTestRunnerFactory>();
         }
     }
 }

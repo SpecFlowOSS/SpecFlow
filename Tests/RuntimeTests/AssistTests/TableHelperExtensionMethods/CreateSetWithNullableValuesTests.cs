@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().BirthDate.ShouldEqual(new DateTime(2009, 4, 28));
+            people.First().BirthDate.Should().Be(new DateTime(2009, 4, 28));
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().BirthDate.ShouldBeNull();
+            people.First().BirthDate.Should().Be(null);
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().IsRational.Value.ShouldBeTrue();
+            people.First().IsRational.Value.Should().BeTrue();
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().IsRational.ShouldBeNull();
+            people.First().IsRational.Should().Be(null);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableDouble.ShouldBeNull();
+            people.First().NullableDouble.Should().Be(null);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableGuid.ShouldBeNull();
+            people.First().NullableGuid.Should().Be(null);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableChar.ShouldBeNull();
+            people.First().NullableChar.Should().Be(null);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NumberOfIdeas.ShouldEqual(3);
+            people.First().NumberOfIdeas.Should().Be(3);
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NumberOfIdeas.ShouldBeNull();
+            people.First().NumberOfIdeas.Should().Be(null);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableUnsignedInt.ShouldEqual<uint?>(3);
+            people.First().NullableUnsignedInt.Should().Be((uint?)3);
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableUnsignedInt.ShouldBeNull();
+            people.First().NullableUnsignedInt.Should().Be(null);
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().Salary.Value.ShouldEqual(4.01M);
+            people.First().Salary.Value.Should().Be(4.01M);
         }
         
         [Test]
@@ -163,7 +163,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().Salary.ShouldBeNull();
+            people.First().Salary.Should().Be(null);
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var people = table.CreateSet<NullablePerson>();
 
-            people.First().NullableFloat.ShouldBeNull();
+            people.First().NullableFloat.Should().Be(null);
         }
     }
 }

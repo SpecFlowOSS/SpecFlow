@@ -1,17 +1,12 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <version>1.0.2</version>
+    <version>1.0.0-alpha</version>
     <authors>TechTalk</authors>
     <owners>TechTalk</owners>
-    <licenseUrl>http://specflow.org/about/license.aspx</licenseUrl>
     <projectUrl>http://www.specflow.org</projectUrl>
-    <iconUrl>http://techtalk.github.com/SpecFlow/specflow.png</iconUrl>
-    <dependencies>
-      <dependency id="SpecFlow" />
-      <dependency id="xunit" />
-      <dependency id="xunit.extensions" />
-    </dependencies>
+    <licenseUrl>http://go.specflow.org/license</licenseUrl>
+    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
     <id>SpecFlow.xUnit</id>
     <title>SpecFlow.xUnit</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -19,6 +14,10 @@
     <summary>Combined package to setup SpecFlow with xUnit easily.</summary>
     <language>en-US</language>
     <tags>specflow xUnit</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+      <dependency id="xunit" version="[2.0,)" />
+    </dependencies>
   </metadata>
   <files>
     <file src="..\xUnit\App.config.transform" target="content\App.config.transform" />

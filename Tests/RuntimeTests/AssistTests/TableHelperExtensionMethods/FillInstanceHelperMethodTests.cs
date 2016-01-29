@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Should;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
@@ -26,8 +26,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = GetThePerson(table);
 
-            person.MiddleInitial.ShouldEqual('T');
-            person.NullableChar.ShouldEqual('S');
+            person.MiddleInitial.Should().Be('T');
+            person.NullableChar.Should().Be('S');
         }
 
         [Test]
@@ -59,11 +59,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             table.FillInstance(entity);
 
-            entity.Property1.ShouldEqual("Property1");
-            entity.Property2.ShouldEqual(100);
+            entity.Property1.Should().Be("Property1");
+            entity.Property2.Should().Be(100);
 
-            entity.Field1.ShouldEqual("Field1");
-            entity.Field2.ShouldEqual(100);
+            entity.Field1.Should().Be("Field1");
+            entity.Field2.Should().Be(100);
         }
     }
 }

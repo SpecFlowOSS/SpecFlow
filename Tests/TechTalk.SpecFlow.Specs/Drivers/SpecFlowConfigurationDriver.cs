@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 {
     public class SpecFlowConfigurationDriver
     {
-        private const string DefaultProviderName = "NUnit";
+        private const string DefaultProviderName = "NUnit.2";
         private readonly XDocument parsedConfiguration;
 
         public string UnitTestProviderName { get; private set; }
@@ -50,6 +50,23 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             SpecFlowConfigurationElement.Add(new XElement("unitTestProvider", new XAttribute("name", name)));
         }
 
+        public void AddRuntimeDependencyCustomization(string typeName, string interfaceName)
+        {
+            SpecFlowConfigurationElement.Add(
+                new XElement("runtime",
+                    new XElement("dependencies",
+                        new XElement("register", new XAttribute("type", typeName), new XAttribute("as", interfaceName)))
+                    ));
+/*
+                    <runtime>  
+                    <dependencies>
+                      <register type=""{0}"" as=""{1}"" name=""myprovider""/>
+                    </dependencies>
+                  </runtime>
+
+ */ 
+        }
+
         public void SaveConfigurationTo(string path)
         {
             parsedConfiguration.Save(path);
@@ -59,16 +76,25 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         {
             switch (UnitTestProviderName.ToLower())
             {
-                case "nunit":
+                case "nunit.2":
                     yield return @"NUnit\lib\nunit.framework.dll";
+                    break;
+                case "nunit":
+                    yield return @"NUnit3-Runner\bin\nunit.framework.dll";
                     break;
                 case "mbunit.3":
                     yield return @"mbUnit3\mbUnit.dll";
                     yield return @"mbUnit3\gallio.dll";
                     break;
-                case "xunit":
+                case "xunit.1":
                     yield return @"xUnit\lib\xUnit.dll";
-                    yield return @"xUnit\lib\xunit.extensions.dll";
+                    yield return @"xUnit.extensions\lib\xunit.extensions.dll";
+                    break;
+                case "xunit":
+                    yield return @"xUnit2\xunit.core.dll";
+                    yield return @"xUnit2\xunit.abstractions.dll";
+                    yield return @"xUnit2\xunit.assert.dll";
+                    yield return @"xUnit2\xunit.execution.desktop.dll";
                     break;
             }
         }

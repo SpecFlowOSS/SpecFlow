@@ -7,6 +7,7 @@ using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.Parser.Compatibility;
 using TechTalk.SpecFlow.Parser.SyntaxElements;
 
 namespace TechTalk.SpecFlow.Reporting
@@ -24,11 +25,12 @@ namespace TechTalk.SpecFlow.Reporting
             List<Feature> parsedFeatures = new List<Feature>();
             foreach (var featureFile in featureFiles)
             {
-                SpecFlowLangParser parser = new SpecFlowLangParser(featureLanguage);
+                SpecFlowGherkinParser parser = new SpecFlowGherkinParser(featureLanguage);
                 using (var reader = new StreamReader(featureFile))
                 {
-                    Feature feature = parser.Parse(reader, featureFile);
-                    parsedFeatures.Add(feature);
+                    var specFlowFeature = parser.Parse(reader, featureFile);
+                    var compatibleFeature = CompatibleAstConverter.ConvertToCompatibleFeature(specFlowFeature);
+                    parsedFeatures.Add(compatibleFeature);
                 }
             }
             return parsedFeatures;

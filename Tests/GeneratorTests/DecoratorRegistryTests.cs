@@ -7,8 +7,8 @@ using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using FluentAssertions;
+using Gherkin.Ast;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private static TestClassGenerationContext CreateGenerationContext(string tag)
         {
-            return new TestClassGenerationContext(null, new Feature { Tags = new Tags(new Tag(tag)) }, null, null, null, null, null, null, null, null, null, true, false);
+            return new TestClassGenerationContext(null, ParserHelper.CreateAnyFeature(new []{ tag }), null, null, null, null, null, null, null, null, null, null, true);
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var registry = CreateDecoratorRegistry();
 
             List<string> unprocessedTags;
-            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, new Tag[] { new Tag("foo") }, out unprocessedTags);
+            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, ParserHelper.GetTags("foo"), out unprocessedTags);
 
             testMethodDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<string>(), It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
@@ -227,7 +227,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var registry = CreateDecoratorRegistry();
 
             List<string> unprocessedTags;
-            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, new Tag[] { new Tag("dummy") }, out unprocessedTags);
+            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, ParserHelper.GetTags("dummy"), out unprocessedTags);
 
             testMethodDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
@@ -242,7 +242,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var registry = CreateDecoratorRegistry();
 
             List<string> unprocessedTags;
-            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, new Tag[] { new Tag("dummy") }, out unprocessedTags);
+            registry.DecorateTestMethod(CreateGenerationContext("dummy"), null, ParserHelper.GetTags("dummy"), out unprocessedTags);
 
             testMethodDecoratorMock.Verify(d => d.DecorateFrom(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()), Times.Never());
         }

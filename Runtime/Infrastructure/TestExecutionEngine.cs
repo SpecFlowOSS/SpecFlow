@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
-using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
@@ -29,7 +27,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepDefinitionMatchService stepDefinitionMatchService;
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
-        private readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
 
         private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
@@ -38,11 +35,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker)
         {
             this.errorProvider = errorProvider;
             this.bindingInvoker = bindingInvoker;
-            this.bindingRegistryBuilder = bindingRegistryBuilder;
             this.contextManager = contextManager;
             this.unitTestRuntimeProvider = unitTestRuntimeProvider;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
@@ -65,30 +61,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             get { return contextManager.ScenarioContext; }
         }
 
-        public virtual void Initialize(Assembly[] bindingAssemblies)
-        {
-            foreach (Assembly assembly in bindingAssemblies)
-            {
-                bindingRegistryBuilder.BuildBindingsFromAssembly(assembly);
-            }
-            bindingRegistry.Ready = true;
-
-            OnTestRunnerStart();
-#if !SILVERLIGHT
-            AppDomain.CurrentDomain.DomainUnload += 
-                delegate
-                    {
-                        OnTestRunEnd();
-                    };
-            AppDomain.CurrentDomain.ProcessExit += 
-                delegate
-                    {
-                        OnTestRunEnd();
-                    };
-#endif
-        }
-
-        protected virtual void OnTestRunnerStart()
+        public virtual void OnTestRunStart()
         {
             FireEvents(HookType.BeforeTestRun);
         }
@@ -225,7 +198,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void OnStepEnd()
         {
-            FireScenarioEvents(HookType.AfterStep);
+            FireScenarioEvents(HookType.AfterStep);            
         }
 
         #region Step/event execution
@@ -238,7 +211,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var stepContext = contextManager.GetStepContext();
 
-            foreach (IHookBinding eventBinding in bindingRegistry.GetHooks(bindingEvent))
+            foreach (IHookBinding eventBinding in GetOrderedHooks(bindingEvent))
             {
                 int scopeMatches;
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
@@ -246,6 +219,11 @@ namespace TechTalk.SpecFlow.Infrastructure
 
                 bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
             }
+        }
+
+        private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
+        {
+            return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
         private void ExecuteStep(StepInstance stepInstance)
@@ -316,7 +294,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             finally
             {
                 if (!isStepSkipped)
+                {
                     OnStepEnd();
+                }
+                contextManager.CleanupStepContext();
             }
         }
 
@@ -414,7 +395,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
                                           : (StepDefinitionType) stepDefinitionKeyword;
-            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+            contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg)); 
+            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg,contextManager.GetStepContext()));
         }
 
         private StepDefinitionType GetCurrentBindingType()

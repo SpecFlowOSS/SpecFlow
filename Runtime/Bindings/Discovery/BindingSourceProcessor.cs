@@ -135,25 +135,42 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         private void ProcessHookAttribute(BindingSourceMethod bindingSourceMethod, BindingScope[] methodScopes, BindingSourceAttribute hookAttribute)
         {
             var scopes = methodScopes.AsEnumerable();
-
-			// HACK: Currently on mono to compile we have to pass the optional parameter to TryGetParamsAttributeValue
-            string[] tags = hookAttribute.TryGetParamsAttributeValue<string>(0, null);
+			
+            string[] tags = GetTagsDefinedOnBindingAttribute(hookAttribute);
             if (tags != null)
                 scopes = scopes.Concat(tags.Select(t => new BindingScope(t, null, null)));
+            
 
             ApplyForScope(scopes.ToArray(), scope => ProcessHookAttribute(bindingSourceMethod, hookAttribute, scope));
+        }
+
+        private static string[] GetTagsDefinedOnBindingAttribute(BindingSourceAttribute hookAttribute)
+        {
+            return TagsFromConstructor(hookAttribute);            
+        }
+
+        private static string[] TagsFromConstructor(BindingSourceAttribute hookAttribute)
+        {
+            // HACK: Currently on mono to compile we have to pass the optional parameter to TryGetParamsAttributeValue
+            return hookAttribute.TryGetParamsAttributeValue<string>(0, null);
         }
 
         private void ProcessHookAttribute(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute hookAttribute, BindingScope scope)
         {
             HookType hookType = GetHookType(hookAttribute);
+            int order = GetHookOrder(hookAttribute);
 
             if (!ValidateHook(bindingSourceMethod, hookAttribute, hookType))
                 return;
 
-            var hookBinding = bindingFactory.CreateHookBinding(bindingSourceMethod.BindingMethod, hookType, scope);
+            var hookBinding = bindingFactory.CreateHookBinding(bindingSourceMethod.BindingMethod, hookType, scope, order);
 
             ProcessHookBinding(hookBinding);
+        }
+
+        private int GetHookOrder(BindingSourceAttribute hookAttribute)
+        {
+            return hookAttribute.TryGetAttributeValue("Order", 10000);
         }
 
         private void ProcessStepArgumentTransformationAttribute(BindingSourceMethod bindingSourceMethod, BindingSourceAttribute stepArgumentTransformationAttribute)

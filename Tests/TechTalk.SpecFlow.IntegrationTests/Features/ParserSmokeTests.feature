@@ -6,6 +6,7 @@ Scenario Outline: Test files can be parsed
 
 Examples: 
 	| test file                |
+	| and                      |
 	| asterisks                |
 	| background               |
 	| background_withtitle     |
@@ -38,6 +39,7 @@ Scenario Outline: Parsed test files produce the same result as before
 
 Examples: 
 	| test file                |
+	| and                      |
 	| asterisks                |
 	| background               |
 	| background_withtitle     |

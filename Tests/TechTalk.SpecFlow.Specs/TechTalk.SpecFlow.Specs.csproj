@@ -10,10 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow.Specs</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,19 +32,29 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Gherkin.3.2.0\lib\net45\Gherkin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="nunit-console-runner">
-      <HintPath>..\..\packages\NUnit.Runners.2.6.0.12051\tools\lib\nunit-console-runner.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.Runners.2.6.4\tools\lib\nunit-console-runner.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Should">
-      <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -53,14 +64,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.SpecFlow, Version=1.7.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SpecFlow.1.7.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    <Reference Include="TechTalk.SpecFlow, Version=1.9.0.77, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit">
+      <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\..\packages\xunit.extensions.1.9.2\lib\net20\xunit.extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\AssemblyFolderHelper.cs" />
     <Compile Include="Drivers\BindingClassInput.cs" />
     <Compile Include="Drivers\ContentFileInput.cs" />
+    <Compile Include="Drivers\HooksDriver.cs" />
     <Compile Include="Drivers\MsTestTestExecutionDriver.cs" />
     <Compile Include="Drivers\FeatureFileInput.cs" />
     <Compile Include="Drivers\FileInput.cs" />
@@ -76,6 +95,12 @@
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
+    <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
+    <Compile Include="Features\AcessingContexts.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AcessingContexts.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,6 +121,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Features\InAppDomainParallelExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InAppDomainParallelExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\XUnit2Provider.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XUnit2Provider.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\XUnitProvider.feature.cs">
+      <DependentUpon>XUnitProvider.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\OrderedHookSupport.feature.cs">
+      <DependentUpon>OrderedHookSupport.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Features\HookSupport.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,11 +148,6 @@
     </Compile>
     <Compile Include="Features\NUnitProvider.feature.cs">
       <DependentUpon>NUnitProvider.feature</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Features\Parser\HandlingParserErrors.feature.cs">
-      <DependentUpon>HandlingParserErrors.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -183,6 +223,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="Drivers\Templates\App.config" />
+    <None Include="Features\AcessingContexts.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\BasicExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BasicExecution.feature.cs</LastGenOutput>
@@ -203,6 +247,22 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExternalSteps.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\InAppDomainParallelExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>InAppDomainParallelExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnit2Provider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnit2Provider.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\XUnitProvider.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XUnitProvider.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\OrderedHookSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OrderedHookSupport.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\HookSupport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>HookSupport.feature.cs</LastGenOutput>
@@ -214,10 +274,6 @@
     <None Include="Features\MsTestProvider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>MsTestProvider.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Features\Parser\HandlingParserErrors.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>HandlingParserErrors.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\Parser\ParsingErrors.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -258,6 +314,10 @@
       <Project>{27B6695E-7049-4C1B-8820-812722128D9E}</Project>
       <Name>SpecFlowBinPackage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj">
+      <Project>{b4588e81-c589-434f-8f12-3d881433c3e4}</Project>
+      <Name>TechTalk.SpecFlow.Parser.Compatibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
@@ -269,15 +329,32 @@
   <ItemGroup>
     <EmbeddedResource Include="Drivers\Templates\TestProjectFile.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.* $(TargetDir)SpecFlow\ /s /y
-xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
-xcopy $(SolutionDir)packages\NUnit.Runners.2.6.0.12051\*.* $(TargetDir)NUnit.Runners\ /s /y
+
+xcopy $(SolutionDir)packages\NUnit.2.6.4\*.* $(TargetDir)NUnit\ /s /y
+
+xcopy $(SolutionDir)packages\NUnit.Runners.2.6.4\*.* $(TargetDir)NUnit.Runners\ /s /y
+
+xcopy $(SolutionDir)packages\xunit.1.9.2\lib\net20\*.* $(TargetDir)xunit\lib\ /s /y
+
+xcopy $(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.* $(TargetDir)xunit.extensions\lib\ /s /y
+
+xcopy $(SolutionDir)packages\xunit.runner.console.2.0.0\*.* $(TargetDir)xunit.runner.console\ /s /y
+
+xcopy $(SolutionDir)lib\xunit.2.0.0\*.* $(TargetDir)xUnit2\ /s /y
 xcopy "$(SolutionDir)lib\Microsoft F#\*.*" $(TargetDir)FSharp\ /s /y
+xcopy $(SolutionDir)packages\NUnit.2.6.0.12054\*.* $(TargetDir)NUnit\ /s /y
+
+xcopy $(SolutionDir)lib\NUnit3-Runner\*.* $(TargetDir)NUnit3-Runner\ /s /y
+
+xcopy $(SolutionDir)lib\mbunit.3.3.442.0\*.* $(TargetDir)mbUnit3\ /s /y
 </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

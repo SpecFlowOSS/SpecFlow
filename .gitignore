@@ -9,10 +9,13 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 _ReSharper*/
+_NCrunch*/
 [Tt]est[Rr]esult*
 *.pidb
 *.userprefs
 *.resharper
+*.ncrunchproject
+*.ncrunchsolution
 *.cache
 *.gpState
 *.dotCover
@@ -21,3 +24,12 @@ test-results
 *.docstates
 Tests/TechTalk.SpecFlow.Specs.Silverlight4.Web/ClientBin/*
 *.stackdump
+_UpgradeReport_Files/*
+Backup*/*
+
+UpgradeLog*
+
+
+packages/*
+/_NCrunch_TechTalk.SpecFlow_VS2013/StoredText
+!lib/**

@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 {
     public interface IRuntimeBindingSourceProcessor : IBindingSourceProcessor
     {
-        
+        void BuildingCompleted();
     }
 
     public class RuntimeBindingSourceProcessor : BindingSourceProcessor, IRuntimeBindingSourceProcessor
@@ -54,6 +54,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
                 throw errorProvider.GetNonStaticEventError(bindingSourceMethod.BindingMethod);
 
             return base.ValidateHook(bindingSourceMethod, hookAttribute, hookType);
+        }
+
+        public void BuildingCompleted()
+        {
+            bindingRegistry.Ready = true;
         }
     }
 }

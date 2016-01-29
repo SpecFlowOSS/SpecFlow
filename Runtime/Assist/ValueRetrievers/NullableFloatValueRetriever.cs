@@ -1,20 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class NullableFloatValueRetriever
+    public class NullableFloatValueRetriever : IValueRetriever
     {
-        private readonly Func<string, float> FloatValueRetriever;
+        private readonly Func<string, float> FloatValueRetriever = v => new FloatValueRetriever().GetValue(v);
 
-        public NullableFloatValueRetriever(Func<string, float> FloatValueRetriever)
+        public NullableFloatValueRetriever(Func<string, float> FloatValueRetriever = null)
         {
-            this.FloatValueRetriever = FloatValueRetriever;
+            if (FloatValueRetriever != null)
+                this.FloatValueRetriever = FloatValueRetriever;
         }
 
         public float? GetValue(string value)
         {
             if (string.IsNullOrEmpty(value)) return null;
             return FloatValueRetriever(value);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return propertyType == typeof(float?);
         }
     }
 }

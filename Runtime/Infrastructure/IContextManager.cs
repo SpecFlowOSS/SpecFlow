@@ -9,16 +9,21 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
+    using System.Diagnostics;
+
     public interface IContextManager
     {
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
-
+        ScenarioStepContext StepContext { get; }
         void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
         void CleanupFeatureContext();
 
         void InitializeScenarioContext(ScenarioInfo scenarioInfo);
         void CleanupScenarioContext();
+
+        void InitializeStepContext(StepInfo stepInfo);
+        void CleanupStepContext();
     }
 
     internal static class ContextManagerExtensions
@@ -79,14 +84,66 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Implementation of internal context manager which keeps a stack of contexts, rather than a single one. 
+        /// This allows the contexts to be used when a new context is created before the previous context has been completed 
+        /// which is what happens when a step calls other steps. This means that the step contexts will be reported 
+        /// correctly even when there is a nesting of steps calling steps calling steps.
+        /// </summary>
+        /// <typeparam name="TContext">A type derived from SpecFlowContext, which needs to be managed  in a way</typeparam>
+        private class StackedInternalContextManager<TContext> : IDisposable where TContext : SpecFlowContext
+        {
+            private readonly ITestTracer testTracer;
+            private readonly Stack<TContext> instances = new Stack<TContext>();
+
+            public StackedInternalContextManager(ITestTracer testTracer)
+            {
+                this.testTracer = testTracer;
+            }
+
+            public TContext Instance
+            {
+                get { return instances.Any()?instances.Peek():null; }
+            }
+
+            public void Init(TContext newInstance)
+            {
+                instances.Push(newInstance);
+            }
+
+            public void Cleanup()
+            {
+                if (!instances.Any())
+                {
+                    testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
+                    return;
+                }
+                var instance = instances.Pop();
+                ((IDisposable)instance).Dispose();
+
+            }
+
+            public void Dispose()
+            {
+                var instance = instances.Pop();
+                if (instance != null)
+                {
+                    ((IDisposable)instance).Dispose();
+
+                }
+            }
+        }
+
         private readonly IObjectContainer parentContainer;
         private readonly InternalContextManager<ScenarioContext> scenarioContext;
         private readonly InternalContextManager<FeatureContext> featureContext;
+        private readonly StackedInternalContextManager<ScenarioStepContext> stepContext;
 
         public ContextManager(ITestTracer testTracer, IObjectContainer parentContainer)
         {
             featureContext = new InternalContextManager<FeatureContext>(testTracer);
             scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
+            stepContext = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
             this.parentContainer = parentContainer;
         }
 
@@ -98,6 +155,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         public ScenarioContext ScenarioContext
         {
             get { return scenarioContext.Instance; }
+        }
+
+        public ScenarioStepContext StepContext 
+        {
+            get{return stepContext.Instance;} 
         }
 
         public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
@@ -114,15 +176,41 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var testRunner = parentContainer.Resolve<ITestRunner>(); // we need to delay-resolve the test runner to avoid circular dependencies
-            var newContext = new ScenarioContext(scenarioInfo, testRunner, parentContainer);
+            var newContext = new ScenarioContext(scenarioInfo, parentContainer);
+            SetupScenarioContainer(newContext);
             scenarioContext.Init(newContext);
             ScenarioContext.Current = newContext;
         }
 
+        protected virtual void SetupScenarioContainer(ScenarioContext newContext)
+        {
+            newContext.ScenarioContainer.RegisterInstanceAs(newContext);
+            newContext.ScenarioContainer.RegisterInstanceAs(FeatureContext);
+
+            newContext.ScenarioContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(newContext.ScenarioContainer);
+            };
+        }
+
         public void CleanupScenarioContext()
         {
-            scenarioContext.Cleanup();
+            scenarioContext.Cleanup();            
+        }
+
+        public void InitializeStepContext(StepInfo stepInfo)
+        {
+            var newContext = new ScenarioStepContext(stepInfo);
+            stepContext.Init(newContext);
+            ScenarioStepContext.Current = newContext;
+        }
+
+        public void CleanupStepContext()
+        {
+            stepContext.Cleanup();
+            ScenarioStepContext.Current = stepContext.Instance;
         }
 
         public void Dispose()
@@ -135,6 +223,13 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 scenarioContext.Dispose();
             }
+            if (stepContext != null)
+            {
+                stepContext.Dispose();
+            }
         }
     }
+
+    
+    
 }

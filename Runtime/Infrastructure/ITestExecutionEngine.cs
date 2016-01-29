@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -12,14 +9,15 @@ namespace TechTalk.SpecFlow.Infrastructure
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
 
-        void Initialize(Assembly[] bindingAssemblies);
+        void OnTestRunStart();
+        void OnTestRunEnd();
 
         void OnFeatureStart(FeatureInfo featureInfo);
         void OnFeatureEnd();
+
         void OnScenarioStart(ScenarioInfo scenarioInfo);
         void OnAfterLastStep();
         void OnScenarioEnd();
-        void OnTestRunEnd();
 
         void Step(StepDefinitionKeyword stepDefinitionKeyword, string keyword, string text, string multilineTextArg, Table tableArg);
 
