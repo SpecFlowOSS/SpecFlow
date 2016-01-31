@@ -1,17 +1,21 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
-using TechTalk.SpecFlow.Bindings.Reflection;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.Tracing;
-
 namespace TechTalk.SpecFlow.Bindings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using TechTalk.SpecFlow.Assist.ValueRetrievers;
+    using TechTalk.SpecFlow.Bindings.Reflection;
+    using TechTalk.SpecFlow.Infrastructure;
+    using TechTalk.SpecFlow.Tracing;
+
+
+
+
     public interface IStepArgumentTypeConverter
     {
-        object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
+        object Convert(Queue<Object> values, IBindingType typeToConvertTo, CultureInfo cultureInfo);
         bool CanConvert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo);
     }
 
@@ -41,7 +45,7 @@ namespace TechTalk.SpecFlow.Bindings
             return stepTransformations.Length > 0 ? stepTransformations[0] : null;
         }
 
-        public object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+        private object Convert(object value, IBindingType typeToConvertTo, CultureInfo cultureInfo)
         {
             if (value == null) throw new ArgumentNullException("value");
 
@@ -55,13 +59,49 @@ namespace TechTalk.SpecFlow.Bindings
             return ConvertSimple(typeToConvertTo, value, cultureInfo);
         }
 
+        public object Convert(Queue<object> values, IBindingType typeToConvertTo, CultureInfo cultureInfo)
+        {
+            if (values == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            object value = values.Peek();
+            if (typeToConvertTo == value.GetType())
+            {
+                return values.Dequeue();
+            }
+
+            IStepArgumentTransformationBinding stepTransformation = GetMatchingStepTransformation(value, typeToConvertTo, true);
+            if (stepTransformation != null)
+            {
+                if (stepTransformation.Method.Parameters.Count() > 1)
+                {
+                    return DoMultipleValueTransform(stepTransformation, values, cultureInfo);
+                }
+                return DoTransform(stepTransformation, values.Dequeue(), cultureInfo);
+            }
+
+            return ConvertSimple(typeToConvertTo, values.Dequeue(), cultureInfo);
+        }
+
+        private object DoMultipleValueTransform(IStepArgumentTransformationBinding stepTransformation, Queue<object> remainingValues, CultureInfo cultureInfo)
+        {
+            var arguments = new List<object>();
+            foreach (IBindingParameter param in stepTransformation.Method.Parameters)
+            {
+                arguments.Add(ConvertSimple(param.Type, remainingValues.Dequeue(), cultureInfo));
+            }
+            TimeSpan duration;
+            return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments.ToArray(), testTracer, out duration);
+        }
+
         private object DoTransform(IStepArgumentTransformationBinding stepTransformation, object value, CultureInfo cultureInfo)
         {
             object[] arguments;
             if (stepTransformation.Regex != null && value is string)
                 arguments = GetStepTransformationArgumentsFromRegex(stepTransformation, (string)value, cultureInfo);
             else
-                arguments = new object[] {value};
+                arguments = new object[] { value };
 
             TimeSpan duration;
             return bindingInvoker.InvokeBinding(stepTransformation, contextManager, arguments, testTracer, out duration);
@@ -97,7 +137,7 @@ namespace TechTalk.SpecFlow.Bindings
                 return false;
 
             if (stepTransformationBinding.Regex != null && value is string)
-                return stepTransformationBinding.Regex.IsMatch((string) value);
+                return stepTransformationBinding.Regex.IsMatch((string)value);
             return true;
         }
 
@@ -106,7 +146,7 @@ namespace TechTalk.SpecFlow.Bindings
             if (!(typeToConvertTo is RuntimeBindingType))
                 throw new SpecFlowException("The StepArgumentTypeConverter can be used with runtime types only.");
 
-            return ConvertSimple(((RuntimeBindingType) typeToConvertTo).Type, value, cultureInfo);
+            return ConvertSimple(((RuntimeBindingType)typeToConvertTo).Type, value, cultureInfo);
         }
 
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
