@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        internal GherkinDialectProvider DialectProvider
+        public GherkinDialectProvider DialectProvider
         {
             get { return dialectProvider; }
         }
