@@ -27,8 +27,13 @@ namespace TechTalk.SpecFlow.Tools
         public static void GenerateAll(
             [Required(Description = "Visual Studio Project File containing features")] string projectFile,
             [Optional(false, "force", "f")] bool forceGeneration,
-            [Optional(false, "verbose", "v")] bool verboseOutput)
+            [Optional(false, "verbose", "v")] bool verboseOutput,
+            [Optional(false, "debug", Description = "Used for tool integration")] bool requestDebuggerToAttach)
         {
+            if (requestDebuggerToAttach)
+                Debugger.Launch();
+
+
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
