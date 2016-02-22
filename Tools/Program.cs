@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using NConsoler;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
@@ -9,6 +11,7 @@ using TechTalk.SpecFlow.Reporting.NUnitExecutionReport;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport;
 using TechTalk.SpecFlow.Tracing;
 using MsBuildProjectReader = TechTalk.SpecFlow.Generator.Project.MsBuildProjectReader;
+using TextWriterTraceListener = TechTalk.SpecFlow.Tracing.TextWriterTraceListener;
 
 namespace TechTalk.SpecFlow.Tools
 {
@@ -16,6 +19,8 @@ namespace TechTalk.SpecFlow.Tools
     {
         private static void Main(string[] args)
         {
+            Debugger.Launch();
+
             Consolery.Run(typeof(Program), args);
             return;
         }
@@ -29,7 +34,16 @@ namespace TechTalk.SpecFlow.Tools
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
+
+            batchGenerator.OnError += batchGenerator_OnError;
+
             batchGenerator.ProcessProject(specFlowProject, forceGeneration);
+        }
+
+        static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput arg1, Generator.Interfaces.TestGeneratorResult arg2)
+        {
+            Console.Error.WriteLine("Error file {0}", arg1.ProjectRelativePath);
+            Console.Error.WriteLine(String.Join(Environment.NewLine, arg2.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
         }
 
         #region Reports
