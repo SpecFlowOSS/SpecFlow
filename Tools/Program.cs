@@ -19,8 +19,6 @@ namespace TechTalk.SpecFlow.Tools
     {
         private static void Main(string[] args)
         {
-            Debugger.Launch();
-
             Consolery.Run(typeof(Program), args);
             return;
         }
