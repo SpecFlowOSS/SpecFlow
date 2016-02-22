@@ -84,6 +84,8 @@
     <ItemGroup>
       <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />
       <SpecFlowTools Include="$(TargetDir)\*.exe" />
+      <SpecFlowTools Include="$(TargetDir)\..\..\..\Tools\bin\$(Configuration)\specflow.exe.config" />
+      <SpecFlowTools Include="$(TargetDir)\*.config" />
       <SpecFlowTools Include="$(TargetDir)\MsBuild\*.*" />
       <SpecFlowLicense Include="$(TargetDir)\*.txt" />
       <SpecFlowRuntime Include="$(TargetDir)\TechTalk.SpecFlow.dll" />
