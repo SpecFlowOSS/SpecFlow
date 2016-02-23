@@ -31,7 +31,7 @@ before_build:
 
 build:
   project: TechTalk.SpecFlow.sln
-  verbosity: minimal
+  verbosity: normal
 
 test:
   assemblies:
