@@ -1,9 +1,10 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0"  >
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0"  >
 
 	<Import Project="..\..\Build\Versioning.targets" />
 	
 	
 	<Target Name="GenerateConfigs">
+        <Message Text="Generating Configs for Version '$(SpecFlowPackageVersion)'" />
 		<ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\app.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowPackageVersion)"/>
 		<ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\plugincompability.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowPackageVersion)"/>
 	</Target>
