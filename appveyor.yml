@@ -28,8 +28,6 @@ before_build:
   - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v3.2.0-rc/nuget.exe
   - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/nuget-restore.cmd
   - nuget-restore
-  - ps: (Get-Content .\Tools\plugincompability.config).replace('[CURRENT_VERSION]', '$(SpecFlowPackageVersion)') | Set-Content .\Tools\plugincompability.config
-  - ps: (Get-Content .\Tools\app.config).replace('[CURRENT_VERSION]', '$(SpecFlowPackageVersion)') | Set-Content .\Tools\app.config
 
 build:
   project: TechTalk.SpecFlow.sln
