@@ -33,7 +33,6 @@ namespace TechTalk.SpecFlow.Tools
             if (requestDebuggerToAttach)
                 Debugger.Launch();
 
-
             SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFile);
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
@@ -43,10 +42,10 @@ namespace TechTalk.SpecFlow.Tools
             batchGenerator.ProcessProject(specFlowProject, forceGeneration);
         }
 
-        static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput arg1, Generator.Interfaces.TestGeneratorResult arg2)
+        static void batchGenerator_OnError(Generator.Interfaces.FeatureFileInput featureFileInput, Generator.Interfaces.TestGeneratorResult testGeneratorResult)
         {
-            Console.Error.WriteLine("Error file {0}", arg1.ProjectRelativePath);
-            Console.Error.WriteLine(String.Join(Environment.NewLine, arg2.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
+            Console.Error.WriteLine("Error file {0}", featureFileInput.ProjectRelativePath);
+            Console.Error.WriteLine(String.Join(Environment.NewLine, testGeneratorResult.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
         }
 
         #region Reports
