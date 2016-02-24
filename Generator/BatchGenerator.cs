@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Generator
 
             using (var generator = CreateGenerator(specFlowProject))
             {
-
+                traceListener.WriteToolOutput("Using Generator: {0}", generator.GetType().FullName);
                 foreach (var featureFile in specFlowProject.FeatureFiles)
                 {
                     var featureFileInput = CreateFeatureFileInput(featureFile, generator, specFlowProject);
