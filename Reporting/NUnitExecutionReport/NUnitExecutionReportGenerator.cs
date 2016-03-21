@@ -32,10 +32,10 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        if (line.StartsWith("***"))
+                        if (line.StartsWith("=>"))
                         {
                             CloseCurrentTest(testLines, currentTest, report);
-                            currentTest = line.Trim('*', ' ');
+                            currentTest = line.Remove(0, 3);
                         }
                         else
                         {
