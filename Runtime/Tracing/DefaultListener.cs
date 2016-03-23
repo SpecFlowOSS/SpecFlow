@@ -1,18 +1,23 @@
 using System;
-using System.Linq;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.Tracing
 {
     public class DefaultListener : ITraceListener
     {
+        public void SetTestname(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void WriteTestOutput(string message)
         {
-            Console.WriteLine(message);
+            TestContext.Out.WriteLine(message);
         }
 
         public void WriteToolOutput(string message)
         {
-            Console.WriteLine("-> " + message);
+            TestContext.Out.WriteLine($"-> {message}");
         }
     }
 }

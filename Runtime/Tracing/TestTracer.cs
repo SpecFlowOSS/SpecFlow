@@ -8,6 +8,7 @@ using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -42,6 +43,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
         {
+            traceListener.SetTestname(TestContext.CurrentContext.Test.FullName);
             string stepText = stepFormatter.GetStepText(stepInstance);
             traceListener.WriteTestOutput(stepText.TrimEnd());
         }
