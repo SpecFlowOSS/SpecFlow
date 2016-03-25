@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gherkin;
 using Gherkin.Ast;
@@ -38,6 +39,26 @@ namespace TechTalk.SpecFlow.Parser
         public static bool HasTags(this IHasTags hasTags)
         {
             return hasTags.Tags.Any();
+        }
+
+        public static bool HasTags(this ScenarioDefinition scenarioDefinition)
+        {
+            var hasTags = scenarioDefinition as IHasTags;
+            if (hasTags == null)
+                return false;
+
+            return hasTags.HasTags();
+        }
+
+        public static IEnumerable<Tag> GetTags(this ScenarioDefinition scenarioDefinition)
+        {
+            var hasTags = scenarioDefinition as IHasTags;
+            if (hasTags == null)
+            {
+                return new List<Tag>();
+            }
+
+            return hasTags.Tags;
         }
     }
 }

@@ -73,10 +73,10 @@ namespace TechTalk.SpecFlow.Parser
                 this.sourceFilePath = sourceFilePath;
             }
 
-            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description,
-                Background background, ScenarioDefinition[] scenariodefinitions, Comment[] comments, AstNode node)
+            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children,
+                Comment[] featureFileComments, AstNode node)
             {
-                return new SpecFlowFeature(tags, location, language, keyword, name, description, background, scenariodefinitions, comments, sourceFilePath);
+                return new SpecFlowFeature(tags, location, language, keyword, name, description, children, featureFileComments, sourceFilePath);
             }
 
             protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
@@ -123,7 +123,7 @@ namespace TechTalk.SpecFlow.Parser
             return feature;
         }
 
-        private void CheckSemanticErrors(Feature feature)
+        private void CheckSemanticErrors(SpecFlowFeature feature)
         {
             var errors = new List<ParserException>();
 
