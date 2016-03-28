@@ -174,7 +174,6 @@
     <Compile Include="PlatformSpecific\ConfigDefaults.cs" />
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
-    <Compile Include="DictionaryHelpers.cs" />
     <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="ScenarioStepContext.cs" />
