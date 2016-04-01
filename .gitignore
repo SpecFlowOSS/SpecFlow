@@ -33,3 +33,5 @@ UpgradeLog*
 packages/*
 /_NCrunch_TechTalk.SpecFlow_VS2013/StoredText
 !lib/**
+/Tools/app.config
+/Tools/plugincompability.config
