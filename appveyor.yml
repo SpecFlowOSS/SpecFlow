@@ -25,7 +25,7 @@ nuget:
 configuration: Release
 
 before_build:
-  - nuget sources add -Name Gherkin -Source https://ci.appveyor.com/nuget/gherkin-pjtbjoy1y4gh
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/nuget-restore.cmd
   - nuget-restore
 
