@@ -10,9 +10,8 @@ namespace TechTalk.SpecFlow.Generator.Project
     {
         public static IEnumerable<ProjectItem> FeatureFiles(this Microsoft.Build.Evaluation.Project project)
         {
-
             return project.AllEvaluatedItems.Where(x => IsNonCompilingItem(x) &&
-                                                        x.EvaluatedInclude.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase));
+                                                        x.EvaluatedInclude.IndexOf(".feature", StringComparison.InvariantCultureIgnoreCase) >= 0);
         }
 
         private static bool IsNonCompilingItem(ProjectItem x)

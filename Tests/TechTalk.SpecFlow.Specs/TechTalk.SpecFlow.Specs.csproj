@@ -44,7 +44,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Gherkin.3.2.0\lib\net45\Gherkin.dll</HintPath>
+      <HintPath>..\..\packages\Gherkin.3.3.0-ci002\lib\net45\Gherkin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build" />
