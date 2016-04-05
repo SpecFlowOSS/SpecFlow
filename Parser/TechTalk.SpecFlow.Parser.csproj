@@ -59,7 +59,6 @@
     </Compile>
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
-    <Compile Include="SpecFlowScenarioOutline.cs" />
     <Compile Include="StepKeyword.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SpecFlowFeature.cs" />

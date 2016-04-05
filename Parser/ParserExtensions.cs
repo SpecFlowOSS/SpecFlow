@@ -52,13 +52,12 @@ namespace TechTalk.SpecFlow.Parser
 
         public static IEnumerable<Tag> GetTags(this ScenarioDefinition scenarioDefinition)
         {
-            var hasTags = scenarioDefinition as IHasTags;
-            if (hasTags == null)
+            if (!scenarioDefinition.HasTags())
             {
                 return new List<Tag>();
             }
 
-            return hasTags.Tags;
+            return ((IHasTags)scenarioDefinition).Tags;
         }
     }
 }

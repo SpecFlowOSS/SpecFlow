@@ -102,8 +102,7 @@ namespace TechTalk.SpecFlow.Parser
             protected override ScenarioOutline CreateScenarioOutline(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, Examples[] examples, AstNode node)
             {
                 ResetBlock();
-                
-                return new SpecFlowScenarioOutline(tags, location, keyword, name, description, steps, examples);
+                return base.CreateScenarioOutline(tags, location, keyword, name, description, steps, examples, node);
             }
 
             protected override Background CreateBackground(Location location, string keyword, string name, string description, Step[] steps, AstNode node)

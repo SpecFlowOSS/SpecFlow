@@ -18,9 +18,9 @@ namespace TechTalk.SpecFlow.Parser
 
             if (Children != null)
             {
-                ScenarioDefinitions = Children.Where(child => !(child is Background));
+                ScenarioDefinitions = Children.Where(child => !(child is Background)).ToList();
 
-                var background = Children.Where(child => child is Background).SingleOrDefault();
+                var background = Children.SingleOrDefault(child => child is Background);
 
                 if (background != null)
                 {
