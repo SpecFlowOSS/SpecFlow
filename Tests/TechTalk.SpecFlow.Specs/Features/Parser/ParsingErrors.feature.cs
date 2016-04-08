@@ -271,8 +271,16 @@ this.ScenarioSetup(scenarioInfo);
                     "les: duplicated example set\r\n\t\t| something |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 130
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "line",
+                        "error"});
+            table7.AddRow(new string[] {
+                        "9",
+                        "Scenario Outline \'Scenario outline\' already contains an example with name \'duplic" +
+                            "ated example set\'"});
 #line 131
- testRunner.Then("no parsing error is reported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the following errors are provided", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -282,23 +290,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DuplicatedBackground()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicated background", ((string[])(null)));
-#line 133
+#line 135
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 134
+#line 136
  testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated background\r\n\r\n\tBackground: \r\n\t\tGiven something\r\n\r\n\tBackgroun" +
                     "d: \r\n\t\tGiven something else", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 144
+#line 146
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "line",
                         "error"});
-            table7.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "6",
                         "got \'Background:\'"});
-#line 145
- testRunner.Then("the following errors are provided", ((string)(null)), table7, "Then ");
+#line 147
+ testRunner.Then("the following errors are provided", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

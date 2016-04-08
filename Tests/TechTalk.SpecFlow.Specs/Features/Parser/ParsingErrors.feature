@@ -128,7 +128,9 @@ Scenario: Duplicated example set name
 			| something |
 	"""
 	When the file is parsed
-	Then no parsing error is reported
+	Then the following errors are provided
+ 		| line | error                                                                                              |
+ 		| 9    | Scenario Outline 'Scenario outline' already contains an example with name 'duplicated example set' |
 
 Scenario: Duplicated background
 	Given there is a Gherkin file as
