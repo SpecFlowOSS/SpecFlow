@@ -98,10 +98,8 @@ namespace TechTalk.SpecFlow.Generator
             SpecFlowFeature feature;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {
-                feature = parser.Parse(contentReader, featureFileInput.GetFullPath(projectSettings));
+                feature = ParseContent(parser, contentReader, featureFileInput.GetFullPath(projectSettings));
             }
-
-            feature = ChangeFeatureBeforeCodeGeneration(feature);
 
             var featureGenerator = featureGeneratorRegistry.CreateGenerator(feature);
 
@@ -109,9 +107,9 @@ namespace TechTalk.SpecFlow.Generator
             return codeNamespace;
         }
 
-        protected virtual SpecFlowFeature ChangeFeatureBeforeCodeGeneration(SpecFlowFeature specFlowFeature)
+        protected virtual SpecFlowFeature ParseContent(SpecFlowGherkinParser parser, TextReader contentReader, string sourceFilePath)
         {
-            return specFlowFeature;
+            return parser.Parse(contentReader, sourceFilePath);
         }
 
         protected string GetTargetNamespace(FeatureFileInput featureFileInput)
