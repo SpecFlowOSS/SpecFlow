@@ -71,9 +71,7 @@ Scenario: Scenario outline without examples
 			Given something
 	"""
 	When the file is parsed
-	Then the following errors are provided
-		| line | error                           |
-		| 6    | got 'Scenario: proper scenario' |
+	Then no parsing error is reported
 
 Scenario: Empty example set
 	Given there is a Gherkin file as
@@ -86,9 +84,7 @@ Scenario: Empty example set
 		Examples: 
 	"""
 	When the file is parsed
-	Then the following errors are provided
-		| line | error                  |
-		| 7    | unexpected end of file |
+	Then no parsing error is reported
 
 Scenario: Language not supported
 	Given there is a Gherkin file as
@@ -133,8 +129,8 @@ Scenario: Duplicated example set name
 	"""
 	When the file is parsed
 	Then the following errors are provided
-		| line | error                                  |
-		| 9    | got 'Examples: duplicated example set' |
+ 		| line | error                                                                                              |
+ 		| 9    | Scenario Outline 'Scenario outline' already contains an example with name 'duplicated example set' |
 
 Scenario: Duplicated background
 	Given there is a Gherkin file as
