@@ -8,7 +8,6 @@ namespace TechTalk.SpecFlow.Tracing
     {
         private readonly ITraceListenerQueue traceListenerQueue;
         private readonly Lazy<ITestRunner> testRunner;
-        private string testName;
 
         public AsyncTraceListener(ITraceListenerQueue traceListenerQueue, IObjectContainer container)
         {
@@ -18,17 +17,12 @@ namespace TechTalk.SpecFlow.Tracing
 
         public void WriteTestOutput(string message)
         {
-            traceListenerQueue.EnqueueMessgage(testRunner.Value, $"[{testName}]: {message}", false);
+            traceListenerQueue.EnqueueMessgage(testRunner.Value, message, false);
         }
 
         public void WriteToolOutput(string message)
         {
-            traceListenerQueue.EnqueueMessgage(testRunner.Value, $"[{testName}]: {message}", true);
-        }
-
-        public void SetTestname(string name)
-        {
-            testName = name;
+            traceListenerQueue.EnqueueMessgage(testRunner.Value, message, true);
         }
     }
 }

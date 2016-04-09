@@ -21,11 +21,6 @@ namespace TechTalk.SpecFlow.Tracing
             this.toolMessagePrefix = toolMessagePrefix;
         }
 
-        public void SetTestname(string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public void WriteTestOutput(string message)
         {
             textWriter.WriteLine(message);

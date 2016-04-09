@@ -205,6 +205,7 @@
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />
+    <Compile Include="Tracing\NUnit3TraceListener.cs" />
     <Compile Include="Tracing\AsyncTraceListener.cs" />
     <Compile Include="Tracing\CodeFormattingExtensions.cs" />
     <Compile Include="Tracing\DefaultListener.cs" />
