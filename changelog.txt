@@ -1,3 +1,13 @@
+2.1.0-preview20160412-* - 2016/04/12
+
+Core changes:
++ Update Gherkin 3 parser
+
+New Features:
++ Improved output of specflow.exe GenerateAll command
++ Add debugging support for specflow.exe GenerateAll command
+
+
 2.0.0 - 2016/01/27
 
 Core changes:
