@@ -1,17 +1,13 @@
-﻿using System;
+using System;
 using BoDi;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Tracing;
+using TechTalk.SpecFlow;
 
-namespace TechTalk.SpecFlow.Tracing
+namespace NUnit3Tracing
 {
     public class NUnit3TraceListener : ITraceListener
     {
-        private readonly Lazy<ITestRunner> testRunner;
-
-        public NUnit3TraceListener(IObjectContainer container)
-        {
-            testRunner = new Lazy<ITestRunner>(container.Resolve<ITestRunner>);
-        }
 
         public void WriteTestOutput(string message)
         {
@@ -28,7 +24,7 @@ namespace TechTalk.SpecFlow.Tracing
         private string FormatMessage(string message)
         {
             var testName = GetCurrentTestCaseName();
-            return $"#{testRunner.Value.ThreadId}: [{testName}]: {message}";
+            return $"#[{testName}]: {message}";
         }
 
         private string GetCurrentTestCaseName()

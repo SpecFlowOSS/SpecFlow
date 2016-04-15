@@ -37,12 +37,12 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
                         string testLine = string.Empty;
                         if(line.StartsWith("#"))
                         {
-                            testLine = line.Remove(0, test.Length + 8);
+                            testLine = line.Remove(0, test.Length + "#[]: ".Length);
                             testLines.Add(testLine);
                         }
                         else if(line.StartsWith("->"))
                         {
-                            testLine = "->" + line.Remove(0, test.Length + 10);
+                            testLine = "->" + line.Remove(0, test.Length + "->#[]: ".Length);
                             testLines.Add(testLine);
                         }
                     }

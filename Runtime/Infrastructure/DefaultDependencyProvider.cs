@@ -40,6 +40,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 
+            container.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
             RegisterUnitTestProviders(container);
         }
 
@@ -53,8 +54,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
-            testRunnerContainer.RegisterTypeAs<NUnit3TraceListener, ITraceListener>("nunit");
-            testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
             testRunnerContainer.RegisterTypeAs<TestTracer, ITestTracer>();
         }
     }

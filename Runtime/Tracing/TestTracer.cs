@@ -2,13 +2,11 @@
 using System.Globalization;
 using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Configuration;
-using BoDi;
 
 namespace TechTalk.SpecFlow.Tracing
 {
@@ -28,24 +26,14 @@ namespace TechTalk.SpecFlow.Tracing
 
     public class TestTracer : ITestTracer
     {
-        private readonly Lazy<ITraceListener> traceListener;
+        private readonly ITraceListener traceListener;
         private readonly IStepFormatter stepFormatter;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
         private readonly RuntimeConfiguration runtimeConfiguration;
 
-        public TestTracer(IStepFormatter stepFormatter, 
-            IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, 
-            RuntimeConfiguration runtimeConfiguration,
-            IObjectContainer container)
+        public TestTracer(ITraceListener traceListener, IStepFormatter stepFormatter, IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, RuntimeConfiguration runtimeConfiguration)
         {
-            if(string.Compare(runtimeConfiguration.RuntimeUnitTestProvider,"nunit",true) == 0)
-            {
-                traceListener = new Lazy<ITraceListener>(() => container.Resolve<ITraceListener>("nunit"));
-            }
-            else
-                traceListener = new Lazy<ITraceListener>(container.Resolve<ITraceListener>);
-
-
+            this.traceListener = traceListener;
             this.stepFormatter = stepFormatter;
             this.stepDefinitionSkeletonProvider = stepDefinitionSkeletonProvider;
             this.runtimeConfiguration = runtimeConfiguration;
@@ -54,39 +42,39 @@ namespace TechTalk.SpecFlow.Tracing
         public void TraceStep(StepInstance stepInstance, bool showAdditionalArguments)
         {
             string stepText = stepFormatter.GetStepText(stepInstance);
-            traceListener.Value.WriteTestOutput(stepText.TrimEnd());
+            traceListener.WriteTestOutput(stepText.TrimEnd());
         }
 
         public void TraceWarning(string text)
         {
-            traceListener.Value.WriteToolOutput("warning: {0}", text);
+            traceListener.WriteToolOutput("warning: {0}", text);
         }
 
         public void TraceStepDone(BindingMatch match, object[] arguments, TimeSpan duration)
         {
-            traceListener.Value.WriteToolOutput("done: {0} ({1:F1}s)", 
+            traceListener.WriteToolOutput("done: {0} ({1:F1}s)", 
                 stepFormatter.GetMatchText(match, arguments), duration.TotalSeconds);
         }
 
         public void TraceStepSkipped()
         {
-            traceListener.Value.WriteToolOutput("skipped because of previous errors");
+            traceListener.WriteToolOutput("skipped because of previous errors");
         }
 
         public void TraceStepPending(BindingMatch match, object[] arguments)
         {
-            traceListener.Value.WriteToolOutput("pending: {0}",
+            traceListener.WriteToolOutput("pending: {0}",
                 stepFormatter.GetMatchText(match, arguments));
         }
 
         public void TraceBindingError(BindingException ex)
         {
-            traceListener.Value.WriteToolOutput("binding error: {0}", ex.Message);
+            traceListener.WriteToolOutput("binding error: {0}", ex.Message);
         }
 
         public void TraceError(Exception ex)
         {
-            traceListener.Value.WriteToolOutput("error: {0}", ex.Message);
+            traceListener.WriteToolOutput("error: {0}", ex.Message);
         }
 
         public void TraceNoMatchingStepDefinition(StepInstance stepInstance, ProgrammingLanguage targetLanguage, CultureInfo bindingCulture, List<BindingMatch> matchesWithoutScopeCheck)
@@ -98,25 +86,25 @@ namespace TechTalk.SpecFlow.Tracing
             {
                 string preMessage = string.Format("No matching step definition found for the step. There are matching step definitions, but none of them have matching scope for this step: {0}.", 
                     string.Join(", ", matchesWithoutScopeCheck.Select(m => stepFormatter.GetMatchText(m, null)).ToArray()));
-                traceListener.Value.WriteToolOutput(preMessage);
+                traceListener.WriteToolOutput(preMessage);
                 message.AppendLine("Change the scope or use the following code to create a new step definition:");
             }
             message.Append(
                stepDefinitionSkeletonProvider.GetStepDefinitionSkeleton(targetLanguage, stepInstance, runtimeConfiguration.StepDefinitionSkeletonStyle, bindingCulture)
                     .Indent(StepDefinitionSkeletonProvider.METHOD_INDENT));
 
-            traceListener.Value.WriteToolOutput(message.ToString());
+            traceListener.WriteToolOutput(message.ToString());
         }
 
         public void TraceDuration(TimeSpan elapsed, IBindingMethod method, object[] arguments)
         {
-            traceListener.Value.WriteToolOutput("duration: {0}: {1:F1}s", 
+            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", 
                 stepFormatter.GetMatchText(method, arguments), elapsed.TotalSeconds);
         }
 
         public void TraceDuration(TimeSpan elapsed, string text)
         {
-            traceListener.Value.WriteToolOutput("duration: {0}: {1:F1}s", text, elapsed.TotalSeconds);
+            traceListener.WriteToolOutput("duration: {0}: {1:F1}s", text, elapsed.TotalSeconds);
         }
     }
 }
