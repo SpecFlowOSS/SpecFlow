@@ -25,11 +25,11 @@ namespace TechTalk.SpecFlow.Assist
                 index++;
             }
 
-            foreach (var item in  tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
+            foreach (var item in tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable)
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
-                    line += string.Format(" {0} |", item.GetPropertyValue(header));
+                    line += $" {item.GetPropertyValue(header)} |";
                 realData.AppendLine(line);
             }
 

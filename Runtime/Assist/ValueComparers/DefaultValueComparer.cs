@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool Compare(string expectedValue, object actualValue)
         {
-            var actual = actualValue == null ? String.Empty : actualValue.ToString();
+            var actual = actualValue?.ToString() ?? String.Empty;
 
             return expectedValue == actual;
         }

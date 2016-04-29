@@ -4,30 +4,17 @@ namespace TechTalk.SpecFlow.Assist
 {
     public class TableDifferenceResults<TT>
     {
-        private readonly Table table;
-        private readonly IEnumerable<int> indexesOfTableRowsThatWereNotMatched;
-        private readonly IEnumerable<TT> itemsInTheDataThatWereNotFoundInTheTable;
-
         public TableDifferenceResults(Table table, IEnumerable<int> indexesOfTableRowsThatWereNotMatched, IEnumerable<TT> itemsInTheDataThatWereNotFoundInTheTable)
         {
-            this.table = table;
-            this.indexesOfTableRowsThatWereNotMatched = indexesOfTableRowsThatWereNotMatched;
-            this.itemsInTheDataThatWereNotFoundInTheTable = itemsInTheDataThatWereNotFoundInTheTable;
+            this.Table = table;
+            this.IndexesOfTableRowsThatWereNotMatched = indexesOfTableRowsThatWereNotMatched;
+            this.ItemsInTheDataThatWereNotFoundInTheTable = itemsInTheDataThatWereNotFoundInTheTable;
         }
 
-        public Table Table
-        {
-            get { return table; }
-        }
+        public Table Table { get; }
 
-        public IEnumerable<int> IndexesOfTableRowsThatWereNotMatched
-        {
-            get { return indexesOfTableRowsThatWereNotMatched; }
-        }
+        public IEnumerable<int> IndexesOfTableRowsThatWereNotMatched { get; }
 
-        public IEnumerable<TT> ItemsInTheDataThatWereNotFoundInTheTable
-        {
-            get { return itemsInTheDataThatWereNotFoundInTheTable; }
-        }
+        public IEnumerable<TT> ItemsInTheDataThatWereNotFoundInTheTable { get; }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
-using BoDi;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -18,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
 
-            var differences = FindAnyDifferences(instanceTable, instance);
+            var differences = FindAnyDifferences(instanceTable, instance).ToArray();
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
@@ -43,12 +38,9 @@ namespace TechTalk.SpecFlow.Assist
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
         {
-            if (difference.DoesNotExist)
-                return string.Format("{0}: Property does not exist", difference.Property);
-
-            return string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                 difference.Property, difference.Expected,
-                                 difference.Actual);
+            return difference.DoesNotExist 
+                ? $"{difference.Property}: Property does not exist" 
+                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>";
         }
 
         private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
@@ -60,7 +52,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
         {
-            return differences.Count() > 0;
+            return differences.Any();
         }
 
         private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
@@ -74,7 +66,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = Assist.Service.Instance.ValueComparers;
+            var valueComparers = Service.Instance.ValueComparers;
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
