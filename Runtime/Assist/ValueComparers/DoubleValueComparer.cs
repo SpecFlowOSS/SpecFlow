@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (double);
+            return actualValue is double;
         }
 
         public bool Compare(string expectedValue, object actualValue)
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             Double expected;
             if (Double.TryParse(expectedValue, out expected) == false)
                 return false;
-            return expected == (double) actualValue;
+            return Math.Abs(expected - (double) actualValue) < double.Epsilon;
         }
     }
 }

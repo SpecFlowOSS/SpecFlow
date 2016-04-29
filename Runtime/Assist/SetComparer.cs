@@ -54,12 +54,12 @@ namespace TechTalk.SpecFlow.Assist
 
         private bool ThereAreResultsWhenThereShouldBeNone(IEnumerable<T> set)
         {
-            return set.Count() > 0 && table.Rows.Count() == 0;
+            return set.Any() && !table.Rows.Any();
         }
 
         private bool ThereAreNoResultsAndNoExpectedResults(IEnumerable<T> set)
         {
-            return set.Count() == 0 && table.Rows.Count() == 0;
+            return !set.Any() && !table.Rows.Any();
         }
 
         private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
@@ -111,7 +111,7 @@ namespace TechTalk.SpecFlow.Assist
         private static int GetTheIndexOfTheMatchingItem(Table expectedItem,
                                                         IList<T> actualItems)
         {
-            for (var actualItemIndex = 0; actualItemIndex < actualItems.Count(); actualItemIndex++)
+            for (var actualItemIndex = 0; actualItemIndex < actualItems.Count; actualItemIndex++)
             {
                 var actualItem = actualItems[actualItemIndex];
 
@@ -141,14 +141,12 @@ namespace TechTalk.SpecFlow.Assist
 
         private void AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType()
         {
-            var propertiesThatDoNotExist = from columnHeader in table.Header
+            var propertiesThatDoNotExist = (from columnHeader in table.Header
                                            where (typeof (T).GetProperties().Any(property => TEHelpers.IsMemberMatchingToColumnName(property, columnHeader)) == false)
-                                           select columnHeader;
+                                           select columnHeader).ToArray();
 
             if (propertiesThatDoNotExist.Any())
-                throw new ComparisonException(
-                    propertiesThatDoNotExist.Aggregate(@"The following fields do not exist:",
-                                                       (running, next) => running + string.Format("{0}{1}", Environment.NewLine, next)));
+                throw new ComparisonException($@"The following fields do not exist:{ string.Join(Environment.NewLine, propertiesThatDoNotExist)}");
         }
     }
 }
