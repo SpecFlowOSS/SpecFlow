@@ -146,7 +146,7 @@ namespace TechTalk.SpecFlow.Assist
                                            select columnHeader).ToArray();
 
             if (propertiesThatDoNotExist.Any())
-                throw new ComparisonException($@"The following fields do not exist:{ string.Join(Environment.NewLine, propertiesThatDoNotExist)}");
+                throw new ComparisonException($@"The following fields do not exist:{Environment.NewLine}{string.Join(Environment.NewLine, propertiesThatDoNotExist)}");
         }
     }
 }
