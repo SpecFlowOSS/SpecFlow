@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
 
-            var differences = FindAnyDifferences(instanceTable, instance);
+            var differences = FindAnyDifferences(instanceTable, instance).ToArray();
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
