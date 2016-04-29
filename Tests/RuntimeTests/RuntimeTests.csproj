@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
     <Compile Include="AssistTests\ExampleEntities\EntityWithPropertiesAndFields.cs" />
+    <Compile Include="AssistTests\FindInSetExtensionMethodTests.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
