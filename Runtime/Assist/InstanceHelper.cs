@@ -9,12 +9,6 @@ namespace TechTalk.SpecFlow.Assist
 {
     internal static class InstanceHelper
     {
-        public static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
-        {
-            return instance.GetType().GetProperties()
-                .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
-        }
-
         public static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
             var expected = GetTheExpectedValue(row);
@@ -27,7 +21,7 @@ namespace TechTalk.SpecFlow.Assist
 
         public static bool ThereIsADifference<T>(T instance, TableRow row)
         {
-            return ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row);
+            return InstanceComparisonExtensionMethods.ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row);
         }
 
         private static string GetTheExpectedValue(TableRow row)
