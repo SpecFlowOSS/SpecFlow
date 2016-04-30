@@ -84,6 +84,33 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             results.Should().Contain(jane);
         }
 
+        [Test]
+        public void Usage_example()
+        {
+            var john = new Person {FirstName = "John", LastName = "Doe"};
+            var jane = new Person {FirstName = "Jane", LastName = "Doe"};
+            var records = new List<Person> {john, jane};
+
+            Table table;
+            table = new Table("Field", "Value");
+            table.AddRow("FirstName", "John");
+
+            table.FindAllInSet(records).Count().Should().Be(1);
+            table.FindAllInSet(records).Should().Contain(john);
+
+            table = new Table("Field", "Value");
+            table.AddRow("LastName", "Doe");
+
+            table.FindAllInSet(records).Count().Should().Be(2);
+            table.FindAllInSet(records).Should().Contain(john);
+            table.FindAllInSet(records).Should().Contain(jane);
+
+            table = new Table("Field", "Value");
+            table.AddRow("LastName", "Trump");
+
+            table.FindAllInSet(records).Count().Should().Be(0);
+        }
+
         public class Person
         {
             public string FirstName { get; set; }
