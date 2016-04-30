@@ -80,6 +80,46 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             comparisonResult.ExceptionWasThrown.Should().BeTrue();
         }
 
+        [Test]
+        public void Usage_example()
+        {
+            var howardRoark = new Person {FirstName = "Howard", LastName = "Roark"};
+            var johnGalt = new Person {FirstName = "John", LastName = "Galt"};
+            var records = new List<Person> {howardRoark, johnGalt};
+
+            Table table;
+            table = new Table("Field", "Value");
+            table.AddRow("FirstName", "Howard");
+
+            table.FindInSet(records).Should().Be(howardRoark);
+
+            table = new Table("Field", "Value");
+            table.AddRow("LastName", "Galt");
+
+            table.FindInSet(records).Should().Be(johnGalt);
+
+            table = new Table("Field", "Value");
+            table.AddRow("LastName", "Keating");
+
+            // this call will throw an exception because no match exists
+            Exception exception = null;
+            try
+            {
+                table.FindInSet(records);
+            } catch (Exception ex)
+            {
+                exception = ex;
+            }
+            exception.Should().NotBeNull();
+            exception.Message.Should().Be("No instance in the set matches the table");
+        }
+
+        public class Person
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+
         private ComparisonTestResult ExceptionWasThrownByThisSearch(Table table, IEnumerable<InstanceComparisonTestObject> set)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };
