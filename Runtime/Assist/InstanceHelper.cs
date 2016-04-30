@@ -11,7 +11,6 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
-            return false;
             return instance.GetType().GetProperties()
                 .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }

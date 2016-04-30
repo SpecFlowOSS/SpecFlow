@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Globalization;
@@ -66,6 +67,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var result = table.FindInSet(testSet);
 
             result.Should().BeSameAs(testSet[1]);
+        }
+
+        [Test]
+        public void Throws_an_exception_if_the_property_cannot_be_found()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("What You Talkin Bout", "Willis");
+
+            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
+
+            comparisonResult.ExceptionWasThrown.Should().BeTrue();
         }
 
         private ComparisonTestResult ExceptionWasThrownByThisSearch(Table table, IEnumerable<InstanceComparisonTestObject> set)
