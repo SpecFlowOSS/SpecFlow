@@ -69,6 +69,11 @@ namespace TechTalk.SpecFlow.Assist
                 .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
         }
 
+        internal static bool ThereIsADifference<T>(T instance, TableRow row)
+        {
+            return ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row);
+        }
+
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
         {
             var expected = GetTheExpectedValue(row);

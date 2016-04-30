@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             foreach (var row in table.Rows)
             {
-                if (InstanceHelper.ThereIsADifference(instance, row))
+                if (InstanceComparisonExtensionMethods.ThereIsADifference(instance, row))
                 {
                     return false;
                 }
