@@ -25,26 +25,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Throws_exception_when_table_does_not_exist_in_set()
+        public void It_returns_nothing_when_no_match_could_be_found()
         {
             var table = new Table("Field", "Value");
             table.AddRow("String Property", "Peter Keating");
 
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeTrue();
-        }
-
-        [Test]
-        public void Does_not_throw_exception_when_value_exists_set()
-        {
-            var table = new Table("Field", "Value");
-            table.AddRow("String Property", "Joel Mario");
-            table.AddRow("Int Property", "20");
-
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeFalse();
+            table.FindAllInSet(testSet).Count().Should().Be(0);
         }
 
         [Test]
@@ -74,14 +60,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Throws_an_exception_if_the_property_cannot_be_found()
+        public void Returns_nothing_if_the_match_cannot_be_found()
         {
             var table = new Table("Field", "Value");
             table.AddRow("What You Talkin Bout", "Willis");
 
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeTrue();
+            table.FindAllInSet(testSet).Count().Should().Be(0);
         }
 
         [Test]
@@ -104,21 +88,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }
-        }
-
-        private ComparisonTestResult ExceptionWasThrownByThisSearch(Table table, IEnumerable<InstanceComparisonTestObject> set)
-        {
-            var result = new ComparisonTestResult { ExceptionWasThrown = false };
-            try
-            {
-                table.FindAllInSet(set);
-            }
-            catch (ComparisonException ex)
-            {
-                result.ExceptionWasThrown = true;
-                result.ExceptionMessage = ex.Message;
-            }
-            return result;
         }
     }
 }

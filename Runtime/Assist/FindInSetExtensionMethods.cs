@@ -23,11 +23,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof (T));
 
-            var matches = set.Where(instance => InstanceMatchesTable(instance, instanceTable)).ToArray();
-
-            if (matches.Any()) return matches;
-
-            throw new ComparisonException("No instance in the set matches the table");
+            return set.Where(instance => InstanceMatchesTable(instance, instanceTable)).ToArray();
         }
 
         private static bool InstanceMatchesTable<T>(T instance, Table table)
