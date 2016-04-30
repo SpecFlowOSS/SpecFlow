@@ -24,26 +24,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Throws_exception_when_table_does_not_exist_in_set()
+        public void It_returns_null_when_no_match_can_be_found()
         {
             var table = new Table("Field", "Value");
             table.AddRow("String Property", "Peter Keating");
 
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeTrue();
-        }
-
-        [Test]
-        public void Does_not_throw_exception_when_value_exists_set()
-        {
-            var table = new Table("Field", "Value");
-            table.AddRow("String Property", "Joel Mario");
-            table.AddRow("Int Property", "20");
-
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeFalse();
+            table.FindInSet(testSet).Should().BeNull();
         }
 
         [Test]
@@ -70,14 +56,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
-        public void Throws_an_exception_if_the_property_cannot_be_found()
+        public void Returns_null_if_the_property_cannot_be_found()
         {
             var table = new Table("Field", "Value");
             table.AddRow("What You Talkin Bout", "Willis");
 
-            var comparisonResult = ExceptionWasThrownByThisSearch(table, testSet);
-
-            comparisonResult.ExceptionWasThrown.Should().BeTrue();
+            table.FindInSet(testSet).Should().BeNull();
         }
 
         [Test]
@@ -125,17 +109,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             table = new Table("Field", "Value");
             table.AddRow("LastName", "Keating");
 
-            // this call will throw an exception because no match exists
-            Exception exception = null;
-            try
-            {
-                table.FindInSet(records);
-            } catch (Exception ex)
-            {
-                exception = ex;
-            }
-            exception.Should().NotBeNull();
-            exception.Message.Should().Be("No instance in the set matches the table");
+            table.FindInSet(records).Should().BeNull();
         }
 
         public class Person

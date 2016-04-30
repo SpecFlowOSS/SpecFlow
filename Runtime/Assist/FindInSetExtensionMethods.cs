@@ -13,10 +13,8 @@ namespace TechTalk.SpecFlow.Assist
 
             if (matches.Length > 1)
                 throw new ComparisonException("Multiple instances match the table");
-            if (matches.Length == 1)
-                return matches.First();
 
-            throw new ComparisonException("No instance in the set matches the table");
+            return matches.FirstOrDefault();
         }
 
         public static IEnumerable<T> FindAllInSet<T>(this Table table, IEnumerable<T> set)
