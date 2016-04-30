@@ -81,6 +81,30 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void It_should_throw_if_multiple_results_can_be_found()
+        {
+            var john = new Person {FirstName = "John", LastName = "Doe"};
+            var jane = new Person {FirstName = "Jane", LastName = "Doe"};
+            var records = new List<Person> { john, jane};
+
+            var table = new Table("Field", "Value");
+            table.AddRow("LastName", "Doe");
+
+            Exception exception = null;
+            try
+            {
+                table.FindInSet(records);
+            }
+            catch (ComparisonException ex)
+            {
+                exception = ex;
+            }
+
+            exception.Should().NotBeNull();
+            exception.Message.Should().Be("Multiple instances match the table");
+        }
+
+        [Test]
         public void Usage_example()
         {
             var howardRoark = new Person {FirstName = "Howard", LastName = "Roark"};

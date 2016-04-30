@@ -9,8 +9,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof (T));
 
-            foreach (var instance in set.Where(instance => InstanceMatchesTable(instance, instanceTable)))
-                return instance;
+            var matches = set.Where(instance => InstanceMatchesTable(instance, instanceTable)).ToArray();
+
+            if (matches.Length > 1)
+                throw new ComparisonException("Multiple instances match the table");
+            if (matches.Length == 1)
+                return matches.First();
 
             throw new ComparisonException("No instance in the set matches the table");
         }
