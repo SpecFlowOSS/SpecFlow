@@ -98,7 +98,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
                 IntProperty = 1,
                 BoolProperty = true,
                 StringProperty = "Test",
-                DateTimeProperty = new DateTime(2016, 4, 1)
+                DateTimeProperty = new DateTime(2016, 4, 30)
             };
 
             var result = GetResultFromThisComparison(table, test);
