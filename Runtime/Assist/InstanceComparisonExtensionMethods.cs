@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Assist
 
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
 
-            var differences = FindAnyDifferences(instanceTable, instance).ToArray();
+            var differences = FindAnyDifferences(instanceTable, instance);
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
@@ -43,11 +43,11 @@ namespace TechTalk.SpecFlow.Assist
                 : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>";
         }
 
-        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
+        private static Difference[] FindAnyDifferences<T>(Table table, T instance)
         {
-            return from row in table.Rows
+            return (from row in table.Rows
                    where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
-                   select CreateDifferenceForThisRow(instance, row);
+                   select CreateDifferenceForThisRow(instance, row)).ToArray();
         }
 
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
