@@ -152,6 +152,10 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Infrastructure\ContextManagers\IInternalContextManager.cs" />
+    <Compile Include="Infrastructure\ContextManagers\InternalContextManager.cs" />
+    <Compile Include="Infrastructure\ContextManagers\StackedInternalContextManager.cs" />
+    <Compile Include="Infrastructure\ContextManagers\ThreadSafeInternalContextManagerWrapper.cs" />
     <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
@@ -245,6 +249,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 using MockRepository = Rhino.Mocks.MockRepository;
@@ -100,7 +101,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var container = new ObjectContainer();
             container.RegisterInstanceAs(new Mock<ITestRunner>().Object);
-            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), container);
+            var testTracerStub = MockRepository.Stub<ITestTracer>();
+            ContextManagerStub = new ContextManager(container,
+                new InternalContextManager<FeatureContext>(testTracerStub),
+                new InternalContextManager<ScenarioContext>(testTracerStub),
+                new StackedInternalContextManager<ScenarioStepContext>(testTracerStub));
+
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
             ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
 

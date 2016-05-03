@@ -55,7 +55,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterInstanceAs(runtimeConfiguration);
 
             if (runtimeConfiguration.RuntimeUnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
+                container.RegisterInstanceAs(
+                    container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
+            
 
             foreach (var plugin in plugins)
                 plugin.RegisterCustomizations(container, runtimeConfiguration);
@@ -68,6 +70,9 @@ namespace TechTalk.SpecFlow.Infrastructure
             var testRunnerContainer = new ObjectContainer(globalContainer);
 
             defaultDependencyProvider.RegisterTestRunnerDefaults(testRunnerContainer);
+
+            var unitTestRuntimeProvider = testRunnerContainer.Resolve<IUnitTestRuntimeProvider>();
+            unitTestRuntimeProvider.RegisterContextManagers(testRunnerContainer);
 
             return testRunnerContainer;
         }

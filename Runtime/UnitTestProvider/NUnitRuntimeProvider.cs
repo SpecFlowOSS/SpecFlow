@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using BoDi;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
 
 namespace TechTalk.SpecFlow.UnitTestProvider
 {
@@ -49,6 +51,13 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         public bool DelayedFixtureTearDown
         {
             get { return false; }
+        }
+
+        public void RegisterContextManagers(IObjectContainer objectContainer)
+        {
+            objectContainer.RegisterTypeAs<InternalContextManager<FeatureContext>, IInternalContextManager<FeatureContext>>();
+            objectContainer.RegisterTypeAs<InternalContextManager<ScenarioContext>, IInternalContextManager<ScenarioContext>>();
+            objectContainer.RegisterTypeAs<StackedInternalContextManager<ScenarioStepContext>, IInternalContextManager<ScenarioStepContext>>();
         }
     }
 }

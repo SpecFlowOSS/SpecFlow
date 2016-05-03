@@ -250,14 +250,27 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
     internal class DecoratorRegistryStub : IDecoratorRegistry
     {
+        private IEnumerable<string> _featureTags;
+        private IEnumerable<string> _scenarioTags;
+
+        public DecoratorRegistryStub() : this(new List<string>(),new List<string>())
+        {
+        }
+
+        public DecoratorRegistryStub(IEnumerable<string> featureTags, IEnumerable<string> scenarioTags)
+        {
+            _featureTags = featureTags;
+            _scenarioTags = scenarioTags;
+        }
+
         public void DecorateTestClass(TestClassGenerationContext generationContext, out List<string> unprocessedTags)
         {
-            unprocessedTags = new List<string>();
+            unprocessedTags = _featureTags.ToList();
         }
 
         public void DecorateTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<Tag> tags, out List<string> unprocessedTags)
         {
-            unprocessedTags = new List<string>();
+            unprocessedTags = _scenarioTags.ToList();
         }
     }
 }

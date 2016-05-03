@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using BoDi;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
 using FluentAssertions;
@@ -97,6 +98,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public bool DelayedFixtureTearDown
             {
                 get { throw new NotImplementedException(); }
+            }
+
+            public void RegisterContextManagers(IObjectContainer objectContainer)
+            {
+                throw new NotImplementedException();
             }
         }
 

@@ -23,6 +23,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
             }
         }
 
+        public static IEnumerable<CodeAttributeDeclaration> CustomAttributes(this CodeTypeDeclaration codeTypeDeclaration)
+        {
+            foreach (var customAttribute in codeTypeDeclaration.CustomAttributes)
+            {
+
+                var attribute = customAttribute as CodeAttributeDeclaration;
+                if (attribute != null)
+                {
+                    yield return attribute;
+                }
+            }
+        }
+
         public static IEnumerable<CodeAttributeDeclaration> CustomAttributes(this CodeMemberMethod codeMemberMethod)
         {
             foreach (var customAttribute in codeMemberMethod.CustomAttributes)
