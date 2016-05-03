@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (decimal);
+            return actualValue is decimal;
         }
 
         public bool Compare(string expectedValue, object actualValue)

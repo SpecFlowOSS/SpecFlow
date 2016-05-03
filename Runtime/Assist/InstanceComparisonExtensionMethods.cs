@@ -51,19 +51,16 @@ namespace TechTalk.SpecFlow.Assist
 
         private static string DescribeTheErrorForThisDifference(Difference difference)
         {
-            if (difference.DoesNotExist)
-                return string.Format("{0}: Property does not exist", difference.Property);
-
-            return string.Format("{0}: Expected <{1}>, Actual <{2}>",
-                                 difference.Property, difference.Expected,
-                                 difference.Actual);
+            return difference.DoesNotExist 
+                ? $"{difference.Property}: Property does not exist" 
+                : $"{difference.Property}: Expected <{difference.Expected}>, Actual <{difference.Actual}>";
         }
 
-        private static IEnumerable<Difference> FindAnyDifferences<T>(Table table, T instance)
+        private static Difference[] FindAnyDifferences<T>(Table table, T instance)
         {
-            return from row in table.Rows
+            return (from row in table.Rows
                    where ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row)
-                   select CreateDifferenceForThisRow(instance, row);
+                   select CreateDifferenceForThisRow(instance, row)).ToArray();
         }
 
         private static bool HasDifference<T>(Table table, T instance)
@@ -90,7 +87,7 @@ namespace TechTalk.SpecFlow.Assist
             var expected = GetTheExpectedValue(row);
             var propertyValue = instance.GetPropertyValue(row.Id());
 
-            var valueComparers = Assist.Service.Instance.ValueComparers;
+            var valueComparers = Service.Instance.ValueComparers;
 
             return valueComparers
                 .FirstOrDefault(x => x.CanCompare(propertyValue))
