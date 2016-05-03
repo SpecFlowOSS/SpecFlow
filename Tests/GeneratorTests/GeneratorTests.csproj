@@ -72,7 +72,7 @@
     <Compile Include="IgnoredTestGeneratorTests.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="ParserHelper.cs" />
-    <Compile Include="MSestGeneratorProviderTests.cs" />
+    <Compile Include="MsTestGeneratorProviderTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="TestGeneratorTestsBase.cs" />
     <Compile Include="TestUpToDateCheckerTests.cs" />
     <Compile Include="UnitTestFeatureGeneratorTests.cs" />
-    <Compile Include="XUnitTestGeenratorProviderTests.cs" />
+    <Compile Include="XUnitTestGeneratorProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
