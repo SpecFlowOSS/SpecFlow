@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist.ValueComparers;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
-using BoDi;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -22,6 +17,19 @@ namespace TechTalk.SpecFlow.Assist
 
             if (ThereAreAnyDifferences(differences))
                 ThrowAnExceptionThatDescribesThoseDifferences(differences);
+        }
+
+        /// <summary>
+        /// Indicates whether the table is equivalent to the specified instance by comparing the values of all
+        /// columns against the properties of the instance.  Will return false after finding the first difference.
+        /// </summary>
+        public static bool IsEquivalentToInstance<T>(this Table table, T instance)
+        {
+            AssertThatTheInstanceExists(instance);
+
+            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
+
+            return HasDifference(instanceTable, instance) == false;
         }
 
         private static void AssertThatTheInstanceExists<T>(T instance)
@@ -58,9 +66,17 @@ namespace TechTalk.SpecFlow.Assist
                    select CreateDifferenceForThisRow(instance, row);
         }
 
+        private static bool HasDifference<T>(Table table, T instance)
+        {
+            // This method exists so it will stop evaluating the instance (hence stop using Reflection)
+            // after the first difference is found.
+            return (from row in table.Rows select row)
+                   .Any(row => ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row));
+        }
+
         private static bool ThereAreAnyDifferences(IEnumerable<Difference> differences)
         {
-            return differences.Count() > 0;
+            return differences.Any();
         }
 
         private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)

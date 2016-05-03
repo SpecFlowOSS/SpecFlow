@@ -125,8 +125,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             try
             {
-                expectedItem.CompareToInstance(actualItem);
-                return true;
+                return expectedItem.IsEquivalentToInstance(actualItem);
             }
             catch
             {
