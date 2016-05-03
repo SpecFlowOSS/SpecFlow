@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(parentResults);
 
-            result.Should().Be("The table and the set not match.");
+            result.Should().Be("The table and the set do not match.");
         }
 
         public class TestClass{}
