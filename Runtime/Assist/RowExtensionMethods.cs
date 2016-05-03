@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -99,7 +98,7 @@ namespace TechTalk.SpecFlow.Assist
                                 select property.PropertyType).FirstOrDefault();
 
             if (propertyType == null)
-                throw new InvalidOperationException(string.Format("No enum with value {0} found in type {1}", value, typeof(T).Name));
+                throw new InvalidOperationException($"No enum with value {value} found in type {typeof(T).Name}");
 
             return propertyType;
         }
@@ -147,13 +146,13 @@ namespace TechTalk.SpecFlow.Assist
         {
             var acceptedValues = new[] { "true", "false" };
             if (acceptedValues.Contains(row[id]) == false)
-                throw new InvalidCastException(string.Format("You must use 'true' or 'false' when setting bools for {0}", id));
+                throw new InvalidCastException($"You must use 'true' or 'false' when setting bools for {id}");
         }
 
         private static void AssertThatAValueWithThisIdExistsInThisRow(TableRow row, string id)
         {
             if (AValueWithThisIdExists(row, id) == false)
-                throw new InvalidOperationException(string.Format("{0} could not be found in the row.", id));
+                throw new InvalidOperationException($"{id} could not be found in the row.");
         }
 
         private static bool AValueWithThisIdExists(IEnumerable<KeyValuePair<string, string>> row, string id)

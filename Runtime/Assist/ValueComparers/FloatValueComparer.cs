@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (float);
+            return actualValue is float;
         }
 
         public bool Compare(string expectedValue, object actualValue)
@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
             float expected;
             if (float.TryParse(expectedValue, out expected) == false)
                 return false;
-            return expected == (float) actualValue;
+            return Math.Abs(expected - (float) actualValue) < float.Epsilon;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (DateTime);
+            return actualValue is DateTime;
         }
 
         public bool Compare(string expectedValue, object actualValue)

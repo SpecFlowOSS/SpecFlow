@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (Guid);
+            return actualValue is Guid;
         }
 
         public bool Compare(string expectedValue, object actualValue)

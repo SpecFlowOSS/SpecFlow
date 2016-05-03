@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
-using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -21,7 +19,7 @@ namespace TechTalk.SpecFlow.Assist
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
-                throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
+                throw new MissingMethodException($"Unable to find a suitable constructor to create instance of {typeof(T).Name}");
 
             var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, typeof(T));
 
@@ -41,9 +39,7 @@ namespace TechTalk.SpecFlow.Assist
 
         internal static bool ThisTypeHasADefaultConstructor<T>()
         {
-            return typeof(T).GetConstructors()
-                       .Where(c => c.GetParameters().Length == 0)
-                       .Count() > 0;
+            return typeof(T).GetConstructors().Any(c => c.GetParameters().Length == 0);
         }
 
         internal static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
@@ -54,9 +50,9 @@ namespace TechTalk.SpecFlow.Assist
                                          select property.Name;
 
             return (from constructor in typeof(T).GetConstructors()
-                    where projectedPropertyNames.Except(
+                    where !projectedPropertyNames.Except(
                         from parameter in constructor.GetParameters()
-                        select parameter.Name).Count() == 0
+                        select parameter.Name).Any()
                     select constructor).FirstOrDefault();
         }
 
@@ -151,12 +147,12 @@ namespace TechTalk.SpecFlow.Assist
         {
             if (TheHeaderIsTheOldFieldValuePair(table))
                 return true;
-            return (table.Rows.Count() != 1) || (table.Header.Count() == 2 && TheFirstRowValueIsTheNameOfAProperty(table, type));
+            return (table.Rows.Count() != 1) || (table.Header.Count == 2 && TheFirstRowValueIsTheNameOfAProperty(table, type));
         }
 
         private static bool TheHeaderIsTheOldFieldValuePair(Table table)
         {
-            return table.Header.Count() == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
+            return table.Header.Count == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
         }
 
         private static bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)

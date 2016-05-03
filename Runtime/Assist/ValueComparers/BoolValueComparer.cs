@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace TechTalk.SpecFlow.Assist.ValueComparers
+﻿namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
     public class BoolValueComparer : IValueComparer
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (bool);
+            return actualValue is bool;
         }
 
         public bool Compare(string expectedValue, object actualValue)

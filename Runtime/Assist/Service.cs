@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using BoDi;
-using System.Linq;
-using TechTalk.SpecFlow.Assist;
 using TechTalk.SpecFlow.Assist.ValueComparers;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
@@ -15,8 +11,8 @@ namespace TechTalk.SpecFlow.Assist
         private List<IValueComparer> _registeredValueComparers;
         private List<IValueRetriever> _registeredValueRetrievers;
 
-        public IEnumerable<IValueComparer> ValueComparers { get { return _registeredValueComparers; } }
-        public IEnumerable<IValueRetriever> ValueRetrievers { get { return _registeredValueRetrievers; } }
+        public IEnumerable<IValueComparer> ValueComparers => _registeredValueComparers;
+        public IEnumerable<IValueRetriever> ValueRetrievers => _registeredValueRetrievers;
 
         public static Service Instance { get; internal set; }
 

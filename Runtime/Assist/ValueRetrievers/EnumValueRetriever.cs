@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
@@ -46,7 +45,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
             catch
             {
-                throw new InvalidOperationException(string.Format("No enum with value {0} found", value));
+                throw new InvalidOperationException($"No enum with value {value} found");
             }
         }
 
@@ -69,9 +68,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return value;
         }
 
-        private InvalidOperationException GetInvalidOperationException(string value)
-        {
-            return new InvalidOperationException(string.Format("No enum with value {0} found", value));
-        }
+        private InvalidOperationException GetInvalidOperationException(string value) => new InvalidOperationException($"No enum with value {value} found");
     }
 }
