@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -73,10 +74,10 @@ namespace TechTalk.SpecFlow.Parser
                 this.sourceFilePath = sourceFilePath;
             }
 
-            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description,
-                Background background, ScenarioDefinition[] scenariodefinitions, Comment[] comments, AstNode node)
+            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children,
+                Comment[] featureFileComments, AstNode node)
             {
-                return new SpecFlowFeature(tags, location, language, keyword, name, description, background, scenariodefinitions, comments, sourceFilePath);
+                return new SpecFlowFeature(tags, location, language, keyword, name, description, children, featureFileComments, sourceFilePath);
             }
 
             protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
@@ -123,10 +124,23 @@ namespace TechTalk.SpecFlow.Parser
             return feature;
         }
 
-        private void CheckSemanticErrors(Feature feature)
+        private void CheckSemanticErrors(SpecFlowFeature feature)
         {
             var errors = new List<ParserException>();
 
+            CheckForDuplicateScenarios(feature, errors);
+
+            CheckForDuplicateExamples(feature, errors);
+
+            // collect
+            if (errors.Count == 1)
+                throw errors[0];
+            if (errors.Count > 1)
+                throw new CompositeParserException(errors.ToArray());
+        }
+
+        private void CheckForDuplicateScenarios(SpecFlowFeature feature, List<ParserException> errors)
+        {
             // duplicate scenario name
             var duplicatedScenarios = feature.ScenarioDefinitions.GroupBy(sd => sd.Name, sd => sd).Where(g => g.Count() > 1).ToArray();
             errors.AddRange(
@@ -134,12 +148,28 @@ namespace TechTalk.SpecFlow.Parser
                     new SemanticParserException(
                         string.Format("Feature file already contains a scenario with name '{0}'", g.Key),
                         g.ElementAt(1).Location)));
+        }
 
-            // collect
-            if (errors.Count == 1)
-                throw errors[0];
-            if (errors.Count > 1)
-                throw new CompositeParserException(errors.ToArray());
+        private void CheckForDuplicateExamples(SpecFlowFeature feature, List<ParserException> errors)
+        {
+            foreach (var scenarioDefinition in feature.ScenarioDefinitions)
+            {
+                var scenarioOutline = scenarioDefinition as ScenarioOutline;
+                if (scenarioOutline != null)
+                {
+                    var duplicateExamples = scenarioOutline.Examples
+                                                           .Where(e => !String.IsNullOrWhiteSpace(e.Name))
+                                                           .Where(e => e.Tags.All(t => t.Name != "ignore"))
+                                                           .GroupBy(e => e.Name, e => e).Where(g => g.Count() > 1);
+
+                    foreach (var duplicateExample in duplicateExamples)
+                    {
+                        var message = string.Format("Scenario Outline '{0}' already contains an example with name '{1}'", scenarioOutline.Name, duplicateExample.Key);
+                        var semanticParserException = new SemanticParserException(message, duplicateExample.ElementAt(1).Location);
+                        errors.Add(semanticParserException);
+                    }
+                }
+            }
         }
     }
 }

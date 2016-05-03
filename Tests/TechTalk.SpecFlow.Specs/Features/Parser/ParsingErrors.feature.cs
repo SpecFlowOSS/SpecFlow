@@ -32,8 +32,8 @@ namespace TechTalk.SpecFlow.Specs.Features.Parser
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Providing meaningful errors for wrong Gherkin files", "In order to find out easily what is wrong with a Gherkin file\nAs a SpecFlow user\n" +
-                    "I want to get proper error messages when the files are parsed", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Providing meaningful errors for wrong Gherkin files", "In order to find out easily what is wrong with a Gherkin file\r\nAs a SpecFlow user" +
+                    "\r\nI want to get proper error messages when the files are parsed", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -99,8 +99,8 @@ this.ScenarioSetup(scenarioInfo);
 this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 17
- testRunner.Given("there is a Gherkin file as", "\tFeature: misspelled step keyword\n\n\tScenario: misspelled step keyword\n\t\tGiven som" +
-                    "ething\n\t\tWhenX something is misspelled", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there is a Gherkin file as", "\tFeature: misspelled step keyword\r\n\r\n\tScenario: misspelled step keyword\r\n\t\tGiven " +
+                    "something\r\n\t\tWhenX something is misspelled", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 25
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -125,8 +125,8 @@ this.ScenarioSetup(scenarioInfo);
 this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 31
- testRunner.Given("there is a Gherkin file as", "\tFeature: Wrongly spelled scenario outline\n\n\t@dummy_tag\n\tScenario OutlinX: Wrongl" +
-                    "y spelled scenario outline\n\t\tGiven something\n\n\tExamples:\n\t\t| something |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Wrongly spelled scenario outline\r\n\r\n\t@dummy_tag\r\n\tScenario OutlinX: Wro" +
+                    "ngly spelled scenario outline\r\n\t\tGiven something\r\n\r\n\tExamples:\r\n\t\t| something |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 42
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -151,8 +151,8 @@ this.ScenarioSetup(scenarioInfo);
 this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 48
- testRunner.Given("there is a Gherkin file as", "\tFeature: Table cell count mismatch\n\n\tScenario: Table cell count mismatch\n\t\tGiven" +
-                    " a table\n\t\t\t| h1 | h2 |\n\t\t\t| c1 | c2 | c3 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Table cell count mismatch\r\n\r\n\tScenario: Table cell count mismatch\r\n\t\tGi" +
+                    "ven a table\r\n\t\t\t| h1 | h2 |\r\n\t\t\t| c1 | c2 | c3 |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 57
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -177,19 +177,12 @@ this.ScenarioSetup(scenarioInfo);
 this.ScenarioSetup(scenarioInfo);
 #line hidden
 #line 63
- testRunner.Given("there is a Gherkin file as", "\tFeature: Delayed semantic error\n\n\tScenario Outline: Scenario outline without exa" +
-                    "mples\n\t\tGiven something\n\n\tScenario: proper scenario\n\t\tGiven something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Delayed semantic error\r\n\r\n\tScenario Outline: Scenario outline without e" +
+                    "xamples\r\n\t\tGiven something\r\n\r\n\tScenario: proper scenario\r\n\t\tGiven something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 73
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "line",
-                        "error"});
-            table5.AddRow(new string[] {
-                        "6",
-                        "got \'Scenario: proper scenario\'"});
 #line 74
- testRunner.Then("the following errors are provided", ((string)(null)), table5, "Then ");
+ testRunner.Then("no parsing error is reported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -199,23 +192,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EmptyExampleSet()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Empty example set", ((string[])(null)));
-#line 78
+#line 76
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 79
- testRunner.Given("there is a Gherkin file as", "\tFeature: Empty example set\n\n\tScenario Outline: Scenario outline without examples" +
-                    "\n\t\tGiven <something>\n\n\tExamples: ", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 88
+#line 77
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Empty example set\r\n\r\n\tScenario Outline: Scenario outline without exampl" +
+                    "es\r\n\t\tGiven <something>\r\n\r\n\tExamples: ", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 86
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "line",
-                        "error"});
-            table6.AddRow(new string[] {
-                        "7",
-                        "unexpected end of file"});
-#line 89
- testRunner.Then("the following errors are provided", ((string)(null)), table6, "Then ");
+#line 87
+ testRunner.Then("no parsing error is reported", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -225,22 +211,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void LanguageNotSupported()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Language not supported", ((string[])(null)));
-#line 93
+#line 89
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 94
- testRunner.Given("there is a Gherkin file as", "\t#language: invalid-lang\n\tFeature: Invalid language", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 99
+#line 90
+ testRunner.Given("there is a Gherkin file as", "\t#language: invalid-lang\r\n\tFeature: Invalid language", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 95
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "line",
                         "error"});
-            table7.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "1",
                         "Language not supported: invalid"});
-#line 100
- testRunner.Then("the following errors are provided", ((string)(null)), table7, "Then ");
+#line 96
+ testRunner.Then("the following errors are provided", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -250,23 +236,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DuplicatedScenarioName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicated scenario name", ((string[])(null)));
-#line 104
+#line 100
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 105
- testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated scenario name\n\n\tScenario: Duplicated scenario\n\t\tGiven someth" +
-                    "ing\n\n\tScenario: Duplicated scenario \n\t\tGiven something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 115
+#line 101
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated scenario name\r\n\r\n\tScenario: Duplicated scenario\r\n\t\tGiven som" +
+                    "ething\r\n\r\n\tScenario: Duplicated scenario \r\n\t\tGiven something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 111
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "line",
                         "error"});
-            table8.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "6",
                         "Feature file already contains a scenario with name \'Duplicated scenario\'"});
-#line 116
- testRunner.Then("the following errors are provided", ((string)(null)), table8, "Then ");
+#line 112
+ testRunner.Then("the following errors are provided", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -276,24 +262,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DuplicatedExampleSetName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicated example set name", ((string[])(null)));
-#line 120
+#line 116
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 121
- testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated example set name\n\n\tScenario Outline: Scenario outline\n\t\tGive" +
-                    "n <something>\n\n\tExamples: duplicated example set\n\t\t| something |\n\n\tExamples: dup" +
-                    "licated example set\n\t\t| something |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 117
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated example set name\r\n\r\n\tScenario Outline: Scenario outline\r\n\t\tG" +
+                    "iven <something>\r\n\r\n\tExamples: duplicated example set\r\n\t\t| something |\r\n\r\n\tExamp" +
+                    "les: duplicated example set\r\n\t\t| something |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 130
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "line",
                         "error"});
-            table9.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "9",
-                        "got \'Examples: duplicated example set\'"});
-#line 135
- testRunner.Then("the following errors are provided", ((string)(null)), table9, "Then ");
+                        "Scenario Outline \'Scenario outline\' already contains an example with name \'duplic" +
+                            "ated example set\'"});
+#line 131
+ testRunner.Then("the following errors are provided", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -303,23 +290,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DuplicatedBackground()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicated background", ((string[])(null)));
-#line 139
+#line 135
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 140
- testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated background\n\n\tBackground: \n\t\tGiven something\n\n\tBackground: \n\t" +
-                    "\tGiven something else", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 150
+#line 136
+ testRunner.Given("there is a Gherkin file as", "\tFeature: Duplicated background\r\n\r\n\tBackground: \r\n\t\tGiven something\r\n\r\n\tBackgroun" +
+                    "d: \r\n\t\tGiven something else", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 146
  testRunner.When("the file is parsed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "line",
                         "error"});
-            table10.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "6",
                         "got \'Background:\'"});
-#line 151
- testRunner.Then("the following errors are provided", ((string)(null)), table10, "Then ");
+#line 147
+ testRunner.Then("the following errors are provided", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

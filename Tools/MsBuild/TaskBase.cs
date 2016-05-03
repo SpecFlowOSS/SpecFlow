@@ -1,7 +1,9 @@
 using System;
 using System.CodeDom.Compiler;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -19,6 +21,7 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             Errors = new CompilerErrorCollection();
             try
             {
+                AddAssemblyLoadEvent();
                 DoExecute();
             }
             catch (Exception ex)
@@ -46,6 +49,26 @@ namespace TechTalk.SpecFlow.Tools.MsBuild
             }
 
             return true;
+        }
+
+        private void AddAssemblyLoadEvent()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string assemblyName = args.Name.Split(new[] { ',' }, 2)[0];
+
+            if (assemblyName.StartsWith("TechTalk.SpecFlow", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var assembly = assemblies.Where(a => a.GetName().Name == assemblyName).SingleOrDefault();
+
+                return assembly;
+            }
+
+            return null;
         }
 
         public void RecordException(Exception ex)

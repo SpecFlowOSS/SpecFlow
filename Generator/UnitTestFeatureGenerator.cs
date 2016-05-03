@@ -66,7 +66,7 @@ namespace TechTalk.SpecFlow.Generator
             return new TestClassGenerationContext(
                 testGeneratorProvider,
                 feature,
-                codeNamespace, 
+                codeNamespace,
                 testClass,
                 DeclareTestRunnerMember(testClass),
                 CreateMethod(testClass),
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Generator
                 else
                     GenerateTest(generationContext, (Scenario)scenarioDefinition);
             }
-            
+
             //before return the generated code, call generate provider's method in case the provider want to customerize the generated code            
             testGeneratorProvider.FinalizeTestClass(generationContext);
             return codeNamespace;
@@ -193,7 +193,7 @@ namespace TechTalk.SpecFlow.Generator
             var testRunnerField = GetTestRunnerExpression();
 
             var testRunnerParameters = testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.ParallelExecution) ?
-                new CodeExpression[]{} : new []  {new CodePrimitiveExpression(null), new CodePrimitiveExpression(0) };
+                new CodeExpression[] { } : new[] { new CodePrimitiveExpression(null), new CodePrimitiveExpression(0) };
 
             testClassInitializeMethod.Statements.Add(
                 new CodeAssignStatement(
@@ -320,7 +320,7 @@ namespace TechTalk.SpecFlow.Generator
             foreach (var step in background.Steps)
                 GenerateStep(backgroundMethod, step, null);
 
-			AddLineDirectiveHidden(backgroundMethod.Statements);
+            AddLineDirectiveHidden(backgroundMethod.Statements);
         }
 
         private class ParameterSubstitution : List<KeyValuePair<string, string>>
@@ -378,7 +378,7 @@ namespace TechTalk.SpecFlow.Generator
                                                         : null
                                                   : exampleSet.Name.ToIdentifier();
 
-                foreach (var example in exampleSet.TableBody.Select((r, i) => new { Row = r, Index = i}))
+                foreach (var example in exampleSet.TableBody.Select((r, i) => new { Row = r, Index = i }))
                 {
                     string variantName = useFirstColumnAsName ? example.Row.Cells.First().Value : string.Format("Variant {0}", example.Index);
                     GenerateScenarioOutlineTestVariant(generationContext, scenarioOutline, scenatioOutlineTestMethod, paramToIdentifier, exampleSet.Name ?? "", exampleSetIdentifier, example.Row, exampleSet.Tags, variantName);
@@ -446,16 +446,16 @@ namespace TechTalk.SpecFlow.Generator
                 testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string), pair.Value));
             }
 
-            testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof (string[]), SCENARIO_OUTLINE_EXAMPLE_TAGS_PARAMETER));
+            testMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(string[]), SCENARIO_OUTLINE_EXAMPLE_TAGS_PARAMETER));
             return testMethod;
         }
 
-        private void GenerateScenarioOutlineTestVariant(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, CodeMemberMethod scenatioOutlineTestMethod, 
+        private void GenerateScenarioOutlineTestVariant(TestClassGenerationContext generationContext, ScenarioOutline scenarioOutline, CodeMemberMethod scenatioOutlineTestMethod,
             IEnumerable<KeyValuePair<string, string>> paramToIdentifier, string exampleSetTitle, string exampleSetIdentifier,
             Gherkin.Ast.TableRow row, IEnumerable<Tag> exampleSetTags, string variantName)
         {
-            
-            CodeMemberMethod testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);            
+
+            CodeMemberMethod testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();
@@ -477,7 +477,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             CodeMemberMethod testMethod = CreateMethod(generationContext.TestClass);
 
-            SetupTestMethod(generationContext, testMethod, scenario, additionalTags,variantName,exampleSetIdentifier);
+            SetupTestMethod(generationContext, testMethod, scenario, additionalTags, variantName, exampleSetIdentifier);
 
             return testMethod;
         }
@@ -494,7 +494,7 @@ namespace TechTalk.SpecFlow.Generator
             //ScenarioInfo scenarioInfo = new ScenarioInfo("xxxx", tags...);
             CodeExpression tagsExpression;
             if (additionalTagsExpression == null)
-                tagsExpression = GetStringArrayExpression(scenario.Tags);
+                tagsExpression = GetStringArrayExpression(scenario.GetTags());
             else if (!scenario.HasTags())
                 tagsExpression = additionalTagsExpression;
             else
@@ -504,21 +504,21 @@ namespace TechTalk.SpecFlow.Generator
                 // if (tags2 != null)
                 //   tags = Enumerable.ToArray(Enumerable.Concat(tags1, tags1));
                 testMethod.Statements.Add(
-                    new CodeVariableDeclarationStatement(typeof(string[]), "__tags", GetStringArrayExpression(scenario.Tags)));
+                    new CodeVariableDeclarationStatement(typeof(string[]), "__tags", GetStringArrayExpression(scenario.GetTags())));
                 tagsExpression = new CodeVariableReferenceExpression("__tags");
                 testMethod.Statements.Add(
                     new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            additionalTagsExpression, 
-                            CodeBinaryOperatorType.IdentityInequality, 
+                            additionalTagsExpression,
+                            CodeBinaryOperatorType.IdentityInequality,
                             new CodePrimitiveExpression(null)),
                         new CodeAssignStatement(
-                            tagsExpression, 
+                            tagsExpression,
                             new CodeMethodInvokeExpression(
-                                new CodeTypeReferenceExpression(typeof (Enumerable)),
+                                new CodeTypeReferenceExpression(typeof(Enumerable)),
                                 "ToArray",
                                 new CodeMethodInvokeExpression(
-                                    new CodeTypeReferenceExpression(typeof (Enumerable)),
+                                    new CodeTypeReferenceExpression(typeof(Enumerable)),
                                     "Concat",
                                     tagsExpression,
                                     additionalTagsExpression)))));
@@ -562,7 +562,7 @@ namespace TechTalk.SpecFlow.Generator
         private void SetupTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, ScenarioDefinition scenarioDefinition, IEnumerable<Tag> additionalTags, string variantName, string exampleSetIdentifier, bool rowTest = false)
         {
             testMethod.Attributes = MemberAttributes.Public;
-            testMethod.Name=GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
+            testMethod.Name = GetTestMethodName(scenarioDefinition, variantName, exampleSetIdentifier);
             var friendlyTestName = scenarioDefinition.Name;
             if (variantName != null)
                 friendlyTestName = string.Format("{0}: {1}", scenarioDefinition.Name, variantName);
@@ -573,7 +573,7 @@ namespace TechTalk.SpecFlow.Generator
                 testGeneratorProvider.SetTestMethod(generationContext, testMethod, friendlyTestName);
 
             List<string> scenarioCategories;
-            decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.Tags, additionalTags), out scenarioCategories);
+            decoratorRegistry.DecorateTestMethod(generationContext, testMethod, ConcatTags(scenarioDefinition.GetTags(), additionalTags), out scenarioCategories);
 
             if (scenarioCategories.Any())
                 testGeneratorProvider.SetTestMethodCategories(generationContext, testMethod, scenarioCategories);
