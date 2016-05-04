@@ -11,6 +11,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         {
         }
 
+        public override UnitTestGeneratorTraits GetTraits()
+        {
+            return base.GetTraits() | UnitTestGeneratorTraits.ParallelExecution;
+        }
+
         public override void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
