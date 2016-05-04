@@ -17,7 +17,7 @@
             }
             catch
             {
-                return "The table and the set not match.";
+                return "The table and the set do not match.";
             }
         }
     }
