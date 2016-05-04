@@ -6,6 +6,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
     public interface IFeatureGenerator
     {
-        CodeNamespace GenerateUnitTestFixture(SpecFlowFeature feature, string testClassName, string targetNamespace);
+        CodeNamespace GenerateUnitTestFixture(SpecFlowDocument document, string testClassName, string targetNamespace);
     }
 }

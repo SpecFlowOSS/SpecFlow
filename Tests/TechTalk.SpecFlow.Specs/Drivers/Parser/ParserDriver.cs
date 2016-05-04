@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
     public class ParserDriver
     {
         public string FileContent { get; set; }
-        public SpecFlowFeature ParsedFeature { get; private set; }
+        public SpecFlowDocument ParsedDocument { get; private set; }
         public ParserException[] ParsingErrors { get; private set; }
 
         private readonly SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
@@ -24,13 +24,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
         public void ParseFile()
         {
             var contentReader = new StringReader(FileContent);
-            ParsedFeature = null;
+            ParsedDocument = null;
             ParsingErrors = new ParserException[0];
 
             try
             {
-                ParsedFeature = parser.Parse(contentReader, "sample.feature");
-                Assert.IsNotNull(ParsedFeature);
+                ParsedDocument = parser.Parse(contentReader, "sample.feature");
+                Assert.IsNotNull(ParsedDocument);
             }
             catch (ParserException ex)
             {
@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             const string NS2 = "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"";
 
             string expected = parsedFeatureXml.Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
-            string got = SerializeFeature(ParsedFeature).Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
+            string got = SerializeDocument(ParsedDocument).Replace("\r", "").Replace(NS1, "").Replace(NS2, "");
 
             Assert.AreEqual(expected, got);
         }
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
             }
         }
 
-        private void SerializeFeature(SpecFlowFeature feature, TextWriter writer)
+        private void SerializeDocument(SpecFlowDocument feature, TextWriter writer)
         {
             var oldFeature = CompatibleAstConverter.ConvertToCompatibleFeature(feature);
             oldFeature.SourceFile = null;
@@ -82,23 +82,23 @@ namespace TechTalk.SpecFlow.Specs.Drivers.Parser
 
         public void SaveSerializedFeatureTo(string fileName)
         {
-            Assert.IsNotNull(ParsedFeature, "The parsing was not successful");
-            SerializeFeature(ParsedFeature, fileName);
+            Assert.IsNotNull(ParsedDocument, "The parsing was not successful");
+            SerializeDocument(ParsedDocument, fileName);
         }
 
-        private void SerializeFeature(SpecFlowFeature feature, string fileName)
+        private void SerializeDocument(SpecFlowDocument feature, string fileName)
         {
             using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
-                SerializeFeature(feature, writer);
+                SerializeDocument(feature, writer);
             }
         }
 
-        private string SerializeFeature(SpecFlowFeature feature)
+        private string SerializeDocument(SpecFlowDocument feature)
         {
             using (var writer = new Utf8StringWriter())
             {
-                SerializeFeature(feature, writer);
+                SerializeDocument(feature, writer);
                 return writer.ToString();
             }
         }
