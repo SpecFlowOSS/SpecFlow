@@ -6,7 +6,7 @@ Core changes:
 New Features:
 + Improved output of specflow.exe GenerateAll command
 + Add debugging support for specflow.exe GenerateAll command
-
++ Added support for Scenarios and Features to run in parallel with mbunit.3 Unit Test Provider
 
 2.0.0 - 2016/01/27
 
