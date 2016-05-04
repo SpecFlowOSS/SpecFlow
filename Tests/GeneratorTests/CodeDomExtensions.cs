@@ -53,7 +53,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             foreach (CodeAttributeArgument arguments in attribute.Arguments)
             {
-                yield return arguments.Value.As<CodePrimitiveExpression>().Value;
+                var codePrimitiveExpression=arguments.Value.As<CodePrimitiveExpression>();
+
+                if (codePrimitiveExpression != null)
+                {
+                    yield return codePrimitiveExpression.Value;
+                }  
             }
         }
     }
