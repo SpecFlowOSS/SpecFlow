@@ -90,7 +90,7 @@ namespace TechTalk.SpecFlow.Utils
             }
         }
 
-        public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo)
+        public void AddSourceLinePragmaStatement(CodeStatementCollection statements, int lineNo, int colNo, bool suppressLineStatement = false)
         {
             if (currentBoundSourceCodeFile == null)
                 throw new InvalidOperationException("The generated code was not bound to a file!");
@@ -100,12 +100,16 @@ namespace TechTalk.SpecFlow.Utils
                 case CodeDomProviderLanguage.VB:
                     if (isExternalSourceBlockOpen)
                         AddDisableSourceLinePragmaStatement(statements);
-                    statements.Add(new CodeSnippetStatement(string.Format("#ExternalSource(\"{0}\",{1})", currentBoundSourceCodeFile, lineNo)));
+                    if (!suppressLineStatement) {
+                        statements.Add(new CodeSnippetStatement(string.Format("#ExternalSource(\"{0}\",{1})", currentBoundSourceCodeFile, lineNo)));
+                    }
                     isExternalSourceBlockOpen = true;
                     AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
                     break;
                 case CodeDomProviderLanguage.CSharp:
-                    statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
+                    if (!suppressLineStatement) {
+                        statements.Add(new CodeSnippetStatement(string.Format("#line {0}", lineNo)));
+                    }
                     AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
                     break;
             }

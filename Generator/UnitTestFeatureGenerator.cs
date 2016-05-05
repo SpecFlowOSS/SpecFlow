@@ -703,7 +703,7 @@ namespace TechTalk.SpecFlow.Generator
 
         private void AddLineDirective(CodeStatementCollection statements, Background background)
         {
-            AddLineDirective(statements, background.FilePosition);
+            AddLineDirective(statements, background.FilePosition, suppressLineStatement: true);
         }
 
         private void AddLineDirective(CodeStatementCollection statements, Scenario scenario)
@@ -716,12 +716,12 @@ namespace TechTalk.SpecFlow.Generator
             AddLineDirective(statements, step.FilePosition);
         }
 
-        private void AddLineDirective(CodeStatementCollection statements, FilePosition filePosition)
+        private void AddLineDirective(CodeStatementCollection statements, FilePosition filePosition, bool suppressLineStatement = false)
         {
             if (filePosition == null || generatorConfiguration.AllowDebugGeneratedFiles)
                 return;
 
-            codeDomHelper.AddSourceLinePragmaStatement(statements, filePosition.Line, filePosition.Column);
+            codeDomHelper.AddSourceLinePragmaStatement(statements, filePosition.Line, filePosition.Column, suppressLineStatement);
         }
 
         #endregion
