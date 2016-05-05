@@ -5,7 +5,7 @@
     <DisplayName>SpecFlow for Visual Studio 2013</DisplayName>
     <Description xml:space="preserve">SpecFlow integration for Visual Studio 2013. Sponsored by TechTalk (http://www.techtalk.at).</Description>
     <MoreInfo>http://www.specflow.org</MoreInfo>
-    <License>LICENSE.txt</License>
+    <License>Shared\LICENSE.txt</License>
     <GettingStartedGuide>http://go.specflow.org/getting-started</GettingStartedGuide>
     <ReleaseNotes>changelog.txt</ReleaseNotes>
     <Icon>specflowsetup.ico</Icon>
