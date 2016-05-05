@@ -95,19 +95,19 @@ namespace TechTalk.SpecFlow.Generator
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
             var parser = new SpecFlowGherkinParser(generatorConfiguration.FeatureLanguage);
-            SpecFlowFeature feature;
+            SpecFlowDocument specFlowDocument;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {
-                feature = ParseContent(parser, contentReader, featureFileInput.GetFullPath(projectSettings));
+                specFlowDocument = ParseContent(parser, contentReader, featureFileInput.GetFullPath(projectSettings));
             }
 
-            var featureGenerator = featureGeneratorRegistry.CreateGenerator(feature);
+            var featureGenerator = featureGeneratorRegistry.CreateGenerator(specFlowDocument);
 
-            var codeNamespace = featureGenerator.GenerateUnitTestFixture(feature, null, targetNamespace);
+            var codeNamespace = featureGenerator.GenerateUnitTestFixture(specFlowDocument, null, targetNamespace);
             return codeNamespace;
         }
 
-        protected virtual SpecFlowFeature ParseContent(SpecFlowGherkinParser parser, TextReader contentReader, string sourceFilePath)
+        protected virtual SpecFlowDocument ParseContent(SpecFlowGherkinParser parser, TextReader contentReader, string sourceFilePath)
         {
             return parser.Parse(contentReader, sourceFilePath);
         }

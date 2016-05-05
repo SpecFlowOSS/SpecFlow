@@ -35,12 +35,12 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         protected IFeatureGenerator CreateUnitTestFeatureGenerator()
         {
-            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyFeature());
+            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
         }
 
-        protected void GenerateFeature(IFeatureGenerator generator, SpecFlowFeature feature)
+        protected void GenerateFeature(IFeatureGenerator generator, SpecFlowDocument document)
         {
-            generator.GenerateUnitTestFixture(feature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(document, "dummy", "dummyNS");
         }
     }
 
@@ -55,9 +55,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestClassCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            var theFeature = ParserHelper.CreateFeature(new string[] { "foo", "bar" });
+            var theDocument = ParserHelper.CreateDocument(new string[] { "foo", "bar" });
 
-            GenerateFeature(generator, theFeature);
+            GenerateFeature(generator, theDocument);
 
             generatedCats.Should().Equal(new string[] {"foo", "bar"});
         }
@@ -70,7 +70,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, CodeMemberMethod _, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            var theFeature = ParserHelper.CreateFeature(scenarioTags: new []{ "foo", "bar"});
+            var theFeature = ParserHelper.CreateDocument(scenarioTags: new []{ "foo", "bar"});
 
             GenerateFeature(generator, theFeature);
 
@@ -85,7 +85,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             unitTestGeneratorProviderMock.Setup(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.IsAny<IEnumerable<string>>()))
                 .Callback((TestClassGenerationContext ctx, CodeMemberMethod _, IEnumerable<string> cats) => generatedCats = cats.ToArray());
 
-            var theFeature = ParserHelper.CreateFeature(tags: new []{ "featuretag"}, scenarioTags: new[] { "foo", "bar" });
+            var theFeature = ParserHelper.CreateDocument(tags: new []{ "featuretag"}, scenarioTags: new[] { "foo", "bar" });
 
             GenerateFeature(generator, theFeature);
 
@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var generator = CreateUnitTestFeatureGenerator();
 
-            var theFeature = ParserHelper.CreateFeature(new string[] { "decorated", "other" });
+            var theFeature = ParserHelper.CreateDocument(new string[] { "decorated", "other" });
 
             GenerateFeature(generator, theFeature);
 
@@ -115,7 +115,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             var generator = CreateUnitTestFeatureGenerator();
 
-            var theFeature = ParserHelper.CreateFeature(scenarioTags: new[] { "decorated", "other" });
+            var theFeature = ParserHelper.CreateDocument(scenarioTags: new[] { "decorated", "other" });
 
             GenerateFeature(generator, theFeature);
 

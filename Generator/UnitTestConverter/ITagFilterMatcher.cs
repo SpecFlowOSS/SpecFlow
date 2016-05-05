@@ -23,14 +23,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return tagFilterMatcher.Match(tagFilter, new string[] {tagName});
         }
 
-        public static bool MatchPrefix(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature)
+        public static bool MatchPrefix(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowDocument document)
         {
-            return tagFilterMatcher.MatchPrefix(tagFilter, feature.Tags.Select(t => t.GetNameWithoutAt()));
+            return tagFilterMatcher.MatchPrefix(tagFilter, document.SpecFlowFeature.Tags.Select(t => t.GetNameWithoutAt()));
         }
 
-        public static bool GetTagValue(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowFeature feature, out string value)
+        public static bool GetTagValue(this ITagFilterMatcher tagFilterMatcher, string tagFilter, SpecFlowDocument document, out string value)
         {
-            return tagFilterMatcher.GetTagValue(tagFilter, feature.Tags.Select(t => t.GetNameWithoutAt()), out value);
+            return tagFilterMatcher.GetTagValue(tagFilter, document.SpecFlowFeature.Tags.Select(t => t.GetNameWithoutAt()), out value);
         }
     }
 }

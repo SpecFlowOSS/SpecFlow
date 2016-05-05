@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_be_able_to_generate_anything()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            var anyFeature = ParserHelper.CreateAnyFeature();
+            var anyFeature = ParserHelper.CreateAnyDocument();
             generatorProvider.CanGenerate(anyFeature).Should().Be(true);
         }
 
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_create_valid_instance()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            var anyFeature = ParserHelper.CreateAnyFeature();
+            var anyFeature = ParserHelper.CreateAnyDocument();
             var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().NotBeNull();
@@ -52,7 +52,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_UnitTestFeatureGeneratorProvider_create_UnitTestFeatureGenerator_instance()
         {
             var generatorProvider = CreateUnitTestFeatureGeneratorProvider();
-            var anyFeature = ParserHelper.CreateAnyFeature();
+            var anyFeature = ParserHelper.CreateAnyDocument();
             var generator = generatorProvider.CreateGenerator(anyFeature);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();

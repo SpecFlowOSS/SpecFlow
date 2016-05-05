@@ -64,7 +64,7 @@ namespace TechTalk.SpecFlow.Parser
             return StepKeyword.And;
         }
 
-        private class SpecFlowAstBuilder : AstBuilder<SpecFlowFeature>
+        private class SpecFlowAstBuilder : AstBuilder<SpecFlowDocument>
         {
             private readonly string sourceFilePath;
             private ScenarioBlock scenarioBlock = ScenarioBlock.Given;
@@ -74,10 +74,9 @@ namespace TechTalk.SpecFlow.Parser
                 this.sourceFilePath = sourceFilePath;
             }
 
-            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children,
-                Comment[] featureFileComments, AstNode node)
+            protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, AstNode node)
             {
-                return new SpecFlowFeature(tags, location, language, keyword, name, description, children, featureFileComments, sourceFilePath);
+                return new SpecFlowFeature(tags, location, language, keyword, name, description, children, sourceFilePath);
             }
 
             protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
@@ -92,6 +91,11 @@ namespace TechTalk.SpecFlow.Parser
             private void ResetBlock()
             {
                 scenarioBlock = ScenarioBlock.Given;
+            }
+
+            protected override GherkinDocument CreateGherkinDocument(Feature feature, Comment[] gherkinDocumentComments, AstNode node)
+            {
+                return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments);
             }
 
             protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, AstNode node)
@@ -113,24 +117,24 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        public SpecFlowFeature Parse(TextReader featureFileReader, string sourceFilePath)
+        public SpecFlowDocument Parse(TextReader featureFileReader, string sourceFilePath)
         {
-            var parser = new Parser<SpecFlowFeature>(new SpecFlowAstBuilder(sourceFilePath));
+            var parser = new Parser<SpecFlowDocument>(new SpecFlowAstBuilder(sourceFilePath));
             var tokenMatcher = new TokenMatcher(dialectProvider);
-            var feature = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
+            SpecFlowDocument specFlowDocument = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
 
-            CheckSemanticErrors(feature);
+            CheckSemanticErrors(specFlowDocument);
 
-            return feature;
+            return specFlowDocument;
         }
 
-        private void CheckSemanticErrors(SpecFlowFeature feature)
+        private void CheckSemanticErrors(SpecFlowDocument specFlowDocument)
         {
             var errors = new List<ParserException>();
 
-            CheckForDuplicateScenarios(feature, errors);
+            CheckForDuplicateScenarios(specFlowDocument.SpecFlowFeature, errors);
 
-            CheckForDuplicateExamples(feature, errors);
+            CheckForDuplicateExamples(specFlowDocument.SpecFlowFeature, errors);
 
             // collect
             if (errors.Count == 1)
