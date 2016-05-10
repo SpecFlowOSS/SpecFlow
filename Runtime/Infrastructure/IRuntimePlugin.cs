@@ -10,6 +10,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         void RegisterDependencies(ObjectContainer container);
         void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration);
         void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration);
+
+        void CustomizeTestRunnerDependencies(ObjectContainer testRunnerContainer);
     }
 
     [Flags]
