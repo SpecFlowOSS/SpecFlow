@@ -5,11 +5,44 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
+    public class RuntimePluginEvents
+    {
+        public event EventHandler<RegisterGlobalDependenciesEventArgs> RegisterGlobalDependencies;
+        public event EventHandler<CustomizeGlobalDependenciesEventArgs> CustomizeGlobalDependencies;
+        public event EventHandler<ConfigurationDefaultsEventArgs> ConfigurationDefaults;
+        public event EventHandler<CustomizeTestRunnerDependenciesEventArgs> CustomizeTestRunnerDependencies;
+
+        public void RaiseRegisterGlobalDependencies(ObjectContainer objectContainer)
+        {
+            RegisterGlobalDependencies?.Invoke(this, new RegisterGlobalDependenciesEventArgs(objectContainer));
+        }
+
+        public void RaiseConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
+        {
+            ConfigurationDefaults?.Invoke(this, new ConfigurationDefaultsEventArgs(runtimeConfiguration));
+        }
+
+        public void RaiseCustomizeGlobalDependencies(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
+        {
+            CustomizeGlobalDependencies?.Invoke(this, new CustomizeGlobalDependenciesEventArgs(container, runtimeConfiguration));
+        }
+
+        public void RaiseCustomizeTestRunnerDependencies(ObjectContainer testRunnerContainer)
+        {
+            CustomizeTestRunnerDependencies?.Invoke(this, new CustomizeTestRunnerDependenciesEventArgs(testRunnerContainer));
+        }
+    }
+
+    public class RuntimePluginParameters
+    {
+        public string Parameter { get; set; }
+    }
+
+
+
     public interface IRuntimePlugin
     {
-        void RegisterDependencies(ObjectContainer container);
-        void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration);
-        void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration);
+        void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters);
     }
 
     [Flags]

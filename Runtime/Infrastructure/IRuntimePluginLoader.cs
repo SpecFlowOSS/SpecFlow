@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -8,6 +10,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         IRuntimePlugin LoadPlugin(PluginDescriptor pluginDescriptor);
     }
 
+  
     public class RuntimePluginLoader : IRuntimePluginLoader
     {
         private const string ASSEMBLY_NAME_PATTERN = "{0}.SpecFlowPlugin";
@@ -43,6 +46,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
 
             return plugin;
-        }
+        }       
     }
 }

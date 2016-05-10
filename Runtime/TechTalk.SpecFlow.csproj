@@ -165,7 +165,11 @@
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
+    <Compile Include="Infrastructure\LoadedRuntimePlugin.cs" />
     <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
+    <Compile Include="Infrastructure\RuntimePluginEventArgs.cs" />
+    <Compile Include="Infrastructure\RuntimePlugins.cs" />
+    <Compile Include="Infrastructure\RuntimePluginsLoader.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />

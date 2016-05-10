@@ -37,6 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<StepTextAnalyzer, IStepTextAnalyzer>();
 
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
+            container.RegisterTypeAs<RuntimePluginsLoader, IRuntimePluginsLoader>();
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 

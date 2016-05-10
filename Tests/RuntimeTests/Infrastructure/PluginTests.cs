@@ -9,6 +9,7 @@ using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {
@@ -17,18 +18,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     {
         public class PluginWithCustomDependency : IRuntimePlugin
         {
-            public void RegisterDependencies(ObjectContainer container)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
             {
-                container.RegisterTypeAs<CustomDependency, ICustomDependency>();
-            }
-
-            public void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
-            {
-                
-            }
-
-            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
-            {
+                runtimePluginEvents.RegisterGlobalDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
             }
         }
 
@@ -47,6 +39,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
             {
             }
+
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            {
+                runtimePluginEvents.CustomizeGlobalDependencies += (sender, args) =>
+                                                                   {
+                                                                       if (args.runtimeConfiguration.StopAtFirstError)
+                                                                           args.ObjectContainer.RegisterTypeAs<CustomTestRunnerFactory, ITestRunnerFactory>();
+                                                                   };
+            }
         }
 
         public class PluginWithCustomConfiguration : IRuntimePlugin
@@ -58,17 +59,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 this.specifyDefaults = specifyDefaults;
             }
 
-            public void RegisterDependencies(ObjectContainer container)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
             {
+                runtimePluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.RuntimeConfiguration); };
+            }
+        }
+
+        public class PluginWithCustommTestRunnerDependencies : IRuntimePlugin
+        {
+            private readonly Action<ObjectContainer> _specificTestRunnerDependencies;
+
+            public PluginWithCustommTestRunnerDependencies(Action<ObjectContainer> specificTestRunnerDependencies)
+            {
+                _specificTestRunnerDependencies = specificTestRunnerDependencies;
             }
 
-            public void RegisterCustomizations(ObjectContainer container, RuntimeConfiguration runtimeConfiguration)
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
             {
-            }
-
-            public void RegisterConfigurationDefaults(RuntimeConfiguration runtimeConfiguration)
-            {
-                specifyDefaults(runtimeConfiguration);
+                runtimePluginEvents.CustomizeTestRunnerDependencies += (sender, args) => { _specificTestRunnerDependencies(args.ObjectContainer); };
             }
         }
 
@@ -87,6 +95,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public ITestRunner Create(Assembly testAssembly)
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public class CustomTraceListener : ITraceListener
+        {
+            public void WriteTestOutput(string message)
+            {
+
+            }
+
+            public void WriteToolOutput(string message)
+            {
+
             }
         }
 
@@ -145,8 +166,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             StringConfigProvider configurationHolder = GetConfigWithPlugin();
 
-            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(
-                conf => conf.StopAtFirstError = true));
+            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.StopAtFirstError = true));
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<RuntimeConfiguration>();
             runtimeConfiguration.StopAtFirstError.Should().BeTrue();
@@ -178,5 +198,39 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var customTestRunnerFactory = container.Resolve<ITestRunnerFactory>();
             customTestRunnerFactory.Should().BeOfType<CustomTestRunnerFactory>();
         }
+
+        [Test]
+        public void Should_be_able_to_register_test_runner_dependencies_from_a_plugin()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustommTestRunnerDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultTestRunnerContainer(configurationHolder);
+            var customDependency = container.Resolve<ICustomDependency>();
+
+            customDependency.Should().BeOfType(typeof(CustomDependency));
+        }
+
+        [Test]
+        public void Test_runner_dependencies_from_a_plugin_are_not_in_the_global_container()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustommTestRunnerDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
+
+            Assert.Throws<ObjectContainerException>(() => container.Resolve<ICustomDependency>(), "Interface cannot be resolved");
+        }
+
+        [Test]
+        public void Should_be_able_to_override_test_runner_registration_from_a_plugin()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            TestRunContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustommTestRunnerDependencies(oc => oc.RegisterTypeAs<CustomTraceListener, ITraceListener>()));
+            var container = TestObjectFactories.CreateDefaultTestRunnerContainer(configurationHolder);
+            var traceListener = container.Resolve<ITraceListener>();
+
+            traceListener.Should().BeOfType(typeof(CustomTraceListener));
+        }
     }
+
+   
 }
