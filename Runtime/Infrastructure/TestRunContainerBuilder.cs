@@ -69,6 +69,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             defaultDependencyProvider.RegisterTestRunnerDefaults(testRunnerContainer);
 
+            var configurationProvider = testRunnerContainer.Resolve<IRuntimeConfigurationProvider>();
+            var plugins = LoadPlugins(configurationProvider, testRunnerContainer);
+
+            foreach (var plugin in plugins)
+                plugin.CustomizeTestRunnerDependencies(testRunnerContainer);
+
             return testRunnerContainer;
         }
 
