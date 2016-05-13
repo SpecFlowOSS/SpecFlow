@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow
     public class TestRunnerManager : ITestRunnerManager
     {
         protected readonly IObjectContainer globalContainer;
-        protected readonly ITestRunContainerBuilder testRunContainerBuilder;
+        protected readonly IContainerBuilder containerBuilder;
         protected readonly RuntimeConfiguration runtimeConfiguration;
         protected readonly IRuntimeBindingRegistryBuilder bindingRegistryBuilder;
 
@@ -32,10 +32,10 @@ namespace TechTalk.SpecFlow
 
         public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
-        public TestRunnerManager(IObjectContainer globalContainer, ITestRunContainerBuilder testRunContainerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
+        public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
         {
             this.globalContainer = globalContainer;
-            this.testRunContainerBuilder = testRunContainerBuilder;
+            this.containerBuilder = containerBuilder;
             this.runtimeConfiguration = runtimeConfiguration;
             this.bindingRegistryBuilder = bindingRegistryBuilder;
         }
@@ -102,9 +102,9 @@ namespace TechTalk.SpecFlow
 
         protected virtual ITestRunner CreateTestRunnerInstance()
         {
-            var testRunnerContainer = testRunContainerBuilder.CreateTestRunnerContainer(globalContainer);
+            var testThreadContainer = containerBuilder.CreateTestThreadContainer(globalContainer);
 
-            return testRunnerContainer.Resolve<ITestRunner>();
+            return testThreadContainer.Resolve<ITestRunner>();
         }
 
         public void Initialize(Assembly assignedTestAssembly)
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow
         private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new Dictionary<Assembly, ITestRunnerManager>(1);
         private static readonly object testRunnerManagerRegistrySyncRoot = new object();
 
-        private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, ITestRunContainerBuilder testRunContainerBuilder = null)
+        private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
         {
             ITestRunnerManager testRunnerManager;
             if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
@@ -156,7 +156,7 @@ namespace TechTalk.SpecFlow
                 {
                     if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
                     {
-                        testRunnerManager = CreateTestRunnerManager(testAssembly, testRunContainerBuilder);
+                        testRunnerManager = CreateTestRunnerManager(testAssembly, containerBuilder);
                         testRunnerManagerRegistry.Add(testAssembly, testRunnerManager);
                     }
                 }
@@ -164,11 +164,11 @@ namespace TechTalk.SpecFlow
             return testRunnerManager;
         }
 
-        private static ITestRunnerManager CreateTestRunnerManager(Assembly testAssembly, ITestRunContainerBuilder testRunContainerBuilder = null)
+        private static ITestRunnerManager CreateTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
         {
-            testRunContainerBuilder = testRunContainerBuilder ?? new TestRunContainerBuilder();
+            containerBuilder = containerBuilder ?? new ContainerBuilder();
 
-            var container = testRunContainerBuilder.CreateContainer();
+            var container = containerBuilder.CreateGlobalContainer();
             var testRunnerManager = container.Resolve<ITestRunnerManager>();
             testRunnerManager.Initialize(testAssembly);
             return testRunnerManager;

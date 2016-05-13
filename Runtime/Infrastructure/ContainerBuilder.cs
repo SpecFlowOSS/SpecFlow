@@ -7,27 +7,27 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    public interface ITestRunContainerBuilder
+    public interface IContainerBuilder
     {
-        IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null);
-        IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer);
+        IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null);
+        IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer);
     }
 
-    public class TestRunContainerBuilder : ITestRunContainerBuilder
+    public class ContainerBuilder : IContainerBuilder
     {
         public static IDefaultDependencyProvider DefaultDependencyProvider = new DefaultDependencyProvider();
 
         private readonly IDefaultDependencyProvider defaultDependencyProvider;
 
-        public TestRunContainerBuilder(IDefaultDependencyProvider defaultDependencyProvider = null)
+        public ContainerBuilder(IDefaultDependencyProvider defaultDependencyProvider = null)
         {
             this.defaultDependencyProvider = defaultDependencyProvider ?? DefaultDependencyProvider;
         }
 
-        public virtual IObjectContainer CreateContainer(IRuntimeConfigurationProvider configurationProvider = null)
+        public virtual IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
             var container = new ObjectContainer();
-            container.RegisterInstanceAs<ITestRunContainerBuilder>(this);
+            container.RegisterInstanceAs<IContainerBuilder>(this);
 
             RegisterDefaults(container);
 
@@ -62,16 +62,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
-        public IObjectContainer CreateTestRunnerContainer(IObjectContainer globalContainer)
+        public IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {
-            var testRunnerContainer = new ObjectContainer(globalContainer);
+            var testThreadContainer = new ObjectContainer(globalContainer);
 
-            defaultDependencyProvider.RegisterTestRunnerDefaults(testRunnerContainer);
+            defaultDependencyProvider.RegisterTestThreadContainerDefaults(testThreadContainer);
 
             var runtimePluginEvents = globalContainer.Resolve<RuntimePluginEvents>();
-            runtimePluginEvents.RaiseCustomizeTestRunnerDependencies(testRunnerContainer);
+            runtimePluginEvents.RaiseCustomizeTestThreadDependencies(testThreadContainer);
 
-            return testRunnerContainer;
+            return testThreadContainer;
         }
 
         protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)
@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         protected virtual void RegisterDefaults(ObjectContainer container)
         {
-            defaultDependencyProvider.RegisterDefaults(container);
+            defaultDependencyProvider.RegisterGlobalContainerDefaults(container);
         }
     }
 }

@@ -37,9 +37,9 @@ namespace TechTalk.SpecFlow.Infrastructure
         public RuntimeConfiguration RuntimeConfiguration { get; private set; }
     }
 
-    public class CustomizeTestRunnerDependenciesEventArgs : EventArgs
+    public class CustomizeTestThreadDependenciesEventArgs : EventArgs
     {
-        public CustomizeTestRunnerDependenciesEventArgs(ObjectContainer objectContainer)
+        public CustomizeTestThreadDependenciesEventArgs(ObjectContainer objectContainer)
         {
             ObjectContainer = objectContainer;
         }
