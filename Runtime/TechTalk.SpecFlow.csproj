@@ -167,7 +167,6 @@
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
     <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
     <Compile Include="Infrastructure\RuntimePluginEventArgs.cs" />
-    <Compile Include="Infrastructure\RuntimePlugins.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
