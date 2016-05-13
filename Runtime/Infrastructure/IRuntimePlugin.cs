@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public class RuntimePluginParameters
     {
-        public string Parameter { get; set; }
+        public string Parameters { get; set; }
     }
 
     public class PluginDescriptor
@@ -26,12 +26,14 @@ namespace TechTalk.SpecFlow.Infrastructure
         public string Name { get; private set; }
         public string Path { get; private set; }
         public PluginType Type { get; private set; }
+        public string Parameters { get; private set; }
 
-        public PluginDescriptor(string name, string path, PluginType type)
+        public PluginDescriptor(string name, string path, PluginType type, string parameters)
         {
             Name = name;
             Path = path;
             Type = type;
+            Parameters = parameters;
         }
     }
 }

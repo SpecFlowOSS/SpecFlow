@@ -330,9 +330,17 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["type"] = value; }
         }
 
+        [ConfigurationProperty("parameters", IsRequired = false, DefaultValue = null)]
+        public string Parameters
+        {
+            get { return (string)this["parameters"]; }
+            set { this["parameters"] = value; }
+        }
+
         public PluginDescriptor ToPluginDescriptor()
         {
-            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, Type);
+            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, 
+                Type, Parameters);
         }
     }
 }

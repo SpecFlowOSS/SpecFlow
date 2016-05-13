@@ -94,7 +94,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         protected virtual void LoadPlugin(PluginDescriptor pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents)
         {
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
-            var runtimePluginParameters = new RuntimePluginParameters(); //TODO: populate parameter from pluginDescriptor
+            var runtimePluginParameters = new RuntimePluginParameters
+            {
+                Parameters = pluginDescriptor.Parameters
+            }; 
             plugin.Initialize(runtimePluginEvents, runtimePluginParameters);
         }
 
