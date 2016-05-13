@@ -19,11 +19,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, RuntimeConfiguration runtimeConfiguration)
         {
             ObjectContainer = objectContainer;
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.RuntimeConfiguration = runtimeConfiguration;
         }
 
         public ObjectContainer ObjectContainer { get; private set; }
-        public RuntimeConfiguration runtimeConfiguration { get; private set; }
+        public RuntimeConfiguration RuntimeConfiguration { get; private set; }
     }
 
 

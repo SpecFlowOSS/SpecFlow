@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             {
                 runtimePluginEvents.CustomizeGlobalDependencies += (sender, args) =>
                                                                    {
-                                                                       if (args.runtimeConfiguration.StopAtFirstError)
+                                                                       if (args.RuntimeConfiguration.StopAtFirstError)
                                                                            args.ObjectContainer.RegisterTypeAs<CustomTestRunnerFactory, ITestRunnerFactory>();
                                                                    };
             }
