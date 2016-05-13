@@ -128,22 +128,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
             {
-                //runtimePluginEvents.RegisterGlobalDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
-            }
-
-            public void RegisterDependencies(ObjectContainer container)
-            {
-                container.RegisterTypeAs<CustomDependency, ICustomDependency>();
-            }
-
-            public void RegisterCustomizations(ObjectContainer container, SpecFlowProjectConfiguration specFlowProjectConfiguration)
-            {
-                //nop
-            }
-
-            public void RegisterConfigurationDefaults(SpecFlowProjectConfiguration specFlowConfiguration)
-            {
-                //nop
+                generatorPluginEvents.RegisterDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
             }
         }
 
@@ -151,22 +136,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
             {
-                //runtimePluginEvents.RegisterGlobalDependencies += (sender, args) => args.ObjectContainer.RegisterTypeAs<CustomDependency, ICustomDependency>();
-            }
-
-            public void RegisterDependencies(ObjectContainer container)
-            {
-            }
-
-            public void RegisterCustomizations(ObjectContainer container, SpecFlowProjectConfiguration specFlowProjectConfiguration)
-            {
-                if (specFlowProjectConfiguration.RuntimeConfiguration.StopAtFirstError)
-                    container.RegisterTypeAs<CustomHeaderWriter, ITestHeaderWriter>();
-            }
-
-            public void RegisterConfigurationDefaults(SpecFlowProjectConfiguration specFlowConfiguration)
-            {
-                //nop
+                generatorPluginEvents.CustomizeDependencies += (sender, args) =>
+                {
+                    if (args.SpecFlowProjectConfiguration.RuntimeConfiguration.StopAtFirstError)
+                        args.ObjectContainer.RegisterTypeAs<CustomHeaderWriter, ITestHeaderWriter>();
+                };
             }
         }
 
@@ -181,22 +155,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters)
             {
-                //runtimePluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.RuntimeConfiguration); };
-            }
-
-            public void RegisterDependencies(ObjectContainer container)
-            {
-                //nop
-            }
-
-            public void RegisterCustomizations(ObjectContainer container, SpecFlowProjectConfiguration specFlowProjectConfiguration)
-            {
-                //nop
-            }
-
-            public void RegisterConfigurationDefaults(SpecFlowProjectConfiguration specFlowConfiguration)
-            {
-                specifyDefaults(specFlowConfiguration);
+                generatorPluginEvents.ConfigurationDefaults += (sender, args) => { specifyDefaults(args.SpecFlowProjectConfiguration); };
             }
         }
     }
