@@ -66,14 +66,17 @@ namespace TechTalk.SpecFlow.Generator
             var pluginLoader = container.Resolve<IGeneratorPluginLoader>();
             foreach (var pluginDescriptor in configurationProvider.GetPlugins(configurationHolder).Where(pd => (pd.Type & PluginType.Generator) != 0))
             {
-                LoadPlugin(pluginLoader, pluginDescriptor, generatorPluginEvents);
+                LoadPlugin(pluginDescriptor, pluginLoader, generatorPluginEvents);
             }
         }
 
-        private static void LoadPlugin(IGeneratorPluginLoader pluginLoader, PluginDescriptor pluginDescriptor, GeneratorPluginEvents generatorPluginEvents)
+        private static void LoadPlugin(PluginDescriptor pluginDescriptor, IGeneratorPluginLoader pluginLoader, GeneratorPluginEvents generatorPluginEvents)
         {
             var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
-            var generatorPluginParameters = new GeneratorPluginParameters(); //TODO: populate parameter from pluginDescriptor
+            var generatorPluginParameters = new GeneratorPluginParameters
+            {
+                Parameters = pluginDescriptor.Parameters
+            };
             plugin.Initialize(generatorPluginEvents, generatorPluginParameters);
         }
 

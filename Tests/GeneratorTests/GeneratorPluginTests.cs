@@ -73,6 +73,21 @@ namespace TechTalk.SpecFlow.GeneratorTests
             customHeaderWriter.Should().BeOfType<CustomHeaderWriter>();
         }
 
+        [Test]
+        public void Should_be_able_to_specify_a_plugin_with_parameters()
+        {
+            var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"<specFlow>
+                  <plugins>
+                    <add name=""MyCompany.MyPlugin"" parameters=""foo, bar"" />
+                  </plugins>
+                </specFlow>"));
+            var pluginMock = new Mock<IGeneratorPlugin>();
+            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(pluginMock.Object);
+            CreateDefaultContainer(configurationHolder);
+
+            pluginMock.Verify(p => p.Initialize(It.IsAny<GeneratorPluginEvents>(), It.Is<GeneratorPluginParameters>(pp => pp.Parameters == "foo, bar")));
+        }
+
         private SpecFlowConfigurationHolder GetConfigWithPlugin()
         {
             return new SpecFlowConfigurationHolder(string.Format(@"<specFlow>
