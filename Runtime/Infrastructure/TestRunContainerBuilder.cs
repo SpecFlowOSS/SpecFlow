@@ -37,9 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
 
             var runtimePluginEvents = container.Resolve<RuntimePluginEvents>();
-            var plugins = LoadPlugins(configurationProvider, container);
-            foreach (var plugin in plugins)
-                plugin.Initialize(runtimePluginEvents, new RuntimePluginParameters());//TODO: get parameters from plugin registration
+            LoadPlugins(configurationProvider, container, runtimePluginEvents);
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
@@ -76,19 +74,28 @@ namespace TechTalk.SpecFlow.Infrastructure
             return testRunnerContainer;
         }
 
-        protected virtual IRuntimePlugin[] LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container)
+        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)
         {
-            var plugins = container.Resolve<IDictionary<string, IRuntimePlugin>>().Values.AsEnumerable();
+            // initialize plugins that were registered from code
+            foreach (var runtimePlugin in container.Resolve<IDictionary<string, IRuntimePlugin>>().Values)
+            {
+                // these plugins cannot have parameters
+                runtimePlugin.Initialize(runtimePluginEvents, new RuntimePluginParameters());
+            }
 
+            // load & initalize parameters from configuration
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            plugins = plugins.Concat(configurationProvider.GetPlugins().Where(pd => (pd.Type & PluginType.Runtime) != 0).Select(pd => LoadPlugin(pluginLoader, pd)));
-
-            return plugins.ToArray();
+            foreach (var pluginDescriptor in configurationProvider.GetPlugins().Where(pd => (pd.Type & PluginType.Runtime) != 0))
+            {
+                LoadPlugin(pluginDescriptor, pluginLoader, runtimePluginEvents);
+            }
         }
 
-        protected virtual IRuntimePlugin LoadPlugin(IRuntimePluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
+        protected virtual void LoadPlugin(PluginDescriptor pluginDescriptor, IRuntimePluginLoader pluginLoader, RuntimePluginEvents runtimePluginEvents)
         {
-            return pluginLoader.LoadPlugin(pluginDescriptor);
+            var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
+            var runtimePluginParameters = new RuntimePluginParameters(); //TODO: populate parameter from pluginDescriptor
+            plugin.Initialize(runtimePluginEvents, runtimePluginParameters);
         }
 
         protected virtual void RegisterDefaults(ObjectContainer container)
