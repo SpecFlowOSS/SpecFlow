@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             string resultsFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx");
 
             var provessHelper = new ProcessHelper();
-            provessHelper.RunProcess(nunitConsolePath, "\"/testcontainer:{0}\" \"/resultsfile:{1}\"", 
+            provessHelper.RunProcess(nunitConsolePath, "\"/testcontainer:{0}\" \"/resultsfile:{1}\"",
                 inputProjectDriver.CompiledAssemblyPath, resultsFilePath);
 
             XDocument logFile = XDocument.Load(resultsFilePath);
