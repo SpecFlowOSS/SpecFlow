@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
             var provessHelper = new ProcessHelper();
             var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"NUnit.Runners\tools\nunit-console-x86.exe");
-            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" {3}", 
+            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" {3}",
                 inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
 
             return ProcessNUnitResult(logFilePath, resultFilePath);
