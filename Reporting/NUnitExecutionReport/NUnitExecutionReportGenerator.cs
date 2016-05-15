@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using TechTalk.SpecFlow.Reporting.NUnitExecutionReport.ReportElements;
 
@@ -24,26 +25,31 @@ namespace TechTalk.SpecFlow.Reporting.NUnitExecutionReport
         {
             if (File.Exists(reportParameters.LabelledTestOutput))
             {
-                using(var reader = new StreamReader(reportParameters.LabelledTestOutput))
+                var allLines = File.ReadAllLines(reportParameters.LabelledTestOutput);
+                var TestNameLines = allLines.Where(line => line.StartsWith("=>"));
+                var testNames = TestNameLines.Select(line => line.Remove(0, 3));
+                foreach(var test in testNames)
                 {
-                    string currentTest = "unknown";
+                    var scenarioLines = allLines.Where(line => !line.StartsWith("=>") && line.Contains($"[{test}]"));
                     List<string> testLines = new List<string>();
-
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    foreach (var line in scenarioLines)
                     {
-                        if (line.StartsWith("***"))
+                        string testLine = string.Empty;
+                        if(line.StartsWith("#"))
                         {
-                            CloseCurrentTest(testLines, currentTest, report);
-                            currentTest = line.Trim('*', ' ');
+                            testLine = line.Remove(0, test.Length + "#[]: ".Length);
+                            testLines.Add(testLine);
                         }
-                        else
+                        else if(line.StartsWith("->"))
                         {
-                            testLines.Add(line);
+                            testLine = "->" + line.Remove(0, test.Length + "->#[]: ".Length);
+                            testLines.Add(testLine);
                         }
                     }
-                    CloseCurrentTest(testLines, currentTest, report);
+                    CloseCurrentTest(testLines, test, report);
+
                 }
+
             }
         }
 
