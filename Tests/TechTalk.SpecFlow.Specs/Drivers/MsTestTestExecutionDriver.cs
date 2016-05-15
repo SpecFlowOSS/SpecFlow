@@ -20,14 +20,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public TestRunSummary Execute()
         {
-            string vsFolder = Environment.Is64BitProcess ? @"%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\Common7\IDE" : @"%ProgramFiles%\Microsoft Visual Studio 12.0\Common7\IDE";
+            string vsFolder = Environment.Is64BitProcess ? @"%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\IDE" : @"%ProgramFiles%\Microsoft Visual Studio 14.0\Common7\IDE";
             var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(),
                 Environment.ExpandEnvironmentVariables(vsFolder + @"\MsTest.exe"));
 
             string resultsFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx");
 
             var provessHelper = new ProcessHelper();
-            provessHelper.RunProcess(nunitConsolePath, "\"/testcontainer:{0}\" \"/resultsfile:{1}\"", 
+            provessHelper.RunProcess(nunitConsolePath, "\"/testcontainer:{0}\" \"/resultsfile:{1}\"",
                 inputProjectDriver.CompiledAssemblyPath, resultsFilePath);
 
             XDocument logFile = XDocument.Load(resultsFilePath);
