@@ -4,7 +4,7 @@
 //      SpecFlow Version:1.9.0.77
 //      SpecFlow Generator Version:1.9.0.0
 //      Runtime Version:4.0.30319.42000
-// 
+//
 //      Changes to this file may cause incorrect behavior and will be lost if
 //      the code is regenerated.
 //  </auto-generated>
@@ -14,20 +14,20 @@
 namespace TechTalk.SpecFlow.Specs.Features.Reports
 {
     using TechTalk.SpecFlow;
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Generating HTML report from NUnit/MsTest execution result")]
     public partial class GeneratingHTMLReportFromNUnitMsTestExecutionResultFeature
     {
-        
+
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
+
 #line 1 "ExecutionReport.feature"
 #line hidden
-        
+
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
@@ -35,35 +35,35 @@ namespace TechTalk.SpecFlow.Specs.Features.Reports
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Generating HTML report from NUnit/MsTest execution result", "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-        
+
         [NUnit.Framework.TestFixtureTearDownAttribute()]
         public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-        
+
         [NUnit.Framework.SetUpAttribute()]
         public virtual void TestInitialize()
         {
         }
-        
+
         [NUnit.Framework.TearDownAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-        
+
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-        
+
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-        
+
         public virtual void FeatureBackground()
         {
 #line 3
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.Specs.Features.Reports
                     "nding and 1 ignored scenarios", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Summary is included in the HTML result (NUnit)")]
         public virtual void SummaryIsIncludedInTheHTMLResultNUnit()
@@ -96,7 +96,7 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Summary is included in the HTML result (MsTest)")]
         [NUnit.Framework.CategoryAttribute("mstest")]
@@ -119,7 +119,7 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Feature summary is included in the HTML result (NUnit)")]
         public virtual void FeatureSummaryIsIncludedInTheHTMLResultNUnit()
@@ -141,7 +141,7 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Feature summary is included in the HTML result (MsTest)")]
         [NUnit.Framework.CategoryAttribute("mstest")]
@@ -165,7 +165,7 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful test output is included in the HTML result", exampleTags);
@@ -183,14 +183,14 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
         public virtual void SuccessfulTestOutputIsIncludedInTheHTMLResult_NUnit_2()
         {
             this.SuccessfulTestOutputIsIncludedInTheHTMLResult("NUnit.2", ((string[])(null)));
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Successful test output is included in the HTML result")]
         [NUnit.Framework.CategoryAttribute("mstest")]
@@ -199,7 +199,7 @@ this.FeatureBackground();
             this.SuccessfulTestOutputIsIncludedInTheHTMLResult("MsTest", new string[] {
                         "mstest"});
         }
-        
+
         public virtual void PendingTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pending test output is included in the HTML result", exampleTags);
@@ -222,14 +222,14 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
         public virtual void PendingTestOutputIsIncludedInTheHTMLResult_NUnit_2()
         {
             this.PendingTestOutputIsIncludedInTheHTMLResult("NUnit.2", ((string[])(null)));
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
         [NUnit.Framework.CategoryAttribute("mstest")]
@@ -238,7 +238,7 @@ this.FeatureBackground();
             this.PendingTestOutputIsIncludedInTheHTMLResult("MsTest", new string[] {
                         "mstest"});
         }
-        
+
         public virtual void FailingTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test output is included in the HTML result", exampleTags);
@@ -259,14 +259,14 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
         public virtual void FailingTestOutputIsIncludedInTheHTMLResult_NUnit_2()
         {
             this.FailingTestOutputIsIncludedInTheHTMLResult("NUnit.2", ((string[])(null)));
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failing test output is included in the HTML result")]
         [NUnit.Framework.CategoryAttribute("mstest")]
@@ -275,7 +275,7 @@ this.FeatureBackground();
             this.FailingTestOutputIsIncludedInTheHTMLResult("MsTest", new string[] {
                         "mstest"});
         }
-        
+
         public virtual void FailingTestExceptionIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test exception is included in the HTML result", exampleTags);
@@ -296,14 +296,14 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
         public virtual void FailingTestExceptionIsIncludedInTheHTMLResult_NUnit_2()
         {
             this.FailingTestExceptionIsIncludedInTheHTMLResult("NUnit.2", ((string[])(null)));
         }
-        
+
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Failing test exception is included in the HTML result")]
         [NUnit.Framework.CategoryAttribute("mstest")]

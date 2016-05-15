@@ -137,12 +137,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().NotBeNull();
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException))]
+        [Test]
         public void Should_throw_error_if_class_have_multiple_ctor_with_max_parameter_count()
         {
             var scenarioContext = CreateScenarioContext();
 
-            scenarioContext.GetBindingInstance(typeof(ClassWithMultipleMaxParamCountCtor));
+            Assert.Throws<ObjectContainerException>(() => scenarioContext.GetBindingInstance(typeof(ClassWithMultipleMaxParamCountCtor)));
         }
 
         public class SimpleClass
