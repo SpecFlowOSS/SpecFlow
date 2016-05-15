@@ -34,7 +34,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [When(@"I generate SpecFlow NUnit execution report")]
+        [When(@"I generate SpecFlow NUnit.2 execution report")]
         [When(@"I generate SpecFlow NUnit execution report with the custom XSLT")]
+        [When(@"I generate SpecFlow NUnit.2 execution report with the custom XSLT")]
         public void WhenIGenerateSpecFlowNUnitExecutionReport()
         {
             ProcessHelper processHelper = new ProcessHelper();
