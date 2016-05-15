@@ -58,6 +58,11 @@ namespace TechTalk.SpecFlow.Parser
             }
 
             return ((IHasTags)scenarioDefinition).Tags;
-        }
+        }     
+    }
+
+    public static class SpecFlowLocation
+    {
+        public static Location Empty { get; } = new Location();
     }
 }

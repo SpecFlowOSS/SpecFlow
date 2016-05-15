@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
 {
@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public string Type;
 
         public Binding Binding;
-        public ScenarioStep ScenarioStep;
+        public SpecFlowStep ScenarioStep;
         public List<Instance> Instances = new List<Instance>();
     }
 }
