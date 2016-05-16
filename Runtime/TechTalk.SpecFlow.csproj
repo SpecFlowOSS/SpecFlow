@@ -113,8 +113,10 @@
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\ParameterNameExtensions.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
+    <Compile Include="BindingSkeletons\StepParameterNameGenerator.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
