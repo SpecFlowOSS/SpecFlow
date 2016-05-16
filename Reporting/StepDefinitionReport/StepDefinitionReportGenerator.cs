@@ -131,15 +131,17 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         private IEnumerable<SpecFlowStep> CreateScenarioSteps(ScenarioOutline scenarioOutline, Dictionary<string, string> paramSubst)
         {
             var result = new List<SpecFlowStep>();
-            foreach (SpecFlowStep scenarioStep in scenarioOutline.Steps)
+            foreach (var scenarioStep in scenarioOutline.Steps)
             {
-                var stepArgument = scenarioStep.Argument;
-                if (scenarioStep.Argument is DataTable)
+                var specflowStep = (SpecFlowStep) scenarioStep;
+
+                var stepArgument = specflowStep.Argument;
+                if (specflowStep.Argument is DataTable)
                 {
-                    stepArgument = Clone((DataTable)scenarioStep.Argument, (c) => GetReplacedText(c.Value, paramSubst));
+                    stepArgument = Clone((DataTable)specflowStep.Argument, (c) => GetReplacedText(c.Value, paramSubst));
                 }
 
-                var newStep = Clone(scenarioStep, stepArgument);                
+                var newStep = Clone(specflowStep, stepArgument);                
 
                 result.Add(newStep);
             }
@@ -168,13 +170,13 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             switch (stepDefinition.Type)
             {
                 case "Given":
-                    stepDefinition.ScenarioStep = new SpecFlowStep(SpecFlowLocation.Empty, "Given", sampleText, null, StepKeyword.Given, Parser.ScenarioBlock.Given);
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "Given", sampleText, null, StepKeyword.Given, Parser.ScenarioBlock.Given);
                     break;
                 case "When":
-                    stepDefinition.ScenarioStep = new SpecFlowStep(SpecFlowLocation.Empty, "When", sampleText, null, StepKeyword.When, Parser.ScenarioBlock.When);
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "When", sampleText, null, StepKeyword.When, Parser.ScenarioBlock.When);
                     break;
                 case "Then":
-                    stepDefinition.ScenarioStep = new SpecFlowStep(SpecFlowLocation.Empty, "Then", sampleText, null, StepKeyword.Then, Parser.ScenarioBlock.Then);
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "Then", sampleText, null, StepKeyword.Then, Parser.ScenarioBlock.Then);
                     break;
                 default:
                     throw new InvalidOperationException();
@@ -226,7 +228,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
         private void AddStepInstances(FeatureRef featureRef, ScenarioRef scenarioRef, IEnumerable<Step> scenarioSteps, bool fromScenarioOutline)
         {
-            var specFlowSteps = (IEnumerable<SpecFlowStep>) scenarioSteps;
+            var specFlowSteps = scenarioSteps.Cast<SpecFlowStep>();
 
             foreach (var scenarioStep in specFlowSteps)
             {
@@ -246,7 +248,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     Instance instance = new Instance
                                             {
                                                 FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = scenarioStep,
+                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
                                                 FeatureRef = featureRef,
                                                 ScenarioRef = scenarioRef
                                             };
@@ -263,8 +265,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
                     if (stepDefinition.ScenarioStep == null)
                     {
-
-                        var sampleText = GetSampleText(bindingInfo, stepDefinition.ScenarioStep.Text, match);
+                        var sampleText = GetSampleText(bindingInfo, scenarioStep.Text, match);
                         stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock, sampleText);
                         
                     }
@@ -290,7 +291,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     Instance instance = new Instance
                                             {
                                                 FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = scenarioStep,
+                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
                                                 FeatureRef = featureRef,
                                                 ScenarioRef = scenarioRef
                                             };
@@ -319,15 +320,15 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             return new Gherkin.Ast.TableRow(row.Location, row.Cells.Select(c => new TableCell(c.Location, valueExpr(c))).ToArray());
         }
 
-        private SpecFlowStep CloneTo(SpecFlowStep step, string currentBlock, string sampleText)
+        private ReportStep CloneTo(SpecFlowStep step, string currentBlock, string sampleText)
         {
-            SpecFlowStep newStep = null;
+            ReportStep newStep = null;
             if (currentBlock == "When")
-                newStep = new SpecFlowStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.When);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.When);
             else if (currentBlock == "Then")
-                newStep = new SpecFlowStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Then);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Then);
             else // Given or empty
-                newStep = new SpecFlowStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Given);
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Given);
 
             Debug.Assert(newStep != null);
             

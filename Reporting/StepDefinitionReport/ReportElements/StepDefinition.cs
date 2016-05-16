@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public string Type;
 
         public Binding Binding;
-        public SpecFlowStep ScenarioStep;
+        public ReportStep ScenarioStep;
         public List<Instance> Instances = new List<Instance>();
     }
 }

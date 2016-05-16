@@ -84,6 +84,7 @@
     <Compile Include="StepDefinitionReport\ReportElements\Instance.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\Parameter.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\ScenarioRef.cs" />
+    <Compile Include="StepDefinitionReport\ReportElements\ReportStep.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinition.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinitionReport.cs" />
     <Compile Include="ResourceXmlReader.cs" />

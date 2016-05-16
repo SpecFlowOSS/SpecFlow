@@ -12,6 +12,6 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public FeatureRef FeatureRef;
         public ScenarioRef ScenarioRef;
         public List<Parameter> Parameters;
-        public SpecFlowStep ScenarioStep;
+        public ReportStep ScenarioStep;
     }
 }
