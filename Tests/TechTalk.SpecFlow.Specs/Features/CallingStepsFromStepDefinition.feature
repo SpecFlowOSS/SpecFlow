@@ -37,3 +37,47 @@ Examples:
 	| Given     |
 	| When      |
 	| Then      |
+
+Scenario: When I call other steps of a different type it shouldn't change the type of the next and step in my feature
+	Given the following binding class
+         """
+	     [Binding]
+	     public class CallingStepsFromStepDefinitionSteps : Steps
+         {
+			[Given(@"I have a given step")]
+		    public void GivenIHaveEntered()
+			{
+				//...
+			}
+
+			[When(@"I call a step of a different type")]
+		    public void WhenICallAStepOfADifferentType()
+			{
+				//...
+			}
+
+			[Given(@"I want to call another given step")]
+		    public void GivenIWantToCallAnotherGivenStep()
+			{
+				//...
+			}
+
+			[Given(@"I called some steps of different types")]
+		    public void GivenIHaveCalledStepsOfDifferentTypes()
+			{
+				Given("I have a given step");
+				When("I call a step of a different type");
+			}
+		 }	
+         """
+	And a scenario 'Simple Scenario' as
+         """
+			Given I called some steps of different types
+			And I want to call another given step
+         """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |
+
+
