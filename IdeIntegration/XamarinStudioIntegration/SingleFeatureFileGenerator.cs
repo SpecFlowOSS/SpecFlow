@@ -1,5 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
+using System.Threading.Tasks;
 using MonoDevelop.Core;
 using MonoDevelop.Ide.CustomTools;
 using MonoDevelop.Projects;
@@ -11,10 +12,10 @@ namespace MonoDevelop.TechTalk.SpecFlow
 {
 	public class SingleFeatureFileGenerator : ISingleFileCustomTool
 	{
-		public IAsyncOperation Generate(IProgressMonitor monitor, ProjectFile featureFile, SingleFileCustomToolResult result)
+		public async Task Generate(ProgressMonitor monitor, ProjectFile featureFile, SingleFileCustomToolResult result)
 		{
-			return new ThreadAsyncOperation(() => {
-				
+			await Task.Run(() => 
+            {				
                 var ideSingleFileGenerator = new IdeSingleFileGenerator();
 
                 ideSingleFileGenerator.GenerationError += 
@@ -31,7 +32,7 @@ namespace MonoDevelop.TechTalk.SpecFlow
                 string outputFilePath = ideSingleFileGenerator.GenerateFile(featureFile.FilePath, null, () => new MonoDevelopGeneratorServices(featureFile.Project));
 				result.GeneratedFilePath = outputFilePath;
 				
-			}, result);
+			});
 		}
 	}
 }

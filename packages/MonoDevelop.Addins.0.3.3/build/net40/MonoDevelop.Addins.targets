@@ -30,20 +30,28 @@
     <Reference Include="System.Xml" />
     <AddinReference Include="MonoDevelop.Core"/>
     <AddinReference Include="MonoDevelop.Ide" />
-        <Reference Include="gtk-sharp">
-    <Private>False</Private>
+    <!-- we depend on GTK# and friends but it's not in bin -->
+    <Reference Include="gtk-sharp">
+      <Private>False</Private>
     </Reference>
     <Reference Include="atk-sharp">
-        <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="glib-sharp">
-        <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="gdk-sharp">
-        <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="pango-sharp">
-        <Private>False</Private>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cairo">
+      <Private>False</Private>
+    </Reference>
+    <!-- this is in bin, but core addins don't use it, so we have to make it explicit -->
+    <Reference Include="Newtonsoft.Json">
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
