@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
             var provessHelper = new ProcessHelper();
-            string nunitConsoleRunnerPath = @"NUnit3-Runner\bin\nunit-console.exe";
+            string nunitConsoleRunnerPath = @"NUnit3-Runner\tools\nunit3-console.exe";
             var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), nunitConsoleRunnerPath);
             provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"--result={1};format=nunit2\" --labels=All \"--out={2}\" {3}",
                 inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
@@ -36,6 +36,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public TestRunSummary Execute()
         {
+            return this.ExecuteWithNUnit3();
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
@@ -96,7 +97,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             if (Include == null)
                 return string.Empty;
 
-            return string.Format(" \"/include:{0}\"", Include);
+            return string.Format(" \"--where:cat=={0}\"", Include);
         }
     }
 }
