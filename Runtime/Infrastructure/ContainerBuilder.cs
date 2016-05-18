@@ -11,6 +11,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null);
         IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer);
+        IObjectContainer CreateScenarioContainer(IObjectContainer testThreadContainer, ScenarioInfo scenarioInfo);
     }
 
     public class ContainerBuilder : IContainerBuilder
@@ -62,7 +63,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return container;
         }
 
-        public IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
+        public virtual IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {
             var testThreadContainer = new ObjectContainer(globalContainer);
 
@@ -72,6 +73,30 @@ namespace TechTalk.SpecFlow.Infrastructure
             runtimePluginEvents.RaiseCustomizeTestThreadDependencies(testThreadContainer);
 
             return testThreadContainer;
+        }
+
+        public virtual IObjectContainer CreateScenarioContainer(IObjectContainer testThreadContainer, ScenarioInfo scenarioInfo)
+        {
+            if (testThreadContainer == null)
+                throw new ArgumentNullException(nameof(testThreadContainer));
+
+            var scenarioContainer = new ObjectContainer(testThreadContainer);
+            scenarioContainer.RegisterInstanceAs(scenarioInfo);
+
+            var contextManager = testThreadContainer.Resolve<IContextManager>();
+
+            var featureContext = contextManager.FeatureContext;
+            if (featureContext != null)
+                scenarioContainer.RegisterInstanceAs(featureContext);
+
+            scenarioContainer.ObjectCreated += obj =>
+            {
+                var containerDependentObject = obj as IContainerDependentObject;
+                if (containerDependentObject != null)
+                    containerDependentObject.SetObjectContainer(scenarioContainer);
+            };
+
+            return scenarioContainer;
         }
 
         protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)
