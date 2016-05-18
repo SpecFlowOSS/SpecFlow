@@ -30,7 +30,7 @@
             </References>
 
             <Packages>
-                <Package ID="SpecFlow.NUnit" Version="1.1.1" />
+                <Package ID="SpecFlow.NUnit" Version="2.0.0" />
             </Packages>
 
             <Files>
