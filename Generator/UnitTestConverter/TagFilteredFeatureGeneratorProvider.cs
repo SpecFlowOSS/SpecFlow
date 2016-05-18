@@ -20,11 +20,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             this.registeredName = registeredName;
         }
 
-        public bool CanGenerate(SpecFlowFeature feature)
+        public bool CanGenerate(SpecFlowDocument document)
         {
-            return tagFilterMatcher.MatchPrefix(registeredName, feature);
+            return tagFilterMatcher.MatchPrefix(registeredName, document);
         }
 
-        public abstract IFeatureGenerator CreateGenerator(SpecFlowFeature feature);
+        public abstract IFeatureGenerator CreateGenerator(SpecFlowDocument document);
     }
 }

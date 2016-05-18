@@ -89,7 +89,7 @@ Scenario: Add two numbers
             UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
 
             var generatorRegistryStub = new Mock<IFeatureGeneratorRegistry>();
-            generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(unitTestFeatureGenerator);
+            generatorRegistryStub.Setup(r => r.CreateGenerator(It.IsAny<SpecFlowDocument>())).Returns(unitTestFeatureGenerator);
 
             return new TestGenerator(generatorConfiguration, projectSettings, TestHeaderWriterStub.Object, TestUpToDateCheckerStub.Object, generatorRegistryStub.Object, codeDomHelper);
         }

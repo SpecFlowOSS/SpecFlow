@@ -58,14 +58,14 @@ namespace TechTalk.SpecFlow.Generator
             return feature.Background != null;
         }
 
-        private TestClassGenerationContext CreateTestClassStructure(CodeNamespace codeNamespace, string testClassName, SpecFlowFeature feature)
+        private TestClassGenerationContext CreateTestClassStructure(CodeNamespace codeNamespace, string testClassName, SpecFlowDocument document)
         {
             var testClass = codeDomHelper.CreateGeneratedTypeDeclaration(testClassName);
             codeNamespace.Types.Add(testClass);
 
             return new TestClassGenerationContext(
                 testGeneratorProvider,
-                feature,
+                document,
                 codeNamespace,
                 testClass,
                 DeclareTestRunnerMember(testClass),
@@ -75,7 +75,7 @@ namespace TechTalk.SpecFlow.Generator
                 CreateMethod(testClass),
                 CreateMethod(testClass),
                 CreateMethod(testClass),
-                HasFeatureBackground(feature) ? CreateMethod(testClass) : null,
+                HasFeatureBackground(document.SpecFlowFeature) ? CreateMethod(testClass) : null,
                 generateRowTests: testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.RowTests) && generatorConfiguration.AllowRowTests);
         }
 
@@ -89,12 +89,13 @@ namespace TechTalk.SpecFlow.Generator
             return codeNamespace;
         }
 
-        public CodeNamespace GenerateUnitTestFixture(SpecFlowFeature feature, string testClassName, string targetNamespace)
+        public CodeNamespace GenerateUnitTestFixture(SpecFlowDocument document, string testClassName, string targetNamespace)
         {
             CodeNamespace codeNamespace = CreateNamespace(targetNamespace);
+            var feature = document.SpecFlowFeature;
 
             testClassName = testClassName ?? string.Format(TESTCLASS_NAME_FORMAT, feature.Name.ToIdentifier());
-            var generationContext = CreateTestClassStructure(codeNamespace, testClassName, feature);
+            var generationContext = CreateTestClassStructure(codeNamespace, testClassName, document);
 
             SetupTestClass(generationContext);
             SetupTestClassInitializeMethod(generationContext);

@@ -32,8 +32,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var anyFeature = ParserHelper.CreateAnyFeature();
-            var generator = featureGeneratorRegistry.CreateGenerator(anyFeature);
+            var anyDocument = ParserHelper.CreateAnyDocument();
+            var generator = featureGeneratorRegistry.CreateGenerator(anyDocument);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();
         }
@@ -44,15 +44,15 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowFeature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowDocument>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowDocument>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var anyFeature = ParserHelper.CreateAnyFeature();
+            var anyFeature = ParserHelper.CreateAnyDocument();
             var generator = featureGeneratorRegistry.CreateGenerator(anyFeature);
 
             generator.Should().Be(dummyGenerator);
@@ -64,18 +64,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowFeature>())).Returns(true); // generic
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowDocument>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(It.IsAny<SpecFlowDocument>())).Returns(true); // generic
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
-            featureGeneratorRegistry.CreateGenerator(theFeature);
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument();
+            featureGeneratorRegistry.CreateGenerator(theDocument);
 
-            genericHighPrioProvider.Verify(p => p.CreateGenerator(theFeature), Times.Once());
+            genericHighPrioProvider.Verify(p => p.CreateGenerator(theDocument), Times.Once());
         }
 
         [Test]
@@ -83,18 +83,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var dummyGenerator = new Mock<IFeatureGenerator>().Object;
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument();
 
             var genericHighPrioProvider = new Mock<IFeatureGeneratorProvider>();
-            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowFeature>())).Returns(dummyGenerator);
-            genericHighPrioProvider.Setup(p => p.CanGenerate(theFeature)).Returns(false); // not applicable for aFeature
+            genericHighPrioProvider.Setup(p => p.CreateGenerator(It.IsAny<SpecFlowDocument>())).Returns(dummyGenerator);
+            genericHighPrioProvider.Setup(p => p.CanGenerate(theDocument)).Returns(false); // not applicable for aFeature
             genericHighPrioProvider.Setup(p => p.Priority).Returns(1); // high-prio
 
             container.RegisterInstanceAs(genericHighPrioProvider.Object, "custom");
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+            var generator = featureGeneratorRegistry.CreateGenerator(theDocument);
 
             generator.Should().BeOfType<UnitTestFeatureGenerator>();
         }
@@ -117,7 +117,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
             }
 
-            public override IFeatureGenerator CreateGenerator(SpecFlowFeature feature)
+            public override IFeatureGenerator CreateGenerator(SpecFlowDocument feature)
             {
                 return DummyGenerator;
             }
@@ -128,11 +128,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] {"mytag"});
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument(tags: new[] {"mytag"});
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+            var generator = featureGeneratorRegistry.CreateGenerator(theDocument);
 
             generator.Should().Be(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
         }
@@ -142,11 +142,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("@mytag");
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] { "mytag" });
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument(tags: new[] { "mytag" });
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+            var generator = featureGeneratorRegistry.CreateGenerator(theDocument);
 
             generator.Should().Be(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
         }
@@ -156,11 +156,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature(tags: new[] { "othertag" });
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument(tags: new[] { "othertag" });
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+            var generator = featureGeneratorRegistry.CreateGenerator(theDocument);
 
             generator.Should().NotBe(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
         }
@@ -170,11 +170,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             container.RegisterTypeAs<TestTagFilteredFeatureGeneratorProvider, IFeatureGeneratorProvider>("mytag");
 
-            SpecFlowFeature theFeature = ParserHelper.CreateAnyFeature();
+            SpecFlowDocument theDocument = ParserHelper.CreateAnyDocument();
 
             var featureGeneratorRegistry = CreateFeatureGeneratorRegistry();
 
-            var generator = featureGeneratorRegistry.CreateGenerator(theFeature);
+            var generator = featureGeneratorRegistry.CreateGenerator(theDocument);
 
             generator.Should().NotBe(TestTagFilteredFeatureGeneratorProvider.DummyGenerator);
         }
