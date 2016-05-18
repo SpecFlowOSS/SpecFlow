@@ -126,6 +126,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InAppDomainParallelExecution.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\Reports\StepDefinitionReport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StepDefinitionReport.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnit2Provider.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -251,6 +256,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>InAppDomainParallelExecution.feature.cs</LastGenOutput>
     </None>
+    <None Include="Features\Reports\StepDefinitionReport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StepDefinitionReport.feature.cs</LastGenOutput>
+    </None>
     <None Include="Features\XUnit2Provider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>XUnit2Provider.feature.cs</LastGenOutput>
@@ -321,6 +330,10 @@
     <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
+      <Project>{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}</Project>
+      <Name>TechTalk.SpecFlow.Reporting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

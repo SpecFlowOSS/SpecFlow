@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
 {
@@ -12,6 +12,6 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements
         public FeatureRef FeatureRef;
         public ScenarioRef ScenarioRef;
         public List<Parameter> Parameters;
-        public ScenarioStep ScenarioStep;
+        public ReportStep ScenarioStep;
     }
 }

@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Gherkin.Ast;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         public StepDefinitionReportParameters ReportParameters { get; set; }
         private readonly SpecFlowProject specFlowProject;
         private readonly List<BindingInfo> bindings;
-        private readonly List<Feature> parsedFeatures;
+        private readonly List<SpecFlowDocument> parsedSpecFlowDocuments;
 
         private ReportElements.StepDefinitionReport report;
         private Dictionary<BindingInfo, StepDefinition> stepDefByBinding;
@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             ReportParameters = reportParameters;
 
             specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);
-            parsedFeatures = ParserHelper.GetParsedFeatures(specFlowProject);
+            parsedSpecFlowDocuments = ParserHelper.GetParsedFeatures(specFlowProject);
 
             var basePath = Path.Combine(specFlowProject.ProjectSettings.ProjectFolder, reportParameters.BinFolder);
             bindings = BindingCollector.CollectBindings(specFlowProject, basePath);
@@ -59,21 +59,22 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                 report.StepDefinitions.Add(stepDefinition);
             }
 
-            foreach (var feature in parsedFeatures)
+            foreach (var specflowDocument in parsedSpecFlowDocuments)
             {
-                var featureRef = new FeatureRef { FilePath = feature.SourceFile, Name = feature.Title };
+                var feature = specflowDocument.SpecFlowFeature;
+                var featureRef = new FeatureRef { FilePath = feature.SourceFilePath, Name = feature.Name };
                 if (feature.Background != null)
                 {
                     var scenarioRef = new ScenarioRef { Name = "Background" };
                     AddStepInstances(featureRef, scenarioRef, feature.Background.Steps, false);
                 }
 
-                foreach (var scenario in feature.Scenarios)
+                foreach (var scenario in feature.ScenarioDefinitions)
                 {
-                    var scenarioRef = new ScenarioRef { Name = scenario.Title, SourceFileLine = scenario.FilePosition == null ? -1 : scenario.FilePosition.Line };
+                    var scenarioRef = new ScenarioRef { Name = scenario.Name, SourceFileLine = scenario.Location == null ? -1 : scenario.Location.Line };
                     if (scenario is ScenarioOutline)
                     {
-                        ScenarioSteps firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline) scenario);
+                        var firstExampleSteps = CreateFirstExampleScenarioSteps((ScenarioOutline) scenario);
                         AddStepInstances(featureRef, scenarioRef, firstExampleSteps, true);
                     }
                     else
@@ -95,60 +96,52 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     stepDefinition.Instances = null;
                 }
 
-                if(stepDefinition.ScenarioStep.ScenarioBlock == 0)
-                {
-                    stepDefinition.ScenarioStep.ScenarioBlock =
-                        (Parser.ScenarioBlock)
-                        Enum.Parse(typeof (Parser.ScenarioBlock), stepDefinition.Type);
-                }
+                //if(stepDefinition.ScenarioStep.ScenarioBlock == 0)
+                //{
+                //    stepDefinition.ScenarioStep.ScenarioBlock = (Parser.ScenarioBlock)Enum.Parse(typeof (Parser.ScenarioBlock), stepDefinition.Type);
+                //}
 
-                if(stepDefinition.ScenarioStep.StepKeyword == 0)
-                {
-                    stepDefinition.ScenarioStep.StepKeyword = (StepKeyword)
-                        Enum.Parse(typeof(StepKeyword), stepDefinition.Type);
-                }
+                //if(stepDefinition.ScenarioStep.StepKeyword == 0)
+                //{
+                //    stepDefinition.ScenarioStep.StepKeyword = (StepKeyword)Enum.Parse(typeof(StepKeyword), stepDefinition.Type);
+                //}
             }
 
             return report;
         }
 
-        private ScenarioSteps CreateFirstExampleScenarioSteps(ScenarioOutline scenarioOutline)
+        private IEnumerable<SpecFlowStep> CreateFirstExampleScenarioSteps(ScenarioOutline scenarioOutline)
         {
-            foreach (var exampleSet in scenarioOutline.Examples.ExampleSets)
+            foreach (var exampleSet in scenarioOutline.Examples)
             {
-                foreach (var example in exampleSet.Table.Body)
+                foreach (var example in exampleSet.TableBody)
                 {
                     Dictionary<string, string> paramSubst = new Dictionary<string, string>();
-                    for (int i = 0; i < exampleSet.Table.Header.Cells.Length; i++)
+                    for (int i = 0; i < exampleSet.TableHeader.Cells.Count(); i++)
                     {
-                        paramSubst.Add(exampleSet.Table.Header.Cells[i].Value, example.Cells[i].Value);
+                        paramSubst.Add(exampleSet.TableHeader.Cells.ElementAt(i).Value, example.Cells.ElementAt(i).Value);
                     }
 
                     return CreateScenarioSteps(scenarioOutline, paramSubst);
                 }
             }
-            return new ScenarioSteps();
+            return new List<SpecFlowStep>();
         }
 
-        private ScenarioSteps CreateScenarioSteps(ScenarioOutline scenarioOutline, Dictionary<string, string> paramSubst)
+        private IEnumerable<SpecFlowStep> CreateScenarioSteps(ScenarioOutline scenarioOutline, Dictionary<string, string> paramSubst)
         {
-            ScenarioSteps result = new ScenarioSteps();
+            var result = new List<SpecFlowStep>();
             foreach (var scenarioStep in scenarioOutline.Steps)
             {
-                var newStep = Clone(scenarioStep);
-                newStep.Text = GetReplacedText(newStep.Text, paramSubst);
-                newStep.MultiLineTextArgument = GetReplacedText(newStep.MultiLineTextArgument, paramSubst);
+                var specflowStep = (SpecFlowStep) scenarioStep;
 
-                if (newStep.TableArg != null)
+                var stepArgument = specflowStep.Argument;
+                if (specflowStep.Argument is DataTable)
                 {
-                    foreach (var row in newStep.TableArg.Body)
-                    {
-                        foreach (var cell in row.Cells)
-                        {
-                            cell.Value = GetReplacedText(cell.Value, paramSubst);
-                        }
-                    }
+                    stepArgument = Clone((DataTable)specflowStep.Argument, (c) => GetReplacedText(c.Value, paramSubst));
                 }
+
+                var newStep = Clone(specflowStep, stepArgument);                
 
                 result.Add(newStep);
             }
@@ -172,22 +165,23 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         {
             BindingInfo bindingInfo = bindingByStepDef[stepDefinition];
             Debug.Assert(bindingInfo != null);
+            var sampleText = GetSampleText(bindingInfo);
+
             switch (stepDefinition.Type)
             {
                 case "Given":
-                    stepDefinition.ScenarioStep = new Given();
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "Given", sampleText, null, StepKeyword.Given, Parser.ScenarioBlock.Given);
                     break;
                 case "When":
-                    stepDefinition.ScenarioStep = new When();
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "When", sampleText, null, StepKeyword.When, Parser.ScenarioBlock.When);
                     break;
                 case "Then":
-                    stepDefinition.ScenarioStep = new Then();
+                    stepDefinition.ScenarioStep = new ReportStep(SpecFlowLocation.Empty, "Then", sampleText, null, StepKeyword.Then, Parser.ScenarioBlock.Then);
                     break;
                 default:
                     throw new InvalidOperationException();
             }
 
-            stepDefinition.ScenarioStep.Text = GetSampleText(bindingInfo);
         }
 
         private string GetSampleText(BindingInfo bindingInfo, string text, Match match)
@@ -196,8 +190,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             for (int groupIndex = match.Groups.Count - 1; groupIndex >= 1; groupIndex--)
             {
                 int paramIndex = groupIndex - 1;
-                var paramText = paramIndex >= bindingInfo.ParameterNames.Length ? "{?param?}" :
-                                                                                                  "{" + bindingInfo.ParameterNames[paramIndex] + "}";
+                var paramText = paramIndex >= bindingInfo.ParameterNames.Length ? "{?param?}" : "{" + bindingInfo.ParameterNames[paramIndex] + "}";
 
                 var gr = match.Groups[groupIndex];
                 sampleText.Remove(gr.Index, gr.Length);
@@ -233,9 +226,11 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
         }
 
-        private void AddStepInstances(FeatureRef featureRef, ScenarioRef scenarioRef, IEnumerable<ScenarioStep> scenarioSteps, bool fromScenarioOutline)
+        private void AddStepInstances(FeatureRef featureRef, ScenarioRef scenarioRef, IEnumerable<Step> scenarioSteps, bool fromScenarioOutline)
         {
-            foreach (var scenarioStep in scenarioSteps)
+            var specFlowSteps = scenarioSteps.Cast<SpecFlowStep>();
+
+            foreach (var scenarioStep in specFlowSteps)
             {
                 string currentBlock = scenarioStep.ScenarioBlock.ToString();                  
 
@@ -253,7 +248,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     Instance instance = new Instance
                                             {
                                                 FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = scenarioStep,
+                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
                                                 FeatureRef = featureRef,
                                                 ScenarioRef = scenarioRef
                                             };
@@ -270,8 +265,9 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 
                     if (stepDefinition.ScenarioStep == null)
                     {
-                        stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock);
-                        stepDefinition.ScenarioStep.Text = GetSampleText(bindingInfo, stepDefinition.ScenarioStep.Text, match);
+                        var sampleText = GetSampleText(bindingInfo, scenarioStep.Text, match);
+                        stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock, sampleText);
+                        
                     }
 
                     found = true;
@@ -287,7 +283,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     {
                         stepDefinition = new StepDefinition();
                         stepDefinition.Type = currentBlock;
-                        stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock);
+                        stepDefinition.ScenarioStep = CloneTo(scenarioStep, currentBlock, scenarioStep.Text);
                         stepDefsWithNoBinding.Add(stepDefinition);
                         report.StepDefinitions.Add(stepDefinition);
                     }
@@ -295,7 +291,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
                     Instance instance = new Instance
                                             {
                                                 FromScenarioOutline = fromScenarioOutline,
-                                                ScenarioStep = scenarioStep,
+                                                ScenarioStep = CloneTo(scenarioStep, scenarioStep.ScenarioBlock.ToString(), scenarioStep.Text),
                                                 FeatureRef = featureRef,
                                                 ScenarioRef = scenarioRef
                                             };
@@ -304,62 +300,38 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
         }
 
-        private ScenarioStep Clone(ScenarioStep step)
+        private SpecFlowStep Clone(SpecFlowStep step, StepArgument stepArgument)
         {
-            ScenarioStep newStep = null;
-            if (step is Given)
-                newStep = new Given();
-            else if (step is When)
-                newStep = new When();
-            else if (step is Then)
-                newStep = new Then();
-            else if (step is And)
-                newStep = new And();
-            else if (step is But)
-                newStep = new But();
-
-            Debug.Assert(newStep != null);
-
-            newStep.Text = step.Text;
-            newStep.MultiLineTextArgument = step.MultiLineTextArgument;
-            newStep.TableArg = Clone(step.TableArg);
-            newStep.ScenarioBlock = step.ScenarioBlock;
-            newStep.StepKeyword = step.StepKeyword;
-
-            return newStep;
+            return new SpecFlowStep(step.Location, step.Keyword, step.Text, stepArgument, step.StepKeyword, step.ScenarioBlock);
         }
 
-        private GherkinTable Clone(GherkinTable table)
+        private DataTable Clone(DataTable table, Func<TableCell, string> getCellValue = null)
         {
             if (table == null)
                 return null;
 
-            return new GherkinTable(Clone(table.Header), table.Body.Select(r => Clone(r)).ToArray());
+            return new DataTable(table.Rows.Select(r => Clone(r, getCellValue)).ToArray());
         }
 
-        private GherkinTableRow Clone(GherkinTableRow row)
+        private Gherkin.Ast.TableRow Clone(Gherkin.Ast.TableRow row, Func<TableCell, string> getValue = null)
         {
-            return new GherkinTableRow(row.Cells.Select(c => new GherkinTableCell(){Value = c.Value}).ToArray());
+            var valueExpr = getValue ?? ((c) => c.Value);
+
+            return new Gherkin.Ast.TableRow(row.Location, row.Cells.Select(c => new TableCell(c.Location, valueExpr(c))).ToArray());
         }
 
-        private ScenarioStep CloneTo(ScenarioStep step, string currentBlock)
+        private ReportStep CloneTo(SpecFlowStep step, string currentBlock, string sampleText)
         {
-            ScenarioStep newStep = null;
+            ReportStep newStep = null;
             if (currentBlock == "When")
-                newStep = new When();
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.When);
             else if (currentBlock == "Then")
-                newStep = new Then();
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Then);
             else // Given or empty
-                newStep = new Given();
+                newStep = new ReportStep(step.Location, step.Keyword, sampleText, step.Argument, step.StepKeyword, Parser.ScenarioBlock.Given);
 
             Debug.Assert(newStep != null);
-
-            newStep.Text = step.Text;
-            newStep.MultiLineTextArgument = step.MultiLineTextArgument;
-            newStep.TableArg = Clone(step.TableArg);
-            newStep.ScenarioBlock = step.ScenarioBlock;
-            newStep.StepKeyword = step.StepKeyword;
-
+            
             return newStep;
         }
 

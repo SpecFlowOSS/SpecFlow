@@ -1,3 +1,13 @@
+2.1.0 - 2016-05-24
+
+Core changes:
+
+New Features:
+
+Smaller Improvements/fixes:
++ Update reports to use latest parser
+
+
 2.1.0-preview20160412-* - 2016/04/12
 
 Core changes:
