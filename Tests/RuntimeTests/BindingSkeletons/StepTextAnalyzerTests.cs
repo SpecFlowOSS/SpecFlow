@@ -199,5 +199,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.TextParts[1].Should().Be("\" something with \"");
             result.TextParts[2].Should().Be("\" parameters");
         }
+
+        [Test]
+        public void Should_support_accented_characters()
+        {
+            var sut = new StepTextAnalyzer();
+
+            var result = sut.Analyze("I \"dö\" something ", bindingCulture);
+            result.Parameters.Count.Should().Be(1);
+            result.Parameters[0].Name.Should().Be("dö");
+            result.TextParts.Count.Should().Be(2);
+            result.TextParts[0].Should().Be("I \"");
+            result.TextParts[1].Should().Be("\" something ");
+        }
     }
 }
