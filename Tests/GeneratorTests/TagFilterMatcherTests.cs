@@ -2,7 +2,6 @@
 using System.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
 using FluentAssertions;
 
 namespace TechTalk.SpecFlow.GeneratorTests

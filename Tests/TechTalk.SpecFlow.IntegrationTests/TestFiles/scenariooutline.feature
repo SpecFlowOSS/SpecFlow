@@ -7,7 +7,7 @@ Scenario Outline: Simple Scenario Outline
 Examples: 
 	| what           |
 	| something      |
-	| somethign else |
+	| something else |
 
 Scenario Outline: Scenario Outline with multiple examples block
 	Given there is something
@@ -17,16 +17,16 @@ Scenario Outline: Scenario Outline with multiple examples block
 Examples: first set
 	| what           |
 	| something      |
-	| somethign else |
+	| something else |
 
 Examples: second set
 	| what                |
-	| somethign different |
+	| something different |
 
 #third example set without a name
 Examples: 
 	| what                        |
-	| somethign totally different |
+	| something totally different |
 
 Scenario Outline: Scenario Outline with table arguments
 	Given there is something
@@ -37,7 +37,7 @@ Scenario Outline: Scenario Outline with table arguments
 Examples: 
 	| what           |
 	| something      |
-	| somethign else |
+	| something else |
 
 Scenario Outline: Scenario Outline with multiline string arguments
 	Given there is something
@@ -49,4 +49,4 @@ Scenario Outline: Scenario Outline with multiline string arguments
 Examples: 
 	| what           |
 	| something      |
-	| somethign else |
+	| something else |

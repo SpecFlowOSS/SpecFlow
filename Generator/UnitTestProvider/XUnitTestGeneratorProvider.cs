@@ -12,18 +12,22 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string DESCRIPTION_PROPERTY_NAME = "Description";
         private const string FACT_ATTRIBUTE = "Xunit.FactAttribute";
         private const string FACT_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
-        private const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        internal const string THEORY_ATTRIBUTE = "Xunit.Extensions.TheoryAttribute";
+        internal const string THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME = "Skip";
         private const string INLINEDATA_ATTRIBUTE = "Xunit.Extensions.InlineDataAttribute";
-        private const string SKIP_REASON = "Ignored";
+        internal const string SKIP_REASON = "Ignored";
         private const string TRAIT_ATTRIBUTE = "Xunit.TraitAttribute";
         private const string IUSEFIXTURE_INTERFACE = "Xunit.IUseFixture";
+        private const string CATEGORY_PROPERTY_NAME = "Category";
 
         private CodeTypeDeclaration _currentFixtureDataTypeDeclaration = null;
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public bool SupportsRowTests { get { return true; } }
-        public bool SupportsAsyncTests { get { return false; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.RowTests;
+        }
 
         public XUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -37,7 +41,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            // xUnit does not support caregories
+            // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
+            foreach (string str in featureCategories)
+                SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
         }
 
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
@@ -45,14 +51,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // xUnit uses IUseFixture<T> on the class
 
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
 
             _currentFixtureDataTypeDeclaration = CodeDomHelper.CreateGeneratedTypeDeclaration("FixtureData");
             generationContext.TestClass.Members.Add(_currentFixtureDataTypeDeclaration);
 
             var fixtureDataType =
                 CodeDomHelper.CreateNestedTypeReference(generationContext.TestClass, _currentFixtureDataTypeDeclaration.Name);
-            
-            var useFixtureType = new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+
+            var useFixtureType = CreateFixtureInterface(fixtureDataType);
+
             CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
@@ -97,23 +105,23 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     generationContext.TestClassCleanupMethod.Name));
         }
 
-        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE);
 
-            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Title);
-            SetDescription(testMethod, scenarioTitle);
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
+            SetDescription(testMethod, friendlyTestName);
         }
 
-        public void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE);
 
-            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Title);
+            SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, scenarioTitle);
         }
 
-        public void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
+        public virtual void SetRow(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> arguments, IEnumerable<string> tags, bool isIgnored)
         {
             //TODO: better handle "ignored"
             if (isIgnored)
@@ -131,7 +139,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
         {
-            // xUnit does not support caregories
+            foreach (string str in scenarioCategories)
+                SetProperty((CodeTypeMember)testMethod, "Category", str);
         }
 
         public void SetTestInitializeMethod(TestClassGenerationContext generationContext)
@@ -174,7 +183,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             //TODO: how to do class level ignore?
         }
 
-        public void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
+        public virtual void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
                 .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == FACT_ATTRIBUTE);
@@ -187,19 +196,35 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodeAttributeArgument(FACT_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
                     );
             }
+
+            var theoryAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
+                .FirstOrDefault(codeAttributeDeclaration => codeAttributeDeclaration.Name == THEORY_ATTRIBUTE);
+
+            if (theoryAttr != null)
+            {
+                // set [TheoryAttribute(Skip="reason")]
+                theoryAttr.Arguments.Add
+                    (
+                        new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
+                    );
+            }
         }
 
-        private void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
+        protected void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
         {
             CodeDomHelper.AddAttribute(codeTypeMember, TRAIT_ATTRIBUTE, name, value);
         }
 
-        private void SetDescription(CodeTypeMember codeTypeMember, string description)
+        protected void SetDescription(CodeTypeMember codeTypeMember, string description)
         {
             // xUnit doesn't have a DescriptionAttribute so using a TraitAttribute instead
             SetProperty(codeTypeMember, DESCRIPTION_PROPERTY_NAME, description);
         }
 
+        protected virtual CodeTypeReference CreateFixtureInterface(CodeTypeReference fixtureDataType)
+        {
+            return new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+        }
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
         {

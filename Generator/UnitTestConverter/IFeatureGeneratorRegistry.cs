@@ -1,10 +1,9 @@
-using TechTalk.SpecFlow.Parser.SyntaxElements;
-using System.Linq;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
     public interface IFeatureGeneratorRegistry
     {
-        IFeatureGenerator CreateGenerator(Feature feature);
+        IFeatureGenerator CreateGenerator(SpecFlowDocument document);
     }
 }

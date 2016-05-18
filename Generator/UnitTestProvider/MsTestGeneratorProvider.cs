@@ -24,8 +24,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         protected CodeDomHelper CodeDomHelper { get; set; }
 
-        public virtual bool SupportsRowTests { get { return false; } }
-        public virtual bool SupportsAsyncTests { get { return false; } }
+        public virtual UnitTestGeneratorTraits GetTraits()
+        {
+            return UnitTestGeneratorTraits.None;
+        }
 
         public MsTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
@@ -61,6 +63,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             generationContext.TestClassInitializeMethod.Attributes |= MemberAttributes.Static;
+            generationContext.TestRunnerField.Attributes |= MemberAttributes.Static;
+
             generationContext.TestClassInitializeMethod.Parameters.Add(new CodeParameterDeclarationExpression(
                 TESTCONTEXT_TYPE, "testContext"));
 
@@ -77,36 +81,35 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public virtual void SetTestInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestInitializeMethod, TESTSETUP_ATTR);
-
-            //if (FeatureContext.Current != null && FeatureContext.Current.FeatureInfo.Title != "<current_feature_title>")
-            //  <TestClass>.<TestClassInitialize>(null);
-
             FixTestRunOrderingIssue(generationContext);
         }
 
         protected virtual void FixTestRunOrderingIssue(TestClassGenerationContext generationContext)
         {
             //see https://github.com/techtalk/SpecFlow/issues/96
+
+            //if (testRunner.FeatureContext != null && testRunner.FeatureContext.FeatureInfo.Title != "<current_feature_title>")
+            //  <TestClass>.<TestClassInitialize>(null);
+
+            var featureContextExpression = new CodePropertyReferenceExpression(
+                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name), 
+                "FeatureContext");
             generationContext.TestInitializeMethod.Statements.Add(
                 new CodeConditionStatement(
                     new CodeBinaryOperatorExpression(
                         new CodeBinaryOperatorExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeTypeReferenceExpression(typeof (FeatureContext)),
-                                "Current"),
+                            featureContextExpression,
                             CodeBinaryOperatorType.IdentityInequality,
                             new CodePrimitiveExpression(null)),
                         CodeBinaryOperatorType.BooleanAnd,
                         new CodeBinaryOperatorExpression(
                             new CodePropertyReferenceExpression(
                                 new CodePropertyReferenceExpression(
-                                    new CodePropertyReferenceExpression(
-                                        new CodeTypeReferenceExpression(typeof (FeatureContext)),
-                                        "Current"),
+                                    featureContextExpression,
                                     "FeatureInfo"),
                                 "Title"),
                             CodeBinaryOperatorType.IdentityInequality,
-                            new CodePrimitiveExpression(generationContext.Feature.Title))),
+                            new CodePrimitiveExpression(generationContext.Feature.Name))),
                     new CodeExpressionStatement(
                         new CodeMethodInvokeExpression(
                             new CodeTypeReferenceExpression(
@@ -122,14 +125,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
+        public virtual void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
-            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
+            CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
 
             //as in mstest, you cannot mark classes with the description attribute, we
             //just apply it for each test method as a property
-            SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Title);
+            SetProperty(testMethod, FEATURE_TITILE_PROPERTY_NAME, generationContext.Feature.Name);
         }
 
         public virtual void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)

@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
@@ -23,22 +23,22 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.ValueRetrieverTests
             };
             
             var retriever = new NullableCharValueRetriever(func);
-            retriever.GetValue("the first test value").ShouldEqual('a');
-            retriever.GetValue("the second test value").ShouldEqual('b');
+            retriever.GetValue("the first test value").Should().Be('a');
+            retriever.GetValue("the second test value").Should().Be('b');
         }
 
         [Test]
         public void Returns_null_when_value_is_empty()
         {
             var retriever = new NullableCharValueRetriever(v => 'a');
-            retriever.GetValue("").ShouldBeNull();
+            retriever.GetValue("").Should().Be(null);
         }
 
         [Test]
         public void Returns_null_when_value_is_null()
         {
             var retriever = new NullableCharValueRetriever(v => 'a');
-            retriever.GetValue(null).ShouldBeNull();
+            retriever.GetValue(null).Should().Be(null);
         }
     }
 }

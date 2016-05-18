@@ -1,6 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            result.ShouldBeNull();
+            result.Should().Be(null);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            result.ShouldEqual("");
+            result.Should().Be("");
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 
             var result = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            result.AgnosticLineBreak().ShouldEqual(@"  | One     | Two | Three      |
+            result.AgnosticLineBreak().Should().Be(@"  | One     | Two | Three      |
   | 1234567 | 1   | 1234567890 |
 + | 1       | 2   | 3          |
 ".AgnosticLineBreak());

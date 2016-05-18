@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Should;
 using TechTalk.SpecFlow.Assist;
 using System.Linq;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -31,7 +31,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"no parsing error is reported")]
         public void ThenNoParsingErrorIsReported()
         {
-            parserDriver.ParsingErrors.ShouldEqual(null, "There are parsing errors");
+            parserDriver.ParsingErrors.Should().BeEmpty("There are parsing errors");
         }
 
         [StepArgumentTransformation]

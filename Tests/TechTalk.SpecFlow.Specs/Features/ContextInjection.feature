@@ -255,4 +255,3 @@ Scenario: Disposable dependencies should be disposed after scenario execution
 	Then the execution summary should contain
          | Succeeded | Failed |
          | 1         | 1      |
-

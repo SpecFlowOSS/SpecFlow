@@ -2,16 +2,16 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class DefaultValueComparer : IValueComparer
+    public class DefaultValueComparer : IValueComparer
     {
         public bool CanCompare(object actualValue)
         {
             return true;
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
-            var actual = actualValue == null ? String.Empty : actualValue.ToString();
+            var actual = actualValue?.ToString() ?? String.Empty;
 
             return expectedValue == actual;
         }

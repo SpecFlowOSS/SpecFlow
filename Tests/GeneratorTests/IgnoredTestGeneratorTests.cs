@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BoDi;
+using Gherkin.Ast;
 using Moq;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.Parser.SyntaxElements;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -30,16 +31,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         private IFeatureGenerator CreateUnitTestFeatureGenerator()
         {
-            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(new Feature());
-        }
-
-        private Feature CreateFeature(string[] tags = null)
-        {
-            tags = tags ?? new string[0];
-
-            Scenario scenario1 = new Scenario("Scenario", "scenario1 title", "", new Tags(), new ScenarioSteps());
-
-            return new Feature("feature", "title", new Tags(tags.Select(t => new Tag(t)).ToArray()), "desc", null, new Scenario[] {scenario1}, new Comment[0]);
+            return container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
         }
 
         [Test]
@@ -47,9 +39,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] {"ignore"});
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(new string[] {"ignore"});
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestClassIgnore(It.IsAny<TestClassGenerationContext>()));
         }
@@ -59,9 +51,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] {"IgnoRe"});
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(new string[] {"IgnoRe"});
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestClassIgnore(It.IsAny<TestClassGenerationContext>()));
         }
@@ -71,9 +63,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] {"ignore"});
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(new string[] {"ignore"});
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodIgnore(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()), Times.Never());
         }
@@ -83,10 +75,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("ignore"));
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(scenarioTags: new []{"ignore"});
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodIgnore(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
@@ -96,10 +87,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("IgnoRe"));
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(scenarioTags: new[] { "IgnoRe" });
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodIgnore(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
@@ -109,9 +99,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature(new string[] {"ignore", "other"});
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(new string[] {"ignore", "other"});
 
-            generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
 
             unitTestGeneratorProviderMock.Verify(ug => ug.SetTestClassCategories(It.IsAny<TestClassGenerationContext>(), It.Is<IEnumerable<string>>(cats => !cats.Contains("ignore"))));
         }
@@ -121,12 +111,24 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var generator = CreateUnitTestFeatureGenerator();
 
-            Feature theFeature = CreateFeature();
-            theFeature.Scenarios[0].Tags = new Tags(new Tag("ignore"), new Tag("other"));
+            SpecFlowDocument theDocument = ParserHelper.CreateDocument(scenarioTags: new[] { "ignore", "other" });
+
+            generator.GenerateUnitTestFixture(theDocument, "dummy", "dummyNS");
+
+            unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.Is<IEnumerable<string>>(cats => !cats.Contains("ignore"))));
+        }
+
+        [Test]
+        public void Should_call_SetTestMethodIgnore_when_scenario_outline_ignored()
+        {
+            unitTestGeneratorProviderMock.Setup(p=>p.GetTraits()).Returns(UnitTestGeneratorTraits.RowTests); // e.g. xunit 
+            var generator = CreateUnitTestFeatureGenerator();
+
+            var theFeature = ParserHelper.CreateDocumentWithScenarioOutline(scenarioOutlineTags: new[] {"ignore"});
 
             generator.GenerateUnitTestFixture(theFeature, "dummy", "dummyNS");
 
-            unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodCategories(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>(), It.Is<IEnumerable<string>>(cats => !cats.Contains("ignore"))));
+            unitTestGeneratorProviderMock.Verify(ug => ug.SetTestMethodIgnore(It.IsAny<TestClassGenerationContext>(), It.IsAny<CodeMemberMethod>()));
         }
     }
 }

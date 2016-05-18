@@ -1,0 +1,51 @@
+version: build{build}
+
+branches:
+  only:
+  - master
+
+environment:
+  SpecFlowBaseVersion: 2.1.0
+  SpecFlowPackageVersion: "2.1.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  
+cache:
+  - packages -> **\packages.config
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: "$(SpecFlowBaseVersion)"
+  assembly_file_version: "$(SpecFlowBaseVersion)"
+  assembly_informational_version: "$(SpecFlowPackageVersion)"
+
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+configuration: Release
+
+before_build:
+  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/nuget-restore.cmd
+  - nuget-restore
+
+build:
+  project: TechTalk.SpecFlow.sln
+  verbosity: normal
+
+test:
+  assemblies:
+  - TechTalk.SpecFlow.GeneratorTests.dll
+  - TechTalk.SpecFlow.RuntimeTests.dll
+  - TechTalk.SpecFlow.IntegrationTests.dll
+  - TechTalk.SpecFlow.Specs\bin\Release\TechTalk.SpecFlow.Specs.dll
+
+artifacts:
+- path: '\Installer\NuGetPackages\bin\SpecFlow.*.nupkg'
+- path: Installer\NuGetPackages\bin\SpecFlow.CustomPlugin.*.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.1.1.1.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.NUnit.Runners.1.0.0.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.xUnit.1.0.2.nupkg
+- path: Installer\NuGetPackages\bin\SpecFlow.MsTest.1.0.0.nupkg
+- path: Installer\SpecFlowBinPackage\bin\SpecFlowBinPackage.zip
+- path: Installer\SpecFlowBinPackage\bin\SpecFlowSymbolPackage.zip

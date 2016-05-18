@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using TechTalk.SpecFlow.IntegrationTests.TestFiles;
-using Should;
 using TechTalk.SpecFlow.Assist;
 using System.Linq;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.Parser;
 
@@ -38,7 +38,7 @@ namespace TechTalk.SpecFlow.IntegrationTests.StepDefinitions
         public void WhenTheParsedResultIsSavedTo(string parsedFileName)
         {
             var assemblyFolder = AssemblyFolderHelper.GetTestAssemblyFolder();
-            assemblyFolder.EndsWith(@"\bin\Debug").ShouldBeTrue("parsed file saving can only be done from a development environment");
+            assemblyFolder.EndsWith(@"\bin\Debug").Should().BeTrue("parsed file saving can only be done from a development environment");
             parserDriver.SaveSerializedFeatureTo(Path.Combine(assemblyFolder, @"..\..\TestFiles", parsedFileName));
         }
 

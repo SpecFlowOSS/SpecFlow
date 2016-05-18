@@ -3,7 +3,7 @@ using TechTalk.SpecFlow.Assist.ValueRetrievers;
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class GuidValueComparer : IValueComparer
+    public class GuidValueComparer : IValueComparer
     {
         private readonly GuidValueRetriever guidValueRetriever;
 
@@ -14,10 +14,10 @@ namespace TechTalk.SpecFlow.Assist.ValueComparers
 
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (Guid);
+            return actualValue is Guid;
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             try
             {

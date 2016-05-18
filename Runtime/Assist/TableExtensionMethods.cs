@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         public static T CreateInstance<T>(this Table table)
         {
-            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, typeof(T));
             return TEHelpers.ThisTypeHasADefaultConstructor<T>()
                        ? TEHelpers.CreateTheInstanceWithTheDefaultConstructor<T>(instanceTable)
                        : TEHelpers.CreateTheInstanceWithTheValuesFromTheTable<T>(instanceTable);
@@ -21,9 +21,9 @@ namespace TechTalk.SpecFlow.Assist
             return instance;
         }
 
-        public static void FillInstance<T>(this Table table, T instance)
+        public static void FillInstance(this Table table, object instance)
         {
-            var instanceTable = TEHelpers.GetTheProperInstanceTable<T>(table);
+            var instanceTable = TEHelpers.GetTheProperInstanceTable(table, instance.GetType());
             TEHelpers.LoadInstanceWithKeyValuePairs(instanceTable, instance);
         }
 

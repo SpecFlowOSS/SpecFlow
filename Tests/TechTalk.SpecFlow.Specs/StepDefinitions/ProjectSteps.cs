@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using TechTalk.SpecFlow.Specs.Drivers;
 using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
-using Should;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
@@ -83,7 +83,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Then(@"no compilation errors are reported")]
         public void ThenNoCompilationErrorsAreReported()
         {
-            CompilationError.ShouldBeNull();
+            CompilationError.Should().BeNull();
         }
     }
 }

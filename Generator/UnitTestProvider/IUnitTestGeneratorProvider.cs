@@ -7,8 +7,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public interface IUnitTestGeneratorProvider
     {
-        bool SupportsRowTests { get; }
-        bool SupportsAsyncTests { get; }
+        UnitTestGeneratorTraits GetTraits();
 
         void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription);
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);
@@ -21,7 +20,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestInitializeMethod(TestClassGenerationContext generationContext); 
         void SetTestCleanupMethod(TestClassGenerationContext generationContext);
 
-        void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle);
+        void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName);
         void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories);
         void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod);
 

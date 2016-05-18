@@ -1,12 +1,25 @@
-﻿namespace TechTalk.SpecFlow.Assist.ValueRetrievers
+﻿using System;
+using System.Collections.Generic;
+
+namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class ByteValueRetriever
+    public class ByteValueRetriever : IValueRetriever
     {
         public virtual byte GetValue(string value)
         {
             byte returnValue;
             byte.TryParse(value, out returnValue);
             return returnValue;
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return GetValue(keyValuePair.Value);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return propertyType == typeof(byte);
         }
     }
 }

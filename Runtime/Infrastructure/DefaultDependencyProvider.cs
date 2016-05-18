@@ -8,7 +8,7 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    internal partial class DefaultDependencyProvider
+    public partial class DefaultDependencyProvider : IDefaultDependencyProvider
     {
         partial void RegisterUnitTestProviders(ObjectContainer container);
 
@@ -16,26 +16,21 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             container.RegisterTypeAs<DefaultRuntimeConfigurationProvider, IRuntimeConfigurationProvider>();
 
-            container.RegisterTypeAs<TestRunnerFactory, ITestRunnerFactory>();
-            container.RegisterTypeAs<TestRunner, ITestRunner>();
-            container.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
-            container.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
+            container.RegisterTypeAs<TestRunnerManager, ITestRunnerManager>();
 
             container.RegisterTypeAs<StepFormatter, IStepFormatter>();
             container.RegisterTypeAs<TestTracer, ITestTracer>();
 
             container.RegisterTypeAs<DefaultListener, ITraceListener>();
+            container.RegisterTypeAs<TraceListenerQueue, ITraceListenerQueue>(); 
 
             container.RegisterTypeAs<ErrorProvider, IErrorProvider>();
-            container.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
             container.RegisterTypeAs<RuntimeBindingSourceProcessor, IRuntimeBindingSourceProcessor>();
             container.RegisterTypeAs<RuntimeBindingRegistryBuilder, IRuntimeBindingRegistryBuilder>();
             container.RegisterTypeAs<BindingRegistry, IBindingRegistry>();
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
-
-            container.RegisterTypeAs<ContextManager, IContextManager>();
 
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
             container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
@@ -46,6 +41,20 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
 
             RegisterUnitTestProviders(container);
+        }
+
+        public void RegisterTestRunnerDefaults(ObjectContainer testRunnerContainer)
+        {
+            testRunnerContainer.RegisterTypeAs<TestRunner, ITestRunner>();
+            testRunnerContainer.RegisterTypeAs<ContextManager, IContextManager>();
+            testRunnerContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+
+            // needs to invoke methods so requires the context manager
+            testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
+            testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
+
+            testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
+            testRunnerContainer.RegisterTypeAs<TestTracer, ITestTracer>();
         }
     }
 }

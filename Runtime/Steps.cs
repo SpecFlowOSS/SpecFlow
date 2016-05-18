@@ -1,17 +1,61 @@
-﻿namespace TechTalk.SpecFlow
-{
-    public abstract class Steps
-    {
-        protected readonly ITestRunner testRunner;
+﻿using BoDi;
+using TechTalk.SpecFlow.Infrastructure;
 
-        protected Steps(ITestRunner testRunner)
+namespace TechTalk.SpecFlow
+{
+    public abstract class Steps : IContainerDependentObject
+    {
+        private IObjectContainer objectContainer;
+
+        void IContainerDependentObject.SetObjectContainer(IObjectContainer container)
         {
-            this.testRunner = testRunner;
+            if (objectContainer != null)
+                throw new SpecFlowException("Container of the steps class has already initialized!");
+
+            objectContainer = container;
         }
 
-        protected Steps() : this(ScenarioContext.Current.TestRunner)  // This will be AsyncTestRunner for asynchronous tests
+        protected ITestRunner TestRunner
         {
-            testRunner = ScenarioContext.Current.TestRunner;
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<ITestRunner>();
+            }
+        }
+
+        public ScenarioContext ScenarioContext
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<ScenarioContext>();
+            }
+        }
+
+        public FeatureContext FeatureContext
+        {
+            get
+            {
+                AssertInitialized();
+                return objectContainer.Resolve<FeatureContext>();
+            }
+        }
+
+        public ScenarioStepContext StepContext
+        {
+            get
+            {
+                AssertInitialized();
+                var contextManager = objectContainer.Resolve<IContextManager>();
+                return contextManager.StepContext;
+            }
+        }
+
+        protected void AssertInitialized()
+        {
+            if (objectContainer == null)
+                throw new SpecFlowException("Container of the steps class has not been initialized!");
         }
 
         #region Given
@@ -32,7 +76,7 @@
 
         public void Given(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Given(step, multilineTextArg, tableArg, null);
+            TestRunner.Given(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -54,7 +98,7 @@
 
         public void When(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.When(step, multilineTextArg, tableArg, null);
+            TestRunner.When(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -76,7 +120,7 @@
 
         public void Then(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.Then(step, multilineTextArg, tableArg, null);
+            TestRunner.Then(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -98,7 +142,7 @@
 
         public void But(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.But(step, multilineTextArg, tableArg, null);
+            TestRunner.But(step, multilineTextArg, tableArg, null);
         }
         #endregion
 
@@ -120,7 +164,7 @@
 
         public void And(string step, string multilineTextArg, Table tableArg)
         {
-            testRunner.And(step, multilineTextArg, tableArg, null);
+            TestRunner.And(step, multilineTextArg, tableArg, null);
         }
         #endregion
     }

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Evaluation;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -25,53 +25,44 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            var project = Engine.GlobalEngine.GetLoadedProject(projectFilePath);
-            if (project == null)
-            {
-                project = new Microsoft.Build.BuildEngine.Project();
-                project.Load(projectFilePath, ProjectLoadSettings.IgnoreMissingImports);
-            }
+            Microsoft.Build.Evaluation.Project project = ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
 
             string projectFolder = Path.GetDirectoryName(projectFilePath);
 
-            SpecFlowProject specFlowProject = new SpecFlowProject();
+            var specFlowProject = new SpecFlowProject();
             specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
             specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-            specFlowProject.ProjectSettings.AssemblyName = project.GetEvaluatedProperty("AssemblyName");
-            specFlowProject.ProjectSettings.DefaultNamespace = project.GetEvaluatedProperty("RootNamespace");
+            specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x=>x.Name=="AssemblyName").EvaluatedValue;
+            specFlowProject.ProjectSettings.DefaultNamespace =project.AllEvaluatedProperties.First(x=>x.Name=="RootNamespace").EvaluatedValue;
 
-            var items = project.GetEvaluatedItemsByName("None").Cast<BuildItem>()
-                .Concat(project.GetEvaluatedItemsByName("Content").Cast<BuildItem>());
-            foreach (BuildItem item in items)
+            foreach (ProjectItem item in project.FeatureFiles())
             {
-                var extension = Path.GetExtension(item.FinalItemSpec);
-                if (extension.Equals(".feature", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var featureFile = new FeatureFileInput(item.FinalItemSpec);
-                    var ns = item.GetEvaluatedMetadata("CustomToolNamespace");
-                    if (!String.IsNullOrEmpty(ns))
-                        featureFile.CustomNamespace = ns;
-                    specFlowProject.FeatureFiles.Add(featureFile);
-                }
-
-                if (Path.GetFileName(item.FinalItemSpec).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var configFilePath = Path.Combine(projectFolder, item.FinalItemSpec);
-                    var configFileContent = File.ReadAllText(configFilePath);
-                    var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
-                    specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
-                    specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
-                }
+                var featureFile = new FeatureFileInput(item.EvaluatedInclude);
+                var ns = item.GetMetadataValue("CustomToolNamespace");
+                if (!String.IsNullOrEmpty(ns))
+                    featureFile.CustomNamespace = ns;
+                specFlowProject.FeatureFiles.Add(featureFile);
+                               
             }
+
+            ProjectItem appConfigItem = project.ApplicationConfigurationFile();
+            if (appConfigItem != null)
+            {
+                var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
+                var configFileContent = File.ReadAllText(configFilePath);
+                var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+                specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
+                specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
+            }
+            
             return specFlowProject;
         }
 
         private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
         {
-            XmlDocument configDocument;
             try
             {
-                configDocument = new XmlDocument();
+                var configDocument = new XmlDocument();
                 configDocument.LoadXml(configFileContent);
 
                 return new SpecFlowConfigurationHolder(configDocument.SelectSingleNode("/configuration/specFlow"));

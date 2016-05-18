@@ -13,12 +13,12 @@ Scenario: Examples can be tagged
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 
 			@tag1
 			Examples: 
 				| what                |
-				| somethign different |
+				| something different |
 		"""
 	And all steps are bound and pass
 #this is a bug, the tagged examples can only be filtered with NUnit, if row testing is disabled
@@ -38,14 +38,16 @@ Scenario: Examples can be ignored
 			Examples: 
 				| what           |
 				| something      |
-				| somethign else |
+				| something else |
 
 			@ignore
 			Examples: 
 				| what                |
-				| somethign different |
+				| something different |
 		"""
 	And all steps are bound and pass
+#this is a bug, the tagged examples can only be filtered with NUnit, if row testing is disabled
+	And row testing is disabled
 	When I execute the tests
 	Then the execution summary should contain
 		| Total | Succeeded | Ignored |

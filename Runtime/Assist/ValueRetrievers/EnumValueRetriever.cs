@@ -1,14 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
-    internal class EnumValueRetriever
+    public class EnumValueRetriever : IValueRetriever
     {
         public object GetValue(string value, Type enumType)
         {
             CheckThatTheValueIsAnEnum(value, enumType);
 
             return ConvertTheStringToAnEnum(value, enumType);
+        }
+
+        public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            return GetValue(keyValuePair.Value, propertyType);
+        }
+
+        public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
+        {
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return typeof(Enum).IsAssignableFrom(propertyType.GetGenericArguments()[0]);
+            return propertyType.IsEnum;
         }
 
         private object ConvertTheStringToAnEnum(string value, Type enumType)
@@ -32,7 +45,7 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             }
             catch
             {
-                throw new InvalidOperationException(string.Format("No enum with value {0} found", value));
+                throw new InvalidOperationException($"No enum with value {value} found");
             }
         }
 
@@ -55,9 +68,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return value;
         }
 
-        private InvalidOperationException GetInvalidOperationException(string value)
-        {
-            return new InvalidOperationException(string.Format("No enum with value {0} found", value));
-        }
+        private InvalidOperationException GetInvalidOperationException(string value) => new InvalidOperationException($"No enum with value {value} found");
     }
 }

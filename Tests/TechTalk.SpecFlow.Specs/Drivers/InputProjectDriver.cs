@@ -88,7 +88,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             ProjectName = "SpecFlow.TestProject";
             Language = "C#";
 
-            compilationFolder = Path.Combine(Path.GetTempPath(), Environment.ExpandEnvironmentVariables(ConfigurationManager.AppSettings["testProjectFolder"]));
+            var testProjectFolder = ConfigurationManager.AppSettings["testProjectFolder"] ?? "SpecFlowTestProject";
+            compilationFolder = Path.Combine(Path.GetTempPath(), Environment.ExpandEnvironmentVariables(testProjectFolder));
 
             FeatureFiles = new List<FeatureFileInput>();
             ContentFiles = new List<ContentFileInput>();
@@ -146,6 +147,16 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         public void AddBindingCode(string bindingCode)
         {
             DefaultBindingClass.OtherBindings.Add(bindingCode);
+        }
+
+        public void AddEventBinding(string eventType, string code, string methodName = null, int hookOrder = 10000)
+        {
+            methodName = methodName ?? eventType;
+            AddBindingCode(string.Format(@"[{0}(Order = {4})]{1}public void {3}() {{
+                Console.WriteLine(""-> hook: {3}"");
+                {2}
+            }}
+            ", eventType, IsStaticEvent(eventType) ? "static " : "", code, methodName, hookOrder));
         }
 
         public void AddEventBinding(string eventType, string code, string methodName = null)

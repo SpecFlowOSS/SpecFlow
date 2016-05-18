@@ -10,13 +10,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TechTalk.SpecFlow.RuntimeTests</RootNamespace>
     <AssemblyName>TechTalk.SpecFlow.RuntimeTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\specflow.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,39 +35,43 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\mocking\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="Should">
-      <HintPath>..\..\lib\Should\Should.dll</HintPath>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssistTests\CreateInstanceHelperMethodTests.cs" />
+    <Compile Include="AssistTests\ExampleEntities\EntityWithPropertiesAndFields.cs" />
     <Compile Include="AssistTests\FormattingTableDiffExceptionBuilderTests.cs" />
+    <Compile Include="AssistTests\InstanceEquivalenceExtensionMethodTests.cs" />
     <Compile Include="AssistTests\PivotTableTests.cs" />
     <Compile Include="AssistTests\RowExtensionMethodTests_GetEnum.cs" />
     <Compile Include="AssistTests\ProjectionTests.cs" />
@@ -104,13 +108,16 @@
     <Compile Include="AssistTests\ValueRetrieverTests\BoolValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ByteValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\CharValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\DateTimeOffsetValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\GuidValueRetriever_IsAValidGuidTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\LongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableByteValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableDateTimeOffsetValueRetriever.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableFloatValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\FloatValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableLongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableShortValueRetrieverTests.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\NullableTimespanValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUIntValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableULongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\NullableUShortValueRetrieverTests.cs" />
@@ -133,15 +140,11 @@
     <Compile Include="AssistTests\ValueRetrieverTests\StringValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\ULongValueRetrieverTests.cs" />
     <Compile Include="AssistTests\ValueRetrieverTests\UShortValueRetrieverTests.cs" />
-    <Compile Include="AsyncTests\AsyncContextTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerEventsTest.cs" />
-    <Compile Include="AsyncTests\AsyncTestRunnerTestBase.cs" />
-    <Compile Include="AsyncTests\FakeAsyncTestExecutor.cs" />
     <Compile Include="BindingSkeletons\ResourceSkeletonTemplateProviderTests.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProviderTests.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProviderTests.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzerTests.cs" />
+    <Compile Include="BindingSkeletons\StringHelpers.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchServiceTest.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
     <Compile Include="BindingSourceProcessorStub.cs" />
@@ -150,7 +153,8 @@
     <Compile Include="Infrastructure\StringConfigProvider.cs" />
     <Compile Include="Infrastructure\TestExecutionEngineTests.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
-    <Compile Include="Infrastructure\TestRunnerFactoryTests.cs" />
+    <Compile Include="TestRunnerManagerRunnerCreationTests.cs" />
+    <Compile Include="ScenarioStepContextTests.cs" />
     <Compile Include="StepsTest.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="StepExecutionTestsWithConversionsForTables.cs" />
@@ -165,9 +169,13 @@
     <Compile Include="ConfigurationTest.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestRunnerManagerStaticApiTest.cs" />
     <Compile Include="TestRunnerManagerTest.cs" />
-    <Compile Include="TestTestRunnerFactory.cs" />
+    <Compile Include="TestObjectFactories.cs" />
     <Compile Include="AssistTests\TestHelpers.cs" />
+    <Compile Include="AssistTests\ServiceTests.cs" />
+    <Compile Include="AssistTests\WorkingExampleOfValueRetrieverAndComparerAddition.cs" />
+    <Compile Include="AssistTests\ValueRetrieverTests\TimeSpanValueRetrieverTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
@@ -190,11 +198,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="ScenarioContext_BindingInstancesTest.cs" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

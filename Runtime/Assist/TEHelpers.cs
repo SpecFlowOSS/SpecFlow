@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
+using System.Text.RegularExpressions;
 
 namespace TechTalk.SpecFlow.Assist
 {
@@ -19,134 +19,121 @@ namespace TechTalk.SpecFlow.Assist
         {
             var constructor = GetConstructorMatchingToColumnNames<T>(table);
             if (constructor == null)
-                throw new MissingMethodException(string.Format("Unable to find a suitable constructor to create instance of {0}", typeof(T).Name));
+                throw new MissingMethodException($"Unable to find a suitable constructor to create instance of {typeof(T).Name}");
 
-            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, typeof(T));
 
             var constructorParameters = constructor.GetParameters();
             var parameterValues = new object[constructorParameters.Length];
             for (var parameterIndex = 0; parameterIndex < constructorParameters.Length; parameterIndex++)
             {
                 var parameterName = constructorParameters[parameterIndex].Name;
-                var property = (from p in propertiesThatNeedToBeSet
-                                where p.PropertyName == parameterName
-                                select p).FirstOrDefault();
-                if (property != null)
-                    parameterValues[parameterIndex] = property.Handler(property.Row);
+                var member = (from m in membersThatNeedToBeSet
+                                where m.MemberName == parameterName
+                                select m).FirstOrDefault();
+                if (member != null)
+                    parameterValues[parameterIndex] = member.GetValue();
             }
             return (T)constructor.Invoke(parameterValues);
         }
 
         internal static bool ThisTypeHasADefaultConstructor<T>()
         {
-            return typeof(T).GetConstructors()
-                       .Where(c => c.GetParameters().Length == 0)
-                       .Count() > 0;
+            return typeof(T).GetConstructors().Any(c => c.GetParameters().Length == 0);
         }
 
         internal static ConstructorInfo GetConstructorMatchingToColumnNames<T>(Table table)
         {
             var projectedPropertyNames = from property in typeof(T).GetProperties()
                                          from row in table.Rows
-                                         where IsPropertyMatchingToColumnName(property, row.Id())
+                                         where IsMemberMatchingToColumnName(property, row.Id())
                                          select property.Name;
 
             return (from constructor in typeof(T).GetConstructors()
-                    where projectedPropertyNames.Except(
+                    where !projectedPropertyNames.Except(
                         from parameter in constructor.GetParameters()
-                        select parameter.Name).Count() == 0
+                        select parameter.Name).Any()
                     select constructor).FirstOrDefault();
         }
 
-        internal static bool IsPropertyMatchingToColumnName(PropertyInfo property, string columnName)
+        internal static bool IsMemberMatchingToColumnName(MemberInfo member, string columnName)
         {
-            return property.Name.MatchesThisColumnName(columnName);
+            return member.Name.MatchesThisColumnName(columnName);
         }
 
         internal static bool MatchesThisColumnName(this string propertyName, string columnName)
         {
-            return propertyName.Equals(columnName.Replace(" ", string.Empty), StringComparison.OrdinalIgnoreCase);
+            var normalizedColumnName = NormalizePropertyNameToMatchAgainstAColumnName(RemoveAllCharactersThatAreNotValidInAPropertyName(columnName));
+            var normalizedPropertyName = NormalizePropertyNameToMatchAgainstAColumnName(propertyName);
 
+            return normalizedPropertyName.Equals(normalizedColumnName, StringComparison.OrdinalIgnoreCase);
         }
 
-        internal static void LoadInstanceWithKeyValuePairs<T>(Table table, T instance)
+        internal static string RemoveAllCharactersThatAreNotValidInAPropertyName(string name)
         {
-            var propertiesThatNeedToBeSet = GetPropertiesThatNeedToBeSet<T>(table);
-
-            propertiesThatNeedToBeSet.ToList()
-                .ForEach(x => instance.SetPropertyValue(x.PropertyName, x.Handler(x.Row)));
+            //Unicode groups allowed: Lu, Ll, Lt, Lm, Lo, Nl or Nd see https://msdn.microsoft.com/en-us/library/aa664670%28v=vs.71%29.aspx
+            return new Regex(@"[^\p{Lu}\p{Ll}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}_]").Replace(name, string.Empty);
         }
 
-        internal static IEnumerable<PropertyHandler> GetPropertiesThatNeedToBeSet<T>(Table table)
+        internal static string NormalizePropertyNameToMatchAgainstAColumnName(string name)
         {
-            var handlers = GetTypeHandlersForFieldValuePairs<T>();
-
-            return from property in typeof (T).GetProperties()
-                   from key in handlers.Keys
-                   from row in table.Rows
-                   where ThisPropertyMatchesTheType(property, key) 
-                         && IsPropertyMatchingToColumnName(property, row.Id())
-                   select new PropertyHandler {Row = row, PropertyName = property.Name, Handler = handlers[key]};
+            // we remove underscores, because they should be equivalent to spaces that were removed too from the column names
+            return name.Replace("_", string.Empty);
         }
 
-        private static bool ThisPropertyMatchesTheType(PropertyInfo property, Type key)
+        internal static void LoadInstanceWithKeyValuePairs(Table table, object instance)
         {
-            if (key.IsAssignableFrom(property.PropertyType))
-                return true;
-            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                return key.IsAssignableFrom(property.PropertyType.GetGenericArguments()[0]);
-            return false;
+            var membersThatNeedToBeSet = GetMembersThatNeedToBeSet(table, instance.GetType());
+
+            membersThatNeedToBeSet.ToList()
+                .ForEach(x => x.Setter(instance, x.GetValue()));
         }
 
-        internal static Dictionary<Type, Func<TableRow, object>> GetTypeHandlersForFieldValuePairs<T>()
+        internal static IEnumerable<MemberHandler> GetMembersThatNeedToBeSet(Table table, Type type)
         {
-            return new Dictionary<Type, Func<TableRow, object>>
-                       {
-                           {typeof (string), (TableRow row) => new StringValueRetriever().GetValue(row[1])},
-                           {typeof (byte), (TableRow row) => new ByteValueRetriever().GetValue(row[1])},
-                           {typeof (byte?), (TableRow row) => new NullableByteValueRetriever(v => new ByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (sbyte), (TableRow row) => new SByteValueRetriever().GetValue(row[1])},
-                           {typeof (sbyte?), (TableRow row) => new NullableSByteValueRetriever(v => new SByteValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (int), (TableRow row) => new IntValueRetriever().GetValue(row[1])},
-                           {typeof (int?), (TableRow row) => new NullableIntValueRetriever(v => new IntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (uint), (TableRow row) => new UIntValueRetriever().GetValue(row[1])},
-                           {typeof (uint?), (TableRow row) => new NullableUIntValueRetriever(v => new UIntValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (short), (TableRow row) => new ShortValueRetriever().GetValue(row[1])},
-                           {typeof (short?), (TableRow row) => new NullableShortValueRetriever(v => new ShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ushort), (TableRow row) => new UShortValueRetriever().GetValue(row[1])},
-                           {typeof (ushort?), (TableRow row) => new NullableUShortValueRetriever(v => new UShortValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (long), (TableRow row) => new LongValueRetriever().GetValue(row[1])},
-                           {typeof (long?), (TableRow row) => new NullableLongValueRetriever(v => new LongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (ulong), (TableRow row) => new ULongValueRetriever().GetValue(row[1])},
-                           {typeof (ulong?), (TableRow row) => new NullableULongValueRetriever(v => new ULongValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (float), (TableRow row) => new FloatValueRetriever().GetValue(row[1])},
-                           {typeof (float?), (TableRow row) => new NullableFloatValueRetriever(v => new FloatValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (double), (TableRow row) => new DoubleValueRetriever().GetValue(row[1])},
-                           {typeof (double?), (TableRow row) => new NullableDoubleValueRetriever(v => new DoubleValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (decimal), (TableRow row) => new DecimalValueRetriever().GetValue(row[1])},
-                           {typeof (decimal?), (TableRow row) => new NullableDecimalValueRetriever(v => new DecimalValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (char), (TableRow row) => new CharValueRetriever().GetValue(row[1])},
-                           {typeof (char?), (TableRow row) => new NullableCharValueRetriever(v => new CharValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (bool), (TableRow row) => new BoolValueRetriever().GetValue(row[1])},
-                           {typeof (bool?), (TableRow row) => new NullableBoolValueRetriever(v => new BoolValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (DateTime), (TableRow row) => new DateTimeValueRetriever().GetValue(row[1])},
-                           {typeof (DateTime?), (TableRow row) => new NullableDateTimeValueRetriever(v => new DateTimeValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Guid), (TableRow row) => new GuidValueRetriever().GetValue(row[1])},
-                           {typeof (Guid?), (TableRow row) => new NullableGuidValueRetriever(v => new GuidValueRetriever().GetValue(v)).GetValue(row[1])},
-                           {typeof (Enum), (TableRow row) => new EnumValueRetriever().GetValue(row[1], typeof (T).GetProperties().First(x => x.Name.MatchesThisColumnName(row[0])).PropertyType)},
-                       };
+            var properties = from property in type.GetProperties()
+                             from row in table.Rows
+                             where TheseTypesMatch(type, property.PropertyType, row)
+                                   && IsMemberMatchingToColumnName(property, row.Id())
+                select new MemberHandler { Type = type, Row = row, MemberName = property.Name, PropertyType = property.PropertyType, Setter = (i, v) => property.SetValue(i, v, null) };
+
+            var fields = from field in type.GetFields()
+                             from row in table.Rows
+                             where TheseTypesMatch(type, field.FieldType, row)
+                                   && IsMemberMatchingToColumnName(field, row.Id())
+                select new MemberHandler { Type = type, Row = row, MemberName = field.Name, PropertyType = field.FieldType, Setter = (i, v) => field.SetValue(i, v) };
+
+            var memberHandlers = new List<MemberHandler>();
+
+            memberHandlers.AddRange(properties);
+            memberHandlers.AddRange(fields);
+
+            return memberHandlers;
         }
 
-        internal class PropertyHandler
+        private static bool TheseTypesMatch(Type targetType, Type memberType, TableRow row)
+        {
+            return Service.Instance.GetValueRetrieverFor(row, targetType, memberType) != null;
+        }
+
+        internal class MemberHandler
         {
             public TableRow Row { get; set; }
-            public string PropertyName { get; set; }
-            public Func<TableRow, object> Handler { get; set; }
+            public string MemberName { get; set; }
+            public Action<object, object> Setter { get; set; }
+            public Type Type { get; set; }
+            public Type PropertyType { get; set; }
+
+            public object GetValue()
+            {
+                var valueRetriever = Service.Instance.GetValueRetrieverFor(Row, Type, PropertyType);
+                return valueRetriever.Retrieve(new KeyValuePair<string, string>(Row[0], Row[1]), Type, PropertyType);
+            }
         }
 
-        internal static Table GetTheProperInstanceTable<T>(Table table)
+        internal static Table GetTheProperInstanceTable(Table table, Type type)
         {
-            return ThisIsAVerticalTable<T>(table)
+            return ThisIsAVerticalTable(table, type)
                        ? table
                        : FlipThisHorizontalTableToAVerticalTable(table);
         }
@@ -156,23 +143,23 @@ namespace TechTalk.SpecFlow.Assist
             return new PivotTable(table).GetInstanceTable(0);
         }
 
-        private static bool ThisIsAVerticalTable<T>(Table table)
+        private static bool ThisIsAVerticalTable(Table table, Type type)
         {
             if (TheHeaderIsTheOldFieldValuePair(table))
                 return true;
-            return (table.Rows.Count() != 1) || (table.Header.Count() == 2 && TheFirstRowValueIsTheNameOfAProperty<T>(table));
+            return (table.Rows.Count() != 1) || (table.Header.Count == 2 && TheFirstRowValueIsTheNameOfAProperty(table, type));
         }
 
         private static bool TheHeaderIsTheOldFieldValuePair(Table table)
         {
-            return table.Header.Count() == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
+            return table.Header.Count == 2 && table.Header.First() == "Field" && table.Header.Last() == "Value";
         }
 
-        private static bool TheFirstRowValueIsTheNameOfAProperty<T>(Table table)
+        private static bool TheFirstRowValueIsTheNameOfAProperty(Table table, Type type)
         {
             var firstRowValue = table.Rows[0][table.Header.First()];
-            return typeof(T).GetProperties()
-                .Any(property => IsPropertyMatchingToColumnName(property, firstRowValue));
+            return type.GetProperties()
+                .Any(property => IsMemberMatchingToColumnName(property, firstRowValue));
         }
     }
 }

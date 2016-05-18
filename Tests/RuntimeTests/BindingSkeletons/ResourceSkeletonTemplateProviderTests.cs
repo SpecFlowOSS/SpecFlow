@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
-using Should;
+using FluentAssertions;
 
 namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
 {
@@ -13,9 +13,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
     {
         private void ShouldNotBeMissing(string template)
         {
-            template.ShouldNotBeNull();
-            template.ShouldNotEqual("");
-            template.ShouldNotEqual("undefined template");
+            template.Should().NotBeNull();
+            template.Should().NotBeEmpty();
+            template.Should().NotBe("undefined template");
         }
 
         [Test]
@@ -54,9 +54,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
     {
         private void ShouldNotBeMissing(string template)
         {
-            template.ShouldNotBeNull();
-            template.ShouldNotEqual("");
-            template.ShouldNotEqual("undefined template");
+            template.Should().NotBeNull();
+            template.Should().NotBeEmpty();
+            template.Should().NotBe("undefined template");
         }
 
         [Test]

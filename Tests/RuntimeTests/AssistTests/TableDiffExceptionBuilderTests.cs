@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Should;
+using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, new TestObject[] {});
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.AgnosticLineBreak().ShouldEqual(@"  | One | Two | Three |
+            message.AgnosticLineBreak().Should().Be(@"  | One | Two | Three |
 ".AgnosticLineBreak());
         }
 
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new[] {2, 3}, new TestObject[] {});
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
   | testa | 1   | W     |
 - | testb | 2   | X     |
 - | testc | 3   | Y     |
@@ -59,7 +59,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
   | testa | 1   | W     |
 + | A | 1 | Z |
 + | B1 | 1234567 | ZYXW |
@@ -82,7 +82,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.AgnosticLineBreak().ShouldEqual(@"  | One   | Two | Three |
+            message.AgnosticLineBreak().Should().Be(@"  | One   | Two | Three |
   | testa | 1   | W     |
 + | A | 1 | Z |
 + |  |  |  |
@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
-            message.AgnosticLineBreak().ShouldEqual(@"  | one   | TWO | The fourth property |
+            message.AgnosticLineBreak().Should().Be(@"  | one   | TWO | The fourth property |
   | testa | 1   | W                   |
 + | A | 1 | Z |
 ".AgnosticLineBreak());

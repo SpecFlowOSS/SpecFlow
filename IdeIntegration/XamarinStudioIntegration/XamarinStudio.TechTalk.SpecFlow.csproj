@@ -98,4 +98,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <AddinReference Include="MonoDevelop.Xamarin.Ide" />
+  </ItemGroup>
 </Project>

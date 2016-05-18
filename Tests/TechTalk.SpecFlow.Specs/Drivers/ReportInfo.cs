@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
+using FluentAssertions;
 using NUnit.Framework;
-using Should;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public void AssertExists()
         {
-            File.Exists(FilePath).ShouldBeTrue("no result is generated");
+            File.Exists(FilePath).Should().BeTrue("no result is generated");
         }
 
         public void AssertEqualIgnoringWhitespace(string expectedValue)

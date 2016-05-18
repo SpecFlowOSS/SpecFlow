@@ -2,14 +2,14 @@
 
 namespace TechTalk.SpecFlow.Assist.ValueComparers
 {
-    internal class DateTimeValueComparer : IValueComparer
+    public class DateTimeValueComparer : IValueComparer
     {
         public bool CanCompare(object actualValue)
         {
-            return actualValue != null && actualValue.GetType() == typeof (DateTime);
+            return actualValue is DateTime;
         }
 
-        public bool TheseValuesAreTheSame(string expectedValue, object actualValue)
+        public bool Compare(string expectedValue, object actualValue)
         {
             DateTime expected;
             if (DateTime.TryParse(expectedValue, out expected) == false)

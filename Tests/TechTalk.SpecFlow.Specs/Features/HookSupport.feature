@@ -24,8 +24,7 @@ Examples:
 	| BeforeScenarioBlock |
 	| AfterScenarioBlock  |
 	| BeforeTestRun       |
-#bug: nunit does not run the AfterTestRun event
-#	| AfterTestRun        |
+	| AfterTestRun        |
 
 Examples: Cucumber compatibility
 	| event  |
@@ -88,4 +87,3 @@ Examples: Cucumber compatibility
 	| event  | count |
 	| Before | 3     |
 	| After  | 3     |
-

@@ -91,7 +91,12 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void AddBindingClass(InputProjectDriver inputProjectDriver, Project project, BindingClassInput bindingClassInput)
         {
-            if (bindingClassInput.RawClass != null)
+            if (bindingClassInput.RawClass != null && bindingClassInput.RawClass.Contains("[assembly:"))
+            {
+                string outputPath = Path.Combine(inputProjectDriver.CompilationFolder, bindingClassInput.ProjectRelativePath);
+                File.WriteAllText(outputPath, bindingClassInput.RawClass, Encoding.UTF8);
+            }
+            else if (bindingClassInput.RawClass != null)
             {
                 SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "BindingClass." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
