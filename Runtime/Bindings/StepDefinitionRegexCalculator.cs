@@ -47,7 +47,7 @@ namespace TechTalk.SpecFlow.Bindings
 
                 reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, paramPosition.Position - processedPosition)));
                 reBuilder.Append(CalculateParamRegex(parameters[paramPosition.ParamIndex]));
-                processedPosition = paramPosition.Position + paramPosition.Lenght;
+                processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
             reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, stepText.Length - processedPosition)));
@@ -106,13 +106,13 @@ namespace TechTalk.SpecFlow.Bindings
         private class ParamSearchResult
         {
             public int Position { get; private set; }
-            public int Lenght { get; private set; }
+            public int Length { get; private set; }
             public int ParamIndex { get; private set; }
 
-            public ParamSearchResult(int position, int lenght, int paramIndex)
+            public ParamSearchResult(int position, int length, int paramIndex)
             {
                 Position = position;
-                Lenght = lenght;
+                Length = length;
                 ParamIndex = paramIndex;
             }
         }

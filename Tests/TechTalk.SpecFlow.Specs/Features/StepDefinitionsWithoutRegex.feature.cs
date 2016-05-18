@@ -446,6 +446,28 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Steps with currency amounts")]
+        public virtual void StepsWithCurrencyAmounts()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Steps with currency amounts", ((string[])(null)));
+#line 224
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 225
+ testRunner.Given("a scenario \'Simple Scenario\' as", "Given I pay £0.01", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 229
+ testRunner.And("the following step definitions", "[Given]\r\npublic void Given_I_pay_P0(decimal p0)\r\n{\r\n    if (p0 != Convert.ToDecim" +
+                    "al(0.01)) throw new Exception(\"the parameter passed was not a number\");\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 237
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 238
+ testRunner.Then("the binding method \'Given_I_pay_P0\' is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
