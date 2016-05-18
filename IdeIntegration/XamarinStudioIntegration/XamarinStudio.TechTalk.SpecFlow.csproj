@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CC567007-C48F-44F9-95D8-FC56FE2DA330}</ProjectGuid>
-    <ProjectTypeGuids>{7DBEB09D-BB9F-4D92-A141-A009135475EF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{86F6BF2A-E449-4B3E-813B-9ACC37E5545F};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>XamarinStudio.TechTalk.SpecFlow</RootNamespace>
     <AssemblyName>XamarinStudio.TechTalk.SpecFlow</AssemblyName>
@@ -33,21 +34,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Addins">
-      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/Mono.Addins.dll</Package>
-    </Reference>
-    <Reference Include="MonoDevelop.Core">
-      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/MonoDevelop.Core.dll</Package>
-    </Reference>
-    <Reference Include="MonoDevelop.Ide">
-      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/MonoDevelop.Ide.dll</Package>
-    </Reference>
-    <Reference Include="Mono.TextEditor">
-      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/Mono.TextEditor.dll</Package>
-    </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
-      <Package>/Applications/Xamarin Studio.app/Contents/Resources/lib/monodevelop/bin/ICSharpCode.NRefactory.dll</Package>
-    </Reference>
     <Reference Include="gtk-sharp" />
     <Reference Include="glib-sharp" />
     <Reference Include="gdk-sharp" />
@@ -59,9 +45,9 @@
     <Compile Include="MonoDevelopGeneratorServices.cs" />
     <Compile Include="MonoDevelopSpecFlowConfigurationReader.cs" />
     <Compile Include="SingleFeatureFileGenerator.cs" />
-    <Compile Include="ThreadAsyncOperation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets" Condition="Exists('..\..\packages\MonoDevelop.Addins.0.3.3\build\net40\MonoDevelop.Addins.targets')" />
   <ItemGroup>
     <EmbeddedResource Include="Properties\SpecFlow.SyntaxModeDefinition.xml">
       <LogicalName>SpecFlow.SyntaxModeDefinition.xml</LogicalName>
@@ -108,5 +94,8 @@
       <Project>{44D52C1B-0ABC-44B6-8EB8-0F754E264226}</Project>
       <Name>TechTalk.SpecFlow.IdeIntegration</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

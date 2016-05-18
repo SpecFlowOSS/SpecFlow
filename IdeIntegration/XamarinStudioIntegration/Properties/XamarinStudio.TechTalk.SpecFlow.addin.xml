@@ -6,7 +6,7 @@
        url         = "http://www.specflow.org" 
        description = "Integrates SpecFlow into the Xamarin Studio IDE." 
        category    = "IDE extensions" 
-       version     = "1.9.0.1">
+       version     = "1.9.1.0">
 
 	<Runtime>
 		<Import assembly="Gherkin.dll"/>
@@ -21,13 +21,7 @@
         <Import assembly="TechTalk.SpecFlow.IdeIntegration.dll"/>
         <Import assembly="XamarinStudio.TechTalk.SpecFlow.dll"/>
 	</Runtime>
-	
-	<Dependencies>
-		<Addin id="Core" version="5.0"/>
-		<Addin id="Ide" version="5.0"/>
-        <Addin id="SourceEditor2" version="5.0"/>
-	</Dependencies>
-	
+
 	<Extension path="/MonoDevelop/Core/MimeTypes">
 		<MimeType id="application/feature-template" _description="Feature Template"  isText="true">
 			<File pattern="*.feature"/>
