@@ -61,12 +61,9 @@ namespace TechTalk.SpecFlow
             get { return scenarioContainer; }
         }
 
-        internal ScenarioContext(ScenarioInfo scenarioInfo, IObjectContainer parentContainer)
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo)
         {
-            if (parentContainer == null)
-                throw new ArgumentNullException("parentContainer");
-
-            this.scenarioContainer = new ObjectContainer(parentContainer);
+            this.scenarioContainer = scenarioContainer;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -102,8 +99,13 @@ namespace TechTalk.SpecFlow
             scenarioContainer.RegisterInstanceAs(instance, bindingType);
         }
 
+        private bool isDisposed = false;
         protected override void Dispose()
         {
+            if (isDisposed)
+                return;
+
+            isDisposed = true; //HACK: we need this flag, because the ScenarioContainer is disposed by the scenarioContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
             base.Dispose();
 
             scenarioContainer.Dispose();

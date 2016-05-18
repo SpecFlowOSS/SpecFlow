@@ -5,6 +5,7 @@ using System.Text;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.RuntimeTests
@@ -13,7 +14,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         static internal TestRunner CreateTestRunner(out IObjectContainer container, Action<IObjectContainer> registerMocks = null)
         {
-            container = CreateDefaultTestRunnerContainer();
+            container = CreateDefaultTestThreadContainer();
 
             if (registerMocks != null)
                 registerMocks(container);
@@ -29,15 +30,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
-            var instance = new TestRunContainerBuilder();
-            return instance.CreateContainer(configurationProvider);
+            var instance = new ContainerBuilder();
+            return instance.CreateGlobalContainer(configurationProvider);
         }
 
-        internal static IObjectContainer CreateDefaultTestRunnerContainer(IRuntimeConfigurationProvider configurationProvider = null)
+        internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null)
         {
-            var instance = new TestRunContainerBuilder();
+            var instance = new ContainerBuilder();
             var globalContainer = CreateDefaultGlobalContainer(configurationProvider);
-            return instance.CreateTestRunnerContainer(globalContainer);
+            return instance.CreateTestThreadContainer(globalContainer);
+        }
+
+        internal static IObjectContainer CreateDefaultScenarioContainer(StringConfigProvider configurationHolder)
+        {
+            var instance = new ContainerBuilder();
+            var testThreadContainer = CreateDefaultTestThreadContainer(configurationHolder);
+
+            return instance.CreateScenarioContainer(testThreadContainer, new ScenarioInfo("test scenario info"));
         }
     }
 }
