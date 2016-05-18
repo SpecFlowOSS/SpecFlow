@@ -100,7 +100,7 @@ namespace TechTalk.SpecFlow.Bindings
         private string CalculateRegex(string text)
         {
             text = wordBoundaryRe.Replace(text, match => @"\W*" + match.Value[0]);
-            return text.Replace("_", @"\s+(?:-(?!\d)\s?)?");
+            return text.Replace("_", @"\W+(?!(?<=-)\d)"); //get one or more non-word characters until we find one which is not a - that is followed by a number
         }
 
         private class ParamSearchResult
