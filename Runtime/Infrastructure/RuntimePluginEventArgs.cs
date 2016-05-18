@@ -4,9 +4,9 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    public class RegisterGlobalDependenciesEventArgs : EventArgs
+    public abstract class ObjectContainerEventArgs : EventArgs
     {
-        public RegisterGlobalDependenciesEventArgs(ObjectContainer objectContainer)
+        protected ObjectContainerEventArgs(ObjectContainer objectContainer)
         {
             ObjectContainer = objectContainer;
         }
@@ -14,18 +14,23 @@ namespace TechTalk.SpecFlow.Infrastructure
         public ObjectContainer ObjectContainer { get; private set; }
     }
 
-    public class CustomizeGlobalDependenciesEventArgs : EventArgs
+    public class RegisterGlobalDependenciesEventArgs : ObjectContainerEventArgs
     {
-        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, RuntimeConfiguration runtimeConfiguration)
+        public RegisterGlobalDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
         {
-            ObjectContainer = objectContainer;
+        }
+    }
+
+    public class CustomizeGlobalDependenciesEventArgs : ObjectContainerEventArgs
+    {
+        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, RuntimeConfiguration runtimeConfiguration) 
+            : base(objectContainer)
+        {
             this.RuntimeConfiguration = runtimeConfiguration;
         }
 
-        public ObjectContainer ObjectContainer { get; private set; }
         public RuntimeConfiguration RuntimeConfiguration { get; private set; }
     }
-
 
     public class ConfigurationDefaultsEventArgs : EventArgs
     {
@@ -37,14 +42,10 @@ namespace TechTalk.SpecFlow.Infrastructure
         public RuntimeConfiguration RuntimeConfiguration { get; private set; }
     }
 
-    public class CustomizeTestThreadDependenciesEventArgs : EventArgs
+    public class CustomizeTestThreadDependenciesEventArgs : ObjectContainerEventArgs
     {
-        public CustomizeTestThreadDependenciesEventArgs(ObjectContainer objectContainer)
+        public CustomizeTestThreadDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
         {
-            ObjectContainer = objectContainer;
         }
-
-        public ObjectContainer ObjectContainer { get; private set; }
-
     }   
 }
