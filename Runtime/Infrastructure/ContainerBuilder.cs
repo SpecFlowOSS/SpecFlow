@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BoDi;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure

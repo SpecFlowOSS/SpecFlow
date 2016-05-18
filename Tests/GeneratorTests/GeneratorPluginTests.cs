@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 using DefaultDependencyProvider = TechTalk.SpecFlow.Generator.DefaultDependencyProvider;
 
 namespace TechTalk.SpecFlow.GeneratorTests

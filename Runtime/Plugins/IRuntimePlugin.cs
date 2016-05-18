@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace TechTalk.SpecFlow.Infrastructure
+namespace TechTalk.SpecFlow.Plugins
 {
     public interface IRuntimePlugin
     {

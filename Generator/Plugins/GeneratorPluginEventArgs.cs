@@ -3,6 +3,7 @@ using System.Linq;
 using BoDi;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Plugins
 {

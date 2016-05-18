@@ -2,7 +2,7 @@ using System;
 using BoDi;
 using TechTalk.SpecFlow.Configuration;
 
-namespace TechTalk.SpecFlow.Infrastructure
+namespace TechTalk.SpecFlow.Plugins
 {
     public class RuntimePluginEvents
     {

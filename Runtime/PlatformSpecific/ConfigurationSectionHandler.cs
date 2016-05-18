@@ -8,6 +8,7 @@ using System.Xml;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration
 {

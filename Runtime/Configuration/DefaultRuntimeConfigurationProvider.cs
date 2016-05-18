@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration
 {
