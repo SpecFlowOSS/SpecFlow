@@ -37,6 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             configurationProvider = configurationProvider ?? container.Resolve<IRuntimeConfigurationProvider>();
 
+            container.RegisterTypeAs<RuntimePluginEvents, RuntimePluginEvents>(); //NOTE: we need this unnecessary registration, due to a bug in BoDi (does not inherit non-registered objects)
             var runtimePluginEvents = container.Resolve<RuntimePluginEvents>();
             LoadPlugins(configurationProvider, container, runtimePluginEvents);
 
@@ -95,6 +96,9 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (containerDependentObject != null)
                     containerDependentObject.SetObjectContainer(scenarioContainer);
             };
+
+            var runtimePluginEvents = testThreadContainer.Resolve<RuntimePluginEvents>();
+            runtimePluginEvents.RaiseCustomizeScenarioDependencies(scenarioContainer);
 
             return scenarioContainer;
         }

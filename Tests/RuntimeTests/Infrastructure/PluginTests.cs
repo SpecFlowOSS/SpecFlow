@@ -80,6 +80,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             }
         }
 
+        public class PluginWithCustomScenarioDependencies : IRuntimePlugin
+        {
+            private readonly Action<ObjectContainer> _specificScenarioDependencies;
+
+            public PluginWithCustomScenarioDependencies(Action<ObjectContainer> specificScenarioDependencies)
+            {
+                _specificScenarioDependencies = specificScenarioDependencies;
+            }
+
+            public void Initialize(RuntimePluginEvents runtimePluginEvents, RuntimePluginParameters runtimePluginParameters)
+            {
+                runtimePluginEvents.CustomizeScenarioDependencies += (sender, args) => { _specificScenarioDependencies(args.ObjectContainer); };
+            }
+        }
+
         public interface ICustomDependency
         {
 
@@ -248,7 +263,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             traceListener.Should().BeOfType(typeof(CustomTraceListener));
         }
+
+        [Test]
+        public void Should_be_able_to_register_scenario_dependencies_from_a_plugin()
+        {
+            StringConfigProvider configurationHolder = GetConfigWithPlugin();
+            ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomScenarioDependencies(oc => oc.RegisterTypeAs<CustomDependency, ICustomDependency>()));
+            var container = TestObjectFactories.CreateDefaultScenarioContainer(configurationHolder);
+            var customDependency = container.Resolve<ICustomDependency>();
+
+            customDependency.Should().BeOfType(typeof(CustomDependency));
+        }
+
     }
 
-   
+
 }

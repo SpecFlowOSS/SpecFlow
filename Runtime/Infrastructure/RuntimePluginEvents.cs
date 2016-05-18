@@ -10,6 +10,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public event EventHandler<CustomizeGlobalDependenciesEventArgs> CustomizeGlobalDependencies;
         public event EventHandler<ConfigurationDefaultsEventArgs> ConfigurationDefaults;
         public event EventHandler<CustomizeTestThreadDependenciesEventArgs> CustomizeTestThreadDependencies;
+        public event EventHandler<CustomizeScenarioDependenciesEventArgs> CustomizeScenarioDependencies;
 
         public void RaiseRegisterGlobalDependencies(ObjectContainer objectContainer)
         {
@@ -29,6 +30,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         public void RaiseCustomizeTestThreadDependencies(ObjectContainer testThreadContainer)
         {
             CustomizeTestThreadDependencies?.Invoke(this, new CustomizeTestThreadDependenciesEventArgs(testThreadContainer));
+        }
+
+        public void RaiseCustomizeScenarioDependencies(ObjectContainer scenarioContainer)
+        {
+            CustomizeScenarioDependencies?.Invoke(this, new CustomizeScenarioDependenciesEventArgs(scenarioContainer));
         }
     }
 }

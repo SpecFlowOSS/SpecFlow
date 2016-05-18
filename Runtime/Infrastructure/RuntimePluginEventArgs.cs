@@ -47,5 +47,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         public CustomizeTestThreadDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
         {
         }
+    }
+
+    public class CustomizeScenarioDependenciesEventArgs : ObjectContainerEventArgs
+    {
+        public CustomizeScenarioDependenciesEventArgs(ObjectContainer objectContainer) : base(objectContainer)
+        {
+        }
     }   
 }
