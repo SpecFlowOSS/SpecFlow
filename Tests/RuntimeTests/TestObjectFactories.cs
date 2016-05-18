@@ -27,17 +27,29 @@ namespace TechTalk.SpecFlow.RuntimeTests
             IObjectContainer container;
             return CreateTestRunner(out container, registerMocks);
         }
-
-        internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null)
+        static internal TestRunner CreateTestRunnerRegisteringGlobalMocks(out IObjectContainer container, Action<IObjectContainer> registerMocks)
         {
-            var instance = new ContainerBuilder();
-            return instance.CreateGlobalContainer(configurationProvider);
+            container = CreateDefaultTestThreadContainer(null,registerMocks);
+
+            return (TestRunner)container.Resolve<ITestRunner>();
         }
 
-        internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null)
+
+        internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
             var instance = new ContainerBuilder();
-            var globalContainer = CreateDefaultGlobalContainer(configurationProvider);
+            var globalContainer = instance.CreateGlobalContainer(configurationProvider);
+
+            if(registerGlobalMocks!=null)
+                registerGlobalMocks(globalContainer);
+
+            return globalContainer;
+        }
+
+        internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)
+        {
+            var instance = new ContainerBuilder();
+            var globalContainer = CreateDefaultGlobalContainer(configurationProvider, registerGlobalMocks);
             return instance.CreateTestThreadContainer(globalContainer);
         }
 

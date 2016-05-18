@@ -6,6 +6,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
 using FluentAssertions;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -102,7 +103,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             public void RegisterContextManagers(IObjectContainer objectContainer)
             {
-                throw new NotImplementedException();
+                objectContainer.RegisterTypeAs<InternalContextManager<FeatureContext>, IInternalContextManager<FeatureContext>>();
+                objectContainer.RegisterTypeAs<InternalContextManager<ScenarioContext>, IInternalContextManager<ScenarioContext>>();
+                objectContainer.RegisterTypeAs<StackedInternalContextManager<ScenarioStepContext>, IInternalContextManager<ScenarioStepContext>>();
             }
         }
 

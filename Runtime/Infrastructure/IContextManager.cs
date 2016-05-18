@@ -38,17 +38,19 @@ namespace TechTalk.SpecFlow.Infrastructure
 
     public class ContextManager : IContextManager, IDisposable
     {
-        private readonly IObjectContainer parentContainer;
+        private readonly IObjectContainer testThreadContainer;
         private readonly IInternalContextManager<FeatureContext> featureContext;
         private readonly IInternalContextManager<ScenarioContext> scenarioContext;
         private readonly IInternalContextManager<ScenarioStepContext> stepContext;
+        private readonly IContainerBuilder containerBuilder;
 
-        public ContextManager(IObjectContainer parentContainer, IInternalContextManager<FeatureContext> featureContext, IInternalContextManager<ScenarioContext> scenarioContext, IInternalContextManager<ScenarioStepContext> stepContext)
+        public ContextManager(IContainerBuilder containerBuilder,IObjectContainer testThreadContainer, IInternalContextManager<FeatureContext> featureContext, IInternalContextManager<ScenarioContext> scenarioContext, IInternalContextManager<ScenarioStepContext> stepContext)
         {
             this.featureContext = featureContext;
             this.scenarioContext = scenarioContext;
             this.stepContext = stepContext;
-            this.parentContainer = parentContainer;
+            this.testThreadContainer = testThreadContainer;
+            this.containerBuilder = containerBuilder;
         }
 
         public FeatureContext FeatureContext
@@ -80,23 +82,10 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var newContext = new ScenarioContext(scenarioInfo, parentContainer);
-            SetupScenarioContainer(newContext);
+            var scenarioContainer = containerBuilder.CreateScenarioContainer(testThreadContainer, scenarioInfo);
+            var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContext.Init(newContext);
             ScenarioContext.Current = newContext;
-        }
-
-        protected virtual void SetupScenarioContainer(ScenarioContext newContext)
-        {
-            newContext.ScenarioContainer.RegisterInstanceAs(newContext);
-            newContext.ScenarioContainer.RegisterInstanceAs(FeatureContext);
-
-            newContext.ScenarioContainer.ObjectCreated += obj =>
-            {
-                var containerDependentObject = obj as IContainerDependentObject;
-                if (containerDependentObject != null)
-                    containerDependentObject.SetObjectContainer(newContext.ScenarioContainer);
-            };
         }
 
         public void CleanupScenarioContext()

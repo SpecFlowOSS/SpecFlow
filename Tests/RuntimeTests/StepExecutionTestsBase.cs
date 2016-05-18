@@ -99,10 +99,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             FeatureLanguage = GetFeatureLanguage();
             CultureInfo bindingCulture = GetBindingCulture();
 
-            var container = new ObjectContainer();
-            container.RegisterInstanceAs(new Mock<ITestRunner>().Object);
+            var testThreadContainer = new ObjectContainer();
+            testThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
             var testTracerStub = MockRepository.Stub<ITestTracer>();
-            ContextManagerStub = new ContextManager(container,
+            var containerBuilderMock = new Mock<IContainerBuilder>();
+            containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
+                .Returns((IObjectContainer ttc, ScenarioInfo si) =>
+                {
+                    var scenarioContainer = new ObjectContainer(ttc);
+                    scenarioContainer.RegisterInstanceAs(si);
+                    return scenarioContainer;
+                });
+            ContextManagerStub = new ContextManager(containerBuilderMock.Object,testThreadContainer,
                 new InternalContextManager<FeatureContext>(testTracerStub),
                 new InternalContextManager<ScenarioContext>(testTracerStub),
                 new StackedInternalContextManager<ScenarioStepContext>(testTracerStub));
