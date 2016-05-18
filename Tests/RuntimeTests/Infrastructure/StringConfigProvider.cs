@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 {

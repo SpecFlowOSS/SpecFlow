@@ -84,6 +84,7 @@
     <Compile Include="StepDefinitionReport\ReportElements\Instance.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\Parameter.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\ScenarioRef.cs" />
+    <Compile Include="StepDefinitionReport\ReportElements\ReportStep.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinition.cs" />
     <Compile Include="StepDefinitionReport\ReportElements\StepDefinitionReport.cs" />
     <Compile Include="ResourceXmlReader.cs" />
@@ -103,10 +104,6 @@
     <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj">
-      <Project>{b4588e81-c589-434f-8f12-3d881433c3e4}</Project>
-      <Name>TechTalk.SpecFlow.Parser.Compatibility</Name>
     </ProjectReference>
     <ProjectReference Include="..\Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>

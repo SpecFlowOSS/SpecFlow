@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -12,7 +13,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         partial void RegisterUnitTestProviders(ObjectContainer container);
 
-        public virtual void RegisterDefaults(ObjectContainer container)
+        public virtual void RegisterGlobalContainerDefaults(ObjectContainer container)
         {
             container.RegisterTypeAs<DefaultRuntimeConfigurationProvider, IRuntimeConfigurationProvider>();
 
@@ -43,18 +44,18 @@ namespace TechTalk.SpecFlow.Infrastructure
             RegisterUnitTestProviders(container);
         }
 
-        public void RegisterTestRunnerDefaults(ObjectContainer testRunnerContainer)
+        public void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer)
         {
-            testRunnerContainer.RegisterTypeAs<TestRunner, ITestRunner>();
-            testRunnerContainer.RegisterTypeAs<ContextManager, IContextManager>();
-            testRunnerContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
+            testThreadContainer.RegisterTypeAs<TestRunner, ITestRunner>();
+            testThreadContainer.RegisterTypeAs<ContextManager, IContextManager>();
+            testThreadContainer.RegisterTypeAs<TestExecutionEngine, ITestExecutionEngine>();
 
             // needs to invoke methods so requires the context manager
-            testRunnerContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
-            testRunnerContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
+            testThreadContainer.RegisterTypeAs<StepArgumentTypeConverter, IStepArgumentTypeConverter>();
+            testThreadContainer.RegisterTypeAs<StepDefinitionMatchService, IStepDefinitionMatchService>();
 
-            testRunnerContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
-            testRunnerContainer.RegisterTypeAs<TestTracer, ITestTracer>();
+            testThreadContainer.RegisterTypeAs<AsyncTraceListener, ITraceListener>();
+            testThreadContainer.RegisterTypeAs<TestTracer, ITestTracer>();
         }
     }
 }

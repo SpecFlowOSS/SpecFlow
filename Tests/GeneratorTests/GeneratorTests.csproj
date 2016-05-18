@@ -70,6 +70,7 @@
     <Compile Include="DecoratorRegistryTests.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
+    <Compile Include="GeneratorPluginTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
     <Compile Include="MbUnitGeneratorProviderTests.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />

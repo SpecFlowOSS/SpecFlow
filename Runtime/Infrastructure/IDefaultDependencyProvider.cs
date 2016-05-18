@@ -4,7 +4,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 {
     public interface IDefaultDependencyProvider
     {
-        void RegisterDefaults(ObjectContainer container);
-        void RegisterTestRunnerDefaults(ObjectContainer testRunnerContainer);
+        void RegisterGlobalContainerDefaults(ObjectContainer container);
+        void RegisterTestThreadContainerDefaults(ObjectContainer testThreadContainer);
     }
 }

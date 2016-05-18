@@ -56,10 +56,14 @@ namespace TechTalk.SpecFlow.Tools
             [Required(Description = "Visual Studio Project File containing specs")] string projectFile,
             [Optional("", Description = "Xslt file to use, defaults to built-in stylesheet if not provided")] string xsltFile,
             [Optional("bin\\Debug", Description = @"Path for Spec dll e.g. Company.Specs.dll. Defaults to bin\Debug ")] string binFolder,
-            [Optional("StepDefinitionReport.html", "out", Description = "Generated Output File. Defaults to StepDefinitionReport.html")] string outputFile)
+            [Optional("StepDefinitionReport.html", "out", Description = "Generated Output File. Defaults to StepDefinitionReport.html")] string outputFile,
+            [Optional(false, "verbose", "v")] bool verboseOutput,
+            [Optional(false, "debug", Description = "Used for tool integration")] bool requestDebuggerToAttach)
         {
-            StepDefinitionReportParameters reportParameters = 
-                new StepDefinitionReportParameters(projectFile, outputFile, xsltFile, binFolder, true);
+            if (requestDebuggerToAttach)
+                Debugger.Launch();
+
+            StepDefinitionReportParameters reportParameters = new StepDefinitionReportParameters(projectFile, outputFile, xsltFile, binFolder, true);
             var generator = new StepDefinitionReportGenerator(reportParameters);
             generator.GenerateAndTransformReport();
         }

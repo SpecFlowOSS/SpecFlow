@@ -50,13 +50,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowFeature feature = parser.Parse(reader, null);
-                Assert.IsNotNull(feature);
+                var  document = parser.Parse(reader, null);
+                Assert.IsNotNull(document);
 
                 var sampleTestGeneratorProvider = new MbUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
-                CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
+                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
@@ -70,13 +70,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowFeature feature = parser.Parse(reader, null);
-                Assert.IsNotNull(feature);
+                var document = parser.Parse(reader, null);
+                Assert.IsNotNull(document);
 
                 var sampleTestGeneratorProvider = new MbUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
-                CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
+                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
   
 
                 Assert.IsNotNull(code);
@@ -95,13 +95,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowFeature feature = parser.Parse(reader, null);
-                Assert.IsNotNull(feature);
+                var document = parser.Parse(reader, null);
+                Assert.IsNotNull(document);
 
                 var sampleTestGeneratorProvider = new MbUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider,new []{ "Parallelizable" });
-                CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
+                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
 
@@ -115,13 +115,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
             using (var reader = new StringReader(SampleFeatureFile))
             {
-                SpecFlowFeature feature = parser.Parse(reader, null);
-                Assert.IsNotNull(feature);
+                var document = parser.Parse(reader, null);
+                Assert.IsNotNull(document);
 
                 var sampleTestGeneratorProvider = new MbUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider,null, new[] { "Parallelizable" });
-                CodeNamespace code = converter.GenerateUnitTestFixture(feature, "TestClassName", "Target.Namespace");
+                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
 

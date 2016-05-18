@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Plugins
 {
