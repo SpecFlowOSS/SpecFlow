@@ -4,6 +4,8 @@ using System.Threading;
 
 namespace TechTalk.SpecFlow
 {
+    using TechTalk.SpecFlow.Bindings;
+
     public class ScenarioStepContext : SpecFlowContext
     {
         #region Singleton
@@ -37,7 +39,6 @@ namespace TechTalk.SpecFlow
         #endregion
 
         public StepInfo StepInfo { get; private set; }
-
 
         internal ScenarioStepContext(StepInfo stepInfo)
         {
