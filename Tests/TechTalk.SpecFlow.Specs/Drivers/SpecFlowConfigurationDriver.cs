@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 {
     public class SpecFlowConfigurationDriver
     {
-        private const string DefaultProviderName = "NUnit.2";
+        private const string DefaultProviderName = "NUnit";
         private readonly XDocument parsedConfiguration;
 
         public string UnitTestProviderName { get; private set; }

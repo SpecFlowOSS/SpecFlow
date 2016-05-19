@@ -30,10 +30,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            configurationDriver.UnitTestProviderName.Should().Be("NUnit.2");
+            configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 
             projectSteps.EnsureCompiled();
-            nUnitTestExecutionDriver.Execute();
+            nUnitTestExecutionDriver.ExecuteWithNUnit3();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             switch (unitTestProvider)
             {
                 case "NUnit.2":
-                    nUnitTestExecutionDriver.Execute();
+                    nUnitTestExecutionDriver.ExecuteWithNUnit2();
                     break;
                 case "NUnit":
                     nUnitTestExecutionDriver.ExecuteWithNUnit3();

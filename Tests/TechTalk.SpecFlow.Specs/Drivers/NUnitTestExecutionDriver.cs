@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
 
-        public TestRunSummary Execute()
+        public TestRunSummary ExecuteDoNotUse()
         {
             return this.ExecuteWithNUnit3();
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
@@ -55,7 +55,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
 
-        public TestRunSummary ExecuteOutProc()
+        public TestRunSummary ExecuteWithNUnit2()
         {
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
