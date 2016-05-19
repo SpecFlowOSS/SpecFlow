@@ -401,8 +401,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private StepDefinitionType GetCurrentBindingType()
         {
-            ScenarioBlock currentScenarioBlock = contextManager.ScenarioContext.CurrentScenarioBlock;
-            return currentScenarioBlock == ScenarioBlock.None ? StepDefinitionType.Given : currentScenarioBlock.ToBindingType();
+            return contextManager.StepContext?.StepInfo.StepDefinitionType ?? StepDefinitionType.Given;            
         }
 
         #endregion
