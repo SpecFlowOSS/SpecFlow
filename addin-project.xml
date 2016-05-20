@@ -1,7 +1,7 @@
 <AddinProject appVersion="6.0">
     <Project platforms="Win32 Mac Linux">
         <AddinFile>IdeIntegration/XamarinStudioIntegration/bin/Release/XamarinStudio.TechTalk.SpecFlow.dll</AddinFile>
-        <BuildFile>TechTalk.SpecFlow.sln</BuildFile>
+        <BuildFile>TechTalk.SpecFlow.XS.sln</BuildFile>
         <BuildConfiguration>Release</BuildConfiguration>
     </Project>
 </AddinProject>
