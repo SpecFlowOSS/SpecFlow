@@ -8,6 +8,8 @@ namespace TechTalk.SpecFlow.Bindings
     {
         bool Ready { get; set; }
 
+        IEnumerable<IStepDefinitionBinding> GetStepDefinitions();
+        IEnumerable<IHookBinding> GetHooks();
         IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText = null);
         IEnumerable<IHookBinding> GetHooks(HookType bindingEvent);
         IEnumerable<IStepArgumentTransformationBinding> GetStepTransformations();
@@ -25,10 +27,20 @@ namespace TechTalk.SpecFlow.Bindings
 
         public bool Ready { get; set; }
 
+        public IEnumerable<IStepDefinitionBinding> GetStepDefinitions()
+        {
+            return stepDefinitions;
+        }
+
         public IEnumerable<IStepDefinitionBinding> GetConsideredStepDefinitions(StepDefinitionType stepDefinitionType, string stepText)
         {
             //TODO: later optimize to return step definitions that has a chance to match to stepText
             return stepDefinitions.Where(sd => sd.StepDefinitionType == stepDefinitionType);
+        }
+
+        public virtual IEnumerable<IHookBinding> GetHooks()
+        {
+            return hooks.Values.SelectMany(hookList => hookList);
         }
 
         public virtual IEnumerable<IHookBinding> GetHooks(HookType bindingEvent)
