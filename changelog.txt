@@ -16,6 +16,7 @@ Core changes:
 New Features:
 + Improved output of specflow.exe GenerateAll command
 + Add debugging support for specflow.exe GenerateAll command
++ Fixed issue #246 where regexless steps could not pass negative numbers as arguments
 
 
 2.0.0 - 2016/01/27

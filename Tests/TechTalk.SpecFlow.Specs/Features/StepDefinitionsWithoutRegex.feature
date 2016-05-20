@@ -203,3 +203,36 @@ Examples:
 	| Single word licalized prefix   | Angenommen  | Angenommen_   |
 	| Multiple word licalized prefix | Gegeben sei | Gegeben_sei_  |
 	| Mixed keyword variants         | Gegeben sei | Angenommen_   |
+
+
+Scenario: Steps with parameters with negative values
+	Given a scenario 'Simple Scenario' as
+         """
+			Given MinimumAmount is -0.01
+         """
+	And the following step definitions
+		 """
+			[Given]
+			public void Given_MinimumAmount_is_P0(decimal p0)
+			{
+			    if (p0 != Convert.ToDecimal(-0.01)) throw new Exception("the parameter passed was not negative");
+			}
+		 """
+	When I execute the tests
+	Then the binding method 'Given_MinimumAmount_is_P0' is executed
+
+Scenario: Steps with currency amounts
+	Given a scenario 'Simple Scenario' as
+         """
+			Given I pay £0.01
+         """
+	And the following step definitions
+		 """
+			[Given]
+			public void Given_I_pay_P0(decimal p0)
+			{
+			    if (p0 != Convert.ToDecimal(0.01)) throw new Exception("the parameter passed was not a number");
+			}
+		 """
+	When I execute the tests
+	Then the binding method 'Given_I_pay_P0' is executed
