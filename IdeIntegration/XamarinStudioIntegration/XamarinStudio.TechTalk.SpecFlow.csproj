@@ -98,6 +98,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\..\lib\IKVM\IKVM.OpenJDK.Core.dll">
+      <Link>IKVM.OpenJDK.Core.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\lib\IKVM\IKVM.OpenJDK.Security.dll">
+      <Link>IKVM.OpenJDK.Security.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\lib\IKVM\IKVM.OpenJDK.Text.dll">
+      <Link>IKVM.OpenJDK.Text.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\lib\IKVM\IKVM.OpenJDK.Util.dll">
+      <Link>IKVM.OpenJDK.Util.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\lib\IKVM\IKVM.Runtime.dll">
+      <Link>IKVM.Runtime.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AddinReference Include="MonoDevelop.Xamarin.Ide" />
