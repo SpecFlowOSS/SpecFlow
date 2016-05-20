@@ -55,15 +55,17 @@ namespace TechTalk.SpecFlow
         internal Stopwatch Stopwatch { get; private set; }
 
         private readonly IObjectContainer scenarioContainer;
+        private readonly IBindingInstanceResolver bindingInstanceResolver;
 
         public IObjectContainer ScenarioContainer
         {
             get { return scenarioContainer; }
         }
 
-        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo)
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, IBindingInstanceResolver bindingInstanceResolver)
         {
             this.scenarioContainer = scenarioContainer;
+            this.bindingInstanceResolver = bindingInstanceResolver;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -91,7 +93,7 @@ namespace TechTalk.SpecFlow
 
         public object GetBindingInstance(Type bindingType)
         {
-            return scenarioContainer.Resolve(bindingType);
+            return bindingInstanceResolver.ResolveBindingInstance(bindingType, scenarioContainer);
         }
 
         private bool isDisposed = false;
