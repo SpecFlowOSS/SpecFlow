@@ -1,9 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Addin namespace="XamarinStudio.TechTalk.SpecFlow" id="XamarinStudio.TechTalk.SpecFlow" name="XamarinStudio.TechTalk.SpecFlow" author="Mike Jones" copyright="ABEL Learinng Limited" description="XamarinStudio.TechTalk.SpecFlow" category="IDE extensions" version="1.0">
-    <Dependencies>
-        <Addin id="::MonoDevelop.Core" version="4.0" />
-        <Addin id="::MonoDevelop.Ide" version="4.0" />
+<ExtensionModel>
+	<Dependencies>
+        <Addin id="::MonoDevelop.Core" version="6.0" />
+        <Addin id="::MonoDevelop.Ide" version="6.0" />
     </Dependencies>
-    <Runtime>
-    </Runtime>
-</Addin>
+	<Runtime>
+		<Import assembly="Gherkin.dll"/>
+		<Import assembly="IKVM.OpenJDK.Core.dll"/>
+		<Import assembly="IKVM.OpenJDK.Security.dll"/>
+		<Import assembly="IKVM.OpenJDK.Text.dll"/>
+		<Import assembly="IKVM.Runtime.dll"/>
+        <Import assembly="TechTalk.SpecFlow.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Generator.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Parser.dll"/>
+		<Import assembly="TechTalk.SpecFlow.Utils.dll"/>
+        <Import assembly="TechTalk.SpecFlow.IdeIntegration.dll"/>
+        <Import assembly="XamarinStudio.TechTalk.SpecFlow.dll"/>
+	</Runtime>
+
+	<Extension path="/MonoDevelop/Core/MimeTypes">
+		<MimeType id="application/feature-template" _description="Feature Template"  isText="true">
+			<File pattern="*.feature"/>
+		</MimeType>
+	</Extension>
+   
+	
+	<Extension path="/MonoDevelop/Ide/FileFilters">
+		<FileFilter id           = "FeatureTemplates"
+		            insertbefore = "AllFiles"
+		            _label       = "Feature Templates"
+		            extensions   = "*.feature"/>
+	</Extension>
+
+   <Extension path="/MonoDevelop/SourceEditor2/SyntaxModes">
+        <Templates resource="SpecFlow.SyntaxModeDefinition.xml" />
+    </Extension>
+
+    <Extension path = "/MonoDevelop/Ide/ProjectTemplates">
+        <ProjectTemplate id = "SpecFlowProject" resource="SpecFlowProject.xpt.xml"/>
+    </Extension>
+
+	<Extension path="/MonoDevelop/Ide/FileTemplates">
+		<FileTemplate id="SpecFlowFeatureTemplate" resource="SpecFlowFeature.xft.xml"/>
+		<FileTemplate id="SpecFlowStepDefinition" resource="SpecFlowStepDefinition.xft.xml"/>
+		<FileTemplate id="SpecFlowEventDefinition" resource="SpecFlowEventDefinition.xft.xml"/>
+	</Extension>
+	
+	<Extension path="/MonoDevelop/Ide/CustomTools">
+		<Tool name="SpecFlowSingleFileGenerator" type="MonoDevelop.TechTalk.SpecFlow.SingleFeatureFileGenerator"/>
+	</Extension>
+</ExtensionModel>

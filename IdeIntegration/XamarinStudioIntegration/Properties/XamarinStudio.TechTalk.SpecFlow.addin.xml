@@ -1,13 +1,8 @@
-<Addin namespace   = "MonoDevelop" 
-       id          = "TechTalk.SpecFlow" 
-       name        = "SpecFlow Support" 
-       author      = "TechTalk, SineSignal, Mike Jones" 
-       copyright   = "BSD" 
-       url         = "http://www.specflow.org" 
-       description = "Integrates SpecFlow into the Xamarin Studio IDE." 
-       category    = "IDE extensions" 
-       version     = "1.9.1.0">
-
+<ExtensionModel>
+	<Dependencies>
+        <Addin id="::MonoDevelop.Core" version="4.0" />
+        <Addin id="::MonoDevelop.Ide" version="4.0" />
+    </Dependencies>
 	<Runtime>
 		<Import assembly="Gherkin.dll"/>
 		<Import assembly="IKVM.OpenJDK.Core.dll"/>
@@ -53,4 +48,4 @@
 	<Extension path="/MonoDevelop/Ide/CustomTools">
 		<Tool name="SpecFlowSingleFileGenerator" type="MonoDevelop.TechTalk.SpecFlow.SingleFeatureFileGenerator"/>
 	</Extension>
-</Addin>
+</ExtensionModel>
