@@ -99,20 +99,31 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"the log file '(.*)' is empty")]
         public void GivenTheLogFileIsEmpty(string logFilePath)
         {
-            File.WriteAllText(logFilePath, "");
+            File.WriteAllText(GetFullPathToLogFile(logFilePath), "");
+        }
+
+        private string GetFullPathToLogFile(string logFileName)
+        {
+            var fullPathToLogFile = Path.Combine(Path.GetTempPath(), logFileName);
+            return fullPathToLogFile;
         }
 
         [Then(@"the log file '(.*)' should contain text '(.*)'")]
         public void ThenTheLogFileShouldContainText(string logFilePath, string text)
         {
-            var logContent = File.ReadAllText(logFilePath);
+            var logContent = this.ReadAllTextOfLogFile(logFilePath);
             logContent.Should().Contain(text);
+        }
+
+        private string ReadAllTextOfLogFile(string logFilePath)
+        {
+            return File.ReadAllText(this.GetFullPathToLogFile(logFilePath));
         }
 
         [Then(@"the log file '(.*)' should contain the text '(.*)' (\d+) times")]
         public void ThenTheLogFileShouldContainTHETextTimes(string logFilePath, string text, int times)
         {
-            var logConent = File.ReadAllText(logFilePath);
+            var logConent = this.ReadAllTextOfLogFile(logFilePath);
             logConent.Should().NotBeNullOrEmpty("no trace log is generated");
 
             var regex = new Regex(text, RegexOptions.Multiline);
