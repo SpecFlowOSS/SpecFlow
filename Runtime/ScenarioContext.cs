@@ -55,15 +55,17 @@ namespace TechTalk.SpecFlow
         internal Stopwatch Stopwatch { get; private set; }
 
         private readonly IObjectContainer scenarioContainer;
+        private readonly IBindingInstanceResolver bindingInstanceResolver;
 
         public IObjectContainer ScenarioContainer
         {
             get { return scenarioContainer; }
         }
 
-        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo)
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, IBindingInstanceResolver bindingInstanceResolver)
         {
             this.scenarioContainer = scenarioContainer;
+            this.bindingInstanceResolver = bindingInstanceResolver;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -89,14 +91,19 @@ namespace TechTalk.SpecFlow
             throw new PendingStepException();
         }
 
+        /// <summary>
+        /// Called by SpecFlow infrastructure when an instance of a binding class is needed.
+        /// </summary>
+        /// <param name="bindingType">The type of the binding class.</param>
+        /// <returns>The binding class instance</returns>
+        /// <remarks>
+        /// The binding classes are the classes with the [Binding] attribute, that might 
+        /// contain step definitions, hooks or step argument transformations. The method 
+        /// is called when any binding method needs to be called.
+        /// </remarks>
         public object GetBindingInstance(Type bindingType)
         {
-            return scenarioContainer.Resolve(bindingType);
-        }
-
-        internal void SetBindingInstance(Type bindingType, object instance)
-        {
-            scenarioContainer.RegisterInstanceAs(instance, bindingType);
+            return bindingInstanceResolver.ResolveBindingInstance(bindingType, scenarioContainer);
         }
 
         private bool isDisposed = false;
