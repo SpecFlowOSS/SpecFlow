@@ -14,13 +14,13 @@ For issues/bugs please use the [issue tracker on GitHub](https://github.com/tech
 
 This respostory is maintained to enable Xamarin Studio users to install an addin, the Xamarin Studio addin is based upon the monodevelop addin orignially created by TechTalk.
 
-== Download Addin for Xamarin Studio 6
+### Download Addin for Xamarin Studio 6
 You can download the addin here https://github.com/mikeyjones/SpecFlow/releases/download/v1.9.2/TechTalk.SpecFlow.TechTalk.SpecFlow_1.9.1.0.mpack
 
-== Download Addin Xamarin Studio 5
+### Download Addin Xamarin Studio 5
 You can download the addin here https://github.com/mikeyjones/SpecFlow/releases/download/v1.9.0.1/MonoDevelop.TechTalk.SpecFlow_1.9.0.1.mpack
 
-== Installation for Xamarin Studio
+### Installation for Xamarin Studio
 To install, goto Xamarin Studio/Addi-ins.. click the button on the far left saying "Install from file..." and select the mpack file from your hard drive. The addin will install and you can now run and creat specflow tests
 
 
