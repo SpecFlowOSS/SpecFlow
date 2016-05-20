@@ -94,11 +94,6 @@ namespace TechTalk.SpecFlow
             return scenarioContainer.Resolve(bindingType);
         }
 
-        internal void SetBindingInstance(Type bindingType, object instance)
-        {
-            scenarioContainer.RegisterInstanceAs(instance, bindingType);
-        }
-
         private bool isDisposed = false;
         protected override void Dispose()
         {
