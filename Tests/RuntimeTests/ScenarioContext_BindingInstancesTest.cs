@@ -14,10 +14,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         private TestRunner testRunner;
 
-        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerMocks = null)
+        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
             IObjectContainer testThreadContainer;
-            testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerMocks);
+            testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerTestThreadMocks, registerGlobalMocks);
             return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]));
         }
 
