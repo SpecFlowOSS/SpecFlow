@@ -34,21 +34,20 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
 
-        public TestRunSummary ExecuteDoNotUse()
+        public TestRunSummary Execute()
         {
-            return this.ExecuteWithNUnit3();
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
             var args = new List<string>
                            {
                                inputProjectDriver.CompiledAssemblyPath,
-                               "/xml:" + resultFilePath,
-                               "/labels",
-                               "/out:" + logFilePath
+                               "--result=" + resultFilePath + ";format=nunit2",
+                               "--labels=All",
+                               "--output=" + logFilePath
                            };
             if (Include != null)
-                args.Add("/include:" + Include);
+                args.Add(this.GetIncludeExclude());
 
             NUnit.ConsoleRunner.Program.Main(args.ToArray());
 
