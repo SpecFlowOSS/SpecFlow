@@ -6,6 +6,7 @@ New Features:
 
 Smaller Improvements/fixes:
 + Update reports to use latest parser
++ Allow customizing binding class resolution with IBindingInstanceResolver
 
 
 2.1.0-preview20160412-* - 2016/04/12
