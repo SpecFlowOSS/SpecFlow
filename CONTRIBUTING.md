@@ -6,9 +6,9 @@ This contributing guide is based on the contributing for ElixirScript (which was
 
 Use the issues tracker for:
 
-* [bug reports](#bug-reports)
-* [submitting pull requests](#pull-requests)
-* [feature requests](#feature-requests)
+* [bug reports](#bug)
+* [submitting pull requests](no special label for these)
+* [feature requests](#feature-request)
 
 ## Bug reports
 
