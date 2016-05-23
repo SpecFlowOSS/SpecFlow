@@ -52,6 +52,11 @@ Example:
 > causing the bug, and potential solutions (and your opinions on their
 > merits).
 
+We move issues that need help, but may not be of a criticial nature or require
+intensive SpecFlow knowledge, to [Up For Grabs](https://github.com/techtalk/SpecFlow/labels/up-for-grabs). 
+This is a list of easier tasks that anybody who wants to get into SpecFlow
+development can try.  Thank you!
+
 ## Feature requests
 
 Feature requests are welcome. But please take a moment to find
@@ -59,6 +64,11 @@ out whether your idea fits with the scope and aims of the project. It's up to *y
 to make a strong case to convince the community of the merits of this feature.
 Since much of the work is done be volunteers, someone who believes in the 
 idea will have to write the code.  Please provide as much detail and context as possible.
+
+If active work is not made on your feature request within 2-3 months, we may close your
+feature request.  Anybody is free to pick up on the idea, and we welcome the work! But in
+the interest of keeping the issue list down to a maintainable level, we have to do some
+pruning from time-to-time.
 
 ## Contributing
 
