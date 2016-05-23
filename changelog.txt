@@ -18,6 +18,7 @@ Core changes:
 New Features:
 + Improved output of specflow.exe GenerateAll command
 + Add debugging support for specflow.exe GenerateAll command
++ Two new Assist methods, FindInSet and FindAllInSet.
 + Fixed issue #246 where regexless steps could not pass negative numbers as arguments
 
 

@@ -76,10 +76,15 @@ namespace TechTalk.SpecFlow.Assist
             return differences.Any();
         }
 
-        private static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
+        internal static bool ThePropertyDoesNotExist<T>(T instance, TableRow row)
         {
             return instance.GetType().GetProperties()
                 .Any(property => TEHelpers.IsMemberMatchingToColumnName(property, row.Id())) == false;
+        }
+
+        internal static bool ThereIsADifference<T>(T instance, TableRow row)
+        {
+            return ThePropertyDoesNotExist(instance, row) || TheValuesDoNotMatch(instance, row);
         }
 
         private static bool TheValuesDoNotMatch<T>(T instance, TableRow row)
