@@ -54,14 +54,15 @@ Example:
 
 ## Feature requests
 
-Feature requests are welcome. But take a moment to find
+Feature requests are welcome. But please take a moment to find
 out whether your idea fits with the scope and aims of the project. It's up to *you*
 to make a strong case to convince the community of the merits of this feature.
-Please provide as much detail and context as possible.
+Since much of the work is done be volunteers, someone who believes in the 
+idea will have to write the code.  Please provide as much detail and context as possible.
 
 ## Contributing
 
-Contributions to SpecFlow are welcomed! These contributions can be
+Contributions to SpecFlow are welcomed, appreciated, and loved! These contributions can be
 in the form or code changes, documentation, or ideas of how to implement features.
 
 SpecFlow is broken up into the following parts:
