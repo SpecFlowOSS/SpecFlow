@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
@@ -23,14 +24,14 @@ namespace TechTalk.SpecFlow.Generator
 
             var configurationProvider = container.Resolve<IGeneratorConfigurationProvider>();
 
-            var plugins = LoadPlugins(container, configurationProvider, configurationHolder);
-            foreach (var plugin in plugins)
-                plugin.RegisterDependencies(container);
+            var generatorPluginEvents = container.Resolve<GeneratorPluginEvents>();
+            LoadPlugins(container, configurationProvider, configurationHolder, generatorPluginEvents);
+
+            generatorPluginEvents.RaiseRegisterDependencies(container);
 
             var specFlowConfiguration = new SpecFlowProjectConfiguration();
 
-            foreach (var plugin in plugins)
-                plugin.RegisterConfigurationDefaults(specFlowConfiguration);
+            generatorPluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
             configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
 
@@ -49,25 +50,35 @@ namespace TechTalk.SpecFlow.Generator
             if (specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider != null)
                 container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider));
 
-            foreach (var plugin in plugins)
-                plugin.RegisterCustomizations(container, specFlowConfiguration);
+            generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 
             return container;
         }
 
-        private static IGeneratorPlugin[] LoadPlugins(ObjectContainer container, IGeneratorConfigurationProvider configurationProvider, SpecFlowConfigurationHolder configurationHolder)
+        private static void LoadPlugins(ObjectContainer container, IGeneratorConfigurationProvider configurationProvider, SpecFlowConfigurationHolder configurationHolder, GeneratorPluginEvents generatorPluginEvents)
         {
-            var plugins = container.Resolve<IDictionary<string, IGeneratorPlugin>>().Values.AsEnumerable();
+            // initialize plugins that were registered from code
+            foreach (var generatorPlugin in container.Resolve<IDictionary<string, IGeneratorPlugin>>().Values)
+            {
+                // these plugins cannot have parameters
+                generatorPlugin.Initialize(generatorPluginEvents, new GeneratorPluginParameters());
+            }
 
             var pluginLoader = container.Resolve<IGeneratorPluginLoader>();
-            plugins = plugins.Concat(configurationProvider.GetPlugins(configurationHolder).Where(pd => (pd.Type & PluginType.Generator) != 0).Select(pd => LoadPlugin(pluginLoader, pd)));
-
-            return plugins.ToArray();
+            foreach (var pluginDescriptor in configurationProvider.GetPlugins(configurationHolder).Where(pd => (pd.Type & PluginType.Generator) != 0))
+            {
+                LoadPlugin(pluginDescriptor, pluginLoader, generatorPluginEvents);
+            }
         }
 
-        private static IGeneratorPlugin LoadPlugin(IGeneratorPluginLoader pluginLoader, PluginDescriptor pluginDescriptor)
+        private static void LoadPlugin(PluginDescriptor pluginDescriptor, IGeneratorPluginLoader pluginLoader, GeneratorPluginEvents generatorPluginEvents)
         {
-            return pluginLoader.LoadPlugin(pluginDescriptor);
+            var plugin = pluginLoader.LoadPlugin(pluginDescriptor);
+            var generatorPluginParameters = new GeneratorPluginParameters
+            {
+                Parameters = pluginDescriptor.Parameters
+            };
+            plugin.Initialize(generatorPluginEvents, generatorPluginParameters);
         }
 
         private static void RegisterDefaults(ObjectContainer container)

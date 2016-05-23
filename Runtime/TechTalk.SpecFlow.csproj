@@ -114,8 +114,10 @@
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\ParameterNameExtensions.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
+    <Compile Include="BindingSkeletons\StepParameterNameGenerator.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
@@ -153,6 +155,8 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\IBindingInstanceResolver.cs" />
     <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
@@ -161,12 +165,16 @@
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IDefaultDependencyProvider.cs" />
-    <Compile Include="Infrastructure\IRuntimePlugin.cs" />
-    <Compile Include="Infrastructure\IRuntimePluginLoader.cs" />
+    <Compile Include="Plugins\IRuntimePlugin.cs" />
+    <Compile Include="Plugins\IRuntimePluginLoader.cs" />
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
     <Compile Include="Infrastructure\ITestExecutionEngine.cs" />
     <Compile Include="Infrastructure\ITestRunnerFactory.cs" />
-    <Compile Include="Infrastructure\RuntimePluginAttribute.cs" />
+    <Compile Include="Plugins\PluginDescriptor.cs" />
+    <Compile Include="Plugins\PluginType.cs" />
+    <Compile Include="Plugins\RuntimePluginAttribute.cs" />
+    <Compile Include="Plugins\RuntimePluginEventArgs.cs" />
+    <Compile Include="Plugins\RuntimePluginEvents.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchService.cs" />
     <Compile Include="PlatformCompatibility\CultureInfoHelper.cs" />
     <Compile Include="PlatformCompatibility\EnumHelper.cs" />
@@ -176,6 +184,8 @@
     <Compile Include="Configuration\MissingOrPendingStepsOutcome.cs" />
     <Compile Include="CultureInfoScope.cs" />
     <Compile Include="PlatformSpecific\UnitTestProviders.cs" />
+    <Compile Include="Plugins\RuntimePluginLoader.cs" />
+    <Compile Include="Plugins\RuntimePluginParameters.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="ScenarioStepContext.cs" />
     <Compile Include="StepInfo.cs" />
@@ -198,7 +208,7 @@
     <Compile Include="ITestRunner.cs" />
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
-    <Compile Include="Infrastructure\TestRunContainerBuilder.cs" />
+    <Compile Include="Infrastructure\ContainerBuilder.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />

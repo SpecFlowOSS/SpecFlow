@@ -33,6 +33,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
     public class StepTextAnalyzer : IStepTextAnalyzer
     {
+        private List<string> usedParameterNames = new List<string>();
         public AnalyzedStepText Analyze(string stepText, CultureInfo bindingCulture)
         {
             var result = new AnalyzedStepText();
@@ -77,9 +78,9 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             return result;
         }
 
-        private static AnalyzedStepParameter AnalyzeParameter(string value, CultureInfo bindingCulture, int paramIndex, string regexPattern)
+        private AnalyzedStepParameter AnalyzeParameter(string value, CultureInfo bindingCulture, int paramIndex, string regexPattern)
         {
-            string paramName = "p" + paramIndex;
+            string paramName = StepParameterNameGenerator.GenerateParameterName(value, paramIndex, usedParameterNames);
 
             int intParamValue;
             if (int.TryParse(value, NumberStyles.Integer, bindingCulture, out intParamValue))

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TechTalk.SpecFlow.Assist
 {
     public class EnumerableProjection<T> : IEnumerable<Projection<T>>
     {
-        private IEnumerable<T> collection;
-        private IEnumerable<string> properties;
+        private readonly IEnumerable<T> collection;
+        private readonly IEnumerable<string> properties;
 
         public EnumerableProjection(Table table, IEnumerable<T> collection = null)
         {
             if (table == null && collection == null)
-                throw new ArgumentNullException("table", "Either table or projectCollection must be specified");
+                throw new ArgumentNullException(nameof(table), "Either table or projectCollection must be specified");
 
             if (table != null)
                 properties = table.Header;
@@ -38,10 +37,7 @@ namespace TechTalk.SpecFlow.Assist
                 {
                     return new Projection<T>(collection.First(), properties).Equals(obj);
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             return base.Equals(obj);
         }
@@ -54,8 +50,8 @@ namespace TechTalk.SpecFlow.Assist
 
     public class ProjectionEnumerator<T> : IEnumerator<Projection<T>>
     {
-        private IEnumerator<T> collectionEnumerator;
-        private IEnumerable<string> properties;
+        private readonly IEnumerator<T> collectionEnumerator;
+        private readonly IEnumerable<string> properties;
 
         public ProjectionEnumerator(IEnumerable<T> collection, IEnumerable<string> properties)
         {
@@ -63,26 +59,14 @@ namespace TechTalk.SpecFlow.Assist
             this.properties = properties;
         }
 
-        public Projection<T> Current
-        {
-            get
-            {
-                return new Projection<T>(collectionEnumerator.Current, properties);
-            }
-        }
+        public Projection<T> Current => new Projection<T>(collectionEnumerator.Current, properties);
 
         public void Dispose()
         {
             collectionEnumerator.Dispose();
         }
 
-        object System.Collections.IEnumerator.Current
-        {
-            get
-            {
-                return Current;
-            }
-        }
+        object System.Collections.IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
@@ -98,7 +82,7 @@ namespace TechTalk.SpecFlow.Assist
     public class Projection<T>
     {
         private readonly T item;
-        private IEnumerable<string> properties;
+        private readonly IEnumerable<string> properties;
 
         public Projection(T item, IEnumerable<string> properties)
         {
@@ -116,10 +100,7 @@ namespace TechTalk.SpecFlow.Assist
                     IEnumerable<string> properties = this.properties;
                     if (otherProjection.properties != null)
                     {
-                        if (properties == null)
-                            properties = otherProjection.properties;
-                        else
-                            properties = properties.Intersect(otherProjection.properties);
+                        properties = properties?.Intersect(otherProjection.properties) ?? otherProjection.properties;
                     }
                     if (properties != null)
                     {

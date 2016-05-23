@@ -384,19 +384,6 @@ IDoNotExist: Property does not exist".AgnosticLineBreak());
             return result;
         }
 
-        private static ComparisonException GetExceptionThrownByThisComparison(Table table, StandardTypesComparisonTestObject test)
-        {
-            try
-            {
-                table.CompareToInstance(test);
-            }
-            catch (ComparisonException ex)
-            {
-                return ex;
-            }
-            return null;
-        }
-
         private static ComparisonTestResult ExceptionWasThrownByThisComparison(Table table, StandardTypesComparisonTestObject test)
         {
             var result = new ComparisonTestResult { ExceptionWasThrown = false };

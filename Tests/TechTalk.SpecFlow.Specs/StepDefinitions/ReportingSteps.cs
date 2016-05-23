@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using TechTalk.SpecFlow.Reporting.StepDefinitionReport;
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
@@ -34,7 +35,9 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         }
 
         [When(@"I generate SpecFlow NUnit execution report")]
+        [When(@"I generate SpecFlow NUnit.2 execution report")]
         [When(@"I generate SpecFlow NUnit execution report with the custom XSLT")]
+        [When(@"I generate SpecFlow NUnit.2 execution report with the custom XSLT")]
         public void WhenIGenerateSpecFlowNUnitExecutionReport()
         {
             ProcessHelper processHelper = new ProcessHelper();
@@ -61,6 +64,24 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
                 "mstestexecutionreport \"{0}\" \"/testResult:{1}\" \"/out:{2}\" {3}", inputProjectDriver.ProjectFilePath,
                 Path.Combine(inputProjectDriver.DeploymentFolder, "mstest-result.trx"), reportInfo.FilePath, GetCustomXsltArgument());
         }
+
+        [When(@"I generate SpecFlow Step Definition report")]
+        public void WhenIGenerateSpecFlowStepDefinitionReport()
+        {
+            ProcessHelper processHelper = new ProcessHelper();
+
+            reportInfo.FilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "stepdefinitionreport.html");
+
+            processHelper.RunProcess(
+                Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
+                "StepDefinitionReport \"{0}\" \"/out:{1}\"", inputProjectDriver.ProjectFilePath, reportInfo.FilePath);
+
+            //StepDefinitionReportParameters reportParameters =
+            //    new StepDefinitionReportParameters(inputProjectDriver.ProjectFilePath, reportInfo.FilePath, "", "bin\\Debug", true);
+            //var generator = new StepDefinitionReportGenerator(reportParameters);
+            //generator.GenerateAndTransformReport();
+        }
+
 
         private string customXslt;
 

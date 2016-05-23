@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
     public interface IFeatureGeneratorProvider
     {
         int Priority { get; }
-        bool CanGenerate(SpecFlowFeature feature);
-        IFeatureGenerator CreateGenerator(SpecFlowFeature feature);
+        bool CanGenerate(SpecFlowDocument document);
+        IFeatureGenerator CreateGenerator(SpecFlowDocument document);
     }
 }

@@ -44,7 +44,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
-            scenarioContext = new ScenarioContext(new ScenarioInfo("scenario_title"), new ObjectContainer());
+            scenarioContext = new ScenarioContext(new ObjectContainer(), new ScenarioInfo("scenario_title"), new BindingInstanceResolver());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
 

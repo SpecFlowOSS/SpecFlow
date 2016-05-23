@@ -91,8 +91,8 @@ this.FeatureBackground();
  testRunner.When("I generate SpecFlow NUnit execution report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 11
- testRunner.Then("the generated report contains", "\tSummary \n\tFeatures\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\tIgnored \n\t2 f" +
-                    "eatures\t40%\t\t\t\t5\t\t\t2\t\t\t1\t\t1\t\t\t1 ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tSummary \r\n\tFeatures\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\tIgnored \r\n\t2" +
+                    " features\t40%\t\t\t\t5\t\t\t2\t\t\t1\t\t1\t\t\t1 ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -114,8 +114,8 @@ this.FeatureBackground();
  testRunner.When("I generate SpecFlow MsTest execution report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 22
- testRunner.Then("the generated report contains", "\tSummary \n\tFeatures\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\tIgnored \n\t2 f" +
-                    "eatures\t50%\t\t\t\t4\t\t\t2\t\t\t1\t\t1\t\t\t0 ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tSummary \r\n\tFeatures\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\tIgnored \r\n\t2" +
+                    " features\t50%\t\t\t\t4\t\t\t2\t\t\t1\t\t1\t\t\t0 ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -135,9 +135,9 @@ this.FeatureBackground();
  testRunner.When("I generate SpecFlow NUnit execution report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 32
- testRunner.Then("the generated report contains", "\tFeature Summary\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\t" +
-                    "Ignored\t\t\n\tFeature with failing scenarios\t\t0%\t\t\t\t3\t\t\t0\t\t\t1\t\t1\t\t\t1\n\tFeature with " +
-                    "successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tFeature Summary\r\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t" +
+                    "\tIgnored\t\t\r\n\tFeature with failing scenarios\t\t0%\t\t\t\t3\t\t\t0\t\t\t1\t\t1\t\t\t1\r\n\tFeature wi" +
+                    "th successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -159,9 +159,9 @@ this.FeatureBackground();
  testRunner.When("I generate SpecFlow MsTest execution report", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 44
- testRunner.Then("the generated report contains", "\tFeature Summary\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t\t" +
-                    "Ignored\t\t\n\tFeature with failing scenarios\t\t0%\t\t\t\t2\t\t\t0\t\t\t1\t\t1\t\t\t0\n\tFeature with " +
-                    "successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tFeature Summary\r\n\tFeature\t\t\t\t\t\t\t\tSuccess rate\tScenarios\tSuccess\t\tFailed\tPending\t" +
+                    "\tIgnored\t\t\r\n\tFeature with failing scenarios\t\t0%\t\t\t\t2\t\t\t0\t\t\t1\t\t1\t\t\t0\r\n\tFeature wi" +
+                    "th successful scenarios\t100%\t\t\t2\t\t\t2\t\t\t0\t\t0\t\t\t0", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -179,7 +179,7 @@ this.FeatureBackground();
  testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 55
- testRunner.Then("the generated report contains", "\tWhen the step pass in Feature with successful scenarios\n\t-> done: ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tWhen the step pass in Feature with successful scenarios\r\n\t-> done: ", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -213,12 +213,12 @@ this.FeatureBackground();
  testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 71
- testRunner.Then("the generated report contains", "\tWhen the step is pending\n\t-> No matching step definition found for the step. Use" +
-                    " the following code to create one:", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the generated report contains", "\tWhen the step is pending\r\n\t-> No matching step definition found for the step. Us" +
+                    "e the following code to create one:", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 76
- testRunner.And("the generated report contains", "\t [When(@\"the step is pending\")]\n        public void WhenTheStepIsPending()\n     " +
-                    "   {\n            ScenarioContext.Current.Pending();\n        }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the generated report contains", "\t [When(@\"the step is pending\")]\r\n        public void WhenTheStepIsPending()\r\n   " +
+                    "     {\r\n            ScenarioContext.Current.Pending();\r\n        }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -232,31 +232,29 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Pending test output is included in the HTML result")]
-        [NUnit.Framework.IgnoreAttribute()]
         [NUnit.Framework.CategoryAttribute("mstest")]
         public virtual void PendingTestOutputIsIncludedInTheHTMLResult_MsTest_MsTest()
         {
             this.PendingTestOutputIsIncludedInTheHTMLResult("MsTest", new string[] {
-                        "mstest",
-                        "ignore"});
+                        "mstest"});
         }
         
         public virtual void FailingTestOutputIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test output is included in the HTML result", exampleTags);
-#line 93
+#line 94
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 94
- testRunner.Given(string.Format("there are {0} test execution results for the project", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 95
+ testRunner.Given(string.Format("there are {0} test execution results for the project", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 96
  testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 96
- testRunner.Then("the generated report contains", "\tWhen the step fail in Feature with failing scenarios\n\t-> error:", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
+ testRunner.Then("the generated report contains", "\tWhen the step fail in Feature with failing scenarios\r\n\t-> error:", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 101
+#line 102
  testRunner.And("the generated report contains", "\tsimulated failure", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -281,19 +279,19 @@ this.FeatureBackground();
         public virtual void FailingTestExceptionIsIncludedInTheHTMLResult(string unittest, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing test exception is included in the HTML result", exampleTags);
-#line 113
+#line 114
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
-#line 114
- testRunner.Given(string.Format("there are {0} test execution results for the project", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 115
+ testRunner.Given(string.Format("there are {0} test execution results for the project", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 116
  testRunner.When(string.Format("I generate SpecFlow {0} execution report", unittest), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 116
+#line 117
  testRunner.Then("the generated report contains", "\tsystem.exception", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 120
+#line 121
  testRunner.And("the generated report contains", "\tsimulated failure", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -30,8 +30,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             globalObjectContainerStub.Setup(o => o.Resolve<IBindingAssemblyLoader>()).Returns(new BindingAssemblyLoader());
             globalObjectContainerStub.Setup(o => o.Resolve<ITraceListenerQueue>()).Returns(new Mock<ITraceListenerQueue>().Object);
             
-            var testRunContainerBuilderStub = new Mock<ITestRunContainerBuilder>();
-            testRunContainerBuilderStub.Setup(b => b.CreateTestRunnerContainer(It.IsAny<IObjectContainer>()))
+            var testRunContainerBuilderStub = new Mock<IContainerBuilder>();
+            testRunContainerBuilderStub.Setup(b => b.CreateTestThreadContainer(It.IsAny<IObjectContainer>()))
                 .Returns(objectContainerStub.Object);
 
             var runtimeBindingRegistryBuilderMock = new Mock<IRuntimeBindingRegistryBuilder>();

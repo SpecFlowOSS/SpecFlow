@@ -1,6 +1,6 @@
 using System;
 
-namespace TechTalk.SpecFlow.Infrastructure
+namespace TechTalk.SpecFlow.Plugins
 {
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
     public class RuntimePluginAttribute: Attribute

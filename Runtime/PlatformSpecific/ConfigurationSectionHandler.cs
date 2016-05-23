@@ -8,6 +8,7 @@ using System.Xml;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration
 {
@@ -330,9 +331,17 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["type"] = value; }
         }
 
+        [ConfigurationProperty("parameters", IsRequired = false, DefaultValue = null)]
+        public string Parameters
+        {
+            get { return (string)this["parameters"]; }
+            set { this["parameters"] = value; }
+        }
+
         public PluginDescriptor ToPluginDescriptor()
         {
-            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, Type);
+            return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, 
+                Type, Parameters);
         }
     }
 }

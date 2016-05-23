@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
         private string NormalizeWhitespace(string value)
         {
             var whitespaceRe = new Regex(@"\s+");
-            return whitespaceRe.Replace(value.Trim(), " ");
+            return whitespaceRe.Replace(value.Trim(), "");
         }
 
         private string HtmlEncode(string value)

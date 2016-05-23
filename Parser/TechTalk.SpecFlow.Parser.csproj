@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gherkin.3.3.0-ci002\lib\net45\Gherkin.dll</HintPath>
+      <HintPath>..\packages\Gherkin.4.0.0\lib\net45\Gherkin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="ScenarioBlock.cs" />
+    <Compile Include="SpecFlowDocument.cs" />
     <Compile Include="StepKeyword.cs" />
     <Compile Include="SemanticParserException.cs" />
     <Compile Include="SpecFlowFeature.cs" />

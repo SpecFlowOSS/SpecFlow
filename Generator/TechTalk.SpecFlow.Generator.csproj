@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gherkin.3.3.0-ci002\lib\net45\Gherkin.dll</HintPath>
+      <HintPath>..\packages\Gherkin.4.0.0\lib\net45\Gherkin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Build" />
@@ -67,6 +67,9 @@
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
     <Compile Include="ITestUpToDateChecker.cs" />
+    <Compile Include="Plugins\GeneratorPluginEventArgs.cs" />
+    <Compile Include="Plugins\GeneratorPluginEvents.cs" />
+    <Compile Include="Plugins\GeneratorPluginParameters.cs" />
     <Compile Include="Plugins\IGeneratorPlugin.cs" />
     <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />

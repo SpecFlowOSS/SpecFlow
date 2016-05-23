@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (instance != null)
                 {
                     testTracer.TraceWarning(string.Format("The previous {0} was not disposed.", typeof(TContext).Name));
-                    Dispose();
+                    DisposeInstance();
                 }
                 instance = newInstance;
             }
@@ -70,7 +70,12 @@ namespace TechTalk.SpecFlow.Infrastructure
                     testTracer.TraceWarning(string.Format("The previous {0} was already disposed.", typeof(TContext).Name));
                     return;
                 }
-                ((IDisposable)instance).Dispose();
+                DisposeInstance();
+            }
+
+            private void DisposeInstance()
+            {
+                ((IDisposable) instance).Dispose();
                 instance = null;
             }
 
@@ -78,8 +83,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             {
                 if (instance != null)
                 {
-                    ((IDisposable)instance).Dispose();
-                    instance = null;
+                    DisposeInstance();
                 }
             }
         }
@@ -134,98 +138,87 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private readonly IObjectContainer parentContainer;
-        private readonly InternalContextManager<ScenarioContext> scenarioContext;
-        private readonly InternalContextManager<FeatureContext> featureContext;
-        private readonly StackedInternalContextManager<ScenarioStepContext> stepContext;
+        private readonly IObjectContainer testThreadContainer;
+        private readonly InternalContextManager<ScenarioContext> scenarioContextManager;
+        private readonly InternalContextManager<FeatureContext> featureContextManager;
+        private readonly StackedInternalContextManager<ScenarioStepContext> stepContextManager;
+        private readonly IContainerBuilder containerBuilder;
 
-        public ContextManager(ITestTracer testTracer, IObjectContainer parentContainer)
+        public ContextManager(ITestTracer testTracer, IObjectContainer testThreadContainer, IContainerBuilder containerBuilder)
         {
-            featureContext = new InternalContextManager<FeatureContext>(testTracer);
-            scenarioContext = new InternalContextManager<ScenarioContext>(testTracer);
-            stepContext = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
-            this.parentContainer = parentContainer;
+            featureContextManager = new InternalContextManager<FeatureContext>(testTracer);
+            scenarioContextManager = new InternalContextManager<ScenarioContext>(testTracer);
+            stepContextManager = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
+            this.testThreadContainer = testThreadContainer;
+            this.containerBuilder = containerBuilder;
         }
 
         public FeatureContext FeatureContext
         {
-            get { return featureContext.Instance; }
+            get { return featureContextManager.Instance; }
         }
 
         public ScenarioContext ScenarioContext
         {
-            get { return scenarioContext.Instance; }
+            get { return scenarioContextManager.Instance; }
         }
 
         public ScenarioStepContext StepContext 
         {
-            get{return stepContext.Instance;} 
+            get{return stepContextManager.Instance;} 
         }
 
         public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
         {
             var newContext = new FeatureContext(featureInfo, bindingCulture);
-            featureContext.Init(newContext);
+            featureContextManager.Init(newContext);
             FeatureContext.Current = newContext;
         }
 
         public void CleanupFeatureContext()
         {
-            featureContext.Cleanup();
+            featureContextManager.Cleanup();
         }
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var newContext = new ScenarioContext(scenarioInfo, parentContainer);
-            SetupScenarioContainer(newContext);
-            scenarioContext.Init(newContext);
+            var scenarioContainer = containerBuilder.CreateScenarioContainer(testThreadContainer, scenarioInfo);
+            var newContext = scenarioContainer.Resolve<ScenarioContext>();
+            scenarioContextManager.Init(newContext);
             ScenarioContext.Current = newContext;
-        }
-
-        protected virtual void SetupScenarioContainer(ScenarioContext newContext)
-        {
-            newContext.ScenarioContainer.RegisterInstanceAs(newContext);
-            newContext.ScenarioContainer.RegisterInstanceAs(FeatureContext);
-
-            newContext.ScenarioContainer.ObjectCreated += obj =>
-            {
-                var containerDependentObject = obj as IContainerDependentObject;
-                if (containerDependentObject != null)
-                    containerDependentObject.SetObjectContainer(newContext.ScenarioContainer);
-            };
         }
 
         public void CleanupScenarioContext()
         {
-            scenarioContext.Cleanup();            
+            scenarioContextManager.Cleanup();            
         }
 
         public void InitializeStepContext(StepInfo stepInfo)
         {
             var newContext = new ScenarioStepContext(stepInfo);
-            stepContext.Init(newContext);
+            stepContextManager.Init(newContext);
             ScenarioStepContext.Current = newContext;
         }
 
         public void CleanupStepContext()
         {
-            stepContext.Cleanup();
-            ScenarioStepContext.Current = stepContext.Instance;
+            stepContextManager.Cleanup();
+            ScenarioStepContext.Current = stepContextManager.Instance;
         }
 
         public void Dispose()
         {
-            if (featureContext != null)
+            if (featureContextManager != null)
             {
-                featureContext.Dispose();
+                featureContextManager.Dispose();
             }
-            if (scenarioContext != null)
+            if (scenarioContextManager != null)
             {
-                scenarioContext.Dispose();
+                scenarioContextManager.Dispose();
             }
-            if (stepContext != null)
+            if (stepContextManager != null)
             {
-                stepContext.Dispose();
+                stepContextManager.Dispose();
             }
         }
     }

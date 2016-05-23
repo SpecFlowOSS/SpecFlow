@@ -6,6 +6,8 @@ using System.Text;
 using BoDi;
 using NUnit.Framework;
 using FluentAssertions;
+using Moq;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -14,11 +16,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         private TestRunner testRunner;
 
-        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerMocks = null)
+        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
-            IObjectContainer container;
-            testRunner = TestObjectFactories.CreateTestRunner(out container, registerMocks);
-            return new ScenarioContext(new ScenarioInfo("sample scenario", new string[0]), container);
+            IObjectContainer testThreadContainer;
+            testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerTestThreadMocks, registerGlobalMocks);
+            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]), testThreadContainer.Resolve<IBindingInstanceResolver>());
         }
 
         [Test]
@@ -69,6 +71,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var expectedInstance = new SimpleClass();
             scenarioContext.SetBindingInstance(typeof(SimpleClass), expectedInstance);
+            var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
+            result.Should().Be(expectedInstance);
+        }
+
+        [Test]
+        public void GetBindingInstance_should_return_instance_through_BindingInstanceResolver()
+        {
+            var expectedInstance = new SimpleClass();
+
+            var scenarioContext = CreateScenarioContext(registerGlobalMocks: (globalContainer =>
+            {
+                var bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
+                bindingInstanceResolverMock.Setup(m => m.ResolveBindingInstance(typeof(SimpleClass), It.IsAny<IObjectContainer>()))
+                    .Returns(expectedInstance);
+                globalContainer.RegisterInstanceAs(bindingInstanceResolverMock.Object);
+            }));
+
             var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
             result.Should().Be(expectedInstance);
         }

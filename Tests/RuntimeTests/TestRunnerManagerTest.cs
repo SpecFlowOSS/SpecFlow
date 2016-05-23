@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [SetUp]
         public void Setup()
         {
-            var globalContainer = new TestRunContainerBuilder().CreateContainer();
+            var globalContainer = new ContainerBuilder().CreateGlobalContainer();
             testRunnerManager = globalContainer.Resolve<TestRunnerManager>();
             testRunnerManager.Initialize(anAssembly);
         }

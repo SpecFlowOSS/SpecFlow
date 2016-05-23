@@ -55,18 +55,17 @@ namespace TechTalk.SpecFlow
         internal Stopwatch Stopwatch { get; private set; }
 
         private readonly IObjectContainer scenarioContainer;
+        private readonly IBindingInstanceResolver bindingInstanceResolver;
 
         public IObjectContainer ScenarioContainer
         {
             get { return scenarioContainer; }
         }
 
-        internal ScenarioContext(ScenarioInfo scenarioInfo, IObjectContainer parentContainer)
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, IBindingInstanceResolver bindingInstanceResolver)
         {
-            if (parentContainer == null)
-                throw new ArgumentNullException("parentContainer");
-
-            this.scenarioContainer = new ObjectContainer(parentContainer);
+            this.scenarioContainer = scenarioContainer;
+            this.bindingInstanceResolver = bindingInstanceResolver;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -92,18 +91,28 @@ namespace TechTalk.SpecFlow
             throw new PendingStepException();
         }
 
+        /// <summary>
+        /// Called by SpecFlow infrastructure when an instance of a binding class is needed.
+        /// </summary>
+        /// <param name="bindingType">The type of the binding class.</param>
+        /// <returns>The binding class instance</returns>
+        /// <remarks>
+        /// The binding classes are the classes with the [Binding] attribute, that might 
+        /// contain step definitions, hooks or step argument transformations. The method 
+        /// is called when any binding method needs to be called.
+        /// </remarks>
         public object GetBindingInstance(Type bindingType)
         {
-            return scenarioContainer.Resolve(bindingType);
+            return bindingInstanceResolver.ResolveBindingInstance(bindingType, scenarioContainer);
         }
 
-        internal void SetBindingInstance(Type bindingType, object instance)
-        {
-            scenarioContainer.RegisterInstanceAs(instance, bindingType);
-        }
-
+        private bool isDisposed = false;
         protected override void Dispose()
         {
+            if (isDisposed)
+                return;
+
+            isDisposed = true; //HACK: we need this flag, because the ScenarioContainer is disposed by the scenarioContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
             base.Dispose();
 
             scenarioContainer.Dispose();

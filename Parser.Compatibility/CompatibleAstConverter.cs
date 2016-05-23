@@ -15,18 +15,20 @@ namespace TechTalk.SpecFlow.Parser.Compatibility
 {
     public class CompatibleAstConverter
     {
-        public static Feature ConvertToCompatibleFeature(SpecFlowFeature gherkin3Feature)
+        public static Feature ConvertToCompatibleFeature(SpecFlowDocument specFlowDocument)
         {
-            return new Feature(gherkin3Feature.Keyword, gherkin3Feature.Name, 
-                ConvertToCompatibleTags(gherkin3Feature.Tags), 
-                gherkin3Feature.Description, 
-                ConvertToCompatibleBackground(gherkin3Feature.Background), 
-                ConvertToCompatibleScenarios(gherkin3Feature.ScenarioDefinitions), 
-                ConvertToCompatibleComments(gherkin3Feature.Comments))
+            var specFlowFeature = specFlowDocument.SpecFlowFeature;
+
+            return new Feature(specFlowFeature.Keyword, specFlowFeature.Name, 
+                ConvertToCompatibleTags(specFlowFeature.Tags),
+                specFlowFeature.Description, 
+                ConvertToCompatibleBackground(specFlowFeature.Background), 
+                ConvertToCompatibleScenarios(specFlowFeature.ScenarioDefinitions), 
+                ConvertToCompatibleComments(specFlowDocument.Comments))
             {
-                FilePosition = ConvertToCompatibleFilePosition(gherkin3Feature.Location),
-                Language = gherkin3Feature.Language,
-                SourceFile = gherkin3Feature.SourceFilePath
+                FilePosition = ConvertToCompatibleFilePosition(specFlowFeature.Location),
+                Language = specFlowFeature.Language,
+                SourceFile = specFlowFeature.SourceFilePath
             };
         }
 

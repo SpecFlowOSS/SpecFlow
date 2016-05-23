@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         public void SetUp()
         {
             // ScenarioContext is needed, because the [Binding]-instances live there
-            var scenarioContext = new ScenarioContext(null,new ObjectContainer());
+            var scenarioContext = new ScenarioContext(new ObjectContainer(), null, new BindingInstanceResolver());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
 
             bindingRegistryStub.Setup(br => br.GetStepTransformations()).Returns(stepTransformations);
