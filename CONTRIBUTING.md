@@ -26,6 +26,10 @@ Guidelines for bug reports:
 3. **Isolate and report the problem** &mdash; ideally create a reduced test
    case.
 
+4. **Provide a screenshot or example code** &mdash; you might in a situation that
+   is very tied to your specific use-case, so provide as much information as
+  possible.
+
 Please try to be as detailed as possible in your report. Please provide steps to
 reproduce the issue as well as the outcome you were expecting! All these details
 will help developers to fix any potential bugs.
