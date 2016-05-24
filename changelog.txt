@@ -1,13 +1,21 @@
 2.1.0 - 2016-05-24
 
 Core changes:
++ Update to Gherkin 4.0.0 parser
++ Plugin Interface for Generator and Runtime Plugins
+  Changed to an event base interface and added additional hooks for customizing TestThread and Scenario Dependencies
+
 
 New Features:
++ Two new Assist methods, FindInSet and FindAllInSet.
++ Fixed issue #246 where regexless steps could not pass negative numbers as arguments
+
 
 Smaller Improvements/fixes:
 + Update reports to use latest parser
 + Allow customizing binding class resolution with IBindingInstanceResolver
 + Added support for generating better argument names in step methods.
++ SpecFlow can be build and all tests run if you only have VS2015 installed
 
 
 2.1.0-preview20160412-* - 2016/04/12
@@ -18,8 +26,6 @@ Core changes:
 New Features:
 + Improved output of specflow.exe GenerateAll command
 + Add debugging support for specflow.exe GenerateAll command
-+ Two new Assist methods, FindInSet and FindAllInSet.
-+ Fixed issue #246 where regexless steps could not pass negative numbers as arguments
 
 
 2.0.0 - 2016/01/27
