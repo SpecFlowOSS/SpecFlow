@@ -13,11 +13,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         private readonly InputProjectDriver inputProjectDriver;
         private readonly ProjectGenerator projectGenerator;
         private readonly ProjectCompiler projectCompiler;
+        private readonly HooksDriver _hooksDriver;
 
-        public ProjectSteps(InputProjectDriver inputProjectDriver, ProjectGenerator projectGenerator, ProjectCompiler projectCompiler)
+        public ProjectSteps(InputProjectDriver inputProjectDriver, ProjectGenerator projectGenerator, ProjectCompiler projectCompiler, HooksDriver hooksDriver)
         {
             this.inputProjectDriver = inputProjectDriver;
             this.projectCompiler = projectCompiler;
+            _hooksDriver = hooksDriver;
             this.projectGenerator = projectGenerator;
         }
 
@@ -64,6 +66,8 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         {
             var project = projectGenerator.GenerateProject(inputProjectDriver);
             projectCompiler.Compile(project);
+
+            _hooksDriver.EnsureInitialized();
         }
 
         [When(@"the project is compiled")]
