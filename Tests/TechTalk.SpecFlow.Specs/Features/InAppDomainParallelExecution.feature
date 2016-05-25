@@ -1,6 +1,6 @@
 ﻿Feature: In-AppDomain Parallel Execution
 
-Background: 
+Background:
 	Given there is a SpecFlow project
 	And the project is configured to use the NUnit provider
     And the following binding class
@@ -30,7 +30,7 @@ Background:
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -44,7 +44,7 @@ Background:
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -70,7 +70,7 @@ Scenario Outline: Before/After TestRun hook should only be executed once
     Then the execution log should contain text 'Was parallel'
     And the hook 'HookFor<event>' is executed once
 
-Examples: 
+Examples:
 	| event               |
 	| BeforeTestRun       |
 	| AfterTestRun        |
@@ -106,7 +106,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -120,7 +120,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -134,7 +134,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -175,7 +175,7 @@ Scenario Outline: Current context cannot be used in multi-threaded execution
 		| Failed |
 		| 1      |
 
-Examples: 
+Examples:
     | context             |
     | ScenarioContext     |
     | FeatureContext      |

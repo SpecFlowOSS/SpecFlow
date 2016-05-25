@@ -94,13 +94,13 @@ public void WhenIDoSomething()
 #line hidden
 #line 27
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 1\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
+                    "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 41
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 2\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
+                    "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -214,18 +214,18 @@ this.FeatureBackground();
 #line hidden
 #line 103
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 5\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
+                    "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 117
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 3\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
+                    "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 131
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 4\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
-                    "hing\n\n    Examples: \n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3 " +
-                    "    |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                    "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
+                    "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 145
     testRunner.And("the type \'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject\' " +
                     "is registered as \'TechTalk.SpecFlow.Tracing.ITraceListener\' in SpecFlow runtime " +
