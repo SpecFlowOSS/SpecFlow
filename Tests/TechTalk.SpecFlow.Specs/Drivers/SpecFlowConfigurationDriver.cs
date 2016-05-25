@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 {
     public class SpecFlowConfigurationDriver
     {
-        private const string DefaultProviderName = "NUnit.2";
+        private const string DefaultProviderName = "NUnit";
         private readonly XDocument parsedConfiguration;
 
         public string UnitTestProviderName { get; private set; }
@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     yield return @"NUnit\lib\nunit.framework.dll";
                     break;
                 case "nunit":
-                    yield return @"NUnit3-Runner\bin\nunit.framework.dll";
+                    yield return @"NUnit3\lib\net45\nunit.framework.dll";
                     break;
                 case "mbunit.3":
                     yield return @"mbUnit3\mbUnit.dll";

@@ -13,7 +13,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_parse_csproj_file_correctly()
         {
-            string text = Path.Combine(Directory.GetCurrentDirectory(), "Data\\sampleCsProjectfile.csproj");
+            var directoryName = Path.GetDirectoryName(this.GetType().Assembly.Location);
+            string text = Path.Combine(directoryName, "Data\\sampleCsProjectfile.csproj");
             SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(text);
             specflowProjectfile.FeatureFiles.Count.Should().Be(3);
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();

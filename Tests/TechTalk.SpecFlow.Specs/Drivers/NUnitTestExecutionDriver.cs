@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
             var provessHelper = new ProcessHelper();
-            string nunitConsoleRunnerPath = @"NUnit3-Runner\bin\nunit-console.exe";
+            string nunitConsoleRunnerPath = @"NUnit3-Runner\tools\nunit3-console.exe";
             var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), nunitConsoleRunnerPath);
             provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"--result={1};format=nunit2\" --labels=All \"--out={2}\" {3}",
                 inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
@@ -42,26 +42,26 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             var args = new List<string>
                            {
                                inputProjectDriver.CompiledAssemblyPath,
-                               "/xml:" + resultFilePath,
-                               "/labels",
-                               "/out:" + logFilePath
+                               "--result=" + resultFilePath + ";format=nunit2",
+                               "--labels=All",
+                               "--output=" + logFilePath
                            };
             if (Include != null)
-                args.Add("/include:" + Include);
+                args.Add(this.GetIncludeExclude());
 
-            NUnit.ConsoleRunner.Runner.Main(args.ToArray());
+            NUnit.ConsoleRunner.Program.Main(args.ToArray());
 
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
 
-        public TestRunSummary ExecuteOutProc()
+        public TestRunSummary ExecuteWithNUnit2()
         {
             string resultFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.xml");
             string logFilePath = Path.Combine(inputProjectDriver.DeploymentFolder, "nunit-result.txt");
 
             var provessHelper = new ProcessHelper();
             var nunitConsolePath = Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"NUnit.Runners\tools\nunit-console-x86.exe");
-            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" {3}", 
+            provessHelper.RunProcess(nunitConsolePath, "\"{0}\" \"/xml:{1}\" /labels \"/out={2}\" {3}",
                 inputProjectDriver.CompiledAssemblyPath, resultFilePath, logFilePath, GetIncludeExclude());
 
             return ProcessNUnitResult(logFilePath, resultFilePath);
@@ -96,7 +96,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             if (Include == null)
                 return string.Empty;
 
-            return string.Format(" \"/include:{0}\"", Include);
+            return string.Format(" \"--where:cat=={0}\"", Include);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿Feature: In-AppDomain Parallel Execution
 
-Background: 
+Background:
 	Given there is a SpecFlow project
 	And the project is configured to use the NUnit provider
     And the following binding class
@@ -30,7 +30,7 @@ Background:
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -44,7 +44,7 @@ Background:
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -70,7 +70,7 @@ Scenario Outline: Before/After TestRun hook should only be executed once
     Then the execution log should contain text 'Was parallel'
     And the hook 'HookFor<event>' is executed once
 
-Examples: 
+Examples:
 	| event               |
 	| BeforeTestRun       |
 	| AfterTestRun        |
@@ -87,7 +87,8 @@ Scenario: TraceListener should be called synchronously
             {
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
                 System.Diagnostics.Debug.WriteLine("NonThreadSafeTraceListener: {0}", message);
-                System.IO.File.AppendAllText(@"NonThreadSafeTraceListener.log", "NonThreadSafeTraceListener: " + message + Environment.NewLine);
+                string filePath = Path.Combine(Path.GetTempPath(), "NonThreadSafeTraceListener.log");
+                System.IO.File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
                 System.Threading.Thread.Sleep(100);
                 var afterStartIndex = startIndex;
                 if (afterStartIndex != currentStartIndex)
@@ -106,7 +107,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -120,7 +121,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -134,7 +135,7 @@ Scenario: TraceListener should be called synchronously
 		Scenario Outline: Simple Scenario Outline
 	      When I do something
 
-      Examples: 
+      Examples:
         | Count |
         | 1     |
         | 2     |
@@ -175,7 +176,7 @@ Scenario Outline: Current context cannot be used in multi-threaded execution
 		| Failed |
 		| 1      |
 
-Examples: 
+Examples:
     | context             |
     | ScenarioContext     |
     | FeatureContext      |
