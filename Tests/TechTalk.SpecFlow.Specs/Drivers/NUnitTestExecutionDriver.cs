@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             if (Include != null)
                 args.Add("/include:" + Include);
 
-            NUnit.ConsoleRunner.Runner.Main(args.ToArray());
+            //NUnit.ConsoleRunner.Runner.Main(args.ToArray());
 
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }
