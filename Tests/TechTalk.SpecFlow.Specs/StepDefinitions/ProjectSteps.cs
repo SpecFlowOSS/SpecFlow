@@ -8,6 +8,15 @@ using TechTalk.SpecFlow.Specs.Drivers.MsBuild;
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
+    public class UglyHook
+    {
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+        }
+    }
+    [Binding]
     public class ProjectSteps
     {
         private readonly InputProjectDriver inputProjectDriver;
