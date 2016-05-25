@@ -80,7 +80,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     yield return @"NUnit\lib\nunit.framework.dll";
                     break;
                 case "nunit":
-                    yield return @"NUnit3-Runner\bin\nunit.framework.dll";
+                    yield return @"NUnit3-Runner\lib\net45\nunit.framework.dll";
                     break;
                 case "mbunit.3":
                     yield return @"mbUnit3\mbUnit.dll";
