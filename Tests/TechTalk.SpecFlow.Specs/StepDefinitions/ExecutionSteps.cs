@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             configurationDriver.UnitTestProviderName.Should().Be("NUnit.2");
 
             projectSteps.EnsureCompiled();
-            nUnitTestExecutionDriver.Execute();
+            nUnitTestExecutionDriver.ExecuteOutProcWithNUnit2();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             switch (unitTestProvider)
             {
                 case "NUnit.2":
-                    nUnitTestExecutionDriver.Execute();
+                    nUnitTestExecutionDriver.ExecuteOutProcWithNUnit2();
                     break;
                 case "NUnit":
                     nUnitTestExecutionDriver.ExecuteWithNUnit3();
