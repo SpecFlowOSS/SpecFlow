@@ -87,7 +87,8 @@ Scenario: TraceListener should be called synchronously
             {
                 var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
                 System.Diagnostics.Debug.WriteLine("NonThreadSafeTraceListener: {0}", message);
-                System.IO.File.AppendAllText(@"NonThreadSafeTraceListener.log", "NonThreadSafeTraceListener: " + message + Environment.NewLine);
+                string filePath = Path.Combine(Path.GetTempPath(), "NonThreadSafeTraceListener.log");
+                System.IO.File.AppendAllText(filePath, "NonThreadSafeTraceListener: " + message + Environment.NewLine);
                 System.Threading.Thread.Sleep(100);
                 var afterStartIndex = startIndex;
                 if (afterStartIndex != currentStartIndex)

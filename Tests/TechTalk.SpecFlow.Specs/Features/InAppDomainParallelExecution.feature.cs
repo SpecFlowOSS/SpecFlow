@@ -199,7 +199,8 @@ this.FeatureBackground();
     {
         var currentStartIndex = System.Threading.Interlocked.Increment(ref startIndex);
         System.Diagnostics.Debug.WriteLine(""NonThreadSafeTraceListener: {0}"", message);
-        System.IO.File.AppendAllText(@""NonThreadSafeTraceListener.log"", ""NonThreadSafeTraceListener: "" + message + Environment.NewLine);
+        string filePath = Path.Combine(Path.GetTempPath(), ""NonThreadSafeTraceListener.log"");
+        System.IO.File.AppendAllText(filePath, ""NonThreadSafeTraceListener: "" + message + Environment.NewLine);
         System.Threading.Thread.Sleep(100);
         var afterStartIndex = startIndex;
         if (afterStartIndex != currentStartIndex)
@@ -212,34 +213,34 @@ this.FeatureBackground();
     }
 }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 103
+#line 104
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 5\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
                     "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
                     "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 117
+#line 118
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 3\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
                     "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
                     "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 131
+#line 132
  testRunner.Given("there is a feature file in the project as", "Feature: Feature 4\nScenario Outline: Simple Scenario Outline\n     When I do somet" +
                     "hing\n\n    Examples:\n      | Count |\r\n      | 1     |\n      | 2     |\n      | 3  " +
                     "   |\n      | 4     |\n      | 5     |", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 145
+#line 146
     testRunner.And("the type \'SpecFlow.TestProject.NonThreadSafeTraceListener, SpecFlow.TestProject\' " +
                     "is registered as \'TechTalk.SpecFlow.Tracing.ITraceListener\' in SpecFlow runtime " +
                     "configuration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 146
-    testRunner.And("the log file \'NonThreadSafeTraceListener.log\' is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
-    testRunner.When("I execute the tests with NUnit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("the log file \'NonThreadSafeTraceListener.log\' is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
-    testRunner.Then("the execution log should contain text \'Was parallel\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("I execute the tests with NUnit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 149
+    testRunner.Then("the execution log should contain text \'Was parallel\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 150
     testRunner.Then("the log file \'NonThreadSafeTraceListener.log\' should contain text \'NonThreadSafeT" +
                     "raceListener:\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 150
+#line 151
  testRunner.Then("the log file \'NonThreadSafeTraceListener.log\' should contain the text \'NonThreadS" +
                     "afeTraceListener:\' 50 times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -249,7 +250,7 @@ this.FeatureBackground();
             table2.AddRow(new string[] {
                         "25",
                         "25"});
-#line 151
+#line 152
  testRunner.And("the execution summary should contain", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -258,28 +259,28 @@ this.FeatureBackground();
         public virtual void CurrentContextCannotBeUsedInMulti_ThreadedExecution(string context, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Current context cannot be used in multi-threaded execution", exampleTags);
-#line 156
+#line 157
 this.ScenarioSetup(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 157
+#line 158
  testRunner.Given("there is a feature file in the project as", string.Format("Feature: Feature with {0}.Current\nScenario: Simple Scenario\n     When I use {0}.C" +
                         "urrent", context), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 163
+#line 164
  testRunner.And("the following step definition", string.Format("[When(@\"I use {0}.Current\")]\npublic void WhenIUseContextCurrent()\n{{\n   System.Th" +
                         "reading.Thread.Sleep(200);\n   Console.WriteLine({0}.Current);\r\n}}", context), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 172
-    testRunner.When("I execute the tests with NUnit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 173
+    testRunner.When("I execute the tests with NUnit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 174
     testRunner.Then("the execution log should contain text \'Was parallel\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Failed"});
             table3.AddRow(new string[] {
                         "1"});
-#line 174
+#line 175
  testRunner.And("the execution summary should contain", ((string)(null)), table3, "And ");
 #line hidden
             this.ScenarioCleanup();
