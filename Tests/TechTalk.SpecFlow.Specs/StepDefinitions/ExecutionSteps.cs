@@ -30,10 +30,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [When(@"I execute the tests")]
         public void WhenIExecuteTheTests()
         {
-            configurationDriver.UnitTestProviderName.Should().Be("NUnit.2");
+            configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 
             projectSteps.EnsureCompiled();
-            nUnitTestExecutionDriver.ExecuteOutProcWithNUnit2();
+            nUnitTestExecutionDriver.ExecuteWithNUnit3();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
