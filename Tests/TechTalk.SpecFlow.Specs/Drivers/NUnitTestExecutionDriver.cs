@@ -42,14 +42,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             var args = new List<string>
                            {
                                inputProjectDriver.CompiledAssemblyPath,
-                               "/xml:" + resultFilePath,
-                               "/labels",
-                               "/out:" + logFilePath
+                               "--result=" + resultFilePath + ";format=nunit2",
+                               "--labels=All",
+                               "--output=" + logFilePath
                            };
             if (Include != null)
-                args.Add("/include:" + Include);
+                args.Add(this.GetIncludeExcludeNunit3());
 
-            //NUnit.ConsoleRunner.Runner.Main(args.ToArray());
+            NUnit.ConsoleRunner.Program.Main(args.ToArray());
 
             return ProcessNUnitResult(logFilePath, resultFilePath);
         }

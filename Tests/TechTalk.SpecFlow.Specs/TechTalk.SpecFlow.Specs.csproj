@@ -53,6 +53,9 @@
       <HintPath>..\..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="nunit3-console">
+      <HintPath>..\..\packages\NUnit.ConsoleRunner.3.2.1\tools\nunit3-console.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
