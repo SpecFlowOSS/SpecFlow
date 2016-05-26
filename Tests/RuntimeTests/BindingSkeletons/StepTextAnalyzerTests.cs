@@ -30,9 +30,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I \"do\" something", bindingCulture);
+            var result = sut.Analyze("I \"did\" something", bindingCulture);
             result.Parameters.Count.Should().Be(1);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.TextParts.Count.Should().Be(2);
             result.TextParts[0].Should().Be("I \"");
             result.TextParts[1].Should().Be("\" something");
@@ -43,9 +43,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I 'do' something", bindingCulture);
+            var result = sut.Analyze("I 'did' something", bindingCulture);
             result.Parameters.Count.Should().Be(1);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.TextParts.Count.Should().Be(2);
             result.TextParts[0].Should().Be("I '");
             result.TextParts[1].Should().Be("' something");
@@ -56,9 +56,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I <do> something", bindingCulture);
+            var result = sut.Analyze("I <did> something", bindingCulture);
             result.Parameters.Count.Should().Be(1);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.TextParts.Count.Should().Be(2);
             result.TextParts[0].Should().Be("I ");
             result.TextParts[1].Should().Be(" something");
@@ -122,9 +122,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I \"do\" something with \"multiple\" parameters", bindingCulture);
+            var result = sut.Analyze("I \"did\" something with \"multiple\" parameters", bindingCulture);
             result.Parameters.Count.Should().Be(2);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.Parameters[1].Name.Should().Be("multiple");
             result.TextParts.Count.Should().Be(3);
             result.TextParts[0].Should().Be("I \"");
@@ -167,10 +167,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I \"do\" something and \"do\" something else", bindingCulture);
+            var result = sut.Analyze("I \"did\" something and \"did\" something else", bindingCulture);
             result.Parameters.Count.Should().Be(2);
-            result.Parameters[0].Name.Should().Be("do");
-            result.Parameters[1].Name.Should().Be("do1");
+            result.Parameters[0].Name.Should().Be("did");
+            result.Parameters[1].Name.Should().Be("did1");
         }
 
         [Test]
@@ -178,11 +178,11 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I \"do\" something \"and\" then \"do\" something else", bindingCulture);
+            var result = sut.Analyze("I \"did\" something \"and\" then \"did\" something else", bindingCulture);
             result.Parameters.Count.Should().Be(3);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.Parameters[1].Name.Should().Be("and");
-            result.Parameters[2].Name.Should().Be("do2");
+            result.Parameters[2].Name.Should().Be("did2");
         }
 
         [Test]
@@ -190,9 +190,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
         {
             var sut = new StepTextAnalyzer();
 
-            var result = sut.Analyze("I \"Do\" something with \"MUlTiPLe\" parameters", bindingCulture);
+            var result = sut.Analyze("I \"Did\" something with \"MUlTiPLe\" parameters", bindingCulture);
             result.Parameters.Count.Should().Be(2);
-            result.Parameters[0].Name.Should().Be("do");
+            result.Parameters[0].Name.Should().Be("did");
             result.Parameters[1].Name.Should().Be("mUlTiPLe");
             result.TextParts.Count.Should().Be(3);
             result.TextParts[0].Should().Be("I \"");

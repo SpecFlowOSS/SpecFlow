@@ -6,12 +6,16 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
     public class StepParameterNameGenerator
     {
+        
+
+
         public static  string GenerateParameterName(string value,int paramIndex, List<string> usedParameterNames)
         {
-            if (IsSingleWordWithNoNumbers(value))
-                return UniquelyIdentified(LowerCaseFirstLetter(value),usedParameterNames,paramIndex);
+           
             if (IsSingleWordSurroundedByAngleBrackets(value))
-                return UniquelyIdentified(LowerCaseFirstLetter(RemoveSurroundingAngleBrackets(value)),usedParameterNames, paramIndex);
+                value = RemoveSurroundingAngleBrackets(value);
+            if (IsSingleWordWithNoNumbers(value))
+                return UniquelyIdentified(LowerCaseFirstLetter(value), usedParameterNames, paramIndex);
             return "p" + paramIndex;
         }
 

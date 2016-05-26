@@ -114,6 +114,7 @@
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\Keywords.cs" />
     <Compile Include="BindingSkeletons\ParameterNameExtensions.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
