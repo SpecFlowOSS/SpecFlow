@@ -88,15 +88,23 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             ProjectName = "SpecFlow.TestProject";
             Language = "C#";
 
-            var testProjectFolder = ConfigurationManager.AppSettings["testProjectFolder"] ?? "SpecFlowTestProject";
-            var tempDirectory = Path.Combine(Path.GetTempPath(), testProjectFolder + "_" + Guid.NewGuid().ToString("D"));
-            compilationFolder = Path.Combine(tempDirectory, Environment.ExpandEnvironmentVariables(testProjectFolder));
+            var tempDirectory = DetermineDirectoryForTestProjects();
+            compilationFolder = Path.Combine(tempDirectory, "Project_" + Guid.NewGuid().ToString("D"));
 
             FeatureFiles = new List<FeatureFileInput>();
             ContentFiles = new List<ContentFileInput>();
             BindingClasses = new List<BindingClassInput>();
 
             References = new List<string>();
+        }
+
+        internal static string DetermineDirectoryForTestProjects()
+        {
+            var variableForProjectName = ConfigurationManager.AppSettings["testProjectFolder"] ?? "SpecFlowTestProject";
+            var tempDirectory = Path.Combine(
+                Path.GetTempPath(),
+                Environment.ExpandEnvironmentVariables(variableForProjectName));
+            return tempDirectory;
         }
 
         public void Reset()
