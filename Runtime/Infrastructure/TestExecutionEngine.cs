@@ -401,7 +401,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private StepDefinitionType GetCurrentBindingType()
         {
-            return contextManager.CurrentTopLevelStep?.StepInfo.StepDefinitionType?? StepDefinitionType.Given;
+            return contextManager.CurrentTopLevelStep?.StepInfo.StepDefinitionType ?? StepDefinitionType.Given;
         }
 
         #endregion
