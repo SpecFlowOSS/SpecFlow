@@ -86,7 +86,11 @@
     <Compile Include="Drivers\InputProjectDriver.cs" />
     <Compile Include="Drivers\MsBuild\ProjectCompiler.cs" />
     <Compile Include="Drivers\MsBuild\ProjectGenerator.cs" />
-    <Compile Include="Drivers\NUnitTestExecutionDriver.cs" />
+    <Compile Include="Drivers\NUnit2TestExecutionDriver.cs" />
+    <Compile Include="Drivers\NUnit3InProcessTestExecutionDriver.cs" />
+    <Compile Include="Drivers\NUnit3TestExecutionDriverBase.cs" />
+    <Compile Include="Drivers\NUnit3TestExecutionDriver.cs" />
+    <Compile Include="Drivers\NUnitTestExecutionDriverBase.cs" />
     <Compile Include="Drivers\Parser\ParserDriver.cs" />
     <Compile Include="Drivers\Parser\Utf8StringWriter.cs" />
     <Compile Include="Drivers\ProcessHelper.cs" />

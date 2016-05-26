@@ -12,15 +12,17 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     {
         private readonly ProjectSteps projectSteps;
         private readonly SpecFlowConfigurationDriver configurationDriver;
-        private readonly NUnitTestExecutionDriver nUnitTestExecutionDriver;
+        private readonly NUnit3TestExecutionDriver nUnit3TestExecutionDriver;
+        private readonly NUnit2TestExecutionDriver nUnit2TestExecutionDriver;
         private readonly XUnitTestExecutionDriver xUnitTestExecutionDriver;
         private readonly MsTestTestExecutionDriver msTestTestExecutionDriver;
 
-        public ExecutionSteps(NUnitTestExecutionDriver nUnitTestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
+        public ExecutionSteps(NUnit3TestExecutionDriver nUnit3TestExecutionDriver, NUnit2TestExecutionDriver nUnit2TestExecutionDriver, XUnitTestExecutionDriver xUnitTestExecutionDriver,
             SpecFlowConfigurationDriver configurationDriver, MsTestTestExecutionDriver msTestTestExecutionDriver,
             ProjectSteps projectSteps)
         {
-            this.nUnitTestExecutionDriver = nUnitTestExecutionDriver;
+            this.nUnit3TestExecutionDriver = nUnit3TestExecutionDriver;
+            this.nUnit2TestExecutionDriver = nUnit2TestExecutionDriver;
             this.xUnitTestExecutionDriver = xUnitTestExecutionDriver;
             this.projectSteps = projectSteps;
             this.msTestTestExecutionDriver = msTestTestExecutionDriver;
@@ -33,13 +35,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             configurationDriver.UnitTestProviderName.Should().Be("NUnit");
 
             projectSteps.EnsureCompiled();
-            nUnitTestExecutionDriver.ExecuteWithNUnit3();
+            nUnit3TestExecutionDriver.Execute();
         }
 
         [When(@"I execute the tests tagged with '@(.+)'")]
         public void WhenIExecuteTheTestsTaggedWithTag(string tag)
         {
-            nUnitTestExecutionDriver.Include = tag;
+            nUnit3TestExecutionDriver.Include = tag;
             WhenIExecuteTheTests();
         }
 
@@ -51,10 +53,10 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             switch (unitTestProvider)
             {
                 case "NUnit.2":
-                    nUnitTestExecutionDriver.ExecuteOutProcWithNUnit2();
+                    nUnit2TestExecutionDriver.Execute();
                     break;
                 case "NUnit":
-                    nUnitTestExecutionDriver.ExecuteWithNUnit3();
+                    nUnit3TestExecutionDriver.Execute();
                     break;
                 case "MsTest":
                     msTestTestExecutionDriver.Execute();
