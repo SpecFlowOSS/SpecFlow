@@ -72,6 +72,7 @@
     <Compile Include="GeneratorPluginTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />
+    <Compile Include="NUnit3GeneratorProviderTests.cs" />
     <Compile Include="ParserHelper.cs" />
     <Compile Include="MsTestGeneratorProviderTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
