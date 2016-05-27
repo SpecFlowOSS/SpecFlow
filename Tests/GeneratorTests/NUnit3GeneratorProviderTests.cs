@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 var sampleTestGeneratorProvider =
                     new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
-                var converter = MSestGeneratorProviderTests.CreateUnitTestConverter(sampleTestGeneratorProvider);
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
 

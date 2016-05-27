@@ -125,7 +125,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
-                var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
@@ -147,7 +147,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
-                var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
-                var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
@@ -191,7 +191,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
 
-                var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
 
                 Assert.IsNotNull(code);
@@ -204,14 +204,6 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 var descriptionAttributeForFourthScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_ExampleSet1_AndAnother").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
             }
-        }
-
-        public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
-        {
-            var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            return new UnitTestFeatureGenerator(testGeneratorProvider, codeDomHelper,
-                                                 new GeneratorConfiguration { AllowRowTests = true, AllowDebugGeneratedFiles = true },
-                                                 new DecoratorRegistryStub());
         }
     }
 }

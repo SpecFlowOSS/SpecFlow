@@ -71,6 +71,7 @@
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
     <Compile Include="GeneratorPluginTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
+    <Compile Include="IUnitTestGeneratorProviderExtensions.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="NUnit3GeneratorProviderTests.cs" />
     <Compile Include="ParserHelper.cs" />
