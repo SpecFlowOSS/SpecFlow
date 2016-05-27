@@ -77,7 +77,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 13
  testRunner.And("the following binding class", @"[Binding]
 [Scope(Tag = ""mytag"")]
 public class Hooks
@@ -89,9 +89,9 @@ public class Hooks
 		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: HookForBeforeScenarioHook"");
 	}
 }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 27
  testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
+#line 28
  testRunner.Then("the hook \'HookForBeforeScenarioHook\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
