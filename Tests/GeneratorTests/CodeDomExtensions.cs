@@ -43,5 +43,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 yield return arguments.Value.As<CodePrimitiveExpression>().Value;
             }
         }
+
+        public static IEnumerable<CodeAttributeDeclaration> CustomAttributes(this CodeTypeDeclaration codeTypeDeclaration)
+        {
+            foreach (var customAttribute in codeTypeDeclaration.CustomAttributes)
+            {
+
+                var attribute = customAttribute as CodeAttributeDeclaration;
+                if (attribute != null)
+                {
+                    yield return attribute;
+                }
+            }
+        }
     }
 }

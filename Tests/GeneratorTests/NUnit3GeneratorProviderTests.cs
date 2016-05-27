@@ -27,6 +27,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 When I do something
                 Then something should happen";
 
+        private const string IgnoredFeatureFile = @"
+            @ignore
+            Feature: Ignored feature file";
+
+        private const string FeatureFileWithIgnoredScenario = @"
+            Feature: Feature With Ignored Scenario
+
+            @ignore
+            Scenario: Ignored scenario";
+
         [Test]
         public void ShouldNotGenerateObsoleteTestFixtureSetUpAttribute()
         {
@@ -131,6 +141,40 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .HasFlag(UnitTestGeneratorTraits.ParallelExecution)
                 .Should()
                 .BeTrue("trait ParallelExecution was not found");
+        }
+
+        [Test]
+        public void ShouldProvideAReasonForIgnoringAFeature()
+        {
+            var code = GenerateCodeNamespaceFromFeature(IgnoredFeatureFile);
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.IgnoreAttribute");
+
+            attribute.Should().NotBeNull("Ignore attribute was not found");
+
+            attribute.ArgumentValues()
+                .Single()
+                .As<string>()
+                .Should()
+                .NotBeNullOrWhiteSpace("No reason for ignoring the feature was given");
+        }
+
+        [Test]
+        public void ShouldProvideAReasonForIgnoringAScenario()
+        {
+            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithIgnoredScenario);
+
+            var attributes = code.Class().Members().ToArray().Single(m => m.Name == "IgnoredScenario").CustomAttributes().ToArray();
+            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.IgnoreAttribute");
+
+            attribute.Should().NotBeNull("Ignore attribute was not found");
+
+            attribute.ArgumentValues()
+                .Single()
+                .As<string>()
+                .Should()
+                .NotBeNullOrWhiteSpace("No reason for ignoring the scenario was given");
         }
     }
 }
