@@ -18,100 +18,100 @@ namespace TechTalk.SpecFlow.GeneratorTests
         private const string TestDescriptionAttributeName = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
         private const string SampleFeatureFile = @"
             Feature: Sample feature file
-            
+
             Scenario: Simple scenario
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline
-				Given there is something
+            Scenario Outline: Simple Scenario Outline
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           |
-				| something      |
-				| something else |
+                Then something should happen
+            Examples:
+                | what           |
+                | something      |
+                | something else |
 ";
 
         private const string SampleFeatureFileWithMultipleExampleSets = @"
             Feature: Sample feature file
-            
+
             Scenario: Simple scenario
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline
-				Given there is something
+            Scenario Outline: Simple Scenario Outline
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           |
-				| something      |
-				| something else |
-			Examples: 
-				| what           |
-				| another        |
-				| and another    |
+                Then something should happen
+            Examples:
+                | what           |
+                | something      |
+                | something else |
+            Examples:
+                | what           |
+                | another        |
+                | and another    |
 ";
         private const string SampleFeatureFileSameFirstColumn = @"
             Feature: Sample feature file
-            
+
             Scenario: Simple scenario
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline
-				Given there is something
+            Scenario Outline: Simple Scenario Outline
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           | what else       |
-				| something      | thing           |
-				| something      | different thing |
+                Then something should happen
+            Examples:
+                | what           | what else       |
+                | something      | thing           |
+                | something      | different thing |
 ";
         private const string SampleFeatureFileMultipleColumns = @"
             Feature: Sample feature file
-            
+
             Scenario: Simple scenario
-				Given there is something
-				When I do something
-				Then something should happen
+                Given there is something
+                When I do something
+                Then something should happen
 
             @mytag
-			Scenario Outline: Simple Scenario Outline
-				Given there is something
+            Scenario Outline: Simple Scenario Outline
+                Given there is something
                     """"""
                       long string
                     """"""
-				When I do <what>
+                When I do <what>
                     | foo | bar |
                     | 1   | 2   |
-				Then something should happen
-			Examples: 
-				| what           | what else       |
-				| something      | thing           |
-				| something else | different thing |
+                Then something should happen
+            Examples:
+                | what           | what else       |
+                | something      | thing           |
+                | something else | different thing |
 ";
 
         [Test]
@@ -124,10 +124,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 Assert.IsNotNull(document);
 
                 var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
-         
+
                 var converter = CreateUnitTestConverter(sampleTestGeneratorProvider);
                 CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
-                
+
                 Assert.IsNotNull(code);
                 var descriptionAttributeForFirstScenarioOutline = code.Class().Members().Single(m => m.Name == "SimpleScenarioOutline_Something").CustomAttributes().Single(a => a.Name == TestDescriptionAttributeName);
                 descriptionAttributeForFirstScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: something");
@@ -205,7 +205,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
             }
         }
-       
+
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
         {
             var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
