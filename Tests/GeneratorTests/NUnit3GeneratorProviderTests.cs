@@ -7,6 +7,9 @@ using FluentAssertions;
 
 using NUnit.Framework;
 
+using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Utils;
@@ -43,15 +46,23 @@ namespace TechTalk.SpecFlow.GeneratorTests
             using (var reader = new StringReader(feature))
             {
                 SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
-                SpecFlowDocument document = parser.Parse(reader, null);
+                SpecFlowDocument document = parser.Parse(reader, "test.feature");
 
-                var sampleTestGeneratorProvider = CreateTestGeneratorProvider();
+                var featureGenerator = CreateFeatureGenerator();
 
-                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
-                code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+                code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
 
             return code;
+        }
+
+        private static IFeatureGenerator CreateFeatureGenerator()
+        {
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            container.RegisterInstanceAs(CreateTestGeneratorProvider());
+
+            var generator = container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
+            return generator;
         }
 
         private static NUnit3TestGeneratorProvider CreateTestGeneratorProvider()
