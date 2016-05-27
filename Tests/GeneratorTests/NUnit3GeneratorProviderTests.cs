@@ -45,14 +45,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
                 SpecFlowDocument document = parser.Parse(reader, null);
 
-                var sampleTestGeneratorProvider =
-                    new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+                var sampleTestGeneratorProvider = CreateTestGeneratorProvider();
 
                 var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
                 code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
 
             return code;
+        }
+
+        private static NUnit3TestGeneratorProvider CreateTestGeneratorProvider()
+        {
+            return new NUnit3TestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
         }
 
         [Test]
@@ -94,6 +98,28 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .FirstOrDefault(a => a.Name == "NUnit.Framework.OneTimeTearDownAttribute")
                 .Should()
                 .NotBeNull();
+        }
+
+        [Test]
+        public void ShouldHaveRowTestsTrait()
+        {
+            var nUnit3TestGeneratorProvider = CreateTestGeneratorProvider();
+
+            nUnit3TestGeneratorProvider.GetTraits()
+                .HasFlag(UnitTestGeneratorTraits.RowTests)
+                .Should()
+                .BeTrue("trait RowTests was not found");
+        }
+
+        [Test]
+        public void ShouldHaveParallelExecutionTrait()
+        {
+            var nUnit3TestGeneratorProvider = CreateTestGeneratorProvider();
+
+            nUnit3TestGeneratorProvider.GetTraits()
+                .HasFlag(UnitTestGeneratorTraits.ParallelExecution)
+                .Should()
+                .BeTrue("trait ParallelExecution was not found");
         }
     }
 }
