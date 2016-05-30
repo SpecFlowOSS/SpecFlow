@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Specs.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ScopedHooks", "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ScopedHooks", "Hooks are only triggered once, also if the scope is there multiple times", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -65,19 +65,19 @@ namespace TechTalk.SpecFlow.Specs.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Scope on Binding class and method triggers hook only once")]
-        public virtual void ScopeOnBindingClassAndMethodTriggersHookOnlyOnce()
+        [NUnit.Framework.DescriptionAttribute("One hook is called once")]
+        public virtual void OneHookIsCalledOnce()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Scope on Binding class and method triggers hook only once", ((string[])(null)));
-#line 3
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("One hook is called once", ((string[])(null)));
+#line 5
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-#line 4
+#line 6
  testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\n\n@mytag\nScenario: Simple Scenario\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 12
+#line 14
  testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 15
  testRunner.And("the following binding class", @"[Binding]
 [Scope(Tag = ""mytag"")]
 public class Hooks
@@ -85,14 +85,140 @@ public class Hooks
 	[BeforeScenario(""mytag"")]
 	public void BeforeScenarioHook()
 	{
-		Console.WriteLine(""HookForBeforeScenarioHook"");
 		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: HookForBeforeScenarioHook"");
 	}
 }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
- testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
  testRunner.Then("the hook \'HookForBeforeScenarioHook\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Two hooks for the same event are called once each")]
+        public virtual void TwoHooksForTheSameEventAreCalledOnceEach()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two hooks for the same event are called once each", ((string[])(null)));
+#line 32
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 33
+ testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\n\n@mytag\nScenario: Simple Scenario\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 41
+ testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 42
+ testRunner.And("the following binding class", @"[Binding]
+[Scope(Tag = ""mytag"")]
+public class Hooks
+{
+	[BeforeScenario(""mytag"")]
+	public void BeforeScenarioHook()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook1"");
+	}
+
+	[BeforeScenario(""mytag"")]
+	public void BeforeScenarioHook_TheOtherOne()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook2"");
+	}
+}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 62
+ testRunner.Then("the hook \'Hook1\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 63
+ testRunner.And("the hook \'Hook2\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Two hooks for diffenrent events are called once each")]
+        public virtual void TwoHooksForDiffenrentEventsAreCalledOnceEach()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two hooks for diffenrent events are called once each", ((string[])(null)));
+#line 66
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 67
+ testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\n\n@mytag\nScenario: Simple Scenario\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 75
+ testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 76
+ testRunner.And("the following binding class", @"[Binding]
+[Scope(Tag = ""mytag"")]
+public class Hooks
+{
+	[BeforeScenario(""mytag"")]
+	public void BeforeScenarioHook()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook1"");
+	}
+
+	[AfterScenario(""mytag"")]
+	public void AfterScenarioHook()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook2"");
+	}
+}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 96
+ testRunner.Then("the hook \'Hook1\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 97
+ testRunner.And("the hook \'Hook2\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Two hooks for the same event with same name but in different classes are called o" +
+            "nce each")]
+        public virtual void TwoHooksForTheSameEventWithSameNameButInDifferentClassesAreCalledOnceEach()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Two hooks for the same event with same name but in different classes are called o" +
+                    "nce each", ((string[])(null)));
+#line 99
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+#line 100
+ testRunner.Given("there is a feature file in the project as", "Feature: Simple Feature\n\n@mytag\nScenario: Simple Scenario\nWhen I do something", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 108
+ testRunner.And("all steps are bound and pass", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 109
+ testRunner.And("the following binding class", @"[Binding]
+[Scope(Tag = ""mytag"")]
+public class Hooks
+{
+	[BeforeScenario(""mytag"")]
+	public void BeforeScenarioHook()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook1"");
+	}
+}
+
+[Binding]
+[Scope(Tag = ""mytag"")]
+public class AnotherHooks
+{
+	[BeforeScenario(""mytag"")]
+	public void BeforeScenarioHook()
+	{
+		System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, ""hooks.log""), ""-> hook: Hook2"");
+	}
+}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 133
+ testRunner.When("I execute the tests", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 134
+ testRunner.Then("the hook \'Hook1\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 135
+ testRunner.And("the hook \'Hook2\' is executed once", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

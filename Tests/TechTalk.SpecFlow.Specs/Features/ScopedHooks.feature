@@ -1,6 +1,8 @@
 ﻿Feature: ScopedHooks
+	Hooks are only triggered once, also if the scope is there multiple times
 
-Scenario: Scope on Binding class and method triggers hook only once
+
+Scenario: One hook is called once
 	Given there is a feature file in the project as
          """
 			Feature: Simple Feature
@@ -19,11 +21,116 @@ Scenario: Scope on Binding class and method triggers hook only once
 			[BeforeScenario("mytag")]
 			public void BeforeScenarioHook()
 			{
-				Console.WriteLine("HookForBeforeScenarioHook");
 				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: HookForBeforeScenarioHook");
 			}
 		}
 		"""
 	When I execute the tests
 	Then the hook 'HookForBeforeScenarioHook' is executed once
+	
+
+Scenario: Two hooks for the same event are called once each
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			@mytag
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And all steps are bound and pass
+	And the following binding class
+		"""
+		[Binding]
+		[Scope(Tag = "mytag")]
+		public class Hooks
+		{
+			[BeforeScenario("mytag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook1");
+			}
+
+			[BeforeScenario("mytag")]
+			public void BeforeScenarioHook_TheOtherOne()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook2");
+			}
+		}
+		"""
+	When I execute the tests
+	Then the hook 'Hook1' is executed once
+	And the hook 'Hook2' is executed once
+	
+
+Scenario: Two hooks for diffenrent events are called once each
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			@mytag
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And all steps are bound and pass
+	And the following binding class
+		"""
+		[Binding]
+		[Scope(Tag = "mytag")]
+		public class Hooks
+		{
+			[BeforeScenario("mytag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook1");
+			}
+
+			[AfterScenario("mytag")]
+			public void AfterScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook2");
+			}
+		}
+		"""
+	When I execute the tests
+	Then the hook 'Hook1' is executed once
+	And the hook 'Hook2' is executed once
+	
+Scenario: Two hooks for the same event with same name but in different classes are called once each
+	Given there is a feature file in the project as
+         """
+			Feature: Simple Feature
+
+			@mytag
+			Scenario: Simple Scenario
+			When I do something
+         """
+	And all steps are bound and pass
+	And the following binding class
+		"""
+		[Binding]
+		[Scope(Tag = "mytag")]
+		public class Hooks
+		{
+			[BeforeScenario("mytag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook1");
+			}
+		}
+
+		[Binding]
+		[Scope(Tag = "mytag")]
+		public class AnotherHooks
+		{
+			[BeforeScenario("mytag")]
+			public void BeforeScenarioHook()
+			{
+				System.IO.File.AppendAllText(System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, "hooks.log"), "-> hook: Hook2");
+			}
+		}
+		"""
+	When I execute the tests
+	Then the hook 'Hook1' is executed once
+	And the hook 'Hook2' is executed once
 	
