@@ -37,5 +37,23 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             return this.GetShortDisplayText();
         }
+
+        protected bool Equals(RuntimeBindingMethod other)
+        {
+            return Equals(MethodInfo, other.MethodInfo);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RuntimeBindingMethod) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (MethodInfo != null ? MethodInfo.GetHashCode() : 0);
+        }
     }
 }
