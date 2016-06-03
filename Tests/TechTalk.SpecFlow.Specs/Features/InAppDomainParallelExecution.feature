@@ -152,31 +152,3 @@ Scenario: TraceListener should be called synchronously
 		| Total | Succeeded |
 		| 25    | 25        |
 
-
-Scenario Outline: Current context cannot be used in multi-threaded execution
-	Given there is a feature file in the project as
-		"""
-		Feature: Feature with <context>.Current
-		Scenario: Simple Scenario
-	      When I use <context>.Current
-		"""
-	And the following step definition
-         """
-         [When(@"I use <context>.Current")]
-		 public void WhenIUseContextCurrent()
-		 {
-            System.Threading.Thread.Sleep(200);
-            Console.WriteLine(<context>.Current);
-		 }
-         """
-    When I execute the tests with NUnit
-    Then the execution log should contain text 'Was parallel'
-	And the execution summary should contain
-		| Failed |
-		| 1      |
-
-Examples: 
-    | context             |
-    | ScenarioContext     |
-    | FeatureContext      |
-    | ScenarioStepContext |
