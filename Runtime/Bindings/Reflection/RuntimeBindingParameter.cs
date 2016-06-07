@@ -25,5 +25,23 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             return string.Format("{0}: {1}", ParameterName, Type);
         }
+
+        protected bool Equals(RuntimeBindingParameter other)
+        {
+            return Equals(parameterInfo, other.parameterInfo);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RuntimeBindingParameter) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (parameterInfo != null ? parameterInfo.GetHashCode() : 0);
+        }
     }
 }

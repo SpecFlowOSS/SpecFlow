@@ -81,7 +81,10 @@ namespace TechTalk.SpecFlow.Bindings
 
         public virtual void RegisterHookBinding(IHookBinding hookBinding)
         {
-            GetHookListForRegister(hookBinding.HookType).Add(hookBinding);
+            List<IHookBinding> hookRegistry = GetHookListForRegister(hookBinding.HookType);
+
+            if (!hookRegistry.Contains(hookBinding))
+                hookRegistry.Add(hookBinding);
         }
 
         public virtual void RegisterStepArgumentTransformationBinding(IStepArgumentTransformationBinding stepArgumentTransformationBinding)

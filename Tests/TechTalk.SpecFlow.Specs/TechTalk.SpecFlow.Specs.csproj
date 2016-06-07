@@ -131,6 +131,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StepDefinitionReport.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\ScopedHooks.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScopedHooks.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\XUnit2Provider.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -259,6 +264,10 @@
     <None Include="Features\Reports\StepDefinitionReport.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>StepDefinitionReport.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\ScopedHooks.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ScopedHooks.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\XUnit2Provider.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
