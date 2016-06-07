@@ -172,7 +172,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var newContext = new FeatureContext(featureInfo, bindingCulture);
             featureContextManager.Init(newContext);
-            FeatureContext.Current = newContext;
         }
 
         public void CleanupFeatureContext()
@@ -185,7 +184,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             var scenarioContainer = containerBuilder.CreateScenarioContainer(testThreadContainer, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext);
-            ScenarioContext.Current = newContext;
         }
 
         public void CleanupScenarioContext()
@@ -197,13 +195,11 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var newContext = new ScenarioStepContext(stepInfo);
             stepContextManager.Init(newContext);
-            ScenarioStepContext.Current = newContext;
         }
 
         public void CleanupStepContext()
         {
             stepContextManager.Cleanup();
-            ScenarioStepContext.Current = stepContextManager.Instance;
         }
 
         public void Dispose()

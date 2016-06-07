@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using BoDi;
 using TechTalk.SpecFlow.Bindings.Discovery;
@@ -122,14 +123,7 @@ namespace TechTalk.SpecFlow
                     if (!testRunnerRegistry.TryGetValue(threadId, out testRunner))
                     {
                         testRunner = CreateTestRunner(threadId);
-                        testRunnerRegistry.Add(threadId, testRunner);
-
-                        if (IsMultiThreaded)
-                        {
-                            FeatureContext.DisableSingletonInstance();
-                            ScenarioContext.DisableSingletonInstance();
-                            ScenarioStepContext.DisableSingletonInstance();
-                        }
+                        testRunnerRegistry.Add(threadId, testRunner);                        
                     }
                 }
             }
@@ -174,6 +168,7 @@ namespace TechTalk.SpecFlow
             return testRunnerManager;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)] //potential problem when getting inlined because of Assembly.GetCallingAssembly() - http://www.ticklishtechs.net/2010/03/04/be-careful-when-using-getcallingassembly-and-always-use-the-release-build-for-testing/
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
         {
             testAssembly = testAssembly ?? Assembly.GetCallingAssembly();

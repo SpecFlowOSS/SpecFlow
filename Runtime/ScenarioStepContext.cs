@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 
 namespace TechTalk.SpecFlow
@@ -7,33 +8,8 @@ namespace TechTalk.SpecFlow
     public class ScenarioStepContext : SpecFlowContext
     {
         #region Singleton
-        private static bool isCurrentDisabled = false;
-        private static ScenarioStepContext current;
-        public static ScenarioStepContext Current
-        {
-            get
-            {
-                if (isCurrentDisabled)
-                    throw new SpecFlowException("The ScenarioStepContext.Current static accessor cannot be used in multi-threaded execution. Try injecting the scenario context to the binding class. See http://go.specflow.org/doc-multithreaded for details.");
-                if (current == null)
-                {
-                    Debug.WriteLine("Accessing NULL ScenarioStepContext");
-                }
-                return current;
-            }
-            internal set
-            {
-                if (!isCurrentDisabled)
-                    current = value;
-            }
-        }
+        public static ScenarioStepContext Current => TestRunnerManager.GetTestRunner(Assembly.GetCallingAssembly()).ScenarioContext.StepContext;
 
-        internal static void DisableSingletonInstance()
-        {
-            isCurrentDisabled = true;
-            Thread.MemoryBarrier();
-            current = null;
-        }
         #endregion
 
         public StepInfo StepInfo { get; private set; }
