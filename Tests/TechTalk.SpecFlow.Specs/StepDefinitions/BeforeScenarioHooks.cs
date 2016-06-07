@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow;
+
 using TechTalk.SpecFlow.Specs.Drivers;
 
 namespace TechTalk.SpecFlow.Specs.StepDefinitions
 {
     [Binding]
-    public sealed class AfterScenarioHooks
+    public sealed class BeforeScenarioHooks
     {
-        [AfterTestRun]
-        public static void AfterTestRun()
+        [BeforeTestRun]
+        public static void BeforeTestRun()
         {
             var directoryForTestProjects = InputProjectDriver.DetermineDirectoryForTestProjects();
 

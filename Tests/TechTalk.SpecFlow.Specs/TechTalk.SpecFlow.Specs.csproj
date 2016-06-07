@@ -205,7 +205,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TaggedExamples.feature</DependentUpon>
     </Compile>
-    <Compile Include="StepDefinitions\AfterScenarioHooks.cs" />
+    <Compile Include="StepDefinitions\BeforeScenarioHooks.cs" />
     <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
     <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
