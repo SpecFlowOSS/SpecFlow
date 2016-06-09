@@ -6,6 +6,8 @@ using System.Text;
 using BoDi;
 using NUnit.Framework;
 using FluentAssertions;
+using Moq;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -14,11 +16,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
     {
         private TestRunner testRunner;
 
-        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerMocks = null)
+        private ScenarioContext CreateScenarioContext(Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
             IObjectContainer testThreadContainer;
-            testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerMocks);
-            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]));
+            testRunner = TestObjectFactories.CreateTestRunner(out testThreadContainer, registerTestThreadMocks, registerGlobalMocks);
+            return new ScenarioContext(new ObjectContainer(testThreadContainer), new ScenarioInfo("sample scenario", new string[0]), testThreadContainer.Resolve<IBindingInstanceResolver>());
         }
 
         [Test]
@@ -74,6 +76,23 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void GetBindingInstance_should_return_instance_through_BindingInstanceResolver()
+        {
+            var expectedInstance = new SimpleClass();
+
+            var scenarioContext = CreateScenarioContext(registerGlobalMocks: (globalContainer =>
+            {
+                var bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
+                bindingInstanceResolverMock.Setup(m => m.ResolveBindingInstance(typeof(SimpleClass), It.IsAny<IObjectContainer>()))
+                    .Returns(expectedInstance);
+                globalContainer.RegisterInstanceAs(bindingInstanceResolverMock.Object);
+            }));
+
+            var result = scenarioContext.GetBindingInstance(typeof(SimpleClass));
+            result.Should().Be(expectedInstance);
+        }
+
+        [Test]
         public void Should_dispose_disposable_binding_instances()
         {
             var scenarioContext = CreateScenarioContext();
@@ -118,12 +137,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
             result.Should().NotBeNull();
         }
 
-        [Test, ExpectedException(typeof(ObjectContainerException))]
+        [Test]
         public void Should_throw_error_if_class_have_multiple_ctor_with_max_parameter_count()
         {
             var scenarioContext = CreateScenarioContext();
 
-            scenarioContext.GetBindingInstance(typeof(ClassWithMultipleMaxParamCountCtor));
+            Assert.Throws<ObjectContainerException>(() => scenarioContext.GetBindingInstance(typeof(ClassWithMultipleMaxParamCountCtor)));
         }
 
         public class SimpleClass

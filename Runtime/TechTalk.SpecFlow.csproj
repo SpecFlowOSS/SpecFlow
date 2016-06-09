@@ -55,6 +55,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Assist\EnumerableProjection.cs" />
+    <Compile Include="Assist\FindInSetExtensionMethods.cs" />
     <Compile Include="Assist\FormattingTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SafetyTableDiffExceptionBuilder.cs" />
     <Compile Include="Assist\SetComparer.cs" />
@@ -113,8 +114,10 @@
     <Compile Include="Assist\ValueRetrievers\UShortValueRetriever.cs" />
     <Compile Include="BindingSkeletons\FileBasedSkeletonTemplateProvider.cs" />
     <Compile Include="BindingSkeletons\ISkeletonTemplateProvider.cs" />
+    <Compile Include="BindingSkeletons\ParameterNameExtensions.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonProvider.cs" />
     <Compile Include="BindingSkeletons\StepDefinitionSkeletonStyle.cs" />
+    <Compile Include="BindingSkeletons\StepParameterNameGenerator.cs" />
     <Compile Include="BindingSkeletons\StepTextAnalyzer.cs" />
     <Compile Include="Bindings\HookType.cs" />
     <Compile Include="Bindings\BindingScope.cs" />
@@ -152,6 +155,8 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\IBindingInstanceResolver.cs" />
     <Compile Include="Infrastructure\ContextManagers\IInternalContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagers\InternalContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagers\StackedInternalContextManager.cs" />

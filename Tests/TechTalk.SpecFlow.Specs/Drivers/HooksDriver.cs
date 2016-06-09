@@ -28,15 +28,15 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public string GetHookLogStatement(string methodName)
         {
-            EnsureInitialized();
+            //EnsureInitialized();
             return string.Format(@"System.IO.File.AppendAllText(@""{1}"", ""-> hook: {0}"");", methodName, HookLogPath);
         }
 
-        private void EnsureInitialized()
+        public void EnsureInitialized()
         {
             if (isInitialized)
                 return;
-
+            
             //reset file
             File.WriteAllText(HookLogPath, "");
             isInitialized = true;

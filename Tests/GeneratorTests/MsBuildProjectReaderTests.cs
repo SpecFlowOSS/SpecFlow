@@ -13,8 +13,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_parse_csproj_file_correctly()
         {
-            string text = Path.Combine(Directory.GetCurrentDirectory(), "Data\\sampleCsProjectfile.csproj");
-            SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(text);
+            var directoryName = Path.GetDirectoryName(this.GetType().Assembly.Location);
+            string projectFilePath = Path.Combine(directoryName, "Data\\sampleCsProjectfile.csproj");
+            SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
             specflowProjectfile.FeatureFiles.Count.Should().Be(3);
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowDefinition\CreateWorkflowDefinition.feature").Should().NotBeNull();

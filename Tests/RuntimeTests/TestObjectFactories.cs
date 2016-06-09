@@ -12,45 +12,33 @@ namespace TechTalk.SpecFlow.RuntimeTests
 {
     public static class TestObjectFactories
     {
-        static internal TestRunner CreateTestRunner(out IObjectContainer container, Action<IObjectContainer> registerMocks = null)
+        static internal TestRunner CreateTestRunner(out IObjectContainer createThreadContainer, Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
-            container = CreateDefaultTestThreadContainer();
-
-            if (registerMocks != null)
-                registerMocks(container);
-
-            return (TestRunner)container.Resolve<ITestRunner>();
+            createThreadContainer = CreateDefaultTestThreadContainer(registerTestThreadMocks: registerTestThreadMocks, registerGlobalMocks: registerGlobalMocks);
+            return (TestRunner)createThreadContainer.Resolve<ITestRunner>();
         }
 
-        static internal TestRunner CreateTestRunner(Action<IObjectContainer> registerMocks = null)
+        static internal TestRunner CreateTestRunner(Action<IObjectContainer> registerTestThreadMocks = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
             IObjectContainer container;
-            return CreateTestRunner(out container, registerMocks);
+            return CreateTestRunner(out container, registerTestThreadMocks, registerGlobalMocks);
         }
-        static internal TestRunner CreateTestRunnerRegisteringGlobalMocks(out IObjectContainer container, Action<IObjectContainer> registerMocks)
-        {
-            container = CreateDefaultTestThreadContainer(null,registerMocks);
-
-            return (TestRunner)container.Resolve<ITestRunner>();
-        }
-
 
         internal static IObjectContainer CreateDefaultGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)
         {
             var instance = new ContainerBuilder();
             var globalContainer = instance.CreateGlobalContainer(configurationProvider);
-
-            if(registerGlobalMocks!=null)
-                registerGlobalMocks(globalContainer);
-
+            registerGlobalMocks?.Invoke(globalContainer);
             return globalContainer;
         }
 
-        internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null)
+        internal static IObjectContainer CreateDefaultTestThreadContainer(IRuntimeConfigurationProvider configurationProvider = null, Action<IObjectContainer> registerGlobalMocks = null, Action<IObjectContainer> registerTestThreadMocks = null)
         {
             var instance = new ContainerBuilder();
             var globalContainer = CreateDefaultGlobalContainer(configurationProvider, registerGlobalMocks);
-            return instance.CreateTestThreadContainer(globalContainer);
+            var testThreadContainer = instance.CreateTestThreadContainer(globalContainer);
+            registerTestThreadMocks?.Invoke(testThreadContainer);
+            return testThreadContainer;
         }
 
         internal static IObjectContainer CreateDefaultScenarioContainer(StringConfigProvider configurationHolder)

@@ -9,6 +9,8 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
+    //NOTE: Please update https://github.com/techtalk/SpecFlow/wiki/Available-Containers-&-Registrations if you change registration defaults
+
     public partial class DefaultDependencyProvider : IDefaultDependencyProvider
     {
         partial void RegisterUnitTestProviders(ObjectContainer container);
@@ -32,6 +34,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<BindingFactory, IBindingFactory>();
             container.RegisterTypeAs<StepDefinitionRegexCalculator, IStepDefinitionRegexCalculator>();
             container.RegisterTypeAs<BindingInvoker, IBindingInvoker>();
+            container.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
 
             container.RegisterTypeAs<StepDefinitionSkeletonProvider, IStepDefinitionSkeletonProvider>();
             container.RegisterTypeAs<DefaultSkeletonTemplateProvider, ISkeletonTemplateProvider>();
