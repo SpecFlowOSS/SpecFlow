@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0-*",
     "buildOptions": {
-        "outputName": "TechTalk.SpecFlow.Reporting"        
+        "outputName": "specflow",
+        "emitEntryPoint": true
     },
     "dependencies": {
-        "Gherkin": "4.0.0",
         "Runtime": {
             "version": "*",
             "target": "project"
@@ -20,13 +20,19 @@
         "Generator": {
             "version": "*",
             "target": "project"
+        },
+        "Reporting": {
+            "version": "*",
+            "target": "project"
         }
     },
    
     "frameworks": {
         "net45": {
             "frameworkAssemblies": {
-                "Microsoft.Build": "4.0.0.0"
+				"Microsoft.Build": "4.0.0.0",
+                "Microsoft.Build.Framework": "4.0.0.0",
+                "Microsoft.Build.Utilities.v4.0": "4.0.0.0"
             }
         }
     }

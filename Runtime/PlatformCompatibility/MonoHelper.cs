@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TechTalk.SpecFlow.Compatibility
 {
-    internal class MonoHelper
+    public class MonoHelper
     {
         public static bool IsMono { get; private set; }
 
