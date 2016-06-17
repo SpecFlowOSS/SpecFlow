@@ -64,10 +64,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TechTalk.SpecFlow, Version=1.9.0.77, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="xunit">
       <HintPath>..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
     </Reference>
@@ -104,6 +100,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AcessingContexts.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\AsyncSupport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsyncSupport.feature</DependentUpon>
     </Compile>
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
@@ -205,6 +206,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TaggedExamples.feature</DependentUpon>
     </Compile>
+    <Compile Include="StepDefinitions\AsyncSteps.cs" />
     <Compile Include="StepDefinitions\BeforeScenarioHooks.cs" />
     <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
     <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
@@ -241,6 +243,10 @@
     <None Include="Features\AcessingContexts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\AsyncSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AsyncSupport.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\BasicExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -348,6 +354,10 @@
     <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
       <Project>{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}</Project>
       <Name>TechTalk.SpecFlow.Reporting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+      <Project>{413ee28c-4f89-4c6f-ba1e-2cdee4cd43b4}</Project>
+      <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
