@@ -1,0 +1,39 @@
+﻿{
+  "version": "1.0.0-*",
+    "buildOptions": {
+        "outputName": "TechTalk.SpecFlow.Generator",
+        "compile": {
+            "include": [
+                "**.cs",
+                "..\\Runtime\\PlatformCompatibility\\MonoHelper.cs"
+            ]
+        }
+    },
+    "dependencies": {
+        "Gherkin": "4.0.0",
+        "Runtime": {
+            "version": "*",
+            "target": "project"
+        },
+        "Utils": {
+            "version": "*",
+            "target": "project"
+        },
+        "Parser": {
+            "version": "*",
+            "target": "project"
+        },
+        "Generator": {
+            "version": "*",
+            "target": "project"
+        }
+    },
+   
+    "frameworks": {
+        "net45": {
+            "frameworkAssemblies": {
+                "Microsoft.Build": "4.0.0.0"
+            }
+        }
+    }
+}
