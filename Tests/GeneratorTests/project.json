@@ -1,0 +1,39 @@
+﻿{
+  "version": "1.0.0-*",
+    "buildOptions": {
+        "outputName": "TechTalk.SpecFlow.GeneratorTests",
+        "keyFile": "..\\..\\specflow.snk"
+    },
+    "dependencies": {
+        "NUnit": "3.2.1",
+        "FluentAssertions": "3.3.0",
+        "Moq": "4.0.10827",
+        "RhinoMocks": "3.6.1",
+        "Runtime": {
+            "version": "*",
+            "target": "project"
+        },
+        "Utils": {
+            "version": "*",
+            "target": "project"
+        },
+        "Parser": {
+            "version": "*",
+            "target": "project"
+        },
+        "Generator": {
+            "version": "*",
+            "target": "project"
+        },
+        "Reporting": {
+            "version": "*",
+            "target": "project"
+        }
+    },
+   
+    "frameworks": {
+        "net45": {
+            
+        }
+    }
+}

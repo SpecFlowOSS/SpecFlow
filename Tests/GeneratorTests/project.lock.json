@@ -1,0 +1,301 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "BoDi.Embedded/1.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Configuration"
+        ]
+      },
+      "FluentAssertions/3.3.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net45/FluentAssertions.Core.dll": {},
+          "lib/net45/FluentAssertions.dll": {}
+        },
+        "runtime": {
+          "lib/net45/FluentAssertions.Core.dll": {},
+          "lib/net45/FluentAssertions.dll": {}
+        }
+      },
+      "Gherkin/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Gherkin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Gherkin.dll": {}
+        }
+      },
+      "Moq/4.0.10827": {
+        "type": "package",
+        "compile": {
+          "lib/NET40/Moq.dll": {}
+        },
+        "runtime": {
+          "lib/NET40/Moq.dll": {}
+        }
+      },
+      "NUnit/3.2.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/nunit.framework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/nunit.framework.dll": {}
+        }
+      },
+      "RhinoMocks/3.6.1": {
+        "type": "package",
+        "compile": {
+          "lib/net/Rhino.Mocks.dll": {}
+        },
+        "runtime": {
+          "lib/net/Rhino.Mocks.dll": {}
+        }
+      },
+      "Generator/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Gherkin": "4.0.0",
+          "Parser": "(, )",
+          "Runtime": "(, )",
+          "Utils": "(, )"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.Build"
+        ]
+      },
+      "Parser/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Gherkin": "4.0.0"
+        }
+      },
+      "Reporting/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Generator": "(, )",
+          "Gherkin": "4.0.0",
+          "Parser": "(, )",
+          "Runtime": "(, )",
+          "Utils": "(, )"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.Build"
+        ]
+      },
+      "Runtime/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "BoDi.Embedded": "1.2.0"
+        },
+        "frameworkAssemblies": [
+          "System.Linq",
+          "System.Xml",
+          "System.Xml.Linq"
+        ]
+      },
+      "Utils/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5"
+      }
+    }
+  },
+  "libraries": {
+    "BoDi.Embedded/1.2.0": {
+      "sha512": "0EfW6uSU7WV79aDJL+eEwvKWvyXTOGd/G/Q+tl89jzwiyhG8sZLHvS8Iu9MfNJc8XAuHJdJj3EDTHvBFJ791nQ==",
+      "type": "package",
+      "files": [
+        "BoDi.Embedded.1.2.0.nupkg.sha512",
+        "BoDi.Embedded.nuspec",
+        "content/BoDi/BoDi.cs"
+      ]
+    },
+    "FluentAssertions/3.3.0": {
+      "sha512": "/nvTu0y49M/d+l181nRD2HQv0rZI97Gb4LdO+F+ATEGhrKTRb6Mga9VYaVzFY3ak75cJUaA/QKz7Nf0aY+Xj9Q==",
+      "type": "package",
+      "files": [
+        "FluentAssertions.3.3.0.nupkg.sha512",
+        "FluentAssertions.nuspec",
+        "lib/net40/FluentAssertions.Core.dll",
+        "lib/net40/FluentAssertions.Core.pdb",
+        "lib/net40/FluentAssertions.Core.xml",
+        "lib/net40/FluentAssertions.dll",
+        "lib/net40/FluentAssertions.pdb",
+        "lib/net40/FluentAssertions.xml",
+        "lib/net45/FluentAssertions.Core.dll",
+        "lib/net45/FluentAssertions.Core.pdb",
+        "lib/net45/FluentAssertions.Core.xml",
+        "lib/net45/FluentAssertions.dll",
+        "lib/net45/FluentAssertions.pdb",
+        "lib/net45/FluentAssertions.xml",
+        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.dll",
+        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.pdb",
+        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.pdb",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.XML",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.pdb",
+        "lib/portable-win81+wpa81/FluentAssertions.Core.dll",
+        "lib/portable-win81+wpa81/FluentAssertions.Core.pdb",
+        "lib/portable-win81+wpa81/FluentAssertions.Core.xml",
+        "lib/portable-win81+wpa81/FluentAssertions.dll",
+        "lib/portable-win81+wpa81/FluentAssertions.pdb",
+        "lib/portable-win81+wpa81/FluentAssertions.xml",
+        "lib/sl5/FluentAssertions.Core.dll",
+        "lib/sl5/FluentAssertions.Core.pdb",
+        "lib/sl5/FluentAssertions.Core.xml",
+        "lib/sl5/FluentAssertions.dll",
+        "lib/sl5/FluentAssertions.pdb",
+        "lib/sl5/FluentAssertions.xml",
+        "lib/sl5/Microsoft.CSharp.dll",
+        "lib/sl5/Microsoft.CSharp.xml",
+        "lib/sl5/Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll",
+        "lib/sl5/Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.xml",
+        "lib/sl5/System.Xml.Linq.dll",
+        "lib/sl5/System.Xml.Linq.xml",
+        "lib/sl5/de/Microsoft.CSharp.resources.dll",
+        "lib/sl5/de/System.Xml.Linq.resources.dll",
+        "lib/sl5/es/Microsoft.CSharp.resources.dll",
+        "lib/sl5/es/System.Xml.Linq.resources.dll",
+        "lib/sl5/fr/Microsoft.CSharp.resources.dll",
+        "lib/sl5/fr/System.Xml.Linq.resources.dll",
+        "lib/sl5/it/Microsoft.CSharp.resources.dll",
+        "lib/sl5/it/System.Xml.Linq.resources.dll",
+        "lib/sl5/ja/Microsoft.CSharp.resources.dll",
+        "lib/sl5/ja/System.Xml.Linq.resources.dll",
+        "lib/sl5/ko/Microsoft.CSharp.resources.dll",
+        "lib/sl5/ko/System.Xml.Linq.resources.dll",
+        "lib/sl5/ru/Microsoft.CSharp.resources.dll",
+        "lib/sl5/ru/System.Xml.Linq.resources.dll",
+        "lib/sl5/zh-Hans/Microsoft.CSharp.resources.dll",
+        "lib/sl5/zh-Hans/System.Xml.Linq.resources.dll",
+        "lib/sl5/zh-Hant/Microsoft.CSharp.resources.dll",
+        "lib/sl5/zh-Hant/System.Xml.Linq.resources.dll",
+        "lib/win8/FluentAssertions.Core.dll",
+        "lib/win8/FluentAssertions.Core.pdb",
+        "lib/win8/FluentAssertions.Core.xml",
+        "lib/win8/FluentAssertions.XML",
+        "lib/win8/FluentAssertions.dll",
+        "lib/win8/FluentAssertions.pdb",
+        "lib/wp8/FluentAssertions.Core.dll",
+        "lib/wp8/FluentAssertions.Core.pdb",
+        "lib/wp8/FluentAssertions.Core.xml",
+        "lib/wp8/FluentAssertions.dll",
+        "lib/wp8/FluentAssertions.pdb",
+        "lib/wp8/FluentAssertions.xml"
+      ]
+    },
+    "Gherkin/4.0.0": {
+      "sha512": "D8OI/VZaYye2VnkW6UizFJ9cu2CPu3tXckvRoA120TOQ19LEevGbIaiDFLV3wlyqkYUQP9f/CgOfXrahG/X5ng==",
+      "type": "package",
+      "files": [
+        "Gherkin.4.0.0.nupkg.sha512",
+        "Gherkin.nuspec",
+        "lib/net45/Gherkin.dll"
+      ]
+    },
+    "Moq/4.0.10827": {
+      "sha512": "MiSRqZ+Dj3mF3I/KSC9uWQZK7G4FgR6eM5/EWSVE3H/x8xu5EMsMaLeZfgGGbu0Difk2nllSsepa8F7ahl/tsg==",
+      "type": "package",
+      "files": [
+        "License.txt",
+        "Moq.4.0.10827.nupkg.sha512",
+        "Moq.chm",
+        "Moq.nuspec",
+        "lib/NET35/Moq.dll",
+        "lib/NET35/Moq.pdb",
+        "lib/NET35/Moq.xml",
+        "lib/NET40/Moq.dll",
+        "lib/NET40/Moq.pdb",
+        "lib/NET40/Moq.xml",
+        "lib/Silverlight4/Castle.Core.dll",
+        "lib/Silverlight4/Moq.Silverlight.dll",
+        "lib/Silverlight4/Moq.Silverlight.pdb",
+        "lib/Silverlight4/Moq.Silverlight.xml"
+      ]
+    },
+    "NUnit/3.2.1": {
+      "sha512": "tBlwEclR6C6+rNSOA+vbwR0SkfLJPgF5Fm0YYNtpgfzkXhZT/rpqAWmo2Y4wn4R6ueRrUE793fR0xCJlbyAKOQ==",
+      "type": "package",
+      "files": [
+        "CHANGES.txt",
+        "LICENSE.txt",
+        "NOTICES.txt",
+        "NUnit.3.2.1.nupkg.sha512",
+        "NUnit.nuspec",
+        "lib/dotnet/nunit.framework.dll",
+        "lib/dotnet/nunit.framework.xml",
+        "lib/net20/nunit.framework.dll",
+        "lib/net20/nunit.framework.xml",
+        "lib/net35/nunit.framework.dll",
+        "lib/net35/nunit.framework.xml",
+        "lib/net40/nunit.framework.dll",
+        "lib/net40/nunit.framework.xml",
+        "lib/net45/nunit.framework.dll",
+        "lib/net45/nunit.framework.xml",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.dll",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.xml"
+      ]
+    },
+    "RhinoMocks/3.6.1": {
+      "sha512": "0HjdR7PVVUDz9Db5cLzU0Dquay8MhoCoZ8PJRZOo10Iysq4m+mjl2aaxc4eWztvZ6S1v/NYW5xv1qul0ToN21w==",
+      "type": "package",
+      "files": [
+        "RhinoMocks.3.6.1.nupkg.sha512",
+        "RhinoMocks.nuspec",
+        "lib/net/Rhino.Mocks.dll",
+        "lib/net/Rhino.Mocks.xml"
+      ]
+    },
+    "Generator/1.0.0": {
+      "type": "project",
+      "path": "../../Generator/project.json"
+    },
+    "Parser/1.0.0": {
+      "type": "project",
+      "path": "../../Parser/project.json"
+    },
+    "Reporting/1.0.0": {
+      "type": "project",
+      "path": "../../Reporting/project.json"
+    },
+    "Runtime/1.0.0": {
+      "type": "project",
+      "path": "../../Runtime/project.json"
+    },
+    "Utils/1.0.0": {
+      "type": "project",
+      "path": "../../Utils/project.json"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "FluentAssertions >= 3.3.0",
+      "Generator",
+      "Moq >= 4.0.10827",
+      "NUnit >= 3.2.1",
+      "Parser",
+      "Reporting",
+      "RhinoMocks >= 3.6.1",
+      "Runtime",
+      "Utils"
+    ],
+    ".NETFramework,Version=v4.5": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
+}
