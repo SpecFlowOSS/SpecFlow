@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Reporting", "Reporting\TechTalk.SpecFlow.Reporting.csproj", "{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Parser", "Parser\TechTalk.SpecFlow.Parser.csproj", "{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeTests", "Tests\RuntimeTests\RuntimeTests.csproj", "{F8FACCF0-5497-4C6B-861F-78D72FD9561B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Generator", "Generator\TechTalk.SpecFlow.Generator.csproj", "{453D8014-B6CD-4E86-80A8-D59F59092334}"
@@ -31,7 +29,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBinPackage", "Installer\SpecFlowBinPackage\SpecFlowBinPackage.csproj", "{27B6695E-7049-4C1B-8820-812722128D9E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4} = {FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F} = {7CCEF6D6-FC17-422E-9BED-EDD752B6496F}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTests", "Tests\GeneratorTests\GeneratorTests.csproj", "{97C30FCC-3093-4430-93DC-D671C656C404}"
@@ -60,6 +57,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow", "Runtim
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Utils", "Utils\TechTalk.SpecFlow.Utils.xproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Parser", "Parser\TechTalk.SpecFlow.Parser.xproj", "{ABA918DA-C436-4EE2-B23D-FD0B24403B27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,12 +72,6 @@ Global
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8FACCF0-5497-4C6B-861F-78D72FD9561B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +149,12 @@ Global
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
