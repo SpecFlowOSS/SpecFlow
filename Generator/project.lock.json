@@ -37,47 +37,6 @@
           "System.Xml.Linq"
         ]
       },
-      "TechTalk.SpecFlow/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "BoDi.Embedded": "1.2.0"
-        },
-        "frameworkAssemblies": [
-          "System.Linq",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "net45/TechTalk.SpecFlow.dll": {}
-        },
-        "runtime": {
-          "net45/TechTalk.SpecFlow.dll": {}
-        }
-      },
-      "TechTalk.SpecFlow.Parser/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "Gherkin": "4.0.0"
-        },
-        "compile": {
-          "net45/TechTalk.SpecFlow.Parser.dll": {}
-        },
-        "runtime": {
-          "net45/TechTalk.SpecFlow.Parser.dll": {}
-        }
-      },
-      "TechTalk.SpecFlow.Utils/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "compile": {
-          "net45/TechTalk.SpecFlow.Utils.dll": {}
-        },
-        "runtime": {
-          "net45/TechTalk.SpecFlow.Utils.dll": {}
-        }
-      },
       "Utils/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5"
@@ -110,21 +69,6 @@
     "Runtime/1.0.0": {
       "type": "project",
       "path": "../Runtime/project.json"
-    },
-    "TechTalk.SpecFlow/1.0.0": {
-      "type": "project",
-      "path": "../Runtime/project.json",
-      "msbuildProject": "../Runtime/TechTalk.SpecFlow.xproj"
-    },
-    "TechTalk.SpecFlow.Parser/1.0.0": {
-      "type": "project",
-      "path": "../Parser/project.json",
-      "msbuildProject": "../Parser/TechTalk.SpecFlow.Parser.xproj"
-    },
-    "TechTalk.SpecFlow.Utils/1.0.0": {
-      "type": "project",
-      "path": "../Utils/project.json",
-      "msbuildProject": "../Utils/TechTalk.SpecFlow.Utils.xproj"
     },
     "Utils/1.0.0": {
       "type": "project",

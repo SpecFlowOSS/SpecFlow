@@ -1,7 +1,8 @@
 ﻿{
   "version": "1.0.0-*",
     "buildOptions": {
-        "outputName": "TechTalk.SpecFlow" 
+        "outputName": "TechTalk.SpecFlow",
+        "keyFile": "..\\specflow.snk"
     },
     "dependencies": {
         "BoDi.Embedded": "1.2.0"

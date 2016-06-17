@@ -1,11 +1,14 @@
 ﻿{
   "version": "1.0.0-*",
     "buildOptions": {
-        "outputName": "specflow",
-        "emitEntryPoint": true,
-        "keyFile": "..\\specflow.snk"
+        "outputName": "RuntimeTests",
+        "keyFile": "..\\..\\specflow.snk"
     },
     "dependencies": {
+        "NUnit": "3.2.1",
+        "FluentAssertions": "3.3.0",
+        "Moq": "4.0.10827",
+        "RhinoMocks": "3.6.1",
         "Runtime": {
             "version": "*",
             "target": "project"
@@ -30,11 +33,7 @@
    
     "frameworks": {
         "net45": {
-            "frameworkAssemblies": {
-				"Microsoft.Build": "4.0.0.0",
-                "Microsoft.Build.Framework": "4.0.0.0",
-                "Microsoft.Build.Utilities.v4.0": "4.0.0.0"
-            }
+            
         }
     }
 }
