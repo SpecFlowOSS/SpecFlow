@@ -1,16 +1,15 @@
 ﻿{
-    "version": "1.0.0-*",
+  "version": "1.0.0-*",
     "buildOptions": {
-        "outputName": "TechTalk.SpecFlow.RuntimeTests",
-        "emitEntryPoint": true,
+        "outputName": "TechTalk.SpecFlow.Specs",
         "keyFile": "..\\..\\specflow.snk"
     },
     "dependencies": {
         "NUnit": "3.2.1",
-        "NUnitLite": "3.2.1",
         "FluentAssertions": "3.3.0",
         "Moq": "4.0.10827",
         "RhinoMocks": "3.6.1",
+        "Gherkin": "4.0.0",
         "Runtime": {
             "version": "*",
             "target": "project"
@@ -32,13 +31,10 @@
             "target": "project"
         }
     },
-
+   
     "frameworks": {
         "net45": {
-
+            
         }
-    },
-    "commands": {
-        "test": "TechTalk.SpecFlow.RuntimeTests"
     }
 }
