@@ -1,0 +1,19 @@
+﻿{
+  "version": "1.0.0-*",
+    "buildOptions": {
+        "outputName": "TechTalk.SpecFlow" 
+    },
+    "dependencies": {
+        "BoDi.Embedded": "1.2.0"
+    },
+
+    "frameworks": {
+        "net45": {
+            "frameworkAssemblies": {
+                "System.Xml": "4.0.0.0",
+                "System.Linq": "4.0.0.0",
+                "System.Xml.Linq": "4.0.0.0"
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "BoDi.Embedded/1.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Configuration"
+        ]
+      }
+    }
+  },
+  "libraries": {
+    "BoDi.Embedded/1.2.0": {
+      "sha512": "0EfW6uSU7WV79aDJL+eEwvKWvyXTOGd/G/Q+tl89jzwiyhG8sZLHvS8Iu9MfNJc8XAuHJdJj3EDTHvBFJ791nQ==",
+      "type": "package",
+      "files": [
+        "BoDi.Embedded.1.2.0.nupkg.sha512",
+        "BoDi.Embedded.nuspec",
+        "content/BoDi/BoDi.cs"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "BoDi.Embedded >= 1.2.0"
+    ],
+    ".NETFramework,Version=v4.5": [
+      "System.Linq >= 4.0.0",
+      "System.Xml >= 4.0.0",
+      "System.Xml.Linq >= 4.0.0"
+    ]
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
+}

@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Reporting", "Reporting\TechTalk.SpecFlow.Reporting.csproj", "{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow", "Runtime\TechTalk.SpecFlow.csproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.SpecFlow.Parser", "Parser\TechTalk.SpecFlow.Parser.csproj", "{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeTests", "Tests\RuntimeTests\RuntimeTests.csproj", "{F8FACCF0-5497-4C6B-861F-78D72FD9561B}"
@@ -61,6 +59,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D87E7021
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyProjectForHoldingTheNUnit2Reference", "Tests\DummyProjectForHoldingTheNUnit2Reference\DummyProjectForHoldingTheNUnit2Reference.csproj", "{DBEEB615-5991-46BC-B274-1516BD0F3D91}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow", "Runtime\TechTalk.SpecFlow.xproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,12 +74,6 @@ Global
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -157,6 +151,12 @@ Global
 		{DBEEB615-5991-46BC-B274-1516BD0F3D91}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DBEEB615-5991-46BC-B274-1516BD0F3D91}.VS2010IntegrationTest|Any CPU.ActiveCfg = Release|Any CPU
 		{DBEEB615-5991-46BC-B274-1516BD0F3D91}.VS2010IntegrationTest|Any CPU.Build.0 = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
