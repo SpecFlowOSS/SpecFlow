@@ -1,0 +1,17 @@
+﻿{
+  "version": "1.0.0-*",
+    "buildOptions": {
+        "outputName": "TechTalk.SpecFlow.Utils" 
+    },
+    "dependencies": {
+       
+    },
+
+    "frameworks": {
+        "net45": {
+            "frameworkAssemblies": {
+             
+            }
+        }
+    }
+}
