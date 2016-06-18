@@ -85,6 +85,15 @@
           "lib/net/Rhino.Mocks.dll": {}
         }
       },
+      "SpecFlow/1.9.0": {
+        "type": "package",
+        "compile": {
+          "lib/net35/TechTalk.SpecFlow.dll": {}
+        },
+        "runtime": {
+          "lib/net35/TechTalk.SpecFlow.dll": {}
+        }
+      },
       "SpecFlow.NUnit3.ConsoleRunner/1.0.0": {
         "type": "package",
         "compile": {
@@ -180,6 +189,40 @@
           "System.Xml",
           "System.Xml.Linq"
         ]
+      },
+      "TechTalk.SpecFlow.Specs/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "FluentAssertions": "3.3.0",
+          "Gherkin": "4.0.0",
+          "Moq": "4.0.10827",
+          "NUnit": "3.2.1",
+          "NUnit.Extension.NUnitProjectLoader": "3.2.1",
+          "NUnit.Extension.NUnitV2Driver": "3.2.1",
+          "NUnit.Extension.NUnitV2ResultWriter": "3.2.1",
+          "NUnit.Extension.VSProjectLoader": "3.2.1",
+          "NUnit.Runners": "3.2.1",
+          "Parser": "(, )",
+          "Parser.Compatibility": "(, )",
+          "Reporting": "(, )",
+          "RhinoMocks": "3.6.1",
+          "SpecFlow.NUnit3.ConsoleRunner": "1.0.0",
+          "xunit": "1.9.2",
+          "xunit.extensions": "1.9.2",
+          "xunit.runner.console": "2.0.0"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.Build",
+          "Microsoft.Build.Framework",
+          "Microsoft.Build.Utilities.v4.0"
+        ],
+        "compile": {
+          "net45/TechTalk.SpecFlow.Specs.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.Specs.dll": {}
+        }
       },
       "Utils/1.0.0": {
         "type": "project",
@@ -413,6 +456,34 @@
         "lib/net/Rhino.Mocks.xml"
       ]
     },
+    "SpecFlow/1.9.0": {
+      "sha512": "f/7BVLy90tKdCFykotYxu7UK54NKRER79hOWVyT96alHOZXz3OV5XRZNZnsafyg4ZQqQLbYEdX7ozMEoAZwAyA==",
+      "type": "package",
+      "files": [
+        "LICENSE.txt",
+        "SpecFlow.1.9.0.nupkg.sha512",
+        "SpecFlow.nuspec",
+        "changelog.txt",
+        "content/App.config.transform",
+        "lib/net35/TechTalk.SpecFlow.dll",
+        "lib/sl3/TechTalk.SpecFlow.Silverlight3.dll",
+        "lib/sl4-wp/TechTalk.SpecFlow.WindowsPhone7.dll",
+        "tools/Gherkin.dll",
+        "tools/IKVM.OpenJDK.Core.dll",
+        "tools/IKVM.OpenJDK.Security.dll",
+        "tools/IKVM.OpenJDK.Text.dll",
+        "tools/IKVM.OpenJDK.Util.dll",
+        "tools/IKVM.Runtime.dll",
+        "tools/TechTalk.SpecFlow.Generator.dll",
+        "tools/TechTalk.SpecFlow.Parser.dll",
+        "tools/TechTalk.SpecFlow.Reporting.dll",
+        "tools/TechTalk.SpecFlow.Utils.dll",
+        "tools/TechTalk.SpecFlow.dll",
+        "tools/TechTalk.SpecFlow.targets",
+        "tools/TechTalk.SpecFlow.tasks",
+        "tools/specflow.exe"
+      ]
+    },
     "SpecFlow.NUnit3.ConsoleRunner/1.0.0": {
       "sha512": "CfornMyzN0H482whzFUlOsfg2PSJHMM9LYPlguK8hSrxxN3R6lmadeKzL187Ha3Wp3T5MBNoaIJBXCY4lYUXnA==",
       "type": "package",
@@ -486,6 +557,11 @@
       "type": "project",
       "path": "../../Runtime/project.json"
     },
+    "TechTalk.SpecFlow.Specs/1.0.0": {
+      "type": "project",
+      "path": "../TechTalk.SpecFlow.Specs/project.json",
+      "msbuildProject": "../TechTalk.SpecFlow.Specs/TechTalk.SpecFlow.Specs.xproj"
+    },
     "Utils/1.0.0": {
       "type": "project",
       "path": "../../Utils/project.json"
@@ -497,25 +573,14 @@
       "Gherkin >= 4.0.0",
       "Moq >= 4.0.10827",
       "NUnit >= 3.2.1",
-      "NUnit.Extension.NUnitProjectLoader >= 3.2.1",
-      "NUnit.Extension.NUnitV2Driver >= 3.2.1",
-      "NUnit.Extension.NUnitV2ResultWriter >= 3.2.1",
-      "NUnit.Extension.VSProjectLoader >= 3.2.1",
-      "NUnit.Runners >= 3.2.1",
       "Parser",
-      "Parser.Compatibility",
-      "Reporting",
       "RhinoMocks >= 3.6.1",
-      "SpecFlow.NUnit3.ConsoleRunner >= 1.0.0",
+      "SpecFlow >= 1.9.0",
+      "TechTalk.SpecFlow.Specs",
       "xunit >= 1.9.2",
-      "xunit.extensions >= 1.9.2",
-      "xunit.runner.console >= 2.0.0"
+      "xunit.extensions >= 1.9.2"
     ],
-    ".NETFramework,Version=v4.5": [
-      "Microsoft.Build >= 4.0.0",
-      "Microsoft.Build.Framework >= 4.0.0",
-      "Microsoft.Build.Utilities.v4.0 >= 4.0.0"
-    ]
+    ".NETFramework,Version=v4.5": []
   },
   "tools": {},
   "projectFileToolGroups": {}

@@ -2,7 +2,6 @@
     "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.RuntimeTests",
-        "emitEntryPoint": true,
         "keyFile": "..\\..\\specflow.snk"
     },
     "dependencies": {

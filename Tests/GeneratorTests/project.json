@@ -6,6 +6,7 @@
     },
     "dependencies": {
         "NUnit": "3.2.1",
+        "NUnitLite": "3.2.1",
         "FluentAssertions": "3.3.0",
         "Moq": "4.0.10827",
         "RhinoMocks": "3.6.1",

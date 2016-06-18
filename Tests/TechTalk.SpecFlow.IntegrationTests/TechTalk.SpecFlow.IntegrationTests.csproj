@@ -263,16 +263,6 @@
     <EmbeddedResource Include="TestFiles\whitespaces.feature.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
-      <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
-      <Name>TechTalk.SpecFlow.Parser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj">
-      <Project>{ADED3F39-1742-42E2-A55A-3043AC84BDAD}</Project>
-      <Name>TechTalk.SpecFlow.Specs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Drivers\" />
   </ItemGroup>
   <ItemGroup>

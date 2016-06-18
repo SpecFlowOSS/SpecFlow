@@ -51,6 +51,18 @@
           "lib/net45/nunit.framework.dll": {}
         }
       },
+      "NUnitLite/3.2.1": {
+        "type": "package",
+        "dependencies": {
+          "NUnit": "[3.2.1]"
+        },
+        "compile": {
+          "lib/net45/nunitlite.dll": {}
+        },
+        "runtime": {
+          "lib/net45/nunitlite.dll": {}
+        }
+      },
       "RhinoMocks/3.6.1": {
         "type": "package",
         "compile": {
@@ -251,6 +263,31 @@
         "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.xml"
       ]
     },
+    "NUnitLite/3.2.1": {
+      "sha512": "Y/eVXlf6gpX6WuUQGrShVs9AxhItqU1IhXNu4Gs1+aEpQ+HaZwiJUWZDEuUcu/mvqD7W9FDB5ODdG8uwbPoohg==",
+      "type": "package",
+      "files": [
+        "CHANGES.txt",
+        "LICENSE.txt",
+        "NOTICES.txt",
+        "NUnitLite.3.2.1.nupkg.sha512",
+        "NUnitLite.nuspec",
+        "content/Program.cs",
+        "content/Program.vb",
+        "lib/dotnet/nunitlite.dll",
+        "lib/net20/nunitlite.dll",
+        "lib/net35/nunitlite.dll",
+        "lib/net40/nunitlite.dll",
+        "lib/net45/nunitlite.dll",
+        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac/nunitlite.dll",
+        "tools/install.ps1",
+        "tools/net20/nunitlite-runner.exe",
+        "tools/net35/nunitlite-runner.exe",
+        "tools/net40/nunitlite-runner.exe",
+        "tools/net45/nunitlite-runner.exe",
+        "tools/portable/nunitlite-runner.exe"
+      ]
+    },
     "RhinoMocks/3.6.1": {
       "sha512": "0HjdR7PVVUDz9Db5cLzU0Dquay8MhoCoZ8PJRZOo10Iysq4m+mjl2aaxc4eWztvZ6S1v/NYW5xv1qul0ToN21w==",
       "type": "package",
@@ -288,6 +325,7 @@
       "Generator",
       "Moq >= 4.0.10827",
       "NUnit >= 3.2.1",
+      "NUnitLite >= 3.2.1",
       "Parser",
       "Reporting",
       "RhinoMocks >= 3.6.1",
