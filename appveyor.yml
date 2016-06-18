@@ -25,14 +25,12 @@ nuget:
 
 configuration: Release
 
-before_build:
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-  - appveyor DownloadFile https://raw.githubusercontent.com/appveyor/ci/master/scripts/nuget-restore.cmd
-  - nuget-restore
 
 build:
-  project: TechTalk.SpecFlow.sln
   verbosity: normal
+
+build_script:
+  cmd: build.bat
 
 test:
   assemblies:
