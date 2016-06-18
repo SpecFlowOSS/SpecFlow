@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
     {
         protected override string GetTemplateFileContent()
         {
-            var resourceStream = GetType().Assembly.GetManifestResourceStream(GetType(), "DefaultSkeletonTemplates.sftemplate");
+            var resourceStream = GetType().Assembly.GetManifestResourceStream("Runtime.BindingSkeletons.DefaultSkeletonTemplates.sftemplate");
             if (resourceStream == null)
                 throw new SpecFlowException("Missing resource: DefaultSkeletonTemplates.sftemplate");
 

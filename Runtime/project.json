@@ -5,7 +5,8 @@
         "keyFile": "..\\specflow.snk",
         "embed": {
             "include": [
-                "..\\Languages.xml"
+                "..\\Languages.xml",
+                ".\\BindingSkeletons\\DefaultSkeletonTemplates.sftemplate"
             ]
         }
     },
