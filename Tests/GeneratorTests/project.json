@@ -2,7 +2,11 @@
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.GeneratorTests",
-        "keyFile": "..\\..\\specflow.snk"
+        "keyFile": "..\\..\\specflow.snk",
+        "copyToOutput": [
+            "Data\\app.config",
+            "Data\\sampleCsProjectfile.csproj"
+        ]
     },
     "dependencies": {
         "NUnit": "3.2.1",
