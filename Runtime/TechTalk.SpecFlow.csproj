@@ -156,6 +156,8 @@
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
     <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\ContextManager.cs" />
+    <Compile Include="Infrastructure\ContextManagerExtensions.cs" />
     <Compile Include="Infrastructure\IBindingInstanceResolver.cs" />
     <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
