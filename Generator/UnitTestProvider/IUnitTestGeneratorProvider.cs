@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         void SetTestClassInitializeMethod(TestClassGenerationContext generationContext);
         void SetTestClassCleanupMethod(TestClassGenerationContext generationContext);
 
-        void SetTestInitializeMethod(TestClassGenerationContext generationContext); 
+        void SetTestInitializeMethod(TestClassGenerationContext generationContext);
         void SetTestCleanupMethod(TestClassGenerationContext generationContext);
 
         void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName);
