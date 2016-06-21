@@ -2,13 +2,13 @@
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.Specs",
-        "keyFile": "..\\..\\specflow.snk",
+        "keyFile": "../../specflow.snk",
         "compile": {
             "excludeFiles": [
-                ".\\Drivers\\Templates\\BindingClass.cs",
-                ".\\Drivers\\Templates\\BindingClass.fs",
-                ".\\Drivers\\Templates\\Bindings.cs",
-                ".\\Drivers\\Templates\\Bindings.fs"
+                "./Drivers/Templates/BindingClass.cs",
+                "./Drivers/Templates/BindingClass.fs",
+                "./Drivers/Templates/Bindings.cs",
+                "./Drivers/Templates/Bindings.fs"
             ]
         }
     },

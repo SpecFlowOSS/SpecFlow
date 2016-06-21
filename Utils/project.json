@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.Utils",
-        "keyFile": "..\\specflow.snk"
+        "keyFile": "../specflow.snk"
     },
     "dependencies": {
        

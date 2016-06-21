@@ -3,7 +3,7 @@
     "buildOptions": {
         "outputName": "specflow",
         "emitEntryPoint": true,
-        "keyFile": "..\\specflow.snk"
+        "keyFile": "../specflow.snk"
     },
     "dependencies": {
         "Runtime": {

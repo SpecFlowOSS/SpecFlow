@@ -2,11 +2,11 @@
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow",
-        "keyFile": "..\\specflow.snk",
+        "keyFile": "../specflow.snk",
         "embed": {
             "include": [
-                "..\\Languages.xml",
-                ".\\BindingSkeletons\\DefaultSkeletonTemplates.sftemplate"
+                "../Languages.xml",
+                "./BindingSkeletons/DefaultSkeletonTemplates.sftemplate"
             ]
         }
     },
