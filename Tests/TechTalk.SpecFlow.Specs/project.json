@@ -5,12 +5,24 @@
         "keyFile": "../../specflow.snk",
         "compile": {
             "excludeFiles": [
+                "./Drivers/Templates/App.config",
                 "./Drivers/Templates/BindingClass.cs",
                 "./Drivers/Templates/BindingClass.fs",
                 "./Drivers/Templates/Bindings.cs",
-                "./Drivers/Templates/Bindings.fs"
+                "./Drivers/Templates/Bindings.fs",
+                "./Drivers/Templates/TestProjectFile.csproj",
+                "./Drivers/Templates/TestProjectFile.fsproj"
             ]
-        }
+        },
+        "embed": [
+             "./Drivers/Templates/App.config",
+                "./Drivers/Templates/BindingClass.cs",
+                "./Drivers/Templates/BindingClass.fs",
+                "./Drivers/Templates/Bindings.cs",
+                "./Drivers/Templates/Bindings.fs",
+                "./Drivers/Templates/TestProjectFile.csproj",
+                "./Drivers/Templates/TestProjectFile.fsproj"
+        ]
     },
     "dependencies": {
         "NUnit": "3.2.1",        
