@@ -47,6 +47,9 @@ Example:
 >
 > `<url>` - a link to the reduced test case (e.g. a GitHub Gist)
 >
+> Used SpecFlow Version: (1.9, 2.0, 2.1, ...)
+> Used Test Runner: (NUnit, XUnit, SpecFlow+Runner, MsTest, ...)
+>
 > Any other information you want to share that is relevant to the issue being
 > reported. This might include the lines of code that you have identified as
 > causing the bug, and potential solutions (and your opinions on their
