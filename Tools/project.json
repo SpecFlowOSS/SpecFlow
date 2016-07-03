@@ -3,7 +3,8 @@
     "buildOptions": {
         "outputName": "specflow",
         "emitEntryPoint": true,
-        "keyFile": "../specflow.snk"
+        "keyFile": "../specflow.snk",
+        "platform": "x86"
     },
     "dependencies": {
         "Runtime": {

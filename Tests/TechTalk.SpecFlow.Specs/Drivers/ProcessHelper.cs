@@ -11,12 +11,16 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public int RunProcess(string executablePath, string argumentsFormat, params object[] arguments)
         {
-            ProcessStartInfo psi = new ProcessStartInfo(executablePath, string.Format(argumentsFormat, arguments));
+            var parameters = string.Format(argumentsFormat, arguments);
+            ProcessStartInfo psi = new ProcessStartInfo(executablePath, parameters);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
-            var p = Process.Start(psi);
+
+            Console.WriteLine($"starting process {executablePath} {parameters}");
+
+            var p = Process.Start(psi);    
 
             ConsoleOutput = p.StandardOutput.ReadToEnd();
             Console.WriteLine(ConsoleOutput);
