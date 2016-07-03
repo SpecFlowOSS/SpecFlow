@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Reporting.MsTestExecutionReport
 
             XslCompiledTransform xslt = new XslCompiledTransform();
 
-            using (var xsltReader = new ResourceXmlReader(typeof(MsTestExecutionReportGenerator), "MsTestToNUnit.xslt", nameTable))
+            using (var xsltReader = new ResourceXmlReader(typeof(MsTestExecutionReportGenerator).Assembly, "Reporting.MsTestExecutionReport.MsTestToNUnit.xslt", nameTable))
             {
                 var resourceResolver = new XmlResourceResolver();
                 var xsltSettings = new XsltSettings(true, false);

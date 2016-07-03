@@ -2,7 +2,14 @@
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.Reporting",
-        "keyFile": "../specflow.snk"
+        "keyFile": "../specflow.snk",
+        "embed": {
+            "include": [
+                "./MsTestExecutionReport/MsTestToNUnit.xslt",
+                "./NUnitExecutionReport/NUnitExecutionReport.xslt",
+                "./StepDefinitionReport/StepDefinitionReport.xslt"
+            ]
+        }
     },
     "dependencies": {
         "Gherkin": "4.0.0",
