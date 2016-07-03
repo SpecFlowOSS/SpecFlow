@@ -15,6 +15,7 @@
     "BoDi.Embedded/1.2.0": {
       "sha512": "0EfW6uSU7WV79aDJL+eEwvKWvyXTOGd/G/Q+tl89jzwiyhG8sZLHvS8Iu9MfNJc8XAuHJdJj3EDTHvBFJ791nQ==",
       "type": "package",
+      "path": "BoDi.Embedded/1.2.0",
       "files": [
         "BoDi.Embedded.1.2.0.nupkg.sha512",
         "BoDi.Embedded.nuspec",

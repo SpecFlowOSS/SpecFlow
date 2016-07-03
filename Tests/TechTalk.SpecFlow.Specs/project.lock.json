@@ -191,6 +191,7 @@
     "BoDi.Embedded/1.2.0": {
       "sha512": "0EfW6uSU7WV79aDJL+eEwvKWvyXTOGd/G/Q+tl89jzwiyhG8sZLHvS8Iu9MfNJc8XAuHJdJj3EDTHvBFJ791nQ==",
       "type": "package",
+      "path": "BoDi.Embedded/1.2.0",
       "files": [
         "BoDi.Embedded.1.2.0.nupkg.sha512",
         "BoDi.Embedded.nuspec",
@@ -200,6 +201,7 @@
     "FluentAssertions/3.3.0": {
       "sha512": "/nvTu0y49M/d+l181nRD2HQv0rZI97Gb4LdO+F+ATEGhrKTRb6Mga9VYaVzFY3ak75cJUaA/QKz7Nf0aY+Xj9Q==",
       "type": "package",
+      "path": "FluentAssertions/3.3.0",
       "files": [
         "FluentAssertions.3.3.0.nupkg.sha512",
         "FluentAssertions.nuspec",
@@ -277,6 +279,7 @@
     "Gherkin/4.0.0": {
       "sha512": "D8OI/VZaYye2VnkW6UizFJ9cu2CPu3tXckvRoA120TOQ19LEevGbIaiDFLV3wlyqkYUQP9f/CgOfXrahG/X5ng==",
       "type": "package",
+      "path": "Gherkin/4.0.0",
       "files": [
         "Gherkin.4.0.0.nupkg.sha512",
         "Gherkin.nuspec",
@@ -286,6 +289,7 @@
     "Moq/4.0.10827": {
       "sha512": "MiSRqZ+Dj3mF3I/KSC9uWQZK7G4FgR6eM5/EWSVE3H/x8xu5EMsMaLeZfgGGbu0Difk2nllSsepa8F7ahl/tsg==",
       "type": "package",
+      "path": "Moq/4.0.10827",
       "files": [
         "License.txt",
         "Moq.4.0.10827.nupkg.sha512",
@@ -306,6 +310,7 @@
     "NUnit/3.2.1": {
       "sha512": "tBlwEclR6C6+rNSOA+vbwR0SkfLJPgF5Fm0YYNtpgfzkXhZT/rpqAWmo2Y4wn4R6ueRrUE793fR0xCJlbyAKOQ==",
       "type": "package",
+      "path": "NUnit/3.2.1",
       "files": [
         "CHANGES.txt",
         "LICENSE.txt",
@@ -329,6 +334,7 @@
     "NUnit.ConsoleRunner/3.2.1": {
       "sha512": "KLhiVGQ+wz+IGZsSIPK8jFb/roPnIx7cfTP1yG7b5oDfEyIvaWkk0yKCk+ZTArq5RzRd5fjF0GxoqUFJ+9MB6A==",
       "type": "package",
+      "path": "NUnit.ConsoleRunner/3.2.1",
       "files": [
         "CHANGES.txt",
         "LICENSE.txt",
@@ -351,6 +357,7 @@
     "NUnit.Extension.NUnitProjectLoader/3.2.1": {
       "sha512": "5j+Jud2vuB2Shx9sOyCv0TjkyYF6N2rChN6nhDW9W3LCwGIcfkLHsgQgG45kpIhgcKnSU8xf38BTpjFVa18NJw==",
       "type": "package",
+      "path": "NUnit.Extension.NUnitProjectLoader/3.2.1",
       "files": [
         "LICENSE.txt",
         "NOTICES.txt",
@@ -362,6 +369,7 @@
     "NUnit.Extension.NUnitV2Driver/3.2.1": {
       "sha512": "84ZuxvoNWLW8trwq5h0MsvJrCo9i3H284dij8utEh1+eEWw5S7BrmYdeb0Ty+RNG9zArCC7S8dDtFhsuTV+3HQ==",
       "type": "package",
+      "path": "NUnit.Extension.NUnitV2Driver/3.2.1",
       "files": [
         "LICENSE.txt",
         "NOTICES.txt",
@@ -376,6 +384,7 @@
     "NUnit.Extension.NUnitV2ResultWriter/3.2.1": {
       "sha512": "U7Y9bGao97WSZnaXJ/S6/zZgSreKSxS+HO4KOzHKqdNGiG2a3JJ/4OXawKYQplQwhyvghvjZiuCI7SHLblpFtg==",
       "type": "package",
+      "path": "NUnit.Extension.NUnitV2ResultWriter/3.2.1",
       "files": [
         "LICENSE.txt",
         "NOTICES.txt",
@@ -387,6 +396,7 @@
     "NUnit.Extension.VSProjectLoader/3.2.1": {
       "sha512": "8yfF7rf6q16rmJu4X/yLUXv/BLXPPPhjesqqCymC0eLrXmruZ5t1otk1xzIwQaqlP6ZnZg6ymSlrVR3x0CKdqQ==",
       "type": "package",
+      "path": "NUnit.Extension.VSProjectLoader/3.2.1",
       "files": [
         "LICENSE.txt",
         "NOTICES.txt",
@@ -398,6 +408,7 @@
     "NUnit.Runners/3.2.1": {
       "sha512": "gffBaCUPDtLnKwRyYF8mJN/cFwmLshxyKm3nD7FJRXywTYWPX1fI6yQlye919Qxlw7lS27DdgWYFVud/EvJGAA==",
       "type": "package",
+      "path": "NUnit.Runners/3.2.1",
       "files": [
         "NUnit.Runners.3.2.1.nupkg.sha512",
         "NUnit.Runners.nuspec"
@@ -406,6 +417,7 @@
     "RhinoMocks/3.6.1": {
       "sha512": "0HjdR7PVVUDz9Db5cLzU0Dquay8MhoCoZ8PJRZOo10Iysq4m+mjl2aaxc4eWztvZ6S1v/NYW5xv1qul0ToN21w==",
       "type": "package",
+      "path": "RhinoMocks/3.6.1",
       "files": [
         "RhinoMocks.3.6.1.nupkg.sha512",
         "RhinoMocks.nuspec",
@@ -416,6 +428,7 @@
     "SpecFlow.NUnit3.ConsoleRunner/1.0.0": {
       "sha512": "CfornMyzN0H482whzFUlOsfg2PSJHMM9LYPlguK8hSrxxN3R6lmadeKzL187Ha3Wp3T5MBNoaIJBXCY4lYUXnA==",
       "type": "package",
+      "path": "SpecFlow.NUnit3.ConsoleRunner/1.0.0",
       "files": [
         "LICENSE.txt",
         "SpecFlow.NUnit3.ConsoleRunner.1.0.0.nupkg.sha512",
@@ -427,6 +440,7 @@
     "xunit/1.9.2": {
       "sha512": "c1wppJtYPUGPHVP9U1wjmfii4553MuQSXkAt8rudkXW+eUFJxOOfDvhBJ6S0YHHDMFEJwiMN770AT4Lno8EBpw==",
       "type": "package",
+      "path": "xunit/1.9.2",
       "files": [
         "lib/net20/xunit.dll",
         "lib/net20/xunit.dll.tdnet",
@@ -441,6 +455,7 @@
     "xunit.extensions/1.9.2": {
       "sha512": "DJqVmnziilQrW47PW9QMVyrc5hUlIiI3+2cHoAG6pE/bb/dr+IAewUD+rgIUZqwVcMmB+1KfPLHm7TLUB6dtJQ==",
       "type": "package",
+      "path": "xunit.extensions/1.9.2",
       "files": [
         "lib/net20/xunit.extensions.dll",
         "lib/net20/xunit.extensions.xml",
@@ -451,6 +466,7 @@
     "xunit.runner.console/2.0.0": {
       "sha512": "RDsg4bCMB+s8ODPqSBH7pKdflwTriGsbYeXu052VykOtLeLNQA6YpjNUCol3o43q/snB2PlKGJwGdDV+KSmNkQ==",
       "type": "package",
+      "path": "xunit.runner.console/2.0.0",
       "files": [
         "tools/HTML.xslt",
         "tools/NUnitXml.xslt",
@@ -499,7 +515,6 @@
       "NUnit >= 3.2.1",
       "NUnit.Extension.NUnitProjectLoader >= 3.2.1",
       "NUnit.Extension.NUnitV2Driver >= 3.2.1",
-      "NUnit.Extension.NUnitV2ResultWriter >= 3.2.1",
       "NUnit.Extension.VSProjectLoader >= 3.2.1",
       "NUnit.Runners >= 3.2.1",
       "Parser",
@@ -517,6 +532,16 @@
       "Microsoft.Build.Utilities.v4.0 >= 4.0.0"
     ]
   },
-  "tools": {},
-  "projectFileToolGroups": {}
+  "tools": {
+    ".NETCoreApp,Version=v1.0": {
+      "NUnit.Extension.NUnitV2ResultWriter/3.2.1": {
+        "type": "package"
+      }
+    }
+  },
+  "projectFileToolGroups": {
+    ".NETCoreApp,Version=v1.0": [
+      "NUnit.Extension.NUnitV2ResultWriter >= 3.2.1"
+    ]
+  }
 }

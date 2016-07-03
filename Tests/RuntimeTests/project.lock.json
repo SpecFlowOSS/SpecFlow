@@ -128,6 +128,7 @@
     "BoDi.Embedded/1.2.0": {
       "sha512": "0EfW6uSU7WV79aDJL+eEwvKWvyXTOGd/G/Q+tl89jzwiyhG8sZLHvS8Iu9MfNJc8XAuHJdJj3EDTHvBFJ791nQ==",
       "type": "package",
+      "path": "BoDi.Embedded/1.2.0",
       "files": [
         "BoDi.Embedded.1.2.0.nupkg.sha512",
         "BoDi.Embedded.nuspec",
@@ -137,6 +138,7 @@
     "FluentAssertions/3.3.0": {
       "sha512": "/nvTu0y49M/d+l181nRD2HQv0rZI97Gb4LdO+F+ATEGhrKTRb6Mga9VYaVzFY3ak75cJUaA/QKz7Nf0aY+Xj9Q==",
       "type": "package",
+      "path": "FluentAssertions/3.3.0",
       "files": [
         "FluentAssertions.3.3.0.nupkg.sha512",
         "FluentAssertions.nuspec",
@@ -214,6 +216,7 @@
     "Gherkin/4.0.0": {
       "sha512": "D8OI/VZaYye2VnkW6UizFJ9cu2CPu3tXckvRoA120TOQ19LEevGbIaiDFLV3wlyqkYUQP9f/CgOfXrahG/X5ng==",
       "type": "package",
+      "path": "Gherkin/4.0.0",
       "files": [
         "Gherkin.4.0.0.nupkg.sha512",
         "Gherkin.nuspec",
@@ -223,6 +226,7 @@
     "Moq/4.0.10827": {
       "sha512": "MiSRqZ+Dj3mF3I/KSC9uWQZK7G4FgR6eM5/EWSVE3H/x8xu5EMsMaLeZfgGGbu0Difk2nllSsepa8F7ahl/tsg==",
       "type": "package",
+      "path": "Moq/4.0.10827",
       "files": [
         "License.txt",
         "Moq.4.0.10827.nupkg.sha512",
@@ -243,6 +247,7 @@
     "NUnit/3.2.1": {
       "sha512": "tBlwEclR6C6+rNSOA+vbwR0SkfLJPgF5Fm0YYNtpgfzkXhZT/rpqAWmo2Y4wn4R6ueRrUE793fR0xCJlbyAKOQ==",
       "type": "package",
+      "path": "NUnit/3.2.1",
       "files": [
         "CHANGES.txt",
         "LICENSE.txt",
@@ -266,6 +271,7 @@
     "NUnitLite/3.2.1": {
       "sha512": "Y/eVXlf6gpX6WuUQGrShVs9AxhItqU1IhXNu4Gs1+aEpQ+HaZwiJUWZDEuUcu/mvqD7W9FDB5ODdG8uwbPoohg==",
       "type": "package",
+      "path": "NUnitLite/3.2.1",
       "files": [
         "CHANGES.txt",
         "LICENSE.txt",
@@ -291,6 +297,7 @@
     "RhinoMocks/3.6.1": {
       "sha512": "0HjdR7PVVUDz9Db5cLzU0Dquay8MhoCoZ8PJRZOo10Iysq4m+mjl2aaxc4eWztvZ6S1v/NYW5xv1qul0ToN21w==",
       "type": "package",
+      "path": "RhinoMocks/3.6.1",
       "files": [
         "RhinoMocks.3.6.1.nupkg.sha512",
         "RhinoMocks.nuspec",

@@ -25,6 +25,7 @@
     "Gherkin/4.0.0": {
       "sha512": "D8OI/VZaYye2VnkW6UizFJ9cu2CPu3tXckvRoA120TOQ19LEevGbIaiDFLV3wlyqkYUQP9f/CgOfXrahG/X5ng==",
       "type": "package",
+      "path": "Gherkin/4.0.0",
       "files": [
         "Gherkin.4.0.0.nupkg.sha512",
         "Gherkin.nuspec",
