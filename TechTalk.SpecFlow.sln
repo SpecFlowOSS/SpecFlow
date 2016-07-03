@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
 EndProject
@@ -9,11 +9,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{577A0375-1436-446C-802B-3C75C8CEF94F}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		build.bat = build.bat
 		changelog.txt = changelog.txt
+		Clean.bat = Clean.bat
 		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
 		LICENSE.txt = LICENSE.txt
 		.nuget\nuget.config = .nuget\nuget.config
 		README.md = README.md
+		runtests.bat = runtests.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportGherkinParser", "Installer\ImportGherkinParser\ImportGherkinParser.csproj", "{0D3D2616-F53C-46A2-ADEB-273D140C1267}"
