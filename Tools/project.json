@@ -23,7 +23,7 @@
             "version": "*",
             "target": "project"
         },
-        "Reporting": {
+        "TechTalk.SpecFlow.Reporting": {
             "version": "*",
             "target": "project"
         }

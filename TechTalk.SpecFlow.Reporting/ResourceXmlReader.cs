@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Reporting
         {
             var result = assembly.GetManifestResourceStream(resourceName);
             if (result == null)
-                throw new InvalidOperationException(String.Format("Resource '{0}' not found.", resourceName));
+                throw new InvalidOperationException(String.Format("Resource '{0}' in assembly {1} not found.", resourceName, assembly.FullName));
             return result;
         }
 
