@@ -36,3 +36,4 @@ packages/*
 /Tools/app.config
 /Tools/plugincompability.config
 TechTalk.SpecFlow.sln.GhostDoc.xml
+*.lock.json

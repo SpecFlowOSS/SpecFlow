@@ -143,7 +143,8 @@
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "Gherkin": "4.0.0",
-          "Parser": "(, )"
+          "Parser": "(, )",
+          "TechTalk.SpecFlow.Parser": "1.0.0"
         },
         "frameworkAssemblies": [
           "System.Xml"
@@ -154,20 +155,6 @@
         "runtime": {
           "net45/Parser.Compatibility.dll": {}
         }
-      },
-      "Reporting/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "Generator": "(, )",
-          "Gherkin": "4.0.0",
-          "Parser": "(, )",
-          "Runtime": "(, )",
-          "Utils": "(, )"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.Build"
-        ]
       },
       "Runtime/1.0.0": {
         "type": "project",
@@ -180,6 +167,93 @@
           "System.Xml",
           "System.Xml.Linq"
         ]
+      },
+      "TechTalk.SpecFlow/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "BoDi.Embedded": "1.2.0"
+        },
+        "frameworkAssemblies": [
+          "System.Linq",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "net45/TechTalk.SpecFlow.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.dll": {}
+        }
+      },
+      "TechTalk.SpecFlow.Generator/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Gherkin": "4.0.0",
+          "Parser": "(, )",
+          "Runtime": "(, )",
+          "TechTalk.SpecFlow": "1.0.0",
+          "TechTalk.SpecFlow.Parser": "1.0.0",
+          "TechTalk.SpecFlow.Utils": "1.0.0",
+          "Utils": "(, )"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.Build"
+        ],
+        "compile": {
+          "net45/TechTalk.SpecFlow.Generator.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.Generator.dll": {}
+        }
+      },
+      "TechTalk.SpecFlow.Parser/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Gherkin": "4.0.0"
+        },
+        "compile": {
+          "net45/TechTalk.SpecFlow.Parser.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.Parser.dll": {}
+        }
+      },
+      "TechTalk.SpecFlow.Reporting/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "Generator": "(, )",
+          "Gherkin": "4.0.0",
+          "Parser": "(, )",
+          "Runtime": "(, )",
+          "TechTalk.SpecFlow": "1.0.0",
+          "TechTalk.SpecFlow.Generator": "1.0.0",
+          "TechTalk.SpecFlow.Parser": "1.0.0",
+          "TechTalk.SpecFlow.Utils": "1.0.0",
+          "Utils": "(, )"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.Build"
+        ],
+        "compile": {
+          "net45/TechTalk.SpecFlow.Reporting.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.Reporting.dll": {}
+        }
+      },
+      "TechTalk.SpecFlow.Utils/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "compile": {
+          "net45/TechTalk.SpecFlow.Utils.dll": {}
+        },
+        "runtime": {
+          "net45/TechTalk.SpecFlow.Utils.dll": {}
+        }
       },
       "Utils/1.0.0": {
         "type": "project",
@@ -494,13 +568,34 @@
       "path": "../../Parser.Compatibility/project.json",
       "msbuildProject": "../../Parser.Compatibility/Parser.Compatibility.xproj"
     },
-    "Reporting/1.0.0": {
-      "type": "project",
-      "path": "../../Reporting/project.json"
-    },
     "Runtime/1.0.0": {
       "type": "project",
       "path": "../../Runtime/project.json"
+    },
+    "TechTalk.SpecFlow/1.0.0": {
+      "type": "project",
+      "path": "../../Runtime/project.json",
+      "msbuildProject": "../../Runtime/TechTalk.SpecFlow.xproj"
+    },
+    "TechTalk.SpecFlow.Generator/1.0.0": {
+      "type": "project",
+      "path": "../../Generator/project.json",
+      "msbuildProject": "../../Generator/TechTalk.SpecFlow.Generator.xproj"
+    },
+    "TechTalk.SpecFlow.Parser/1.0.0": {
+      "type": "project",
+      "path": "../../Parser/project.json",
+      "msbuildProject": "../../Parser/TechTalk.SpecFlow.Parser.xproj"
+    },
+    "TechTalk.SpecFlow.Reporting/1.0.0": {
+      "type": "project",
+      "path": "../../TechTalk.SpecFlow.Reporting/project.json",
+      "msbuildProject": "../../TechTalk.SpecFlow.Reporting/TechTalk.SpecFlow.Reporting.xproj"
+    },
+    "TechTalk.SpecFlow.Utils/1.0.0": {
+      "type": "project",
+      "path": "../../Utils/project.json",
+      "msbuildProject": "../../Utils/TechTalk.SpecFlow.Utils.xproj"
     },
     "Utils/1.0.0": {
       "type": "project",
@@ -519,9 +614,9 @@
       "NUnit.Runners >= 3.2.1",
       "Parser",
       "Parser.Compatibility",
-      "Reporting",
       "RhinoMocks >= 3.6.1",
       "SpecFlow.NUnit3.ConsoleRunner >= 1.0.0",
+      "TechTalk.SpecFlow.Reporting",
       "xunit >= 1.9.2",
       "xunit.extensions >= 1.9.2",
       "xunit.runner.console >= 2.0.0"
