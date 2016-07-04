@@ -34,7 +34,9 @@ xcopy ".\NuGet\custom\NUnit3-Runner\*" "%targetDir%\bin\Debug\net45\NUnit3-Runne
 xcopy ".\lib\xunit.2.0.0\*.*" "%targetDir%\bin\Debug\net45\xUnit2\" /s /y
 xcopy ".\lib\Microsoft F#\*.*" "%targetDir%\bin\Debug\net45\FSharp\" /s /y
 
-xcopy "%USERPROFILE%\.nuget\packages\NUnit\2.6.0.12054\*" "%targetDir%\bin\Debug\net45\NUnit\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit\2.6.4\*" "%targetDir%\bin\Debug\net45\NUnit\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Runners\2.6.4\*" "%targetDir%\bin\Debug\net45\NUnit.Runners\" /s /y
+
 
 
 
