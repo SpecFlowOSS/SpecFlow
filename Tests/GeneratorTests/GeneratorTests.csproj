@@ -74,6 +74,7 @@
     <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="ParserHelper.cs" />
     <Compile Include="MsTestGeneratorProviderTests.cs" />
+    <Compile Include="ParserTests.cs" />
     <Compile Include="TagFilterMatcherTests.cs" />
     <Compile Include="TestHeaderWriterTests.cs" />
     <Compile Include="TestGeneratorErrorsTests.cs" />
