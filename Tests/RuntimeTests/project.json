@@ -1,43 +1,40 @@
 ﻿{
-    "version": "1.0.0-*",
-    "buildOptions": {
-        "outputName": "TechTalk.SpecFlow.RuntimeTests",
-        "keyFile": "../../specflow.snk"
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "outputName": "TechTalk.SpecFlow.RuntimeTests",
+    "keyFile": "../../specflow.snk"
+  },
+  "dependencies": {
+    "NUnit": "3.4.0",
+    "dotnet-test-nunit": "3.4.0-beta-1",
+    "FluentAssertions": "3.3.0",
+    "Moq": "4.0.10827",
+    "RhinoMocks": "3.6.1",
+    "Runtime": {
+      "version": "*",
+      "target": "project"
     },
-    "dependencies": {
-        "NUnit": "3.2.1",
-        "NUnitLite": "3.2.1",
-        "FluentAssertions": "3.3.0",
-        "Moq": "4.0.10827",
-        "RhinoMocks": "3.6.1",
-        "Runtime": {
-            "version": "*",
-            "target": "project"
-        },
-        "Utils": {
-            "version": "*",
-            "target": "project"
-        },
-        "Parser": {
-            "version": "*",
-            "target": "project"
-        },
-        "Generator": {
-            "version": "*",
-            "target": "project"
-        },
-        "TechTalk.SpecFlow.Reporting": {
-            "version": "*",
-            "target": "project"
-        }
+    "Utils": {
+      "version": "*",
+      "target": "project"
     },
-
-    "frameworks": {
-        "net45": {
-
-        }
+    "Parser": {
+      "version": "*",
+      "target": "project"
     },
-    "commands": {
-        "test": "TechTalk.SpecFlow.RuntimeTests"
+    "Generator": {
+      "version": "*",
+      "target": "project"
+    },
+    "TechTalk.SpecFlow.Reporting": {
+      "version": "*",
+      "target": "project"
     }
+  },
+  "testRunner": "nunit",
+  "frameworks": {
+    "net451": {
+
+    }
+  }
 }

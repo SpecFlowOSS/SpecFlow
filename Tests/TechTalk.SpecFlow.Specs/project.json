@@ -25,12 +25,13 @@
     ]
   },
   "dependencies": {
-    "NUnit": "3.2.1",
-    "NUnit.Extension.NUnitProjectLoader": "3.2.1",
-    "NUnit.Extension.NUnitV2Driver": "3.2.1",
+    "NUnit": "3.4.0",
+    "dotnet-test-nunit": "3.4.0-beta-1",
+    "NUnit.Extension.NUnitProjectLoader": "3.4.0",
+    "NUnit.Extension.NUnitV2Driver": "3.4.0",
 
-    "NUnit.Extension.VSProjectLoader": "3.2.1",
-    "NUnit.Runners": "3.2.1",
+    "NUnit.Extension.VSProjectLoader": "3.4.0",
+    "NUnit.Runners": "3.4.0",
     "FluentAssertions": "3.3.0",
     "Moq": "4.0.10827",
     "RhinoMocks": "3.6.1",
@@ -56,8 +57,9 @@
     "NUnit.Extension.NUnitV2ResultWriter": "3.2.1"
 
   },
+  "testRunner": "nunit",
   "frameworks": {
-    "net45": {
+    "net452": {
       "frameworkAssemblies": {
         "Microsoft.Build": "4.0.0.0",
         "Microsoft.Build.Framework": "4.0.0.0",
