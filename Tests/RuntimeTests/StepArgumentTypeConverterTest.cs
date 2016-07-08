@@ -75,6 +75,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void ShouldConvertStringToEnumerationTypeWithWhitespace()
+        {
+            var result = _stepArgumentTypeConverter.Convert("Value 1", typeof(TestEnumeration), _enUSCulture);
+            Assert.That(result, Is.EqualTo(TestEnumeration.Value1));
+        }
+
+        [Test]
         public void ShouldConvertGuidToGuidType()
         {
             var result = _stepArgumentTypeConverter.Convert("{EF338B79-FD29-488F-8CA7-39C67C2B8874}", typeof (Guid), _enUSCulture);
