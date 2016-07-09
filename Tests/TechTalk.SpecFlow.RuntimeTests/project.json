@@ -10,13 +10,10 @@
     "FluentAssertions": "3.3.0",
     "Moq": "4.0.10827",
     "RhinoMocks": "3.6.1",
-    "Runtime": {
-      "version": "*",
-      "target": "project"
-    },
+    "TechTalk.SpecFlow": "1.0.0-*",
     "Utils": {
-      "version": "*",
-      "target": "project"
+        "version": "*",
+        "target": "project"
     },
     "TechTalk.SpecFlow.Parser": "1.0.0-*",
     "Generator": {

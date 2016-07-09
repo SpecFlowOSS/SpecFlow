@@ -7,10 +7,7 @@
         "platform": "x86"
     },
     "dependencies": {
-        "Runtime": {
-            "version": "*",
-            "target": "project"
-        },
+        "TechTalk.SpecFlow": "1.0.0-*",
         "Utils": {
             "version": "*",
             "target": "project"
