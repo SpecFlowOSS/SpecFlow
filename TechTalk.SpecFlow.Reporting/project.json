@@ -21,10 +21,7 @@
             "version": "*",
             "target": "project"
         },
-        "Parser": {
-            "version": "*",
-            "target": "project"
-        },
+        "TechTalk.SpecFlow.Parser": "1.0.0-*",
         "Generator": {
             "version": "*",
             "target": "project"

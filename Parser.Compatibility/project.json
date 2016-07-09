@@ -1,15 +1,12 @@
-﻿{
+{
   "version": "1.0.0-*",
     "buildOptions": {
         "outputName": "TechTalk.SpecFlow.Parser.Compatibility",
         "keyFile": "../specflow.snk"
     },
     "dependencies": {
-        "Gherkin": "4.0.0",
-        "Parser": {
-            "version": "*",
-            "target": "project"
-        }
+        "Gherkin": "4.0.0",        
+        "TechTalk.SpecFlow.Parser": "1.0.0-*"
     },
    
     "frameworks": {
