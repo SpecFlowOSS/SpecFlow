@@ -15,10 +15,7 @@
         "Moq": "4.0.10827",
         "RhinoMocks": "3.6.1",
         "TechTalk.SpecFlow": "1.0.0-*",
-        "Utils": {
-            "version": "*",
-            "target": "project"
-        },
+        "TechTalk.SpecFlow.Utils": "*",
         "TechTalk.SpecFlow.Parser": "1.0.0-*",
         "TechTalk.SpecFlow.Generator": "1.0.0-*",
         "TechTalk.SpecFlow.Reporting": {
