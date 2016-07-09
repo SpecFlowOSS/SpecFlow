@@ -66,18 +66,3 @@ xcopy "%USERPROFILE%\.nuget\packages\xunit.extensions\1.9.2\*.*" "%copyTargetDir
 
 xcopy "%USERPROFILE%\.nuget\packages\xunit.runner.console\2.0.0\*.*" "%copyTargetDir%\xunit.runner.console\" /s /y
 
-
-goto :eof
-xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "%project:Directory%\bin\Debug\net452\SpecFlow\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.2.6.4\*.*" "$(TargetDir)NUnit\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.Runners.2.6.4\*.*" "$(TargetDir)NUnit.Runners\" /s /y
-xcopy "$(SolutionDir)packages\xunit.1.9.2\lib\net20\*.*" "$(TargetDir)xunit\lib\" /s /y
-xcopy "$(SolutionDir)packages\xunit.extensions.1.9.2\lib\net20\*.*" "$(TargetDir)xunit.extensions\lib\" /s /y
-xcopy "$(SolutionDir)packages\xunit.runner.console.2.0.0\*.*" "$(TargetDir)xunit.runner.console\" /s /y
-xcopy "$(SolutionDir)lib\xunit.2.0.0\*.*" "$(TargetDir)xUnit2\" /s /y
-xcopy "$(SolutionDir)lib\Microsoft F#\*.*" "$(TargetDir)FSharp\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.2.6.0.12054\*.*" "$(TargetDir)NUnit\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.3.2.1\*.*" "$(TargetDir)NUnit3\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.Extension.NUnitV2ResultWriter.3.2.1\*.*" "$(TargetDir)NUnit.Extension.3.2.1\" /s /y
-xcopy "$(SolutionDir)packages\NUnit.ConsoleRunner.3.2.1\*.*" "$(TargetDir)NUnit3-Runner\" /s /y
-xcopy "$(SolutionDir)lib\mbunit.3.3.442.0\*.*" "$(TargetDir)mbUnit3\" /s /y

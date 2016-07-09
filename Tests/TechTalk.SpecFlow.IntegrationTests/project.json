@@ -1,9 +1,9 @@
 ﻿{
-  "version": "1.0.0-*",
-  "buildOptions": {
-    "outputName": "TechTalk.SpecFlow.IntegrationTests",
-    "keyFile": "../../specflow.snk"
-  },
+    "version": "1.0.0-*",
+    "buildOptions": {
+        "outputName": "TechTalk.SpecFlow.IntegrationTests",
+        "keyFile": "../../specflow.snk"
+    },
     "dependencies": {
         "NUnit": "3.4.0",
         "dotnet-test-nunit": "3.4.0-beta-1",
@@ -15,16 +15,16 @@
         "xunit": "1.9.2",
         "xunit.extensions": "1.9.2",
         "TechTalk.SpecFlow.Parser": "1.0.0-*",
-        "TechTalk.SpecFlow.Specs": {
-            "version": "*",
-            "target": "project"
+        "TechTalk.SpecFlow.Specs": "*"
+    },
+    "testRunner": "nunit",
+
+    "frameworks": {
+        "net452": {
+
         }
     },
-  "testRunner": "nunit",
-
-  "frameworks": {
-    "net452": {
-
+    "scripts": {
+        "postcompile": "../../PostCompile.bat %project:Directory%"
     }
-  }
 }

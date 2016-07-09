@@ -58,6 +58,6 @@
     }
   },
   "scripts": {
-    "postcompile": "PostCompile.bat %project:Directory%"
+    "postcompile": "../../PostCompile.bat %project:Directory%"
   }
 }
