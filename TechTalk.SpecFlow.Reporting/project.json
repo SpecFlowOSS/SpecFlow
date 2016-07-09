@@ -19,10 +19,7 @@
             "target": "project"
         },
         "TechTalk.SpecFlow.Parser": "1.0.0-*",
-        "Generator": {
-            "version": "*",
-            "target": "project"
-        }
+        "TechTalk.SpecFlow.Generator": "1.0.0-*"
     },
    
     "frameworks": {
