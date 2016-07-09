@@ -37,7 +37,7 @@
   },
   "testRunner": "nunit",
   "frameworks": {
-    "net451": {
+    "net452": {
       
     }
   }
