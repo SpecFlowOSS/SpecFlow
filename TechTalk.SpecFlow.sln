@@ -35,8 +35,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D87E7021
 		Build\Versioning.targets = Build\Versioning.targets
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow", "Runtime\TechTalk.SpecFlow.xproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Utils", "Utils\TechTalk.SpecFlow.Utils.xproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Generator", "Generator\TechTalk.SpecFlow.Generator.xproj", "{F0A50949-8FE1-4048-9A3E-BB0498843669}"
@@ -47,8 +45,6 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Specs", "
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.IntegrationTests", "Tests\TechTalk.SpecFlow.IntegrationTests\TechTalk.SpecFlow.IntegrationTests.xproj", "{6F6B4286-382F-4134-AE5A-AFC4C80F588F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Parser.Compatibility", "Parser.Compatibility\Parser.Compatibility.xproj", "{5177B485-5389-4E15-8B43-7E7BC0EAF065}"
-EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DummyProjectForHoldingTheNUnit2Reference", "Tests\DummyProjectForHoldingTheNUnit2Reference\DummyProjectForHoldingTheNUnit2Reference.xproj", "{AEDCA17F-4535-4494-8580-E50A497C605C}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Reporting", "TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.xproj", "{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}"
@@ -58,6 +54,10 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RuntimeTests", "Tests\TechTalk.SpecFlow.RuntimeTests\RuntimeTests.xproj", "{7E637287-6E34-4BEC-8226-B052062AEA1F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Parser", "TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.xproj", "{ABA918DA-C436-4EE2-B23D-FD0B24403B27}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow", "TechTalk.SpecFlow\TechTalk.SpecFlow.xproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Parser.Compatibility", "TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.xproj", "{5177B485-5389-4E15-8B43-7E7BC0EAF065}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,12 +80,6 @@ Global
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D719B8EA-6C89-4B81-AABD-65ACF562F521}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -115,12 +109,6 @@ Global
 		{6F6B4286-382F-4134-AE5A-AFC4C80F588F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F6B4286-382F-4134-AE5A-AFC4C80F588F}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F6B4286-382F-4134-AE5A-AFC4C80F588F}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
-		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEDCA17F-4535-4494-8580-E50A497C605C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -151,6 +139,18 @@ Global
 		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
 		{ABA918DA-C436-4EE2-B23D-FD0B24403B27}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{5177B485-5389-4E15-8B43-7E7BC0EAF065}.VS2010IntegrationTest|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
