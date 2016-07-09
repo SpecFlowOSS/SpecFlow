@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers
 
         public void AssertExists()
         {
-            File.Exists(FilePath).Should().BeTrue("no result is generated");
+            File.Exists(FilePath).Should().BeTrue($"result is generated at path {FilePath}");
         }
 
         public void AssertEqualIgnoringWhitespace(string expectedValue)

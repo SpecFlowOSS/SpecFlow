@@ -7,7 +7,9 @@
             "include": [
                 "./MsTestExecutionReport/MsTestToNUnit.xslt",
                 "./NUnitExecutionReport/NUnitExecutionReport.xslt",
-                "./StepDefinitionReport/StepDefinitionReport.xslt"
+                "./StepDefinitionReport/StepDefinitionReport.xslt",
+                "./Common/Common.xslt",
+                "./Common/GherkinElements.xslt"
             ]
         }
     },

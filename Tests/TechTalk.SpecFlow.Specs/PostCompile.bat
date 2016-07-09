@@ -2,46 +2,73 @@ echo %1
 
 set targetDir=%1
 
+set copyTargetDir=%targetDir%\bin\Debug\net452\win7-x64
+
 cd ..\..\
-mkdir "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-mkdir "%targetDir%\bin\Debug\net45\SpecFlow\lib"
+mkdir "%copyTargetDir%\SpecFlow\Tools"
+mkdir "%copyTargetDir%\SpecFlow\lib"
 
-mkdir "%targetDir%\bin\Debug\net45\NUnit3\""
-copy .\Tools\MsBuild\TechTalk.SpecFlow.targets "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Tools\MsBuild\TechTalk.SpecFlow.tasks "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Tools\bin\Debug\net45\specflow.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Runtime\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Utils\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Reporting\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Parser\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy .\Generator\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
-copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%targetDir%\bin\Debug\net45\SpecFlow\Tools"
+mkdir "%copyTargetDir%\NUnit3\"
+mkdir "%copyTargetDir%\NUnit3-Runner\"
+mkdir "%copyTargetDir%\NUnit\"
+mkdir "%copyTargetDir%\NUnit-Runner\"
+mkdir "%copyTargetDir%\xUnit2\"
+mkdir "%copyTargetDir%\xUnit\"
+mkdir "%copyTargetDir%\xunit.runner.console\"
+mkdir "%copyTargetDir%\FSharp\"
 
-copy .\Tools\MsBuild\TechTalk.SpecFlow.targets "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Tools\MsBuild\TechTalk.SpecFlow.tasks "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Tools\bin\Debug\net45\specflow.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Runtime\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Utils\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Reporting\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Parser\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy .\Generator\bin\Debug\net45\*.* "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%targetDir%\bin\Debug\net45\SpecFlow\lib"
-copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%targetDir%\bin\Debug\net45\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.tasks "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Tools\bin\Debug\net45\SpecFlow.* "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Utils\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Reporting\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Parser\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\Tools"
+copy .\TechTalk.SpecFlow.Generator\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\Tools"
+copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%copyTargetDir%\SpecFlow\Tools"
+copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%copyTargetDir%\SpecFlow\Tools"
 
-xcopy "%USERPROFILE%\.nuget\packages\NUnit\3.2.1\*" "%targetDir%\bin\Debug\net45\NUnit3\" /s /y
-xcopy ".\NuGet\custom\NUnit3-Runner\*" "%targetDir%\bin\Debug\net45\NUnit3-Runner\" /s /y
-xcopy ".\lib\xunit.2.0.0\*.*" "%targetDir%\bin\Debug\net45\xUnit2\" /s /y
-xcopy ".\lib\Microsoft F#\*.*" "%targetDir%\bin\Debug\net45\FSharp\" /s /y
+copy .\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.tasks "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Tools\bin\Debug\net45\SpecFlow.* "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Utils\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Reporting\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Parser\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\lib"
+copy .\TechTalk.SpecFlow.Generator\bin\Debug\net45\*.* "%copyTargetDir%\SpecFlow\lib"
+copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%copyTargetDir%\SpecFlow\lib"
+copy "%targetDir%\bin\Debug\net45\Gherkin.dll" "%copyTargetDir%\SpecFlow\lib"
 
-xcopy "%USERPROFILE%\.nuget\packages\NUnit\2.6.4\*" "%targetDir%\bin\Debug\net45\NUnit\" /s /y
-xcopy "%USERPROFILE%\.nuget\packages\NUnit.Runners\2.6.4\*" "%targetDir%\bin\Debug\net45\NUnit.Runners\" /s /y
+rem xcopy "%USERPROFILE%\.nuget\packages\NUnit\3.2.1\*" "%copyTargetDir%\NUnit3\" /s /y
+rem xcopy ".\NuGet\custom\NUnit3-Runner\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy ".\lib\xunit.2.0.0\*.*" "%copyTargetDir%\xUnit2\" /s /y
+xcopy ".\lib\Microsoft F#\*.*" "%copyTargetDir%\FSharp\" /s /y
+
+xcopy "%USERPROFILE%\.nuget\packages\NUnit\2.6.4\*" "%copyTargetDir%\NUnit\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Runners\2.6.4\*" "%copyTargetDir%\NUnit.Runners\" /s /y
+
+xcopy "%USERPROFILE%\.nuget\packages\NUnit\3.4.0\*" "%copyTargetDir%\NUnit3\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.ConsoleRunner\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Extension.NUnitProjectLoader\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Extension.VSProjectLoader\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Extension.NUnitV2ResultWriter\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Extension.NUnitV2Driver\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\NUnit.Extension.TeamCityEventListener\3.4.0\*" "%copyTargetDir%\NUnit3-Runner\" /s /y
+
+echo nunit-v2-result-writer.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
+echo vs-project-loader.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
+echo nunit.v2.driver.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
+echo nunit-project-loader.dll >> "%copyTargetDir%\NUnit3-Runner\tools\.addins"
+
+xcopy "%USERPROFILE%\.nuget\packages\xunit\1.9.2\*.*" "%copyTargetDir%\xUnit\" /s /y
+xcopy "%USERPROFILE%\.nuget\packages\xunit.extensions\1.9.2\*.*" "%copyTargetDir%\xUnit\" /s /y
 
 
+xcopy "%USERPROFILE%\.nuget\packages\xunit.runner.console\2.0.0\*.*" "%copyTargetDir%\xunit.runner.console\" /s /y
 
 
 goto :eof
-xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "%project:Directory%\bin\Debug\net45\SpecFlow\" /s /y
+xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "%project:Directory%\bin\Debug\net452\SpecFlow\" /s /y
 xcopy "$(SolutionDir)packages\NUnit.2.6.4\*.*" "$(TargetDir)NUnit\" /s /y
 xcopy "$(SolutionDir)packages\NUnit.Runners.2.6.4\*.*" "$(TargetDir)NUnit.Runners\" /s /y
 xcopy "$(SolutionDir)packages\xunit.1.9.2\lib\net20\*.*" "$(TargetDir)xunit\lib\" /s /y

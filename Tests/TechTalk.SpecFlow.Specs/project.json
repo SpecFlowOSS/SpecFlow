@@ -24,32 +24,28 @@
       "./Drivers/Templates/TestProjectFile.fsproj"
     ]
   },
-  "dependencies": {
-    "NUnit": "3.4.0",
-    "dotnet-test-nunit": "3.4.0-beta-1",
-    "NUnit.Extension.NUnitProjectLoader": "3.4.0",
-    "NUnit.Extension.NUnitV2Driver": "3.4.0",
+    "dependencies": {
+        "NUnit": "3.4.0",
+        "dotnet-test-nunit": "3.4.0-beta-1",
+        "NUnit.Extension.NUnitProjectLoader": "3.4.0",
+        "NUnit.Extension.NUnitV2Driver": "3.4.0",
 
-    "NUnit.Extension.VSProjectLoader": "3.4.0",
-    "NUnit.Runners": "3.4.0",
-    "FluentAssertions": "3.3.0",
-    "Moq": "4.0.10827",
-    "RhinoMocks": "3.6.1",
-    "Gherkin": "4.0.0",
-    "xunit": "1.9.2",
-    "xunit.extensions": "1.9.2",
-    "xunit.runner.console": "2.0.0",
-    "TechTalk.SpecFlow.Parser": "1.0.0-*",
-    "TechTalk.SpecFlow.Parser.Compatibility": "1.0.0-*",
-    "TechTalk.SpecFlow.Reporting": {
-        "version": "*",
-        "target": "project"
+        "NUnit.Extension.VSProjectLoader": "3.4.0",
+        "NUnit.Runners": "3.4.0",
+        "FluentAssertions": "3.3.0",
+        "Moq": "4.0.10827",
+        "RhinoMocks": "3.6.1",
+        "Gherkin": "4.0.0",
+        "xunit": "1.9.2",
+        "xunit.extensions": "1.9.2",
+        "xunit.runner.console": "2.0.0",
+        "TechTalk.SpecFlow.Parser": "1.0.0-*",
+        "TechTalk.SpecFlow.Parser.Compatibility": "1.0.0-*",
+        "TechTalk.SpecFlow.Reporting": "*",
+        "SpecFlow.NUnit3.ConsoleRunner": "1.0.0"
     },
-    "SpecFlow.NUnit3.ConsoleRunner": "1.0.0"
-  },
   "tools": {
-    "NUnit.Extension.NUnitV2ResultWriter": "3.2.1"
-
+    
   },
   "testRunner": "nunit",
   "frameworks": {
