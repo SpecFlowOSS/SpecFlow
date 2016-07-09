@@ -1,5 +1,5 @@
 dotnet restore
-dotnet build Tools
+dotnet build TechTalk.SpecFlow.Tools
 if ERRORLEVEL 1 goto :eof
 dotnet build Tests/TechTalk.SpecFlow.GeneratorTests
 if ERRORLEVEL 1 goto :eof
