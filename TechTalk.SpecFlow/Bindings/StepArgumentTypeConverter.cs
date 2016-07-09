@@ -112,7 +112,7 @@ namespace TechTalk.SpecFlow.Bindings
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
             if (typeToConvertTo.IsEnum && value is string)
-                return Enum.Parse(typeToConvertTo, (string)value, true);
+                return Enum.Parse(typeToConvertTo, RemoveWhitespace((string) value), true);
 
             if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))
                 return null;
@@ -121,6 +121,11 @@ namespace TechTalk.SpecFlow.Bindings
                 return new GuidValueRetriever().GetValue(value as string);
 
             return System.Convert.ChangeType(value, typeToConvertTo, cultureInfo);
+        }
+
+        private static string RemoveWhitespace(string value)
+        {
+            return value.Replace(" ", string.Empty);
         }
 
         public static bool CanConvertSimple(IBindingType typeToConvertTo, object value, CultureInfo cultureInfo)

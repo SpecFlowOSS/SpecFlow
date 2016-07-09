@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
     {
         public static CodeTypeDeclaration Class(this CodeNamespace code)
         {
-            return code.Types[0];            
+            return code.Types[0];
         }
 
         public static IEnumerable<CodeMemberMethod> Members(this CodeTypeDeclaration codeTypeDeclaration)
@@ -27,7 +27,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             foreach (var customAttribute in codeMemberMethod.CustomAttributes)
             {
-                
+
                 var attribute = customAttribute as CodeAttributeDeclaration;
                 if (attribute != null)
                 {
@@ -41,6 +41,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
             foreach (CodeAttributeArgument arguments in attribute.Arguments)
             {
                 yield return arguments.Value.As<CodePrimitiveExpression>().Value;
+            }
+        }
+
+        public static IEnumerable<CodeAttributeDeclaration> CustomAttributes(this CodeTypeDeclaration codeTypeDeclaration)
+        {
+            foreach (var customAttribute in codeTypeDeclaration.CustomAttributes)
+            {
+
+                var attribute = customAttribute as CodeAttributeDeclaration;
+                if (attribute != null)
+                {
+                    yield return attribute;
+                }
             }
         }
     }

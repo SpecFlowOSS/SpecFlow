@@ -53,12 +53,12 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         }
 
 
-        public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClassInitializeMethod, TESTFIXTURESETUP_ATTR);
         }
 
-        public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR);
         }

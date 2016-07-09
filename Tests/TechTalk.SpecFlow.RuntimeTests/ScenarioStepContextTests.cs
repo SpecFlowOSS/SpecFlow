@@ -85,11 +85,78 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void ShouldReportCorrectCurrentTopLevelStep()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise twice", null, string.Empty);
+            contextManager.InitializeStepContext(secondStepInfo);
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext();
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext();
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+        }
+
+        [Test]
+        public void ShouldReportCorrectCurrentTopLevelStepIfWeHaveExecutedMoreThan1Step()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext();
+            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise twice", null, string.Empty);
+            contextManager.InitializeStepContext(secondStepInfo);
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext();
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+        }
+
+        [Test]
+        public void ShouldReportCorrectCurrentTopLevelStepIfWeHaveStepsMoreThan1Deep()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            Assert.AreEqual(firstStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext();
+            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise twice", null, string.Empty);
+            contextManager.InitializeStepContext(secondStepInfo);
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            var thirdStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise a third time", null, string.Empty);
+            contextManager.InitializeStepContext(thirdStepInfo); //Call sub step
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            var fourthStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise a forth time", null, string.Empty);
+            contextManager.InitializeStepContext(fourthStepInfo); //call sub step of sub step
+            contextManager.CleanupStepContext(); // return from sub step of sub step
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext(); // return from sub step
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            contextManager.CleanupStepContext(); // finish 2nd step
+            Assert.AreEqual(secondStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+            var fifthStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialise a fifth time", null, string.Empty);
+            contextManager.InitializeStepContext(fifthStepInfo);
+            Assert.AreEqual(fifthStepInfo, contextManager.CurrentTopLevelStep.StepInfo);
+        }
+
+        [Test]
         public void ShouldReportSetValuesCorrectly()
         {
             var table = new Table("header1","header2");
             const string multlineText = @" some
-eaxmplae
+example
 multiline
 text";
             var stepInfo = new StepInfo(StepDefinitionType.Given, "Step text", table, multlineText);
