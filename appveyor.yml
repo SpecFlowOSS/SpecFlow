@@ -27,10 +27,8 @@ configuration: Release
 
 
 build:
+  project: TechTalk.SpecFlow.sln
   verbosity: normal
-
-build_script:
-  cmd: build.bat
 
 test:
   assemblies:
