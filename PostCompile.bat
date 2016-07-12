@@ -66,3 +66,6 @@ xcopy "%USERPROFILE%\.nuget\packages\xunit.extensions\1.9.2\*.*" "%copyTargetDir
 
 xcopy "%USERPROFILE%\.nuget\packages\xunit.runner.console\2.0.0\*.*" "%copyTargetDir%\xunit.runner.console\" /s /y
 
+xcopy "%USERPROFILE%\.nuget\packages\SpecFlow\1.9.0\lib\net35\*.*" "%copyTargetDir%\" /s /y
+
+xcopy ".\lib\mbunit.3.3.442.0\*.*" "%copyTargetDir%\mbUnit3\" /s /y

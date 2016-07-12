@@ -6,8 +6,8 @@
     },
     "dependencies": {
         "Gherkin": "4.0.0",
-        "TechTalk.SpecFlow": "1.0.0-*",
-        "TechTalk.SpecFlow.Parser": "1.0.0-*",
+        "TechTalk.SpecFlow": "*",
+        "TechTalk.SpecFlow.Parser": "*",
         "TechTalk.SpecFlow.Utils": "*"
     },
 
