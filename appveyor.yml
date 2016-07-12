@@ -25,10 +25,13 @@ nuget:
 
 configuration: Release
 
+before_build:
+- cmd: dotnet restore
 
 build:
   project: TechTalk.SpecFlow.sln
   verbosity: normal
+
 
 test:
   assemblies:
