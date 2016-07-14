@@ -207,6 +207,78 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             result.Should().Be("When/I '(.*)' something/WhenISomething/string p0");
         }
 
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_escape_csharp_keywords()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithLanguageKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/string @do");
+        }
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_not_escape_csharp_keywords_when_cased_differently()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithIncorrectlyCasedCSharpKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.CSharp, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/string fLoaT");
+        }
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_escape_vb_keywords()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithLanguageKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.VB, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/ByVal [do] As String");
+        }
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_escape_vb_keywords_regardless_of_case()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithVBCasedKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.VB, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/ByVal [Do] As String");
+        }
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_escape_fsharp_keywords()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithLanguageKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.FSharp, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/``do`` : string");
+        }
+
+        [Test]
+        public void Should_GetStepDefinitionSkeleton_should_not_escape_fsharp_keywords_when_differently_cased()
+        {
+            var sut = CreateSut();
+
+            var stepInstance = CreateWhenWithDifferentlyCasedFSharpKeyword();
+
+            var result = sut.GetStepDefinitionSkeleton(ProgrammingLanguage.FSharp, stepInstance, StepDefinitionSkeletonStyle.RegexAttribute, bindingCulture);
+
+            result.Should().Be("When/I '(.*)' something/WhenISomething/finaLLY : string");
+        }
+
         private StepInstance CreateWhenWithSingleParam()
         {
             var stepInstance = CreateSimpleWhen("I 'do' something");
@@ -216,6 +288,47 @@ namespace TechTalk.SpecFlow.RuntimeTests.BindingSkeletons
             analizeResult.Parameters.Add(new AnalyzedStepParameter("String", "p0", ".*"));
             return stepInstance;
         }
+
+        private StepInstance CreateWhenWithLanguageKeyword()
+        {
+            var stepInstance = CreateSimpleWhen("I 'do' something");
+            analizeResult.TextParts.Clear();
+            analizeResult.TextParts.Add("I '");
+            analizeResult.TextParts.Add("' something");
+            analizeResult.Parameters.Add(new AnalyzedStepParameter("String", "do", ".*"));
+            return stepInstance;
+        }
+
+        private StepInstance CreateWhenWithDifferentlyCasedFSharpKeyword()
+        {
+            var stepInstance = CreateSimpleWhen("I 'finaLLY' something");
+            analizeResult.TextParts.Clear();
+            analizeResult.TextParts.Add("I '");
+            analizeResult.TextParts.Add("' something");
+            analizeResult.Parameters.Add(new AnalyzedStepParameter("String", "finaLLY", ".*"));
+            return stepInstance;
+        }
+
+        private StepInstance CreateWhenWithIncorrectlyCasedCSharpKeyword()
+        {
+            var stepInstance = CreateSimpleWhen("I 'fLoaT' something");
+            analizeResult.TextParts.Clear();
+            analizeResult.TextParts.Add("I '");
+            analizeResult.TextParts.Add("' something");
+            analizeResult.Parameters.Add(new AnalyzedStepParameter("String", "fLoaT", ".*"));
+            return stepInstance;
+        }
+
+        private StepInstance CreateWhenWithVBCasedKeyword()
+        {
+            var stepInstance = CreateSimpleWhen("I 'Do' something");
+            analizeResult.TextParts.Clear();
+            analizeResult.TextParts.Add("I '");
+            analizeResult.TextParts.Add("' something");
+            analizeResult.Parameters.Add(new AnalyzedStepParameter("String", "Do", ".*"));
+            return stepInstance;
+        }
+
 
         [Test]
         public void Should_GetStepDefinitionSkeleton_generate_simple_underscored_method_name_style()

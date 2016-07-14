@@ -159,11 +159,11 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             switch (language)
             {
                 case ProgrammingLanguage.VB:
-                    return String.Format("ByVal {0} As {1}", parameter.Name, parameter.Type);
+                    return String.Format("ByVal {0} As {1}", Keywords.EscapeVBKeyword(parameter.Name), parameter.Type);
                 case ProgrammingLanguage.CSharp:
-                    return String.Format("{1} {0}", parameter.Name, GetCSharpTypeName(parameter.Type));
+                    return String.Format("{1} {0}", Keywords.EscapeCSharpKeyword(parameter.Name), GetCSharpTypeName(parameter.Type));
                 case ProgrammingLanguage.FSharp:
-                    return String.Format("{0} : {1}", parameter.Name, GetFSharpTypeName(parameter.Type));
+                    return String.Format("{0} : {1}", Keywords.EscapeFSharpKeyword(parameter.Name), GetFSharpTypeName(parameter.Type));
                 default:
                     return String.Format("{1} {0}", parameter.Name, parameter.Type);
             }
