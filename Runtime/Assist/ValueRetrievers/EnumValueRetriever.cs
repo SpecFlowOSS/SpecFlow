@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Assist.ValueRetrievers
 {
@@ -24,9 +25,9 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
             return propertyType.IsEnum;
         }
 
-        private object ConvertTheStringToAnEnum(string value, Type enumType)
+        private static object ConvertTheStringToAnEnum(string value, Type enumType)
         {
-            return Enum.Parse(GetTheEnumType(enumType), ParseTheValue(value), true);
+            return StepArgumentTypeConverter.ConvertToAnEnum(GetTheEnumType(enumType), value);
         }
 
         private static Type GetTheEnumType(Type enumType)
@@ -60,12 +61,6 @@ namespace TechTalk.SpecFlow.Assist.ValueRetrievers
         private static bool ThisIsNotANullableEnum(Type enumType)
         {
             return enumType.IsGenericType == false;
-        }
-
-        private string ParseTheValue(string value)
-        {
-            value = value.Replace(" ", "");
-            return value;
         }
 
         private InvalidOperationException GetInvalidOperationException(string value) => new InvalidOperationException($"No enum with value {value} found");
