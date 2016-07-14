@@ -130,6 +130,9 @@ namespace TechTalk.SpecFlow.Parser
 
         private void CheckSemanticErrors(SpecFlowDocument specFlowDocument)
         {
+            if (specFlowDocument?.SpecFlowFeature == null)
+                return;
+
             var errors = new List<ParserException>();
 
             CheckForDuplicateScenarios(specFlowDocument.SpecFlowFeature, errors);
