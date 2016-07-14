@@ -105,6 +105,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AcessingContexts.feature</DependentUpon>
     </Compile>
+    <Compile Include="Features\AsyncSupport.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsyncSupport.feature</DependentUpon>
+    </Compile>
     <Compile Include="Features\BindingCulture.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -241,6 +246,10 @@
     <None Include="Features\AcessingContexts.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AcessingContexts.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Features\AsyncSupport.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AsyncSupport.feature.cs</LastGenOutput>
     </None>
     <None Include="Features\BasicExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
