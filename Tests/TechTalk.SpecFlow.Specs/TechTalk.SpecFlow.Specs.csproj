@@ -162,7 +162,7 @@
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj">
       <Project>{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}</Project>
       <Name>TechTalk.SpecFlow.Reporting</Name>
     </ProjectReference>
