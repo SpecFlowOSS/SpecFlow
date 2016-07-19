@@ -101,7 +101,7 @@
     <EmbeddedResource Include="StepDefinitionReport\StepDefinitionReport.xslt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Generator\TechTalk.SpecFlow.Generator.csproj">
+    <ProjectReference Include="..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
