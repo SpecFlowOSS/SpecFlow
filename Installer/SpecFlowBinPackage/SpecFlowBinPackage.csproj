@@ -53,7 +53,7 @@
       <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
       <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Tools\TechTalk.SpecFlow.Tools.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj">
       <Project>{87BE7FE6-C3DE-4409-ABF6-FA5B60AF3DE1}</Project>
       <Name>TechTalk.SpecFlow.Tools</Name>
     </ProjectReference>
@@ -84,7 +84,7 @@
     <ItemGroup>
       <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />
       <SpecFlowTools Include="$(TargetDir)\*.exe" />
-      <SpecFlowTools Include="$(TargetDir)\..\..\..\Tools\bin\$(Configuration)\specflow.exe.config" />
+      <SpecFlowTools Include="$(TargetDir)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\specflow.exe.config" />
       <SpecFlowTools Include="$(TargetDir)\*.config" />
       <SpecFlowTools Include="$(TargetDir)\MsBuild\*.*" />
       <SpecFlowLicense Include="$(TargetDir)\*.txt" />

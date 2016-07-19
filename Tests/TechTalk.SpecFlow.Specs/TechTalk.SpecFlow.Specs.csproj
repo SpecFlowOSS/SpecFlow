@@ -178,9 +178,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <SpecFlowTasksPath>..\..\Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
-  <Import Project="..\..\Tools\MsBuild\TechTalk.SpecFlow.targets" />
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "$(TargetDir)SpecFlow\" /s /y
 xcopy "$(SolutionDir)packages\NUnit.2.6.4\*.*" "$(TargetDir)NUnit\" /s /y
