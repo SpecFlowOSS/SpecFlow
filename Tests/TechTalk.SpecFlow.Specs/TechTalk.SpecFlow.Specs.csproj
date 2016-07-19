@@ -158,7 +158,7 @@
       <Project>{b4588e81-c589-434f-8f12-3d881433c3e4}</Project>
       <Name>TechTalk.SpecFlow.Parser.Compatibility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
