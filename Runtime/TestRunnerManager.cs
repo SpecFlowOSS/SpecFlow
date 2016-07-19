@@ -30,6 +30,8 @@ namespace TechTalk.SpecFlow
         private readonly object syncRoot = new object();
         private bool isTestRunInitialized;
 
+        public IObjectContainer GlobalContainer { get { return globalContainer; } }
+
         public bool IsMultiThreaded { get { return testRunnerRegistry.Count > 1; } }
 
         public TestRunnerManager(IObjectContainer globalContainer, IContainerBuilder containerBuilder, RuntimeConfiguration runtimeConfiguration, IRuntimeBindingRegistryBuilder bindingRegistryBuilder)
@@ -147,8 +149,10 @@ namespace TechTalk.SpecFlow
         private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new Dictionary<Assembly, ITestRunnerManager>(1);
         private static readonly object testRunnerManagerRegistrySyncRoot = new object();
 
-        private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
+        public static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly = null, IContainerBuilder containerBuilder = null)
         {
+            testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+
             ITestRunnerManager testRunnerManager;
             if (!testRunnerManagerRegistry.TryGetValue(testAssembly, out testRunnerManager))
             {
