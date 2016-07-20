@@ -130,13 +130,19 @@ namespace TechTalk.SpecFlow.Reporting.MsTestExecutionReport
                 if (stdOut == null)
                     continue;
 
-                report.ScenarioOutputs.Add(
-                    new ScenarioOutput()
-                        {
-                            Name = testClassName + "." + nameAttr.Value,
-                            Text = stdOut.InnerText
-                        }
-                    );
+                ScenarioOutput scenarioOutput = new ScenarioOutput()
+                {
+                    Name = testClassName + "." + nameAttr.Value,
+                    Text = stdOut.InnerText
+                };
+
+                var dbgTrace = testResultNode.SelectSingleNode("mstest:Output/mstest:DebugTrace", namespaceManager);
+                if (dbgTrace != null)
+                {
+                    scenarioOutput.DebugText = dbgTrace.InnerText;
+                }
+
+                report.ScenarioOutputs.Add(scenarioOutput);
             }
         }
     }
