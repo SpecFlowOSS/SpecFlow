@@ -18,7 +18,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             //TODO: Need a cleaner way to express this.
             var featureLanguage = settings.ContainsKey("featureLanguage") ? CultureInfo.GetCultureInfo(settings["featureLanguage"].ToString()) : CultureInfo.GetCultureInfo("en-us");
             var toolLanguage = settings.ContainsKey("toolLanguage") ? CultureInfo.GetCultureInfo(settings["toolLanguage"].ToString()) : CultureInfo.GetCultureInfo("en-us");
-            var generatorUnitTestProvider = settings.ContainsKey("unittestProvider") ? settings["unittestProvider"].ToString() : "xUnit";
+            var generatorUnitTestProvider = settings.ContainsKey("unittestProvider") ? settings["unittestProvider"].ToString() : "NUnit";
             var defaultNamespace = settings.ContainsKey("defaultNamespace") ? settings["defaultNamespace"].ToString() : projectFolder.Name;
 
             var project = new SpecFlowProject()
