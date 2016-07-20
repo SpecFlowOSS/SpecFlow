@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Tools
 
         [Action("Generate tests from all feature files in a project")]
         public static void GenerateAll(
-            [Required(Description = "Visual Studio Project File containing features")] string projectFile,
+            [Required(Description = "Directory containing the project files")] string directoryName,
             [Optional(false, "force", "f")] bool forceGeneration,
             [Optional(false, "verbose", "v")] bool verboseOutput,
             [Optional(false, "debug", Description = "Used for tool integration")] bool requestDebuggerToAttach)
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.Tools
             if (requestDebuggerToAttach)
                 Debugger.Launch();
 
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectFile));
+            SpecFlowProject specFlowProject = DirectoryProjectReader.LoadSpecFlowProject(Path.GetFullPath(directoryName));
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
 

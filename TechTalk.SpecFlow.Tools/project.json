@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-*",
     "buildOptions": {
-        "outputName": "specflow",
+        "outputName": "dotnet-specflow",
         "emitEntryPoint": true,
         "keyFile": "../specflow.snk",
         "platform": "x86"
