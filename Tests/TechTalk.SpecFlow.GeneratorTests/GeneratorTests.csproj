@@ -95,19 +95,19 @@
     <Compile Include="XUnitTestGeneratorProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Generator\TechTalk.SpecFlow.Generator.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj">
       <Project>{453D8014-B6CD-4E86-80A8-D59F59092334}</Project>
       <Name>TechTalk.SpecFlow.Generator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Runtime\TechTalk.SpecFlow.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow\TechTalk.SpecFlow.csproj">
       <Project>{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}</Project>
       <Name>TechTalk.SpecFlow</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Utils\TechTalk.SpecFlow.Utils.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj">
       <Project>{C0AF4A43-0C3B-47C7-86DE-79FB632B1453}</Project>
       <Name>TechTalk.SpecFlow.Utils</Name>
     </ProjectReference>

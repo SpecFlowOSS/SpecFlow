@@ -183,7 +183,7 @@
     <EmbeddedResource Include="TestFiles\whitespaces.feature.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
@@ -203,9 +203,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <SpecFlowTasksPath>..\..\Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
-  <Import Project="..\..\Tools\MsBuild\TechTalk.SpecFlow.targets" />
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "$(TargetDir)SpecFlow\" /s /y
 xcopy "$(SolutionDir)packages\NUnit.2.6.4\*.*" "$(TargetDir)NUnit\" /s /y

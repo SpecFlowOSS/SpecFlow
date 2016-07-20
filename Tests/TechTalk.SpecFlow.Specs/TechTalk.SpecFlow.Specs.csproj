@@ -154,15 +154,15 @@
       <Project>{27B6695E-7049-4C1B-8820-812722128D9E}</Project>
       <Name>SpecFlowBinPackage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj">
       <Project>{b4588e81-c589-434f-8f12-3d881433c3e4}</Project>
       <Name>TechTalk.SpecFlow.Parser.Compatibility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Parser\TechTalk.SpecFlow.Parser.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj">
       <Project>{7CCEF6D6-FC17-422E-9BED-EDD752B6496F}</Project>
       <Name>TechTalk.SpecFlow.Parser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Reporting\TechTalk.SpecFlow.Reporting.csproj">
+    <ProjectReference Include="..\..\TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj">
       <Project>{FC43509F-E7D3-40C4-B4C3-1E6C9D5530A4}</Project>
       <Name>TechTalk.SpecFlow.Reporting</Name>
     </ProjectReference>
@@ -178,9 +178,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <SpecFlowTasksPath>..\..\Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
+    <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>
   </PropertyGroup>
-  <Import Project="..\..\Tools\MsBuild\TechTalk.SpecFlow.targets" />
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)Installer\SpecFlowBinPackage\bin\package\*.*" "$(TargetDir)SpecFlow\" /s /y
 xcopy "$(SolutionDir)packages\NUnit.2.6.4\*.*" "$(TargetDir)NUnit\" /s /y
