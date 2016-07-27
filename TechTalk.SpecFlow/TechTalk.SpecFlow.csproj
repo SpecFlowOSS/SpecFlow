@@ -156,6 +156,7 @@
     <Compile Include="Bindings\MethodBinding.cs" />
     <Compile Include="Bindings\StepDefinitionRegexCalculator.cs" />
     <Compile Include="BoDi\BoDi.cs" />
+    <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagerExtensions.cs" />

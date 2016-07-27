@@ -146,6 +146,7 @@ namespace TechTalk.SpecFlow
 
         private static readonly Dictionary<Assembly, ITestRunnerManager> testRunnerManagerRegistry = new Dictionary<Assembly, ITestRunnerManager>(1);
         private static readonly object testRunnerManagerRegistrySyncRoot = new object();
+        private const int FixedLogicalThreadId = 0;
 
         private static ITestRunnerManager GetTestRunnerManager(Assembly testAssembly, IContainerBuilder containerBuilder = null)
         {
@@ -177,9 +178,30 @@ namespace TechTalk.SpecFlow
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
         {
             testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
-            managedThreadId = managedThreadId ?? Thread.CurrentThread.ManagedThreadId;
+            managedThreadId = GetLogicalThreadId(managedThreadId);
             var testRunnerManager = GetTestRunnerManager(testAssembly);
             return testRunnerManager.GetTestRunner(managedThreadId.Value);
+        }
+
+        private static int GetLogicalThreadId(int? managedThreadId)
+        {
+            if (ParallelExecutionIsDisabled())
+            {
+                return FixedLogicalThreadId;
+            }
+
+            return managedThreadId ?? Thread.CurrentThread.ManagedThreadId;
+        }
+
+        private static bool ParallelExecutionIsDisabled()
+        {
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NCrunch)) ||
+                !string.IsNullOrEmpty(Environment.GetEnvironmentVariable(EnvironmentVariableNames.SpecflowDisableParallelExecution)))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         internal static void Reset()

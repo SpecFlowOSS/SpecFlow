@@ -81,20 +81,29 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testRunnerFake.Verify(tr => tr.OnTestRunStart());
         }
 
+
         [Test]
         public void Should_resolve_a_test_runner_specific_test_tracer()
         {
-            var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0);
-            testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-            testRunner1.OnScenarioStart(new ScenarioInfo("foo"));
-            var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
+            //This test can't run in NCrunch as when NCrunch runs the tests it will disable the ability to get different test runners for each thread 
+            //as it manages the parallelisation 
+            //see https://github.com/techtalk/SpecFlow/issues/638
+            if (!TestEnvironmentHelper.IsBeingRunByNCrunch())
+            {
+                var testRunner1 = TestRunnerManager.GetTestRunner(anAssembly, 0);
+                testRunner1.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
+                testRunner1.OnScenarioStart(new ScenarioInfo("foo"));
+                var tracer1 = testRunner1.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
-            var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1);
-            testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
-            testRunner2.OnScenarioStart(new ScenarioInfo("foo"));
-            var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
+                var testRunner2 = TestRunnerManager.GetTestRunner(anAssembly, 1);
+                testRunner2.OnFeatureStart(new FeatureInfo(new CultureInfo("en-US"), "sds", "sss"));
+                testRunner2.OnScenarioStart(new ScenarioInfo("foo"));
+                var tracer2 = testRunner2.ScenarioContext.ScenarioContainer.Resolve<ITestTracer>();
 
-            tracer1.Should().NotBeSameAs(tracer2);
+                tracer1.Should().NotBeSameAs(tracer2);
+            }
+            
         }
     }
+
 }
