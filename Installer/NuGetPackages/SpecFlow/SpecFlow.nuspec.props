@@ -1,0 +1,39 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <ItemGroup Label="SpecFlow">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\TechTalk.SpecFlow.dll">
+      <targetFolder>SpecFlow\lib\net45</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow\bin\$(Configuration)\TechTalk.SpecFlow.pdb">
+      <targetFolder>SpecFlow\lib\net45</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\App.config.transform">
+      <targetFolder>SpecFlow\content</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\*.txt">
+      <targetFolder>SpecFlow</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\*.dll">
+      <targetFolder>SpecFlow\tools</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\*.exe">
+      <targetFolder>SpecFlow\tools</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\*.config">
+      <targetFolder>SpecFlow\tools</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\*.pdb">
+      <targetFolder>SpecFlow\tools</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\TechTalk.SpecFlow.Tools\bin\$(Configuration)\MsBuild\*">
+      <targetFolder>SpecFlow\tools</targetFolder>
+    </additionalFiles>
+  </ItemGroup>
+</Project>

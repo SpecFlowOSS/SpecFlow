@@ -24,8 +24,4 @@
       <reference file="Gherkin.dll" />
     </references>
   </metadata>
-  <files>
-    <file src="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\*.dll" target="lib\net45"
-          exclude="..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.Reporting.dll;..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.dll;..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\Microsoft.Build.Utilities.v3.5.dll;..\..\..\Installer\SpecFlowBinPackage\bin\package\tools\TechTalk.SpecFlow.Parser.Compatibility.dll"  />
-  </files>
 </package>
