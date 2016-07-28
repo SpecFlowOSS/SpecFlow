@@ -12,7 +12,7 @@
       <targetFolder>SpecFlow\content</targetFolder>
     </additionalFiles>
 
-    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\*.txt">
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\..\..\..\*.txt">
       <targetFolder>SpecFlow</targetFolder>
     </additionalFiles>
 
