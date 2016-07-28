@@ -80,11 +80,6 @@
     <Content Include="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <!--<SpecFlowPackageVersion>1.2.3</SpecFlowPackageVersion>-->
-    <NuGetVersionSpec Condition="'$(SpecFlowPackageVersion)' != ''">-Version $(SpecFlowPackageVersion)</NuGetVersionSpec>
-    <NuGetVersion>2.8.3</NuGetVersion>
-  </PropertyGroup>
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.props')" Project="$(MSBuildProjectDirectory)\.build\build.props" />
   <Import Condition="Exists('$(MSBuildProjectDirectory)\.build\build.targets')" Project="$(MSBuildProjectDirectory)\.build\build.targets" />
   <Import Project="..\..\packages\MSBuild.MSBBuildConvention.2.0.0\build\MSBuild.MSBBuildConvention.targets" Condition="Exists('..\..\packages\MSBuild.MSBBuildConvention.2.0.0\build\MSBuild.MSBBuildConvention.targets')" />
