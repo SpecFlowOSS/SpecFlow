@@ -165,6 +165,7 @@
     <Compile Include="Infrastructure\TestExecutionEngineTests.cs" />
     <Compile Include="Infrastructure\TestRunContainerBuilderTests.cs" />
     <Compile Include="ScenarioContextExtensions.cs" />
+    <Compile Include="TestEnvironmentHelper.cs" />
     <Compile Include="TestRunnerManagerRunnerCreationTests.cs" />
     <Compile Include="ScenarioStepContextTests.cs" />
     <Compile Include="StepsTest.cs" />
