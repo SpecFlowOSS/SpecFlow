@@ -119,6 +119,10 @@
     <Compile Include="StepDefinitions\FeatureFileSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\PostBuild.bat">
+      <Link>PostBuild.bat</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -148,7 +152,6 @@
     <None Include="Features\StepDefinitionsWithoutRegex.feature" />
     <None Include="Features\TaggedExamples.feature" />
     <None Include="packages.config" />
-    <None Include="PostBuild.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Installer\SpecFlowBinPackage\SpecFlowBinPackage.csproj">
@@ -183,7 +186,7 @@
   </PropertyGroup>
   <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)PostBuild.bat "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)\Tests\PostBuild.bat "$(TargetDir)" "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
