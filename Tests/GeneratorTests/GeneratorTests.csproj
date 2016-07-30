@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeDomExtensions.cs" />
+    <Compile Include="TestNameGeneratorProviderTest.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="DecoratorRegistryTests.cs" />
     <Compile Include="FeatureGeneratorProviderTests.cs" />
