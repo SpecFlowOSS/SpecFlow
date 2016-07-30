@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestGeneratorTest.cs" />
     <Compile Include="CodeDomExtensions.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
     <Compile Include="DecoratorRegistryTests.cs" />
