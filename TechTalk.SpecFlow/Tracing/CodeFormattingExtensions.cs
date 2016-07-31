@@ -19,7 +19,6 @@ namespace TechTalk.SpecFlow.Tracing
 
         public static string ToIdentifier(this string text)
         {
-            System.Diagnostics.Debug.WriteLine("ToIdentifier");
             string identifier = ToIdentifierPart(text);
             if (identifier.Length > 0 && char.IsDigit(identifier[0]))
                 identifier = "_" + identifier;
