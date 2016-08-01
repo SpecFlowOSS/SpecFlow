@@ -40,6 +40,8 @@ namespace TechTalk.SpecFlow.Tracing
 
         public static string ToIdentifierPart(this string text)
         {
+            text = RemoveQuotationCharacters(text);
+
             text = firstWordCharRe.Replace(text, match => match.Groups["pre"].Value + match.Groups["fc"].Value.ToUpper());
 
             text = punctCharRe.Replace(text, "_");
@@ -189,13 +191,20 @@ namespace TechTalk.SpecFlow.Tracing
             var nonIdRemoved = nonIdentifierRe.Replace(text, String.Empty);
 
             return nonLatinRe.Replace(nonIdRemoved, match =>
-               {
-                   string result;
-                   // if there is a Latin substitute, we use that
-                   if (accentReplacements.TryGetValue(match.Value, out result))
-                       return result;
-                   return match.Value;
-               });
+            {
+                string result;
+                // if there is a Latin substitute, we use that
+                if (accentReplacements.TryGetValue(match.Value, out result))
+                    return result;
+                return match.Value;
+            });
+        }
+
+        static private readonly Regex singleAndDoubleQuotes = new Regex(@"['""]");
+
+        public static string RemoveQuotationCharacters(string text)
+        {
+            return singleAndDoubleQuotes.Replace(text, String.Empty);
         }
     }
 }
