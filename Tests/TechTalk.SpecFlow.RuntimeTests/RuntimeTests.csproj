@@ -156,6 +156,7 @@
     <Compile Include="BindingSkeletons\StepTextAnalyzerTests.cs" />
     <Compile Include="BindingSkeletons\StringHelpers.cs" />
     <Compile Include="Bindings\BindingRegistryTests.cs" />
+    <Compile Include="Configuration\JsonConfigTests.cs" />
     <Compile Include="Infrastructure\StepDefinitionMatchServiceTest.cs" />
     <Compile Include="RuntimeBindingRegistryBuilderTests.cs" />
     <Compile Include="BindingSourceProcessorStub.cs" />

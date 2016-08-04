@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         {
             if (HasJsonConfig)
             {
-                return LoadJson();
+                return LoadJson(runtimeConfiguration);
             }
 
             if (HasAppConfig)
@@ -168,7 +168,14 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         }
 
 
-        private RuntimeConfiguration LoadJson()
+        private RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration)
+        {
+            var jsonContent = @"";
+
+            return LoadJson(runtimeConfiguration, jsonContent);
+        }
+
+        public RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration, string jsonContent)
         {
             throw new NotImplementedException();
         }
