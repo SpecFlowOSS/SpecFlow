@@ -75,7 +75,6 @@
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
     <Compile Include="Project\MsBuildProjectFileExtensions.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
-    <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />
     <Compile Include="RemotableGeneratorClass.cs" />
     <Compile Include="TestClassGenerationContext.cs" />

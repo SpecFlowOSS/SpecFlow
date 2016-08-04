@@ -14,6 +14,7 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -54,7 +55,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenarioBlock)).Returns(beforeScenarioBlockEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenarioBlock)).Returns(afterScenarioBlockEvents);
 
-            runtimeConfiguration = new RuntimeConfiguration();
+            runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
             stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();

@@ -1,4 +1,5 @@
 ﻿using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.PlatformSpecific;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
@@ -10,7 +11,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public SpecFlowProjectConfiguration()
         {
             GeneratorConfiguration = new GeneratorConfiguration(); // load defaults
-            RuntimeConfiguration = new RuntimeConfiguration(); // load defaults
+            RuntimeConfiguration = RuntimeConfigurationLoader.GetDefault(); // load defaults
         }
 
         #region Equality

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration
 {
     public class DefaultRuntimeConfigurationProvider : IRuntimeConfigurationProvider
     {
-        public void LoadConfiguration(RuntimeConfiguration defaultConfiguration)
+        public RuntimeConfiguration LoadConfiguration(RuntimeConfiguration runtimeConfiguration)
         {
-            defaultConfiguration.LoadConfiguration();
+            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
+            return runtimeConfigurationLoader.Load(runtimeConfiguration);
         }
 
         public IEnumerable<PluginDescriptor> GetPlugins()

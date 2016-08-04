@@ -6,6 +6,7 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
@@ -56,7 +57,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateRuntimeConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.RuntimeConfiguration.LoadConfiguration(specFlowConfigSection);
+            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
+            configuration.RuntimeConfiguration = runtimeConfigurationLoader.LoadAppConfig(configuration.RuntimeConfiguration, specFlowConfigSection);
         }
 
         internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)

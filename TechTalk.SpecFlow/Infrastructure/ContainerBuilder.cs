@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BoDi;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -44,11 +45,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-            RuntimeConfiguration runtimeConfiguration = new RuntimeConfiguration();
+            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
+            RuntimeConfiguration runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
 
             runtimePluginEvents.RaiseConfigurationDefaults(runtimeConfiguration);
 
-            configurationProvider.LoadConfiguration(runtimeConfiguration);
+            runtimeConfiguration = configurationProvider.LoadConfiguration(runtimeConfiguration);
 
 #if !BODI_LIMITEDRUNTIME
             if (runtimeConfiguration.CustomDependencies != null)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.PlatformSpecific;
 
 namespace TechTalk.SpecFlow.RuntimeTests
 {
@@ -13,8 +14,10 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void CanLoadConfigFromConfigFile()
         {
-            var runtimeConfiguration = new RuntimeConfiguration();
-            runtimeConfiguration.LoadConfiguration();
+            var runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
+            var configurationLoader = new RuntimeConfigurationLoader();
+
+            runtimeConfiguration = configurationLoader.Load(runtimeConfiguration);
         }
 
         [Test]
@@ -39,10 +42,13 @@ namespace TechTalk.SpecFlow.RuntimeTests
 </specFlow>")]
         public void CanLoadConfigFromString(string configString)
         {
-            //const string configString = ;
+            var runtimeConfig = RuntimeConfigurationLoader.GetDefault();
 
-            var runtimeConfig = new RuntimeConfiguration();
-            runtimeConfig.LoadConfiguration(ConfigurationSectionHandler.CreateFromXml(configString));
+            var configurationLoader = new RuntimeConfigurationLoader();
+
+
+            var configurationSectionHandler = ConfigurationSectionHandler.CreateFromXml(configString);
+            configurationLoader.LoadAppConfig(runtimeConfig, configurationSectionHandler);
         }
     }
 }

@@ -179,6 +179,7 @@
     <Compile Include="PlatformSpecific\AppConfig\StepAssemblyConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\TraceConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\UnitTestProviderConfigElement.cs" />
+    <Compile Include="PlatformSpecific\RuntimeConfigurationLoader.cs" />
     <Compile Include="Plugins\IRuntimePlugin.cs" />
     <Compile Include="Plugins\IRuntimePluginLoader.cs" />
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />

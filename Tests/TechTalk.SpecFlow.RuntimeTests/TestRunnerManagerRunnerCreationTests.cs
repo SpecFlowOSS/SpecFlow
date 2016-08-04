@@ -9,6 +9,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.RuntimeTests.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 
@@ -20,7 +21,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         private readonly Mock<ITestRunner> testRunnerFake = new Mock<ITestRunner>();
         private readonly Mock<IObjectContainer> objectContainerStub = new Mock<IObjectContainer>();
         private readonly Mock<IObjectContainer> globalObjectContainerStub = new Mock<IObjectContainer>();
-        private readonly RuntimeConfiguration runtimeConfigurationStub = new RuntimeConfiguration();
+        private readonly RuntimeConfiguration runtimeConfigurationStub = RuntimeConfigurationLoader.GetDefault();
         private readonly Assembly anAssembly = Assembly.GetExecutingAssembly();
         private readonly Assembly anotherAssembly = typeof(TestRunnerManager).Assembly;
 
