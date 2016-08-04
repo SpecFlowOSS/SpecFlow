@@ -16,26 +16,26 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class RuntimeConfiguration
     {
-        public ContainerRegistrationCollection CustomDependencies { get; set; }
+        public ContainerRegistrationCollection CustomDependencies { get; private set; }
 
         //language settings
-        public CultureInfo FeatureLanguage { get; set; }
-        public CultureInfo ToolLanguage { get; set; }
-        public CultureInfo BindingCulture { get; set; }
+        public CultureInfo FeatureLanguage { get; private set; }
+        public CultureInfo ToolLanguage { get; private set; }
+        public CultureInfo BindingCulture { get; private set; }
 
         //unit test framework settings
-        public string RuntimeUnitTestProvider { get; set; }
+        public string RuntimeUnitTestProvider { get; private set; }
 
         //runtime settings
-        public bool DetectAmbiguousMatches { get; set; }
+        public bool DetectAmbiguousMatches { get; private set; }
         public bool StopAtFirstError { get; set; }
-        public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
+        public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; private set; }
 
         //tracing settings
-        public bool TraceSuccessfulSteps { get; set; }
-        public bool TraceTimings { get; set; }
-        public TimeSpan MinTracedDuration { get; set; }
-        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
+        public bool TraceSuccessfulSteps { get; private set; }
+        public bool TraceTimings { get; private set; }
+        public TimeSpan MinTracedDuration { get; private set; }
+        public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; private set; }
 
         public List<string> AdditionalStepAssemblies { get; private set; }
 
