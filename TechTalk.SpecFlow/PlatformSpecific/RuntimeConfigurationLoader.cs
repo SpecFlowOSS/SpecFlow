@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
@@ -16,18 +13,18 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 {
     public class RuntimeConfigurationLoader
     {
-        private static readonly CultureInfo _defaultFeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-        private static readonly CultureInfo _defaultToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-        private static readonly CultureInfo _defaultBindingCulture = null;
-        private static readonly string _defaultRuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
-        private static readonly bool _defaultDetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
-        private static readonly bool _defaultStopAtFirstError = ConfigDefaults.StopAtFirstError;
-        private static readonly MissingOrPendingStepsOutcome _defaultMissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
-        private static readonly bool _defaultTraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
-        private static readonly bool _defaultTraceTimings = ConfigDefaults.TraceTimings;
-        private static readonly TimeSpan _defaultMinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
-        private static readonly StepDefinitionSkeletonStyle _defaultStepDefinitionSkeletonStyle = ConfigDefaults.StepDefinitionSkeletonStyle;
-        private static readonly List<string> _defaultAdditionalStepAssemblies = new List<string>();
+        private static readonly CultureInfo DefaultFeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+        private static readonly CultureInfo DefaultToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+        private static readonly CultureInfo DefaultBindingCulture = null;
+        private static readonly string DefaultRuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
+        private static readonly bool DefaultDetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
+        private static readonly bool DefaultStopAtFirstError = ConfigDefaults.StopAtFirstError;
+        private static readonly MissingOrPendingStepsOutcome DefaultMissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
+        private static readonly bool DefaultTraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
+        private static readonly bool DefaultTraceTimings = ConfigDefaults.TraceTimings;
+        private static readonly TimeSpan DefaultMinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+        private static readonly StepDefinitionSkeletonStyle DefaultStepDefinitionSkeletonStyle = ConfigDefaults.StepDefinitionSkeletonStyle;
+        private static readonly List<string> DefaultAdditionalStepAssemblies = new List<string>();
 
         public RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration)
         {
@@ -46,11 +43,19 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 
         public static RuntimeConfiguration GetDefault()
         {
-            return new RuntimeConfiguration(new ContainerRegistrationCollection(), _defaultFeatureLanguage,
-                _defaultToolLanguage, _defaultBindingCulture, _defaultRuntimeUnitTestProvider,
-                _defaultDetectAmbiguousMatches, _defaultStopAtFirstError, _defaultMissingOrPendingStepsOutcome,
-                _defaultTraceSuccessfulSteps, _defaultTraceTimings, _defaultMinTracedDuration,
-                _defaultStepDefinitionSkeletonStyle, _defaultAdditionalStepAssemblies);
+            return new RuntimeConfiguration(new ContainerRegistrationCollection(), 
+                                            DefaultFeatureLanguage,
+                                            DefaultToolLanguage, 
+                                            DefaultBindingCulture, 
+                                            DefaultRuntimeUnitTestProvider,
+                                            DefaultDetectAmbiguousMatches, 
+                                            DefaultStopAtFirstError, 
+                                            DefaultMissingOrPendingStepsOutcome,
+                                            DefaultTraceSuccessfulSteps, 
+                                            DefaultTraceTimings, 
+                                            DefaultMinTracedDuration,
+                                            DefaultStepDefinitionSkeletonStyle, 
+                                            DefaultAdditionalStepAssemblies);
         }
 
         private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration)
@@ -60,10 +65,9 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             return LoadAppConfig(runtimeConfiguration, configSection);
         }
 
-        public RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration,
-            ConfigurationSectionHandler configSection)
+        public RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler configSection)
         {
-            if (configSection == null) throw new ArgumentNullException("configSection");
+            if (configSection == null) throw new ArgumentNullException(nameof(configSection));
 
             ContainerRegistrationCollection containerRegistrationCollection = runtimeConfiguration.CustomDependencies;
             CultureInfo featureLanguage = runtimeConfiguration.FeatureLanguage;
@@ -83,9 +87,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             if (IsSpecified(configSection.Language))
             {
                 featureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
-                toolLanguage = string.IsNullOrEmpty(configSection.Language.Tool)
-                    ? CultureInfo.GetCultureInfo(configSection.Language.Feature)
-                    : CultureInfo.GetCultureInfo(configSection.Language.Tool);
+                toolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ? CultureInfo.GetCultureInfo(configSection.Language.Feature) : CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (IsSpecified(configSection.BindingCulture))
@@ -96,7 +98,6 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             if (IsSpecified(configSection.Runtime))
             {
                 detectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
-
 
                 stopAtFirstError = configSection.Runtime.StopAtFirstError;
                 missingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
@@ -113,8 +114,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                 {
                     //compatibility mode, we simulate a custom dependency
                     runtimeUnitTestProvider = "custom";
-                    containerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider,
-                        typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
+                    containerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
                 }
                 else
                 {
@@ -127,8 +127,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             {
                 if (!string.IsNullOrEmpty(configSection.Trace.Listener)) // backwards compatibility
                 {
-                    containerRegistrationCollection.Add(configSection.Trace.Listener,
-                        typeof(ITraceListener).AssemblyQualifiedName);
+                    containerRegistrationCollection.Add(configSection.Trace.Listener, typeof(ITraceListener).AssemblyQualifiedName);
                 }
 
                 traceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
@@ -143,9 +142,19 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                 additionalStepAssemblies.Add(assemblyName);
             }
 
-            return new RuntimeConfiguration(containerRegistrationCollection, featureLanguage, toolLanguage, bindingCulture,
-                runtimeUnitTestProvider, detectAmbiguousMatches, stopAtFirstError, missingOrPendingStepsOutcome,
-                traceSuccessfulSteps, traceTimings, minTracedDuration, stepDefinitionSkeletonStyle, additionalStepAssemblies);
+            return new RuntimeConfiguration(containerRegistrationCollection, 
+                                            featureLanguage, 
+                                            toolLanguage, 
+                                            bindingCulture,
+                                            runtimeUnitTestProvider, 
+                                            detectAmbiguousMatches, 
+                                            stopAtFirstError, 
+                                            missingOrPendingStepsOutcome,
+                                            traceSuccessfulSteps, 
+                                            traceTimings, 
+                                            minTracedDuration, 
+                                            stepDefinitionSkeletonStyle, 
+                                            additionalStepAssemblies);
         }
 
 
