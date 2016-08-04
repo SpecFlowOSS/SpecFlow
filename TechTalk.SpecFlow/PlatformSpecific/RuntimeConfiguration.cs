@@ -38,9 +38,24 @@ namespace TechTalk.SpecFlow.Configuration
         public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set;}
 
         public List<string> AdditionalStepAssemblies { get; set;}
+
+        public List<PluginDescriptor> Plugins { get; set; }
         
 
-        public RuntimeConfiguration(ContainerRegistrationCollection customDependencies, CultureInfo featureLanguage, CultureInfo toolLanguage, CultureInfo bindingCulture, string runtimeUnitTestProvider, bool detectAmbiguousMatches, bool stopAtFirstError, MissingOrPendingStepsOutcome missingOrPendingStepsOutcome, bool traceSuccessfulSteps, bool traceTimings, TimeSpan minTracedDuration, StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle, List<string> additionalStepAssemblies)
+        public RuntimeConfiguration(ContainerRegistrationCollection customDependencies, 
+            CultureInfo featureLanguage, 
+            CultureInfo toolLanguage, 
+            CultureInfo bindingCulture, 
+            string runtimeUnitTestProvider, 
+            bool detectAmbiguousMatches, 
+            bool stopAtFirstError, 
+            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome, 
+            bool traceSuccessfulSteps, 
+            bool traceTimings, 
+            TimeSpan minTracedDuration, 
+            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle, 
+            List<string> additionalStepAssemblies,
+            List<PluginDescriptor> pluginDescriptors)
         {
             CustomDependencies = customDependencies;
             FeatureLanguage = featureLanguage;
@@ -55,6 +70,7 @@ namespace TechTalk.SpecFlow.Configuration
             MinTracedDuration = minTracedDuration;
             StepDefinitionSkeletonStyle = stepDefinitionSkeletonStyle;
             AdditionalStepAssemblies = additionalStepAssemblies;
+            Plugins = pluginDescriptors;
         }
 
         public static IEnumerable<PluginDescriptor> GetPlugins()

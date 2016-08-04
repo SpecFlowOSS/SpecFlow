@@ -6,6 +6,7 @@ using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
@@ -13,18 +14,19 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 {
     public class RuntimeConfigurationLoader
     {
-        private static readonly CultureInfo DefaultFeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-        private static readonly CultureInfo DefaultToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
-        private static readonly CultureInfo DefaultBindingCulture = null;
-        private static readonly string DefaultRuntimeUnitTestProvider = ConfigDefaults.UnitTestProviderName;
-        private static readonly bool DefaultDetectAmbiguousMatches = ConfigDefaults.DetectAmbiguousMatches;
-        private static readonly bool DefaultStopAtFirstError = ConfigDefaults.StopAtFirstError;
-        private static readonly MissingOrPendingStepsOutcome DefaultMissingOrPendingStepsOutcome = ConfigDefaults.MissingOrPendingStepsOutcome;
-        private static readonly bool DefaultTraceSuccessfulSteps = ConfigDefaults.TraceSuccessfulSteps;
-        private static readonly bool DefaultTraceTimings = ConfigDefaults.TraceTimings;
-        private static readonly TimeSpan DefaultMinTracedDuration = TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
-        private static readonly StepDefinitionSkeletonStyle DefaultStepDefinitionSkeletonStyle = ConfigDefaults.StepDefinitionSkeletonStyle;
-        private static readonly List<string> DefaultAdditionalStepAssemblies = new List<string>();
+        private static CultureInfo DefaultFeatureLanguage => CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+        private static CultureInfo DefaultToolLanguage => CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+        private static CultureInfo DefaultBindingCulture => null;
+        private static string DefaultRuntimeUnitTestProvider => ConfigDefaults.UnitTestProviderName;
+        private static bool DefaultDetectAmbiguousMatches => ConfigDefaults.DetectAmbiguousMatches;
+        private static bool DefaultStopAtFirstError => ConfigDefaults.StopAtFirstError;
+        private static MissingOrPendingStepsOutcome DefaultMissingOrPendingStepsOutcome => ConfigDefaults.MissingOrPendingStepsOutcome;
+        private static bool DefaultTraceSuccessfulSteps => ConfigDefaults.TraceSuccessfulSteps;
+        private static bool DefaultTraceTimings => ConfigDefaults.TraceTimings;
+        private static TimeSpan DefaultMinTracedDuration => TimeSpan.Parse(ConfigDefaults.MinTracedDuration);
+        private static StepDefinitionSkeletonStyle DefaultStepDefinitionSkeletonStyle => ConfigDefaults.StepDefinitionSkeletonStyle;
+        private static List<string> DefaultAdditionalStepAssemblies => new List<string>();
+        private static List<PluginDescriptor> DefaultPluginDescriptors => new List<PluginDescriptor>();
 
         public RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration)
         {
@@ -55,7 +57,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                                             DefaultTraceTimings, 
                                             DefaultMinTracedDuration,
                                             DefaultStepDefinitionSkeletonStyle, 
-                                            DefaultAdditionalStepAssemblies);
+                                            DefaultAdditionalStepAssemblies,
+                                            DefaultPluginDescriptors);
         }
 
         private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration)
@@ -82,6 +85,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             TimeSpan minTracedDuration = runtimeConfiguration.MinTracedDuration;
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = runtimeConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = runtimeConfiguration.AdditionalStepAssemblies;
+            List<PluginDescriptor> pluginDescriptors = runtimeConfiguration.Plugins;
 
 
             if (IsSpecified(configSection.Language))
@@ -142,6 +146,11 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                 additionalStepAssemblies.Add(assemblyName);
             }
 
+            foreach (PluginConfigElement plugin in configSection.Plugins)
+            {
+                pluginDescriptors.Add(plugin.ToPluginDescriptor());
+            }
+
             return new RuntimeConfiguration(containerRegistrationCollection, 
                                             featureLanguage, 
                                             toolLanguage, 
@@ -154,7 +163,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                                             traceTimings, 
                                             minTracedDuration, 
                                             stepDefinitionSkeletonStyle, 
-                                            additionalStepAssemblies);
+                                            additionalStepAssemblies,
+                                            pluginDescriptors);
         }
 
 
