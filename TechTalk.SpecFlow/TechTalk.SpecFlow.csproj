@@ -169,6 +169,16 @@
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IDefaultDependencyProvider.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\BindingCultureConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\GeneratorConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\LanguageConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\PluginCollection.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\PluginConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\RuntimeConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\StepAssemblyCollection.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\StepAssemblyConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\TraceConfigElement.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\UnitTestProviderConfigElement.cs" />
     <Compile Include="Plugins\IRuntimePlugin.cs" />
     <Compile Include="Plugins\IRuntimePluginLoader.cs" />
     <Compile Include="Infrastructure\IStepErrorHandler.cs" />
@@ -201,7 +211,7 @@
     <Compile Include="Bindings\BindingMatch.cs" />
     <Compile Include="Bindings\BindingRegistry.cs" />
     <Compile Include="Bindings\StepDefinitionType.cs" />
-    <Compile Include="PlatformSpecific\ConfigurationSectionHandler.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\ConfigurationSectionHandler.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfiguration.cs" />
     <Compile Include="ErrorHandling\MissingStepDefinitionException.cs" />
     <Compile Include="ErrorHandling\PendingStepException.cs" />
