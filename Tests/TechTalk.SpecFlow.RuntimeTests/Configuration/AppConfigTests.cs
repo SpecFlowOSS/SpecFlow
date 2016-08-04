@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using BoDi;
 using FluentAssertions;
 using NUnit.Framework;
@@ -10,10 +8,10 @@ using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 
-namespace TechTalk.SpecFlow.RuntimeTests
+namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 {
     [TestFixture]
-    public class ConfigurationTest
+    public class AppConfigTests
     {
         [Test]
         public void CanLoadConfigFromConfigFile()

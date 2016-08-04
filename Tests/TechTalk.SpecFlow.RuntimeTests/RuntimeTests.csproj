@@ -179,7 +179,7 @@
     <Compile Include="StepExecutionTestsWithConversionsInNonEnglishCulture.cs" />
     <Compile Include="StepTransformationTests.cs" />
     <Compile Include="StepArgumentTypeConverterTest.cs" />
-    <Compile Include="Configuration\ConfigurationTest.cs" />
+    <Compile Include="Configuration\AppConfigTests.cs" />
     <Compile Include="NUnitTestExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestRunnerManagerStaticApiTest.cs" />
