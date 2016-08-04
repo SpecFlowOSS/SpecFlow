@@ -65,7 +65,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""tool"": { ""feature"": ""de"" }
+                                ""language"": { ""tool"": ""de"" }
                               }
                             }";
 
@@ -317,7 +317,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }
 
         [Test]
-        public void Check_Trace_Listener()
+        public void Trace_Listener_Not_Supported()
         {
             string config = @"{
                               ""specflow"": {
@@ -329,12 +329,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
-            runtimeConfig.CustomDependencies.Count.Should().Be(1);
-
-            foreach (ContainerRegistrationConfigElement containerRegistrationConfigElement in runtimeConfig.CustomDependencies)
-            {
-                containerRegistrationConfigElement.Implementation.Should().Be("TraceListener");
-            }
+            runtimeConfig.CustomDependencies.Count.Should().Be(0);
         }
 
         [Test]
@@ -406,8 +401,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                  ""stepAssemblies"" : {
-                                 }
+                                  ""stepAssemblies"" : [
+                                 ]
                               }
                             }";
 
@@ -439,9 +434,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""stepAssemblies"": {
-                                  ""stepAssembly"": { ""assembly"": ""testEntry"" }
-                                }
+                                ""stepAssemblies"": 
+                                   [ {""assembly"": ""testEntry""} ]
                               }
                             }";
 
@@ -458,12 +452,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""stepAssemblies"": {
-                                  ""stepAssembly"": [
+                                ""stepAssemblies"": [
                                     { ""assembly"": ""testEntry1"" },
                                     { ""assembly"": ""testEntry2"" }
                                   ]
-                                }
                               }
                             }";
 
@@ -481,7 +473,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         {
             string config = @"{
                               ""specflow"": {
-                                ""plugins"": { }
+                                ""plugins"": []
                               }
                             }";
 
@@ -535,7 +527,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry"", ""path""=""path_to_assembly"" }
+                                    { ""name"": ""testEntry"", ""path"":""path_to_assembly"" }
                                   ]                                
                               }
                             }";
@@ -554,7 +546,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry"", ""parameters""=""pluginParameter"" }
+                                    { ""name"": ""testEntry"", ""parameters"":""pluginParameter"" }
                                   ]                                
                               }
                             }";
@@ -573,7 +565,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry"", ""type""=""Runtime"" }
+                                    { ""name"": ""testEntry"", ""type"":""Runtime"" }
                                   ]                                
                               }
                             }";
@@ -593,7 +585,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry"", ""type""=""Generator"" }
+                                    { ""name"": ""testEntry"", ""type"":""Generator"" }
                                   ]                                
                               }
                             }";
@@ -612,7 +604,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry"", ""type""=""GeneratorAndRuntime"" }
+                                    { ""name"": ""testEntry"", ""type"":""GeneratorAndRuntime"" }
                                   ]                                
                               }
                             }";        
@@ -631,7 +623,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               ""specflow"": {
                                 ""plugins"": 
                                   [
-                                    { ""name"": ""testEntry1"" }
+                                    { ""name"": ""testEntry1"" },
                                     { ""name"": ""testEntry2"" }
                                   ]                                
                               }
