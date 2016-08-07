@@ -5,24 +5,40 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
     [Binding]
     public class SpecFlowConfigurationSteps
     {
-        private readonly SpecFlowConfigurationDriver specFlowConfigurationDriver;
+        private readonly AppConfigConfigurationDriver _appConfigConfigurationDriver;
+        private readonly SpecFlowJsonConfigurationDriver _specFlowJsonConfigurationDriver;
 
-        public SpecFlowConfigurationSteps(SpecFlowConfigurationDriver specFlowConfigurationDriver)
+        public SpecFlowConfigurationSteps(AppConfigConfigurationDriver appConfigConfigurationDriver, SpecFlowJsonConfigurationDriver specFlowJsonConfigurationDriver)
         {
-            this.specFlowConfigurationDriver = specFlowConfigurationDriver;
+            this._appConfigConfigurationDriver = appConfigConfigurationDriver;
+            _specFlowJsonConfigurationDriver = specFlowJsonConfigurationDriver;
         }
 
         [Given(@"the specflow configuration is")]
         public void GivenTheSpecflowConfigurationIs(string specFlowConfigurationContent)
         {
-            specFlowConfigurationDriver.SetSpecFlowConfigurationContent(specFlowConfigurationContent);
+            _appConfigConfigurationDriver.SetSpecFlowConfigurationContent(specFlowConfigurationContent);
         }
 
         [Given(@"the project is configured to use the (.+) provider")]
         public void GivenTheProjectIsConfiguredToUseTheUnitTestProvider(string providerName)
         {
-            specFlowConfigurationDriver.SetUnitTestProvider(providerName);
+            _appConfigConfigurationDriver.SetUnitTestProvider(providerName);
         }
+
+
+        [Given(@"SpecFlow is configured in the app\.config")]
+        public void GivenSpecFlowIsConfiguredInTheApp_Config()
+        {
+            _appConfigConfigurationDriver.IsUsed = true;
+        }
+
+        [Given(@"SpecFlow is configured in the specflow\.json")]
+        public void GivenSpecFlowIsConfiguredInTheSpecflow_Json()
+        {
+            _specFlowJsonConfigurationDriver.IsUsed = true;
+        }
+
 
         [StepArgumentTransformation(@"enabled")]
         public bool ConvertEnabled() { return true; }
@@ -33,13 +49,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"row testing is (.+)")]
         public void GivenRowTestingIsRowTest(bool enabled)
         {
-            specFlowConfigurationDriver.SetRowTest(enabled);
+            _appConfigConfigurationDriver.SetRowTest(enabled);
         }
 
         [Given(@"the type '(.*)' is registered as '(.*)' in SpecFlow runtime configuration")]
         public void GivenTheTypeIsRegisteredAsInSpecFlowRuntimeConfiguration(string typeName, string interfaceName)
         {
-            specFlowConfigurationDriver.AddRuntimeDependencyCustomization(typeName, interfaceName);
+            _appConfigConfigurationDriver.AddRuntimeDependencyCustomization(typeName, interfaceName);
         }
     }
 }

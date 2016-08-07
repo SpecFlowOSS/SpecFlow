@@ -71,7 +71,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                                                                                   });
             }
 
-            foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.ConfigurationDriver.GetAdditionalReferences()))
+            foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.AppConfigConfigurationDriver.GetAdditionalReferences()))
                 AddReference(inputProjectDriver, project, reference);
 
             project.Save();
@@ -162,8 +162,14 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
         private void AddAppConfig(InputProjectDriver inputProjectDriver, Project project)
         {
-            inputProjectDriver.ConfigurationDriver.SaveConfigurationTo(Path.Combine(inputProjectDriver.CompilationFolder, "App.config"));
+            inputProjectDriver.AppConfigConfigurationDriver.SaveConfigurationTo(Path.Combine(inputProjectDriver.CompilationFolder, "App.config"));
             project.AddItem("None", "App.config");
+
+            if (inputProjectDriver.SpecFlowJsonConfigurationDriver.IsUsed)
+            {
+                inputProjectDriver.SpecFlowJsonConfigurationDriver.Save(Path.Combine(inputProjectDriver.CompilationFolder, "specflow.json"));
+                project.AddItem("None", "specflow.json");                
+            }
         }
 
         private string SaveFileFromTemplate(string compilationFolder, string templateName, string outputFileName, Dictionary<string, string> replacements = null)

@@ -8,112 +8,113 @@ using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
 {
-    class JsonConfig
+    public class JsonConfig
     {
-        [JsonProperty(PropertyName = "specflow")]
+        [JsonProperty(PropertyName = "specflow", NullValueHandling = NullValueHandling.Ignore)]
         public SpecFlowElement SpecFlow { get; set; }
     }
 
-    class SpecFlowElement
+    public class SpecFlowElement
     {
-        [JsonProperty("language")]
+        [JsonProperty("language", NullValueHandling = NullValueHandling.Ignore)]
         public LanguageElement Language { get; set; }
 
-        [JsonProperty("bindingCulture")]
+        [JsonProperty("bindingCulture", NullValueHandling = NullValueHandling.Ignore)]
         public BindingCultureElement BindingCulture { get; set; }
 
-        [JsonProperty("unitTestProvider")]
+        [JsonProperty("unitTestProvider", NullValueHandling = NullValueHandling.Ignore)]
         public UnitTestProviderElement UnitTestProvider { get; set; }
 
-        [JsonProperty("runtime")]
+        [JsonProperty("runtime", NullValueHandling = NullValueHandling.Ignore)]
         public RuntimeElement Runtime { get; set; }
 
-        [JsonProperty("trace")]
+        [JsonProperty("trace", NullValueHandling = NullValueHandling.Ignore)]
         public TraceElement Trace { get; set; }
 
-        [JsonProperty("stepAssemblies")]
+        [JsonProperty("stepAssemblies", NullValueHandling = NullValueHandling.Ignore)]
         public List<StepAssemblyEntry> StepAssemblies { get; set; }
 
-        [JsonProperty("plugins")]
+        [JsonProperty("plugins", NullValueHandling = NullValueHandling.Ignore)]
         public List<PluginEntry> Plugins { get; set; }
     }
 
-    class LanguageElement
+    public class LanguageElement
     {
-        [JsonProperty("feature", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("feature", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue("en")]
         public string Feature { get; set; }
-        [JsonProperty("tool")]
+
+        [JsonProperty("tool", NullValueHandling = NullValueHandling.Ignore)]
         public string Tool { get; set; }
     }
 
-    class BindingCultureElement
+    public class BindingCultureElement
     {
-        [JsonProperty("name", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("name", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue("en-US")]
         public string Name { get; set; }
     }
 
-    class UnitTestProviderElement
+    public class UnitTestProviderElement
     {
-        [JsonProperty("name")]
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue("NUnit")]
         public string Name { get; set; }
     }
 
-    class RuntimeElement
+    public class RuntimeElement
     {
-        [JsonProperty("detectAmbiguousMatches", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("detectAmbiguousMatches", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.DetectAmbiguousMatches)]
         public bool DetectAmbiguousMatches { get; set; }
 
-        [JsonProperty("stopAtFirstError", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("stopAtFirstError", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.StopAtFirstError)]
         public bool StopAtFirstError { get; set; }
 
 
-        [JsonProperty("missingOrPendingStepsOutcome", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("missingOrPendingStepsOutcome", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.MissingOrPendingStepsOutcome)]
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
     }
 
-    class TraceElement
+    public class TraceElement
     {
-        [JsonProperty("traceTimings", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("traceTimings", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.TraceTimings)]
         public bool TraceTimings { get; set; }
 
-        [JsonProperty("minTracedDuration", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("minTracedDuration", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.MinTracedDuration)]
         public TimeSpan MinTracedDuration { get; set; }
 
-        [JsonProperty("stepDefinitionSkeletonStyle", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("stepDefinitionSkeletonStyle", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.StepDefinitionSkeletonStyle)]
         public StepDefinitionSkeletonStyle StepDefinitionSkeletonStyle { get; set; }
 
-        [JsonProperty("traceSuccessfulSteps", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [JsonProperty("traceSuccessfulSteps", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.TraceSuccessfulSteps)]
         public bool TraceSuccessfulSteps { get; set; }
     }
 
-    class StepAssemblyEntry
+    public class StepAssemblyEntry
     {
-        [JsonProperty("assembly")]
+        [JsonProperty("assembly", NullValueHandling = NullValueHandling.Ignore)]
         public string Assembly { get; set; }
     }
 
-    class PluginEntry
+    public class PluginEntry
     {
-        [JsonProperty("name")]
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
 
-        [JsonProperty("path")]
+        [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
         public string Path { get; set; }
 
-        [JsonProperty("parameters")]
+        [JsonProperty("parameters", NullValueHandling = NullValueHandling.Ignore)]
         public string Parameters { get; set; }
 
-        [JsonProperty("type")]
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public PluginType Type { get; set; }
     }
 }
