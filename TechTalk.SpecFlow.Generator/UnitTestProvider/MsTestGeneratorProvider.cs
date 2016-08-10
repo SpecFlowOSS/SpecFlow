@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected const string TESTTEARDOWN_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute";
         protected const string IGNORE_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute";
         protected const string DESCRIPTION_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute";
+        protected const string TESTCATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 
         protected const string FEATURE_TITILE_PROPERTY_NAME = "FeatureTitle";
 
@@ -46,7 +47,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public virtual void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories)
         {
-            //MsTest does not support caregories... :(
+            CodeDomHelper.AddAttributeForEachValue(generationContext.TestClass, TESTCATEGORY_ATTR, featureCategories);
         }
 
         public void SetTestClassIgnore(TestClassGenerationContext generationContext)
