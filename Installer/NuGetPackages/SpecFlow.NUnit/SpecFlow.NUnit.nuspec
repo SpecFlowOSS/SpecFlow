@@ -19,7 +19,4 @@
       <dependency id="NUnit" version="[3.0,)" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="..\NUnit\App.config.transform" target="content" />
-  </files>
 </package>

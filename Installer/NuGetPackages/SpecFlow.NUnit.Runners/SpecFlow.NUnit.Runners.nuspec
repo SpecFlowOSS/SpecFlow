@@ -19,9 +19,4 @@
       <dependency id="NUnit.Console" version="[3.0,)" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="..\NUnit.Runners\SpecFlowNUnitExtension.cs" target="content" />
-    <file src="..\NUnit.Runners\Install.ps1" target="tools" />
-    <file src="..\NUnit.Runners\Uninstall.ps1" target="tools" />
-  </files>
 </package>

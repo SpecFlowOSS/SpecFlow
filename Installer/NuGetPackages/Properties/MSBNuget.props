@@ -1,0 +1,7 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+
+  <!-- Convention based import of nuspec Folders-->
+  <!--<Import Project="$(MSBuildProjectDirectory)\*.nuspec.props"/>-->
+  <Import Project="$(MSBuildProjectDirectory)\**\*.nuspec.props"/>
+  
+</Project>
