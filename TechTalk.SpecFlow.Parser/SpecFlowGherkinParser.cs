@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.Parser
 
             protected override Feature CreateFeature(Tag[] tags, Location location, string language, string keyword, string name, string description, ScenarioDefinition[] children, AstNode node)
             {
-                return new SpecFlowFeature(tags, location, language, keyword, name, description, children, sourceFilePath);
+                return new SpecFlowFeature(tags, location, language, keyword, name, description, children);
             }
 
             protected override Step CreateStep(Location location, string keyword, string text, StepArgument argument, AstNode node)
@@ -95,7 +95,7 @@ namespace TechTalk.SpecFlow.Parser
 
             protected override GherkinDocument CreateGherkinDocument(Feature feature, Comment[] gherkinDocumentComments, AstNode node)
             {
-                return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments);
+                return new SpecFlowDocument((SpecFlowFeature)feature, gherkinDocumentComments, sourceFilePath);
             }
 
             protected override Scenario CreateScenario(Tag[] tags, Location location, string keyword, string name, string description, Step[] steps, AstNode node)

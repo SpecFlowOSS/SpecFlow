@@ -57,16 +57,16 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 unitTestGeneratorProvider: null,
                 document: new Parser.SpecFlowDocument(
                     feature: new SpecFlowFeature(
-                    tags: null,
-                    location: null,
-                    language: null,
-                    keyword: null,
-                    name: "",
-                    description: null,
-                    sourceFilePath: null,
-                    children:null
-                    ),
-                    comments: null),
+                        tags: null,
+                        location: null,
+                        language: null,
+                        keyword: null,
+                        name: "",
+                        description: null,
+                        children:null
+                        ),
+                    comments: null, 
+                    sourceFilePath: null),
                 ns: null,
                 testClass: null,
                 testRunnerField: null,
