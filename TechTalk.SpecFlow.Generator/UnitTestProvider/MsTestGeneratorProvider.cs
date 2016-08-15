@@ -113,8 +113,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeExpressionStatement(
                         new CodeMethodInvokeExpression(
                             new CodeTypeReferenceExpression(
-                                generationContext.Namespace.Name + "." + generationContext.TestClass.Name
-                                ),
+                                new CodeTypeReference(
+                                    generationContext.Namespace.Name + "." + generationContext.TestClass.Name, 
+                                    CodeTypeReferenceOptions.GlobalReference)),
                             generationContext.TestClassInitializeMethod.Name,
                             new CodePrimitiveExpression(null)))));
         }
