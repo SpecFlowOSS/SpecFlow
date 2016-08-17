@@ -5,11 +5,13 @@ Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Text
 Imports TechTalk.SpecFlow
-Imports TechTalk.SpecRun
-{AdditionalUsings}
 
 Namespace SpecFlow.TestProject
 
-    {BindingClass}
+    
+    <Binding>
+    Public Class {ClassName}
+        {Bindings}
+    End Class
 
 End Namespace

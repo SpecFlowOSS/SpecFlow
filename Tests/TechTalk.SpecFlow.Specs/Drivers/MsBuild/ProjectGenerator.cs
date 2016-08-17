@@ -111,13 +111,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                 SaveFileFromTemplate(inputProjectDriver.CompilationFolder, "Bindings." + inputProjectDriver.CodeFileExtension, bindingClassInput.FileName, new Dictionary<string, string>
                                                                                     {
                                                                                         { "ClassName", bindingClassInput.Name },
-                                                                                        { "Bindings", GetBindingsCode(bindingClassInput) },
+                                                                                        { "Bindings", GetBindingsCode(bindingClassInput, inputProjectDriver) },
                                                                                     });
             }
             project.AddItem("Compile", bindingClassInput.ProjectRelativePath);
         }
 
-        private string GetBindingsCode(BindingClassInput bindingClassInput)
+        private string GetBindingsCode(BindingClassInput bindingClassInput, InputProjectDriver inputProjectDriver)
         {
             StringBuilder result = new StringBuilder();
 
@@ -125,9 +125,30 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
             foreach (var stepBindingInput in bindingClassInput.StepBindings)
             {
-                result.AppendFormat(@"[{2}(@""{3}"")]public void sb{0}({4}) {{ 
+
+                switch (inputProjectDriver.Language.ToLower())
+                {
+                    case "c#":
+                        result.AppendFormat(@"[{2}(@""{3}"")]public void sb{0}({4} {5}) {{ 
                                         {1}
-                                      }}", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex, stepBindingInput.Parameters);
+                                      }}", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex, stepBindingInput.ParameterType, stepBindingInput.ParameterName);
+                        break;
+                    case "vb.net":
+                        if (String.IsNullOrEmpty(stepBindingInput.ParameterType))
+                        {
+                            result.AppendFormat(@"<[{2}](""{3}"")> Public Sub sb{0}()  
+                                        {1}
+                                      End Sub", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex);
+                        }
+                        else
+                        {
+                            result.AppendFormat(@"<[{2}](""{3}"")> Public Sub sb{0}({4} as {5})  
+                                        {1}
+                                      End Sub", ++counter, stepBindingInput.Code, stepBindingInput.ScenarioBlock, stepBindingInput.Regex, stepBindingInput.ParameterName, stepBindingInput.ParameterType);
+                        }
+                        break;
+                }
+
                 result.AppendLine();
             }
 

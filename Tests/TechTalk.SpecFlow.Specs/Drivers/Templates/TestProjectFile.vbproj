@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{ProjectGuid}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SpecRun.TestProject</RootNamespace>
-    <AssemblyName>SpecRun.TestProject</AssemblyName>
+    <RootNamespace>{ProjectName}</RootNamespace>
+    <AssemblyName>{ProjectName}</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -51,7 +51,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>{SpecFlowRoot}\lib\NET45\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>{SpecFlowRoot}\lib\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
