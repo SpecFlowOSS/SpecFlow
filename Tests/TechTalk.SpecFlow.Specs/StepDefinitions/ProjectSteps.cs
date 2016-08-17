@@ -35,6 +35,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
             inputProjectDriver.ProjectName = projectName;
         }
 
+        [Given(@"I have a '(.*)' test project")]
+        public void GivenIHaveATestProject(string language)
+        {
+            inputProjectDriver.Language = language;
+        }
+
+
         private bool isCompiled = false;
         private Exception CompilationError;
 

@@ -135,6 +135,7 @@
     <None Include="Features\ContextInjection.feature" />
     <None Include="Features\ExternalSteps.feature" />
     <None Include="Features\InAppDomainParallelExecution.feature" />
+    <None Include="Features\LanguageSupport.feature" />
     <None Include="Features\Reports\StepDefinitionReport.feature" />
     <None Include="Features\ScopedHooks.feature" />
     <None Include="Features\XUnit2Provider.feature" />
@@ -179,6 +180,13 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Drivers\Templates\BindingClass.vb" />
+    <EmbeddedResource Include="Drivers\Templates\Bindings.vb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
