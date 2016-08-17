@@ -26,6 +26,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                     return "csproj";
                 case "f#":
                     return "fsproj";
+                case "vb.net":
+                    return "vbproj";
                 default:
                     throw new NotSupportedException("Language not supported: " + language);
             }

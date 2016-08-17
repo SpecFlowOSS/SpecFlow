@@ -181,6 +181,13 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Drivers\Templates\TestProjectFile.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Drivers\Templates\BindingClass.vb" />
+    <EmbeddedResource Include="Drivers\Templates\Bindings.vb" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <SpecFlowTasksPath>..\..\TechTalk.SpecFlow.Tools\$(OutDir)\specflow.exe</SpecFlowTasksPath>

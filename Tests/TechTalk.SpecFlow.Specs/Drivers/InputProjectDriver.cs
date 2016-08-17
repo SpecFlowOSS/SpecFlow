@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
@@ -63,6 +64,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                         return "cs";
                     case "f#":
                         return "fs";
+                    case "vb.net":
+                        return "vb";
                     default:
                         throw new NotSupportedException("Language not supported: " + Language);
                 }
