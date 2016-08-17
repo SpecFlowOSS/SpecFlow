@@ -35,6 +35,10 @@ namespace TechTalk.SpecFlow.Generator.Project
             specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x=>x.Name=="AssemblyName").EvaluatedValue;
             specFlowProject.ProjectSettings.DefaultNamespace =project.AllEvaluatedProperties.First(x=>x.Name=="RootNamespace").EvaluatedValue;
 
+
+
+            specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
+
             foreach (ProjectItem item in project.FeatureFiles())
             {
                 var featureFile = new FeatureFileInput(item.EvaluatedInclude);
@@ -56,6 +60,17 @@ namespace TechTalk.SpecFlow.Generator.Project
             }
             
             return specFlowProject;
+        }
+
+        private string GetLanguage(Microsoft.Build.Evaluation.Project project)
+        {
+            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.VisualBasic.targets")))
+                return GenerationTargetLanguage.VB;
+
+            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.CSharp.targets")))
+                return GenerationTargetLanguage.CSharp;
+
+            return GenerationTargetLanguage.CSharp;
         }
 
         private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
