@@ -2,7 +2,7 @@
 using System.Configuration;
 using TechTalk.SpecFlow.BindingSkeletons;
 
-namespace TechTalk.SpecFlow.Configuration
+namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
     public class TraceConfigElement : ConfigurationElement
     {

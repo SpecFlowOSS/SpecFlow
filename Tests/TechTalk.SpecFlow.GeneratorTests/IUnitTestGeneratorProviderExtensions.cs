@@ -1,7 +1,7 @@
-﻿using TechTalk.SpecFlow.Generator;
+﻿using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -12,7 +12,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
 
-            var runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
+            var runtimeConfiguration = ConfigurationLoader.GetDefault();
             runtimeConfiguration.AllowRowTests = true;
             runtimeConfiguration.AllowDebugGeneratedFiles = true;
 

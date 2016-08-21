@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class GeneratorConfigurationProvider : IGeneratorConfigurationProvider
     {
-        private readonly IRuntimeConfigurationLoader _runtimeConfigurationLoader;
+        private readonly IConfigurationLoader _configurationLoader;
 
-        public GeneratorConfigurationProvider(IRuntimeConfigurationLoader runtimeConfigurationLoader)
+        public GeneratorConfigurationProvider(IConfigurationLoader configurationLoader)
         {
-            _runtimeConfigurationLoader = runtimeConfigurationLoader;
+            _configurationLoader = configurationLoader;
         }
 
         public virtual void LoadConfiguration(SpecFlowConfigurationHolder configurationHolder, SpecFlowProjectConfiguration configuration)
@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.RuntimeConfiguration = _runtimeConfigurationLoader.Update(configuration.RuntimeConfiguration, specFlowConfigSection);
+            configuration.SpecFlowConfiguration = _configurationLoader.Update(configuration.SpecFlowConfiguration, specFlowConfigSection);
         }
         
     }

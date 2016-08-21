@@ -9,7 +9,7 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public interface IRuntimeConfigurationProvider
     {
-        RuntimeConfiguration LoadConfiguration(RuntimeConfiguration runtimeConfiguration);
+        SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration);
         IEnumerable<PluginDescriptor> GetPlugins();
     }
 }

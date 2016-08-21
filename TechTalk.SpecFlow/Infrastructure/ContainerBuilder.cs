@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using BoDi;
 using System.Linq;
 using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
@@ -46,25 +45,25 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-            RuntimeConfiguration runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
+            Configuration.SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
 
-            runtimePluginEvents.RaiseConfigurationDefaults(runtimeConfiguration);
+            runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
-            runtimeConfiguration = configurationProvider.LoadConfiguration(runtimeConfiguration);
+            specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
 #if !BODI_LIMITEDRUNTIME
-            if (runtimeConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(runtimeConfiguration.CustomDependencies);
+            if (specFlowConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
 #endif
 
-            container.RegisterInstanceAs(runtimeConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration);
 
-            if (runtimeConfiguration.UnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.UnitTestProvider));
+            if (specFlowConfiguration.UnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(specFlowConfiguration.UnitTestProvider));
 
-            runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, runtimeConfiguration);
+            runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, specFlowConfiguration);
 
-            container.Resolve<IRuntimeConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), runtimeConfiguration);
+            container.Resolve<IConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration);
 
             return container;
         }

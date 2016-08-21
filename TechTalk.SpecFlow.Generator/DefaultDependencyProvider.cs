@@ -1,9 +1,9 @@
 using BoDi;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp, dispose: true);
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB, dispose: true);
 
-            container.RegisterTypeAs<RuntimeConfigurationLoader, IRuntimeConfigurationLoader>();
+            container.RegisterTypeAs<ConfigurationLoader, IConfigurationLoader>();
 
             RegisterUnitTestGeneratorProviders(container);
         }

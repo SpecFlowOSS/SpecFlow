@@ -1,20 +1,19 @@
 ﻿using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.PlatformSpecific;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class SpecFlowProjectConfiguration
     {
-        public RuntimeConfiguration RuntimeConfiguration { get; set; }
+        public SpecFlowConfiguration SpecFlowConfiguration { get; set; }
 
         public SpecFlowProjectConfiguration()
         {
-            RuntimeConfiguration = RuntimeConfigurationLoader.GetDefault(); // load defaults
+            SpecFlowConfiguration = ConfigurationLoader.GetDefault(); // load defaults
         }
 
         protected bool Equals(SpecFlowProjectConfiguration other)
         {
-            return Equals(RuntimeConfiguration, other.RuntimeConfiguration);
+            return Equals(SpecFlowConfiguration, other.SpecFlowConfiguration);
         }
 
         public override bool Equals(object obj)
@@ -27,7 +26,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         public override int GetHashCode()
         {
-            return (RuntimeConfiguration != null ? RuntimeConfiguration.GetHashCode() : 0);
+            return (SpecFlowConfiguration != null ? SpecFlowConfiguration.GetHashCode() : 0);
         }
     }
 }

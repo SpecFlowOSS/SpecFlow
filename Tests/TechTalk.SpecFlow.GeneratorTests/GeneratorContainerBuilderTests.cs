@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public void Should_register_generator_configuration_with_default_config()
         {
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
-            container.Resolve<RuntimeConfiguration>().Should().NotBeNull();
+            container.Resolve<Configuration.SpecFlowConfiguration>().Should().NotBeNull();
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 <specFlow>
                   <generator allowDebugGeneratedFiles=""true"" /><!-- default is false -->
                 </specFlow>"), new ProjectSettings());
-            container.Resolve<RuntimeConfiguration>().AllowDebugGeneratedFiles.Should().Be(true);
+            container.Resolve<Configuration.SpecFlowConfiguration>().AllowDebugGeneratedFiles.Should().Be(true);
         }
     }
 }

@@ -44,10 +44,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var configurationHolder = GetConfigWithPlugin();
 
-            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.RuntimeConfiguration.StopAtFirstError = true));
+            GeneratorContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.SpecFlowConfiguration.StopAtFirstError = true));
             var container = CreateDefaultContainer(configurationHolder);
             var runtimeConfiguration = container.Resolve<SpecFlowProjectConfiguration>();
-            runtimeConfiguration.RuntimeConfiguration.StopAtFirstError.Should().BeTrue();
+            runtimeConfiguration.SpecFlowConfiguration.StopAtFirstError.Should().BeTrue();
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
                 generatorPluginEvents.CustomizeDependencies += (sender, args) =>
                 {
-                    if (args.SpecFlowProjectConfiguration.RuntimeConfiguration.StopAtFirstError)
+                    if (args.SpecFlowProjectConfiguration.SpecFlowConfiguration.StopAtFirstError)
                         args.ObjectContainer.RegisterTypeAs<CustomHeaderWriter, ITestHeaderWriter>();
                 };
             }

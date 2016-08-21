@@ -4,38 +4,37 @@ using System.Configuration;
 using System.Globalization;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
+namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
     public class AppConfigConfigurationLoader
     {
-        public RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler configSection)
+        public Configuration.SpecFlowConfiguration LoadAppConfig(Configuration.SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler configSection)
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
 
-            ContainerRegistrationCollection runtimeContainerRegistrationCollection = runtimeConfiguration.CustomDependencies;
-            ContainerRegistrationCollection generatorContainerRegistrationCollection = runtimeConfiguration.GeneratorCustomDependencies;
-            CultureInfo featureLanguage = runtimeConfiguration.FeatureLanguage;
-            CultureInfo toolLanguage = runtimeConfiguration.ToolLanguage;
-            CultureInfo bindingCulture = runtimeConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = runtimeConfiguration.UnitTestProvider;
-            bool detectAmbiguousMatches = runtimeConfiguration.DetectAmbiguousMatches;
-            bool stopAtFirstError = runtimeConfiguration.StopAtFirstError;
-            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = runtimeConfiguration.MissingOrPendingStepsOutcome;
-            bool traceSuccessfulSteps = runtimeConfiguration.TraceSuccessfulSteps;
-            bool traceTimings = runtimeConfiguration.TraceTimings;
-            TimeSpan minTracedDuration = runtimeConfiguration.MinTracedDuration;
-            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = runtimeConfiguration.StepDefinitionSkeletonStyle;
-            List<string> additionalStepAssemblies = runtimeConfiguration.AdditionalStepAssemblies;
-            List<PluginDescriptor> pluginDescriptors = runtimeConfiguration.Plugins;
+            ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
+            ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
+            CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
+            CultureInfo toolLanguage = specFlowConfiguration.ToolLanguage;
+            CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
+            string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
+            bool detectAmbiguousMatches = specFlowConfiguration.DetectAmbiguousMatches;
+            bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
+            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
+            bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
+            bool traceTimings = specFlowConfiguration.TraceTimings;
+            TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
+            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
+            List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
+            List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
 
-            bool allowRowTests = runtimeConfiguration.AllowRowTests;
-            string generatorPath = runtimeConfiguration.GeneratorPath;
-            bool allowDebugGeneratedFiles = runtimeConfiguration.AllowDebugGeneratedFiles;
+            bool allowRowTests = specFlowConfiguration.AllowRowTests;
+            string generatorPath = specFlowConfiguration.GeneratorPath;
+            bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
 
 
             if (IsSpecified(configSection.Language))
@@ -113,7 +112,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
                 pluginDescriptors.Add(plugin.ToPluginDescriptor());
             }
 
-            return new RuntimeConfiguration(ConfigSource.AppConfig, 
+            return new Configuration.SpecFlowConfiguration(ConfigSource.AppConfig, 
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,

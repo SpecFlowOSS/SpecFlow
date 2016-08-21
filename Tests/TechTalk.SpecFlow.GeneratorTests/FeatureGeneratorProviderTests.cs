@@ -7,7 +7,6 @@ using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using FluentAssertions;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -17,10 +16,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
     {
         private static UnitTestFeatureGeneratorProvider CreateUnitTestFeatureGeneratorProvider()
         {
-            RuntimeConfiguration generatorConfiguration = RuntimeConfigurationLoader.GetDefault();
+            Configuration.SpecFlowConfiguration generatorSpecFlowConfiguration = ConfigurationLoader.GetDefault();
             CodeDomHelper codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
             UnitTestFeatureGenerator unitTestFeatureGenerator = new UnitTestFeatureGenerator(
-                new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorConfiguration, new DecoratorRegistryStub());
+                new NUnitTestGeneratorProvider(codeDomHelper), codeDomHelper, generatorSpecFlowConfiguration, new DecoratorRegistryStub());
 
             return new UnitTestFeatureGeneratorProvider(unitTestFeatureGenerator);
         }

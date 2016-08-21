@@ -1,44 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BoDi;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.BindingSkeletons;
-using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Plugins;
 
-namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
+namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
     public class JsonConfigurationLoader
     {
-        public RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration, string jsonContent)
+        public Configuration.SpecFlowConfiguration LoadJson(Configuration.SpecFlowConfiguration specFlowConfiguration, string jsonContent)
         {
             if (String.IsNullOrWhiteSpace(jsonContent)) throw new ArgumentNullException(nameof(jsonContent));
 
-            var jsonConfig = JsonConvert.DeserializeObject<PlatformSpecific.JsonConfig.JsonConfig>(jsonContent);
+            var jsonConfig = JsonConvert.DeserializeObject<JsonConfig>(jsonContent);
 
 
-            ContainerRegistrationCollection containerRegistrationCollection = runtimeConfiguration.CustomDependencies;
-            ContainerRegistrationCollection generatorContainerRegistrationCollection = runtimeConfiguration.GeneratorCustomDependencies;
-            CultureInfo featureLanguage = runtimeConfiguration.FeatureLanguage;
-            CultureInfo toolLanguage = runtimeConfiguration.ToolLanguage;
-            CultureInfo bindingCulture = runtimeConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = runtimeConfiguration.UnitTestProvider;
-            bool detectAmbiguousMatches = runtimeConfiguration.DetectAmbiguousMatches;
-            bool stopAtFirstError = runtimeConfiguration.StopAtFirstError;
-            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = runtimeConfiguration.MissingOrPendingStepsOutcome;
-            bool traceSuccessfulSteps = runtimeConfiguration.TraceSuccessfulSteps;
-            bool traceTimings = runtimeConfiguration.TraceTimings;
-            TimeSpan minTracedDuration = runtimeConfiguration.MinTracedDuration;
-            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = runtimeConfiguration.StepDefinitionSkeletonStyle;
-            List<string> additionalStepAssemblies = runtimeConfiguration.AdditionalStepAssemblies;
-            List<PluginDescriptor> pluginDescriptors = runtimeConfiguration.Plugins;
-            string generatorPath = runtimeConfiguration.GeneratorPath;
-            bool allowRowTests = runtimeConfiguration.AllowRowTests;
-            bool allowDebugGeneratedFiles = runtimeConfiguration.AllowDebugGeneratedFiles;
+            ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
+            ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
+            CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
+            CultureInfo toolLanguage = specFlowConfiguration.ToolLanguage;
+            CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
+            string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
+            bool detectAmbiguousMatches = specFlowConfiguration.DetectAmbiguousMatches;
+            bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
+            MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
+            bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
+            bool traceTimings = specFlowConfiguration.TraceTimings;
+            TimeSpan minTracedDuration = specFlowConfiguration.MinTracedDuration;
+            StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
+            List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
+            List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
+            string generatorPath = specFlowConfiguration.GeneratorPath;
+            bool allowRowTests = specFlowConfiguration.AllowRowTests;
+            bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
 
 
             var specFlowElement = jsonConfig.SpecFlow;
@@ -95,7 +91,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
             }
 
 
-            return new RuntimeConfiguration(ConfigSource.Json,
+            return new Configuration.SpecFlowConfiguration(ConfigSource.Json,
                                             containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,

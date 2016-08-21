@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 
-namespace TechTalk.SpecFlow.Configuration
+namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
     public class PluginCollection : ConfigurationElementCollection, IEnumerable<PluginConfigElement>
     {

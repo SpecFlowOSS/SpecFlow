@@ -14,7 +14,6 @@ using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 using FluentAssertions;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TestStatus = TechTalk.SpecFlow.Infrastructure.TestStatus;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -23,7 +22,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
     public class TestExecutionEngineTests
     {
         private ScenarioContext scenarioContext;
-        private RuntimeConfiguration runtimeConfiguration;
+        private SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration;
         private Mock<IBindingRegistry> bindingRegistryStub;
         private Mock<IErrorProvider> errorProviderStub;
         private Mock<IContextManager> contextManagerStub;
@@ -55,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenarioBlock)).Returns(beforeScenarioBlockEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenarioBlock)).Returns(afterScenarioBlockEvents);
 
-            runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
+            specFlowConfiguration = ConfigurationLoader.GetDefault();
             errorProviderStub = new Mock<IErrorProvider>();
             testTracerStub = new Mock<ITestTracer>();
             stepDefinitionMatcherStub = new Mock<IStepDefinitionMatchService>();
@@ -71,7 +70,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 testTracerStub.Object, 
                 errorProviderStub.Object, 
                 new Mock<IStepArgumentTypeConverter>().Object, 
-                runtimeConfiguration, 
+                specFlowConfiguration, 
                 bindingRegistryStub.Object,
                 new Mock<IUnitTestRuntimeProvider>().Object,
                 stepDefinitionSkeletonProviderMock.Object, 

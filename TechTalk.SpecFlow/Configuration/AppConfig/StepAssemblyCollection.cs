@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace TechTalk.SpecFlow.Configuration
+namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
     public class StepAssemblyCollection : ConfigurationElementCollection
     {

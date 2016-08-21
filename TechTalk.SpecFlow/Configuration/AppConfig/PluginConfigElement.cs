@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using TechTalk.SpecFlow.Plugins;
 
-namespace TechTalk.SpecFlow.Configuration
+namespace TechTalk.SpecFlow.Configuration.AppConfig
 {
     public class PluginConfigElement : ConfigurationElement
     {

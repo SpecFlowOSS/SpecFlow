@@ -31,10 +31,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Platform.Should().Be(".NET");
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.PlatformVersion.Should().Be(new Version(3,5));
 
-            specflowProjectfile.Configuration.RuntimeConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
-            specflowProjectfile.Configuration.RuntimeConfiguration.AllowRowTests.Should().BeTrue();
-            specflowProjectfile.Configuration.RuntimeConfiguration.UnitTestProvider.Should().Be("MSTest");
-            specflowProjectfile.Configuration.RuntimeConfiguration.FeatureLanguage.Name.Should().Be("en-US");
+            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
+            specflowProjectfile.Configuration.SpecFlowConfiguration.AllowRowTests.Should().BeTrue();
+            specflowProjectfile.Configuration.SpecFlowConfiguration.UnitTestProvider.Should().Be("MSTest");
+            specflowProjectfile.Configuration.SpecFlowConfiguration.FeatureLanguage.Name.Should().Be("en-US");
         }
     }
 }

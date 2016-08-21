@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using TechTalk.SpecFlow.Configuration;
+using TechTalk.SpecFlow.Configuration.AppConfig;
 using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.PlatformSpecific;
-using TechTalk.SpecFlow.PlatformSpecific.AppConfig;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -19,13 +18,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             this.configFileContent = configContent;
         }
 
-        public RuntimeConfiguration LoadConfiguration(RuntimeConfiguration runtimeConfiguration)
+        public SpecFlow.Configuration.SpecFlowConfiguration LoadConfiguration(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
             ConfigurationSectionHandler section = GetSection();
             
             var runtimeConfigurationLoader = new AppConfigConfigurationLoader();
 
-            return runtimeConfigurationLoader.LoadAppConfig(runtimeConfiguration, section);
+            return runtimeConfigurationLoader.LoadAppConfig(specFlowConfiguration, section);
 
         }
 

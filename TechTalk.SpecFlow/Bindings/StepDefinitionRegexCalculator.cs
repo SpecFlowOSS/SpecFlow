@@ -17,11 +17,11 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
     {
-        private readonly RuntimeConfiguration runtimeConfiguration;
+        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
 
-        public StepDefinitionRegexCalculator(RuntimeConfiguration runtimeConfiguration)
+        public StepDefinitionRegexCalculator(Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
         }
 
         static private readonly Regex nonIdentifierRe = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lm}\p{Lo}\p{Nl}\p{Nd}\p{Pc}\p{Mn}\p{Mc}]");
@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             yield return stepDefinitionType.ToString();
 
-            var cultureToSearch = runtimeConfiguration.BindingCulture ?? runtimeConfiguration.FeatureLanguage;
+            var cultureToSearch = specFlowConfiguration.BindingCulture ?? specFlowConfiguration.FeatureLanguage;
 
             foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, stepDefinitionType))
             {

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BoDi;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Infrastructure;
-using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
@@ -37,23 +37,23 @@ namespace TechTalk.SpecFlow.Generator
 
             configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
 
-            if (specFlowConfiguration.RuntimeConfiguration.GeneratorCustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.RuntimeConfiguration.GeneratorCustomDependencies);
+            if (specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies);
 
             container.RegisterInstanceAs(specFlowConfiguration);
-            container.RegisterInstanceAs(specFlowConfiguration.RuntimeConfiguration);
+            container.RegisterInstanceAs(specFlowConfiguration.SpecFlowConfiguration);
 
             var generatorInfo = container.Resolve<IGeneratorInfoProvider>().GetGeneratorInfo();
             container.RegisterInstanceAs(generatorInfo);
 
             container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
 
-            if (specFlowConfiguration.RuntimeConfiguration.UnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.RuntimeConfiguration.UnitTestProvider));
+            if (specFlowConfiguration.SpecFlowConfiguration.UnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.SpecFlowConfiguration.UnitTestProvider));
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 
-            container.Resolve<IRuntimeConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.RuntimeConfiguration);
+            container.Resolve<IConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.SpecFlowConfiguration);
 
 
             return container;

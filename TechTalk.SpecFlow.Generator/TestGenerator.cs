@@ -17,22 +17,22 @@ namespace TechTalk.SpecFlow.Generator
 {
     public class TestGenerator : ErrorHandlingTestGenerator, ITestGenerator
     {
-        protected readonly RuntimeConfiguration runtimeConfiguration;
+        protected readonly SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration;
         protected readonly ProjectSettings projectSettings;
         protected readonly ITestHeaderWriter testHeaderWriter;
         protected readonly ITestUpToDateChecker testUpToDateChecker;
         private readonly IFeatureGeneratorRegistry featureGeneratorRegistry;
         protected readonly CodeDomHelper codeDomHelper;
 
-        public TestGenerator(RuntimeConfiguration runtimeConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
+        public TestGenerator(SpecFlow.Configuration.SpecFlowConfiguration specFlowConfiguration, ProjectSettings projectSettings, ITestHeaderWriter testHeaderWriter, ITestUpToDateChecker testUpToDateChecker, IFeatureGeneratorRegistry featureGeneratorRegistry, CodeDomHelper codeDomHelper)
         {
-            if (runtimeConfiguration == null) throw new ArgumentNullException("runtimeConfiguration");
+            if (specFlowConfiguration == null) throw new ArgumentNullException("specFlowConfiguration");
             if (projectSettings == null) throw new ArgumentNullException("projectSettings");
             if (testHeaderWriter == null) throw new ArgumentNullException("testHeaderWriter");
             if (testUpToDateChecker == null) throw new ArgumentNullException("testUpToDateChecker");
             if (featureGeneratorRegistry == null) throw new ArgumentNullException("featureGeneratorRegistry");
 
-            this.runtimeConfiguration = runtimeConfiguration;
+            this.specFlowConfiguration = specFlowConfiguration;
             this.testUpToDateChecker = testUpToDateChecker;
             this.featureGeneratorRegistry = featureGeneratorRegistry;
             this.codeDomHelper = codeDomHelper;
@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.Generator
         {
             string targetNamespace = GetTargetNamespace(featureFileInput) ?? "SpecFlow.GeneratedTests";
 
-            var parser = new SpecFlowGherkinParser(runtimeConfiguration.FeatureLanguage);
+            var parser = new SpecFlowGherkinParser(specFlowConfiguration.FeatureLanguage);
             SpecFlowDocument specFlowDocument;
             using (var contentReader = featureFileInput.GetFeatureFileContentReader(projectSettings))
             {

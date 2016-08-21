@@ -4,28 +4,25 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using BoDi;
-using Newtonsoft.Json;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Compatibility;
-using TechTalk.SpecFlow.Configuration;
-using TechTalk.SpecFlow.PlatformSpecific.AppConfig;
-using TechTalk.SpecFlow.PlatformSpecific.JsonConfig;
+using TechTalk.SpecFlow.Configuration.AppConfig;
+using TechTalk.SpecFlow.Configuration.JsonConfig;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
-using TechTalk.SpecFlow.UnitTestProvider;
 
-namespace TechTalk.SpecFlow.PlatformSpecific
+namespace TechTalk.SpecFlow.Configuration
 {
     
 
-    public interface IRuntimeConfigurationLoader
+    public interface IConfigurationLoader
     {
-        RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration);
-        RuntimeConfiguration Update(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection);
-        void PrintConfigSource(ITraceListener traceListener, RuntimeConfiguration runtimeConfiguration);
+        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration);
+        SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection);
+        void PrintConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
     }
 
-    public class RuntimeConfigurationLoader : IRuntimeConfigurationLoader
+    public class ConfigurationLoader : IConfigurationLoader
     {
         //private readonly ObjectContainer _objectContainer;
         private readonly JsonConfigurationLoader _jsonConfigurationLoader;
@@ -48,40 +45,37 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
 
-        public RuntimeConfigurationLoader()
+        public ConfigurationLoader()
         {
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
             
         }
 
-        public RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration)
+        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration)
         {
             if (HasJsonConfig)
             {
-
-                var configuration = LoadJson(runtimeConfiguration);
-                return configuration;
+                return LoadJson(specFlowConfiguration);
             }
 
             if (HasAppConfig)
             {
-                var configuration = LoadAppConfig(runtimeConfiguration);       
-                return configuration;
+                return LoadAppConfig(specFlowConfiguration);       
             }
 
             return GetDefault();
         }
 
-        public RuntimeConfiguration Update(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection)
+        public SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            return LoadAppConfig(runtimeConfiguration, specFlowConfigSection);
+            return LoadAppConfig(specFlowConfiguration, specFlowConfigSection);
         }
 
 
-        public static RuntimeConfiguration GetDefault()
+        public static SpecFlowConfiguration GetDefault()
         {
-            return new RuntimeConfiguration(ConfigSource.Default,
+            return new SpecFlowConfiguration(ConfigSource.Default,
                                             new ContainerRegistrationCollection(), 
                                             new ContainerRegistrationCollection(), 
                                             DefaultFeatureLanguage,
@@ -104,24 +98,24 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 
 
 
-        private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration)
+        private SpecFlowConfiguration LoadAppConfig(SpecFlowConfiguration specFlowConfiguration)
         {
             var configSection = ConfigurationManager.GetSection("specFlow") as ConfigurationSectionHandler;
 
-            return LoadAppConfig(runtimeConfiguration, configSection);
+            return LoadAppConfig(specFlowConfiguration, configSection);
         }
 
-        private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection)
+        private SpecFlowConfiguration LoadAppConfig(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            return _appConfigConfigurationLoader.LoadAppConfig(runtimeConfiguration, specFlowConfigSection);
+            return _appConfigConfigurationLoader.LoadAppConfig(specFlowConfiguration, specFlowConfigSection);
         }
 
 
-        private RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration)
+        private SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration)
         {
             var jsonContent = File.ReadAllText(GetSpecflowJsonFilePath());
 
-            return _jsonConfigurationLoader.LoadJson(runtimeConfiguration, jsonContent);
+            return _jsonConfigurationLoader.LoadJson(specFlowConfiguration, jsonContent);
         }
 
         
@@ -141,14 +135,14 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 
         private static string GetSpecflowJsonFilePath()
         {
-            var directory = Path.GetDirectoryName(typeof(RuntimeConfigurationLoader).Assembly.Location);
+            var directory = Path.GetDirectoryName(typeof(ConfigurationLoader).Assembly.Location);
             var specflowJsonFile = Path.Combine(directory, "specflow.json");
             return specflowJsonFile;
         }
 
-        public void PrintConfigSource(ITraceListener traceListener, RuntimeConfiguration runtimeConfiguration)
+        public void PrintConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration)
         {
-            switch (runtimeConfiguration.ConfigSource)
+            switch (specFlowConfiguration.ConfigSource)
             {
                 case ConfigSource.Default:
                     traceListener.WriteToolOutput("Using default config");
