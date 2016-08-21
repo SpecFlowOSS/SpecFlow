@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath, ITraceListener traceListener)
         {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider(new RuntimeConfigurationLoader(/*traceListener*/))).ReadSpecFlowProject(projectFilePath);
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider(new RuntimeConfigurationLoader())).ReadSpecFlowProject(projectFilePath);
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)

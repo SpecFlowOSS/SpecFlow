@@ -14,8 +14,17 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Configuration
 {
-    public class RuntimeConfiguration
+    public enum ConfigSource
     {
+        Default,
+        AppConfig,
+        Json
+    }
+
+    public class RuntimeConfiguration 
+    {
+        public ConfigSource ConfigSource { get; set; }
+
         public ContainerRegistrationCollection CustomDependencies { get; set;}
         public ContainerRegistrationCollection GeneratorCustomDependencies { get; set; }
 
@@ -48,7 +57,8 @@ namespace TechTalk.SpecFlow.Configuration
         public string GeneratorPath { get; set; }
 
 
-        public RuntimeConfiguration(ContainerRegistrationCollection customDependencies, 
+        public RuntimeConfiguration(ConfigSource configSource,
+            ContainerRegistrationCollection customDependencies, 
             ContainerRegistrationCollection generatorCustomDependencies,
             CultureInfo featureLanguage, 
             CultureInfo toolLanguage, 
@@ -67,6 +77,7 @@ namespace TechTalk.SpecFlow.Configuration
             bool allowRowTests,
             string generatorPath)
         {
+            ConfigSource = configSource;
             CustomDependencies = customDependencies;
             GeneratorCustomDependencies = generatorCustomDependencies;
             FeatureLanguage = featureLanguage;

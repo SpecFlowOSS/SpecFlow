@@ -5,6 +5,7 @@ using System.Linq;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -63,8 +64,12 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, runtimeConfiguration);
 
+            container.Resolve<IRuntimeConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), runtimeConfiguration);
+
             return container;
         }
+
+       
 
         public virtual IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer)
         {
@@ -128,7 +133,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             var runtimePluginParameters = new RuntimePluginParameters
             {
                 Parameters = pluginDescriptor.Parameters
-            }; 
+            };
             plugin.Initialize(runtimePluginEvents, runtimePluginParameters);
         }
 

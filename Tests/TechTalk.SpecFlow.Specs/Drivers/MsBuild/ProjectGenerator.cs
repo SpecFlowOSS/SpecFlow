@@ -71,6 +71,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
                                                                                   });
             }
 
+
+            AddReference(inputProjectDriver, project, "Newtonsoft.Json.dll");
             foreach (var reference in inputProjectDriver.References.Concat(inputProjectDriver.AppConfigConfigurationDriver.GetAdditionalReferences()))
                 AddReference(inputProjectDriver, project, reference);
 
@@ -168,7 +170,13 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
             if (inputProjectDriver.SpecFlowJsonConfigurationDriver.IsUsed)
             {
                 inputProjectDriver.SpecFlowJsonConfigurationDriver.Save(Path.Combine(inputProjectDriver.CompilationFolder, "specflow.json"));
-                project.AddItem("None", "specflow.json");                
+                IEnumerable<KeyValuePair<string, string>> metadata = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("Link", "specflow.json"),
+                    new KeyValuePair<string, string>("CopyToOutputDirectory", "Always")
+                };
+                var projectItems = project.AddItem("None", "specflow.json", metadata );
+                
             }
         }
 

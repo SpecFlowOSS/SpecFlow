@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using BoDi;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.BindingSkeletons;
@@ -15,18 +16,20 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.PlatformSpecific
 {
+    
+
     public interface IRuntimeConfigurationLoader
     {
         RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration);
-        //RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler configSection);
         RuntimeConfiguration Update(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection);
+        void PrintConfigSource(ITraceListener traceListener, RuntimeConfiguration runtimeConfiguration);
     }
 
     public class RuntimeConfigurationLoader : IRuntimeConfigurationLoader
     {
-        //private readonly ITraceListener _traceListener;
-        private JsonConfigurationLoader _jsonConfigurationLoader;
-        private AppConfigConfigurationLoader _appConfigConfigurationLoader;
+        //private readonly ObjectContainer _objectContainer;
+        private readonly JsonConfigurationLoader _jsonConfigurationLoader;
+        private readonly AppConfigConfigurationLoader _appConfigConfigurationLoader;
         private static CultureInfo DefaultFeatureLanguage => CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
         private static CultureInfo DefaultToolLanguage => CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
         private static CultureInfo DefaultBindingCulture => null;
@@ -45,9 +48,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
 
-        public RuntimeConfigurationLoader(/*ITraceListener traceListener*/)
+        public RuntimeConfigurationLoader()
         {
-            //_traceListener = traceListener;
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
             
@@ -57,14 +59,15 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         {
             if (HasJsonConfig)
             {
-                //_traceListener.WriteToolOutput("Using specflow.json for configuration");
-                return LoadJson(runtimeConfiguration);
+
+                var configuration = LoadJson(runtimeConfiguration);
+                return configuration;
             }
 
             if (HasAppConfig)
             {
-                //_traceListener.WriteToolOutput("Using app.config for configuration");
-                return LoadAppConfig(runtimeConfiguration);
+                var configuration = LoadAppConfig(runtimeConfiguration);       
+                return configuration;
             }
 
             return GetDefault();
@@ -75,11 +78,11 @@ namespace TechTalk.SpecFlow.PlatformSpecific
             return LoadAppConfig(runtimeConfiguration, specFlowConfigSection);
         }
 
- 
 
         public static RuntimeConfiguration GetDefault()
         {
-            return new RuntimeConfiguration(new ContainerRegistrationCollection(), 
+            return new RuntimeConfiguration(ConfigSource.Default,
+                                            new ContainerRegistrationCollection(), 
                                             new ContainerRegistrationCollection(), 
                                             DefaultFeatureLanguage,
                                             DefaultToolLanguage, 
@@ -116,7 +119,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 
         private RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration)
         {
-            var jsonContent = @"";
+            var jsonContent = File.ReadAllText(GetSpecflowJsonFilePath());
 
             return _jsonConfigurationLoader.LoadJson(runtimeConfiguration, jsonContent);
         }
@@ -125,8 +128,40 @@ namespace TechTalk.SpecFlow.PlatformSpecific
 
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 
-        public bool HasJsonConfig => false;
+        public bool HasJsonConfig
+        {
+            get
+            {
+                var specflowJsonFile = GetSpecflowJsonFilePath();
 
-        
+
+                return File.Exists(specflowJsonFile);
+            }
+        }
+
+        private static string GetSpecflowJsonFilePath()
+        {
+            var directory = Path.GetDirectoryName(typeof(RuntimeConfigurationLoader).Assembly.Location);
+            var specflowJsonFile = Path.Combine(directory, "specflow.json");
+            return specflowJsonFile;
+        }
+
+        public void PrintConfigSource(ITraceListener traceListener, RuntimeConfiguration runtimeConfiguration)
+        {
+            switch (runtimeConfiguration.ConfigSource)
+            {
+                case ConfigSource.Default:
+                    traceListener.WriteToolOutput("Using default config");
+                    break;
+                case ConfigSource.AppConfig:
+                    traceListener.WriteToolOutput("Using app.config");
+                    break;
+                case ConfigSource.Json:
+                    traceListener.WriteToolOutput("Using specflow.json");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
     }
 }

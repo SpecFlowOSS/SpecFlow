@@ -25,7 +25,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     UnitTestProvider = new UnitTestProviderElement(),
                     Plugins = new List<PluginEntry>(),
                     StepAssemblies = new List<StepAssemblyEntry>(),
-                    Trace = new TraceElement()
+                    Trace = new TraceElement(),
+                    Generator = new GeneratorElement()
                 }
             };
         }

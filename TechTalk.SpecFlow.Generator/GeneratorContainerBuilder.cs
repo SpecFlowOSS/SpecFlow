@@ -6,7 +6,9 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
@@ -50,6 +52,9 @@ namespace TechTalk.SpecFlow.Generator
                 container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.RuntimeConfiguration.UnitTestProvider));
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
+
+            container.Resolve<IRuntimeConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.RuntimeConfiguration);
+
 
             return container;
         }

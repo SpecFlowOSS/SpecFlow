@@ -17,20 +17,15 @@ Scenario: Generation configuration in app.config
 	When I execute the tests
 	Then the app.config is used for configuration
 
-
 Scenario: Generation configuration in specflow.json
 	Given SpecFlow is configured in the specflow.json
 	When I execute the tests
 	Then the specflow.json is used for configuration	
 
-
-
 Scenario: Runtime configuration in app.config
 	Given SpecFlow is configured in the app.config
 	When I execute the tests
 	Then the app.config is used for configuration
-
-
 
 Scenario: Runtime configuration in specflow.json
 	Given SpecFlow is configured in the specflow.json

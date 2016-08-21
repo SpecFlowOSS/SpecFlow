@@ -113,7 +113,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
                 pluginDescriptors.Add(plugin.ToPluginDescriptor());
             }
 
-            return new RuntimeConfiguration(runtimeContainerRegistrationCollection,
+            return new RuntimeConfiguration(ConfigSource.AppConfig, 
+                                            runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             toolLanguage,

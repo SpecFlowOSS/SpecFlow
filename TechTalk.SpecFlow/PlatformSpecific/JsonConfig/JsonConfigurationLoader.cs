@@ -95,7 +95,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
             }
 
 
-            return new RuntimeConfiguration(containerRegistrationCollection,
+            return new RuntimeConfiguration(ConfigSource.Json,
+                                            containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             toolLanguage,
