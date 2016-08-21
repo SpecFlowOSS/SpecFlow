@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.PlatformSpecific;
+using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
@@ -21,6 +22,8 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
 
             container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
+            container.RegisterTypeAs<DefaultListener, ITraceListener>();
+
 
             container.RegisterTypeAs<UnitTestFeatureGenerator, UnitTestFeatureGenerator>();
             container.RegisterTypeAs<FeatureGeneratorRegistry, IFeatureGeneratorRegistry>();
