@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Reporting
         public static List<SpecFlowDocument> GetParsedFeatures(SpecFlowProject specFlowProject)
         {
             return GetParsedFeatures(specFlowProject.FeatureFiles.Select(ff => ff.GetFullPath(specFlowProject.ProjectSettings)),
-                specFlowProject.Configuration.GeneratorConfiguration.FeatureLanguage);
+                specFlowProject.Configuration.RuntimeConfiguration.FeatureLanguage);
         }
 
         public static List<SpecFlowDocument> GetParsedFeatures(IEnumerable<string> featureFiles, CultureInfo featureLanguage)

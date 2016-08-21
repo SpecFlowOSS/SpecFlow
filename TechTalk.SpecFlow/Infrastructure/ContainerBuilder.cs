@@ -58,8 +58,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterInstanceAs(runtimeConfiguration);
 
-            if (runtimeConfiguration.RuntimeUnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.RuntimeUnitTestProvider));
+            if (runtimeConfiguration.UnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestRuntimeProvider>(runtimeConfiguration.UnitTestProvider));
 
             runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, runtimeConfiguration);
 

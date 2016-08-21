@@ -22,10 +22,11 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
 
 
             ContainerRegistrationCollection containerRegistrationCollection = runtimeConfiguration.CustomDependencies;
+            ContainerRegistrationCollection generatorContainerRegistrationCollection = runtimeConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = runtimeConfiguration.FeatureLanguage;
             CultureInfo toolLanguage = runtimeConfiguration.ToolLanguage;
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = runtimeConfiguration.RuntimeUnitTestProvider;
+            string runtimeUnitTestProvider = runtimeConfiguration.UnitTestProvider;
             bool detectAmbiguousMatches = runtimeConfiguration.DetectAmbiguousMatches;
             bool stopAtFirstError = runtimeConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = runtimeConfiguration.MissingOrPendingStepsOutcome;
@@ -35,6 +36,9 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = runtimeConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = runtimeConfiguration.AdditionalStepAssemblies;
             List<PluginDescriptor> pluginDescriptors = runtimeConfiguration.Plugins;
+            string generatorPath = runtimeConfiguration.GeneratorPath;
+            bool allowRowTests = runtimeConfiguration.AllowRowTests;
+            bool allowDebugGeneratedFiles = runtimeConfiguration.AllowDebugGeneratedFiles;
 
 
             var specFlowElement = jsonConfig.SpecFlow;
@@ -59,6 +63,11 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
                 missingOrPendingStepsOutcome = specFlowElement.Runtime.MissingOrPendingStepsOutcome;
                 detectAmbiguousMatches = specFlowElement.Runtime.DetectAmbiguousMatches;
                 stopAtFirstError = specFlowElement.Runtime.StopAtFirstError;
+            }
+
+            if (specFlowElement.Generator != null)
+            {
+                
             }
 
             if (specFlowElement.Trace != null)
@@ -87,6 +96,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
 
 
             return new RuntimeConfiguration(containerRegistrationCollection,
+                                            generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             toolLanguage,
                                             bindingCulture,
@@ -99,7 +109,10 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,
                                             additionalStepAssemblies,
-                                            pluginDescriptors);
+                                            pluginDescriptors,
+                                            allowDebugGeneratedFiles,
+                                            allowRowTests,
+                                            generatorPath);
         }
     }
 }

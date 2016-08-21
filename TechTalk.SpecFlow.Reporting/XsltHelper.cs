@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator.Configuration;
 
 namespace TechTalk.SpecFlow.Reporting
@@ -26,7 +27,7 @@ namespace TechTalk.SpecFlow.Reporting
             }
         }
 
-        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, GeneratorConfiguration generatorConfiguration, string xsltFile)
+        public static void TransformHtml(XmlSerializer serializer, object report, Type reportType, string outputFilePath, RuntimeConfiguration generatorConfiguration, string xsltFile)
         {
             var xmlOutputWriter = new StringWriter();
             serializer.Serialize(xmlOutputWriter, report);

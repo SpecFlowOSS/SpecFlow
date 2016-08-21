@@ -101,7 +101,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(RuntimeConfigurationLoader.GetDefault(), configSection);
 
-            runtimeConfig.RuntimeUnitTestProvider.Should().Be("XUnit");
+            runtimeConfig.UnitTestProvider.Should().Be("XUnit");
         }
 
         [Test]

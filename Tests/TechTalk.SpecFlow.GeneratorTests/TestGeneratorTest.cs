@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
 using TechTalk.SpecFlow.Parser;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.GeneratorTests
@@ -46,9 +47,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         public static UnitTestFeatureGenerator CreateUnitTestConverter(IUnitTestGeneratorProvider testGeneratorProvider)
         {
             var codeDomHelper = new CodeDomHelper(CodeDomProviderLanguage.CSharp);
-            return new UnitTestFeatureGenerator(testGeneratorProvider, codeDomHelper,
-                                                 new GeneratorConfiguration { AllowRowTests = true, AllowDebugGeneratedFiles = true },
-                                                 new DecoratorRegistryStub());
+            var runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
+            runtimeConfiguration.AllowRowTests = true;
+            runtimeConfiguration.AllowDebugGeneratedFiles = true;
+
+            return new UnitTestFeatureGenerator(testGeneratorProvider, codeDomHelper, runtimeConfiguration, new DecoratorRegistryStub());
         }
 
         /// <summary>

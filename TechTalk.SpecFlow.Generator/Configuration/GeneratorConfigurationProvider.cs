@@ -30,8 +30,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                         ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
                     if (specFlowConfigSection != null)
                     {
-                        UpdateGeneratorConfiguration(configuration, specFlowConfigSection);
-                        UpdateRuntimeConfiguration(configuration, specFlowConfigSection);
+                        UpdateConfiguration(configuration, specFlowConfigSection);
                     }
                 }
             }
@@ -62,14 +61,10 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             }
         }
 
-        internal virtual void UpdateRuntimeConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
+        internal virtual void UpdateConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
             configuration.RuntimeConfiguration = _runtimeConfigurationLoader.Load(configuration.RuntimeConfiguration);
         }
-
-        internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
-        {
-            configuration.GeneratorConfiguration.UpdateFromConfigFile(specFlowConfigSection);
-        }
+        
     }
 }

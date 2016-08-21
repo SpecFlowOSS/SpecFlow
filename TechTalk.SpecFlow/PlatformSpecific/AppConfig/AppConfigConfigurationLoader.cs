@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
@@ -20,11 +17,12 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
         {
             if (configSection == null) throw new ArgumentNullException(nameof(configSection));
 
-            ContainerRegistrationCollection containerRegistrationCollection = runtimeConfiguration.CustomDependencies;
+            ContainerRegistrationCollection runtimeContainerRegistrationCollection = runtimeConfiguration.CustomDependencies;
+            ContainerRegistrationCollection generatorContainerRegistrationCollection = runtimeConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = runtimeConfiguration.FeatureLanguage;
             CultureInfo toolLanguage = runtimeConfiguration.ToolLanguage;
             CultureInfo bindingCulture = runtimeConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = runtimeConfiguration.RuntimeUnitTestProvider;
+            string runtimeUnitTestProvider = runtimeConfiguration.UnitTestProvider;
             bool detectAmbiguousMatches = runtimeConfiguration.DetectAmbiguousMatches;
             bool stopAtFirstError = runtimeConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = runtimeConfiguration.MissingOrPendingStepsOutcome;
@@ -34,6 +32,10 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = runtimeConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = runtimeConfiguration.AdditionalStepAssemblies;
             List<PluginDescriptor> pluginDescriptors = runtimeConfiguration.Plugins;
+
+            bool allowRowTests = runtimeConfiguration.AllowRowTests;
+            string generatorPath = runtimeConfiguration.GeneratorPath;
+            bool allowDebugGeneratedFiles = runtimeConfiguration.AllowDebugGeneratedFiles;
 
 
             if (IsSpecified(configSection.Language))
@@ -56,7 +58,19 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
 
                 if (IsSpecified(configSection.Runtime.Dependencies))
                 {
-                    containerRegistrationCollection = configSection.Runtime.Dependencies;
+                    runtimeContainerRegistrationCollection = configSection.Runtime.Dependencies;
+                }
+            }
+
+            if (IsSpecified((configSection.Generator)))
+            {
+                allowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
+                allowRowTests = configSection.Generator.AllowRowTests;
+                generatorPath = configSection.Generator.GeneratorPath;
+
+                if (IsSpecified(configSection.Generator.Dependencies))
+                {
+                    generatorContainerRegistrationCollection = configSection.Generator.Dependencies;
                 }
             }
 
@@ -66,7 +80,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
                 {
                     //compatibility mode, we simulate a custom dependency
                     runtimeUnitTestProvider = "custom";
-                    containerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
+                    runtimeContainerRegistrationCollection.Add(configSection.UnitTestProvider.RuntimeProvider, typeof(IUnitTestRuntimeProvider).AssemblyQualifiedName, runtimeUnitTestProvider);
                 }
                 else
                 {
@@ -79,7 +93,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
             {
                 if (!string.IsNullOrEmpty(configSection.Trace.Listener)) // backwards compatibility
                 {
-                    containerRegistrationCollection.Add(configSection.Trace.Listener, typeof(ITraceListener).AssemblyQualifiedName);
+                    runtimeContainerRegistrationCollection.Add(configSection.Trace.Listener, typeof(ITraceListener).AssemblyQualifiedName);
                 }
 
                 traceSuccessfulSteps = configSection.Trace.TraceSuccessfulSteps;
@@ -99,7 +113,8 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
                 pluginDescriptors.Add(plugin.ToPluginDescriptor());
             }
 
-            return new RuntimeConfiguration(containerRegistrationCollection,
+            return new RuntimeConfiguration(runtimeContainerRegistrationCollection,
+                                            generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             toolLanguage,
                                             bindingCulture,
@@ -112,7 +127,11 @@ namespace TechTalk.SpecFlow.PlatformSpecific.AppConfig
                                             minTracedDuration,
                                             stepDefinitionSkeletonStyle,
                                             additionalStepAssemblies,
-                                            pluginDescriptors);
+                                            pluginDescriptors,
+                                            allowDebugGeneratedFiles,
+                                            allowRowTests,
+                                            generatorPath
+                                            );
         }
 
         private bool IsSpecified(ConfigurationElement configurationElement)

@@ -39,6 +39,10 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         private static StepDefinitionSkeletonStyle DefaultStepDefinitionSkeletonStyle => ConfigDefaults.StepDefinitionSkeletonStyle;
         private static List<string> DefaultAdditionalStepAssemblies => new List<string>();
         private static List<PluginDescriptor> DefaultPluginDescriptors => new List<PluginDescriptor>();
+        private static bool DefaultAllowDebugGeneratedFiles => ConfigDefaults.AllowDebugGeneratedFiles;
+        private static bool DefaultAllowRowTests => ConfigDefaults.AllowRowTests;
+        public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
+
 
         public RuntimeConfigurationLoader(ITraceListener traceListener)
         {
@@ -68,6 +72,7 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         public static RuntimeConfiguration GetDefault()
         {
             return new RuntimeConfiguration(new ContainerRegistrationCollection(), 
+                                            new ContainerRegistrationCollection(), 
                                             DefaultFeatureLanguage,
                                             DefaultToolLanguage, 
                                             DefaultBindingCulture, 
@@ -80,8 +85,13 @@ namespace TechTalk.SpecFlow.PlatformSpecific
                                             DefaultMinTracedDuration,
                                             DefaultStepDefinitionSkeletonStyle, 
                                             DefaultAdditionalStepAssemblies,
-                                            DefaultPluginDescriptors);
+                                            DefaultPluginDescriptors,
+                                            DefaultAllowDebugGeneratedFiles,
+                                            DefaultAllowRowTests,
+                                            DefaultGeneratorPath);
         }
+
+
 
         private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration)
         {

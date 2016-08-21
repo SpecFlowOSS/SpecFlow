@@ -35,11 +35,10 @@ namespace TechTalk.SpecFlow.Generator
 
             configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
 
-            if (specFlowConfiguration.GeneratorConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.GeneratorConfiguration.CustomDependencies);
+            if (specFlowConfiguration.RuntimeConfiguration.CustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.RuntimeConfiguration.CustomDependencies);
 
             container.RegisterInstanceAs(specFlowConfiguration);
-            container.RegisterInstanceAs(specFlowConfiguration.GeneratorConfiguration);
             container.RegisterInstanceAs(specFlowConfiguration.RuntimeConfiguration);
 
             var generatorInfo = container.Resolve<IGeneratorInfoProvider>().GetGeneratorInfo();
@@ -47,8 +46,8 @@ namespace TechTalk.SpecFlow.Generator
 
             container.RegisterInstanceAs(container.Resolve<CodeDomHelper>(projectSettings.ProjectPlatformSettings.Language));
 
-            if (specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider != null)
-                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.GeneratorConfiguration.GeneratorUnitTestProvider));
+            if (specFlowConfiguration.RuntimeConfiguration.UnitTestProvider != null)
+                container.RegisterInstanceAs(container.Resolve<IUnitTestGeneratorProvider>(specFlowConfiguration.RuntimeConfiguration.UnitTestProvider));
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 

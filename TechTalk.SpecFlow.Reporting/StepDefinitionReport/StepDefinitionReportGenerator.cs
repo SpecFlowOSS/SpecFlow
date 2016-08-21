@@ -225,7 +225,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             }
             else
             {
-                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.Configuration.GeneratorConfiguration, ReportParameters.XsltFile);
+                XsltHelper.TransformHtml(serializer, report, GetType(), ReportParameters.OutputFile, specFlowProject.Configuration.RuntimeConfiguration, ReportParameters.XsltFile);
             }
         }
 

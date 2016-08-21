@@ -28,6 +28,10 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
         [JsonProperty("runtime", NullValueHandling = NullValueHandling.Ignore)]
         public RuntimeElement Runtime { get; set; }
 
+        [JsonProperty("generator", NullValueHandling = NullValueHandling.Ignore)]
+        public GeneratorElement Generator { get; set; }
+
+
         [JsonProperty("trace", NullValueHandling = NullValueHandling.Ignore)]
         public TraceElement Trace { get; set; }
 
@@ -76,6 +80,21 @@ namespace TechTalk.SpecFlow.PlatformSpecific.JsonConfig
         [JsonProperty("missingOrPendingStepsOutcome", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.MissingOrPendingStepsOutcome)]
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
+    }
+
+    public class GeneratorElement
+    {
+        [JsonProperty("allowDebugGeneratedFiles", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DefaultValue(ConfigDefaults.AllowDebugGeneratedFiles)]
+        public bool AllowDebugGeneratedFiles { get; set; }
+
+        [JsonProperty("allowRowTests", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DefaultValue(ConfigDefaults.AllowRowTests)]
+        public bool AllowRowTests { get; set; }
+
+        [JsonProperty("path", DefaultValueHandling =  DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
+        [DefaultValue(ConfigDefaults.GeneratorPath)]
+        public string GeneratorPath { get; set; }
     }
 
     public class TraceElement

@@ -61,8 +61,6 @@
     </Compile>
     <Compile Include="BatchGenerator.cs" />
     <Compile Include="Configuration\GeneratorInfo.cs" />
-    <Compile Include="Configuration\GeneratorConfiguration.cs" />
-    <Compile Include="Configuration\GeneratorConfigurationReader.cs" />
     <Compile Include="Configuration\IGeneratorInfoProvider.cs" />
     <Compile Include="Configuration\ISpecFlowConfigurationReader.cs" />
     <Compile Include="DefaultDependencyProvider.cs" />
