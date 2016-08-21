@@ -4,6 +4,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.ErrorHandling;
+using TechTalk.SpecFlow.PlatformSpecific;
 using TechTalk.SpecFlow.Plugins;
 using TechTalk.SpecFlow.Tracing;
 
@@ -43,6 +44,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             container.RegisterTypeAs<RuntimePluginLoader, IRuntimePluginLoader>();
 
             container.RegisterTypeAs<BindingAssemblyLoader, IBindingAssemblyLoader>();
+
+            container.RegisterTypeAs<RuntimeConfigurationLoader, IRuntimeConfigurationLoader>();
 
             RegisterUnitTestProviders(container);
         }

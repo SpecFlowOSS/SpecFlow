@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Generator.Project;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
@@ -15,7 +16,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var directoryName = Path.GetDirectoryName(this.GetType().Assembly.Location);
             string projectFilePath = Path.Combine(directoryName, "Data\\sampleCsProjectfile.csproj");
-            SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
+            SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath, new NullListener());
             specflowProjectfile.FeatureFiles.Count.Should().Be(3);
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowDefinition\CreateWorkflowDefinition.feature").Should().NotBeNull();

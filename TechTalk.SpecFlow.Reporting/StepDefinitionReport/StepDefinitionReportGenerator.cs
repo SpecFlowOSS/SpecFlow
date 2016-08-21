@@ -12,6 +12,7 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Project;
 using TechTalk.SpecFlow.Parser;
 using TechTalk.SpecFlow.Reporting.StepDefinitionReport.ReportElements;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
 {
@@ -31,7 +32,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
         {
             ReportParameters = reportParameters;
 
-            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile);
+            specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(reportParameters.ProjectFile, new NullListener());
             parsedSpecFlowDocuments = ParserHelper.GetParsedFeatures(specFlowProject);
 
             var basePath = Path.Combine(specFlowProject.ProjectSettings.ProjectFolder, reportParameters.BinFolder);

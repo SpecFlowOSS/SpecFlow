@@ -173,6 +173,7 @@
     <Compile Include="Infrastructure\IBindingAssemblyLoader.cs" />
     <Compile Include="Infrastructure\IContextManager.cs" />
     <Compile Include="Infrastructure\IDefaultDependencyProvider.cs" />
+    <Compile Include="PlatformSpecific\AppConfig\AppConfigConfigurationLoader.cs" />
     <Compile Include="PlatformSpecific\AppConfig\BindingCultureConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\GeneratorConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\LanguageConfigElement.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="PlatformSpecific\AppConfig\StepAssemblyConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\TraceConfigElement.cs" />
     <Compile Include="PlatformSpecific\AppConfig\UnitTestProviderConfigElement.cs" />
+    <Compile Include="PlatformSpecific\JsonConfig\JsonConfigurationLoader.cs" />
     <Compile Include="PlatformSpecific\JsonConfig\SpecFlowElement.cs" />
     <Compile Include="PlatformSpecific\RuntimeConfigurationLoader.cs" />
     <Compile Include="Plugins\IRuntimePlugin.cs" />

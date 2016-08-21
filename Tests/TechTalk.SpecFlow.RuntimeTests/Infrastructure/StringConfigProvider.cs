@@ -5,6 +5,7 @@ using System.Xml;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.PlatformSpecific;
+using TechTalk.SpecFlow.PlatformSpecific.AppConfig;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -22,7 +23,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             ConfigurationSectionHandler section = GetSection();
             
-            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
+            var runtimeConfigurationLoader = new AppConfigConfigurationLoader();
 
             return runtimeConfigurationLoader.LoadAppConfig(runtimeConfiguration, section);
 

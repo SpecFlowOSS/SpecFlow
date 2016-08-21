@@ -6,6 +6,8 @@ using System.Xml;
 using Microsoft.Build.Evaluation;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
+using TechTalk.SpecFlow.PlatformSpecific;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Generator.Project
 {
@@ -18,9 +20,9 @@ namespace TechTalk.SpecFlow.Generator.Project
             this.configurationLoader = configurationLoader;
         }
 
-        public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
+        public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath, ITraceListener traceListener)
         {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider()).ReadSpecFlowProject(projectFilePath);
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider(new RuntimeConfigurationLoader(traceListener))).ReadSpecFlowProject(projectFilePath);
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)

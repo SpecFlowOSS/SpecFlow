@@ -6,6 +6,8 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.PlatformSpecific;
+using TechTalk.SpecFlow.PlatformSpecific.AppConfig;
+using TechTalk.SpecFlow.PlatformSpecific.JsonConfig;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Configuration
@@ -41,7 +43,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         }")]
         public void CanLoadConfigFromString(string configString)
         {
-            var configurationLoader = new RuntimeConfigurationLoader();
+            var configurationLoader = new JsonConfigurationLoader();
             
             configurationLoader.LoadJson(RuntimeConfigurationLoader.GetDefault(), configString);
         }
@@ -55,7 +57,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                               }
                             }";
             
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.FeatureLanguage.TwoLetterISOLanguageName.Should().Be("de");
         }
@@ -71,7 +73,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
 
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.ToolLanguage.TwoLetterISOLanguageName.Should().Be("de");
         }
@@ -87,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.BindingCulture.TwoLetterISOLanguageName.Should().Be("de");
         }
@@ -103,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.RuntimeUnitTestProvider.Should().Be("XUnit");
         }
@@ -119,7 +121,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.DetectAmbiguousMatches.Should().BeTrue();
         }
@@ -135,7 +137,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.DetectAmbiguousMatches.Should().BeFalse();
         }
@@ -151,7 +153,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StopAtFirstError.Should().BeTrue();
         }
@@ -167,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StopAtFirstError.Should().BeFalse();
         }
@@ -183,7 +185,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Pending);
         }
@@ -199,7 +201,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Error);
         }
@@ -215,7 +217,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Ignore);
         }
@@ -231,7 +233,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
 
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.MissingOrPendingStepsOutcome.Should().Be(MissingOrPendingStepsOutcome.Inconclusive);
         }
@@ -247,7 +249,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.TraceSuccessfulSteps.Should().BeTrue();
         }
@@ -263,7 +265,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.TraceSuccessfulSteps.Should().BeFalse();
         }
@@ -279,7 +281,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.TraceTimings.Should().BeTrue();
         }
@@ -295,7 +297,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.TraceTimings.Should().BeFalse();
         }
@@ -311,7 +313,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.MinTracedDuration.Should().Be(TimeSpan.FromSeconds(1));
         }
@@ -327,7 +329,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.CustomDependencies.Count.Should().Be(0);
         }
@@ -343,7 +345,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.RegexAttribute);
         }
@@ -359,7 +361,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNamePascalCase);
         }
@@ -375,7 +377,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNameRegex);
         }
@@ -391,7 +393,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.StepDefinitionSkeletonStyle.Should().Be(StepDefinitionSkeletonStyle.MethodNameUnderscores);
         }
@@ -408,7 +410,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.AdditionalStepAssemblies.Should().BeEmpty();
         }
@@ -424,7 +426,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.AdditionalStepAssemblies.Should().BeEmpty();
         }
@@ -441,7 +443,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.AdditionalStepAssemblies.Count.Should().Be(1);
             runtimeConfig.AdditionalStepAssemblies.First().Should().Be("testEntry");
@@ -461,7 +463,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.AdditionalStepAssemblies.Count.Should().Be(2);
             runtimeConfig.AdditionalStepAssemblies[0].Should().Be("testEntry1");
@@ -479,7 +481,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Should().BeEmpty();
         }
@@ -495,7 +497,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Should().BeEmpty();
         }
@@ -514,7 +516,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Name.Should().Be("testEntry");
@@ -533,7 +535,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                             }";
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Path.Should().Be("path_to_assembly");
@@ -552,7 +554,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                             }";
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Parameters.Should().Be("pluginParameter");
@@ -572,7 +574,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Runtime);
@@ -591,7 +593,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                             }";
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.Generator);
@@ -610,7 +612,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
                             }";        
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(1);
             runtimeConfig.Plugins.First().Type.Should().Be(PluginType.GeneratorAndRuntime);
@@ -631,7 +633,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             
 
-            var runtimeConfig = new RuntimeConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
+            var runtimeConfig = new JsonConfigurationLoader().LoadJson(RuntimeConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.Plugins.Count.Should().Be(2);
             runtimeConfig.Plugins[0].Name.Should().Be("testEntry1");

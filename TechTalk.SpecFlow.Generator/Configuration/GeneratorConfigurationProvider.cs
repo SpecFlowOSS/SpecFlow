@@ -13,6 +13,13 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 {
     public class GeneratorConfigurationProvider : IGeneratorConfigurationProvider
     {
+        private readonly IRuntimeConfigurationLoader _runtimeConfigurationLoader;
+
+        public GeneratorConfigurationProvider(IRuntimeConfigurationLoader runtimeConfigurationLoader)
+        {
+            _runtimeConfigurationLoader = runtimeConfigurationLoader;
+        }
+
         public virtual void LoadConfiguration(SpecFlowConfigurationHolder configurationHolder, SpecFlowProjectConfiguration configuration)
         {
             try
@@ -57,8 +64,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateRuntimeConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
-            configuration.RuntimeConfiguration = runtimeConfigurationLoader.LoadAppConfig(configuration.RuntimeConfiguration, specFlowConfigSection);
+            configuration.RuntimeConfiguration = _runtimeConfigurationLoader.Load(configuration.RuntimeConfiguration);
         }
 
         internal virtual void UpdateGeneratorConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)

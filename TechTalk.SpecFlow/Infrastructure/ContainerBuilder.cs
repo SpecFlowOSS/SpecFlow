@@ -45,7 +45,6 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-            var runtimeConfigurationLoader = new RuntimeConfigurationLoader();
             RuntimeConfiguration runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
 
             runtimePluginEvents.RaiseConfigurationDefaults(runtimeConfiguration);
