@@ -63,7 +63,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
 
         internal virtual void UpdateConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)
         {
-            configuration.RuntimeConfiguration = _runtimeConfigurationLoader.Load(configuration.RuntimeConfiguration);
+            configuration.RuntimeConfiguration = _runtimeConfigurationLoader.Update(configuration.RuntimeConfiguration, specFlowConfigSection);
         }
         
     }

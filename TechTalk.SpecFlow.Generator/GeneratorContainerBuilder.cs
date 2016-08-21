@@ -35,8 +35,8 @@ namespace TechTalk.SpecFlow.Generator
 
             configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
 
-            if (specFlowConfiguration.RuntimeConfiguration.CustomDependencies != null)
-                container.RegisterFromConfiguration(specFlowConfiguration.RuntimeConfiguration.CustomDependencies);
+            if (specFlowConfiguration.RuntimeConfiguration.GeneratorCustomDependencies != null)
+                container.RegisterFromConfiguration(specFlowConfiguration.RuntimeConfiguration.GeneratorCustomDependencies);
 
             container.RegisterInstanceAs(specFlowConfiguration);
             container.RegisterInstanceAs(specFlowConfiguration.RuntimeConfiguration);

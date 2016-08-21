@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
         public void CanLoadConfigFromConfigFile()
         {
             var runtimeConfiguration = RuntimeConfigurationLoader.GetDefault();
-            var configurationLoader = new RuntimeConfigurationLoader(new TextWriterTraceListener(new StringWriter()));
+            var configurationLoader = new RuntimeConfigurationLoader(/*new TextWriterTraceListener(new StringWriter())*/);
 
             runtimeConfiguration = configurationLoader.Load(runtimeConfiguration);
         }

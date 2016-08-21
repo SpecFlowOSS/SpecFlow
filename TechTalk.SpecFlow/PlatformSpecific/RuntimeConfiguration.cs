@@ -17,7 +17,8 @@ namespace TechTalk.SpecFlow.Configuration
     public class RuntimeConfiguration
     {
         public ContainerRegistrationCollection CustomDependencies { get; set;}
-        public ContainerRegistrationCollection GeneratorCustomCollection { get; set; }
+        public ContainerRegistrationCollection GeneratorCustomDependencies { get; set; }
+
 
         //language settings
         public CultureInfo FeatureLanguage { get; set;}
@@ -45,11 +46,10 @@ namespace TechTalk.SpecFlow.Configuration
 
         public List<PluginDescriptor> Plugins { get; set; }
         public string GeneratorPath { get; set; }
-        public ContainerRegistrationCollection GeneratorCustomDependencies { get; set; }
 
 
         public RuntimeConfiguration(ContainerRegistrationCollection customDependencies, 
-            ContainerRegistrationCollection generatorCustomCollection,
+            ContainerRegistrationCollection generatorCustomDependencies,
             CultureInfo featureLanguage, 
             CultureInfo toolLanguage, 
             CultureInfo bindingCulture, 
@@ -68,7 +68,7 @@ namespace TechTalk.SpecFlow.Configuration
             string generatorPath)
         {
             CustomDependencies = customDependencies;
-            GeneratorCustomCollection = generatorCustomCollection;
+            GeneratorCustomDependencies = generatorCustomDependencies;
             FeatureLanguage = featureLanguage;
             ToolLanguage = toolLanguage;
             BindingCulture = bindingCulture;

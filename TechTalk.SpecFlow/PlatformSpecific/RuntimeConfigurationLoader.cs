@@ -19,11 +19,12 @@ namespace TechTalk.SpecFlow.PlatformSpecific
     {
         RuntimeConfiguration Load(RuntimeConfiguration runtimeConfiguration);
         //RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler configSection);
+        RuntimeConfiguration Update(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection);
     }
 
     public class RuntimeConfigurationLoader : IRuntimeConfigurationLoader
     {
-        private readonly ITraceListener _traceListener;
+        //private readonly ITraceListener _traceListener;
         private JsonConfigurationLoader _jsonConfigurationLoader;
         private AppConfigConfigurationLoader _appConfigConfigurationLoader;
         private static CultureInfo DefaultFeatureLanguage => CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
@@ -44,9 +45,9 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         public static string DefaultGeneratorPath => ConfigDefaults.GeneratorPath;
 
 
-        public RuntimeConfigurationLoader(ITraceListener traceListener)
+        public RuntimeConfigurationLoader(/*ITraceListener traceListener*/)
         {
-            _traceListener = traceListener;
+            //_traceListener = traceListener;
             _jsonConfigurationLoader = new JsonConfigurationLoader();
             _appConfigConfigurationLoader = new AppConfigConfigurationLoader();
             
@@ -56,18 +57,25 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         {
             if (HasJsonConfig)
             {
-                _traceListener.WriteToolOutput("Using specflow.json for configuration");
+                //_traceListener.WriteToolOutput("Using specflow.json for configuration");
                 return LoadJson(runtimeConfiguration);
             }
 
             if (HasAppConfig)
             {
-                _traceListener.WriteToolOutput("Using app.config for configuration");
+                //_traceListener.WriteToolOutput("Using app.config for configuration");
                 return LoadAppConfig(runtimeConfiguration);
             }
 
             return GetDefault();
         }
+
+        public RuntimeConfiguration Update(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection)
+        {
+            return LoadAppConfig(runtimeConfiguration, specFlowConfigSection);
+        }
+
+ 
 
         public static RuntimeConfiguration GetDefault()
         {
@@ -97,10 +105,13 @@ namespace TechTalk.SpecFlow.PlatformSpecific
         {
             var configSection = ConfigurationManager.GetSection("specFlow") as ConfigurationSectionHandler;
 
-            return _appConfigConfigurationLoader.LoadAppConfig(runtimeConfiguration, configSection);
+            return LoadAppConfig(runtimeConfiguration, configSection);
         }
 
-        
+        private RuntimeConfiguration LoadAppConfig(RuntimeConfiguration runtimeConfiguration, ConfigurationSectionHandler specFlowConfigSection)
+        {
+            return _appConfigConfigurationLoader.LoadAppConfig(runtimeConfiguration, specFlowConfigSection);
+        }
 
 
         private RuntimeConfiguration LoadJson(RuntimeConfiguration runtimeConfiguration)
