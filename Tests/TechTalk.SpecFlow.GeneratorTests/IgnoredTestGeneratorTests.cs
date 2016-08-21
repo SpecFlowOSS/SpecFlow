@@ -7,6 +7,7 @@ using BoDi;
 using Gherkin.Ast;
 using Moq;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;

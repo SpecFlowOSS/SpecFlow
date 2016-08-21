@@ -17,6 +17,7 @@ namespace TechTalk.SpecFlow.Configuration
 
     public interface IConfigurationLoader
     {
+        SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder);
         SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration);
         SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection);
         void PrintConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
@@ -52,6 +53,21 @@ namespace TechTalk.SpecFlow.Configuration
             
         }
 
+        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
+        {
+            switch (specFlowConfigurationHolder.ConfigSource)
+            {
+                case ConfigSource.Default:
+                    return GetDefault();
+                case ConfigSource.AppConfig:
+                    return LoadAppConfig(specFlowConfiguration, ConfigurationSectionHandler.CreateFromXml(specFlowConfigurationHolder.Content));
+                case ConfigSource.Json:
+                    return LoadJson(specFlowConfiguration, specFlowConfigurationHolder.Content);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration)
         {
             if (HasJsonConfig)
@@ -61,7 +77,7 @@ namespace TechTalk.SpecFlow.Configuration
 
             if (HasAppConfig)
             {
-                return LoadAppConfig(specFlowConfiguration);       
+                return LoadAppConfig(specFlowConfiguration);
             }
 
             return GetDefault();
@@ -75,27 +91,8 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static SpecFlowConfiguration GetDefault()
         {
-            return new SpecFlowConfiguration(ConfigSource.Default,
-                                            new ContainerRegistrationCollection(), 
-                                            new ContainerRegistrationCollection(), 
-                                            DefaultFeatureLanguage,
-                                            DefaultToolLanguage, 
-                                            DefaultBindingCulture, 
-                                            DefaultRuntimeUnitTestProvider,
-                                            DefaultDetectAmbiguousMatches, 
-                                            DefaultStopAtFirstError, 
-                                            DefaultMissingOrPendingStepsOutcome,
-                                            DefaultTraceSuccessfulSteps, 
-                                            DefaultTraceTimings, 
-                                            DefaultMinTracedDuration,
-                                            DefaultStepDefinitionSkeletonStyle, 
-                                            DefaultAdditionalStepAssemblies,
-                                            DefaultPluginDescriptors,
-                                            DefaultAllowDebugGeneratedFiles,
-                                            DefaultAllowRowTests,
-                                            DefaultGeneratorPath);
+            return new SpecFlowConfiguration(ConfigSource.Default, new ContainerRegistrationCollection(), new ContainerRegistrationCollection(), DefaultFeatureLanguage, DefaultToolLanguage, DefaultBindingCulture, DefaultRuntimeUnitTestProvider, DefaultDetectAmbiguousMatches, DefaultStopAtFirstError, DefaultMissingOrPendingStepsOutcome, DefaultTraceSuccessfulSteps, DefaultTraceTimings, DefaultMinTracedDuration, DefaultStepDefinitionSkeletonStyle, DefaultAdditionalStepAssemblies, DefaultPluginDescriptors, DefaultAllowDebugGeneratedFiles, DefaultAllowRowTests, DefaultGeneratorPath);
         }
-
 
 
         private SpecFlowConfiguration LoadAppConfig(SpecFlowConfiguration specFlowConfiguration)
@@ -115,10 +112,14 @@ namespace TechTalk.SpecFlow.Configuration
         {
             var jsonContent = File.ReadAllText(GetSpecflowJsonFilePath());
 
+            return LoadJson(specFlowConfiguration, jsonContent);
+        }
+
+        private SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration, string jsonContent)
+        {
             return _jsonConfigurationLoader.LoadJson(specFlowConfiguration, jsonContent);
         }
 
-        
 
         public bool HasAppConfig => ConfigurationManager.GetSection("specFlow") != null;
 

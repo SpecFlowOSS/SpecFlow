@@ -202,7 +202,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             ContainerBuilder.DefaultDependencyProvider = new TestDefaultDependencyProvider(new PluginWithCustomConfiguration(conf => conf.StopAtFirstError = true));
             var container = TestObjectFactories.CreateDefaultGlobalContainer(configurationHolder);
-            var runtimeConfiguration = container.Resolve<SpecFlow.Configuration.SpecFlowConfiguration>();
+            var runtimeConfiguration = container.Resolve<SpecFlowConfiguration>();
             runtimeConfiguration.StopAtFirstError.Should().BeTrue();
         }
 

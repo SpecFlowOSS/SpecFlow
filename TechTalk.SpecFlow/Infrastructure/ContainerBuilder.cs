@@ -41,15 +41,15 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             container.RegisterTypeAs<RuntimePluginEvents, RuntimePluginEvents>(); //NOTE: we need this unnecessary registration, due to a bug in BoDi (does not inherit non-registered objects)
             var runtimePluginEvents = container.Resolve<RuntimePluginEvents>();
-            LoadPlugins(configurationProvider, container, runtimePluginEvents);
 
-            runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
+            SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
+            specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
 
-            Configuration.SpecFlowConfiguration specFlowConfiguration = ConfigurationLoader.GetDefault();
+            LoadPlugins(configurationProvider, container, runtimePluginEvents, specFlowConfiguration);
 
             runtimePluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
 
-            specFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration);
+            runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
 #if !BODI_LIMITEDRUNTIME
             if (specFlowConfiguration.CustomDependencies != null)
@@ -109,7 +109,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return scenarioContainer;
         }
 
-        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)
+        protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents, SpecFlowConfiguration specFlowConfiguration)
         {
             // initialize plugins that were registered from code
             foreach (var runtimePlugin in container.Resolve<IDictionary<string, IRuntimePlugin>>().Values)
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             // load & initalize parameters from configuration
             var pluginLoader = container.Resolve<IRuntimePluginLoader>();
-            foreach (var pluginDescriptor in configurationProvider.GetPlugins().Where(pd => (pd.Type & PluginType.Runtime) != 0))
+            foreach (var pluginDescriptor in configurationProvider.GetPlugins(specFlowConfiguration).Where(pd => (pd.Type & PluginType.Runtime) != 0))
             {
                 LoadPlugin(pluginDescriptor, pluginLoader, runtimePluginEvents);
             }

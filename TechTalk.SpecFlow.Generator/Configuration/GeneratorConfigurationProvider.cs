@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
+﻿using System.Collections.Generic;
 using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Configuration.AppConfig;
-using TechTalk.SpecFlow.Generator.Interfaces;
-using TechTalk.SpecFlow.Generator.Project;
-using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Generator.Configuration
@@ -20,45 +14,20 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             _configurationLoader = configurationLoader;
         }
 
-        public virtual void LoadConfiguration(SpecFlowConfigurationHolder configurationHolder, SpecFlowProjectConfiguration configuration)
+        public virtual SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
         {
-            try
-            {
-                if (configurationHolder != null && configurationHolder.HasConfiguration)
-                {
-                    ConfigurationSectionHandler specFlowConfigSection =
-                        ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
-                    if (specFlowConfigSection != null)
-                    {
-                        UpdateConfiguration(configuration, specFlowConfigSection);
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                throw new ConfigurationErrorsException("SpecFlow configuration error", ex);
-            }
+            return _configurationLoader.Load(specFlowConfiguration, specFlowConfigurationHolder);
         }
 
-        public IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfigurationHolder configurationHolder)
+        public SpecFlowConfiguration LoadConfiguration(SpecFlowConfiguration specFlowConfiguration)
         {
-            try
-            {
-                if (configurationHolder != null && configurationHolder.HasConfiguration)
-                {
-                    ConfigurationSectionHandler section = ConfigurationSectionHandler.CreateFromXml(configurationHolder.XmlString);
-                    if (section != null && section.Plugins != null)
-                    {
-                        return section.Plugins.Select(pce => pce.ToPluginDescriptor());
-                    }
-                }
+            return _configurationLoader.Load(specFlowConfiguration);
+        }
 
-                return Enumerable.Empty<PluginDescriptor>();
-            }
-            catch(Exception ex)
-            {
-                throw new ConfigurationErrorsException("SpecFlow configuration error", ex);
-            }
+        public IEnumerable<PluginDescriptor> GetPlugins(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
+        {
+            var config = LoadConfiguration(specFlowConfiguration, specFlowConfigurationHolder);
+            return config.Plugins;
         }
 
         internal virtual void UpdateConfiguration(SpecFlowProjectConfiguration configuration, ConfigurationSectionHandler specFlowConfigSection)

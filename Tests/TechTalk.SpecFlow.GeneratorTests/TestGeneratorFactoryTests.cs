@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Generator;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -57,7 +58,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_create_custom_generator_when_configured_so()
         {
-            var configurationHolder = new SpecFlowConfigurationHolder(string.Format(@"
+            var configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.AppConfig, string.Format(@"
                 <specFlow>
                   <generator>  
                   <dependencies>

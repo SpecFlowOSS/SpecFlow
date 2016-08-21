@@ -51,16 +51,30 @@ namespace TechTalk.SpecFlow.Generator.Project
                                
             }
 
+            SpecFlowConfigurationHolder configurationHolder = null;
+
             ProjectItem appConfigItem = project.ApplicationConfigurationFile();
             if (appConfigItem != null)
             {
                 var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
                 var configFileContent = File.ReadAllText(configFilePath);
-                var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+                configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+            }
+
+            ProjectItem specflowJsonItem = project.SpecFlowJsonConfig();
+            if (specflowJsonItem != null)
+            {
+                var configFilePath = Path.Combine(projectFolder, specflowJsonItem.EvaluatedInclude);
+                var configFileContent = File.ReadAllText(configFilePath);
+                configurationHolder = new SpecFlowConfigurationHolder(ConfigSource.Json, configFileContent);
+            }
+
+            if (configurationHolder != null)
+            {
                 specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
                 specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
             }
-            
+
             return specFlowProject;
         }
 

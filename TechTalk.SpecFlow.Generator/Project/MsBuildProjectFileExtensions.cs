@@ -35,5 +35,11 @@ namespace TechTalk.SpecFlow.Generator.Project
                                                                  Path.GetFileName(x.EvaluatedInclude).Equals("app.config", StringComparison.InvariantCultureIgnoreCase));
 
         }
+
+        public static ProjectItem SpecFlowJsonConfig(this Microsoft.Build.Evaluation.Project project)
+        {
+            return project.AllEvaluatedItems.FirstOrDefault(x => IsNonCompilingItem(x) &&
+                                                                 Path.GetFileName(x.EvaluatedInclude).Equals("specflow.json", StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 }

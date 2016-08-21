@@ -1,8 +1,9 @@
 ﻿using System.Configuration;
 using System.IO;
 using System.Xml;
+using TechTalk.SpecFlow.Configuration.AppConfig;
 
-namespace TechTalk.SpecFlow.Configuration.AppConfig
+namespace TechTalk.SpecFlow.Configuration
 {
     public class ConfigurationSectionHandler : ConfigurationSection
     {

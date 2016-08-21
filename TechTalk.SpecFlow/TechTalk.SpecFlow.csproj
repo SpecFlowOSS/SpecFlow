@@ -169,6 +169,7 @@
     <Compile Include="Configuration\JsonConfig\StepAssemblyEntry.cs" />
     <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
+    <Compile Include="Configuration\SpecFlowConfigurationHolder.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />

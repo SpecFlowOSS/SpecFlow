@@ -29,11 +29,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_register_generator_with_custom_settings_when_configured()
         {
-            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(@"
+            var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(ConfigSource.AppConfig, @"
                 <specFlow>
                   <generator allowDebugGeneratedFiles=""true"" /><!-- default is false -->
                 </specFlow>"), new ProjectSettings());
-            container.Resolve<Configuration.SpecFlowConfiguration>().AllowDebugGeneratedFiles.Should().Be(true);
+            container.Resolve<SpecFlowConfiguration>().AllowDebugGeneratedFiles.Should().Be(true);
         }
     }
 }

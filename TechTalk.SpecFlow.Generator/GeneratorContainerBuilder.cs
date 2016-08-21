@@ -25,18 +25,16 @@ namespace TechTalk.SpecFlow.Generator
             RegisterDefaults(container);
 
             var configurationProvider = container.Resolve<IGeneratorConfigurationProvider>();
-
             var generatorPluginEvents = container.Resolve<GeneratorPluginEvents>();
-            LoadPlugins(container, configurationProvider, configurationHolder, generatorPluginEvents);
-
-            generatorPluginEvents.RaiseRegisterDependencies(container);
 
             var specFlowConfiguration = new SpecFlowProjectConfiguration();
+            specFlowConfiguration.SpecFlowConfiguration = configurationProvider.LoadConfiguration(specFlowConfiguration.SpecFlowConfiguration, configurationHolder);
 
+            LoadPlugins(container, configurationProvider, configurationHolder, generatorPluginEvents, specFlowConfiguration);
+
+            generatorPluginEvents.RaiseRegisterDependencies(container);
             generatorPluginEvents.RaiseConfigurationDefaults(specFlowConfiguration);
-
-            configurationProvider.LoadConfiguration(configurationHolder, specFlowConfiguration);
-
+            
             if (specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies != null)
                 container.RegisterFromConfiguration(specFlowConfiguration.SpecFlowConfiguration.GeneratorCustomDependencies);
 
@@ -59,7 +57,7 @@ namespace TechTalk.SpecFlow.Generator
             return container;
         }
 
-        private static void LoadPlugins(ObjectContainer container, IGeneratorConfigurationProvider configurationProvider, SpecFlowConfigurationHolder configurationHolder, GeneratorPluginEvents generatorPluginEvents)
+        private static void LoadPlugins(ObjectContainer container, IGeneratorConfigurationProvider configurationProvider, SpecFlowConfigurationHolder configurationHolder, GeneratorPluginEvents generatorPluginEvents, SpecFlowProjectConfiguration specFlowConfiguration)
         {
             // initialize plugins that were registered from code
             foreach (var generatorPlugin in container.Resolve<IDictionary<string, IGeneratorPlugin>>().Values)
@@ -69,7 +67,7 @@ namespace TechTalk.SpecFlow.Generator
             }
 
             var pluginLoader = container.Resolve<IGeneratorPluginLoader>();
-            foreach (var pluginDescriptor in configurationProvider.GetPlugins(configurationHolder).Where(pd => (pd.Type & PluginType.Generator) != 0))
+            foreach (var pluginDescriptor in configurationProvider.GetPlugins(specFlowConfiguration.SpecFlowConfiguration, configurationHolder).Where(pd => (pd.Type & PluginType.Generator) != 0))
             {
                 LoadPlugin(pluginDescriptor, pluginLoader, generatorPluginEvents);
             }

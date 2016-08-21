@@ -92,7 +92,6 @@
     <Compile Include="Interfaces\ITestGeneratorFactory.cs" />
     <Compile Include="Interfaces\ProjectPlatformSettings.cs" />
     <Compile Include="Interfaces\ProjectSettings.cs" />
-    <Compile Include="Interfaces\SpecFlowConfigurationHolder.cs" />
     <Compile Include="Interfaces\TestGenerationError.cs" />
     <Compile Include="Interfaces\TestGeneratorFactoryAttribute.cs" />
     <Compile Include="Interfaces\TestGeneratorResult.cs" />
