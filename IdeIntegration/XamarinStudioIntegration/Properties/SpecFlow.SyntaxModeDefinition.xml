@@ -13,6 +13,7 @@
         <Word>When</Word>
         <Word>Then</Word>
         <Word>And</Word>
+        <Word>But</Word>
     </Keywords>
     
     <Span color = "String" stopateol = "true">
