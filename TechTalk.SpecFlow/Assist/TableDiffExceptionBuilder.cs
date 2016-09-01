@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -29,7 +31,15 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
-                    line += $" {item.GetPropertyValue(header)} |";
+                {
+                    var propertyValue = item.GetPropertyValue(header);
+                    if (propertyValue is IEnumerable && !(propertyValue is string))
+                    {
+                        var things = (propertyValue as IEnumerable).Cast<object>().ToList();
+                        propertyValue = string.Join(",", things.Select(x => x.ToString()));
+                    }
+                    line += $" {propertyValue} |";
+                }
                 realData.AppendLine(line);
             }
 
