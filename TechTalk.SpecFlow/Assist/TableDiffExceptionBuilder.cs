@@ -32,18 +32,30 @@ namespace TechTalk.SpecFlow.Assist
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
                 {
-                    var propertyValue = item.GetPropertyValue(header);
-                    if (propertyValue is IEnumerable && !(propertyValue is string))
-                    {
-                        var things = (propertyValue as IEnumerable).Cast<object>().ToList();
-                        propertyValue = string.Join(",", things.Select(x => x.ToString()));
-                    }
-                    line += $" {propertyValue} |";
+                    line += $" {GetTheValue(item, header)} |";
                 }
                 realData.AppendLine(line);
             }
 
             return realData.ToString();
+        }
+
+        private static object GetTheValue(T item, string header)
+        {
+            var propertyValue = item.GetPropertyValue(header);
+            return ThisIsAnEnumerable(propertyValue)
+                ? ConvertThisEnumerableToACommaDelimitedString(propertyValue)
+                : propertyValue;
+        }
+
+        private static string ConvertThisEnumerableToACommaDelimitedString(object propertyValue)
+        {
+            return string.Join(",", ((IEnumerable) propertyValue).Cast<object>().Select(x => x.ToString()));
+        }
+
+        private static bool ThisIsAnEnumerable(object propertyValue)
+        {
+            return propertyValue is IEnumerable && !(propertyValue is string);
         }
     }
 }
