@@ -31,9 +31,7 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
-                {
                     line += $" {GetTheValue(item, header)} |";
-                }
                 realData.AppendLine(line);
             }
 
