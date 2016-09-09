@@ -155,7 +155,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public int? Two { get; set; }
             public string Three { get; set; }
             public string TheFourthProperty { get; set; }
-            public Double[] Doubles { get; set; }
+            public double[] Doubles { get; set; }
             public object[] Objects { get; set; }
         }
 
