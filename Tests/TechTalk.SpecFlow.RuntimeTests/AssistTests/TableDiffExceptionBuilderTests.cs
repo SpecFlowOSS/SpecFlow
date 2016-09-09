@@ -127,6 +127,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
 
             message.Should().NotContain("System.Double[]");
+            message.Should().Contain("1,2,3");
         }
 
         public class TestObject
