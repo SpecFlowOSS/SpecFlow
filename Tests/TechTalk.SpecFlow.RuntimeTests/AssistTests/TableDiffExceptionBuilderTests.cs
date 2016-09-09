@@ -130,6 +130,25 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             message.Should().Contain("1,2,3");
         }
 
+        [Test]
+        public void It_should_treat_nulls_as_empty_spots()
+        {
+            var table = new Table("Objects");
+            table.AddRow("1,2,d");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {Objects = new object[] {1,null,"2","d"}},
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.Should().NotContain("Object[]");
+            message.Should().Contain("1,,2,d");
+        }
+
         public class TestObject
         {
             public string One { get; set; }
@@ -137,6 +156,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
             public string Three { get; set; }
             public string TheFourthProperty { get; set; }
             public Double[] Doubles { get; set; }
+            public object[] Objects { get; set; }
         }
 
         public class TestObjectWithArrays

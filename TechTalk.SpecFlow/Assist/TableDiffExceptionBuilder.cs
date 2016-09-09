@@ -48,7 +48,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private static string ConvertThisEnumerableToACommaDelimitedString(object propertyValue)
         {
-            return string.Join(",", ((IEnumerable) propertyValue).Cast<object>().Select(x => x.ToString()));
+            return string.Join(",", ((IEnumerable) propertyValue).Cast<object>().Select(x => x?.ToString() ?? ""));
         }
 
         private static bool ThisIsAnEnumerable(object propertyValue)
