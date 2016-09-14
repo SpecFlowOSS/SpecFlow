@@ -20,6 +20,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         protected const string DESCRIPTION_ATTR = "NUnit.Framework.DescriptionAttribute";
 
         protected CodeDomHelper CodeDomHelper { get; set; }
+        protected int iterationIndex = 0;
 
         public virtual UnitTestGeneratorTraits GetTraits()
         {
@@ -77,6 +78,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
+            iterationIndex = 0;
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, friendlyTestName);
         }
@@ -119,6 +121,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
             if (isIgnored)
                 args.Add(new CodeAttributeArgument("Ignored", new CodePrimitiveExpression(true)));
+
+            args.Add(new CodeAttributeArgument("Description", new CodePrimitiveExpression(iterationIndex.ToString())));
+            iterationIndex++;                
 
             CodeDomHelper.AddAttribute(testMethod, ROW_ATTR, args.ToArray());
         }
