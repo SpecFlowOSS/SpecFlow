@@ -33,6 +33,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return new CodeTypeReference(ICLASSFIXTURE_INTERFACE, fixtureDataType);
         }
 
+        public override bool ImplmentInterfaceExplicit => false;
+
         public override void SetRowTest(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string scenarioTitle)
         {
             CodeDomHelper.AddAttribute(testMethod, THEORY_ATTRIBUTE);
