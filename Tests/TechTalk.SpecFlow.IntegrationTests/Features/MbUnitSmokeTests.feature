@@ -6,12 +6,14 @@ Background:
 	And all test files are inluded in the project
 
 Scenario Outline: Test files can be generated
-	Given row testing is <row test>
+	Given I have a '<Language>' test project
+	And row testing is <row test>
 	When the feature files in the project are generated
 	Then no generation error is reported
 
 Examples: 
-	| case           | row test |
-	| Normal testing | disabled |
-	| Row testing    | enabled  |
-
+	| Language | case           | row test |
+	| C#       | Normal testing | disabled |
+	| C#       | Row testing    | enabled  |
+	| VB.Net   | Normal testing | disabled |
+	| VB.Net   | Row testing    | enabled  |

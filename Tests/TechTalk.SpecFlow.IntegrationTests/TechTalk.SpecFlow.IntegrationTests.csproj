@@ -87,8 +87,8 @@
     <None Include="Features\Tracing.feature" />
     <None Include="Features\XUnit2SmokeTests.feature" />
     <None Include="Features\XUnitSmokeTests.feature" />
-    <None Include="Features\MsTest2010SmokeTests.feature" />
     <None Include="Features\MsTestSmokeTests.feature" />
+    <None Include="Features\MsTest2010SmokeTests.feature" />
     <None Include="Features\NUnitSmokeTests.feature" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TestFiles\asterisks.feature">
