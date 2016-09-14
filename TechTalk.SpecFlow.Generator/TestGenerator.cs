@@ -93,7 +93,9 @@ namespace TechTalk.SpecFlow.Generator
 
         private string FixVBNetGlobalNamespace(string generatedTestCode)
         {
-            return generatedTestCode.Replace("GlobalVBNetNamespace", "Global");
+            return generatedTestCode
+                    .Replace("Global.GlobalVBNetNamespace", "Global")
+                    .Replace("GlobalVBNetNamespace", "Global");
         }
 
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput)
