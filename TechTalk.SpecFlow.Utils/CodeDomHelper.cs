@@ -99,7 +99,9 @@ namespace TechTalk.SpecFlow.Utils
             {
                 case CodeDomProviderLanguage.VB:
                     if (isExternalSourceBlockOpen)
+                    {
                         AddDisableSourceLinePragmaStatement(statements);
+                    }
                     statements.Add(new CodeSnippetStatement(string.Format("#ExternalSource(\"{0}\",{1})", currentBoundSourceCodeFile, lineNo)));
                     isExternalSourceBlockOpen = true;
                     AddCommentStatement(statements, string.Format("#indentnext {0}", colNo - 1));
@@ -116,7 +118,10 @@ namespace TechTalk.SpecFlow.Utils
             switch (TargetLanguage)
             {
                 case CodeDomProviderLanguage.VB:
-                    statements.Add(new CodeSnippetStatement("#End ExternalSource"));
+                    if (isExternalSourceBlockOpen)
+                    {
+                        statements.Add(new CodeSnippetStatement("#End ExternalSource"));
+                    }
                     isExternalSourceBlockOpen = false;
                     break;
                 case CodeDomProviderLanguage.CSharp:
