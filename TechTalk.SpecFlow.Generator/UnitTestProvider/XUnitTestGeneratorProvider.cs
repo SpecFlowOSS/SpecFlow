@@ -71,7 +71,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             setFixtureMethod.Attributes = MemberAttributes.Public;
             setFixtureMethod.Name = "SetFixture";
             setFixtureMethod.Parameters.Add(new CodeParameterDeclarationExpression(fixtureDataType, "fixtureData"));
-            setFixtureMethod.ImplementationTypes.Add(useFixtureType);
+            if (ImplmentInterfaceExplicit)
+            {
+                setFixtureMethod.ImplementationTypes.Add(useFixtureType);
+            }
             generationContext.TestClass.Members.Add(setFixtureMethod);
 
             // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
@@ -83,6 +86,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     new CodeTypeReferenceExpression(new CodeTypeReference(generationContext.TestClass.Name)),
                     generationContext.TestClassInitializeMethod.Name));
         }
+
+        public virtual bool ImplmentInterfaceExplicit => true;
 
         public void SetTestClassCleanupMethod(TestClassGenerationContext generationContext)
         {

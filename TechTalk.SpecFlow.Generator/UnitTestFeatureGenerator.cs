@@ -83,6 +83,16 @@ namespace TechTalk.SpecFlow.Generator
         {
             targetNamespace = targetNamespace ?? DEFAULT_NAMESPACE;
 
+            if (!targetNamespace.StartsWith("global", StringComparison.CurrentCultureIgnoreCase))
+            {
+                switch (codeDomHelper.TargetLanguage)
+                {
+                    case CodeDomProviderLanguage.VB:
+                        targetNamespace = $"GlobalVBNetNamespace.{targetNamespace}";
+                        break;
+                }
+            }
+
             CodeNamespace codeNamespace = new CodeNamespace(targetNamespace);
 
             codeNamespace.Imports.Add(new CodeNamespaceImport(SPECFLOW_NAMESPACE));
