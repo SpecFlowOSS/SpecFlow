@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
@@ -110,12 +111,59 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
+        [Test]
+        public void It_should_report_the_enumerables_as_lists()
+        {
+            var table = new Table("Doubles");
+            table.AddRow("1,2,3");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {Doubles = new [] {1D, 2D, 5D}},
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.Should().NotContain("System.Double[]");
+            message.Should().Contain("1,2,3");
+        }
+
+        [Test]
+        public void It_should_treat_nulls_as_empty_spots()
+        {
+            var table = new Table("Objects");
+            table.AddRow("1,2,d");
+
+            var builder = new TableDiffExceptionBuilder<TestObject>();
+
+            var remainingItems = new[]
+                                     {
+                                         new TestObject {Objects = new object[] {1,null,"2","d"}},
+                                     };
+            var tableDifferenceResults = new TableDifferenceResults<TestObject>(table, new int[] {}, remainingItems);
+            var message = builder.GetTheTableDiffExceptionMessage(tableDifferenceResults);
+
+            message.Should().NotContain("Object[]");
+            message.Should().Contain("1,,2,d");
+        }
+
         public class TestObject
         {
             public string One { get; set; }
             public int? Two { get; set; }
             public string Three { get; set; }
             public string TheFourthProperty { get; set; }
+            public double[] Doubles { get; set; }
+            public object[] Objects { get; set; }
+        }
+
+        public class TestObjectWithArrays
+        {
+            public string Name { get; set; }
+            public int[] Numbers { get; set; }
+            public string[] Strings { get; set; }
         }
     }
 }
