@@ -1,3 +1,9 @@
+2.?.? - ????-??-??
+
+Smaller Improvements/fixes:
++ The results of comparisons made against sets will be displayed as a comma-delimited list.
+
+
 2.1.0 - 2016-05-24
 
 Core changes:
