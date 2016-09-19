@@ -49,7 +49,7 @@ namespace TechTalk.SpecFlow.Specs.Drivers.MsBuild
 
             ProcessHelper processHelper = new ProcessHelper();
             string targetArg = target == null ? "" : " /target:" + target;
-            int exitCode = processHelper.RunProcess(msBuildPath, "/nologo /v:m \"{0}\" {1}", project.FullPath, targetArg);
+            int exitCode = processHelper.RunProcess(msBuildPath, "/nologo /v:m \"{0}\" {1} /p:Configuration=Debug /p:Platform=AnyCpu", project.FullPath, targetArg);
             LastCompilationOutput = processHelper.ConsoleOutput;
             if (exitCode > 0)
                 throw new Exception("Build failed");

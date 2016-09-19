@@ -34,13 +34,13 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
         [Given(@"all '(.*)' steps are bound and fail")]
         public void GivenAllStepsAreBoundAndFail(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "throw new System.Exception(\"simulated failure\");");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "throw new System.Exception(\"simulated failure\");", "Throw new System.Exception(\"simulated failure\")");
         }
 
         [Given(@"all '(.*)' steps are bound and pass")]
         public void GivenAllStepsAreBoundAndPass(ScenarioBlock scenarioBlock)
         {
-            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "//pass");
+            inputProjectDriver.AddStepBinding(scenarioBlock, ".*", "//pass", "'pass");
         }
 
         [Given(@"the following hooks?")]

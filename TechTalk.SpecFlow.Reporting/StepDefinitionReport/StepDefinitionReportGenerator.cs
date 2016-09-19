@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.Reporting.StepDefinitionReport
             foreach (var specflowDocument in parsedSpecFlowDocuments)
             {
                 var feature = specflowDocument.SpecFlowFeature;
-                var featureRef = new FeatureRef { FilePath = feature.SourceFilePath, Name = feature.Name };
+                var featureRef = new FeatureRef { FilePath = specflowDocument.SourceFilePath, Name = feature.Name };
                 if (feature.Background != null)
                 {
                     var scenarioRef = new ScenarioRef { Name = "Background" };

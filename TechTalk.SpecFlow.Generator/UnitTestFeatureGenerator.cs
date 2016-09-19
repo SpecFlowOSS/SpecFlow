@@ -83,6 +83,16 @@ namespace TechTalk.SpecFlow.Generator
         {
             targetNamespace = targetNamespace ?? DEFAULT_NAMESPACE;
 
+            if (!targetNamespace.StartsWith("global", StringComparison.CurrentCultureIgnoreCase))
+            {
+                switch (codeDomHelper.TargetLanguage)
+                {
+                    case CodeDomProviderLanguage.VB:
+                        targetNamespace = $"GlobalVBNetNamespace.{targetNamespace}";
+                        break;
+                }
+            }
+
             CodeNamespace codeNamespace = new CodeNamespace(targetNamespace);
 
             codeNamespace.Imports.Add(new CodeNamespaceImport(SPECFLOW_NAMESPACE));
@@ -147,7 +157,7 @@ namespace TechTalk.SpecFlow.Generator
             generationContext.TestClass.IsPartial = true;
             generationContext.TestClass.TypeAttributes |= TypeAttributes.Public;
 
-            AddLinePragmaInitial(generationContext.TestClass, generationContext.Feature.SourceFilePath);
+            AddLinePragmaInitial(generationContext.TestClass, generationContext.Document.SourceFilePath);
 
             testGeneratorProvider.SetTestClass(generationContext, generationContext.Feature.Name, generationContext.Feature.Description);
 

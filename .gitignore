@@ -39,3 +39,4 @@ TechTalk.SpecFlow.sln.GhostDoc.xml
 *.lock.json
 .vs/*
 .vscode/*
+Features.Generated/

@@ -78,7 +78,7 @@ namespace TechTalk.SpecFlow.Generator
                 var codeNamespace = GenerateTestFileCode(featureFileInput);
                 var options = new CodeGeneratorOptions
                                   {
-                                      BracingStyle = "C"
+                                      BracingStyle = "C",
                                   };
 
                 AddSpecFlowHeader(codeProvider, outputWriter);
@@ -86,8 +86,16 @@ namespace TechTalk.SpecFlow.Generator
                 AddSpecFlowFooter(codeProvider, outputWriter);
 
                 outputWriter.Flush();
-                return outputWriter.ToString();
+                var generatedTestCode = outputWriter.ToString();
+                return FixVBNetGlobalNamespace(generatedTestCode);
             }
+        }
+
+        private string FixVBNetGlobalNamespace(string generatedTestCode)
+        {
+            return generatedTestCode
+                    .Replace("Global.GlobalVBNetNamespace", "Global")
+                    .Replace("GlobalVBNetNamespace", "Global");
         }
 
         private CodeNamespace GenerateTestFileCode(FeatureFileInput featureFileInput)

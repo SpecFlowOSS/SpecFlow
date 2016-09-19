@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using NUnit.Framework;
 
 namespace TechTalk.SpecFlow.Specs.Drivers
 {
@@ -63,6 +64,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                         return "cs";
                     case "f#":
                         return "fs";
+                    case "vb.net":
+                        return "vb";
                     default:
                         throw new NotSupportedException("Language not supported: " + Language);
                 }
@@ -146,11 +149,51 @@ namespace TechTalk.SpecFlow.Specs.Drivers
             return contentFileInput;
         }
 
-        public void AddStepBinding(ScenarioBlock scenarioBlock, string regex, string code = "//nop")
+        public void AddStepBinding(ScenarioBlock scenarioBlock, string regex, string code = null)
         {
-            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code));
-            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code) { Parameters = "Table tableArg"});
-            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, code) { Parameters = "string mlStringArg"});
+            var codeValue = GetCode(Language, code);
+
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue));
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue) { ParameterType = "Table", ParameterName = "tableArg"});
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue) { ParameterType = "string", ParameterName = "mlStringArg"});
+        }
+
+        public void AddStepBinding(ScenarioBlock scenarioBlock, string regex, string csharpcode, string vbnetcode)
+        {
+            var codeValue = GetCode(Language, csharpcode, vbnetcode);
+
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue));
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue) { ParameterType = "Table", ParameterName = "tableArg" });
+            DefaultBindingClass.StepBindings.Add(new StepBindingInput(scenarioBlock, regex, codeValue) { ParameterType = "string", ParameterName = "mlStringArg" });
+        }
+
+        private string GetCode(string language, string csharpcode, string vbnetcode)
+        {
+            switch (language.ToLower())
+            {
+                case "c#":
+                    return csharpcode;
+                case "vb.net":
+                    return vbnetcode;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(language));
+            }
+        }
+
+        private string GetCode(string language, string code)
+        {
+            if (!String.IsNullOrEmpty(code))
+                return code;
+
+            switch (language.ToLower())
+            {
+                case "c#":
+                    return "//nop";
+                case "vb.net":
+                    return "'nop";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(language));
+            }
         }
 
         public void AddBindingCode(string bindingCode)

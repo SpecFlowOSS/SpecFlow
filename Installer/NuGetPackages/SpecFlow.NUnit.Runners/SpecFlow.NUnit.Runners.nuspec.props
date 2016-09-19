@@ -1,0 +1,18 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <ItemGroup Label="SpecFlow.NUnit.Runners">
+    
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\SpecFlowNUnitExtension.cs">
+      <targetFolder>SpecFlow.NUnit.Runners\content</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\Install.ps1">
+      <targetFolder>SpecFlow.NUnit.Runners\tools</targetFolder>
+    </additionalFiles>
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\Uninstall.ps1">
+      <targetFolder>SpecFlow.NUnit.Runners\tools</targetFolder>
+    </additionalFiles>
+
+  </ItemGroup>
+</Project>

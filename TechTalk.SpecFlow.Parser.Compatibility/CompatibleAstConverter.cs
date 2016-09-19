@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.Parser.Compatibility
             {
                 FilePosition = ConvertToCompatibleFilePosition(specFlowFeature.Location),
                 Language = specFlowFeature.Language,
-                SourceFile = specFlowFeature.SourceFilePath
+                SourceFile = specFlowDocument.SourceFilePath
             };
         }
 

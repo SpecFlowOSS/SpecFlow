@@ -10,6 +10,10 @@ For questions please send them to the Discussion group.
 
 For issues/bugs please use the [issue tracker on GitHub](https://github.com/techtalk/SpecFlow/issues)
 
+## Stats
+
+![Pull Requests](http://issuestats.com/github/techtalk/specflow/badge/pr?style=flat-square)
+![Issues closed](http://issuestats.com/github/techtalk/specflow/badge/issue?style=flat-square)
 
 ## Build status
 Continious integration: [![Build status](https://ci.appveyor.com/api/projects/status/h9nb6vii9xj8vbtl?svg=true)](https://ci.appveyor.com/project/SpecFlow/specflow-kx1o3)

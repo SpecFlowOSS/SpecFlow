@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <version>1.0.0-alpha</version>
+    <authors>TechTalk</authors>
+    <owners>TechTalk</owners>
+    <projectUrl>http://www.specflow.org</projectUrl>
+    <licenseUrl>http://go.specflow.org/license</licenseUrl>
+    <iconUrl>http://go.specflow.org/specflow-nuget-icon</iconUrl>
+    <id>SpecFlow.xUnit</id>
+    <title>SpecFlow.xUnit</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Combined package to setup SpecFlow with xUnit easily.</description>
+    <summary>Combined package to setup SpecFlow with xUnit easily.</summary>
+    <language>en-US</language>
+    <tags>specflow xUnit</tags>
+    <dependencies>
+      <dependency id="SpecFlow" version="[1.0.0-alpha]" />
+      <dependency id="xunit" version="[2.0,)" />
+    </dependencies>
+  </metadata>
+</package>

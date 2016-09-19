@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -29,11 +31,29 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var line = "+ |";
                 foreach (var header in tableDifferenceResults.Table.Header)
-                    line += $" {item.GetPropertyValue(header)} |";
+                    line += $" {GetTheValue(item, header)} |";
                 realData.AppendLine(line);
             }
 
             return realData.ToString();
+        }
+
+        private static object GetTheValue(T item, string header)
+        {
+            var propertyValue = item.GetPropertyValue(header);
+            return ThisIsAnEnumerable(propertyValue)
+                ? ConvertThisEnumerableToACommaDelimitedString(propertyValue)
+                : propertyValue;
+        }
+
+        private static string ConvertThisEnumerableToACommaDelimitedString(object propertyValue)
+        {
+            return string.Join(",", ((IEnumerable) propertyValue).Cast<object>().Select(x => x?.ToString() ?? ""));
+        }
+
+        private static bool ThisIsAnEnumerable(object propertyValue)
+        {
+            return propertyValue is IEnumerable && !(propertyValue is string);
         }
     }
 }

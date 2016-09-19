@@ -14,6 +14,8 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
+    using System.Threading.Tasks;
+
     public class BindingInvoker : IBindingInvoker
     {
         protected readonly RuntimeConfiguration runtimeConfiguration;
@@ -43,6 +45,12 @@ namespace TechTalk.SpecFlow.Bindings
                         Array.Copy(arguments, 0, invokeArgs, 1, arguments.Length);
                     invokeArgs[0] = contextManager;
                     result = bindingAction.DynamicInvoke(invokeArgs);
+
+                    if (result is Task)
+                    {
+                        ((Task)result).Wait();
+                    }
+                   
                     stopwatch.Stop();
                 }
 
@@ -61,6 +69,12 @@ namespace TechTalk.SpecFlow.Bindings
             catch (TargetInvocationException invEx)
             {
                 var ex = invEx.InnerException;
+                ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
+                throw ex;
+            }
+            catch (AggregateException aggregateEx)
+            {
+                var ex = aggregateEx.InnerExceptions.First();
                 ex = ex.PreserveStackTrace(errorProvider.GetMethodText(binding.Method));
                 throw ex;
             }

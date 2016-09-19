@@ -1,0 +1,10 @@
+﻿<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+  <ItemGroup Label="SpecFlow.xUnit">
+    
+
+    <additionalFiles Include="$(MSBuildThisFileDirectory)\App.config.transform">
+      <targetFolder>SpecFlow.xUnit\content</targetFolder>
+    </additionalFiles>
+
+  </ItemGroup>
+</Project>

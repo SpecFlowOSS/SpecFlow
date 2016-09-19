@@ -205,5 +205,39 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 descriptionAttributeForFourthScenarioOutline.ArgumentValues().First().Should().Be("Simple Scenario Outline: and another");
             }
         }
+
+        [Test]
+        public void MsTestGeneratorShouldInvokeFeatureSetupMethodWithGlobalNamespaceAlias()
+        {
+            SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
+            using (var reader = new StringReader(SampleFeatureFileWithMultipleExampleSets))
+            {
+                SpecFlowDocument document = parser.Parse(reader, null);
+                Assert.IsNotNull(document);
+
+                var sampleTestGeneratorProvider = new MsTestGeneratorProvider(new CodeDomHelper(CodeDomProviderLanguage.CSharp));
+
+                var converter = sampleTestGeneratorProvider.CreateUnitTestConverter();
+                CodeNamespace code = converter.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
+
+                Assert.IsNotNull(code);
+                var featureSetupCall = code
+                    .Class()
+                    .Members()
+                    .Single(m => m.Name == "TestInitialize")
+                    .Statements
+                    .OfType<CodeConditionStatement>()
+                    .First()
+                    .TrueStatements
+                    .OfType<CodeExpressionStatement>()
+                    .First()
+                    .Expression
+                    .As<CodeMethodInvokeExpression>();
+
+                featureSetupCall.Should().NotBeNull();
+                featureSetupCall.Method.MethodName.Should().Be("FeatureSetup");
+                featureSetupCall.Method.TargetObject.As<CodeTypeReferenceExpression>().Type.Options.Should().Be(CodeTypeReferenceOptions.GlobalReference);
+            }
+        }
     }
 }
