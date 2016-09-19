@@ -1,7 +1,8 @@
-2.?.? - ????-??-??
+2.2.? - ????-??-??
 
 Smaller Improvements/fixes:
 + The results of comparisons made against sets will be displayed as a comma-delimited list.
++ Fix code generation for VB.Net
 
 
 2.1.0 - 2016-05-24

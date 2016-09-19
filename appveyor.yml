@@ -5,8 +5,8 @@ branches:
   - master
 
 environment:
-  SpecFlowBaseVersion: 2.1.0
-  SpecFlowPackageVersion: "2.1.0-ci$(APPVEYOR_BUILD_NUMBER)"
+  SpecFlowBaseVersion: 2.2.0
+  SpecFlowPackageVersion: "2.2.0-ci$(APPVEYOR_BUILD_NUMBER)"
   
 cache:
   - packages -> **\packages.config
