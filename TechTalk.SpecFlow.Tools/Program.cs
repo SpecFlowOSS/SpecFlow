@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Tools
 
         [Action("Generate tests from all feature files in a project")]
         public static void GenerateAll(
-            [Required(Description = "Visual Studio Project File containing features")] string projectFile,
+            [Required(Description = "Directory containing the project files or the filename of a .csproj file")] string directoryOrProjectFile,
             [Optional(false, "force", "f")] bool forceGeneration,
             [Optional(false, "verbose", "v")] bool verboseOutput,
             [Optional(false, "debug", Description = "Used for tool integration")] bool requestDebuggerToAttach)
@@ -33,7 +33,13 @@ namespace TechTalk.SpecFlow.Tools
             if (requestDebuggerToAttach)
                 Debugger.Launch();
 
-            SpecFlowProject specFlowProject = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(Path.GetFullPath(projectFile));
+            if (!File.Exists(directoryOrProjectFile) && !Directory.Exists(directoryOrProjectFile))
+            {
+                Console.Error.WriteLine("The specified file or directory does not exist. Make sure that you use an existing folder or .csproj file.");
+            }
+
+            SpecFlowProject specFlowProject = LoadSpecFlowProject(directoryOrProjectFile);
+
             ITraceListener traceListener = verboseOutput ? (ITraceListener)new TextWriterTraceListener(Console.Out) : new NullListener();
             var batchGenerator = new BatchGenerator(traceListener, new TestGeneratorFactory());
 
@@ -46,6 +52,18 @@ namespace TechTalk.SpecFlow.Tools
         {
             Console.Error.WriteLine("Error file {0}", featureFileInput.ProjectRelativePath);
             Console.Error.WriteLine(String.Join(Environment.NewLine, testGeneratorResult.Errors.Select(e => String.Format("Line {0}:{1} - {2}", e.Line, e.LinePosition, e.Message))));
+        }
+
+        static SpecFlowProject LoadSpecFlowProject(string directoryOrProjectFile)
+        {
+            var fileAttributes = File.GetAttributes(directoryOrProjectFile);
+            
+            if ((fileAttributes & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                return DirectoryProjectReader.LoadSpecFlowProject(Path.GetFullPath(directoryOrProjectFile));
+            }
+            
+            return MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(directoryOrProjectFile);
         }
 
         #region Reports
