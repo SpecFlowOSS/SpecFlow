@@ -233,6 +233,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             testTracer.TraceStep(stepInstance, true);
 
             bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
+            bool onStepStartExecuted = false;
 
             BindingMatch match = null;
             object[] arguments = null;
@@ -247,6 +248,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 else
                 {
+                    onStepStartExecuted = true;
                     OnStepStart();
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
                     if (runtimeConfiguration.TraceSuccessfulSteps)
@@ -293,7 +295,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             finally
             {
-                if (!isStepSkipped)
+                if (onStepStartExecuted)
                 {
                     OnStepEnd();
                 }

@@ -95,6 +95,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             return stepDefStub;
         }
 
+        private Mock<IStepDefinitionBinding> RegisterUndefinedStepDefinition()
+        {
+            var methodStub = new Mock<IBindingMethod>();
+            var stepDefStub = new Mock<IStepDefinitionBinding>();
+            stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
+                .Returns(BindingMatch.NonMatching);
+
+            return stepDefStub;
+        }
+
 
         private void RegisterFailingStepDefinition()
         {
@@ -270,6 +284,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
             contextManagerStub.Verify(cm => cm.CleanupStepContext());
+        }
+
+        [Test]
+        public void Should_not_execute_afterstep_when_step_is_undefined()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterUndefinedStepDefinition();
+
+            var afterStepMock = CreateHookMock(afterStepEvents);
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "undefined", null, null);
+
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
     }
 }
