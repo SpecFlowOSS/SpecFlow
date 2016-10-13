@@ -247,5 +247,29 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             scenarioContext.TestStatus.Should().Be(TestStatus.TestError);
         }
+
+        [Test]
+        public void Should_cleanup_step_context_after_scenario_block_hook_error()
+        {
+            TimeSpan duration;
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateHookMock(beforeScenarioBlockEvents);
+            methodBindingInvokerMock.Setup(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration))
+                .Throws(new Exception("simulated error"));
+
+            try
+            {
+                testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+                Assert.Fail("should throw simulated error");
+            }
+            catch (Exception)
+            {
+            }
+
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
+            contextManagerStub.Verify(cm => cm.CleanupStepContext());
+        }
     }
 }
