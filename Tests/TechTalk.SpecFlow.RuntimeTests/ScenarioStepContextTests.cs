@@ -158,8 +158,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
             var contextManager = container.Resolve<IContextManager>();
-            //var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
-            //contextManager.InitializeStepContext(firstStepInfo);
             Assert.IsNull(contextManager.CurrentTopLevelStep);
         }
 
@@ -177,6 +175,34 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeScenarioContext(new ScenarioInfo("my scenario"));
 
             Assert.IsNull(contextManager.CurrentTopLevelStep);
+        }
+
+        [Test]
+        public void ShouldBeAbleToDisposeContextManagerAfterAnConsistentState()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            // do not call CleanupStepContext to simulate inconsistent state
+
+            ((IDisposable)contextManager).Dispose();
+        }
+
+        [Test]
+        public void ShouldBeAbleToDisposeContextManagerAfterAnInconsistentState()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            contextManager.CleanupStepContext();
+
+            ((IDisposable)contextManager).Dispose();
         }
 
         [Test]

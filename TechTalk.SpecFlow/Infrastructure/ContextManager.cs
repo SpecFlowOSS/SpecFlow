@@ -100,11 +100,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public void Dispose()
             {
-                var instance = instances.Pop();
-                if (instance != null)
+                while (instances.Any())
                 {
-                    ((IDisposable)instance).Dispose();
-
+                    Cleanup();
                 }
             }
         }
