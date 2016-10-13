@@ -79,8 +79,10 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public TContext Instance
             {
-                get { return instances.Any()?instances.Peek():null; }
+                get { return IsEmpty ? null : instances.Peek(); }
             }
+
+            public bool IsEmpty => !instances.Any();
 
             public void Push(TContext newInstance)
             {
@@ -89,7 +91,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public void RemoveTop()
             {
-                if (!instances.Any())
+                if (IsEmpty)
                 {
                     testTracer.TraceWarning($"The previous {typeof(TContext).Name} was already disposed.");
                     return;
@@ -105,7 +107,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             public void Reset()
             {
-                while (instances.Any())
+                while (!IsEmpty)
                 {
                     RemoveTop();
                 }
@@ -117,7 +119,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly InternalContextManager<FeatureContext> featureContextManager;
         private readonly StackedInternalContextManager<ScenarioStepContext> stepContextManager;
         private readonly IContainerBuilder containerBuilder;
-        private int stepDepth;
 
         /// <summary>
         /// Holds the ScenarioStepContext of the last step that was executed from the actual featrure file, and not any steps that were executed during the calling of a step
@@ -173,7 +174,6 @@ namespace TechTalk.SpecFlow.Infrastructure
         private void ResetCurrentStepStack()
         {
             stepContextManager.Reset();
-            stepDepth = 0;
             CurrentTopLevelStepDefinitionType = null;
             ScenarioStepContext.Current = null;
         }
@@ -185,27 +185,18 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeStepContext(StepInfo stepInfo)
         {
-            stepDepth++;
+            if (stepContextManager.IsEmpty) // top-level step comes
+                CurrentTopLevelStepDefinitionType = stepInfo.StepDefinitionType;
             var newContext = new ScenarioStepContext(stepInfo);
             stepContextManager.Push(newContext);
-            if (ExecutingTopLevelStep())
-            {
-                CurrentTopLevelStepDefinitionType = stepInfo.StepDefinitionType;
-            }
             ScenarioStepContext.Current = newContext;
-        }
-
-        private bool ExecutingTopLevelStep()
-        {
-            return stepDepth <= 1;
         }
 
         public void CleanupStepContext()
         {
             stepContextManager.RemoveTop();
-             
             ScenarioStepContext.Current = stepContextManager.Instance;
-            stepDepth--;
+            // we do not reset CurrentTopLevelStepDefinitionType in order to "remember" last top level type for And and But steps
         }
 
         public void Dispose()
