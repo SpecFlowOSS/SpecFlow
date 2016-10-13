@@ -163,6 +163,15 @@ namespace TechTalk.SpecFlow.Infrastructure
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext);
             ScenarioContext.Current = newContext;
+
+            ResetCurrentStepStack();
+        }
+
+        private void ResetCurrentStepStack()
+        {
+            stepDepth = 0;
+            CurrentTopLevelStep = null;
+            ScenarioStepContext.Current = null;
         }
 
         public void CleanupScenarioContext()

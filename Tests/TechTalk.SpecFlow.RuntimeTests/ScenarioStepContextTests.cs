@@ -152,6 +152,34 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void TopLevelStepShouldBeNullInitially()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            //var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            //contextManager.InitializeStepContext(firstStepInfo);
+            Assert.IsNull(contextManager.CurrentTopLevelStep);
+        }
+
+        [Test]
+        public void ScenarioStartShouldResetTopLevelStep()
+        {
+            IObjectContainer container;
+            var mockTracer = new Mock<ITestTracer>();
+            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
+            var contextManager = container.Resolve<IContextManager>();
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            // do not call CleanupStepContext to simulate inconsistent state
+
+            contextManager.InitializeScenarioContext(new ScenarioInfo("my scenario"));
+
+            Assert.IsNull(contextManager.CurrentTopLevelStep);
+        }
+
+        [Test]
         public void ShouldReportSetValuesCorrectly()
         {
             var table = new Table("header1","header2");
