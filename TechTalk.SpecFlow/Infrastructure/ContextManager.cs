@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using BoDi;
+using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Infrastructure
@@ -81,12 +82,12 @@ namespace TechTalk.SpecFlow.Infrastructure
                 get { return instances.Any()?instances.Peek():null; }
             }
 
-            public void Init(TContext newInstance)
+            public void Push(TContext newInstance)
             {
                 instances.Push(newInstance);                
             }
 
-            public void Cleanup()
+            public void RemoveTop()
             {
                 if (!instances.Any())
                 {
@@ -95,14 +96,18 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 var instance = instances.Pop();
                 ((IDisposable)instance).Dispose();
-
             }
 
             public void Dispose()
             {
+                Reset();
+            }
+
+            public void Reset()
+            {
                 while (instances.Any())
                 {
-                    Cleanup();
+                    RemoveTop();
                 }
             }
         }
@@ -117,7 +122,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         /// <summary>
         /// Holds the ScenarioStepContext of the last step that was executed from the actual featrure file, and not any steps that were executed during the calling of a step
         /// </summary>
-        public ScenarioStepContext CurrentTopLevelStep { get; private set; }
+        public StepDefinitionType? CurrentTopLevelStepDefinitionType { get; private set; }
 
         public ContextManager(ITestTracer testTracer, IObjectContainer testThreadContainer, IContainerBuilder containerBuilder)
         {
@@ -167,8 +172,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         private void ResetCurrentStepStack()
         {
+            stepContextManager.Reset();
             stepDepth = 0;
-            CurrentTopLevelStep = null;
+            CurrentTopLevelStepDefinitionType = null;
             ScenarioStepContext.Current = null;
         }
 
@@ -181,13 +187,12 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             stepDepth++;
             var newContext = new ScenarioStepContext(stepInfo);
-            stepContextManager.Init(newContext);
+            stepContextManager.Push(newContext);
             if (ExecutingTopLevelStep())
             {
-                CurrentTopLevelStep = newContext;
+                CurrentTopLevelStepDefinitionType = stepInfo.StepDefinitionType;
             }
             ScenarioStepContext.Current = newContext;
-            
         }
 
         private bool ExecutingTopLevelStep()
@@ -197,7 +202,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void CleanupStepContext()
         {
-            stepContextManager.Cleanup();
+            stepContextManager.RemoveTop();
              
             ScenarioStepContext.Current = stepContextManager.Instance;
             stepDepth--;
