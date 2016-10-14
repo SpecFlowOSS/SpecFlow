@@ -52,3 +52,41 @@ Scenario: Examples can be ignored
 	Then the execution summary should contain
 		| Total | Succeeded | Ignored |
 		| 3     | 2         | 1       |
+
+Scenario: Scenario Outline Examples can be tagged
+	Given there is a feature file in the project as
+		"""
+			Feature: Simple Feature
+			Scenario Outline: Scenario Outline with Tagged Examples
+				When I do <what>
+
+			@en-gb
+			Examples: 
+				| what           |
+				| something      |
+				| something else |
+
+			@fr-fr
+			Examples: 
+				| what           |
+				| something      |
+				| something else |
+		"""
+	And the following step definition
+         """
+			[BeforeScenario]
+			public void BeforeScenario()
+			{
+				var scenarioTags = ScenarioContext.Current.ScenarioInfo.Tags;
+
+				if (scenarioTags.Length == 0)
+				{
+					throw new Exception("Scenario tags list should not be empty");
+				}
+			}
+         """
+	And all steps are bound and pass
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 4         |
