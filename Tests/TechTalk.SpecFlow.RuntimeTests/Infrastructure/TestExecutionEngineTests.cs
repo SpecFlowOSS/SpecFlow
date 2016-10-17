@@ -276,7 +276,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             try
             {
                 testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
-                Assert.Fail("should throw simulated error");
+                Assert.Fail("execution of the step should have failed because of the exeption thrown by the before scenario block hook");
             }
             catch (Exception)
             {

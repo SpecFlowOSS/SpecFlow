@@ -121,15 +121,15 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IContainerBuilder containerBuilder;
 
         /// <summary>
-        /// Holds the ScenarioStepContext of the last step that was executed from the actual featrure file, and not any steps that were executed during the calling of a step
+        /// Holds the StepDefinitionType of the last step that was executed from the actual featrure file, excluding the types of the steps that were executed during the calling of a step
         /// </summary>
         public StepDefinitionType? CurrentTopLevelStepDefinitionType { get; private set; }
 
         public ContextManager(ITestTracer testTracer, IObjectContainer testThreadContainer, IContainerBuilder containerBuilder)
         {
-            featureContextManager = new InternalContextManager<FeatureContext>(testTracer);
-            scenarioContextManager = new InternalContextManager<ScenarioContext>(testTracer);
-            stepContextManager = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
+            this.featureContextManager = new InternalContextManager<FeatureContext>(testTracer);
+            this.scenarioContextManager = new InternalContextManager<ScenarioContext>(testTracer);
+            this.stepContextManager = new StackedInternalContextManager<ScenarioStepContext>(testTracer);
             this.testThreadContainer = testThreadContainer;
             this.containerBuilder = containerBuilder;
         }
