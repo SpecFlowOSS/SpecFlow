@@ -105,9 +105,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // addressing ReSharper bug: TestCase attribute with empty string[] param causes inconclusive result - https://github.com/techtalk/SpecFlow/issues/116
             bool hasExampleTags = tags.Any();
             var exampleTagExpressionList = tags.Select(t => new CodePrimitiveExpression(t));
-            CodeExpression exampleTagsExpression = hasExampleTags ?
-                (CodeExpression)new CodePrimitiveExpression(null) :
-                new CodeArrayCreateExpression(typeof(string[]), exampleTagExpressionList.ToArray());
+            CodeExpression exampleTagsExpression = hasExampleTags
+                ? new CodeArrayCreateExpression(typeof(string[]), exampleTagExpressionList.ToArray())
+                : (CodeExpression) new CodePrimitiveExpression(null);
+                
             args.Add(new CodeAttributeArgument(exampleTagsExpression));
 
             // adds 'Category' named parameter so that NUnit also understands that this test case belongs to the given categories
