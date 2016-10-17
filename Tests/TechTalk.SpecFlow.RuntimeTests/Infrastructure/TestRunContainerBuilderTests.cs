@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using BoDi;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Configuration;
 using FluentAssertions;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
@@ -97,6 +99,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             public bool DelayedFixtureTearDown
             {
                 get { throw new NotImplementedException(); }
+            }
+
+            public void RegisterContextManagers(IObjectContainer objectContainer)
+            {
+                objectContainer.RegisterTypeAs<InternalContextManager<FeatureContext>, IInternalContextManager<FeatureContext>>();
+                objectContainer.RegisterTypeAs<InternalContextManager<ScenarioContext>, IInternalContextManager<ScenarioContext>>();
+                objectContainer.RegisterTypeAs<StackedInternalContextManager<ScenarioStepContext>, IInternalContextManager<ScenarioStepContext>>();
             }
         }
 

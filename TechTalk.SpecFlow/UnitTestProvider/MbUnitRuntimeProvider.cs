@@ -1,4 +1,8 @@
 using System;
+using BoDi;
+using TechTalk.SpecFlow.Bindings;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
+using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.UnitTestProvider
 {
@@ -33,6 +37,16 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         public virtual bool DelayedFixtureTearDown
         {
             get { return true; }
+        }
+
+        public void RegisterContextManagers(IObjectContainer objectContainer)
+        {
+
+            objectContainer.RegisterInstanceAs<Func<ITestTracer,IInternalContextManager<ScenarioContext>>>(x=>new InternalContextManager<ScenarioContext>(x));
+            objectContainer.RegisterInstanceAs<Func<ITestTracer, IInternalContextManager<ScenarioStepContext>>>(x => new StackedInternalContextManager<ScenarioStepContext>(x));
+            objectContainer.RegisterTypeAs<ThreadSafeInternalContextManagerWrapper<ScenarioContext>, IInternalContextManager<ScenarioContext>>();
+            objectContainer.RegisterTypeAs<ThreadSafeInternalContextManagerWrapper<ScenarioStepContext>, IInternalContextManager<ScenarioStepContext>>();
+            objectContainer.RegisterTypeAs<InternalContextManager<FeatureContext>, IInternalContextManager<FeatureContext>>();
         }
     }
 }

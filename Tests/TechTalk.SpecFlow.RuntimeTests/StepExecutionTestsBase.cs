@@ -9,6 +9,7 @@ using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
+using TechTalk.SpecFlow.Infrastructure.ContextManagers;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
 using MockRepository = Rhino.Mocks.MockRepository;
@@ -101,6 +102,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var testThreadContainer = new ObjectContainer();
             testThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
             testThreadContainer.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
+            var testTracerStub = MockRepository.Stub<ITestTracer>();
             var containerBuilderMock = new Mock<IContainerBuilder>();
             containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
                 .Returns((IObjectContainer ttc, ScenarioInfo si) =>
@@ -109,7 +111,11 @@ namespace TechTalk.SpecFlow.RuntimeTests
                     scenarioContainer.RegisterInstanceAs(si);
                     return scenarioContainer;
                 });
-            ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), testThreadContainer, containerBuilderMock.Object);
+            ContextManagerStub = new ContextManager(containerBuilderMock.Object,testThreadContainer,
+                new InternalContextManager<FeatureContext>(testTracerStub),
+                new InternalContextManager<ScenarioContext>(testTracerStub),
+                new StackedInternalContextManager<ScenarioStepContext>(testTracerStub));
+
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
             ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
 

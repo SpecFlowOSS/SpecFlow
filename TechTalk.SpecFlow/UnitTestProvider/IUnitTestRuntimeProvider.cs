@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BoDi;
 
 namespace TechTalk.SpecFlow.UnitTestProvider
 {
@@ -9,5 +10,6 @@ namespace TechTalk.SpecFlow.UnitTestProvider
         void TestInconclusive(string message);
         void TestIgnore(string message);
         bool DelayedFixtureTearDown { get; }
+        void RegisterContextManagers(IObjectContainer objectContainer);
     }
 }

@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -77,6 +78,7 @@
     <Compile Include="FeatureGeneratorRegistryTests.cs" />
     <Compile Include="GeneratorPluginTests.cs" />
     <Compile Include="IgnoredTestGeneratorTests.cs" />
+    <Compile Include="MbUnitGeneratorProviderTests.cs" />
     <Compile Include="IUnitTestGeneratorProviderExtensions.cs" />
     <Compile Include="MsBuildProjectReaderTests.cs" />
     <Compile Include="NUnit3GeneratorProviderTests.cs" />
