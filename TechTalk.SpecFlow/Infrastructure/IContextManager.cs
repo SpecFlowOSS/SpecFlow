@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using TechTalk.SpecFlow.Bindings;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
@@ -10,7 +11,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         FeatureContext FeatureContext { get; }
         ScenarioContext ScenarioContext { get; }
         ScenarioStepContext StepContext { get; }
-        ScenarioStepContext CurrentTopLevelStep { get; }
+        StepDefinitionType? CurrentTopLevelStepDefinitionType { get; }
 
         void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
         void CleanupFeatureContext();
