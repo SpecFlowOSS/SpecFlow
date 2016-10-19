@@ -52,12 +52,12 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldNotTraceWarningWhenInitialisedTwice()
         {
-            IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
-            var contextManager = container.Resolve<IContextManager>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty));
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
+
             mockTracer.Verify(x => x.TraceWarning(It.IsAny<String>()), Times.Never());
         }
 
