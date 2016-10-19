@@ -15,12 +15,36 @@ namespace TechTalk.SpecFlow.RuntimeTests
         [Test]
         public void ShouldTraceWarningWhenCleanedUpWithoutBeingInitialised()
         {
-            IObjectContainer container;
             var mockTracer = new Mock<ITestTracer>();
-            TestObjectFactories.CreateTestRunner(out container, objectContainer => objectContainer.RegisterInstanceAs(mockTracer.Object));
-            var contextManager = container.Resolve<IContextManager>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
             contextManager.CleanupStepContext();
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."));
+        }
+
+        /// <summary>
+        /// Resolves the context manager and registers the provided test tracer.
+        /// </summary>
+        /// <param name="testTracer">The test tracer that will be registered.</param>
+        /// <returns>An object that implements <see cref="IContextManager"/>.</returns>
+        private static IContextManager ResolveContextManager(ITestTracer testTracer)
+        {
+            var container = CreateObjectContainer(testTracer);
+            var contextManager = container.Resolve<IContextManager>();
+            return contextManager;
+        }
+
+        /// <summary>
+        /// Creates an object container and registers the provided test tracer.
+        /// </summary>
+        /// <param name="testTracer">The test tracer that will be registered.</param>
+        /// <returns>An object that implements <see cref="IObjectContainer"/>.</returns>
+        private static IObjectContainer CreateObjectContainer(ITestTracer testTracer)
+        {
+            IObjectContainer container;
+            TestObjectFactories.CreateTestRunner(
+                out container,
+                objectContainer => objectContainer.RegisterInstanceAs<ITestTracer>(testTracer));
+            return container;
         }
 
         [Test]
