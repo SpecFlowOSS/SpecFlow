@@ -58,7 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise once", null, string.Empty));
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
 
-            mockTracer.Verify(x => x.TraceWarning(It.IsAny<String>()), Times.Never());
+            mockTracer.Verify(x => x.TraceWarning(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialise twice", null, string.Empty));
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
-            mockTracer.Verify(x => x.TraceWarning(It.IsAny<String>()), Times.Never());
+            mockTracer.Verify(x => x.TraceWarning(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
