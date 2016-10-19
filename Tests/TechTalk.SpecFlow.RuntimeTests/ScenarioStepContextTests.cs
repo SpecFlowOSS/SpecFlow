@@ -17,7 +17,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
+
             contextManager.CleanupStepContext();
+
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."));
         }
 
