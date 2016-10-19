@@ -12,7 +12,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
     [TestFixture]
     public class ScenarioStepContextTests
     {
-        
         [Test]
         public void ShouldTraceWarningWhenCleanedUpWithoutBeingInitialised()
         {
@@ -81,7 +80,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.CleanupStepContext();
             Assert.AreEqual(firstStepInfo, contextManager.StepContext.StepInfo);
             contextManager.CleanupStepContext();
-            Assert.AreEqual(null, contextManager.StepContext);            
+            Assert.AreEqual(null, contextManager.StepContext);
         }
 
         [Test]
