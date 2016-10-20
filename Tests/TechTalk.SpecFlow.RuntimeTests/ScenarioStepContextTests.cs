@@ -89,7 +89,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
 
-            mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."),Times.Once());
+            mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."), Times.Once());
         }
 
         [Test]
@@ -98,9 +98,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once",null,string.Empty);
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
             contextManager.InitializeStepContext(firstStepInfo);
-            Assert.AreEqual(firstStepInfo,contextManager.StepContext.StepInfo);
+            Assert.AreEqual(firstStepInfo, contextManager.StepContext.StepInfo);
 
             var secondStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty);
             contextManager.InitializeStepContext(secondStepInfo);
