@@ -255,7 +255,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.InitializeStepContext(thirdStepInfo); //Call sub step
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
 
-            var fourthStepInfo = new StepInfo(StepDefinitionType.Then, "I have called initialize a forth time", null, string.Empty);
+            var fourthStepInfo = new StepInfo(StepDefinitionType.Then, "I have called initialize a fourth time", null, string.Empty);
             contextManager.InitializeStepContext(fourthStepInfo); //call sub step of sub step
             contextManager.CleanupStepContext(); // return from sub step of sub step
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
