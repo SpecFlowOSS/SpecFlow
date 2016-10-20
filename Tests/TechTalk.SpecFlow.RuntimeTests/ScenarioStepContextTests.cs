@@ -28,7 +28,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         /// </summary>
         /// <param name="testTracer">The test tracer that will be registered.</param>
         /// <returns>An object that implements <see cref="IContextManager"/>.</returns>
-        private static IContextManager ResolveContextManager(ITestTracer testTracer)
+        private IContextManager ResolveContextManager(ITestTracer testTracer)
         {
             var container = CreateObjectContainer(testTracer);
             var contextManager = container.Resolve<IContextManager>();
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         /// </summary>
         /// <param name="testTracer">The test tracer that will be registered.</param>
         /// <returns>An object that implements <see cref="IObjectContainer"/>.</returns>
-        private static IObjectContainer CreateObjectContainer(ITestTracer testTracer)
+        private IObjectContainer CreateObjectContainer(ITestTracer testTracer)
         {
             IObjectContainer container;
             TestObjectFactories.CreateTestRunner(
