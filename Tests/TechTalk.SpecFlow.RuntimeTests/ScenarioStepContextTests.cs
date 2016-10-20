@@ -92,24 +92,58 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."), Times.Once());
         }
 
-        [Test]
-        public void ShouldReportCorrectCurrentStep()
+        public void StepContext_WhenInitializedOnce_ShouldReportStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
             var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
             contextManager.InitializeStepContext(firstStepInfo);
-            Assert.AreEqual(firstStepInfo, contextManager.StepContext.StepInfo);
 
+            var actualStepInfo = contextManager.StepContext.StepInfo;
+
+            Assert.AreEqual(firstStepInfo, actualStepInfo);
+        }
+
+        public void StepContext_WhenInitializedTwice_ShouldReportSecondStepInfo()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
             var secondStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty);
             contextManager.InitializeStepContext(secondStepInfo);
-            Assert.AreEqual(secondStepInfo, contextManager.StepContext.StepInfo);
 
-            contextManager.CleanupStepContext();
-            Assert.AreEqual(firstStepInfo, contextManager.StepContext.StepInfo);
+            var actualStepInfo = contextManager.StepContext.StepInfo;
 
+            Assert.AreEqual(secondStepInfo, actualStepInfo);
+        }
+
+        public void StepContext_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepInfo()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            contextManager.InitializeStepContext(firstStepInfo);
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+
+            var actualStepInfo = contextManager.StepContext.StepInfo;
+
+            Assert.AreEqual(firstStepInfo, actualStepInfo);
+        }
+
+        [Test]
+        public void StepContext_WhenInitializedTwiceAndCleanedUpTwice_ShouldReportNoStepInfo()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
             contextManager.CleanupStepContext();
+            contextManager.CleanupStepContext();
+
             Assert.AreEqual(null, contextManager.StepContext);
         }
 
