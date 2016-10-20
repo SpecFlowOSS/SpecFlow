@@ -148,24 +148,61 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldReportCorrectCurrentTopLevelStep()
+        public void CurrentTopLevelStepDefinitionType_WhenInitialized_ShouldReportCorrectStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
-            contextManager.InitializeStepContext(firstStepInfo);
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
 
-            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty);
-            contextManager.InitializeStepContext(secondStepInfo);
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
+            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+        }
+
+        [Test]
+        public void CurrentTopLevelStepDefinitionType_WhenInitializedTwice_ShouldReportFirstStepType()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
+
+            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+        }
+
+        [Test]
+        public void CurrentTopLevelStepDefinitionType_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepType()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
             contextManager.CleanupStepContext(); // remove second
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
 
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
+
+            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
+        }
+
+        [Test]
+        public void CurrentTopLevelStepDefinitionType_WhenInitializedTwiceAndCleanedUpTwice_ShouldReportFirstStepType()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.CleanupStepContext(); // remove second
             contextManager.CleanupStepContext(); // remove first
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
+
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
+
+            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
         [Test]
