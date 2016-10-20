@@ -55,10 +55,21 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
 
             mockTracer.Verify(x => x.TraceWarning(It.IsAny<string>()), Times.Never());
+        }
+
+        /// <summary>
+        /// Creates a <see cref="StepInfo" /> instance, with the specified text and optional step definition type.
+        /// </summary>
+        /// <param name="text">The text of the step.</param>
+        /// <param name="stepDefinitionType">The type of the step definition. Default value is StepDefinitionType.Given</param>
+        /// <returns>A new instance of the <see cref="StepInfo"/> class.</returns>
+        private StepInfo CreateStepInfo(string text, StepDefinitionType stepDefinitionType = StepDefinitionType.Given)
+        {
+            return new StepInfo(stepDefinitionType, text, null, string.Empty);
         }
 
         [Test]
@@ -67,8 +78,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
 
@@ -82,8 +93,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var contextManager = ResolveContextManager(mockTracer.Object);
 
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
 
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
@@ -97,7 +108,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
@@ -110,8 +121,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            var secondStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty);
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            var secondStepInfo = CreateStepInfo("I have called initialize twice");
             contextManager.InitializeStepContext(secondStepInfo);
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
@@ -124,9 +135,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
@@ -139,8 +150,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
             contextManager.CleanupStepContext();
             contextManager.CleanupStepContext();
 
@@ -153,7 +164,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
@@ -166,8 +177,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice", StepDefinitionType.When));
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
@@ -180,8 +191,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice", StepDefinitionType.When));
             contextManager.CleanupStepContext(); // remove second
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
@@ -195,8 +206,8 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice", StepDefinitionType.When));
             contextManager.CleanupStepContext(); // remove second
             contextManager.CleanupStepContext(); // remove first
 
@@ -211,9 +222,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
             contextManager.CleanupStepContext();
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice", StepDefinitionType.When));
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
@@ -226,9 +237,9 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize once"));
             contextManager.CleanupStepContext();
-            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice", StepDefinitionType.When));
             contextManager.CleanupStepContext();
 
             var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
@@ -242,20 +253,20 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once", StepDefinitionType.Given);
             contextManager.InitializeStepContext(firstStepInfo);
             Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
 
             contextManager.CleanupStepContext();
-            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty);
+            var secondStepInfo = CreateStepInfo("I have called initialize twice", StepDefinitionType.When);
             contextManager.InitializeStepContext(secondStepInfo);
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
 
-            var thirdStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize a third time", null, string.Empty);
+            var thirdStepInfo = CreateStepInfo("I have called initialize a third time", StepDefinitionType.Given);
             contextManager.InitializeStepContext(thirdStepInfo); //Call sub step
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
 
-            var fourthStepInfo = new StepInfo(StepDefinitionType.Then, "I have called initialize a fourth time", null, string.Empty);
+            var fourthStepInfo = CreateStepInfo("I have called initialize a fourth time", StepDefinitionType.Then);
             contextManager.InitializeStepContext(fourthStepInfo); //call sub step of sub step
             contextManager.CleanupStepContext(); // return from sub step of sub step
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
@@ -266,7 +277,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             contextManager.CleanupStepContext(); // finish 2nd step
             Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
 
-            var fifthStepInfo = new StepInfo(StepDefinitionType.Then, "I have called initialize a fifth time", null, string.Empty);
+            var fifthStepInfo = CreateStepInfo("I have called initialize a fifth time", StepDefinitionType.Then);
             contextManager.InitializeStepContext(fifthStepInfo);
             Assert.AreEqual(StepDefinitionType.Then, contextManager.CurrentTopLevelStepDefinitionType); // fifthStepInfo
         }
@@ -286,7 +297,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
             // do not call CleanupStepContext to simulate inconsistent state
 
@@ -301,7 +312,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
             // do not call CleanupStepContext to simulate inconsistent state
 
@@ -314,7 +325,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
+            var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
             contextManager.CleanupStepContext();
 
