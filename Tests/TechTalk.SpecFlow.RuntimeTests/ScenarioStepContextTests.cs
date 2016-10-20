@@ -159,6 +159,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
+        public void CurrentTopLevelStepDefinitionType_WithoutInitialization_ShouldReportNull()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            Assert.IsNull(contextManager.CurrentTopLevelStepDefinitionType);
+        }
+
+        [Test]
         public void CurrentTopLevelStepDefinitionType_WhenInitialized_ShouldReportCorrectStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -280,15 +289,6 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var fifthStepInfo = CreateStepInfo("I have called initialize a fifth time", StepDefinitionType.Then);
             contextManager.InitializeStepContext(fifthStepInfo);
             Assert.AreEqual(StepDefinitionType.Then, contextManager.CurrentTopLevelStepDefinitionType); // fifthStepInfo
-        }
-
-        [Test]
-        public void TopLevelStepShouldBeNullInitially()
-        {
-            var mockTracer = new Mock<ITestTracer>();
-            var contextManager = ResolveContextManager(mockTracer.Object);
-
-            Assert.IsNull(contextManager.CurrentTopLevelStepDefinitionType);
         }
 
         [Test]
