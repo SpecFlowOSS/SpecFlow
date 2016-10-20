@@ -206,22 +206,34 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldReportCorrectCurrentTopLevelStepIfWeHaveExecutedMoreThan1Step()
+        public void CurrentTopLevelStepDefinitionType_AfterInitializationAndCleanupAndNewInitialization_ShouldReportSecondStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty);
-            contextManager.InitializeStepContext(firstStepInfo);
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
-
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
             contextManager.CleanupStepContext();
-            var secondStepInfo = new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty);
-            contextManager.InitializeStepContext(secondStepInfo);
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
 
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
+
+            Assert.AreEqual(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
+        }
+
+        [Test]
+        public void CurrentTopLevelStepDefinitionType_AfterInitializationAndCleanupAndNewInitializationAndCleanup_ShouldReportSecondStepType()
+        {
+            var mockTracer = new Mock<ITestTracer>();
+            var contextManager = ResolveContextManager(mockTracer.Object);
+
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.Given, "I have called initialize once", null, string.Empty));
             contextManager.CleanupStepContext();
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
+            contextManager.InitializeStepContext(new StepInfo(StepDefinitionType.When, "I have called initialize twice", null, string.Empty));
+            contextManager.CleanupStepContext();
+
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
+
+            Assert.AreEqual(StepDefinitionType.When, actualCurrentTopLevelStepDefinitionType);
         }
 
         [Test]
