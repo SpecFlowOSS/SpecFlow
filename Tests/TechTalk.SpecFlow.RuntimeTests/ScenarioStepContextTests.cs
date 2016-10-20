@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class ScenarioStepContextTests
     {
         [Test]
-        public void ShouldTraceWarningWhenCleanedUpWithoutBeingInitialized()
+        public void CleanupStepContext_WhenNotInitialized_ShouldTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldNotTraceWarningWhenInitializedTwice()
+        public void InitializeStepContext_WhenInitializedTwice_ShouldNotTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
@@ -62,7 +62,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldNotTraceWarningWhenInitializedTwiceThenDisposedTwice()
+        public void CleanupStepContext_WhenInitializedAsOftenAsCleanedUp_ShouldNotTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
@@ -76,7 +76,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldTraceWarningWhenInitializedTwiceThenCleanedUp3Times()
+        public void CleanupStepContext_WhenCleanedUpMoreOftenThanInitialized_ShouldTraceWarning()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
