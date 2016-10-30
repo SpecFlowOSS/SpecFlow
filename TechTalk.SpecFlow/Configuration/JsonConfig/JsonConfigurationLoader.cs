@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
     public class JsonConfigurationLoader
     {
-        public Configuration.SpecFlowConfiguration LoadJson(Configuration.SpecFlowConfiguration specFlowConfiguration, string jsonContent)
+        public SpecFlowConfiguration LoadJson(SpecFlowConfiguration specFlowConfiguration, string jsonContent)
         {
             if (String.IsNullOrWhiteSpace(jsonContent)) throw new ArgumentNullException(nameof(jsonContent));
 
@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
             CultureInfo toolLanguage = specFlowConfiguration.ToolLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
-            string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
+            string unitTestProvider = specFlowConfiguration.UnitTestProvider;
             bool detectAmbiguousMatches = specFlowConfiguration.DetectAmbiguousMatches;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
@@ -40,18 +40,35 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             var specFlowElement = jsonConfig.SpecFlow;
             if (specFlowElement.Language != null)
             {
-                featureLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Feature);
-                toolLanguage = string.IsNullOrEmpty(specFlowElement.Language.Tool) ? CultureInfo.GetCultureInfo(specFlowElement.Language.Feature) : CultureInfo.GetCultureInfo(specFlowElement.Language.Tool);
+                if (specFlowElement.Language.Feature.IsNotNullOrWhiteSpace())
+                {
+                    featureLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Feature);
+                }
+
+                if (specFlowElement.Language.Tool.IsNullOrWhiteSpace())
+                {
+                    toolLanguage = featureLanguage;
+                }
+                else
+                {
+                    toolLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Tool);
+                }
             }
 
             if (specFlowElement.BindingCulture != null)
             {
-                bindingCulture = CultureInfo.GetCultureInfo(specFlowElement.BindingCulture.Name);
+                if (specFlowElement.BindingCulture.Name.IsNotNullOrWhiteSpace())
+                {
+                    bindingCulture = CultureInfo.GetCultureInfo(specFlowElement.BindingCulture.Name);
+                }
             }
 
             if (specFlowElement.UnitTestProvider != null)
             {
-                runtimeUnitTestProvider = specFlowElement.UnitTestProvider.Name;
+                if (specFlowElement.UnitTestProvider.Name.IsNotNullOrWhiteSpace())
+                {
+                    unitTestProvider = specFlowElement.UnitTestProvider.Name;
+                }
             }
 
             if (specFlowElement.Runtime != null)
@@ -63,7 +80,9 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
 
             if (specFlowElement.Generator != null)
             {
-                
+                allowDebugGeneratedFiles = specFlowElement.Generator.AllowDebugGeneratedFiles;
+                allowRowTests = specFlowElement.Generator.AllowRowTests;
+                generatorPath = specFlowElement.Generator.GeneratorPath;
             }
 
             if (specFlowElement.Trace != null)
@@ -91,13 +110,13 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             }
 
 
-            return new Configuration.SpecFlowConfiguration(ConfigSource.Json,
+            return new SpecFlowConfiguration(ConfigSource.Json,
                                             containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
                                             toolLanguage,
                                             bindingCulture,
-                                            runtimeUnitTestProvider,
+                                            unitTestProvider,
                                             detectAmbiguousMatches,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,

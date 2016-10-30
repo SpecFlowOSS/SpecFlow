@@ -241,6 +241,7 @@
     <Compile Include="SpecFlowContext.cs" />
     <Compile Include="Bindings\StepInstance.cs" />
     <Compile Include="Infrastructure\ContainerBuilder.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestRunnerManager.cs" />
     <Compile Include="Infrastructure\TestStatus.cs" />
