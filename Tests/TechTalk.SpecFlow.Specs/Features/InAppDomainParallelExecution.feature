@@ -148,7 +148,10 @@ Scenario: TraceListener should be called synchronously
     When I execute the tests with NUnit
     Then the execution log should contain text 'Was parallel'
     Then the log file 'NonThreadSafeTraceListener.log' should contain text 'NonThreadSafeTraceListener:'
-	Then the log file 'NonThreadSafeTraceListener.log' should contain the text 'NonThreadSafeTraceListener:' 50 times
+	Then the log file 'NonThreadSafeTraceListener.log' should contain the text 'NonThreadSafeTraceListener:' 51 times
+	#25* start call
+	#25* done call
+	#1 which configuration is used
 	And the execution summary should contain
 		| Total | Succeeded |
 		| 25    | 25        |
