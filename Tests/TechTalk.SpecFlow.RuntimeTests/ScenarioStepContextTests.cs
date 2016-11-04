@@ -312,13 +312,14 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldReportSetValuesCorrectly()
+        public void StepInfoConstructor_WithValidValues_ShouldReportThoseValuesCorrectly()
         {
             var table = new Table("header1","header2");
             const string multlineText = @" some
 example
 multiline
 text";
+
             var stepInfo = new StepInfo(StepDefinitionType.Given, "Step text", table, multlineText);
 
             stepInfo.StepDefinitionType.Should().Be(StepDefinitionType.Given);
