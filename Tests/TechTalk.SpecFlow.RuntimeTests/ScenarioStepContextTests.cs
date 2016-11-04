@@ -288,16 +288,15 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldBeAbleToDisposeContextManagerAfterAnConsistentState()
+        public void Dispose_InInconsistentState_ShouldNotThrowException()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = CreateStepInfo("I have called initialize once");
-            contextManager.InitializeStepContext(firstStepInfo);
-            // do not call CleanupStepContext to simulate inconsistent state
+            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
+            //// do not call CleanupStepContext to simulate inconsistent state
 
-            ((IDisposable)contextManager).Dispose();
+            Assert.DoesNotThrow(() => ((IDisposable)contextManager).Dispose());
         }
 
         [Test]
