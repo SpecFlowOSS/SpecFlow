@@ -273,18 +273,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ScenarioStartShouldResetTopLevelStep()
+        public void CurrentTopLevelStepDefinitionType_AfterInitializingNewScenarioContext_ShouldReportNull()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = CreateStepInfo("I have called initialize once");
-            contextManager.InitializeStepContext(firstStepInfo);
-            // do not call CleanupStepContext to simulate inconsistent state
+            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
+            //// Do not call CleanupStepContext, in order to simulate an inconsistent state
+            contextManager.InitializeScenarioContext(new ScenarioInfo("the next scenario"));
 
-            contextManager.InitializeScenarioContext(new ScenarioInfo("my scenario"));
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            Assert.IsNull(contextManager.CurrentTopLevelStepDefinitionType);
+            Assert.IsNull(actualCurrentTopLevelStepDefinitionType);
         }
 
         [Test]
