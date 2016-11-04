@@ -257,38 +257,19 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void ShouldReportCorrectCurrentTopLevelStepIfWeHaveStepsMoreThan1Deep()
+        public void CurrentTopLevelStepDefinitionType_AfterInitializingSubStepThatHasASubStepItselfAndCompletingDeepestLevelOfSteps_ShouldReportOriginalStepType()
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
 
-            var firstStepInfo = CreateStepInfo("I have called initialize once", StepDefinitionType.Given);
-            contextManager.InitializeStepContext(firstStepInfo);
-            Assert.AreEqual(StepDefinitionType.Given, contextManager.CurrentTopLevelStepDefinitionType); // firstStepInfo
-
-            contextManager.CleanupStepContext();
-            var secondStepInfo = CreateStepInfo("I have called initialize twice", StepDefinitionType.When);
-            contextManager.InitializeStepContext(secondStepInfo);
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
-
-            var thirdStepInfo = CreateStepInfo("I have called initialize a third time", StepDefinitionType.Given);
-            contextManager.InitializeStepContext(thirdStepInfo); //Call sub step
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
-
-            var fourthStepInfo = CreateStepInfo("I have called initialize a fourth time", StepDefinitionType.Then);
-            contextManager.InitializeStepContext(fourthStepInfo); //call sub step of sub step
+            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once", StepDefinitionType.Given));
+            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize a second time, to initialize a sub step", StepDefinitionType.When));
+            contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize a third time, to initialize a sub step of a sub step", StepDefinitionType.Then));
             contextManager.CleanupStepContext(); // return from sub step of sub step
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
 
-            contextManager.CleanupStepContext(); // return from sub step
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
+            var actualCurrentTopLevelStepDefinitionType = contextManager.CurrentTopLevelStepDefinitionType;
 
-            contextManager.CleanupStepContext(); // finish 2nd step
-            Assert.AreEqual(StepDefinitionType.When, contextManager.CurrentTopLevelStepDefinitionType); // secondStepInfo
-
-            var fifthStepInfo = CreateStepInfo("I have called initialize a fifth time", StepDefinitionType.Then);
-            contextManager.InitializeStepContext(fifthStepInfo);
-            Assert.AreEqual(StepDefinitionType.Then, contextManager.CurrentTopLevelStepDefinitionType); // fifthStepInfo
+            Assert.AreEqual(StepDefinitionType.Given, actualCurrentTopLevelStepDefinitionType);
         }
 
         [Test]
