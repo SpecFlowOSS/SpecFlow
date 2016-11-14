@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -74,7 +75,7 @@ namespace TechTalk.SpecFlow.Specs.StepDefinitions
 
             processHelper.RunProcess(
                 Path.Combine(AssemblyFolderHelper.GetTestAssemblyFolder(), @"SpecFlow\tools\specflow.exe"),
-                "StepDefinitionReport \"{0}\" \"/out:{1}\"", inputProjectDriver.ProjectFilePath, reportInfo.FilePath);
+                "StepDefinitionReport \"{0}\" \"/out:{1}\" {2}", inputProjectDriver.ProjectFilePath, reportInfo.FilePath, Debugger.IsAttached ? "/debug" : "");
 
             //StepDefinitionReportParameters reportParameters =
             //    new StepDefinitionReportParameters(inputProjectDriver.ProjectFilePath, reportInfo.FilePath, "", "bin\\Debug", true);

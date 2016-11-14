@@ -51,7 +51,7 @@ namespace NConsoler
 			}
 			catch (NConsolerException e)
 			{
-				messenger.Write(e.Message);
+				messenger.Write(e.ToString());
 			}
 		}
 
