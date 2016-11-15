@@ -30,17 +30,17 @@ namespace TechTalk.SpecFlow.RuntimeTests
         /// <returns>An object that implements <see cref="IContextManager"/>.</returns>
         private IContextManager ResolveContextManager(ITestTracer testTracer)
         {
-            var container = CreateObjectContainer(testTracer);
+            var container = this.CreateTestThreadObjectContainer(testTracer);
             var contextManager = container.Resolve<IContextManager>();
             return contextManager;
         }
 
         /// <summary>
-        /// Creates an object container and registers the provided test tracer.
+        /// Creates a test thread object container and registers the provided test tracer.
         /// </summary>
         /// <param name="testTracer">The test tracer that will be registered.</param>
         /// <returns>An object that implements <see cref="IObjectContainer"/>.</returns>
-        private IObjectContainer CreateObjectContainer(ITestTracer testTracer)
+        private IObjectContainer CreateTestThreadObjectContainer(ITestTracer testTracer)
         {
             IObjectContainer container;
             TestObjectFactories.CreateTestRunner(
