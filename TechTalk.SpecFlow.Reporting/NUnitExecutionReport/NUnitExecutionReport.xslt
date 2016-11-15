@@ -214,7 +214,7 @@
       <td style="text-align:right;">
         <xsl:choose>
           <xsl:when test="@time">
-            <xsl:value-of select='format-number(@time, "#0.0000")' />
+            <xsl:value-of select='format-number(@time, "#0.000")' />
           </xsl:when>
           <xsl:otherwise>N/A</xsl:otherwise>
         </xsl:choose>
