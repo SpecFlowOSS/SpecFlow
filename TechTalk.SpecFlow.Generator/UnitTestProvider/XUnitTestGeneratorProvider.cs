@@ -46,6 +46,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
         }
 
+        public virtual void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        {
+
+        }
+
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {
             // xUnit uses IUseFixture<T> on the class
@@ -112,7 +117,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
+            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName",new CodePrimitiveExpression(friendlyTestName)));
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, friendlyTestName);

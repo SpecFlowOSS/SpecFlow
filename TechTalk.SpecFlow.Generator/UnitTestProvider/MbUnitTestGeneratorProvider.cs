@@ -53,6 +53,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // by default, doing nothing to the final generated code
         }
 
+        public virtual void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        {
+            //not supported
+        }
+
 
         public virtual void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
         {

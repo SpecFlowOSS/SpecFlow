@@ -16,6 +16,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string INLINEDATA_ATTRIBUTE = "Xunit.InlineDataAttribute";
         private const string SKIP_REASON = "Ignored";
         private const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
+        private const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
@@ -85,6 +86,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                         new CodeAttributeArgument(THEORY_ATTRIBUTE_SKIP_PROPERTY_NAME, new CodePrimitiveExpression(SKIP_REASON))
                     );
             }
+        }
+
+        public override void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
         }
     }
 }

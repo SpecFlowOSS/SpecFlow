@@ -37,6 +37,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             @ignore
             Scenario: Ignored scenario";
 
+        private const string FeatureFileWithParrallelize = @"
+            @parrallelize
+            Feature: Parrallelized feature file";
+
         [Test]
         public void ShouldNotGenerateObsoleteTestFixtureSetUpAttribute()
         {
@@ -141,6 +145,17 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .HasFlag(UnitTestGeneratorTraits.ParallelExecution)
                 .Should()
                 .BeTrue("trait ParallelExecution was not found");
+        }
+
+        [Test]
+        public void ShouldAddParallelizableAttribute()
+        {
+            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParrallelize);
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
+
+            attribute.Should().NotBeNull("Parallelizable attribute was not found");
         }
 
         [Test]
