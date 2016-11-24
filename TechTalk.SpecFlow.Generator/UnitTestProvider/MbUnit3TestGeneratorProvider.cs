@@ -17,5 +17,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, TEST_ATTR);
             CodeDomHelper.AddAttribute(testMethod, DESCRIPTION_ATTR, scenarioTitle);
         }
+
+        public override UnitTestGeneratorTraits GetTraits()
+        {
+            return base.GetTraits()| UnitTestGeneratorTraits.ParallelExecution;
+        }
     }
 }
