@@ -1,11 +1,11 @@
 ﻿namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
-    public class ParrallelizeDecorator : ITestClassTagDecorator
+    public class ParallelizeDecorator : ITestClassTagDecorator
     {
-        private const string PARRALLELIZE_TAG = "parrallelize";
+        private const string PARALLELIZE_TAG = "parallelize";
         private readonly ITagFilterMatcher tagFilterMatcher;
 
-        public ParrallelizeDecorator(ITagFilterMatcher tagFilterMatcher)
+        public ParallelizeDecorator(ITagFilterMatcher tagFilterMatcher)
         {
             this.tagFilterMatcher = tagFilterMatcher;
         }
@@ -25,7 +25,7 @@
 
         private bool CanDecorateFrom(string tagName)
         {
-            return tagFilterMatcher.Match(PARRALLELIZE_TAG, tagName);
+            return tagFilterMatcher.Match(PARALLELIZE_TAG, tagName);
         }
 
         public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext)
@@ -35,7 +35,7 @@
 
         public void DecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
-            generationContext.UnitTestGeneratorProvider.SetTestClassParrallelize(generationContext);
+            generationContext.UnitTestGeneratorProvider.SetTestClassParallelize(generationContext);
         }
     }
 }

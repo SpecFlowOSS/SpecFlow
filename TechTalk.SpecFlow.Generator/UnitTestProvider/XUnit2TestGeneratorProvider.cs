@@ -88,7 +88,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
-        public override void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
         }

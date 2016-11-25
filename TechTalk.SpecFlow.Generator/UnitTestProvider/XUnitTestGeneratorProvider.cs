@@ -46,7 +46,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                 SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
         }
 
-        public virtual void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
 
         }

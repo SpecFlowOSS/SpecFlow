@@ -37,9 +37,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             @ignore
             Scenario: Ignored scenario";
 
-        private const string FeatureFileWithParrallelize = @"
-            @parrallelize
-            Feature: Parrallelized feature file";
+        private const string FeatureFileWithParallelize = @"
+            @parallelize
+            Feature: Parallelized feature file";
 
         [Test]
         public void ShouldNotGenerateObsoleteTestFixtureSetUpAttribute()
@@ -150,7 +150,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void ShouldAddParallelizableAttribute()
         {
-            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParrallelize);
+            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParallelize);
 
             var attributes = code.Class().CustomAttributes().ToArray();
             var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");

@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         protected const string TESTFIXTURESETUP_ATTR_NUNIT3 = "NUnit.Framework.OneTimeSetUpAttribute";
         protected const string TESTFIXTURETEARDOWN_ATTR_NUNIT3 = "NUnit.Framework.OneTimeTearDownAttribute";
-        protected const string PARRALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
+        protected const string PARALLELIZABLE_ATTR = "NUnit.Framework.ParallelizableAttribute";
 
         public NUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {
@@ -39,9 +39,9 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(generationContext.TestClassCleanupMethod, TESTFIXTURETEARDOWN_ATTR_NUNIT3);
         }
 
-        public override void SetTestClassParrallelize(TestClassGenerationContext generationContext)
+        public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
-            CodeDomHelper.AddAttribute(generationContext.TestClass, PARRALLELIZABLE_ATTR, new CodeAttributeArgument(new CodePrimitiveExpression(generationContext.TestClass.Name)));
+            CodeDomHelper.AddAttribute(generationContext.TestClass, PARALLELIZABLE_ATTR, new CodeAttributeArgument(new CodePrimitiveExpression(generationContext.TestClass.Name)));
         }
     }
 }
