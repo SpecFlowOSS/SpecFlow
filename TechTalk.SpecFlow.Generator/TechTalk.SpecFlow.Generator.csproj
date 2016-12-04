@@ -111,7 +111,7 @@
     <Compile Include="UnitTestConverter\IFeatureGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestConverter\IFeatureGeneratorRegistry.cs" />
-    <Compile Include="UnitTestConverter\ParallelizeDecorator.cs" />
+    <Compile Include="UnitTestConverter\DoNotParallelizeDecorator.cs" />
     <Compile Include="UnitTestConverter\PriorityValues.cs" />
     <Compile Include="UnitTestConverter\TagFilteredFeatureGeneratorProvider.cs" />
     <Compile Include="UnitTestConverter\ITagFilterMatcher.cs" />

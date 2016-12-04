@@ -8,6 +8,7 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using TechTalk.SpecFlow.Generator;
+using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
@@ -37,8 +38,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             @ignore
             Scenario: Ignored scenario";
 
-        private const string FeatureFileWithParallelize = @"
-            @parallelize
+        private const string FeatureFileWithParallelizeIgnore = @"
+            @externalDependencies
             Feature: Parallelized feature file";
 
         [Test]
@@ -54,7 +55,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 .BeNull();
         }
 
-        private static CodeNamespace GenerateCodeNamespaceFromFeature(string feature)
+        private static CodeNamespace GenerateCodeNamespaceFromFeature(string feature,bool parallelCode=false,string[] ignoreParallelTags=null)
         {
             CodeNamespace code;
             using (var reader = new StringReader(feature))
@@ -62,7 +63,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 SpecFlowGherkinParser parser = new SpecFlowGherkinParser(new CultureInfo("en-US"));
                 SpecFlowDocument document = parser.Parse(reader, "test.feature");
 
-                var featureGenerator = CreateFeatureGenerator();
+                var featureGenerator = CreateFeatureGenerator(parallelCode,ignoreParallelTags);
 
                 code = featureGenerator.GenerateUnitTestFixture(document, "TestClassName", "Target.Namespace");
             }
@@ -70,9 +71,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             return code;
         }
 
-        private static IFeatureGenerator CreateFeatureGenerator()
+        private static IFeatureGenerator CreateFeatureGenerator(bool parallelCode,string[] ignoreParallelTags)
         {
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
+            var generatorConfiguration = container.Resolve<GeneratorConfiguration>();
+            generatorConfiguration.GenerateParallelCodeForFeatures = parallelCode;
+            generatorConfiguration.IgnoreParallelCodeGenerationTags = ignoreParallelTags ??
+                                                                      Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());
 
             var generator = container.Resolve<UnitTestFeatureGeneratorProvider>().CreateGenerator(ParserHelper.CreateAnyDocument());
@@ -150,12 +155,23 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void ShouldAddParallelizableAttribute()
         {
-            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParallelize);
+            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, true);
 
             var attributes = code.Class().CustomAttributes().ToArray();
             var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
 
             attribute.Should().NotBeNull("Parallelizable attribute was not found");
+        }
+
+        [Test]
+        public void ShouldNotAddParallelizableAttribute()
+        {
+            var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParallelizeIgnore, true,new [] { "externalDependencies" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
+
+            attribute.Should().BeNull("Parallelizable attribute was found");
         }
 
         [Test]

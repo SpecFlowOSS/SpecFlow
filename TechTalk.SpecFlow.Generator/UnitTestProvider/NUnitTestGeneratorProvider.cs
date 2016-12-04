@@ -26,6 +26,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.RowTests;
         }
 
+        public bool GenerateParallelCodeForFeature { get; set; }
+
         public NUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;

@@ -160,12 +160,17 @@ namespace TechTalk.SpecFlow.Generator
             AddLinePragmaInitial(generationContext.TestClass, generationContext.Document.SourceFilePath);
 
             testGeneratorProvider.SetTestClass(generationContext, generationContext.Feature.Name, generationContext.Feature.Description);
+            testGeneratorProvider.GenerateParallelCodeForFeature =
+                generatorConfiguration.GenerateParallelCodeForFeatures;
 
             List<string> featureCategories;
             decoratorRegistry.DecorateTestClass(generationContext, out featureCategories);
 
             if (featureCategories.Any())
                 testGeneratorProvider.SetTestClassCategories(generationContext, featureCategories);
+
+            if(testGeneratorProvider.GetTraits().HasFlag(UnitTestGeneratorTraits.ParallelExecution) && testGeneratorProvider.GenerateParallelCodeForFeature)
+                testGeneratorProvider.SetTestClassParallelize(generationContext);
         }
 
         private CodeMemberField DeclareTestRunnerMember(CodeTypeDeclaration type)

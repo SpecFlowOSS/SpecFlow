@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<DecoratorRegistry, IDecoratorRegistry>();
             container.RegisterTypeAs<IgnoreDecorator, ITestClassTagDecorator>("ignore");
             container.RegisterTypeAs<IgnoreDecorator, ITestMethodTagDecorator>("ignore");
-            container.RegisterTypeAs<ParallelizeDecorator, ITestClassTagDecorator>("parallelize");
+            container.RegisterTypeAs<DoNotParallelizeDecorator, ITestClassTagDecorator>("doNotParallelize");
 
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.CSharp), GenerationTargetLanguage.CSharp, dispose: true);
             container.RegisterInstanceAs(GenerationTargetLanguage.CreateCodeDomHelper(GenerationTargetLanguage.VB), GenerationTargetLanguage.VB, dispose: true);

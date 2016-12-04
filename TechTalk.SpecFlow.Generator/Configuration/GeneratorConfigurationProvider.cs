@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             }
             catch(Exception ex)
             {
-                throw new ConfigurationErrorsException("SpecFlow configuration error", ex);
+                throw new ConfigurationErrorsException(string.Format("SpecFlow configuration error :{0}",ex), ex);
             }
         }
 
@@ -50,7 +50,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             }
             catch(Exception ex)
             {
-                throw new ConfigurationErrorsException("SpecFlow configuration error", ex);
+                throw new ConfigurationErrorsException(string.Format("SpecFlow configuration error :{0}", ex), ex);
             }
         }
 

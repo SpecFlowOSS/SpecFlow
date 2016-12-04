@@ -224,6 +224,21 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (string)this["path"]; }
             set { this["path"] = value; }
         }
+        [ConfigurationProperty("generateParallelCodeForFeatures", DefaultValue = ConfigDefaults.GenerateParallelCodeForFeatures, IsRequired = false)]
+        public bool GenerateParallelCodeForFeatures
+        {
+            get { return (bool)this["generateParallelCodeForFeatures"]; }
+            set { this["generateParallelCodeForFeatures"] = value; }
+        }
+
+        [ConfigurationProperty("ignoreParallelTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
+        [ConfigurationCollection(typeof(IgnoreParallelTagCollection), AddItemName = "tag")]
+        public IgnoreParallelTagCollection IgnoreParallelTags
+        {
+            get { return (IgnoreParallelTagCollection)this["ignoreParallelTags"]; }
+            set { this["ignoreParallelTags"] = value; }
+        }
+
     }
 
     public class TraceConfigElement : ConfigurationElement
@@ -342,6 +357,37 @@ namespace TechTalk.SpecFlow.Configuration
         {
             return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, 
                 Type, Parameters);
+        }
+    }
+
+    public class IgnoreParallelTagCollection : ConfigurationElementCollection, IEnumerable<IgnoreParallelTagElement>
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new IgnoreParallelTagElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((IgnoreParallelTagElement)element).Value;
+        }
+
+        IEnumerator<IgnoreParallelTagElement> IEnumerable<IgnoreParallelTagElement>.GetEnumerator()
+        {
+            foreach (var item in this)
+            {
+                yield return (IgnoreParallelTagElement)item;
+            }
+        }
+    }
+
+    public class IgnoreParallelTagElement : ConfigurationElement
+    {
+        [ConfigurationProperty("value", DefaultValue = "",IsRequired = false)]
+        public string Value
+        {
+            get { return (string)this["value"]; }
+            set { this["value"] = value; }
         }
     }
 }
