@@ -164,6 +164,17 @@ namespace TechTalk.SpecFlow.GeneratorTests
         }
 
         [Test]
+        public void ShouldAddParallelizableAttributeBecauseThereIsNoMatchingIgnoreTag()
+        {
+            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, true, new[] { "myOtherexternalDependencies" });
+
+            var attributes = code.Class().CustomAttributes().ToArray();
+            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
+
+            attribute.Should().NotBeNull("Parallelizable attribute was not found");
+        }
+
+        [Test]
         public void ShouldNotAddParallelizableAttribute()
         {
             var code = GenerateCodeNamespaceFromFeature(FeatureFileWithParallelizeIgnore, true,new [] { "externalDependencies" });

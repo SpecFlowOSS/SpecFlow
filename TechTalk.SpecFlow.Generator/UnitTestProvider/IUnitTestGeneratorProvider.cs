@@ -9,8 +9,6 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
     {
         UnitTestGeneratorTraits GetTraits();
 
-        bool GenerateParallelCodeForFeature { get; set; }
-
         void SetTestClass(TestClassGenerationContext generationContext, string featureTitle, string featureDescription);
         void SetTestClassCategories(TestClassGenerationContext generationContext, IEnumerable<string> featureCategories);
         void SetTestClassIgnore(TestClassGenerationContext generationContext);

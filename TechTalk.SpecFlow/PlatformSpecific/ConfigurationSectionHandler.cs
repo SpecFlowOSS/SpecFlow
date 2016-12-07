@@ -232,10 +232,10 @@ namespace TechTalk.SpecFlow.Configuration
         }
 
         [ConfigurationProperty("ignoreParallelTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
-        [ConfigurationCollection(typeof(IgnoreParallelTagCollection), AddItemName = "tag")]
-        public IgnoreParallelTagCollection IgnoreParallelTags
+        [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
+        public TagCollection IgnoreParallelTags
         {
-            get { return (IgnoreParallelTagCollection)this["ignoreParallelTags"]; }
+            get { return (TagCollection)this["ignoreParallelTags"]; }
             set { this["ignoreParallelTags"] = value; }
         }
 
@@ -360,28 +360,28 @@ namespace TechTalk.SpecFlow.Configuration
         }
     }
 
-    public class IgnoreParallelTagCollection : ConfigurationElementCollection, IEnumerable<IgnoreParallelTagElement>
+    public class TagCollection : ConfigurationElementCollection, IEnumerable<TagElement>
     {
         protected override ConfigurationElement CreateNewElement()
         {
-            return new IgnoreParallelTagElement();
+            return new TagElement();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((IgnoreParallelTagElement)element).Value;
+            return ((TagElement)element).Value;
         }
 
-        IEnumerator<IgnoreParallelTagElement> IEnumerable<IgnoreParallelTagElement>.GetEnumerator()
+        IEnumerator<TagElement> IEnumerable<TagElement>.GetEnumerator()
         {
             foreach (var item in this)
             {
-                yield return (IgnoreParallelTagElement)item;
+                yield return (TagElement)item;
             }
         }
     }
 
-    public class IgnoreParallelTagElement : ConfigurationElement
+    public class TagElement : ConfigurationElement
     {
         [ConfigurationProperty("value", DefaultValue = "",IsRequired = false)]
         public string Value
