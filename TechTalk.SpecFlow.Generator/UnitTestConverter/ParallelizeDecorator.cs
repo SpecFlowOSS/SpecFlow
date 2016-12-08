@@ -1,7 +1,9 @@
 ﻿using System.CodeDom;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.UnitTestProvider;
+using TechTalk.SpecFlow.Parser;
 
 namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 {
@@ -25,7 +27,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
 
         public bool CanDecorateFrom(TestClassGenerationContext generationContext)
         {
-            return CanGenerateParallelCodeBasedOnConfiguration(generationContext) && !generationContext.Feature.Tags.Any();
+            return CanGenerateParallelCodeBasedOnConfiguration(generationContext) && !IgnoreParallelCodeGenerationBasedOnTags(generationContext.Feature.Tags.Select(x=>x.GetNameWithoutAt()));
         }
 
         public void DecorateFrom(TestClassGenerationContext generationContext)
@@ -47,20 +49,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
             return generationContext.UnitTestGeneratorProvider.GetTraits()
                 .HasFlag(UnitTestGeneratorTraits.ParallelExecution) && generateParallelCodeForFeatures;
         }
-        private bool IgnoreParallelCodeGenerationBasedOnTags(string tagName)
+        private bool IgnoreParallelCodeGenerationBasedOnTags(IEnumerable<string> tagName)
         {
             return ignoreParallelCodeGenerationTags.Any(x => tagFilterMatcher.Match(x, tagName));
         }
 
         public bool CanDecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
-            return CanGenerateParallelCodeBasedOnConfiguration(generationContext);
+            return IgnoreParallelCodeGenerationBasedOnTags(new[] {tagName});
         }
 
         public void DecorateFrom(string tagName, TestClassGenerationContext generationContext)
         {
-            if(!IgnoreParallelCodeGenerationBasedOnTags(tagName))
-                generationContext.UnitTestGeneratorProvider.SetTestClassParallelize(generationContext);
+
         }
     }
 }

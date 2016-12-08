@@ -28,6 +28,15 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 When I do something
                 Then something should happen";
 
+        private const string SampleFeatureFileWithTags = @"
+            @tag1 @tag2 @tag3
+            Feature: Sample feature file
+
+            Scenario: Simple scenario
+                Given there is something
+                When I do something
+                Then something should happen";
+
         private const string IgnoredFeatureFile = @"
             @ignore
             Feature: Ignored feature file";
@@ -39,7 +48,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             Scenario: Ignored scenario";
 
         private const string FeatureFileWithParallelizeIgnore = @"
-            @externalDependencies
+            @externalDependencies @externalDependencies2
             Feature: Parallelized feature file";
 
         [Test]
@@ -155,12 +164,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void ShouldAddParallelizableAttribute()
         {
-            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFile, true);
+            var code = GenerateCodeNamespaceFromFeature(SampleFeatureFileWithTags, true);
 
             var attributes = code.Class().CustomAttributes().ToArray();
-            var attribute = attributes.FirstOrDefault(a => a.Name == "NUnit.Framework.ParallelizableAttribute");
-
-            attribute.Should().NotBeNull("Parallelizable attribute was not found");
+            var parallelAttributes = attributes.Where(a => a.Name == "NUnit.Framework.ParallelizableAttribute").ToList();
+            parallelAttributes.Should().HaveCount(1, "Only one Parallelizable attribute should be set");
         }
 
         [Test]
@@ -184,6 +192,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             attribute.Should().BeNull("Parallelizable attribute was found");
         }
+
 
         [Test]
         public void ShouldProvideAReasonForIgnoringAFeature()
