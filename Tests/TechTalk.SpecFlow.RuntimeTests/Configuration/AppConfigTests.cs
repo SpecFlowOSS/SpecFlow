@@ -66,18 +66,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             runtimeConfig.FeatureLanguage.TwoLetterISOLanguageName.Should().Be("de");
         }
-
-        [Test]
-        public void CheckToolsLanguage()
-        {
-            string config = @"<specflow><language tool=""de"" /></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.ToolLanguage.TwoLetterISOLanguageName.Should().Be("de");
-        }
+        
 
         [Test]
         public void CheckBindingCulture()
@@ -103,29 +92,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             runtimeConfig.UnitTestProvider.Should().Be("XUnit");
         }
 
-        [Test]
-        public void Check_Runtime_detectAmbiguousMatches_as_true()
-        {
-            string config = @"<specflow><runtime detectAmbiguousMatches=""true"" /></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.DetectAmbiguousMatches.Should().BeTrue();
-        }
-
-        [Test]
-        public void Check_Runtime_detectAmbiguousMatches_as_false()
-        {
-            string config = @"<specflow><runtime detectAmbiguousMatches=""false"" /></specflow>";
-
-            var configSection = ConfigurationSectionHandler.CreateFromXml(config);
-
-            var runtimeConfig = new AppConfigConfigurationLoader().LoadAppConfig(ConfigurationLoader.GetDefault(), configSection);
-
-            runtimeConfig.DetectAmbiguousMatches.Should().BeFalse();
-        }
 
         [Test]
         public void Check_Runtime_stopAtFirstError_as_true()

@@ -47,7 +47,6 @@ namespace TechTalk.SpecFlow.Reporting
 
             XsltArgumentList argumentList = new XsltArgumentList();
             argumentList.AddParam("feature-language", "", generatorSpecFlowConfiguration.FeatureLanguage.Name);
-            argumentList.AddParam("tool-language", "", generatorSpecFlowConfiguration.ToolLanguage.Name);
             
             using (var xmlTextWriter = new XmlTextWriter(outputFilePath, Encoding.UTF8))
             {

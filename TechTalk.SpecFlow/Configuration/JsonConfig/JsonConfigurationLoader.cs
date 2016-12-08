@@ -20,10 +20,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             ContainerRegistrationCollection containerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
-            CultureInfo toolLanguage = specFlowConfiguration.ToolLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
             string unitTestProvider = specFlowConfiguration.UnitTestProvider;
-            bool detectAmbiguousMatches = specFlowConfiguration.DetectAmbiguousMatches;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -32,7 +30,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             StepDefinitionSkeletonStyle stepDefinitionSkeletonStyle = specFlowConfiguration.StepDefinitionSkeletonStyle;
             List<string> additionalStepAssemblies = specFlowConfiguration.AdditionalStepAssemblies;
             List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
-            string generatorPath = specFlowConfiguration.GeneratorPath;
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
 
@@ -43,15 +40,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                 if (specFlowElement.Language.Feature.IsNotNullOrWhiteSpace())
                 {
                     featureLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Feature);
-                }
-
-                if (specFlowElement.Language.Tool.IsNullOrWhiteSpace())
-                {
-                    toolLanguage = featureLanguage;
-                }
-                else
-                {
-                    toolLanguage = CultureInfo.GetCultureInfo(specFlowElement.Language.Tool);
                 }
             }
 
@@ -74,7 +62,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             if (specFlowElement.Runtime != null)
             {
                 missingOrPendingStepsOutcome = specFlowElement.Runtime.MissingOrPendingStepsOutcome;
-                detectAmbiguousMatches = specFlowElement.Runtime.DetectAmbiguousMatches;
                 stopAtFirstError = specFlowElement.Runtime.StopAtFirstError;
             }
 
@@ -82,7 +69,6 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
             {
                 allowDebugGeneratedFiles = specFlowElement.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = specFlowElement.Generator.AllowRowTests;
-                generatorPath = specFlowElement.Generator.GeneratorPath;
             }
 
             if (specFlowElement.Trace != null)
@@ -114,10 +100,8 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             containerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
-                                            toolLanguage,
                                             bindingCulture,
                                             unitTestProvider,
-                                            detectAmbiguousMatches,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,
@@ -127,8 +111,7 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
                                             additionalStepAssemblies,
                                             pluginDescriptors,
                                             allowDebugGeneratedFiles,
-                                            allowRowTests,
-                                            generatorPath);
+                                            allowRowTests);
         }
     }
 }

@@ -27,8 +27,8 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                     //{
                     //    Name = ConfigDefaults.UnitTestProviderName
                     //},
-                    //Plugins = new List<PluginEntry>(),
-                    //StepAssemblies = new List<StepAssemblyEntry>(),
+                    //Plugins = new List<PluginElement>(),
+                    //StepAssemblies = new List<StepAssemblyElement>(),
                     //Trace = new TraceElement(),
                     //Generator = new GeneratorElement()
                 }

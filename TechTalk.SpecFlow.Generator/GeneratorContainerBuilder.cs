@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Generator
 
             generatorPluginEvents.RaiseCustomizeDependencies(container, specFlowConfiguration);
 
-            container.Resolve<IConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.SpecFlowConfiguration);
+            container.Resolve<IConfigurationLoader>().TraceConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration.SpecFlowConfiguration);
 
 
             return container;

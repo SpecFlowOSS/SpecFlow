@@ -164,9 +164,9 @@
     <Compile Include="Configuration\JsonConfig\GeneratorElement.cs" />
     <Compile Include="Configuration\JsonConfig\JsonConfig.cs" />
     <Compile Include="Configuration\JsonConfig\LanguageElement.cs" />
-    <Compile Include="Configuration\JsonConfig\PluginEntry.cs" />
+    <Compile Include="Configuration\JsonConfig\PluginElement.cs" />
     <Compile Include="Configuration\JsonConfig\RuntimeElement.cs" />
-    <Compile Include="Configuration\JsonConfig\StepAssemblyEntry.cs" />
+    <Compile Include="Configuration\JsonConfig\StepAssemblyElement.cs" />
     <Compile Include="Configuration\JsonConfig\TraceElement.cs" />
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
     <Compile Include="Configuration\SpecFlowConfigurationHolder.cs" />

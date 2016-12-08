@@ -12,9 +12,5 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [JsonProperty("allowRowTests", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue(ConfigDefaults.AllowRowTests)]
         public bool AllowRowTests { get; set; }
-
-        [JsonProperty("path", DefaultValueHandling =  DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
-        [DefaultValue(ConfigDefaults.GeneratorPath)]
-        public string GeneratorPath { get; set; }
     }
 }

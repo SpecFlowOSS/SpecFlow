@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseCustomizeGlobalDependencies(container, specFlowConfiguration);
 
-            container.Resolve<IConfigurationLoader>().PrintConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration);
+            container.Resolve<IConfigurationLoader>().TraceConfigSource(container.Resolve<ITraceListener>(), specFlowConfiguration);
 
             return container;
         }

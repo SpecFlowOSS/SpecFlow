@@ -19,10 +19,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             ContainerRegistrationCollection runtimeContainerRegistrationCollection = specFlowConfiguration.CustomDependencies;
             ContainerRegistrationCollection generatorContainerRegistrationCollection = specFlowConfiguration.GeneratorCustomDependencies;
             CultureInfo featureLanguage = specFlowConfiguration.FeatureLanguage;
-            CultureInfo toolLanguage = specFlowConfiguration.ToolLanguage;
             CultureInfo bindingCulture = specFlowConfiguration.BindingCulture;
             string runtimeUnitTestProvider = specFlowConfiguration.UnitTestProvider;
-            bool detectAmbiguousMatches = specFlowConfiguration.DetectAmbiguousMatches;
             bool stopAtFirstError = specFlowConfiguration.StopAtFirstError;
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome = specFlowConfiguration.MissingOrPendingStepsOutcome;
             bool traceSuccessfulSteps = specFlowConfiguration.TraceSuccessfulSteps;
@@ -33,14 +31,12 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             List<PluginDescriptor> pluginDescriptors = specFlowConfiguration.Plugins;
 
             bool allowRowTests = specFlowConfiguration.AllowRowTests;
-            string generatorPath = specFlowConfiguration.GeneratorPath;
             bool allowDebugGeneratedFiles = specFlowConfiguration.AllowDebugGeneratedFiles;
 
 
             if (IsSpecified(configSection.Language))
             {
                 featureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
-                toolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ? CultureInfo.GetCultureInfo(configSection.Language.Feature) : CultureInfo.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (IsSpecified(configSection.BindingCulture))
@@ -50,8 +46,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
 
             if (IsSpecified(configSection.Runtime))
             {
-                detectAmbiguousMatches = configSection.Runtime.DetectAmbiguousMatches;
-
                 stopAtFirstError = configSection.Runtime.StopAtFirstError;
                 missingOrPendingStepsOutcome = configSection.Runtime.MissingOrPendingStepsOutcome;
 
@@ -65,7 +59,6 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
             {
                 allowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 allowRowTests = configSection.Generator.AllowRowTests;
-                generatorPath = configSection.Generator.GeneratorPath;
 
                 if (IsSpecified(configSection.Generator.Dependencies))
                 {
@@ -116,10 +109,8 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             runtimeContainerRegistrationCollection,
                                             generatorContainerRegistrationCollection,
                                             featureLanguage,
-                                            toolLanguage,
                                             bindingCulture,
                                             runtimeUnitTestProvider,
-                                            detectAmbiguousMatches,
                                             stopAtFirstError,
                                             missingOrPendingStepsOutcome,
                                             traceSuccessfulSteps,
@@ -129,8 +120,7 @@ namespace TechTalk.SpecFlow.Configuration.AppConfig
                                             additionalStepAssemblies,
                                             pluginDescriptors,
                                             allowDebugGeneratedFiles,
-                                            allowRowTests,
-                                            generatorPath
+                                            allowRowTests
                                             );
         }
 

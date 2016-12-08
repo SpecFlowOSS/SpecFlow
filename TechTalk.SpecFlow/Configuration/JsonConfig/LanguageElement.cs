@@ -8,8 +8,5 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         [JsonProperty("feature", DefaultValueHandling = DefaultValueHandling.Populate, NullValueHandling = NullValueHandling.Ignore)]
         [DefaultValue("en")]
         public string Feature { get; set; }
-
-        [JsonProperty("tool", NullValueHandling = NullValueHandling.Ignore)]
-        public string Tool { get; set; }
     }
 }

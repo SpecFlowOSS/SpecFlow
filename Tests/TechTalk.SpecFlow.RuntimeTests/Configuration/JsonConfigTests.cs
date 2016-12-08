@@ -58,23 +58,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
             var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
 
             runtimeConfig.FeatureLanguage.TwoLetterISOLanguageName.Should().Be("de");
-        }
-
-        [Test]
-        public void CheckToolsLanguage()
-        {
-            string config = @"{
-                              ""specflow"": {
-                                ""language"": { ""tool"": ""de"" }
-                              }
-                            }";
-
-
-
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-
-            runtimeConfig.ToolLanguage.TwoLetterISOLanguageName.Should().Be("de");
-        }
+        }       
 
         [Test]
         public void CheckBindingCulture()
@@ -107,38 +91,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Configuration
 
             runtimeConfig.UnitTestProvider.Should().Be("XUnit");
         }
-
-        [Test]
-        public void Check_Runtime_detectAmbiguousMatches_as_true()
-        {
-            string config = @"{
-                              ""specflow"": {
-                                ""runtime"": { ""detectAmbiguousMatches"": ""true"" }
-                              }
-                            }";
-
-            
-
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-
-            runtimeConfig.DetectAmbiguousMatches.Should().BeTrue();
-        }
-
-        [Test]
-        public void Check_Runtime_detectAmbiguousMatches_as_false()
-        {
-            string config = @"{
-                              ""specflow"": {
-                                ""runtime"": { ""detectAmbiguousMatches"": ""false"" }
-                              }
-                            }";
-
-            
-
-            var runtimeConfig = new JsonConfigurationLoader().LoadJson(ConfigurationLoader.GetDefault(), config);
-
-            runtimeConfig.DetectAmbiguousMatches.Should().BeFalse();
-        }
+        
 
         [Test]
         public void Check_Runtime_stopAtFirstError_as_true()

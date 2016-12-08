@@ -21,7 +21,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection);
 
-        void PrintConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
+        void TraceConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration);
     }
 
     public class ConfigurationLoader : IConfigurationLoader
@@ -74,8 +74,7 @@ namespace TechTalk.SpecFlow.Configuration
             }
         }
 
-        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration,
-            SpecFlowConfigurationHolder specFlowConfigurationHolder)
+        public SpecFlowConfiguration Load(SpecFlowConfiguration specFlowConfiguration, SpecFlowConfigurationHolder specFlowConfigurationHolder)
         {
             switch (specFlowConfigurationHolder.ConfigSource)
             {
@@ -102,13 +101,12 @@ namespace TechTalk.SpecFlow.Configuration
             return GetDefault();
         }
 
-        public SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration,
-            ConfigurationSectionHandler specFlowConfigSection)
+        public SpecFlowConfiguration Update(SpecFlowConfiguration specFlowConfiguration, ConfigurationSectionHandler specFlowConfigSection)
         {
             return LoadAppConfig(specFlowConfiguration, specFlowConfigSection);
         }
 
-        public void PrintConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration)
+        public void TraceConfigSource(ITraceListener traceListener, SpecFlowConfiguration specFlowConfiguration)
         {
             switch (specFlowConfiguration.ConfigSource)
             {
@@ -132,11 +130,9 @@ namespace TechTalk.SpecFlow.Configuration
             return new SpecFlowConfiguration(ConfigSource.Default,
                 new ContainerRegistrationCollection(), 
                 new ContainerRegistrationCollection(), 
-                DefaultFeatureLanguage,
-                DefaultToolLanguage, 
+                DefaultFeatureLanguage, 
                 DefaultBindingCulture, 
-                DefaultUnitTestProvider,
-                DefaultDetectAmbiguousMatches, 
+                DefaultUnitTestProvider, 
                 DefaultStopAtFirstError, 
                 DefaultMissingOrPendingStepsOutcome,
                 DefaultTraceSuccessfulSteps, 
@@ -146,8 +142,7 @@ namespace TechTalk.SpecFlow.Configuration
                 DefaultAdditionalStepAssemblies, 
                 DefaultPluginDescriptors,
                 DefaultAllowDebugGeneratedFiles, 
-                DefaultAllowRowTests, 
-                DefaultGeneratorPath);
+                DefaultAllowRowTests);
         }
 
 

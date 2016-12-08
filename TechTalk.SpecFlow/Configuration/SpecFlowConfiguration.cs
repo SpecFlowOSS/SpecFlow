@@ -23,10 +23,8 @@ namespace TechTalk.SpecFlow.Configuration
             ContainerRegistrationCollection customDependencies,
             ContainerRegistrationCollection generatorCustomDependencies,
             CultureInfo featureLanguage,
-            CultureInfo toolLanguage,
             CultureInfo bindingCulture,
             string unitTestProvider,
-            bool detectAmbiguousMatches,
             bool stopAtFirstError,
             MissingOrPendingStepsOutcome missingOrPendingStepsOutcome,
             bool traceSuccessfulSteps,
@@ -36,17 +34,14 @@ namespace TechTalk.SpecFlow.Configuration
             List<string> additionalStepAssemblies,
             List<PluginDescriptor> pluginDescriptors,
             bool allowDebugGeneratedFiles,
-            bool allowRowTests,
-            string generatorPath)
+            bool allowRowTests)
         {
             ConfigSource = configSource;
             CustomDependencies = customDependencies;
             GeneratorCustomDependencies = generatorCustomDependencies;
             FeatureLanguage = featureLanguage;
-            ToolLanguage = toolLanguage;
             BindingCulture = bindingCulture;
             UnitTestProvider = unitTestProvider;
-            DetectAmbiguousMatches = detectAmbiguousMatches;
             StopAtFirstError = stopAtFirstError;
             MissingOrPendingStepsOutcome = missingOrPendingStepsOutcome;
             TraceSuccessfulSteps = traceSuccessfulSteps;
@@ -57,7 +52,6 @@ namespace TechTalk.SpecFlow.Configuration
             Plugins = pluginDescriptors;
             AllowDebugGeneratedFiles = allowDebugGeneratedFiles;
             AllowRowTests = allowRowTests;
-            GeneratorPath = generatorPath;
         }
 
         public ConfigSource ConfigSource { get; set; }
@@ -68,14 +62,12 @@ namespace TechTalk.SpecFlow.Configuration
 
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
-        public CultureInfo ToolLanguage { get; set; }
         public CultureInfo BindingCulture { get; set; }
 
         //unit test framework settings
         public string UnitTestProvider { get; set; }
 
         //runtime settings
-        public bool DetectAmbiguousMatches { get; set; }
         public bool StopAtFirstError { get; set; }
         public MissingOrPendingStepsOutcome MissingOrPendingStepsOutcome { get; set; }
 
@@ -91,7 +83,6 @@ namespace TechTalk.SpecFlow.Configuration
         public List<string> AdditionalStepAssemblies { get; set; }
 
         public List<PluginDescriptor> Plugins { get; set; }
-        public string GeneratorPath { get; set; }
 
         public static IEnumerable<PluginDescriptor> GetPlugins()
         {
@@ -107,17 +98,16 @@ namespace TechTalk.SpecFlow.Configuration
         {
             return ConfigSource == other.ConfigSource && Equals(CustomDependencies, other.CustomDependencies) &&
                    Equals(GeneratorCustomDependencies, other.GeneratorCustomDependencies) &&
-                   Equals(FeatureLanguage, other.FeatureLanguage) && Equals(ToolLanguage, other.ToolLanguage) &&
+                   Equals(FeatureLanguage, other.FeatureLanguage) && 
                    Equals(BindingCulture, other.BindingCulture) &&
                    string.Equals(UnitTestProvider, other.UnitTestProvider) &&
-                   DetectAmbiguousMatches == other.DetectAmbiguousMatches && StopAtFirstError == other.StopAtFirstError &&
+                   StopAtFirstError == other.StopAtFirstError &&
                    MissingOrPendingStepsOutcome == other.MissingOrPendingStepsOutcome &&
                    AllowDebugGeneratedFiles == other.AllowDebugGeneratedFiles && AllowRowTests == other.AllowRowTests &&
                    TraceSuccessfulSteps == other.TraceSuccessfulSteps && TraceTimings == other.TraceTimings &&
                    MinTracedDuration.Equals(other.MinTracedDuration) &&
                    StepDefinitionSkeletonStyle == other.StepDefinitionSkeletonStyle &&
-                   Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) &&
-                   string.Equals(GeneratorPath, other.GeneratorPath);
+                   Equals(AdditionalStepAssemblies, other.AdditionalStepAssemblies) && Equals(Plugins, other.Plugins) ;
         }
 
         public override bool Equals(object obj)
@@ -137,10 +127,8 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode*397) ^
                            (GeneratorCustomDependencies != null ? GeneratorCustomDependencies.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ (FeatureLanguage != null ? FeatureLanguage.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (ToolLanguage != null ? ToolLanguage.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ (BindingCulture != null ? BindingCulture.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ (UnitTestProvider != null ? UnitTestProvider.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ DetectAmbiguousMatches.GetHashCode();
                 hashCode = (hashCode*397) ^ StopAtFirstError.GetHashCode();
                 hashCode = (hashCode*397) ^ (int) MissingOrPendingStepsOutcome;
                 hashCode = (hashCode*397) ^ AllowDebugGeneratedFiles.GetHashCode();
@@ -152,7 +140,6 @@ namespace TechTalk.SpecFlow.Configuration
                 hashCode = (hashCode*397) ^
                            (AdditionalStepAssemblies != null ? AdditionalStepAssemblies.GetHashCode() : 0);
                 hashCode = (hashCode*397) ^ (Plugins != null ? Plugins.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (GeneratorPath != null ? GeneratorPath.GetHashCode() : 0);
                 return hashCode;
             }
         }

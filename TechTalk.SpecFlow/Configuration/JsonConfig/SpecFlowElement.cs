@@ -25,9 +25,9 @@ namespace TechTalk.SpecFlow.Configuration.JsonConfig
         public TraceElement Trace { get; set; }
 
         [JsonProperty("stepAssemblies", NullValueHandling = NullValueHandling.Ignore)]
-        public List<StepAssemblyEntry> StepAssemblies { get; set; }
+        public List<StepAssemblyElement> StepAssemblies { get; set; }
 
         [JsonProperty("plugins", NullValueHandling = NullValueHandling.Ignore)]
-        public List<PluginEntry> Plugins { get; set; }
+        public List<PluginElement> Plugins { get; set; }
     }
 }

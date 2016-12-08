@@ -3,7 +3,7 @@ using TechTalk.SpecFlow.Plugins;
 
 namespace TechTalk.SpecFlow.Configuration.JsonConfig
 {
-    public class PluginEntry
+    public class PluginElement
     {
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
