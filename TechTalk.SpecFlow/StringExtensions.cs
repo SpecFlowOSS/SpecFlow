@@ -2,7 +2,7 @@
 
 namespace TechTalk.SpecFlow
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static bool IsNullOrEmpty(this string value)
         {

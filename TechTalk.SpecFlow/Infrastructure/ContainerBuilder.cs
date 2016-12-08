@@ -51,10 +51,8 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             runtimePluginEvents.RaiseRegisterGlobalDependencies(container);
 
-#if !BODI_LIMITEDRUNTIME
             if (specFlowConfiguration.CustomDependencies != null)
                 container.RegisterFromConfiguration(specFlowConfiguration.CustomDependencies);
-#endif
 
             container.RegisterInstanceAs(specFlowConfiguration);
 

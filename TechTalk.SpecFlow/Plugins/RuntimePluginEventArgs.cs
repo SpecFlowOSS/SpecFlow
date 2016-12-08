@@ -23,23 +23,23 @@ namespace TechTalk.SpecFlow.Plugins
 
     public class CustomizeGlobalDependenciesEventArgs : ObjectContainerEventArgs
     {
-        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, Configuration.SpecFlowConfiguration specFlowConfiguration) 
+        public CustomizeGlobalDependenciesEventArgs(ObjectContainer objectContainer, SpecFlowConfiguration specFlowConfiguration) 
             : base(objectContainer)
         {
-            this.SpecFlowConfiguration = specFlowConfiguration;
+            SpecFlowConfiguration = specFlowConfiguration;
         }
 
-        public Configuration.SpecFlowConfiguration SpecFlowConfiguration { get; private set; }
+        public SpecFlowConfiguration SpecFlowConfiguration { get; private set; }
     }
 
     public class ConfigurationDefaultsEventArgs : EventArgs
     {
-        public ConfigurationDefaultsEventArgs(Configuration.SpecFlowConfiguration specFlowConfiguration)
+        public ConfigurationDefaultsEventArgs(SpecFlowConfiguration specFlowConfiguration)
         {
-            this.SpecFlowConfiguration = specFlowConfiguration;
+            SpecFlowConfiguration = specFlowConfiguration;
         }
 
-        public Configuration.SpecFlowConfiguration SpecFlowConfiguration { get; private set; }
+        public SpecFlowConfiguration SpecFlowConfiguration { get; private set; }
     }
 
     public class CustomizeTestThreadDependenciesEventArgs : ObjectContainerEventArgs
