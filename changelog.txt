@@ -4,6 +4,7 @@ Smaller Improvements/fixes:
 + The results of comparisons made against sets will be displayed as a comma-delimited list.
 + Fix code generation for VB.Net
 + Scenario Outline example tags do now appear in ScenarioContext.ScenarioInfo.Tags
++ Fix scenario outline variants showing without source code if generating row tests is disabled
 
 API changes:
 + Move SourceFilePath from SpecFlowFeature to SpecFlowDocument
