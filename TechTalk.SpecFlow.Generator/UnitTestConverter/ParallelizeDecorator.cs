@@ -17,7 +17,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         {
             this.tagFilterMatcher = tagFilterMatcher;
             this.generateParallelCodeForFeatures = generatorConfiguration.GenerateParallelCodeForFeatures;
-            this.ignoreParallelCodeGenerationTags = generatorConfiguration.IgnoreParallelCodeGenerationTags;
+            this.ignoreParallelCodeGenerationTags = generatorConfiguration.SkipParallelizableMarkerForTags;
         }
 
         public int Priority

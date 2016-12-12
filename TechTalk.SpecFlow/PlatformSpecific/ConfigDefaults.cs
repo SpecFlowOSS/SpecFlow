@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const string GeneratorPath = null;
 
         public const bool GenerateParallelCodeForFeatures = false;
-        public static readonly string[] IgnoreParallelCodeGenerationTags = new string[0];
+        public static readonly string[] SkipParallelizableMarkerForTags = new string[0];
     }
 // ReSharper restore RedundantNameQualifier
 }

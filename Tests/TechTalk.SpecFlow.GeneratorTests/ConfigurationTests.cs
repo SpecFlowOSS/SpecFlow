@@ -43,9 +43,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             generatorConfiguration.UpdateFromConfigFile(ConfigurationSectionHandler.CreateFromXml(configString));
 
             Assert.IsTrue(generatorConfiguration.GenerateParallelCodeForFeatures);
-            Assert.IsNotEmpty(generatorConfiguration.IgnoreParallelCodeGenerationTags);
-            Assert.Contains("mySpecialTag1",generatorConfiguration.IgnoreParallelCodeGenerationTags);
-            Assert.Contains("mySpecialTag2", generatorConfiguration.IgnoreParallelCodeGenerationTags);
+            Assert.IsNotEmpty(generatorConfiguration.SkipParallelizableMarkerForTags);
+            Assert.Contains("mySpecialTag1",generatorConfiguration.SkipParallelizableMarkerForTags);
+            Assert.Contains("mySpecialTag2", generatorConfiguration.SkipParallelizableMarkerForTags);
         }
     }
 }

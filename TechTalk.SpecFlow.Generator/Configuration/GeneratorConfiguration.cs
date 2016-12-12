@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
         public bool GenerateParallelCodeForFeatures { get; set; }
-        public string[] IgnoreParallelCodeGenerationTags { get; set; }
+        public string[] SkipParallelizableMarkerForTags { get; set; }
         public string GeneratorPath { get; set; }
 
         public bool UsesPlugins { get; private set; }
@@ -40,7 +40,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             GeneratorPath = ConfigDefaults.GeneratorPath;
 
             GenerateParallelCodeForFeatures = ConfigDefaults.GenerateParallelCodeForFeatures;
-            IgnoreParallelCodeGenerationTags = ConfigDefaults.IgnoreParallelCodeGenerationTags;
+            SkipParallelizableMarkerForTags = ConfigDefaults.SkipParallelizableMarkerForTags;
 
             UsesPlugins = false;
         }
@@ -70,10 +70,10 @@ namespace TechTalk.SpecFlow.Generator.Configuration
                     UsesPlugins = true;
                 }
 
-                if (IsSpecified(configSection.Generator.IgnoreParallelTags))
+                if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
                 {
-                    this.IgnoreParallelCodeGenerationTags =
-                        configSection.Generator.IgnoreParallelTags.Select(x => x.Value).ToArray();
+                    this.SkipParallelizableMarkerForTags =
+                        configSection.Generator.SkipParallelizableMarkerForTags.Select(x => x.Value).ToArray();
                 }
             }
 

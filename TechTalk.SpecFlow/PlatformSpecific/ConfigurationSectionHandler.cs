@@ -231,12 +231,12 @@ namespace TechTalk.SpecFlow.Configuration
             set { this["generateParallelCodeForFeatures"] = value; }
         }
 
-        [ConfigurationProperty("ignoreParallelTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
+        [ConfigurationProperty("skipParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
         [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
-        public TagCollection IgnoreParallelTags
+        public TagCollection SkipParallelizableMarkerForTags
         {
-            get { return (TagCollection)this["ignoreParallelTags"]; }
-            set { this["ignoreParallelTags"] = value; }
+            get { return (TagCollection)this["skipParallelizableMarkerForTags"]; }
+            set { this["skipParallelizableMarkerForTags"] = value; }
         }
 
     }
