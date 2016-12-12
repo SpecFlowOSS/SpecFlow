@@ -17,10 +17,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
                 <generator allowDebugGeneratedFiles=""false""
                            generateParallelCodeForFeatures=""true"">
-                    <ignoreParallelTags>
+                    <skipParallelizableMarkerForTags>
                         <tag value=""mySpecialTag1""/>
                         <tag value=""mySpecialTag2""/>
-                    </ignoreParallelTags>
+                    </skipParallelizableMarkerForTags>
                 </generator>
                  
     
