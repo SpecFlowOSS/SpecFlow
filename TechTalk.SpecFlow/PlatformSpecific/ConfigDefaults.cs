@@ -24,7 +24,7 @@ namespace TechTalk.SpecFlow.Configuration
         public const bool AllowRowTests = true;
         public const string GeneratorPath = null;
 
-        public const bool GenerateParallelCodeForFeatures = false;
+        public const bool MarkFeaturesParallelizable = false;
         public static readonly string[] SkipParallelizableMarkerForTags = new string[0];
     }
 // ReSharper restore RedundantNameQualifier

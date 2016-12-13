@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                                     runtimeProvider=""TechTalk.SpecFlow.UnitTestProvider.NUnitRuntimeProvider, TechTalk.SpecFlow"" />
 
                 <generator allowDebugGeneratedFiles=""false""
-                           generateParallelCodeForFeatures=""true"">
+                           markFeaturesParallelizable=""true"">
                     <skipParallelizableMarkerForTags>
                         <tag value=""mySpecialTag1""/>
                         <tag value=""mySpecialTag2""/>
@@ -42,7 +42,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             var generatorConfiguration = new GeneratorConfiguration();
             generatorConfiguration.UpdateFromConfigFile(ConfigurationSectionHandler.CreateFromXml(configString));
 
-            Assert.IsTrue(generatorConfiguration.GenerateParallelCodeForFeatures);
+            Assert.IsTrue(generatorConfiguration.MarkFeaturesParallelizable);
             Assert.IsNotEmpty(generatorConfiguration.SkipParallelizableMarkerForTags);
             Assert.Contains("mySpecialTag1",generatorConfiguration.SkipParallelizableMarkerForTags);
             Assert.Contains("mySpecialTag2", generatorConfiguration.SkipParallelizableMarkerForTags);

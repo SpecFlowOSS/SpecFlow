@@ -22,7 +22,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
-        public bool GenerateParallelCodeForFeatures { get; set; }
+        public bool MarkFeaturesParallelizable { get; set; }
         public string[] SkipParallelizableMarkerForTags { get; set; }
         public string GeneratorPath { get; set; }
 
@@ -39,7 +39,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             AllowRowTests = ConfigDefaults.AllowRowTests;
             GeneratorPath = ConfigDefaults.GeneratorPath;
 
-            GenerateParallelCodeForFeatures = ConfigDefaults.GenerateParallelCodeForFeatures;
+            MarkFeaturesParallelizable = ConfigDefaults.MarkFeaturesParallelizable;
             SkipParallelizableMarkerForTags = ConfigDefaults.SkipParallelizableMarkerForTags;
 
             UsesPlugins = false;
@@ -61,7 +61,7 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
-                GenerateParallelCodeForFeatures = configSection.Generator.GenerateParallelCodeForFeatures;
+                MarkFeaturesParallelizable = configSection.Generator.MarkFeaturesParallelizable;
                 GeneratorPath = configSection.Generator.GeneratorPath;
 
                 if (IsSpecified(configSection.Generator.Dependencies))

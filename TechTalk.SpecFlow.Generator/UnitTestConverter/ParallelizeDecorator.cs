@@ -16,7 +16,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestConverter
         public ParallelizeDecorator(ITagFilterMatcher tagFilterMatcher, GeneratorConfiguration generatorConfiguration)
         {
             this.tagFilterMatcher = tagFilterMatcher;
-            this.generateParallelCodeForFeatures = generatorConfiguration.GenerateParallelCodeForFeatures;
+            this.generateParallelCodeForFeatures = generatorConfiguration.MarkFeaturesParallelizable;
             this.ignoreParallelCodeGenerationTags = generatorConfiguration.SkipParallelizableMarkerForTags;
         }
 

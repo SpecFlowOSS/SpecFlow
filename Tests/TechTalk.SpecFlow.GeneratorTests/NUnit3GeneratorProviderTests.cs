@@ -84,7 +84,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
         {
             var container = GeneratorContainerBuilder.CreateContainer(new SpecFlowConfigurationHolder(), new ProjectSettings());
             var generatorConfiguration = container.Resolve<GeneratorConfiguration>();
-            generatorConfiguration.GenerateParallelCodeForFeatures = parallelCode;
+            generatorConfiguration.MarkFeaturesParallelizable = parallelCode;
             generatorConfiguration.SkipParallelizableMarkerForTags = ignoreParallelTags ??
                                                                       Enumerable.Empty<string>().ToArray();
             container.RegisterInstanceAs(CreateTestGeneratorProvider());

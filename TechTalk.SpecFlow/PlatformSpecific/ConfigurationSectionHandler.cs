@@ -224,11 +224,11 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (string)this["path"]; }
             set { this["path"] = value; }
         }
-        [ConfigurationProperty("generateParallelCodeForFeatures", DefaultValue = ConfigDefaults.GenerateParallelCodeForFeatures, IsRequired = false)]
-        public bool GenerateParallelCodeForFeatures
+        [ConfigurationProperty("markFeaturesParallelizable", DefaultValue = ConfigDefaults.MarkFeaturesParallelizable, IsRequired = false)]
+        public bool MarkFeaturesParallelizable
         {
-            get { return (bool)this["generateParallelCodeForFeatures"]; }
-            set { this["generateParallelCodeForFeatures"] = value; }
+            get { return (bool)this["markFeaturesParallelizable"]; }
+            set { this["markFeaturesParallelizable"] = value; }
         }
 
         [ConfigurationProperty("skipParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
