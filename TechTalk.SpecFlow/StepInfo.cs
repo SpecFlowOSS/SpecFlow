@@ -9,6 +9,8 @@ namespace TechTalk.SpecFlow
         public string Text { get; private set; }
         public Table Table { get; private set; }
         public string MultilineText { get; private set; }
+        public IStepDefinitionBinding StepBinding { get; internal set; }
+
 
         public StepInfo(StepDefinitionType stepDefinitionType, string text, Table table, string multilineText)
         {
@@ -17,5 +19,7 @@ namespace TechTalk.SpecFlow
             Table = table;
             MultilineText = multilineText;
         }
+
+
     }
 }
