@@ -103,6 +103,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."), Times.Once());
         }
 
+        [Test]
         public void StepContext_WhenInitializedOnce_ShouldReportStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -116,6 +117,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(firstStepInfo, actualStepInfo);
         }
 
+        [Test]
         public void StepContext_WhenInitializedTwice_ShouldReportSecondStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -130,6 +132,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(secondStepInfo, actualStepInfo);
         }
 
+        [Test]
         public void StepContext_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
