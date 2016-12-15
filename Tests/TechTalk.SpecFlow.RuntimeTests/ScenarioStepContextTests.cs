@@ -141,6 +141,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
             contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
+            contextManager.CleanupStepContext();
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
