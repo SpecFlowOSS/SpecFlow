@@ -55,5 +55,10 @@ namespace TechTalk.SpecFlow.Assist
 
             return list;
         }
+
+        public static IEnumerable<T> CreateSet<T>(this Table table, Func<TableRow, T> methodToCreateEachInstance)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
