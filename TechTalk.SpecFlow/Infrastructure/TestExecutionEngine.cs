@@ -202,7 +202,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(HookType bindingEvent)
+
+        protected virtual void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
