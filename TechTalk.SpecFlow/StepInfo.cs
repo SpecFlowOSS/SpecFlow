@@ -9,7 +9,8 @@ namespace TechTalk.SpecFlow
         public string Text { get; private set; }
         public Table Table { get; private set; }
         public string MultilineText { get; private set; }
-        public IStepDefinitionBinding StepBinding { get; internal set; }
+        public BindingMatch BindingMatch { get; set; }
+        public StepInstance StepInstance { get; set; }
 
 
         public StepInfo(StepDefinitionType stepDefinitionType, string text, Table table, string multilineText)

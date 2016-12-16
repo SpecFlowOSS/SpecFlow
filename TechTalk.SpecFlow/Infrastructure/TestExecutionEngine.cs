@@ -240,7 +240,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             try
             {
                 match = GetStepMatch(stepInstance);
-                contextManager.StepContext.StepInfo.StepBinding = match.StepBinding;
+                contextManager.StepContext.StepInfo.BindingMatch = match;
+                contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
