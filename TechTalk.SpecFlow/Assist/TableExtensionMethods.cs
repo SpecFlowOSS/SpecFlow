@@ -21,6 +21,13 @@ namespace TechTalk.SpecFlow.Assist
             return instance;
         }
 
+        public static T CreateInstance<T>(this Table table, Func<Table, T> methodToCreateTheInstance)
+        {
+            var instance = methodToCreateTheInstance(table);
+            table.FillInstance(instance);
+            return instance;
+        }
+
         public static void FillInstance(this Table table, object instance)
         {
             var instanceTable = TEHelpers.GetTheProperInstanceTable(table, instance.GetType());
