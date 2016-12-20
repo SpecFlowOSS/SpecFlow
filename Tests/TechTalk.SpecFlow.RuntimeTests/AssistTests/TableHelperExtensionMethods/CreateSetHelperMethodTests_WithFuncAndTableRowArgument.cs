@@ -6,6 +6,7 @@ using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
@@ -84,6 +85,26 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             foreach (var person in people)
                 LastNameString_ShouldStartWith_FirstNameString(person);
+        }
+
+        [Test]
+        public void It_should_be_easy_to_interact_with_the_row()
+        {
+            var table = new Table("First Name", "Birth Date");
+            table.AddRow("John", "1/1/1900");
+            table.AddRow("Howard", "2/2/1920");
+
+            var people = table.CreateSet(row => new Person
+            {
+                FirstName = row["First Name"],
+                BirthDate = new DateTimeValueRetriever().GetValue(row["Birth Date"]),
+            });
+
+            people.First().FirstName.Should().Equals("John");
+            people.Last().FirstName.Should().Equals("Howard");
+
+            people.First().BirthDate.Should().Equals(DateTime.Parse("1/1/1900"));
+            people.Last().BirthDate.Should().Equals(DateTime.Parse("2/2/1920"));
         }
 
         private static void LastNameString_ShouldStartWith_FirstNameString(Person person)
