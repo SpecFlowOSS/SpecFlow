@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.RuntimeTests.AssistTests.ExampleEntities;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
@@ -69,8 +70,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
 
             var person = table.CreateInstance(tbl =>
             {
-                throw new Exception("This does not make the table easily used, perhaps flip it to a table row?");
-                return new Person {/*BirthDate = ???*/};
+                // this is going to fail, because the table
+                // here has been flipped to the Field/Value form
+                // even though it is in a horizontal form above
+                return new Person
+                {
+                    FirstName = tbl.Rows[0]["FirstName"],
+                    LastName = tbl.Rows[0]["LastName"],
+                    BirthDate = new DateTimeValueRetriever().GetValue(tbl.Rows[0]["BirthDate"]),
+                };
             });
 
             person.FirstName.Should().Be("John");
