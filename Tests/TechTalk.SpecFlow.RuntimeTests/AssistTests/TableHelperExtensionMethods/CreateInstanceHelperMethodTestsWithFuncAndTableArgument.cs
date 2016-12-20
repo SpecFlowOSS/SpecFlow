@@ -61,5 +61,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             person.LastName.Should().Be("Galt");
         }
 
+        [Test]
+        public void CreateInstance_should_be_easy_to_work_with()
+        {
+            var table = new Table("First Name", "Last Name", "Birth Date");
+            table.AddRow("John", "Galt", "1/1/1940");
+
+            var person = table.CreateInstance(tbl =>
+            {
+                throw new Exception("This does not make the table easily used, perhaps flip it to a table row?");
+                return new Person {/*BirthDate = ???*/};
+            });
+
+            person.FirstName.Should().Be("John");
+            person.LastName.Should().Be("Galt");
+            person.BirthDate.Should().Be(DateTime.Parse("1/1/1940"));
+        }
     }
 }
