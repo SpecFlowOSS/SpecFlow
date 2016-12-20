@@ -48,5 +48,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.TableHelperExtensionMethods
             tableFromCallback.Should().Be(table);
         }
 
+        [Test]
+        public void CreateInstance_works_with_a_horizontal_table()
+        {
+            var table = new Table("First Name", "Last Name");
+            table.AddRow("John", "Galt");
+
+            var expectedPerson = new Person { FirstName = "John", LastName = "Galt" };
+            var person = table.CreateInstance(tbl => expectedPerson);
+
+            person.FirstName.Should().Be("John");
+            person.LastName.Should().Be("Galt");
+        }
+
     }
 }
