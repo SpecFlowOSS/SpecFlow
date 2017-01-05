@@ -226,7 +226,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
-        private void ExecuteStep(StepInstance stepInstance)
+        private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
         {
             HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
@@ -240,6 +240,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             try
             {
                 match = GetStepMatch(stepInstance);
+                contextManager.StepContext.StepInfo.BindingMatch = match;
+                contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -399,7 +401,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg));
             try
             {
-                ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                var stepInstance = new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext());
+                ExecuteStep(contextManager, stepInstance);
             }
             finally
             {
