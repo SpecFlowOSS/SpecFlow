@@ -202,7 +202,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(HookType bindingEvent)
+
+        protected virtual void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
@@ -304,7 +305,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepInstance stepInstance)
+        protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
@@ -327,7 +328,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw errorProvider.GetMissingStepDefinitionError();
         }
 
-        private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             TimeSpan duration = TimeSpan.Zero;
             try
