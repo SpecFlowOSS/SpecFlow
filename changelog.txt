@@ -1,3 +1,9 @@
+2.2.0-* - *
+
+Fixes:
++ Removed obsolete marked StepScopeAttribute - use the ScopeAttribute for it
+
+
 2.2.0-preview20161020 - 2016-10-20
 
 Smaller Improvements/fixes:

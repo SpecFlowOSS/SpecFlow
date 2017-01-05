@@ -12,10 +12,4 @@ namespace TechTalk.SpecFlow
         public string Feature { get; set; }
         public string Scenario { get; set; }
     }
-
-
-    [Obsolete("Use [Scope] attribute instead.")]
-    public class StepScopeAttribute : ScopeAttribute
-    {
-    }
 }
