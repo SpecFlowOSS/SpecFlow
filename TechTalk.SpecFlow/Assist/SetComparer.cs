@@ -111,10 +111,14 @@ namespace TechTalk.SpecFlow.Assist
             {
                 var instanceTable = pivotTable.GetInstanceTable(index);
                 if (!ThisItemIsAMatch(instanceTable, actualItems[index]))
-                    listOfMissingItems.Add(index);
+                    listOfMissingItems.Add(index + 1);
             }
 
-            extraOrNonMatchingActualItems = new List<Tuple<T, int?>>(); //TODO
+            extraOrNonMatchingActualItems = 
+                listOfMissingItems.Select(index => new Tuple<T, int?>(actualItems[index-1], index)).Concat(
+                actualItems.Skip(table.RowCount).Select(i => new Tuple<T, int?>(i, null)))
+                .ToList();
+
             return listOfMissingItems;
         }
 
