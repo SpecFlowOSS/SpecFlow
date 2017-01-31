@@ -59,23 +59,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             var fixtureDataType =
                 CodeDomHelper.CreateNestedTypeReference(generationContext.TestClass, _currentFixtureDataTypeDeclaration.Name);
 
-            var useFixtureType = CreateFixtureInterface(fixtureDataType);
+            var useFixtureType = CreateFixtureInterface(generationContext, fixtureDataType);
 
             CodeDomHelper.SetTypeReferenceAsInterface(useFixtureType);
 
             generationContext.TestClass.BaseTypes.Add(useFixtureType);
-
-            // public void SetFixture(T) { } // explicit interface implementation for generic interfaces does not work with codedom
-
-            CodeMemberMethod setFixtureMethod = new CodeMemberMethod();
-            setFixtureMethod.Attributes = MemberAttributes.Public;
-            setFixtureMethod.Name = "SetFixture";
-            setFixtureMethod.Parameters.Add(new CodeParameterDeclarationExpression(fixtureDataType, "fixtureData"));
-            if (ImplmentInterfaceExplicit)
-            {
-                setFixtureMethod.ImplementationTypes.Add(useFixtureType);
-            }
-            generationContext.TestClass.Members.Add(setFixtureMethod);
 
             // public <_currentFixtureTypeDeclaration>() { <fixtureSetupMethod>(); }
             CodeConstructor ctorMethod = new CodeConstructor();
@@ -158,10 +146,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             ctorMethod.Attributes = MemberAttributes.Public;
             generationContext.TestClass.Members.Add(ctorMethod);
 
-            ctorMethod.Statements.Add(
-                new CodeMethodInvokeExpression(
-                    new CodeThisReferenceExpression(),
-                    generationContext.TestInitializeMethod.Name));
+            SetTestConstructor(generationContext, ctorMethod);
         }
 
         public void SetTestCleanupMethod(TestClassGenerationContext generationContext)
@@ -215,6 +200,13 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             }
         }
 
+        protected virtual void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod) {
+          ctorMethod.Statements.Add(
+              new CodeMethodInvokeExpression(
+                  new CodeThisReferenceExpression(),
+                  generationContext.TestInitializeMethod.Name));
+        }
+
         protected void SetProperty(CodeTypeMember codeTypeMember, string name, string value)
         {
             CodeDomHelper.AddAttribute(codeTypeMember, TRAIT_ATTRIBUTE, name, value);
@@ -226,9 +218,19 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             SetProperty(codeTypeMember, DESCRIPTION_PROPERTY_NAME, description);
         }
 
-        protected virtual CodeTypeReference CreateFixtureInterface(CodeTypeReference fixtureDataType)
+        protected virtual CodeTypeReference CreateFixtureInterface(TestClassGenerationContext generationContext, CodeTypeReference fixtureDataType)
         {
-            return new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+            var useFixtureType = new CodeTypeReference(IUSEFIXTURE_INTERFACE, fixtureDataType);
+            // public void SetFixture(T) { } // explicit interface implementation for generic interfaces does not work with codedom
+
+            CodeMemberMethod setFixtureMethod = new CodeMemberMethod();
+            setFixtureMethod.Attributes = MemberAttributes.Public;
+            setFixtureMethod.Name = "SetFixture";
+            setFixtureMethod.Parameters.Add(new CodeParameterDeclarationExpression(fixtureDataType, "fixtureData"));
+            setFixtureMethod.ImplementationTypes.Add(useFixtureType);
+            generationContext.TestClass.Members.Add(setFixtureMethod);
+
+            return useFixtureType;
         }
 
         public virtual void FinalizeTestClass(TestClassGenerationContext generationContext)
