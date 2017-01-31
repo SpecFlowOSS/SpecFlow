@@ -55,6 +55,21 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
         }
 
         [Test]
+        public void Table_with_all_columns_different_case_should_be_sequence_equal_to_collection()
+        {
+            var table = CreateTableWithAllColumns();
+            foreach (var column in table.Header) // change them to lower case
+                table.RenameColumn(column, column.ToLowerInvariant());
+
+            table.AddRow(DateTime.Today.ToString(), testGuid1.ToString(), 1.ToString(), "a");
+            table.AddRow(DateTime.Today.ToString(), testGuid2.ToString(), 2.ToString(), "b");
+
+            var setProjection = testCollection.ToProjection();
+            var tableProjection = table.ToProjection<SetComparisonTestObject>();
+            Assert.IsTrue(tableProjection.SequenceEqual(setProjection));
+        }
+
+        [Test]
         public void Table_with_all_columns_same_rows_but_different_order_should_not_be_sequence_equal_to_collection()
         {
             var table = CreateTableWithAllColumns();

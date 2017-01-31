@@ -173,7 +173,7 @@
       </xsl:call-template>: <xsl:call-template name="get-name"/></h3>
     <table class="reportTable" cellpadding="0" cellspacing="0">
       <tr>
-        <th class="top left">
+        <th class="top left" style="word-wrap: break-word; max-width: 80%;">
           <xsl:call-template name="get-keyword">
             <xsl:with-param name="keyword" select="'Scenario'" />
           </xsl:call-template>
@@ -181,7 +181,9 @@
         <th class="top" style="width: 5em">Status</th>
         <th class="top" style="width: 5em">Time(s)</th>
       </tr>
-      <xsl:apply-templates select=".//nunit:test-case" />
+      <xsl:apply-templates select=".//nunit:test-case">
+        <xsl:sort select="@name" />
+      </xsl:apply-templates>
     </table>
   </xsl:template>
 
@@ -195,28 +197,24 @@
     <xsl:variable name="scenario-id" select="generate-id()" />
     <xsl:variable name="testName" select="@name" />
     <tr>
-      <td class="left">
+      <td class="left" style="word-wrap: break-word; max-width: 80%;">
         <xsl:call-template name="get-name"/>
         <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
-              <xsl:with-param name="text-key" select="'Show'" />
-            </xsl:call-template>]</a>
+          <a href="#" onclick="toggle('out{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text"><xsl:with-param name="text-key" select="'Show'" /></xsl:call-template>]</a>
         </xsl:if>
       </td>
       <td class="{$status}">
         <xsl:value-of select="$status"/>
         <xsl:if test="$status = 'failure'">
           <xsl:text> </xsl:text>
-          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text">
-              <xsl:with-param name="text-key" select="'Show'" />
-            </xsl:call-template>]</a>
+          <a href="#" onclick="toggle('err{$scenario-id}', event); return false;" class="button">[<xsl:call-template name="get-common-tool-text"><xsl:with-param name="text-key" select="'Show'" /></xsl:call-template>]</a>
         </xsl:if>
       </td>
-      <td>
+      <td style="text-align:right;">
         <xsl:choose>
           <xsl:when test="@time">
-            <xsl:value-of select="@time"/>
+            <xsl:value-of select='format-number(@time, "#0.000")' />
           </xsl:when>
           <xsl:otherwise>N/A</xsl:otherwise>
         </xsl:choose>
@@ -224,8 +222,8 @@
     </tr>
     <xsl:if test="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]">
       <tr id="out{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
-          <div class="failurePanel">
+        <td class="left subRow" style="max-width: 80%;">
+          <div class="failurePanel" style="overflow: visible; max-width: 640px">
             <pre>
               <xsl:call-template name="scenario-output">
                 <xsl:with-param name="word" select="/sfr:NUnitExecutionReport/sfr:ScenarioOutput[@name = $testName]/sfr:Text"/>
@@ -237,7 +235,7 @@
     </xsl:if>
     <xsl:if test="$status = 'failure'">
       <tr id="err{$scenario-id}" class="hidden">
-        <td class="left subRow" colspan="3">
+        <td class="left subRow" style="max-width: 80%;">
           <xsl:apply-templates select="nunit:failure" />
         </td>
       </tr>
@@ -245,24 +243,24 @@
   </xsl:template>
 
   <xsl:template match="nunit:failure">
-    <div class="failurePanel">
-    <xsl:choose>
-      <xsl:when test="not(nunit:message)">N/A</xsl:when>
-      <xsl:otherwise>
-        <b>
-          <xsl:call-template name="br-replace">
-            <xsl:with-param name="word" select="nunit:message"/>
-          </xsl:call-template>
-        </b>
-      </xsl:otherwise>
-    </xsl:choose>
-    <!-- display the stacktrace -->
-    <code>
-      <br/>
-      <xsl:call-template name="br-replace">
-        <xsl:with-param name="word" select="nunit:stack-trace"/>
-      </xsl:call-template>
-    </code>
+    <div class="failurePanel" style="overflow: visible; max-width: 640px">
+      <xsl:choose>
+        <xsl:when test="not(nunit:message)">N/A</xsl:when>
+        <xsl:otherwise>
+          <b>
+            <xsl:call-template name="br-replace">
+              <xsl:with-param name="word" select="nunit:message"/>
+            </xsl:call-template>
+          </b>
+        </xsl:otherwise>
+      </xsl:choose>
+      <!-- display the stacktrace -->
+      <code>
+        <br/>
+        <xsl:call-template name="br-replace">
+          <xsl:with-param name="word" select="nunit:stack-trace"/>
+        </xsl:call-template>
+      </code>
     </div>
   </xsl:template>
 

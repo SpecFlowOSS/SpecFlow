@@ -202,7 +202,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(HookType bindingEvent)
+
+        protected virtual void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
@@ -226,7 +227,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
-        private void ExecuteStep(StepInstance stepInstance)
+        private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
         {
             HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
@@ -240,6 +241,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             try
             {
                 match = GetStepMatch(stepInstance);
+                contextManager.StepContext.StepInfo.BindingMatch = match;
+                contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -302,7 +305,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepInstance stepInstance)
+        protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
@@ -325,7 +328,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw errorProvider.GetMissingStepDefinitionError();
         }
 
-        private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             TimeSpan duration = TimeSpan.Zero;
             try
@@ -399,7 +402,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg));
             try
             {
-                ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                var stepInstance = new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext());
+                ExecuteStep(contextManager, stepInstance);
             }
             finally
             {
