@@ -45,14 +45,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 ".AgnosticLineBreak());
         }
 
-        private Tuple<TestObject, int?>[] GetEmptyMissingItemsList()
+        private TableDifferenceItem<TestObject>[] GetEmptyMissingItemsList()
         {
-            return new Tuple<TestObject, int?>[0];
+            return new TableDifferenceItem<TestObject>[0];
         }
 
-        private Tuple<TestObject, int?>[] GetMissingItemsList(TestObject[] items)
+        private TableDifferenceItem<TestObject>[] GetMissingItemsList(TestObject[] items)
         {
-            return items.Select(i => new Tuple<TestObject, int?>(i, null)).ToArray();
+            return items.Select(i => new TableDifferenceItem<TestObject>(i)).ToArray();
         }
 
         [Test]

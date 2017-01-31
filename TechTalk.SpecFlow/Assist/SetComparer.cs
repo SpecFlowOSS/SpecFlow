@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
-        private List<Tuple<T, int?>> extraOrNonMatchingActualItems;
+        private List<TableDifferenceItem<T>> extraOrNonMatchingActualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
 
         public SetComparer(Table table)
@@ -95,7 +95,7 @@ namespace TechTalk.SpecFlow.Assist
                     RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
             }
 
-            extraOrNonMatchingActualItems = actualItems.Select(i => new Tuple<T, int?>(i, null)).ToList();
+            extraOrNonMatchingActualItems = actualItems.Select(i => new TableDifferenceItem<T>(i)).ToList();
             return listOfMissingItems;
         }
 
@@ -115,8 +115,8 @@ namespace TechTalk.SpecFlow.Assist
             }
 
             extraOrNonMatchingActualItems = 
-                listOfMissingItems.Select(index => new Tuple<T, int?>(actualItems[index-1], index)).Concat(
-                actualItems.Skip(table.RowCount).Select(i => new Tuple<T, int?>(i, null)))
+                listOfMissingItems.Select(index => new TableDifferenceItem<T>(actualItems[index-1], index)).Concat(
+                actualItems.Skip(table.RowCount).Select(i => new TableDifferenceItem<T>(i)))
                 .ToList();
 
             return listOfMissingItems;

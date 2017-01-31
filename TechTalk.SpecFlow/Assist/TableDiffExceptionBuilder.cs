@@ -25,13 +25,13 @@ namespace TechTalk.SpecFlow.Assist
                     prefix = "- ";
                 realData.AppendLine(prefix + line);
 
-                var missingIndexedItem = tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.FirstOrDefault(i => i.Item2 == index);
+                var missingIndexedItem = tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.FirstOrDefault(i => i.Index == index);
                 if (missingIndexedItem != null)
                     AppendExtraLineText(tableDifferenceResults, missingIndexedItem, realData);
                 index++;
             }
 
-            foreach (var item in tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.Where(i => i.Item2 == null))
+            foreach (var item in tableDifferenceResults.ItemsInTheDataThatWereNotFoundInTheTable.Where(i => !i.IsIndexSpecific))
             {
                 AppendExtraLineText(tableDifferenceResults, item, realData);
             }
@@ -39,11 +39,11 @@ namespace TechTalk.SpecFlow.Assist
             return realData.ToString();
         }
 
-        private void AppendExtraLineText(TableDifferenceResults<T> tableDifferenceResults, Tuple<T, int?> item, StringBuilder realData)
+        private void AppendExtraLineText(TableDifferenceResults<T> tableDifferenceResults, TableDifferenceItem<T> item, StringBuilder realData)
         {
             var line = "+ |";
             foreach (var header in tableDifferenceResults.Table.Header)
-                line += $" {GetTheValue(item.Item1, header)} |";
+                line += $" {GetTheValue(item.Item, header)} |";
             realData.AppendLine(line);
         }
 
