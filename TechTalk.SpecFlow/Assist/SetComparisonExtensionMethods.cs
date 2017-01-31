@@ -7,7 +7,7 @@ namespace TechTalk.SpecFlow.Assist
         public static void CompareToSet<T>(this Table table, IEnumerable<T> set, bool sequentialEquality = false)
         {
             var checker = new SetComparer<T>(table);
-            checker.CompareToSet(set);
+            checker.CompareToSet(set, sequentialEquality);
         }
     }
 }

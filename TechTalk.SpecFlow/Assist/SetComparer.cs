@@ -8,7 +8,7 @@ namespace TechTalk.SpecFlow.Assist
     {
         private const int MatchNotFound = -1;
         private readonly Table table;
-        private List<T> actualItems;
+        private List<Tuple<T, int?>> extraOrNonMatchingActualItems;
         private readonly ITableDiffExceptionBuilder<T> tableDiffExceptionBuilder;
 
         public SetComparer(Table table)
@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Assist
             return makeSureTheFormattingWorkAboveDoesNotResultInABadException;
         }
 
-        public void CompareToSet(IEnumerable<T> set)
+        public void CompareToSet(IEnumerable<T> set, bool sequentialEquality)
         {
             AssertThatAllColumnsInTheTableMatchToPropertiesOnTheType();
 
@@ -72,7 +72,7 @@ namespace TechTalk.SpecFlow.Assist
 
         private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFound(IEnumerable<T> set)
         {
-            actualItems = GetTheActualItems(set);
+            var actualItems = GetTheActualItems(set);
 
             var listOfMissingItems = new List<int>();
 
@@ -89,12 +89,14 @@ namespace TechTalk.SpecFlow.Assist
                 else
                     RemoveFromActualItemsSoItWillNotBeCheckedAgain(actualItems, matchIndex);
             }
+
+            extraOrNonMatchingActualItems = actualItems.Select(i => new Tuple<T, int?>(i, null)).ToList();
             return listOfMissingItems;
         }
 
         private void ThrowAnErrorDetailingWhichItemsAreMissing(IEnumerable<int> listOfMissingItems)
         {
-            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<T>(table, listOfMissingItems, actualItems));
+            var message = tableDiffExceptionBuilder.GetTheTableDiffExceptionMessage(new TableDifferenceResults<T>(table, listOfMissingItems, extraOrNonMatchingActualItems));
             throw new ComparisonException("\r\n" + message);
         }
 
