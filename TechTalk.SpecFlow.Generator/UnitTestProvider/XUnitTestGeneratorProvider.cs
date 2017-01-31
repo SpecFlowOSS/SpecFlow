@@ -29,6 +29,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.RowTests;
         }
 
+        public bool GenerateParallelCodeForFeature { get; set; }
+
         public XUnitTestGeneratorProvider(CodeDomHelper codeDomHelper)
         {
             CodeDomHelper = codeDomHelper;
@@ -44,6 +46,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             // Set Category trait which can be used with the /trait or /-trait xunit flags to include/exclude tests
             foreach (string str in featureCategories)
                 SetProperty(generationContext.TestClass, CATEGORY_PROPERTY_NAME, str);
+        }
+
+        public virtual void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        {
+
         }
 
         public void SetTestClassInitializeMethod(TestClassGenerationContext generationContext)
@@ -112,7 +119,7 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 
         public void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
         {
-            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName", new CodePrimitiveExpression(friendlyTestName)));
+            CodeDomHelper.AddAttribute(testMethod, FACT_ATTRIBUTE, new CodeAttributeArgument("DisplayName",new CodePrimitiveExpression(friendlyTestName)));
 
             SetProperty(testMethod, FEATURE_TITLE_PROPERTY_NAME, generationContext.Feature.Name);
             SetDescription(testMethod, friendlyTestName);
