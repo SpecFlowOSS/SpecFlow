@@ -5,8 +5,7 @@ using TechTalk.SpecFlow.RuntimeTests.AssistTests.TestInfrastructure;
 
 namespace TechTalk.SpecFlow.RuntimeTests.AssistTests
 {
-    [TestFixture]
-    public class SetComparisonExtensionMethods_MessageTests
+    public abstract class SetComparisonExtensionMethods_MessageTests
     {
         [Test]
         public void Returns_the_names_of_any_fields_that_do_not_exist()
@@ -170,17 +169,37 @@ AnotherFieldThatDoesNotExist".AgnosticLineBreak());
 ".AgnosticLineBreak());
         }
 
-        private static ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
+        private ComparisonException GetTheExceptionThrowByComparingThese(Table table, SetComparisonTestObject[] items)
         {
             try
             {
-                table.CompareToSet(items);
+                CallComparison(table, items);
             }
             catch (ComparisonException ex)
             {
                 return ex;
             }
             return null;
+        }
+
+        protected abstract void CallComparison(Table table, SetComparisonTestObject[] items);
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderInsensitive_MessageTests : SetComparisonExtensionMethods_MessageTests
+    {
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items);
+        }
+    }
+
+    [TestFixture]
+    public class SetComparisonExtensionMethods_OrderSensitive_MessageTests : SetComparisonExtensionMethods_MessageTests
+    {
+        protected override void CallComparison(Table table, SetComparisonTestObject[] items)
+        {
+            table.CompareToSet(items, sequentialEquality: true);
         }
     }
 }
