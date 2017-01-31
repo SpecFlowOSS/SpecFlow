@@ -32,12 +32,17 @@ namespace TechTalk.SpecFlow.Assist
             if (ThereAreNoResultsAndNoExpectedResults(set))
                 return;
 
+            var getListOfExpectedItemsThatCouldNotBeFound = 
+                sequentialEquality ? 
+                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive) :
+                new Func<IEnumerable<T>, IEnumerable<int>>(GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive);
+
             if (ThereAreResultsWhenThereShouldBeNone(set))
-                ThrowAnExpectedNoResultsError(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
+                ThrowAnExpectedNoResultsError(set, getListOfExpectedItemsThatCouldNotBeFound(set));
 
-            AssertThatTheItemsMatchTheExpectedResults(set);
+            AssertThatTheItemsMatchTheExpectedResults(set, getListOfExpectedItemsThatCouldNotBeFound);
 
-            AssertThatNoExtraRowsExist(set, GetListOfExpectedItemsThatCouldNotBeFound(set));
+            AssertThatNoExtraRowsExist(set, getListOfExpectedItemsThatCouldNotBeFound(set));
         }
 
         private void AssertThatNoExtraRowsExist(IEnumerable<T> set, IEnumerable<int> listOfMissingItems)
@@ -62,15 +67,15 @@ namespace TechTalk.SpecFlow.Assist
             return !set.Any() && !table.Rows.Any();
         }
 
-        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set)
+        private void AssertThatTheItemsMatchTheExpectedResults(IEnumerable<T> set, Func<IEnumerable<T>, IEnumerable<int>> getListOfExpectedItemsThatCouldNotBeFound)
         {
-            var listOfMissingItems = GetListOfExpectedItemsThatCouldNotBeFound(set);
+            var listOfMissingItems = getListOfExpectedItemsThatCouldNotBeFound(set);
 
             if (ExpectedItemsCouldNotBeFound(listOfMissingItems))
                 ThrowAnErrorDetailingWhichItemsAreMissing(listOfMissingItems);
         }
 
-        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFound(IEnumerable<T> set)
+        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFoundOrderInsensitive(IEnumerable<T> set)
         {
             var actualItems = GetTheActualItems(set);
 
@@ -91,6 +96,25 @@ namespace TechTalk.SpecFlow.Assist
             }
 
             extraOrNonMatchingActualItems = actualItems.Select(i => new Tuple<T, int?>(i, null)).ToList();
+            return listOfMissingItems;
+        }
+
+        private IEnumerable<int> GetListOfExpectedItemsThatCouldNotBeFoundOrderSensitive(IEnumerable<T> set)
+        {
+            var actualItems = GetTheActualItems(set);
+
+            var listOfMissingItems = new List<int>();
+
+            var pivotTable = new PivotTable(table);
+
+            for (var index = 0; index < Math.Min(actualItems.Count, table.Rows.Count()); index++)
+            {
+                var instanceTable = pivotTable.GetInstanceTable(index);
+                if (!ThisItemIsAMatch(instanceTable, actualItems[index]))
+                    listOfMissingItems.Add(index);
+            }
+
+            extraOrNonMatchingActualItems = new List<Tuple<T, int?>>(); //TODO
             return listOfMissingItems;
         }
 
