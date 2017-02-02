@@ -34,24 +34,38 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IBindingInstanceResolver> bindingInstanceResolverMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
-        private readonly ObjectContainer testThreadContainer = new ObjectContainer();
-        private readonly ObjectContainer scenarioContainer = new ObjectContainer();
+        private ObjectContainer testThreadContainer;
+        private ObjectContainer scenarioContainer;
         private BindingInstanceResolver defaultBindingInstanceResolver = new BindingInstanceResolver();
 
-        private readonly List<IHookBinding> beforeScenarioEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> afterScenarioEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> beforeStepEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> afterStepEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> beforeFeatureEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> afterFeatureEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> beforeTestRunEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> afterTestRunEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> beforeScenarioBlockEvents = new List<IHookBinding>();
-        private readonly List<IHookBinding> afterScenarioBlockEvents = new List<IHookBinding>();
+        private List<IHookBinding> beforeScenarioEvents;
+        private List<IHookBinding> afterScenarioEvents;
+        private List<IHookBinding> beforeStepEvents;
+        private List<IHookBinding> afterStepEvents;
+        private List<IHookBinding> beforeFeatureEvents;
+        private List<IHookBinding> afterFeatureEvents;
+        private List<IHookBinding> beforeTestRunEvents;
+        private List<IHookBinding> afterTestRunEvents;
+        private List<IHookBinding> beforeScenarioBlockEvents;
+        private List<IHookBinding> afterScenarioBlockEvents;
 
         [SetUp]
         public void Setup()
         {
+            testThreadContainer = new ObjectContainer();
+            scenarioContainer = new ObjectContainer();
+
+            beforeScenarioEvents = new List<IHookBinding>();
+            afterScenarioEvents = new List<IHookBinding>();
+            beforeStepEvents = new List<IHookBinding>();
+            afterStepEvents = new List<IHookBinding>();
+            beforeFeatureEvents = new List<IHookBinding>();
+            afterFeatureEvents = new List<IHookBinding>();
+            beforeTestRunEvents = new List<IHookBinding>();
+            afterTestRunEvents = new List<IHookBinding>();
+            beforeScenarioBlockEvents = new List<IHookBinding>();
+            afterScenarioBlockEvents = new List<IHookBinding>();
+
             stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider>();
             bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
             bindingInstanceResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
