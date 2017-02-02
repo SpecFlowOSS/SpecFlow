@@ -495,5 +495,23 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
                 Times.Exactly(2));
         }
+
+        [Test]
+        public void Should_resolve_BeforeAfterFeature_hook_parameter_from_feature_container()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var beforeHook = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass));
+            var afterHook = CreateParametrizedHookMock(afterFeatureEvents, typeof(DummyClass));
+
+            testExecutionEngine.OnFeatureStart(featureInfo);
+            testExecutionEngine.OnFeatureEnd();
+
+            AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+                Times.Exactly(2));
+        }
     }
 }
