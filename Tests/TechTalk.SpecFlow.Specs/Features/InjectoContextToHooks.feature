@@ -22,3 +22,18 @@ Scenario: Inject FeatureContext into a BeforeFeature hook
 	Then the execution summary should contain
          | Succeeded |
          | 1         |
+
+Scenario: Inject ScenarioContext into a BeforeScenario hook
+	Given the following hook
+        """
+		[BeforeScenario]
+		public void BeforeScenarioHook(ScenarioContext scenarioContext)
+		{
+			if (scenarioContext == null)
+				throw new ArgumentNullException("scenarioContext");
+		}
+        """
+	When I execute the tests
+	Then the execution summary should contain
+         | Succeeded |
+         | 1         |

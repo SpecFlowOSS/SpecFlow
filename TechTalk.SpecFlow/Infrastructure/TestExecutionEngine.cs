@@ -222,26 +222,41 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                InvokeHook2(bindingInvoker, eventBinding, bindingEvent);
+                InvokeHook(bindingInvoker, eventBinding, bindingEvent);
             }
         }
 
         protected IObjectContainer TestThreadContainer { get; }
 
-        public void InvokeHook2(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        public void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
         {
-            var currentContainer = TestThreadContainer; //TODO
-            if (hookType == HookType.BeforeFeature || hookType == HookType.AfterFeature)
-            {
-                //TODO: we need to introduce a FeatureContainer
-                currentContainer = new ObjectContainer(currentContainer);
-                currentContainer.RegisterInstanceAs(contextManager.FeatureContext);
-            }
-
+            var currentContainer = GetHookContainer(hookType);
             var arguments = ResolveArguments(hookBinding, currentContainer);
 
             TimeSpan duration;
             invoker.InvokeBinding(hookBinding, contextManager, arguments, testTracer, out duration);
+        }
+
+        private IObjectContainer GetHookContainer(HookType hookType)
+        {
+            IObjectContainer currentContainer;
+            switch (hookType)
+            {
+                case HookType.BeforeTestRun:
+                case HookType.AfterTestRun:
+                    currentContainer = TestThreadContainer;
+                    break;
+                case HookType.BeforeFeature:
+                case HookType.AfterFeature:
+                    //TODO: we need to introduce a FeatureContainer
+                    currentContainer = new ObjectContainer(TestThreadContainer);
+                    currentContainer.RegisterInstanceAs(contextManager.FeatureContext);
+                    break;
+                default: // scenario scoped hooks
+                    currentContainer = ScenarioContext.ScenarioContainer;
+                    break;
+            }
+            return currentContainer;
         }
 
         private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)

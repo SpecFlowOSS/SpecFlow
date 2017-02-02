@@ -33,9 +33,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<IBindingInstanceResolver> bindingInstanceResolverMock;
         private FeatureInfo featureInfo;
-        private ObjectContainer testThreadContainer = new ObjectContainer();
+        private ScenarioInfo scenarioInfo;
+        private readonly ObjectContainer testThreadContainer = new ObjectContainer();
+        private readonly ObjectContainer scenarioContainer = new ObjectContainer();
         private BindingInstanceResolver defaultBindingInstanceResolver = new BindingInstanceResolver();
 
+        private readonly List<IHookBinding> beforeScenarioEvents = new List<IHookBinding>();
+        private readonly List<IHookBinding> afterScenarioEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> beforeStepEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> afterStepEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> beforeFeatureEvents = new List<IHookBinding>();
@@ -55,7 +59,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
-            scenarioContext = new ScenarioContext(new ObjectContainer(), new ScenarioInfo("scenario_title"), new BindingInstanceResolver());
+            scenarioInfo = new ScenarioInfo("scenario_title");
+            scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, bindingInstanceResolverMock.Object);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(featureInfo, culture));
@@ -70,6 +75,8 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterFeature)).Returns(afterFeatureEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeTestRun)).Returns(beforeTestRunEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterTestRun)).Returns(afterTestRunEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenario)).Returns(beforeScenarioEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenario)).Returns(afterScenarioEvents);
 
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();
@@ -379,6 +386,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         }
 
         [Test]
+        public void Should_resolve_container_hook_parameter()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateParametrizedHookMock(beforeTestRunEvents, typeof(IObjectContainer));
+
+            testExecutionEngine.OnTestRunStart();
+
+            AssertHooksWasCalledWithParam(hookMock, testThreadContainer);
+        }
+
+        [Test]
         public void Should_resolve_multiple_hook_parameter()
         {
             var testExecutionEngine = CreateTestExecutionEngine();
@@ -409,5 +429,57 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 Times.Exactly(2));
         }
 
+        [Test]
+        public void Should_resolve_BeforeAfterScenario_hook_parameter_from_scenario_container()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var beforeHook = CreateParametrizedHookMock(beforeScenarioEvents, typeof(DummyClass));
+            var afterHook = CreateParametrizedHookMock(afterScenarioEvents, typeof(DummyClass));
+
+            testExecutionEngine.OnScenarioStart(scenarioInfo);
+            testExecutionEngine.OnScenarioEnd();
+
+            AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+                Times.Exactly(2));
+        }
+
+        [Test]
+        public void Should_resolve_BeforeAfterScenarioBlock_hook_parameter_from_scenario_container()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var beforeHook = CreateParametrizedHookMock(beforeScenarioBlockEvents, typeof(DummyClass));
+            var afterHook = CreateParametrizedHookMock(afterScenarioBlockEvents, typeof(DummyClass));
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+            testExecutionEngine.OnAfterLastStep();
+
+            AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+                Times.Exactly(2));
+        }
+
+        [Test]
+        public void Should_resolve_BeforeAfterStep_hook_parameter_from_scenario_container()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var beforeHook = CreateParametrizedHookMock(beforeStepEvents, typeof(DummyClass));
+            var afterHook = CreateParametrizedHookMock(afterStepEvents, typeof(DummyClass));
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+
+            AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+                Times.Exactly(2));
+        }
     }
 }
