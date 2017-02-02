@@ -19,9 +19,7 @@ Scenario: Inject FeatureContext into a BeforeFeature hook
 		}
         """
 	When I execute the tests
-	Then the execution summary should contain
-         | Succeeded |
-         | 1         |
+	Then all tests should pass
 
 Scenario: Inject ScenarioContext into a BeforeScenario hook
 	Given the following hook
@@ -34,6 +32,4 @@ Scenario: Inject ScenarioContext into a BeforeScenario hook
 		}
         """
 	When I execute the tests
-	Then the execution summary should contain
-         | Succeeded |
-         | 1         |
+	Then all tests should pass
