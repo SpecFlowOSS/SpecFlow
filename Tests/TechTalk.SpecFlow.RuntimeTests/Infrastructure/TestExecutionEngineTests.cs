@@ -32,9 +32,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
         private Mock<IBindingInstanceResolver> bindingInstanceResolverMock;
+        private FeatureInfo featureInfo;
+        private ObjectContainer testThreadContainer = new ObjectContainer();
+        private BindingInstanceResolver defaultBindingInstanceResolver = new BindingInstanceResolver();
 
         private readonly List<IHookBinding> beforeStepEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> afterStepEvents = new List<IHookBinding>();
+        private readonly List<IHookBinding> beforeFeatureEvents = new List<IHookBinding>();
+        private readonly List<IHookBinding> afterFeatureEvents = new List<IHookBinding>();
+        private readonly List<IHookBinding> beforeTestRunEvents = new List<IHookBinding>();
+        private readonly List<IHookBinding> afterTestRunEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> beforeScenarioBlockEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> afterScenarioBlockEvents = new List<IHookBinding>();
 
@@ -43,12 +50,15 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         {
             stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider>();
             bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
+            bindingInstanceResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
+                .Returns((Type t, IObjectContainer container) => defaultBindingInstanceResolver.ResolveBindingInstance(t, container));
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
             scenarioContext = new ScenarioContext(new ObjectContainer(), new ScenarioInfo("scenario_title"), new BindingInstanceResolver());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
-            contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
+            featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
+            contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(featureInfo, culture));
             contextManagerStub.Setup(cm => cm.StepContext).Returns(new ScenarioStepContext(new StepInfo(StepDefinitionType.Given, "step_title", null, null)));
 
             bindingRegistryStub = new Mock<IBindingRegistry>();
@@ -56,6 +66,10 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterStep)).Returns(afterStepEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeScenarioBlock)).Returns(beforeScenarioBlockEvents);
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterScenarioBlock)).Returns(afterScenarioBlockEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeFeature)).Returns(beforeFeatureEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterFeature)).Returns(afterFeatureEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeTestRun)).Returns(beforeTestRunEvents);
+            bindingRegistryStub.Setup(br => br.GetHooks(HookType.AfterTestRun)).Returns(afterTestRunEvents);
 
             runtimeConfiguration = new RuntimeConfiguration();
             errorProviderStub = new Mock<IErrorProvider>();
@@ -82,7 +96,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
                 bindingInstanceResolverMock.Object,
-                new ObjectContainer());
+                testThreadContainer);
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()
@@ -128,6 +142,16 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             var mock = new Mock<IHookBinding>();
             hookList.Add(mock.Object);
             return mock;
+        }
+
+        private Mock<IHookBinding> CreateParametrizedHookMock(List<IHookBinding> hookList, params Type[] paramTypes)
+        {
+            var hookMock = CreateHookMock(hookList);
+            var bindingMethod = new BindingMethod(new BindingType("BT", "Test.BT"), "X", 
+                paramTypes.Select((paramType, i) => new BindingParameter(new RuntimeBindingType(paramType), "p" + i)), 
+                RuntimeBindingType.Void);
+            hookMock.Setup(h => h.Method).Returns(bindingMethod);
+            return hookMock;
         }
 
         [Test]
@@ -304,5 +328,86 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             TimeSpan duration;
             methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
+
+        class DummyClass
+        {
+            public static DummyClass LastInstance = null;
+            public DummyClass()
+            {
+                LastInstance = this;
+            }
+        }
+
+        private void AssertHooksWasCalledWithParam(Mock<IHookBinding> hookMock, Type paramType)
+        {
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object,
+                It.Is((object[] args) => args != null && args.Length == 1 && paramType.IsInstanceOfType(args[0])),
+                testTracerStub.Object, out duration), Times.Once());
+        }
+
+        private void AssertHooksWasCalledWithParam(Mock<IHookBinding> hookMock, object paramObj)
+        {
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object,
+                It.Is((object[] args) => args != null && args.Length > 0 && args.Any(arg => arg == paramObj)),
+                testTracerStub.Object, out duration), Times.Once());
+        }
+
+        [Test]
+        public void Should_resolve_FeautreContext_hook_parameter()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(FeatureContext));
+
+            testExecutionEngine.OnFeatureStart(featureInfo);
+            AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
+        }
+
+        [Test]
+        public void Should_resolve_custom_class_hook_parameter()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass));
+
+            testExecutionEngine.OnFeatureStart(featureInfo);
+            AssertHooksWasCalledWithParam(hookMock, DummyClass.LastInstance);
+        }
+
+        [Test]
+        public void Should_resolve_multiple_hook_parameter()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateParametrizedHookMock(beforeFeatureEvents, typeof(DummyClass), typeof(FeatureContext));
+
+            testExecutionEngine.OnFeatureStart(featureInfo);
+            AssertHooksWasCalledWithParam(hookMock, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(hookMock, contextManagerStub.Object.FeatureContext);
+        }
+
+        [Test]
+        public void Should_resolve_BeforeAfterTestRun_hook_parameter_from_test_thread_container()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var beforeHook = CreateParametrizedHookMock(beforeTestRunEvents, typeof(DummyClass));
+            var afterHook = CreateParametrizedHookMock(afterTestRunEvents, typeof(DummyClass));
+
+            testExecutionEngine.OnTestRunStart();
+            testExecutionEngine.OnTestRunEnd();
+
+            AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
+            AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), testThreadContainer), 
+                Times.Exactly(2));
+        }
+
     }
 }
