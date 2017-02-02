@@ -35,6 +35,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
+        private ObjectContainer featureContainer;
         private ObjectContainer scenarioContainer;
         private BindingInstanceResolver defaultBindingInstanceResolver = new BindingInstanceResolver();
 
@@ -53,6 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Setup()
         {
             testThreadContainer = new ObjectContainer();
+            featureContainer = new ObjectContainer();
             scenarioContainer = new ObjectContainer();
 
             beforeScenarioEvents = new List<IHookBinding>();
@@ -75,9 +77,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             contextManagerStub = new Mock<IContextManager>();
             scenarioInfo = new ScenarioInfo("scenario_title");
             scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, bindingInstanceResolverMock.Object);
+            scenarioContainer.RegisterInstanceAs(scenarioContext);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
-            contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(featureInfo, culture));
+            var featureContext = new FeatureContext(featureContainer, featureInfo);
+            featureContainer.RegisterInstanceAs(featureContext);
+            contextManagerStub.Setup(cm => cm.FeatureContext).Returns(featureContext);
             contextManagerStub.Setup(cm => cm.StepContext).Returns(new ScenarioStepContext(new StepInfo(StepDefinitionType.Given, "step_title", null, null)));
 
             bindingRegistryStub = new Mock<IBindingRegistry>();
@@ -510,7 +515,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), featureContainer),
                 Times.Exactly(2));
         }
     }

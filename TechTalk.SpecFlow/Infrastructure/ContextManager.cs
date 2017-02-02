@@ -151,7 +151,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
         {
-            var newContext = new FeatureContext(featureInfo, bindingCulture);
+            var featureContainer = containerBuilder.CreateFeatureContainer(testThreadContainer, featureInfo);
+            var newContext = featureContainer.Resolve<FeatureContext>();
+            newContext.BindingCulture = bindingCulture;
             featureContextManager.Init(newContext);
             FeatureContext.Current = newContext;
         }
@@ -163,7 +165,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void InitializeScenarioContext(ScenarioInfo scenarioInfo)
         {
-            var scenarioContainer = containerBuilder.CreateScenarioContainer(testThreadContainer, scenarioInfo);
+            var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
             scenarioContextManager.Init(newContext);
             ScenarioContext.Current = newContext;

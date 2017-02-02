@@ -13,6 +13,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         IObjectContainer CreateGlobalContainer(IRuntimeConfigurationProvider configurationProvider = null);
         IObjectContainer CreateTestThreadContainer(IObjectContainer globalContainer);
         IObjectContainer CreateScenarioContainer(IObjectContainer testThreadContainer, ScenarioInfo scenarioInfo);
+        IObjectContainer CreateFeatureContainer(IObjectContainer testThreadContainer, FeatureInfo featureInfo);
     }
 
     public class ContainerBuilder : IContainerBuilder
@@ -85,12 +86,6 @@ namespace TechTalk.SpecFlow.Infrastructure
             var scenarioContainer = new ObjectContainer(testThreadContainer);
             scenarioContainer.RegisterInstanceAs(scenarioInfo);
 
-            var contextManager = testThreadContainer.Resolve<IContextManager>();
-
-            var featureContext = contextManager.FeatureContext;
-            if (featureContext != null)
-                scenarioContainer.RegisterInstanceAs(featureContext);
-
             scenarioContainer.ObjectCreated += obj =>
             {
                 var containerDependentObject = obj as IContainerDependentObject;
@@ -102,6 +97,17 @@ namespace TechTalk.SpecFlow.Infrastructure
             runtimePluginEvents.RaiseCustomizeScenarioDependencies(scenarioContainer);
 
             return scenarioContainer;
+        }
+
+        public IObjectContainer CreateFeatureContainer(IObjectContainer testThreadContainer, FeatureInfo featureInfo)
+        {
+            if (testThreadContainer == null)
+                throw new ArgumentNullException(nameof(testThreadContainer));
+
+            var featureContainer = new ObjectContainer(testThreadContainer);
+            featureContainer.RegisterInstanceAs(featureInfo);
+
+            return featureContainer;
         }
 
         protected virtual void LoadPlugins(IRuntimeConfigurationProvider configurationProvider, ObjectContainer container, RuntimePluginEvents runtimePluginEvents)

@@ -86,8 +86,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we automatically close 
             // the current feature if necessary
-            if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                contextManager.FeatureContext != null)
+            if (unitTestRuntimeProvider.DelayedFixtureTearDown && FeatureContext != null)
             {
                 OnFeatureEnd();
             }
@@ -109,16 +108,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             // only delayed (at the end of the execution), we ignore the 
             // feature-end call, if the feature has been closed already
             if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                contextManager.FeatureContext == null)
+                FeatureContext == null)
                 return;
                 
             FireEvents(HookType.AfterFeature);
 
             if (runtimeConfiguration.TraceTimings)
             {
-                contextManager.FeatureContext.Stopwatch.Stop();
-                var duration = contextManager.FeatureContext.Stopwatch.Elapsed;
-                testTracer.TraceDuration(duration, "Feature: " + contextManager.FeatureContext.FeatureInfo.Title);
+                FeatureContext.Stopwatch.Stop();
+                var duration = FeatureContext.Stopwatch.Elapsed;
+                testTracer.TraceDuration(duration, "Feature: " + FeatureContext.FeatureInfo.Title);
             }
 
             contextManager.CleanupFeatureContext();
@@ -248,9 +247,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     break;
                 case HookType.BeforeFeature:
                 case HookType.AfterFeature:
-                    //TODO: we need to introduce a FeatureContainer
-                    currentContainer = new ObjectContainer(TestThreadContainer);
-                    currentContainer.RegisterInstanceAs(contextManager.FeatureContext);
+                    currentContainer = FeatureContext.FeatureContainer;
                     break;
                 default: // scenario scoped hooks
                     currentContainer = ScenarioContext.ScenarioContainer;
@@ -365,7 +362,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
-            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, contextManager.FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
+            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
 
             if (match.Success)
                 return match;
@@ -379,7 +376,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
 
-            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, contextManager.FeatureContext.BindingCulture, candidatingMatches);
+            testTracer.TraceNoMatchingStepDefinition(stepInstance, FeatureContext.FeatureInfo.GenerationTargetLanguage, FeatureContext.BindingCulture, candidatingMatches);
             contextManager.ScenarioContext.MissingSteps.Add(stepInstance);
             throw errorProvider.GetMissingStepDefinitionError();
         }

@@ -103,11 +103,18 @@ namespace TechTalk.SpecFlow.RuntimeTests
             testThreadContainer.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
             var containerBuilderMock = new Mock<IContainerBuilder>();
             containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
-                .Returns((IObjectContainer ttc, ScenarioInfo si) =>
+                .Returns((IObjectContainer fc, ScenarioInfo si) =>
                 {
-                    var scenarioContainer = new ObjectContainer(ttc);
+                    var scenarioContainer = new ObjectContainer(fc);
                     scenarioContainer.RegisterInstanceAs(si);
                     return scenarioContainer;
+                });
+            containerBuilderMock.Setup(m => m.CreateFeatureContainer(It.IsAny<IObjectContainer>(), It.IsAny<FeatureInfo>()))
+                .Returns((IObjectContainer ttc, FeatureInfo fi) =>
+                {
+                    var featureContainer = new ObjectContainer(ttc);
+                    featureContainer.RegisterInstanceAs(fi);
+                    return featureContainer;
                 });
             ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), testThreadContainer, containerBuilderMock.Object);
             ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);

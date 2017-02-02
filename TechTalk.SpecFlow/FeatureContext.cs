@@ -4,18 +4,20 @@ using System.Globalization;
 using TechTalk.SpecFlow.Compatibility;
 #endif
 using System.Threading;
+using BoDi;
 
 namespace TechTalk.SpecFlow
 {
     public class FeatureContext : SpecFlowContext
     {
-        public FeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
+        public FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo)
         {
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
 
-            BindingCulture = bindingCulture;
+            FeatureContainer = featureContainer;
             FeatureInfo = featureInfo;
+            BindingCulture = FeatureInfo.Language;
         }
 
         #region Singleton
@@ -48,8 +50,21 @@ namespace TechTalk.SpecFlow
         }
         #endregion
 
-        public FeatureInfo FeatureInfo { get; private set; }
-        public CultureInfo BindingCulture { get; private set; }
-        internal Stopwatch Stopwatch { get; private set; }
+        public FeatureInfo FeatureInfo { get; }
+        public CultureInfo BindingCulture { get; internal set; }
+        public IObjectContainer FeatureContainer { get; }
+        internal Stopwatch Stopwatch { get; }
+
+        private bool isDisposed = false;
+        protected override void Dispose()
+        {
+            if (isDisposed)
+                return;
+
+            isDisposed = true; //HACK: we need this flag, because the FeatureContainer is disposed by the featureContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
+            base.Dispose();
+
+            FeatureContainer.Dispose();
+        }
     }
 }
