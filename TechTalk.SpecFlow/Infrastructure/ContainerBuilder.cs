@@ -106,6 +106,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var featureContainer = new ObjectContainer(testThreadContainer);
             featureContainer.RegisterInstanceAs(featureInfo);
+            // this registration is needed, otherwise the nested scenario container will create another instance
+            // is this a BoDi bug?
+            featureContainer.RegisterTypeAs<FeatureContext, FeatureContext>();
 
             return featureContainer;
         }
