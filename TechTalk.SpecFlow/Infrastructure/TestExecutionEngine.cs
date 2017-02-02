@@ -91,14 +91,11 @@ namespace TechTalk.SpecFlow.Infrastructure
                 OnFeatureEnd();
             }
 
-            // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
-            // The runtime can define the binding-culture: Value is configured on App.config, else it is null
-            CultureInfo bindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
 
+            contextManager.InitializeFeatureContext(featureInfo);
+
+            defaultBindingCulture = FeatureContext.BindingCulture;
             defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
-            defaultBindingCulture = bindingCulture;
-
-            contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
             FireEvents(HookType.BeforeFeature);
         }
 

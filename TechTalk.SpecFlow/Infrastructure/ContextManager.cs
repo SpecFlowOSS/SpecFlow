@@ -149,11 +149,10 @@ namespace TechTalk.SpecFlow.Infrastructure
             get{return stepContextManager.Instance;} 
         }
 
-        public void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture)
+        public void InitializeFeatureContext(FeatureInfo featureInfo)
         {
             var featureContainer = containerBuilder.CreateFeatureContainer(testThreadContainer, featureInfo);
             var newContext = featureContainer.Resolve<FeatureContext>();
-            newContext.BindingCulture = bindingCulture;
             featureContextManager.Init(newContext);
             FeatureContext.Current = newContext;
         }

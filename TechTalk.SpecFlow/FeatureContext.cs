@@ -5,19 +5,22 @@ using TechTalk.SpecFlow.Compatibility;
 #endif
 using System.Threading;
 using BoDi;
+using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow
 {
     public class FeatureContext : SpecFlowContext
     {
-        public FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo)
+        internal FeatureContext(IObjectContainer featureContainer, FeatureInfo featureInfo, RuntimeConfiguration runtimeConfiguration)
         {
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
 
             FeatureContainer = featureContainer;
             FeatureInfo = featureInfo;
-            BindingCulture = FeatureInfo.Language;
+            // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
+            // The runtime can define the binding-culture: Value is configured on App.config, else it is null
+            BindingCulture = runtimeConfiguration.BindingCulture ?? featureInfo.Language;
         }
 
         #region Singleton
@@ -51,7 +54,7 @@ namespace TechTalk.SpecFlow
         #endregion
 
         public FeatureInfo FeatureInfo { get; }
-        public CultureInfo BindingCulture { get; internal set; }
+        public CultureInfo BindingCulture { get; }
         public IObjectContainer FeatureContainer { get; }
         internal Stopwatch Stopwatch { get; }
 
