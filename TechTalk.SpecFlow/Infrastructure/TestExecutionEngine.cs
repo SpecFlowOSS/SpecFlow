@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -35,7 +36,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker)
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             this.errorProvider = errorProvider;
             this.bindingInvoker = bindingInvoker;
@@ -49,6 +50,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
             this.stepDefinitionMatchService = stepDefinitionMatchService;
+            this.TestThreadContainer = testThreadContainer;
         }
 
         public FeatureContext FeatureContext
@@ -218,8 +220,37 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
+                InvokeHook2(bindingInvoker, eventBinding, bindingEvent);
             }
+        }
+
+        protected IObjectContainer TestThreadContainer { get; }
+
+        public void InvokeHook2(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        {
+            var currentContainer = TestThreadContainer; //TODO
+            if (hookType == HookType.BeforeFeature || hookType == HookType.AfterFeature)
+            {
+                //TODO: we need to introduce a FeatureContainer
+                currentContainer = new ObjectContainer(currentContainer);
+                currentContainer.RegisterInstanceAs(contextManager.FeatureContext);
+            }
+
+            var arguments = hookBinding.Method.Parameters.Select(p => ResolveParameter(currentContainer, p)).ToArray();
+
+            TimeSpan duration;
+            invoker.InvokeBinding(hookBinding, contextManager, arguments, testTracer, out duration);
+        }
+
+        private object ResolveParameter(IObjectContainer container, IBindingParameter parameter)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            if (parameter == null) throw new ArgumentNullException(nameof(parameter));
+
+            var runtimeParameterType = parameter.Type as RuntimeBindingType;
+            if (runtimeParameterType == null)
+                throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+            return container.Resolve(runtimeParameterType.Type);
         }
 
         private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
