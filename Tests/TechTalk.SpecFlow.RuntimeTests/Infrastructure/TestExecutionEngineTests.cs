@@ -31,6 +31,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IBindingInvoker> methodBindingInvokerMock;
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
+        private Mock<IBindingInstanceResolver> bindingInstanceResolverMock;
 
         private readonly List<IHookBinding> beforeStepEvents = new List<IHookBinding>();
         private readonly List<IHookBinding> afterStepEvents = new List<IHookBinding>();
@@ -41,6 +42,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         public void Setup()
         {
             stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider>();
+            bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
@@ -78,7 +80,9 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 contextManagerStub.Object, 
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
-                methodBindingInvokerMock.Object);
+                methodBindingInvokerMock.Object,
+                bindingInstanceResolverMock.Object,
+                new ObjectContainer());
         }
 
         private Mock<IStepDefinitionBinding> RegisterStepDefinition()

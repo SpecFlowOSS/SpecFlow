@@ -238,13 +238,20 @@ namespace TechTalk.SpecFlow.Infrastructure
                 currentContainer.RegisterInstanceAs(contextManager.FeatureContext);
             }
 
-            var arguments = hookBinding.Method.Parameters.Select(p => ResolveParameter(currentContainer, p)).ToArray();
+            var arguments = ResolveArguments(hookBinding, currentContainer);
 
             TimeSpan duration;
             invoker.InvokeBinding(hookBinding, contextManager, arguments, testTracer, out duration);
         }
 
-        private object ResolveParameter(IObjectContainer container, IBindingParameter parameter)
+        private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)
+        {
+            if (hookBinding.Method == null || !hookBinding.Method.Parameters.Any())
+                return null;
+            return hookBinding.Method.Parameters.Select(p => ResolveArgument(currentContainer, p)).ToArray();
+        }
+
+        private object ResolveArgument(IObjectContainer container, IBindingParameter parameter)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
             if (parameter == null) throw new ArgumentNullException(nameof(parameter));
