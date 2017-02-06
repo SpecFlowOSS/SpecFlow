@@ -94,17 +94,5 @@ namespace TechTalk.SpecFlow
         {
             return bindingInstanceResolver.ResolveBindingInstance(bindingType, ScenarioContainer);
         }
-
-        private bool isDisposed = false;
-        protected override void Dispose()
-        {
-            if (isDisposed)
-                return;
-
-            isDisposed = true; //HACK: we need this flag, because the ScenarioContainer is disposed by the scenarioContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
-            base.Dispose();
-
-            ScenarioContainer.Dispose();
-        }
     }
 }

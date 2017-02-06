@@ -14,6 +14,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             private readonly ITestTracer testTracer;
             private TContext instance;
+            private IDisposable disposable;
 
             public InternalContextManager(ITestTracer testTracer)
             {
@@ -25,7 +26,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 get { return instance; }
             }
 
-            public void Init(TContext newInstance)
+            public void Init(TContext newInstance, IDisposable newDisposable)
             {
                 if (instance != null)
                 {
@@ -33,6 +34,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     DisposeInstance();
                 }
                 instance = newInstance;
+                disposable = newDisposable;
             }
 
             public void Cleanup()
@@ -47,8 +49,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             private void DisposeInstance()
             {
-                ((IDisposable) instance).Dispose();
+                disposable.Dispose();
                 instance = null;
+                disposable = null;
             }
 
             public void Dispose()
@@ -153,7 +156,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var featureContainer = containerBuilder.CreateFeatureContainer(testThreadContainer, featureInfo);
             var newContext = featureContainer.Resolve<FeatureContext>();
-            featureContextManager.Init(newContext);
+            featureContextManager.Init(newContext, featureContainer);
             FeatureContext.Current = newContext;
         }
 
@@ -166,7 +169,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             var scenarioContainer = containerBuilder.CreateScenarioContainer(FeatureContext.FeatureContainer, scenarioInfo);
             var newContext = scenarioContainer.Resolve<ScenarioContext>();
-            scenarioContextManager.Init(newContext);
+            scenarioContextManager.Init(newContext, scenarioContainer);
             ScenarioContext.Current = newContext;
 
             ResetCurrentStepStack();
@@ -202,18 +205,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
         public void Dispose()
         {
-            if (featureContextManager != null)
-            {
-                featureContextManager.Dispose();
-            }
-            if (scenarioContextManager != null)
-            {
-                scenarioContextManager.Dispose();
-            }
-            if (stepContextManager != null)
-            {
-                stepContextManager.Dispose();
-            }
+            featureContextManager?.Dispose();
+            scenarioContextManager?.Dispose();
+            stepContextManager?.Dispose();
         }
     }
 }

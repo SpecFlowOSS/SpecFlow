@@ -57,17 +57,5 @@ namespace TechTalk.SpecFlow
         public CultureInfo BindingCulture { get; }
         public IObjectContainer FeatureContainer { get; }
         internal Stopwatch Stopwatch { get; }
-
-        private bool isDisposed = false;
-        protected override void Dispose()
-        {
-            if (isDisposed)
-                return;
-
-            isDisposed = true; //HACK: we need this flag, because the FeatureContainer is disposed by the featureContextManager of the IContextManager and while we dispose the container itself, the it will call the dispose on us again...
-            base.Dispose();
-
-            FeatureContainer.Dispose();
-        }
     }
 }
