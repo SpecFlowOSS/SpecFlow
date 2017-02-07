@@ -99,7 +99,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             var displosableInstance = (DisplosableClass)scenarioContext.GetBindingInstance(typeof(DisplosableClass));
 
-            ((IDisposable)scenarioContext).Dispose();
+            scenarioContext.ScenarioContainer.Dispose();
 
             displosableInstance.WasDisposed.Should().BeTrue();
         }
