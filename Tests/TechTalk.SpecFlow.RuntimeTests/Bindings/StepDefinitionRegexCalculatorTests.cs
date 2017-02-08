@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,9 +16,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
     [TestFixture, Category("wip_gn")]
     public class StepDefinitionRegexCalculatorTests
     {
+        private RuntimeConfiguration runtimeConfiguration;
+
+        [SetUp]
+        public void Setup()
+        {
+            runtimeConfiguration = new RuntimeConfiguration();
+        }
+
         private StepDefinitionRegexCalculator CreateSut()
         {
-            return new StepDefinitionRegexCalculator(new RuntimeConfiguration());
+            return new StepDefinitionRegexCalculator(runtimeConfiguration);
         }
 
         private IBindingMethod CreateBindingMethod(string name, params string[] parameters)
@@ -55,27 +64,171 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             match.Groups[paramIndex + 1].Value.Should().Be(paramMatch, $"parameter #{paramIndex} should be <{paramMatch}>");
         }
 
-        [Test]
-        public void RecognizeSimpleText_Underscores()
+        [TestCase("When_I_do_something")]
+        [TestCase("WhenIDoSomething")]
+        [TestCase("When_I_doSomething")] //mixed
+        public void RecognizeSimpleText(string methodName)
         {
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
-                CreateBindingMethod("When_I_do_something"));
+                CreateBindingMethod(methodName));
 
             AssertMatches(result, "I do something");
         }
 
-        [Test]
-        public void RecognizeParametrizedText_Underscores()
+        [Test, Combinatorial]
+        public void RecognizeParametrizedText_ParamInMiddle(
+            [Values("When_that_WHO_does_something", "WhenThatWHODoesSomething", "WhenThat_WHO_DoesSomething")] string methodName,
+            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
         {
             var sut = CreateSut();
 
             var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
-                CreateBindingMethod("When_WHO_does_something", "who"));
+                CreateBindingMethod(methodName, "who"));
 
-            var match = AssertMatches(result, "Joe does something");
+            var match = AssertMatches(result, $"that {paramInStepText} does something");
             AssertParamMatch(match, "Joe");
+        }
+
+        [Test, Combinatorial]
+        public void RecognizeParametrizedText_ParamInFront(
+            [Values("When_WHO_does_something", "WhenWHODoesSomething", "When_WHO_DoesSomething")] string methodName,
+            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
+                CreateBindingMethod(methodName, "who"));
+
+            var match = AssertMatches(result, $"{paramInStepText} does something");
+            AssertParamMatch(match, "Joe");
+        }
+
+        [Test, Combinatorial]
+        public void RecognizeParametrizedText_ParamAtTheEnd(
+            [Values("Given_user_WHO", "GivenUserWHO", "GivenUser_WHO")] string methodName,
+            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given, 
+                CreateBindingMethod(methodName, "who"));
+
+            var match = AssertMatches(result, $"user {paramInStepText}");
+            AssertParamMatch(match, "Joe");
+        }
+
+        [Test, Combinatorial]
+        public void RecognizeParametrizedText_UnderscoreInParamName(
+            [Values("When_that_W_H_O_does_something", "WhenThatW_H_ODoesSomething", "WhenThat_W_H_O_DoesSomething")] string methodName,
+            [Values("Joe", "'Joe'", "\"Joe\"")] string paramInStepText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName, "w_h_o"));
+
+            var match = AssertMatches(result, $"that {paramInStepText} does something");
+            AssertParamMatch(match, "Joe");
+        }
+
+        [Test, Combinatorial]
+        public void RecognizeParametrizedText_NumberParams(
+            [Values("When_using_VALUE_as_parameter", "WhenUsingVALUEAsParameter", "WhenUsing_VALUE_AsParameter")] string methodName,
+            [Values("1", "123", "-123", "12.3", "£123")] string paramText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName, "value"));
+
+            var match = AssertMatches(result, $"using {paramText} as parameter");
+            AssertParamMatch(match, paramText);
+        }
+
+        [Test]
+        public void SupportsExtraArguments()
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod("When_WHO_does_something", "who", "table"));
+
+            AssertMatches(result, "Joe does something");
+        }
+
+        [TestCase("that:Joe,does;something.?!")]
+        [TestCase("that : Joe , does ; something .?! ")]
+        [TestCase("!that Joe does something")]
+        [TestCase("that -Joe - does -something-")]
+        [TestCase("that' Joe does \"something\"")]
+        [TestCase("that Joe doe's something")]
+        public void SupportsPunctuation(string stepText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod("When_that_WHO_does_something", "who"));
+
+            var match = AssertMatches(result, stepText);
+            AssertParamMatch(match, "Joe");
+        }
+
+        [TestCase("When_WHO_does_WHAT_with")]
+        [TestCase("WhenWHODoesWHATWith")]
+        [TestCase("When_WHO_Does_WHAT_With")]
+        [TestCase("When_P0_does_P1_with")]
+        public void SupportsMultipleParameters(string methodName)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName, "who", "what"));
+
+            var match = AssertMatches(result, "Joe does something with");
+            AssertParamMatch(match, "Joe", 0);
+            AssertParamMatch(match, "something", 1);
+        }
+
+        [TestCase("(.*) does something with")]
+        public void SupportsRegexMethodNames(string methodName)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName, "who"));
+
+            result.ToString().Should().Be("^" + methodName + "$");
+
+            var match = AssertMatches(result, "Joe does something with");
+            AssertParamMatch(match, "Joe");
+        }
+
+        [TestCase("I_do_something")]
+        [TestCase("IDoSomething")]
+        public void KeywordCanBeAvoided(string methodName)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName));
+
+            AssertMatches(result, "I do something");
+        }
+
+        [TestCase("Angenommen_ich_Knopf_drücke")]
+        [TestCase("Gegeben_sei_ich_Knopf_drücke")]
+        [TestCase("Given_ich_Knopf_drücke")]
+        public void LocalizedKeywordCanBeUsedIfFeatureLanguageIsConfigured(string methodName)
+        {
+            runtimeConfiguration.FeatureLanguage = new CultureInfo("de-AT");
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,
+                CreateBindingMethod(methodName));
+
+            AssertMatches(result, "ich Knopf drücke");
         }
     }
 }
