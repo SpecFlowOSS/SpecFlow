@@ -20,9 +20,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             return new StepDefinitionRegexCalculator(new RuntimeConfiguration());
         }
 
-        private IBindingMethod CreateBindingMethod(string name)
+        private IBindingMethod CreateBindingMethod(string name, params string[] parameters)
         {
-            return new BindingMethod(new BindingType("SomeSteps", "SomeSteps"), name, new IBindingParameter[0], new RuntimeBindingType(typeof(void)));
+            parameters = parameters ?? new string[0];
+            return new BindingMethod(
+                new BindingType("SomeSteps", "SomeSteps"), 
+                name, 
+                parameters.Select(pn => new BindingParameter(new RuntimeBindingType(typeof(string)), pn)), 
+                new RuntimeBindingType(typeof(void)));
         }
 
         private Regex AssertRegex(string regexText)
@@ -44,6 +49,12 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
             return match;
         }
 
+        private void AssertParamMatch(Match match, string paramMatch, int paramIndex = 0)
+        {
+            match.Groups.Count.Should().BeGreaterThan(paramIndex, $"there should be a parameter #{paramIndex} in the regex match");
+            match.Groups[paramIndex + 1].Value.Should().Be(paramMatch, $"parameter #{paramIndex} should be <{paramMatch}>");
+        }
+
         [Test]
         public void RecognizeSimpleText_Underscores()
         {
@@ -53,6 +64,18 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
                 CreateBindingMethod("When_I_do_something"));
 
             AssertMatches(result, "I do something");
+        }
+
+        [Test]
+        public void RecognizeParametrizedText_Underscores()
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When, 
+                CreateBindingMethod("When_WHO_does_something", "who"));
+
+            var match = AssertMatches(result, "Joe does something");
+            AssertParamMatch(match, "Joe");
         }
     }
 }
