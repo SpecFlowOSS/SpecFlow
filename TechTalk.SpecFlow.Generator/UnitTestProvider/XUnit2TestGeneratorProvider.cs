@@ -17,6 +17,10 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         private const string SKIP_REASON = "Ignored";
         private const string ICLASSFIXTURE_INTERFACE = "Xunit.IClassFixture";
         private const string COLLECTION_ATTRIBUTE = "Xunit.CollectionAttribute";
+        private const string OUTPUT_INTERFACE = "Xunit.Abstractions.ITestOutputHelper";
+        private const string OUTPUT_INTERFACE_PARAMETER_NAME = "testOutputHelper";
+        private const string OUTPUT_INTERFACE_FIELD_NAME = "_testOutputHelper";
+        private const string FIXTUREDATA_PARAMETER_NAME = "fixtureData";
 
         public XUnit2TestGeneratorProvider(CodeDomHelper codeDomHelper)
             :base(codeDomHelper)
@@ -29,8 +33,14 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             return UnitTestGeneratorTraits.RowTests | UnitTestGeneratorTraits.ParallelExecution;
         }
 
-        protected override CodeTypeReference CreateFixtureInterface(CodeTypeReference fixtureDataType)
+        protected override CodeTypeReference CreateFixtureInterface(TestClassGenerationContext generationContext, CodeTypeReference fixtureDataType)
         {
+            // Add a field for the ITestOutputHelper
+            generationContext.TestClass.Members.Add(new CodeMemberField(OUTPUT_INTERFACE, OUTPUT_INTERFACE_FIELD_NAME));
+
+            // Store the fixture data type for later use in constructor
+            generationContext.CustomData.Add(FIXTUREDATA_PARAMETER_NAME, fixtureDataType);
+
             return new CodeTypeReference(ICLASSFIXTURE_INTERFACE, fixtureDataType);
         }
 
@@ -61,6 +71,20 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
             CodeDomHelper.AddAttribute(testMethod, INLINEDATA_ATTRIBUTE, args.ToArray());
         }
 
+        protected override void SetTestConstructor(TestClassGenerationContext generationContext, CodeConstructor ctorMethod) {
+            ctorMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression((CodeTypeReference)generationContext.CustomData[FIXTUREDATA_PARAMETER_NAME], FIXTUREDATA_PARAMETER_NAME));
+            ctorMethod.Parameters.Add(
+                new CodeParameterDeclarationExpression(OUTPUT_INTERFACE, OUTPUT_INTERFACE_PARAMETER_NAME));
+
+            base.SetTestConstructor(generationContext, ctorMethod);
+
+            ctorMethod.Statements.Add(
+                new CodeAssignStatement(
+                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), OUTPUT_INTERFACE_FIELD_NAME), 
+                    new CodeVariableReferenceExpression(OUTPUT_INTERFACE_PARAMETER_NAME)));
+        }
+
         public override void SetTestMethodIgnore(TestClassGenerationContext generationContext, CodeMemberMethod testMethod)
         {
             var factAttr = testMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
@@ -87,10 +111,28 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
                     );
             }
         }
-
+        
         public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
         {
             CodeDomHelper.AddAttribute(generationContext.TestClass, COLLECTION_ATTRIBUTE, new CodeAttributeArgument(new CodePrimitiveExpression(Guid.NewGuid())));
+        }
+
+        public override void FinalizeTestClass(TestClassGenerationContext generationContext) 
+        {
+            base.FinalizeTestClass(generationContext);
+
+            // testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<ITestOutputHelper>(_testOutputHelper);
+            generationContext.ScenarioInitializeMethod.Statements.Add(
+                new CodeMethodInvokeExpression(
+                    new CodeMethodReferenceExpression(
+                        new CodePropertyReferenceExpression(
+                            new CodePropertyReferenceExpression(
+                                new CodeFieldReferenceExpression(null, generationContext.TestRunnerField.Name),
+                                "ScenarioContext"),
+                            "ScenarioContainer"),
+                        "RegisterInstanceAs",
+                        new CodeTypeReference(OUTPUT_INTERFACE)),
+                    new CodeVariableReferenceExpression(OUTPUT_INTERFACE_FIELD_NAME)));
         }
     }
 }
