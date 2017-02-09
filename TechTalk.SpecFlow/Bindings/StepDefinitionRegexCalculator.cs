@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -28,7 +27,7 @@ namespace TechTalk.SpecFlow.Bindings
         // any non-word character (including empty)
         // but - sign can only stand at the end of the connecting text if the next character is not digit
 
-        private const string nonWordRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
+        private const string NonWordRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
 
         private readonly RuntimeConfiguration runtimeConfiguration;
 
@@ -42,9 +41,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             // if method name seems to contain regex, we use it as-is
             if (nonIdentifierRe.Match(bindingMethod.Name).Success)
-            {
                 return bindingMethod.Name;
-            }
 
             string methodName = bindingMethod.Name;
             methodName = RemoveStepPrefix(stepDefinitionType, methodName);
@@ -63,7 +60,7 @@ namespace TechTalk.SpecFlow.Bindings
                 processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
-            reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition, methodName.Length - processedPosition)));
+            reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition)));
 
             return reBuilder.ToString();
         }
@@ -116,16 +113,16 @@ namespace TechTalk.SpecFlow.Bindings
         private string CalculateRegex(string methodNamePart)
         {
             if (string.IsNullOrEmpty(methodNamePart))
-                return nonWordRe;
+                return NonWordRe;
 
-            return wordBoundaryRe.Replace("_" + methodNamePart + "_", match => nonWordRe);
+            return wordBoundaryRe.Replace("_" + methodNamePart + "_", match => NonWordRe);
         }
 
         private class ParamSearchResult
         {
-            public int Position { get; private set; }
-            public int Length { get; private set; }
-            public int ParamIndex { get; private set; }
+            public int Position { get; }
+            public int Length { get; }
+            public int ParamIndex { get; }
 
             public ParamSearchResult(int position, int length, int paramIndex)
             {
