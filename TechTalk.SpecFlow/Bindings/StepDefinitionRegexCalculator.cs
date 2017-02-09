@@ -46,24 +46,24 @@ namespace TechTalk.SpecFlow.Bindings
                 return bindingMethod.Name;
             }
 
-            string stepText = bindingMethod.Name;
-            stepText = RemoveStepPrefix(stepDefinitionType, stepText);
+            string methodName = bindingMethod.Name;
+            methodName = RemoveStepPrefix(stepDefinitionType, methodName);
 
             var parameters = bindingMethod.Parameters.ToArray();
 
             int processedPosition = 0;
             var reBuilder = new StringBuilder("(?i)");
-            foreach (var paramPosition in parameters.Select((p, i) => CalculateParamPosition(stepText, p, i)).Where(pp => pp.Position >= 0).OrderBy(pp => pp.Position))
+            foreach (var paramPosition in parameters.Select((p, i) => CalculateParamPosition(methodName, p, i)).Where(pp => pp.Position >= 0).OrderBy(pp => pp.Position))
             {
                 if (paramPosition.Position < processedPosition)
                     continue; //this is an error case -> overlapping parameters
 
-                reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, paramPosition.Position - processedPosition)));
+                reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
                 reBuilder.Append(CalculateParamRegex(parameters[paramPosition.ParamIndex]));
                 processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
-            reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, stepText.Length - processedPosition)));
+            reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition, methodName.Length - processedPosition)));
 
             return reBuilder.ToString();
         }
@@ -113,12 +113,12 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
 
-        private string CalculateRegex(string text)
+        private string CalculateRegex(string methodNamePart)
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(methodNamePart))
                 return nonWordRe;
 
-            return wordBoundaryRe.Replace("_" + text + "_", match => nonWordRe);
+            return wordBoundaryRe.Replace("_" + methodNamePart + "_", match => nonWordRe);
         }
 
         private class ParamSearchResult
@@ -135,28 +135,13 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private int IndexOfWithUnderscores(string text, string textToFind)
-        {
-            int index = ("_" + text + "_").IndexOf("_" + textToFind + "_");
-            return index;
-        }
-
-        private ParamSearchResult CalculateParamPosition(string stepText, IBindingParameter bindingParameter, int paramIndex)
+        private ParamSearchResult CalculateParamPosition(string methodNamePart, IBindingParameter bindingParameter, int paramIndex)
         {
             string paramName = bindingParameter.ParameterName.ToUpper();
-            int result = IndexOfWithUnderscores(stepText, paramName);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramName.Length, paramIndex);
-                
-            result = stepText.IndexOf(paramName);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramName.Length, paramIndex);
-
-            string paramReference = string.Format("P{0}", paramIndex);
-            result = IndexOfWithUnderscores(stepText, paramReference);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramReference.Length, paramIndex);
-
+            var paramRegex = new Regex(string.Format(@"_?{0}_?|_?P{1}_?", paramName, paramIndex));
+            var match = paramRegex.Match(methodNamePart);
+            if (match.Success)
+                return new ParamSearchResult(match.Index, match.Length, paramIndex);
             return new ParamSearchResult(-1, 0, paramIndex);
         }
 
