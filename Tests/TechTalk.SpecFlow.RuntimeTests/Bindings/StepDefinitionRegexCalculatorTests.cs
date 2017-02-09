@@ -13,7 +13,7 @@ using TechTalk.SpecFlow.Configuration;
 
 namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 {
-    [TestFixture, Category("wip_gn")]
+    [TestFixture]
     public class StepDefinitionRegexCalculatorTests
     {
         private RuntimeConfiguration runtimeConfiguration;

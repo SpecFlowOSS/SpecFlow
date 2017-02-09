@@ -1,5 +1,4 @@
-﻿@wip_gn
-Feature: Step definitions can be matched based on the method name (without Regex)
+﻿Feature: Step definitions can be matched based on the method name (without Regex)
 
 Scenario: Parameterless steps 
 	Given a scenario 'Simple Scenario' as
