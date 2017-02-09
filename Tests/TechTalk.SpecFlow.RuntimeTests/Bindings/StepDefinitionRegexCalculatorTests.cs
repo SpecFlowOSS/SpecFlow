@@ -163,7 +163,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         [TestCase("!that Joe does something")]
         [TestCase("that -Joe - does -something-")]
         [TestCase("that' Joe does \"something\"")]
-        [TestCase("that Joe doe's something")]
         public void SupportsPunctuation(string stepText)
         {
             var sut = CreateSut();
@@ -173,6 +172,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             var match = AssertMatches(result, stepText);
             AssertParamMatch(match, "Joe");
+        }
+
+        [TestCase("this doesn't work", "this_doesnt_work", false)]
+        [TestCase("this doesn't work", "this_doesn_t_work", true)]
+        [TestCase("this does not work", "this_does_not_work", true)]
+        public void DoesNotSupportApostrophedShortenings(string stepText, string methodName, bool shouldMatch)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod(methodName));
+
+            var match = result.Match(stepText);
+            match.Success.Should().Be(shouldMatch);
         }
 
         [TestCase("When_WHO_does_WHAT_with")]
