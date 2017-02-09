@@ -111,16 +111,14 @@ namespace TechTalk.SpecFlow.Bindings
             return string.Format(@"(?:""(?<{0}>[^""]*)""|'(?<{0}>[^']*)'|(?<{0}>.*?))", parameterInfo.ParameterName);
         }
 
-        private static readonly Regex wordBoundaryRe = new Regex(@"(?<=[\d\p{L}])\p{Lu}|(?<=\p{L})\d"); //mathces on boundaries of: 0A, aA, AA, a0, A0
+        private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
 
         private string CalculateRegex(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return nonWordRe;
 
-            text = wordBoundaryRe.Replace(text, match => nonWordRe + match.Value[0]);
-            text = text.Replace("_", nonWordRe); //get one or more non-word characters until we find one which is not a - that is followed by a number
-            return nonWordRe + text + nonWordRe;
+            return wordBoundaryRe.Replace("_" + text + "_", match => nonWordRe);
         }
 
         private class ParamSearchResult
