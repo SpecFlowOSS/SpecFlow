@@ -9,8 +9,6 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
-
-
     public interface IStepDefinitionRegexCalculator
     {
         string CalculateRegexFromMethod(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod);
@@ -55,12 +53,18 @@ namespace TechTalk.SpecFlow.Bindings
                 if (paramPosition.Position < processedPosition)
                     continue; //this is an error case -> overlapping parameters
 
-                reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
+                if (paramPosition.Position > processedPosition)
+                { 
+                    reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
+                    reBuilder.Append(NonWordRe);
+                }
                 reBuilder.Append(CalculateParamRegex(parameters[paramPosition.ParamIndex]));
+                reBuilder.Append(NonWordRe);
                 processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
-            reBuilder.Append(CalculateRegex(methodName.Substring(processedPosition)));
+            reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition)));
+            reBuilder.Append(NonWordRe);
 
             return reBuilder.ToString();
         }
@@ -110,12 +114,12 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
 
-        private string CalculateRegex(string methodNamePart)
+        private string CalculateWordRegex(string methodNamePart)
         {
             if (string.IsNullOrEmpty(methodNamePart))
-                return NonWordRe;
+                return string.Empty;
 
-            return wordBoundaryRe.Replace("_" + methodNamePart + "_", match => NonWordRe);
+            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), match => NonWordRe);
         }
 
         private class ParamSearchResult
@@ -141,6 +145,5 @@ namespace TechTalk.SpecFlow.Bindings
                 return new ParamSearchResult(match.Index, match.Length, paramIndex);
             return new ParamSearchResult(-1, 0, paramIndex);
         }
-
     }
 }

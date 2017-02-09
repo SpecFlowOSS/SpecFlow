@@ -160,7 +160,6 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
         [TestCase("that:Joe,does;something.?!")]
         [TestCase("that : Joe , does ; something .?! ")]
-        [TestCase("!that Joe does something")]
         [TestCase("that -Joe - does -something-")]
         [TestCase("that' Joe does \"something\"")]
         public void SupportsPunctuation(string stepText)
@@ -172,6 +171,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             var match = AssertMatches(result, stepText);
             AssertParamMatch(match, "Joe");
+        }
+
+        [TestCase("!that does not work")]
+        [TestCase(" that does not work")]
+        public void DoesNotSupportWhitespaceOrPunctuationInFrontOfStepText(string stepText)
+        {
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.When,
+                CreateBindingMethod("When_that_does_not_work", "who"));
+
+            var match = result.Match(stepText);
+            match.Success.Should().BeFalse();
         }
 
         [TestCase("this doesn't work", "this_doesnt_work", false)]
