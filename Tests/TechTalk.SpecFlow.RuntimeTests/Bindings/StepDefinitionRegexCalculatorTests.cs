@@ -54,7 +54,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
         private Match AssertMatches(Regex regex, string text)
         {
             var match = regex.Match(text);
-            match.Success.Should().BeTrue($"the calculated regex ({regex}) should match text <{text}>");
+            match.Success.Should().BeTrue("the calculated regex ({0}) should match text <{1}>", regex.ToString().Replace("{", "<").Replace("}", ">"), text);
             return match;
         }
 
