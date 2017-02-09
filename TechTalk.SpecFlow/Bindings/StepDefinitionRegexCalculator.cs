@@ -25,7 +25,7 @@ namespace TechTalk.SpecFlow.Bindings
         // any non-word character (including empty)
         // but - sign can only stand at the end of the connecting text if the next character is not digit
 
-        private const string NonWordRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
+        private const string WordConnectorRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
 
         private readonly RuntimeConfiguration runtimeConfiguration;
 
@@ -56,15 +56,15 @@ namespace TechTalk.SpecFlow.Bindings
                 if (paramPosition.Position > processedPosition)
                 { 
                     reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
-                    reBuilder.Append(NonWordRe);
+                    reBuilder.Append(WordConnectorRe);
                 }
                 reBuilder.Append(CalculateParamRegex(parameters[paramPosition.ParamIndex]));
-                reBuilder.Append(NonWordRe);
+                reBuilder.Append(WordConnectorRe);
                 processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
             reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition)));
-            reBuilder.Append(NonWordRe);
+            reBuilder.Append(WordConnectorRe);
 
             return reBuilder.ToString();
         }
@@ -119,7 +119,7 @@ namespace TechTalk.SpecFlow.Bindings
             if (string.IsNullOrEmpty(methodNamePart))
                 return string.Empty;
 
-            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), match => NonWordRe);
+            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), match => WordConnectorRe);
         }
 
         private class ParamSearchResult
