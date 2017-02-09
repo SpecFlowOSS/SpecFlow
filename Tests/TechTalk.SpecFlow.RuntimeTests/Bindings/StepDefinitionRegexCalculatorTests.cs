@@ -255,5 +255,19 @@ namespace TechTalk.SpecFlow.RuntimeTests.Bindings
 
             AssertMatches(result, "ich Knopf drücke");
         }
+
+        [TestCase("Допустим_я_не_авторизован")]
+        [TestCase("я_не_авторизован")]
+        [TestCase("Given_я_не_авторизован")]
+        public void Issue715(string methodName)
+        {
+            runtimeConfiguration.FeatureLanguage = new CultureInfo("ru");
+            var sut = CreateSut();
+
+            var result = CallCalculateRegexFromMethodAndAssertRegex(sut, StepDefinitionType.Given,
+                CreateBindingMethod(methodName));
+
+            AssertMatches(result, "я не авторизован");
+        }
     }
 }
