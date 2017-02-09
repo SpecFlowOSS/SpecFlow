@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +10,8 @@ using TechTalk.SpecFlow.Tracing;
 
 namespace TechTalk.SpecFlow.Bindings
 {
+
+
     public interface IStepDefinitionRegexCalculator
     {
         string CalculateRegexFromMethod(StepDefinitionType stepDefinitionType, IBindingMethod bindingMethod);
@@ -17,6 +19,17 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
     {
+        // for us, a word character means:
+        // \w - letters (Ll, Lu, Lt, Lo, Lm), marks (Mn), numbers (Nd), connectors (Pc, like '_')
+        // \p{Sc} - currency symbols (Sc)
+        // minus sign
+
+        // words can be connected with:
+        // any non-word character (including empty)
+        // but - sign can only stand at the end of the connecting text if the next character is not digit
+
+        private const string nonWordRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
+
         private readonly RuntimeConfiguration runtimeConfiguration;
 
         public StepDefinitionRegexCalculator(RuntimeConfiguration runtimeConfiguration)
@@ -51,7 +64,6 @@ namespace TechTalk.SpecFlow.Bindings
             }
 
             reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, stepText.Length - processedPosition)));
-            reBuilder.Append(@"\W*");
 
             return reBuilder.ToString();
         }
@@ -92,15 +104,23 @@ namespace TechTalk.SpecFlow.Bindings
 
         private string CalculateParamRegex(IBindingParameter parameterInfo)
         {
-            return string.Format(@"(?:['""](?<{0}>.*[^'""])['""]|(?<{0}>.+))", parameterInfo.ParameterName);
+            // parameters should match to the following
+            // 1. quoted text: "..."
+            // 2. apostrophed text: '...'
+            // 3. longer text with lazy matching (as few as possible), to avoid "eating" whitespace before/after
+            return string.Format(@"(?:""(?<{0}>[^""]*)""|'(?<{0}>[^']*)'|(?<{0}>.*?))", parameterInfo.ParameterName);
         }
 
         private static readonly Regex wordBoundaryRe = new Regex(@"(?<=[\d\p{L}])\p{Lu}|(?<=\p{L})\d"); //mathces on boundaries of: 0A, aA, AA, a0, A0
 
         private string CalculateRegex(string text)
         {
-            text = wordBoundaryRe.Replace(text, match => @"\W*" + match.Value[0]);
-            return text.Replace("_", @"\W+(?!(?<=-)\d)"); //get one or more non-word characters until we find one which is not a - that is followed by a number
+            if (string.IsNullOrEmpty(text))
+                return nonWordRe;
+
+            text = wordBoundaryRe.Replace(text, match => nonWordRe + match.Value[0]);
+            text = text.Replace("_", nonWordRe); //get one or more non-word characters until we find one which is not a - that is followed by a number
+            return nonWordRe + text + nonWordRe;
         }
 
         private class ParamSearchResult
