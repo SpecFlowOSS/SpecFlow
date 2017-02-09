@@ -86,7 +86,7 @@ namespace TechTalk.SpecFlow.Bindings
         {
             yield return stepDefinitionType.ToString();
 
-            var cultureToSearch = runtimeConfiguration.BindingCulture ?? runtimeConfiguration.FeatureLanguage;
+            var cultureToSearch = runtimeConfiguration.FeatureLanguage;
 
             foreach (var keyword in LanguageHelper.GetKeywords(cultureToSearch, stepDefinitionType))
             {
