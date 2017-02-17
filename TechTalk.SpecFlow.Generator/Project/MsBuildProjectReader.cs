@@ -25,16 +25,26 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            Microsoft.Build.Evaluation.Project project = ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
+			var specFlowProject = new SpecFlowProject();
+			Microsoft.Build.Evaluation.Project project = null;
+			string projectFolder = Path.GetDirectoryName(projectFilePath);
 
-            string projectFolder = Path.GetDirectoryName(projectFilePath);
+			try
+			{
+				var reader = XmlReader.Create(projectFilePath);
+				project = ProjectCollection.GlobalProjectCollection.LoadProject(reader);
 
-            var specFlowProject = new SpecFlowProject();
-            specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
-            specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-            specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x=>x.Name=="AssemblyName").EvaluatedValue;
-            specFlowProject.ProjectSettings.DefaultNamespace =project.AllEvaluatedProperties.First(x=>x.Name=="RootNamespace").EvaluatedValue;
 
+				specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
+				specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
+				specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x => x.Name == "AssemblyName").EvaluatedValue;
+				specFlowProject.ProjectSettings.DefaultNamespace = project.AllEvaluatedProperties.First(x => x.Name == "RootNamespace").EvaluatedValue;
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex, "Project load error");
+				return new SpecFlowProject();
+			}
 
 
             specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
@@ -64,13 +74,20 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         private string GetLanguage(Microsoft.Build.Evaluation.Project project)
         {
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.VisualBasic.targets")))
-                return GenerationTargetLanguage.VB;
+			try
+			{
+				if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.VisualBasic.targets")))
+					return GenerationTargetLanguage.VB;
 
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.CSharp.targets")))
-                return GenerationTargetLanguage.CSharp;
+				if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.CSharp.targets")))
+					return GenerationTargetLanguage.CSharp;
 
-            return GenerationTargetLanguage.CSharp;
+				return GenerationTargetLanguage.CSharp;
+			}
+			catch
+			{
+				return GenerationTargetLanguage.CSharp; 
+			}
         }
 
         private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
