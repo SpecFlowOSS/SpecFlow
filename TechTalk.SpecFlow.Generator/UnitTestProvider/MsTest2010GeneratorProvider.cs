@@ -11,9 +11,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 		private const string CATEGORY_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute";
 		private const string OWNER_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.OwnerAttribute";
 		private const string WORKITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute";
+        private const string DEPLOYMENTITEM_ATTR = "Microsoft.VisualStudio.TestTools.UnitTesting.DeploymentItemAttribute";
 
 		private const string OWNER_TAG = "owner:";
 		private const string WORKITEM_TAG = "workitem:";
+        private const string DEPLOY_TAG = "deploy:";
 
 	    public MsTest2010GeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
 	    {
@@ -39,7 +41,17 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 					generationContext.CustomData[WORKITEM_TAG] = workitemsAsStrings.Where(t => int.TryParse(t, out temp)).Select(t => int.Parse(t));
 				}
 			}
-		}
+
+            IEnumerable<string> deployTags = featureCategories.Where(t => t.StartsWith(DEPLOY_TAG, StringComparison.InvariantCultureIgnoreCase)).Select(t => t);
+            if (deployTags.Any())
+            {
+                IEnumerable<string> deploymentItemsAsStrings = deployTags.Select(t => t.Substring(DEPLOY_TAG.Length));
+                if (deploymentItemsAsStrings.Any())
+                {
+                    generationContext.CustomData[DEPLOY_TAG] = deploymentItemsAsStrings;
+                }
+            }
+        }
 
 		public override void SetTestMethod(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, string friendlyTestName)
 		{
@@ -67,7 +79,16 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 					CodeDomHelper.AddAttribute(testMethod, WORKITEM_ATTR, workitem);
 				}
 			}
-		}
+
+            if (generationContext.CustomData.ContainsKey(DEPLOY_TAG))
+            {
+                IEnumerable<string> deploymentItems = generationContext.CustomData[DEPLOY_TAG] as IEnumerable<string>;
+                foreach (string deploymentItem in deploymentItems)
+                {
+                    CodeDomHelper.AddAttribute(testMethod, DEPLOYMENTITEM_ATTR, deploymentItem);
+                }
+            }
+        }
 
 		public override void SetTestMethodCategories(TestClassGenerationContext generationContext, CodeMemberMethod testMethod, IEnumerable<string> scenarioCategories)
 		{
@@ -102,7 +123,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 		{
 			return tags == null ? new string[0] : tags.Where(t =>
 				(!t.StartsWith(OWNER_TAG, StringComparison.InvariantCultureIgnoreCase))
-				&& (!t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase)))
+				&& (!t.StartsWith(WORKITEM_TAG, StringComparison.InvariantCultureIgnoreCase))
+                && (!t.StartsWith(DEPLOY_TAG, StringComparison.InvariantCultureIgnoreCase)))
 				.Select(t => t);
 		}
 	}
