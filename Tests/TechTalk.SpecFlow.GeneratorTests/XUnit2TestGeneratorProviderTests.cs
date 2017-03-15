@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             // Assert
             var modifiedAttribute = codeMemberMethod.CustomAttributes.OfType<CodeAttributeDeclaration>()
-                .FirstOrDefault(a => a.Name == "Xunit.Extensions.TheoryAttribute");
+                .FirstOrDefault(a => a.Name == "Xunit.TheoryAttribute");
 
             Assert.That(modifiedAttribute, Is.Not.Null);
             var attribute = modifiedAttribute.Arguments.OfType<CodeAttributeArgument>()
