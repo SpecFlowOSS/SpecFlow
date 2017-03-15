@@ -95,6 +95,7 @@
     <Compile Include="TestGeneratorTestsBase.cs" />
     <Compile Include="TestUpToDateCheckerTests.cs" />
     <Compile Include="UnitTestFeatureGeneratorTests.cs" />
+    <Compile Include="XUnit2TestGeneratorProviderTests.cs" />
     <Compile Include="XUnitTestGeneratorProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
