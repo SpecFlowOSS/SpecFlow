@@ -30,11 +30,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
                 ProjectFolder = @"C:\SolutionFolder\ProjectFolder\"
             };
-
-            var fileSystem = new MockFileSystem(
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1-9-0.1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-1-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix));
+            
+            var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
 
             var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
 
@@ -81,12 +78,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             {
                 ProjectFolder = @"C:\SolutionFolder\ProjectFolder\"
             };
-
-            var fileSystem = new MockFileSystem(
-                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}\1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.1-9-0\1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-1-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-2-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix));
+            
+            var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
 
             var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
 
@@ -132,11 +125,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
                 ProjectFolder = @"C:\SolutionFolder\ProjectFolder\"
             };
 
-            var fileSystem = new MockFileSystem(
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1-9-0.1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-1-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
-                String.Format(@"C:\SolutionFolder\ProjectFolder\bin\Debug\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix));
+            var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
 
             var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
 
@@ -161,6 +150,20 @@ namespace TechTalk.SpecFlow.GeneratorTests
             };
 
             CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        private IFileSystem GetMockFileSystem(string pluginName, string pluginNamePostFix, string pluginAssemblyPostFix)
+        {
+            return new MockFileSystem(
+                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}\1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.1-9-0\1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-1-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-2-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1-9-0.1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-1-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-2-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+                String.Format(@"C:\SolutionFolder\ProjectFolder\bin\Debug\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix));
         }
     }
 }
