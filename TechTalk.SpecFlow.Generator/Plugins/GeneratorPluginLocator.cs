@@ -86,11 +86,11 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         private IEnumerable<string> GetNuGetPluginFolders(PluginDescriptor pluginDescriptor)
         {
-            var nuGetPackagesFolders = GetNuGetPackagesFolders();
+            var nuGetPackagesFolder = GetNuGetPackagesFolder();
 
             return pluginPostfixes
                 .Select(pluginPostfix => pluginDescriptor.Name + pluginPostfix)
-                .SelectMany(packageName => nuGetPackagesFolders.Select(nuGetPackagesFolder => GetLatestPackage(nuGetPackagesFolder, packageName)))
+                .Select(packageName => GetLatestPackage(nuGetPackagesFolder, packageName))
                 .Where(pluginFolder => pluginFolder != null);
         }
 
@@ -107,19 +107,18 @@ namespace TechTalk.SpecFlow.Generator.Plugins
             yield return "";
         }
 
-        private IEnumerable<string> GetNuGetPackagesFolders()
+        private string GetNuGetPackagesFolder()
         {
             // assuming that SpecFlow was installed with nuget, generator is in the "tools" folder
 
+            var directory = new DirectoryInfo(generatorFolder);
 
+            while (!directory.Name.Equals("packages", StringComparison.OrdinalIgnoreCase))
+            {
+                directory = directory.Parent;
+            }
 
-            // When packages are stored in the solution directory, they are stored in the following format:
-            // /packages/[PackageName].[PackageVersion]/
-            yield return Path.Combine(generatorFolder, @"..\..");
-
-            // When packages are stored in the global nuget directory, they are stored in the following format:
-            // /packages/[PackageName]/[PackageVersion]/
-            yield return Path.Combine(generatorFolder, @"..\..\..");
+            return directory.FullName;
         }
     }
 }
