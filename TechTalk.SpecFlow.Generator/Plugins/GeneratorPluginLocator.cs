@@ -63,7 +63,6 @@ namespace TechTalk.SpecFlow.Generator.Plugins
 
         public IEnumerable<string> GetGeneratorPluginAssemblies(PluginDescriptor pluginDescriptor)
         {
-            var foo = GetPluginGeneratorFolders(pluginDescriptor).ToList();
             foreach (var pluginGeneratorFolder in GetPluginGeneratorFolders(pluginDescriptor))
             {
                 string generatorSpecificAssembly = Path.GetFullPath(Path.Combine(pluginGeneratorFolder, string.Format("{0}.Generator.SpecFlowPlugin.dll", pluginDescriptor.Name)));
