@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationTests.cs" />
+    <Compile Include="GeneratorPluginLocatorTests.cs" />
     <Compile Include="TestGeneratorTest.cs" />
     <Compile Include="CodeDomExtensions.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
