@@ -185,10 +185,15 @@ namespace TechTalk.SpecFlow.Generator.Plugins
         {
             // assuming that SpecFlow was installed with nuget, generator is in the "tools" folder
 
-            var directory = new DirectoryInfo(generatorFolder);
+            var directory = new DirectoryInfo(this.generatorFolder);
 
             while (!directory.Name.Equals("packages", StringComparison.OrdinalIgnoreCase))
             {
+                if (Path.GetPathRoot(this.generatorFolder) == directory.FullName)
+                {
+                    throw new SpecFlowException("Generator '" + this.generatorFolder + "' is not located in the nuget folder.");
+                }
+
                 directory = directory.Parent;
             }
 
