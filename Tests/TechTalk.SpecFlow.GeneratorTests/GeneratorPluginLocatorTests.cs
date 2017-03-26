@@ -14,8 +14,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
     [TestFixture]
     public class GeneratorPluginLocatorTests
     {
-        [TestCase("specrun", 1, 9, 0)]
-        public void Should_locate_generator_when_using_local_nuget(string pluginName, int major, int minor, int revision)
+        [TestCase(1, 9, 0, "specrun", 1, 5, 2, "net35")]
+        [TestCase(2, 1, 0, "specrun", 1, 6, 0, "net45")]
+        public void Should_locate_generator_when_using_local_nuget(int specFlowMajor, int specFlowMinor, int specFlowRevision, string pluginName, int pluginMajor, int pluginMinor, int pluginRevision, string frameworkMoniker)
         {
             // Arrange
             var projectSettings = new ProjectSettings()
@@ -32,11 +33,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             executingAssemblyInfoMock
                 .Setup(x => x.GetCodeBase())
-                .Returns(String.Format(@"file:///C:/SolutionFolder/packages/SpecFlow.{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", major, minor, revision));
+                .Returns(String.Format(@"file:///C:/SolutionFolder/packages/SpecFlow.{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision));
 
             executingAssemblyInfoMock
                 .Setup(x => x.GetVersion())
-                .Returns(new Version(major, minor, 0, revision));
+                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
 
             var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfoMock.Object);
 
@@ -47,14 +48,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
             // Assert
             var expected = new List<string>
             {
-                @"C:\SolutionFolder\packages\specrun.specflow.1-9-0.1.5.2\lib\net35\specrun.SpecFlowPlugin.dll"
+                String.Format(@"C:\SolutionFolder\packages\specrun.specflow.{0}-{1}-{2}.{3}.{4}.{5}\lib\{6}\specrun.SpecFlowPlugin.dll",
+                    specFlowMajor, specFlowMinor, specFlowRevision,
+                    pluginMajor, pluginMinor, pluginRevision,
+                    frameworkMoniker)
             };
 
             CollectionAssert.AreEquivalent(expected, actual);
         }
         
-        [TestCase("specrun", 1, 9, 0)]
-        public void Should_locate_generator_when_using_global_nuget(string pluginName, int major, int minor, int revision)
+        [TestCase(1, 9, 0, "specrun", 1, 5, 2, "net35")]
+        [TestCase(2, 1, 0, "specrun", 1, 6, 0, "net45")]
+        public void Should_locate_generator_when_using_global_nuget(int specFlowMajor, int specFlowMinor, int specFlowRevision, string pluginName, int pluginMajor, int pluginMinor, int pluginRevision, string frameworkMoniker)
         {
             // Arrange
             var projectSettings = new ProjectSettings()
@@ -72,11 +77,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
             executingAssemblyInfoMock
                 .Setup(x => x.GetCodeBase())
-                .Returns(String.Format(@"file:///C:/Users/JDoe/.nuget/packages/SpecFlow/{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", major, minor, revision));
+                .Returns(String.Format(@"file:///C:/Users/JDoe/.nuget/packages/SpecFlow/{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision));
 
             executingAssemblyInfoMock
                 .Setup(x => x.GetVersion())
-                .Returns(new Version(major, minor, 0, revision));
+                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
 
             var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfoMock.Object);
 
@@ -87,7 +92,10 @@ namespace TechTalk.SpecFlow.GeneratorTests
             // Assert
             var expected = new List<string>
             {
-                @"C:\Users\JDoe\.nuget\packages\specrun.specflow.1-9-0\1.5.2\lib\net35\specrun.SpecFlowPlugin.dll"
+                String.Format(@"C:\Users\JDoe\.nuget\packages\specrun.specflow.{0}-{1}-{2}\{3}.{4}.{5}\lib\{6}\specrun.SpecFlowPlugin.dll",
+                    specFlowMajor, specFlowMinor, specFlowRevision,
+                    pluginMajor, pluginMinor, pluginRevision,
+                    frameworkMoniker)
             };
 
             CollectionAssert.AreEquivalent(expected, actual);
