@@ -32,18 +32,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             };
             
             var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
-
-            var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetCodeBase())
-                .Returns(String.Format(@"file:///C:/SolutionFolder/packages/SpecFlow.{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision));
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetVersion())
-                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
-
-            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfoMock.Object);
+            var executingAssemblyInfo = this.GetMockExecutingAssemblyInfo(@"C:/SolutionFolder/packages", specFlowMajor, specFlowMinor, specFlowRevision);
+            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfo);
 
             // Act
             var pluginDescriptor = new PluginDescriptor(pluginName, null, PluginType.GeneratorAndRuntime, null);
@@ -80,18 +70,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             };
             
             var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
-
-            var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetCodeBase())
-                .Returns(String.Format(@"file:///C:/Users/JDoe/.nuget/packages/SpecFlow/{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision));
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetVersion())
-                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
-
-            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfoMock.Object);
+            var executingAssemblyInfo = this.GetMockExecutingAssemblyInfo(@"C:/Users/JDoe/.nuget/packages", specFlowMajor, specFlowMinor, specFlowRevision);
+            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfo);
 
             // Act
             var pluginDescriptor = new PluginDescriptor(pluginName, null, PluginType.GeneratorAndRuntime, null);
@@ -126,18 +106,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             };
 
             var fileSystem = this.GetMockFileSystem(pluginName, pluginNamePostFix, pluginAssemblyPostFix);
-
-            var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetCodeBase())
-                .Returns(String.Format(@"file:///C:/SolutionFolder/packages/SpecFlow.{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision));
-
-            executingAssemblyInfoMock
-                .Setup(x => x.GetVersion())
-                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
-
-            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfoMock.Object);
+            var executingAssemblyInfo = this.GetMockExecutingAssemblyInfo(@"C:/SolutionFolder/packages", specFlowMajor, specFlowMinor, specFlowRevision);
+            var loader = new GeneratorPluginLocator(projectSettings, fileSystem, executingAssemblyInfo);
 
             // Act
             var pluginDescriptor = new PluginDescriptor(pluginName, path, PluginType.GeneratorAndRuntime, null);
@@ -152,17 +122,37 @@ namespace TechTalk.SpecFlow.GeneratorTests
             CollectionAssert.AreEquivalent(expected, actual);
         }
 
+        private IExecutingAssemblyInfo GetMockExecutingAssemblyInfo(String packagesPath, int specFlowMajor, int specFlowMinor, int specFlowRevision)
+        {
+            var executingAssemblyInfoMock = new Mock<IExecutingAssemblyInfo>();
+
+            executingAssemblyInfoMock
+                .Setup(x => x.GetCodeBase())
+                .Returns(String.Format(@"file:///{3}/SpecFlow.{0}.{1}.{2}/tools/TechTalk.SpecFlow.Generator.dll", specFlowMajor, specFlowMinor, specFlowRevision, packagesPath));
+
+            executingAssemblyInfoMock
+                .Setup(x => x.GetVersion())
+                .Returns(new Version(specFlowMajor, specFlowMinor, 0, specFlowRevision));
+
+            return executingAssemblyInfoMock.Object;
+        }
+
         private IFileSystem GetMockFileSystem(string pluginName, string pluginNamePostFix, string pluginAssemblyPostFix)
         {
             return new MockFileSystem(
+                // Global packages
                 String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}\1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.1-9-0\1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-1-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\Users\JDoe\.nuget\packages\{0}.{1}.2-2-0\1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+
+                // Local packages
                 String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1.5.2\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\SolutionFolder\packages\{0}.{1}.1-9-0.1.5.2\lib\net35\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-1-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
                 String.Format(@"C:\SolutionFolder\packages\{0}.{1}.2-2-0.1.6.0\lib\net45\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix),
+
+                // Custom packages
                 String.Format(@"C:\SolutionFolder\ProjectFolder\bin\Debug\{0}.{2}.dll", pluginName, pluginNamePostFix, pluginAssemblyPostFix));
         }
     }
