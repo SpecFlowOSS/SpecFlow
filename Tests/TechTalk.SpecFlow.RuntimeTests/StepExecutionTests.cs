@@ -104,7 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
     public class StepExecutionTests : StepExecutionTestsBase
     {
         [Test]
-        public void SholdCallBindingWithoutParameter()
+        public void ShouldCallBindingWithoutParameter()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -120,7 +120,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingSingleParameter()
+        public void ShouldCallBindingSingleParameter()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -136,7 +136,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingMultipleParameter()
+        public void ShouldCallBindingMultipleParameter()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -152,7 +152,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingWithTableParameter()
+        public void ShouldCallBindingWithTableParameter()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -169,7 +169,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingWithMlStringParam()
+        public void ShouldCallBindingWithMlStringParam()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -186,7 +186,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingWithTableAndMlStringParam()
+        public void ShouldCallBindingWithTableAndMlStringParam()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -204,7 +204,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingWithMixedParams()
+        public void ShouldCallBindingWithMixedParams()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -222,7 +222,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdRaiseAmbiguousIfMultipleMatch()
+        public void ShouldRaiseAmbiguousIfMultipleMatch()
         {
             StepExecutionTestsAmbiguousBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -236,7 +236,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdDistinguishByTableParam_CallWithoutTable()
+        public void ShouldDistinguishByTableParam_CallWithoutTable()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -252,7 +252,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdDistinguishByTableParam_CallWithTable()
+        public void ShouldDistinguishByTableParam_CallWithTable()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -269,7 +269,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdRaiseBindingErrorIfWrongParamNumber()
+        public void ShouldRaiseBindingErrorIfWrongParamNumber()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -283,7 +283,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingThatReturnsTask()
+        public void ShouldCallBindingThatReturnsTask()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);
@@ -305,7 +305,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         }
 
         [Test]
-        public void SholdCallBindingThatReturnsTaskAndReportError()
+        public void ShouldCallBindingThatReturnsTaskAndReportError()
         {
             StepExecutionTestsBindings bindingInstance;
             TestRunner testRunner = GetTestRunnerFor(out bindingInstance);

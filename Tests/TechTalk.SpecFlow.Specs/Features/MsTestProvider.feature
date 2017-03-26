@@ -78,7 +78,7 @@ Scenario: Should be able to deploy files
         """
 	And there is a feature file in the project as
          """
-		 @deploy:DeploymentItemTestFile.txt
+		 @MsTest:deploymentitem:DeploymentItemTestFile.txt
 		 Feature: Deployment Item Feature
 	
 		 Scenario: Deployment Item Scenario
