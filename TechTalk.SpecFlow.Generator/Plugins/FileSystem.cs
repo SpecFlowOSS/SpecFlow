@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace TechTalk.SpecFlow.Generator.Plugins
 {
@@ -7,6 +8,8 @@ namespace TechTalk.SpecFlow.Generator.Plugins
         bool FileExists(string path);
 
         string[] GetDirectories(string path, string searchPattern);
+
+        string[] GetDirectories(string path, string searchPattern, SearchOption option);
     }
 
     public class FileSystem : IFileSystem
@@ -19,6 +22,11 @@ namespace TechTalk.SpecFlow.Generator.Plugins
         public string[] GetDirectories(string path, string searchPattern)
         {
             return Directory.GetDirectories(path, searchPattern);
+        }
+
+        public String[] GetDirectories(String path, String searchPattern, SearchOption option)
+        {
+            return Directory.GetDirectories(path, searchPattern, option);
         }
     }
 }

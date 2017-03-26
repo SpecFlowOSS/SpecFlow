@@ -47,13 +47,13 @@ namespace TechTalk.SpecFlow.GeneratorTests
             // Assert
             var expected = new List<string>
             {
-                @"C:\SolutionFolder\packages\specrun.specflow.2-1-0.1.6.0\lib\net45\specrun.SpecFlowPlugin.dll"
+                @"C:\SolutionFolder\packages\specrun.specflow.1-9-0.1.5.2\lib\net35\specrun.SpecFlowPlugin.dll"
             };
 
             CollectionAssert.AreEquivalent(expected, actual);
         }
         
-        [TestCase("specrun", 1, 9, 0, Ignore = "Global nuget is not working yet")]
+        [TestCase("specrun", 1, 9, 0)]
         public void Should_locate_generator_when_using_global_nuget(string pluginName, int major, int minor, int revision)
         {
             // Arrange
@@ -87,7 +87,7 @@ namespace TechTalk.SpecFlow.GeneratorTests
             // Assert
             var expected = new List<string>
             {
-                @"C:\Users\JDoe\.nuget\packages\specrun.specflow.2-1-0\1.6.0\lib\net45\specrun.SpecFlowPlugin.dll"
+                @"C:\Users\JDoe\.nuget\packages\specrun.specflow.1-9-0\1.5.2\lib\net35\specrun.SpecFlowPlugin.dll"
             };
 
             CollectionAssert.AreEquivalent(expected, actual);
@@ -113,6 +113,11 @@ namespace TechTalk.SpecFlow.GeneratorTests
 
         public string[] GetDirectories(string path, string searchPattern)
         {
+            return GetDirectories(path, searchPattern, SearchOption.TopDirectoryOnly);
+        }
+
+        public string[] GetDirectories(string path, string searchPattern, SearchOption option)
+        {
             path = Path.GetFullPath(path);
 
             var directories = this.filesAndDirectories
@@ -134,7 +139,19 @@ namespace TechTalk.SpecFlow.GeneratorTests
                         .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     )
                 })
-                .Where(x => x.PathParts.Any(part => MatchesWildcardPattern(part, searchPattern)))
+                .Where(x =>
+                {
+                    if (option == SearchOption.AllDirectories)
+                    {
+                        return x.PathParts.Any(part => MatchesWildcardPattern(part, searchPattern));
+                    }
+                    else if (x.PathParts.Length == 1)
+                    {
+                        return MatchesWildcardPattern(x.PathParts[0], searchPattern);
+                    }
+
+                    return false;
+                })
                 .Select(x => x.FullPath)
                 .ToArray();
         }
