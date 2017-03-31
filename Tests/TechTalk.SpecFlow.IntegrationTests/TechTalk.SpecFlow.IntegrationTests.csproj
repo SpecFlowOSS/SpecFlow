@@ -25,22 +25,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj" />
-    <ProjectReference Include="..\..\Backup\Tests\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
+    <ProjectReference Include="..\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="NUnit" Version="3.4.0" />
     <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.4.0" />
     <PackageReference Include="NUnit.Extension.NUnitV2Driver" Version="3.4.0" />
     <PackageReference Include="NUnit.Extension.VSProjectLoader" Version="3.4.0" />
     <PackageReference Include="NUnit.Runners" Version="3.4.0" />
-    <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-1" />
     <PackageReference Include="FluentAssertions" Version="3.3.0" />
     <PackageReference Include="Moq" Version="4.0.10827" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
     <PackageReference Include="Gherkin" Version="4.0.0" />
-    <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
+    <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.extensions" Version="1.9.2" />
   </ItemGroup>
 
@@ -51,6 +50,14 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
   </ItemGroup>
 
+  <Import Project="..\..\TechTalk.SpecFlow.Tools\MsBuild\TechTalk.SpecFlow.targets" />
+  
+  <Target Name="AfterUpdateFeatureFilesInProject">
+    <Move SourceFiles="@(SpecFlowGeneratedFiles)" DestinationFolder="Features.Generated" OverwriteReadOnlyFiles="true" />
+  </Target>
 </Project>

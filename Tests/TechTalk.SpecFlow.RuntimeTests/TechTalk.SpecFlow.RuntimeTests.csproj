@@ -31,9 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="NUnit" Version="3.4.0" />
-    <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-1" />
     <PackageReference Include="FluentAssertions" Version="3.3.0" />
     <PackageReference Include="Moq" Version="4.0.10827" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
