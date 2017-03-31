@@ -28,5 +28,24 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
             var test = table.CreateInstance<TestEntity>();
             test.TestProperty.Should().Be(TestEnum.Value2);
         }
+
+        [Test]
+        public void The_value_should_be_NULL_if_it_is_not_filled_in_the_table()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("TestProperty", "");
+
+            var test = table.CreateInstance<TestEntity>();
+            test.TestProperty.Should().BeNull();
+        }
+
+        [Test]
+        public void The_value_should_be_NULL_if_it_is_not_in_the_table()
+        {
+            var table = new Table("Field", "Value");
+
+            var test = table.CreateInstance<TestEntity>();
+            test.TestProperty.Should().BeNull();
+        }
     }
 }
