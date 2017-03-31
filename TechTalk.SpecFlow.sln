@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}"
 EndProject
@@ -20,6 +20,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		runtests.bat = runtests.bat
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D87E7021-4926-4F5A-AC81-92AFC575FB7E}"
+	ProjectSection(SolutionItems) = preProject
+		Build\Versioning.targets = Build\Versioning.targets
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportGherkinParser", "Installer\ImportGherkinParser\ImportGherkinParser.csproj", "{0D3D2616-F53C-46A2-ADEB-273D140C1267}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpecFlowBinPackage", "Installer\SpecFlowBinPackage\SpecFlowBinPackage.csproj", "{27B6695E-7049-4C1B-8820-812722128D9E}"
@@ -29,36 +36,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackages", "Installer\
 		{27B6695E-7049-4C1B-8820-812722128D9E} = {27B6695E-7049-4C1B-8820-812722128D9E}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Specs", "Tests\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.csproj", "{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D87E7021-4926-4F5A-AC81-92AFC575FB7E}"
-	ProjectSection(SolutionItems) = preProject
-		Build\Versioning.targets = Build\Versioning.targets
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.IntegrationTests", "Tests\TechTalk.SpecFlow.IntegrationTests\TechTalk.SpecFlow.IntegrationTests.csproj", "{6F6B4286-382F-4134-AE5A-AFC4C80F588F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Specs", "Tests\TechTalk.SpecFlow.Specs\TechTalk.SpecFlow.Specs.xproj", "{2D7D31B3-E8D0-445A-BB24-216ABA3CB778}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyProjectForHoldingTheNUnit2Reference", "Tests\DummyProjectForHoldingTheNUnit2Reference\DummyProjectForHoldingTheNUnit2Reference.csproj", "{AEDCA17F-4535-4494-8580-E50A497C605C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.IntegrationTests", "Tests\TechTalk.SpecFlow.IntegrationTests\TechTalk.SpecFlow.IntegrationTests.xproj", "{6F6B4286-382F-4134-AE5A-AFC4C80F588F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Reporting", "TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.csproj", "{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DummyProjectForHoldingTheNUnit2Reference", "Tests\DummyProjectForHoldingTheNUnit2Reference\DummyProjectForHoldingTheNUnit2Reference.xproj", "{AEDCA17F-4535-4494-8580-E50A497C605C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.GeneratorTests", "Tests\TechTalk.SpecFlow.GeneratorTests\TechTalk.SpecFlow.GeneratorTests.csproj", "{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Reporting", "TechTalk.SpecFlow.Reporting\TechTalk.SpecFlow.Reporting.xproj", "{B9F15EDE-957D-49F2-BCB3-5AC2720ADDAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.RuntimeTests", "Tests\TechTalk.SpecFlow.RuntimeTests\TechTalk.SpecFlow.RuntimeTests.csproj", "{7E637287-6E34-4BEC-8226-B052062AEA1F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeneratorTests", "Tests\TechTalk.SpecFlow.GeneratorTests\GeneratorTests.xproj", "{48E0CB65-33D4-49CD-9E22-1AD49D8684B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Parser", "TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.csproj", "{ABA918DA-C436-4EE2-B23D-FD0B24403B27}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "RuntimeTests", "Tests\TechTalk.SpecFlow.RuntimeTests\RuntimeTests.xproj", "{7E637287-6E34-4BEC-8226-B052062AEA1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow", "TechTalk.SpecFlow\TechTalk.SpecFlow.csproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Parser", "TechTalk.SpecFlow.Parser\TechTalk.SpecFlow.Parser.xproj", "{ABA918DA-C436-4EE2-B23D-FD0B24403B27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Parser.Compatibility", "TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.csproj", "{5177B485-5389-4E15-8B43-7E7BC0EAF065}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow", "TechTalk.SpecFlow\TechTalk.SpecFlow.xproj", "{413EE28C-4F89-4C6F-BA1E-2CDEE4CD43B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Generator", "TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj", "{F0A50949-8FE1-4048-9A3E-BB0498843669}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Parser.Compatibility", "TechTalk.SpecFlow.Parser.Compatibility\TechTalk.SpecFlow.Parser.Compatibility.xproj", "{5177B485-5389-4E15-8B43-7E7BC0EAF065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Utils", "TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.csproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Generator", "TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.xproj", "{F0A50949-8FE1-4048-9A3E-BB0498843669}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Utils", "TechTalk.SpecFlow.Utils\TechTalk.SpecFlow.Utils.xproj", "{D719B8EA-6C89-4B81-AABD-65ACF562F521}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TechTalk.SpecFlow.Tools", "TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.xproj", "{DCD5104A-5301-44B0-A9B8-0041F782603F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechTalk.SpecFlow.Tools", "TechTalk.SpecFlow.Tools\TechTalk.SpecFlow.Tools.csproj", "{DCD5104A-5301-44B0-A9B8-0041F782603F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,11 +157,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
+		{D87E7021-4926-4F5A-AC81-92AFC575FB7E} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 		{0D3D2616-F53C-46A2-ADEB-273D140C1267} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{27B6695E-7049-4C1B-8820-812722128D9E} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
 		{7A9F3EE4-2FAE-4AA3-95DF-4D9F7D879E7C} = {DCE0C3C4-5BC6-4A30-86BE-3FEFF4677A01}
-		{0359B7D7-7E29-48E9-8DF9-7D1FACFA5CFA} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
-		{D87E7021-4926-4F5A-AC81-92AFC575FB7E} = {577A0375-1436-446C-802B-3C75C8CEF94F}
 		{2D7D31B3-E8D0-445A-BB24-216ABA3CB778} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{6F6B4286-382F-4134-AE5A-AFC4C80F588F} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
 		{AEDCA17F-4535-4494-8580-E50A497C605C} = {A10B5CD6-38EC-4D7E-9D1C-2EBA8017E437}
