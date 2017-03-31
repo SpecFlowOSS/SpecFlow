@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using FluentAssertions;
 using TechTalk.SpecFlow.Assist;
 
@@ -46,6 +47,17 @@ namespace TechTalk.SpecFlow.RuntimeTests.AssistTests.SituationalTests
 
             var test = table.CreateInstance<TestEntity>();
             test.TestProperty.Should().BeNull();
+        }
+
+        [Test]
+        public void There_should_be_an_error_if_in_the_table_is_no_valid_Enum_value()
+        {
+            var table = new Table("Field", "Value");
+            table.AddRow("TestProperty", "NotAnEnumValue");
+
+            Action x = () => { table.CreateInstance<TestEntity>(); };
+
+            x.ShouldThrow<InvalidOperationException>();
         }
     }
 }
