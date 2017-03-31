@@ -1,8 +1,21 @@
-2.2.? - ????-??-??
+2.2.0-* - *
+
+Fixes:
++ Removed obsolete marked StepScopeAttribute - use the ScopeAttribute for it
++ Fixed: Projection<T>.Equals() returns false unnecessarily if table headers differ from property name by casing
++ Fixed regex-less step definition support, see StepDefinitionsWithoutRegex.feature for details (Issues #715, #301)
+
+
+2.2.0-preview20161020 - 2016-10-20
 
 Smaller Improvements/fixes:
 + The results of comparisons made against sets will be displayed as a comma-delimited list.
 + Fix code generation for VB.Net
++ Scenario Outline example tags do now appear in ScenarioContext.ScenarioInfo.Tags
++ Fix scenario outline variants showing without source code if generating row tests is disabled
+
+API changes:
++ Move SourceFilePath from SpecFlowFeature to SpecFlowDocument
 
 
 2.1.0 - 2016-05-24
@@ -25,7 +38,7 @@ Smaller Improvements/fixes:
 + SpecFlow can be build and all tests run if you only have VS2015 installed
 
 
-2.1.0-preview20160412-* - 2016/04/12
+2.1.0-preview20160412-* - 2016-04-12
 
 Core changes:
 + Update Gherkin 3 parser
@@ -35,7 +48,7 @@ New Features:
 + Add debugging support for specflow.exe GenerateAll command
 
 
-2.0.0 - 2016/01/27
+2.0.0 - 2016-01-27
 
 Core changes:
 + All components upgraded to .NET 4.5
@@ -67,7 +80,7 @@ Smaller Improvements/fixes:
 + remove .net runtime version from generated file header to avoid unwanted changes
 
 
-1.9.3 - 2013/09/26 (Visual Studio 2013 Integration)
+1.9.3 - 2013-09-26 (Visual Studio 2013 Integration)
 
 Note: 1.9.3 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
@@ -76,7 +89,7 @@ New Features:
 + SpecRun 1.2 support: run/debug tests from the feature file editor
 
 
-1.9.2 - 2013/03/25 (Visual Studio Integration update)
+1.9.2 - 2013-03-25 (Visual Studio Integration update)
 
 Note: 1.9.2 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
@@ -97,7 +110,7 @@ New Features:
 + Assist: Added overload to CreateSet<T> accepting a Func<TableRow,T> to create each instance
 
 
-1.9.1 - 2012/10/12 (Visual Studio Integration update)
+1.9.1 - 2012-10-12 (Visual Studio Integration update)
 
 Note: 1.9.1 only improved the Visual Studio integration, but uses the SpecFlow 1.9.0 runtime and generator.
 
@@ -112,7 +125,7 @@ Fixed issues:
 + VS2010/VS2012: improve stability, more tracing
 
 
-1.9.0 - 2012/08/06
+1.9.0 - 2012-08-06
 
 See detailed feature summary at http://go.specflow.org/whatsnew-19
 
@@ -159,7 +172,7 @@ Fixed issues:
 + VS2010: Specflow options show up as "General" in VS Import/Export settings (Issue 184)
 + Dispose IDisposable user objects created by SpecFlow (Issue 22)
 
-1.8.1 - 2011/10/25
+1.8.1 - 2011-10-25
 
 Fixed issues:
 + ReSharper: NUnit scenario outline without tag on example set (rowtest enabled) causes inconclusive result (Issue 116)
@@ -168,7 +181,7 @@ Fixed issues:
 + VS2010 step autocomplete: New steps form external project are not found unless IDE is restarted (Issue 88, by Stanislaw Wozniak)
 + VS2010 step autocomplete: Duplicated steps
 
-1.8.0 - 2011/10/17
+1.8.0 - 2011-10-17
 
 Breaking changes:
 + Classes used for context injection must have a single public constructor with maximum parameter count (so far the first constructor was used).
@@ -210,7 +223,7 @@ Fixed issues:
   https://raw.github.com/techtalk/SpecFlow/master/Installer/NUnitNuGetPackage/SpecFlowNUnitExtension.cs to the project, or use
   the SpecFlow.NUnit combined NuGet package that does this automatically.
 
-1.7.1 - 2011/08/19
+1.7.1 - 2011-08-19
 
 Fixed issues:
 + Test execution report displays the feature description instead of the title (Issue 118)
@@ -225,7 +238,7 @@ Fixed issues:
 + Fixed enum property name match (Issue 119)
 + Added Assist support for byte, float, long, ulong, sbyte, ushort, single. With nullables. (Issue 120)
 
-1.7.0 - 2011/07/29
+1.7.0 - 2011-07-29
 
 Breaking changes:
 + There are a few breaking changes in the generated test code. If you upgrade to SpecFlow 1.7, you should either 
@@ -268,14 +281,14 @@ Fixed issues:
 + Assist methods now work with classes with multiple properties of the same enum type.
 + Refactor IUnitTestGeneratorProvider interface to be more consistent (Issue 4)
 
-1.6.1 - 2011/04/15
+1.6.1 - 2011-04-15
 
 Fixed issues:
 + Windows Phone 7 runtime (TechTalk.SpecFlow.WindowsPhone7.dll) is not included in the NuGet package (Issue 61)
 + Warnings in the generated test classes (Issue 58)
 + Improved tracing for VS2010 integration
 
-1.6.0 - 2011/04/04
+1.6.0 - 2011-04-04
 
 Breaking changes:
 + The Silverlight runtime assembly has been renamed to TechTalk.SpecFlow.Silverlight3.dll.
@@ -320,7 +333,7 @@ Fixed issues:
 + VS2010: SpecFlow writes out feature and code-behind files with inconsistent line endings (Issue 28)
 + Step definitions can be implemented in abstract base classes (but the abstract base class must not have the [Binding] attribute). SpecFlow no longer tries to instantiate the abstract base class. (Issue 47)
 
-1.5.0 - 2010/12/17
+1.5.0 - 2010-12-17
 
 Breaking changes:
 + Changing the default value (true) of the allowRowTests configuration setting is not incompatible with older 
@@ -348,7 +361,7 @@ Fixed issues:
 + VS2010 might crash after pasting into a feature file
 + Excution report should list features ordered by feature title
 
-1.4.0 - 2010/10/07
+1.4.0 - 2010-10-07
 
 Breaking changes:
 + The generator has been improved to provide source code language. Because of this, SpecFlow test generated 
@@ -374,18 +387,18 @@ Fixed issues:
 + Better error reporting for wrong Gherkin files (multiple errors displayed, detect duplicate scenario names)
 + Visual Studio 2010 editor slows down after editing a feature file for a longer time (Issue 9)
 
-1.3.5.2 - 2010/08/11
+1.3.5.2 - 2010-08-11
 
 Fixed issues:
 + Sorry, we're ironing out our deploy strategy with the new Mono/MonoDevelop integration.  We didn't 
   change the version in the MonoDevelop Add-In XML file.
 
-1.3.5.1 - 2010/08/11
+1.3.5.1 - 2010-08-11
 
 New features:
 + Support for hosting add-in on http://addins.monodevelop.com
 
-1.3.5 - 2010/08/11
+1.3.5 - 2010-08-11
 
 New features:
 + Support for Mono (v2.6.7) & MonoDevelop (v2.4) by Dale Ragan
@@ -395,13 +408,13 @@ Fixed issues:
 + Test class generation problem for Russian feature files
 + Fix tag support for Silverlight
 
-1.3.4 - 2010/07/28
+1.3.4 - 2010-07-28
 
 Fixed issues:
 + Installation fails if Visual Studio 2010 is not installed
 + VS2010: Background section is not colored properly
 
-1.3.3 - 2010/07/19
+1.3.3 - 2010-07-19
 
 New features:
 + Support for MsTest report generation
@@ -419,7 +432,7 @@ New features:
 Fixed issues:
 + MbUnit execution fails for pending steps (Assert method not found: Inconclusive)
 
-1.3.2 - 2010/06/29
+1.3.2 - 2010-06-29
 
 New features:
 + Support for MsTest for .NET 4.0 categories. Configure the test provider name to 
@@ -430,7 +443,7 @@ Fixed issues:
 + Report generation fails if no custom XSLT is provided
 
 
-1.3.1 - 2010/06/21
+1.3.1 - 2010-06-21
 
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v2.0.1
@@ -446,7 +459,7 @@ New features:
 Fixed issues:
 + NullReference exception when using BeforeTestRun event (Issue 41)
 
-1.3.0 - 2010/05/05
+1.3.0 - 2010-05-05
 
 New features:
 + Using standard Gherkin parser (http://github.com/aslakhellesoy/gherkin) v1.0.24
@@ -473,7 +486,7 @@ Fixed issues:
 + Binding methods are executed using the culture of the feature file.
 + Several parsing issues are solved now (Issue 1, 8, 9, 37)
 
-1.2.0 - 2009/11/25
+1.2.0 - 2009-11-25
 
 New features:
 + Generate #line pragmas to the output file (Issue 26)
@@ -487,7 +500,7 @@ Fixed issues:
 + Fixes in report localization
 + Non-string parameters for bindings are not converted using the feature language (Issue 26)
 
-1.1.0 - 2009/11/11
+1.1.0 - 2009-11-11
 
 New features:
 + Support for MsTest (Issue 4)
@@ -505,7 +518,7 @@ Fixed issues:
 + Generator: Special language characters (e.g. accented letters) are removed when generating 
   test method names (Issue 22)
 
-1.0.2 - 2009/10/20
+1.0.2 - 2009-10-20
 
 New features:
 + Runtime: allow non-static bindings
@@ -519,7 +532,7 @@ Fixed issues:
 + Parser: specifying any "given" should be optional
 
 
-1.0.1 - 2009/10/13
+1.0.1 - 2009-10-13
 
 Initial publish on http://www.specflow.org
 

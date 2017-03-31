@@ -202,7 +202,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(HookType bindingEvent)
+
+        protected virtual void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
@@ -226,19 +227,22 @@ namespace TechTalk.SpecFlow.Infrastructure
             return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
-        private void ExecuteStep(StepInstance stepInstance)
+        private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
         {
             HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
             testTracer.TraceStep(stepInstance, true);
 
             bool isStepSkipped = contextManager.ScenarioContext.TestStatus != TestStatus.OK;
+            bool onStepStartExecuted = false;
 
             BindingMatch match = null;
             object[] arguments = null;
             try
             {
                 match = GetStepMatch(stepInstance);
+                contextManager.StepContext.StepInfo.BindingMatch = match;
+                contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -247,6 +251,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 }
                 else
                 {
+                    onStepStartExecuted = true;
                     OnStepStart();
                     TimeSpan duration = ExecuteStepMatch(match, arguments);
                     if (runtimeConfiguration.TraceSuccessfulSteps)
@@ -293,15 +298,14 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
             finally
             {
-                if (!isStepSkipped)
+                if (onStepStartExecuted)
                 {
                     OnStepEnd();
                 }
-                contextManager.CleanupStepContext();
             }
         }
 
-        private BindingMatch GetStepMatch(StepInstance stepInstance)
+        protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
@@ -324,7 +328,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             throw errorProvider.GetMissingStepDefinitionError();
         }
 
-        private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             TimeSpan duration = TimeSpan.Zero;
             try
@@ -395,13 +399,21 @@ namespace TechTalk.SpecFlow.Infrastructure
             StepDefinitionType stepDefinitionType = (stepDefinitionKeyword == StepDefinitionKeyword.And || stepDefinitionKeyword == StepDefinitionKeyword.But)
                                           ? GetCurrentBindingType()
                                           : (StepDefinitionType) stepDefinitionKeyword;
-            contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg)); 
-            ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg,contextManager.GetStepContext()));
+            contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg));
+            try
+            {
+                var stepInstance = new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext());
+                ExecuteStep(contextManager, stepInstance);
+            }
+            finally
+            {
+                contextManager.CleanupStepContext();
+            }
         }
 
         private StepDefinitionType GetCurrentBindingType()
         {
-            return contextManager.CurrentTopLevelStep?.StepInfo.StepDefinitionType ?? StepDefinitionType.Given;
+            return contextManager.CurrentTopLevelStepDefinitionType ?? StepDefinitionType.Given;
         }
 
         #endregion

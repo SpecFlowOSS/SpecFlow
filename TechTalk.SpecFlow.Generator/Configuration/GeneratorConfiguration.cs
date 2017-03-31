@@ -22,6 +22,8 @@ namespace TechTalk.SpecFlow.Generator.Configuration
         // generator settings
         public bool AllowDebugGeneratedFiles { get; set; }
         public bool AllowRowTests { get; set; }
+        public bool MarkFeaturesParallelizable { get; set; }
+        public string[] SkipParallelizableMarkerForTags { get; set; }
         public string GeneratorPath { get; set; }
 
         public bool UsesPlugins { get; private set; }
@@ -36,6 +38,9 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             AllowDebugGeneratedFiles = ConfigDefaults.AllowDebugGeneratedFiles;
             AllowRowTests = ConfigDefaults.AllowRowTests;
             GeneratorPath = ConfigDefaults.GeneratorPath;
+
+            MarkFeaturesParallelizable = ConfigDefaults.MarkFeaturesParallelizable;
+            SkipParallelizableMarkerForTags = ConfigDefaults.SkipParallelizableMarkerForTags;
 
             UsesPlugins = false;
         }
@@ -56,12 +61,19 @@ namespace TechTalk.SpecFlow.Generator.Configuration
             {
                 AllowDebugGeneratedFiles = configSection.Generator.AllowDebugGeneratedFiles;
                 AllowRowTests = configSection.Generator.AllowRowTests;
+                MarkFeaturesParallelizable = configSection.Generator.MarkFeaturesParallelizable;
                 GeneratorPath = configSection.Generator.GeneratorPath;
 
                 if (IsSpecified(configSection.Generator.Dependencies))
                 {
                     this.CustomDependencies = configSection.Generator.Dependencies;
                     UsesPlugins = true;
+                }
+
+                if (IsSpecified(configSection.Generator.SkipParallelizableMarkerForTags))
+                {
+                    this.SkipParallelizableMarkerForTags =
+                        configSection.Generator.SkipParallelizableMarkerForTags.Select(x => x.Value).ToArray();
                 }
             }
 

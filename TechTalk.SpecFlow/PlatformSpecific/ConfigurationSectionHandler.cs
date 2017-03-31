@@ -224,6 +224,21 @@ namespace TechTalk.SpecFlow.Configuration
             get { return (string)this["path"]; }
             set { this["path"] = value; }
         }
+        [ConfigurationProperty("markFeaturesParallelizable", DefaultValue = ConfigDefaults.MarkFeaturesParallelizable, IsRequired = false)]
+        public bool MarkFeaturesParallelizable
+        {
+            get { return (bool)this["markFeaturesParallelizable"]; }
+            set { this["markFeaturesParallelizable"] = value; }
+        }
+
+        [ConfigurationProperty("skipParallelizableMarkerForTags", IsRequired = false, Options = ConfigurationPropertyOptions.None)]
+        [ConfigurationCollection(typeof(TagCollection), AddItemName = "tag")]
+        public TagCollection SkipParallelizableMarkerForTags
+        {
+            get { return (TagCollection)this["skipParallelizableMarkerForTags"]; }
+            set { this["skipParallelizableMarkerForTags"] = value; }
+        }
+
     }
 
     public class TraceConfigElement : ConfigurationElement
@@ -342,6 +357,37 @@ namespace TechTalk.SpecFlow.Configuration
         {
             return new PluginDescriptor(Name, string.IsNullOrEmpty(Path) ? null : Path, 
                 Type, Parameters);
+        }
+    }
+
+    public class TagCollection : ConfigurationElementCollection, IEnumerable<TagElement>
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new TagElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((TagElement)element).Value;
+        }
+
+        IEnumerator<TagElement> IEnumerable<TagElement>.GetEnumerator()
+        {
+            foreach (var item in this)
+            {
+                yield return (TagElement)item;
+            }
+        }
+    }
+
+    public class TagElement : ConfigurationElement
+    {
+        [ConfigurationProperty("value", DefaultValue = "",IsRequired = false)]
+        public string Value
+        {
+            get { return (string)this["value"]; }
+            set { this["value"] = value; }
         }
     }
 }

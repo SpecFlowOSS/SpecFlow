@@ -16,6 +16,8 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
+  <Import Project="..\Build\Versioning.targets" />
+
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
@@ -36,4 +38,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
+  <Target Name="GenerateConfigs" BeforeTargets="Build">
+    <Message Text="Generating Configs for Version '$(SpecFlowBaseVersion)'" />
+    <ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\app.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)" />
+    <ReplaceTokenInFile InputPath="$(ProjectDir)\\config.template" OutputPath="$(ProjectDir)\\plugincompability.config" Token="[CURRENT_VERSION]" Replacement="$(SpecFlowBaseVersion)" />
+  </Target>
 </Project>
+

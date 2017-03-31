@@ -47,6 +47,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             scenarioContext = new ScenarioContext(new ObjectContainer(), new ScenarioInfo("scenario_title"), new BindingInstanceResolver());
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             contextManagerStub.Setup(cm => cm.FeatureContext).Returns(new FeatureContext(new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp), culture));
+            contextManagerStub.Setup(cm => cm.StepContext).Returns(new ScenarioStepContext(new StepInfo(StepDefinitionType.Given, "step_title", null, null)));
 
             bindingRegistryStub = new Mock<IBindingRegistry>();
             bindingRegistryStub.Setup(br => br.GetHooks(HookType.BeforeStep)).Returns(beforeStepEvents);
@@ -91,6 +92,20 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
                 .Returns(
                     new BindingMatch(stepDefStub.Object, 0, new object[0], new StepContext("bla", "foo", new List<string>(), CultureInfo.InvariantCulture)));
+
+            return stepDefStub;
+        }
+
+        private Mock<IStepDefinitionBinding> RegisterUndefinedStepDefinition()
+        {
+            var methodStub = new Mock<IBindingMethod>();
+            var stepDefStub = new Mock<IStepDefinitionBinding>();
+            stepDefStub.Setup(sd => sd.Method).Returns(methodStub.Object);
+
+            StepDefinitionAmbiguityReason ambiguityReason;
+            List<BindingMatch> candidatingMatches;
+            stepDefinitionMatcherStub.Setup(sdm => sdm.GetBestMatch(It.IsAny<StepInstance>(), It.IsAny<CultureInfo>(), out ambiguityReason, out candidatingMatches))
+                .Returns(BindingMatch.NonMatching);
 
             return stepDefStub;
         }
@@ -246,6 +261,44 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
 
             scenarioContext.TestStatus.Should().Be(TestStatus.TestError);
+        }
+
+        [Test]
+        public void Should_cleanup_step_context_after_scenario_block_hook_error()
+        {
+            TimeSpan duration;
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterStepDefinition();
+
+            var hookMock = CreateHookMock(beforeScenarioBlockEvents);
+            methodBindingInvokerMock.Setup(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration))
+                .Throws(new Exception("simulated error"));
+
+            try
+            {
+                testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "foo", null, null);
+                Assert.Fail("execution of the step should have failed because of the exeption thrown by the before scenario block hook");
+            }
+            catch (Exception)
+            {
+            }
+
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(hookMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Once());
+            contextManagerStub.Verify(cm => cm.CleanupStepContext());
+        }
+
+        [Test]
+        public void Should_not_execute_afterstep_when_step_is_undefined()
+        {
+            var testExecutionEngine = CreateTestExecutionEngine();
+            RegisterUndefinedStepDefinition();
+
+            var afterStepMock = CreateHookMock(afterStepEvents);
+
+            testExecutionEngine.Step(StepDefinitionKeyword.Given, null, "undefined", null, null);
+
+            TimeSpan duration;
+            methodBindingInvokerMock.Verify(i => i.InvokeBinding(afterStepMock.Object, contextManagerStub.Object, null, testTracerStub.Object, out duration), Times.Never());
         }
     }
 }
