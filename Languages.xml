@@ -75,7 +75,7 @@
     <Feature>Egenskab</Feature>
     <Background>Baggrund</Background>
     <Scenario>Scenarie</Scenario>
-    <ScenarioOutline>Abstrakt Scenario</ScenarioOutline>
+    <ScenarioOutline>Abstrakt Scenarie</ScenarioOutline>
     <Examples>Eksempler</Examples>
     <Given>Givet</Given>
     <When>Når</When>
