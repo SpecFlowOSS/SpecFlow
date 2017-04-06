@@ -2,7 +2,7 @@
 
    <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <AssemblyName>to_be_removed</AssemblyName>
+    <AssemblyName>to_be_removed_nuget</AssemblyName>
   </PropertyGroup>
 
  

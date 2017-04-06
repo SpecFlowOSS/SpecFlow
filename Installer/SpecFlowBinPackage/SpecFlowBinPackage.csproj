@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <AssemblyName>to_be_removed</AssemblyName>
+    <AssemblyName>to_be_removed_bin</AssemblyName>
   </PropertyGroup>
   
  <ItemGroup>
@@ -34,7 +34,7 @@
   
   <Target Name="AfterBuild">
     <ItemGroup>
-      <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed.dll" />
+      <SpecFlowTools Include="$(TargetDir)\*.dll" Exclude="$(TargetDir)\to_be_removed*.dll" />
       <SpecFlowTools Include="$(TargetDir)\*.exe" />
       <SpecFlowTools Include="$(TargetDir)\..\..\..\Tools\bin\$(Configuration)\specflow.exe.config" />
       <SpecFlowTools Include="$(TargetDir)\*.config" />
@@ -43,7 +43,7 @@
       <SpecFlowRuntime Include="$(TargetDir)\TechTalk.SpecFlow.dll" />
       <!--<SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.Silverlight3\bin\$(Configuration)\TechTalk.SpecFlow.Silverlight3.dll" />-->
       <!--<SpecFlowRuntime Include="$(SolutionDir)\AlternativeRuntimes\Runtime.WindowsPhone7\bin\$(Configuration)\TechTalk.SpecFlow.WindowsPhone7.dll" />-->
-      <Pdbs Include="$(TargetDir)\*.pdb" Exclude="$(TargetDir)\to_be_removed.pdb" />
+      <Pdbs Include="$(TargetDir)\*.pdb" Exclude="$(TargetDir)\to_be_removed*.pdb" />
     </ItemGroup>
     <RemoveDir Directories="$(PackageDir)" ContinueOnError="false" />
     <MakeDir Directories="$(PackageDir)" ContinueOnError="false" />
