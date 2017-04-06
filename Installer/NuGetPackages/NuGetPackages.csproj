@@ -5,6 +5,10 @@
     <AssemblyName>to_be_removed_nuget</AssemblyName>
   </PropertyGroup>
 
+   <ItemGroup>
+     <Compile Remove="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
+   </ItemGroup>
+
  
   <ItemGroup>
     <None Include=".build\build.props" />
@@ -13,6 +17,7 @@
     <None Include="SpecFlow.CustomPlugin\SpecFlow.CustomPlugin.nuspec.props" />
     <None Include="SpecFlow.MsTest\SpecFlow.MsTest.nuspec.props" />
     <None Include="SpecFlow.NUnit.Runners\SpecFlow.NUnit.Runners.nuspec.props" />
+    <None Include="SpecFlow.NUnit.Runners\SpecFlowNUnitExtension.cs" />
     <None Include="SpecFlow.NUnit\SpecFlow.NUnit.nuspec.props" />
     <None Include="SpecFlow.xUnit\SpecFlow.xUnit.nuspec.props" />
     <None Include="SpecFlow\App.config.transform" />
