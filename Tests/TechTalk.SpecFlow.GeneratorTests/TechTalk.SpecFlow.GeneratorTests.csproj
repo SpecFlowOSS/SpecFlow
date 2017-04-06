@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Data\app.config;Data\sampleCsProjectfile.csproj">
+    <None  Include="Data\app.config;Data\sampleCsProjectfile.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
