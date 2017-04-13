@@ -32,40 +32,42 @@ namespace TechTalk.SpecFlow.Specs.Drivers
                 StringBuilder error = new StringBuilder();
 
                 using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
-                using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
                 {
-                    process.OutputDataReceived += (sender, e) =>
+                    using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
                     {
-                        if (e.Data == null)
+                        process.OutputDataReceived += (sender, e) =>
                         {
-                            outputWaitHandle.Set();
-                        }
-                        else
+                            if (e.Data == null)
+                            {
+                                outputWaitHandle.Set();
+                            }
+                            else
+                            {
+                                output.AppendLine(e.Data);
+                            }
+                        };
+
+                        process.ErrorDataReceived += (sender, e) =>
                         {
-                            output.AppendLine(e.Data);
-                        }
-                    };
+                            if (e.Data == null)
+                            {
+                                errorWaitHandle.Set();
+                            }
+                            else
+                            {
+                                error.AppendLine(e.Data);
+                            }
+                        };
 
-                    process.ErrorDataReceived += (sender, e) =>
-                    {
-                        if (e.Data == null)
-                        {
-                            errorWaitHandle.Set();
-                        }
-                        else
-                        {
-                            error.AppendLine(e.Data);
-                        }
-                    };
+                        process.Start();
 
-                    process.Start();
+                        process.BeginOutputReadLine();
+                        process.BeginErrorReadLine();
 
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-
-                    process.WaitForExit();
-                    outputWaitHandle.WaitOne();
-                    errorWaitHandle.WaitOne();
+                        process.WaitForExit();
+                        outputWaitHandle.WaitOne();
+                        errorWaitHandle.WaitOne();
+                    }
                 }
 
                 ConsoleOutput = output.ToString();
