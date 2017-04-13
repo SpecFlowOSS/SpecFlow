@@ -5,7 +5,7 @@ Fixes:
 + Fixed: Projection<T>.Equals() returns false unnecessarily if table headers differ from property name by casing
 
 New Features:
-+ MsTest: Support for [DeploymentItem] attribute with @deploy tag (Issue 803)
++ MsTest: Support for [DeploymentItem] attribute with @MsTest:DeploymentItem tag (Issue 803)
 
 2.2.0-preview20161020 - 2016-10-20
 
