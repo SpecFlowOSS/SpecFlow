@@ -5,6 +5,8 @@ Fixes:
 + Fixed: Projection<T>.Equals() returns false unnecessarily if table headers differ from property name by casing
 + Fixed regex-less step definition support, see StepDefinitionsWithoutRegex.feature for details (Issues #715, #301)
 
+New Features:
++ MsTest: Support for [DeploymentItem] attribute with @MsTest:DeploymentItem tag (Issue 803)
 
 2.2.0-preview20161020 - 2016-10-20
 

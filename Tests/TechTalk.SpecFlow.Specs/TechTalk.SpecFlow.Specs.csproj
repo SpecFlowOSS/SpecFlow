@@ -96,11 +96,14 @@
     <Compile Include="Drivers\ProcessHelper.cs" />
     <Compile Include="Drivers\SpecFlowConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
+    <Compile Include="StepDefinitions\TestSettingsFileSteps.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
+    <Compile Include="Drivers\TestSettingsFileInput.cs" />
     <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
     <Compile Include="StepDefinitions\BeforeScenarioHooks.cs" />
+    <Compile Include="StepDefinitions\ContentFileSteps.cs" />
     <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
     <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
