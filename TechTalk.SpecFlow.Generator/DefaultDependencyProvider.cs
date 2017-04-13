@@ -3,7 +3,6 @@ using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 using TechTalk.SpecFlow.Generator.Plugins;
 using TechTalk.SpecFlow.Generator.UnitTestConverter;
-using TechTalk.SpecFlow.Utils;
 
 namespace TechTalk.SpecFlow.Generator
 {
@@ -19,6 +18,9 @@ namespace TechTalk.SpecFlow.Generator
             container.RegisterTypeAs<TestHeaderWriter, ITestHeaderWriter>();
             container.RegisterTypeAs<TestUpToDateChecker, ITestUpToDateChecker>();
 
+            container.RegisterTypeAs<FileSystem, IFileSystem>();
+            container.RegisterTypeAs<ExecutingAssemblyInfo, IExecutingAssemblyInfo>();
+            container.RegisterTypeAs<GeneratorPluginLocator, IGeneratorPluginLocator>();
             container.RegisterTypeAs<GeneratorPluginLoader, IGeneratorPluginLoader>();
 
             container.RegisterTypeAs<UnitTestFeatureGenerator, UnitTestFeatureGenerator>();

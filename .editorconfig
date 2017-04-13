@@ -1,0 +1,7 @@
+# top-most EditorConfig file
+root = true
+
+# Global settings
+[*.cs]
+indent_style = space
+indent_size = 4
