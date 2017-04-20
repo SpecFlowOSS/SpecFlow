@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -20,25 +19,19 @@ namespace TechTalk.SpecFlow.Generator.Project
             _configurationLoader = configurationLoader;
         }
 
-        public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
-        {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider()).ReadSpecFlowProject(projectFilePath);
-        }
-
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            string projectFolder = Path.GetDirectoryName(projectFilePath);
+            var projectFolder = Path.GetDirectoryName(projectFilePath);
 
             using (var filestream = new FileStream(projectFilePath, FileMode.Open))
             {
                 var xDocument = XDocument.Load(filestream);
 
-
                 var specFlowProject = new SpecFlowProject();
                 specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
                 specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-                specFlowProject.ProjectSettings.DefaultNamespace = xDocument.Descendants().Where(n => n.Name.LocalName == "RootNamespace").SingleOrDefault()?.Value;
-                specFlowProject.ProjectSettings.AssemblyName = xDocument.Descendants().Where(n => n.Name.LocalName == "AssemblyName").SingleOrDefault()?.Value;
+                specFlowProject.ProjectSettings.DefaultNamespace = xDocument.Descendants(GetNameWithNamespace("RootNamespace")).SingleOrDefault()?.Value;
+                specFlowProject.ProjectSettings.AssemblyName = xDocument.Descendants(GetNameWithNamespace("AssemblyName")).SingleOrDefault()?.Value;
 
                 specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(xDocument);
 
@@ -48,7 +41,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 }
 
                 var appConfigFile = GetAppConfigFile(xDocument);
-                if (!String.IsNullOrWhiteSpace(appConfigFile))
+                if (!string.IsNullOrWhiteSpace(appConfigFile))
                 {
                     var configFilePath = Path.Combine(projectFolder, appConfigFile);
                     var configFileContent = File.ReadAllText(configFilePath);
@@ -61,6 +54,11 @@ namespace TechTalk.SpecFlow.Generator.Project
             }
         }
 
+        public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
+        {
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider()).ReadSpecFlowProject(projectFilePath);
+        }
+
         private string GetAppConfigFile(XDocument xDocument)
         {
             var nodesWhereFeatureFilesCouldBe = GetNotCompileableNodes(xDocument);
@@ -68,7 +66,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             foreach (var xElement in nodesWhereFeatureFilesCouldBe)
             {
                 var include = xElement.Attribute("Include")?.Value;
-                if (String.IsNullOrWhiteSpace(include))
+                if (string.IsNullOrWhiteSpace(include))
                 {
                     continue;
                 }
@@ -90,7 +88,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             {
                 var include = xElement.Attribute("Include")?.Value;
 
-                if (String.IsNullOrWhiteSpace(include))
+                if (string.IsNullOrWhiteSpace(include))
                 {
                     continue;
                 }
@@ -142,7 +140,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             return GenerationTargetLanguage.CSharp;
         }
 
-        private static SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
+        private SpecFlowConfigurationHolder GetConfigurationHolderFromFileContent(string configFileContent)
         {
             try
             {
