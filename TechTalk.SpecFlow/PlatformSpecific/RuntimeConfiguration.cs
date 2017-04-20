@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !DISABLECONFIGFILESUPPORT
 using System.Configuration;
+#endif
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +18,9 @@ namespace TechTalk.SpecFlow.Configuration
 {
     public class RuntimeConfiguration
     {
+#if !BODI_DISABLECONFIGFILESUPPORT
         public ContainerRegistrationCollection CustomDependencies { get; set; }
+#endif
 
         //language settings
         public CultureInfo FeatureLanguage { get; set; }
@@ -61,20 +65,27 @@ namespace TechTalk.SpecFlow.Configuration
 
         public static IEnumerable<PluginDescriptor> GetPlugins()
         {
+#if !DISABLECONFIGFILESUPPORT
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
             if (section == null || section.Plugins == null)
                 return Enumerable.Empty<PluginDescriptor>();
 
             return section.Plugins.Select(pce => pce.ToPluginDescriptor());
+#else
+            return Enumerable.Empty<PluginDescriptor>();
+#endif
         }
 
         public void LoadConfiguration()
         {
+#if !DISABLECONFIGFILESUPPORT
             var section = (ConfigurationSectionHandler)ConfigurationManager.GetSection("specFlow");
             if (section != null)
                 LoadConfiguration(section);
+#endif
         }
 
+#if !DISABLECONFIGFILESUPPORT
         private bool IsSpecified(ConfigurationElement configurationElement)
         {
             return configurationElement != null && configurationElement.ElementInformation.IsPresent;
@@ -150,8 +161,9 @@ namespace TechTalk.SpecFlow.Configuration
 
             this.CustomDependencies.Add(implementationType, interfaceType.AssemblyQualifiedName, name);
         }
+#endif
 
-        #region Equality members
+#region Equality members
 
         protected bool Equals(RuntimeConfiguration other)
         {
@@ -186,6 +198,6 @@ namespace TechTalk.SpecFlow.Configuration
             }
         }
 
-        #endregion
+#endregion
     }
 }
