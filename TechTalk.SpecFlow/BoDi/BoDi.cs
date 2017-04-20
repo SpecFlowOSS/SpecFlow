@@ -248,7 +248,7 @@ namespace BoDi
             {
                 get
                 {
-                    if (Type.IsGenericType && !Type.IsGenericTypeDefinition)
+                    if (Type.GetTypeInfo().IsGenericType && !Type.GetTypeInfo().IsGenericTypeDefinition)
                         return Type.GetGenericTypeDefinition();
                     return Type;
                 }
@@ -310,7 +310,7 @@ namespace BoDi
 
                 if (obj == null)
                 {
-                    if (typeToConstruct.IsInterface)
+                    if (typeToConstruct.GetTypeInfo().IsInterface)
                         throw new ObjectContainerException("Interface cannot be resolved: " + keyToResolve, resolutionPath.ToTypeList());
 
                     obj = container.CreateObject(typeToConstruct, resolutionPath, keyToResolve);
@@ -323,9 +323,9 @@ namespace BoDi
             private Type GetTypeToConstruct(RegistrationKey keyToResolve)
             {
                 var targetType = implementationType;
-                if (targetType.IsGenericTypeDefinition)
+                if (targetType.GetTypeInfo().IsGenericTypeDefinition)
                 {
-                    var typeArgs = keyToResolve.Type.GetGenericArguments();
+                    var typeArgs = keyToResolve.Type.GetTypeInfo().GenericTypeParameters;
                     targetType = targetType.MakeGenericType(typeArgs);
                 }
                 return targetType;
@@ -399,9 +399,9 @@ namespace BoDi
             public object Resolve(ObjectContainer container, RegistrationKey keyToResolve, ResolutionList resolutionPath)
             {
                 var typeToResolve = keyToResolve.Type;
-                Debug.Assert(typeToResolve.IsGenericType && typeToResolve.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                Debug.Assert(typeToResolve.GetTypeInfo().IsGenericType && typeToResolve.GetGenericTypeDefinition() == typeof(IDictionary<,>));
 
-                var genericArguments = typeToResolve.GetGenericArguments();
+                var genericArguments = typeToResolve.GetTypeInfo().GenericTypeArguments;
                 var keyType = genericArguments[0];
                 var targetType = genericArguments[1];
                 var result = (IDictionary)Activator.CreateInstance(typeof (Dictionary<,>).MakeGenericType(genericArguments));
@@ -418,7 +418,7 @@ namespace BoDi
 
             private object ChangeType(string name, Type keyType)
             {
-                if (keyType.IsEnum)
+                if (keyType.GetTypeInfo().IsEnum)
                     return Enum.Parse(keyType, name, true);
 
                 Debug.Assert(keyType == typeof(string));
@@ -469,13 +469,13 @@ namespace BoDi
 
         private bool IsValidTypeMapping(Type implementationType, Type interfaceType)
         {
-            if (interfaceType.IsAssignableFrom(implementationType))
+            if (interfaceType.GetTypeInfo().IsAssignableFrom(implementationType.GetTypeInfo()))
                 return true;
 
-            if (interfaceType.IsGenericTypeDefinition && implementationType.IsGenericTypeDefinition)
+            if (interfaceType.GetTypeInfo().IsGenericTypeDefinition && implementationType.GetTypeInfo().IsGenericTypeDefinition)
             {
                 var baseTypes = GetBaseTypes(implementationType).ToArray();
-                return baseTypes.Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == interfaceType);
+                return baseTypes.Any(t => t.GetTypeInfo().IsGenericType && t.GetGenericTypeDefinition() == interfaceType);
             }
 
             return false;
@@ -483,12 +483,12 @@ namespace BoDi
 
         private static IEnumerable<Type> GetBaseTypes(Type type)
         {
-            if (type.BaseType == null) return type.GetInterfaces();
+            if (type.GetTypeInfo().BaseType == null) return type.GetTypeInfo().ImplementedInterfaces;
 
-            return Enumerable.Repeat(type.BaseType, 1)
-                             .Concat(type.GetInterfaces())
-                             .Concat(type.GetInterfaces().SelectMany(GetBaseTypes))
-                             .Concat(GetBaseTypes(type.BaseType));
+            return Enumerable.Repeat(type.GetTypeInfo().BaseType, 1)
+                             .Concat(type.GetTypeInfo().ImplementedInterfaces)
+                             .Concat(type.GetTypeInfo().ImplementedInterfaces.SelectMany(GetBaseTypes))
+                             .Concat(GetBaseTypes(type.GetTypeInfo().BaseType));
         }
 
 
@@ -655,7 +655,7 @@ namespace BoDi
                 resolvedObject = ResolveObject(keyToResolve, resolutionPath);
                 resolvedObjects.Add(keyToResolve, resolvedObject);
             }
-            Debug.Assert(typeToResolve.IsInstanceOfType(resolvedObject));
+            Debug.Assert(typeToResolve.GetTypeInfo().IsAssignableFrom(resolvedObject.GetType().GetTypeInfo()));
             return resolvedObject;
         }
 
@@ -672,7 +672,7 @@ namespace BoDi
 
             if (IsSpecialNamedInstanceDictionaryKey(keyToResolve))
             {
-                var targetType = keyToResolve.Type.GetGenericArguments()[1];
+                var targetType = keyToResolve.Type.GetTypeInfo().GenericTypeArguments[1];
                 return GetRegistrationResult(CreateNamedInstanceDictionaryKey(targetType));
             }
 
@@ -688,18 +688,18 @@ namespace BoDi
         private bool IsDefaultNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
             return IsNamedInstanceDictionaryKey(keyToResolve) && 
-                   keyToResolve.Type.GetGenericArguments()[0] == typeof(string);
+                   keyToResolve.Type.GetTypeInfo().GenericTypeArguments[0] == typeof(string);
         }
 
         private bool IsSpecialNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
             return IsNamedInstanceDictionaryKey(keyToResolve) && 
-                   keyToResolve.Type.GetGenericArguments()[0].IsEnum;
+                   keyToResolve.Type.GetTypeInfo().GenericTypeArguments[0].GetTypeInfo().IsEnum;
         }
 
         private bool IsNamedInstanceDictionaryKey(RegistrationKey keyToResolve)
         {
-            return keyToResolve.Name == null && keyToResolve.Type.IsGenericType && keyToResolve.Type.GetGenericTypeDefinition() == typeof(IDictionary<,>);
+            return keyToResolve.Name == null && keyToResolve.Type.GetTypeInfo().IsGenericType && keyToResolve.Type.GetGenericTypeDefinition() == typeof(IDictionary<,>);
         }
 
         private object GetPooledObject(RegistrationKey pooledObjectKey)
@@ -725,7 +725,7 @@ namespace BoDi
 
         private object ResolveObject(RegistrationKey keyToResolve, ResolutionList resolutionPath)
         {
-            if (keyToResolve.Type.IsPrimitive || keyToResolve.Type == typeof(string) || keyToResolve.Type.IsValueType)
+            if (keyToResolve.Type.GetTypeInfo().IsPrimitive || keyToResolve.Type == typeof(string) || keyToResolve.Type.GetTypeInfo().IsValueType)
                 throw new ObjectContainerException("Primitive types or structs cannot be resolved: " + keyToResolve.Type.FullName, resolutionPath.ToTypeList());
 
             var registrationResult = GetRegistrationResult(keyToResolve) ?? 
@@ -738,11 +738,12 @@ namespace BoDi
 
         private object CreateObject(Type type, ResolutionList resolutionPath, RegistrationKey keyToResolve)
         {
-            var ctors = type.GetConstructors();
-            if (ctors.Length == 0)
-                ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
+            var ctors = type.GetTypeInfo().DeclaredConstructors;
+            //TODO: how to handle this in .NET Core?
+            //if (ctors.Length == 0)
+            //    ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
 
-            Debug.Assert(ctors.Length > 0, "Class must have a constructor!");
+            Debug.Assert(ctors.Count() > 0, "Class must have a constructor!");
 
             int maxParamCount = ctors.Max(ctor => ctor.GetParameters().Length);
             var maxParamCountCtors = ctors.Where(ctor => ctor.GetParameters().Length == maxParamCount).ToArray();
@@ -779,7 +780,7 @@ namespace BoDi
             if (resolutionPath.Contains(keyToResolve))
                 throw new ObjectContainerException("Circular dependency found! " + factoryDelegate.ToString(), resolutionPath.ToTypeList());
 
-            var args = ResolveArguments(factoryDelegate.Method.GetParameters(), keyToResolve, resolutionPath.AddToEnd(keyToResolve, null));
+            var args = ResolveArguments(factoryDelegate.GetMethodInfo().GetParameters(), keyToResolve, resolutionPath.AddToEnd(keyToResolve, null));
             return factoryDelegate.DynamicInvoke(args);
         }
 
