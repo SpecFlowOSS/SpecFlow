@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using Microsoft.Build.Evaluation;
+using System.Xml.Linq;
+using TechTalk.SpecFlow.Assist.ValueRetrievers;
 using TechTalk.SpecFlow.Generator.Configuration;
 using TechTalk.SpecFlow.Generator.Interfaces;
 
@@ -25,50 +27,117 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
         {
-            Microsoft.Build.Evaluation.Project project = ProjectCollection.GlobalProjectCollection.LoadProject(projectFilePath);
-
             string projectFolder = Path.GetDirectoryName(projectFilePath);
 
-            var specFlowProject = new SpecFlowProject();
-            specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
-            specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
-            specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x=>x.Name=="AssemblyName").EvaluatedValue;
-            specFlowProject.ProjectSettings.DefaultNamespace =project.AllEvaluatedProperties.First(x=>x.Name=="RootNamespace").EvaluatedValue;
-
-            MsBuildWorkspace
-
-            specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
-
-            foreach (ProjectItem item in project.FeatureFiles())
+            using (var filestream = new FileStream(projectFilePath, FileMode.Open))
             {
-                var featureFile = new FeatureFileInput(item.EvaluatedInclude);
-                var ns = item.GetMetadataValue("CustomToolNamespace");
-                if (!String.IsNullOrEmpty(ns))
-                    featureFile.CustomNamespace = ns;
-                specFlowProject.FeatureFiles.Add(featureFile);
-                               
-            }
+                var xDocument = XDocument.Load(filestream);
 
-            ProjectItem appConfigItem = project.ApplicationConfigurationFile();
-            if (appConfigItem != null)
-            {
-                var configFilePath = Path.Combine(projectFolder, appConfigItem.EvaluatedInclude);
-                var configFileContent = File.ReadAllText(configFilePath);
-                var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
-                specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
-                specFlowProject.Configuration = _configurationLoader.LoadConfiguration(configurationHolder);
+
+                var specFlowProject = new SpecFlowProject();
+                specFlowProject.ProjectSettings.ProjectFolder = projectFolder;
+                specFlowProject.ProjectSettings.ProjectName = Path.GetFileNameWithoutExtension(projectFilePath);
+                specFlowProject.ProjectSettings.DefaultNamespace = xDocument.Descendants().Where(n => n.Name.LocalName == "RootNamespace").SingleOrDefault()?.Value;
+                specFlowProject.ProjectSettings.AssemblyName = xDocument.Descendants().Where(n => n.Name.LocalName == "AssemblyName").SingleOrDefault()?.Value;
+
+                specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(xDocument);
+
+                foreach (var item in GetFeatureFiles(xDocument))
+                {
+                    specFlowProject.FeatureFiles.Add(item);
+                }
+
+                var appConfigFile = GetAppConfigFile(xDocument);
+                if (!String.IsNullOrWhiteSpace(appConfigFile))
+                {
+                    var configFilePath = Path.Combine(projectFolder, appConfigFile);
+                    var configFileContent = File.ReadAllText(configFilePath);
+                    var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
+                    specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
+                    specFlowProject.Configuration = _configurationLoader.LoadConfiguration(configurationHolder);
+                }
+
+                return specFlowProject;
             }
-            
-            return specFlowProject;
         }
 
-        private string GetLanguage(Microsoft.Build.Evaluation.Project project)
+        private string GetAppConfigFile(XDocument xDocument)
         {
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.VisualBasic.targets")))
-                return GenerationTargetLanguage.VB;
+            var nodesWhereFeatureFilesCouldBe = GetNotCompileableNodes(xDocument);
 
-            if (project.Imports.Any(i => i.ImportingElement.Project.Contains("Microsoft.CSharp.targets")))
+            foreach (var xElement in nodesWhereFeatureFilesCouldBe)
+            {
+                var include = xElement.Attribute("Include")?.Value;
+                if (String.IsNullOrWhiteSpace(include))
+                {
+                    continue;
+                }
+
+                if (Path.GetFileName(include).Equals("app.config", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return include;
+                }
+            }
+
+            return null;
+        }
+
+        private IEnumerable<FeatureFileInput> GetFeatureFiles(XDocument xDocument)
+        {
+            var nodesWhereFeatureFilesCouldBe = GetNotCompileableNodes(xDocument);
+
+            foreach (var xElement in nodesWhereFeatureFilesCouldBe)
+            {
+                var include = xElement.Attribute("Include")?.Value;
+
+                if (String.IsNullOrWhiteSpace(include))
+                {
+                    continue;
+                }
+
+                if (include.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase) ||
+                    include.EndsWith(".feature.xslx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var featureFile = new FeatureFileInput(include);
+
+                    var customNamespace = xElement.Descendants(GetNameWithNamespace("CustomToolNamespace")).SingleOrDefault();
+                    if (customNamespace != null)
+                    {
+                        featureFile.CustomNamespace = customNamespace.Value;
+                    }
+
+                    yield return featureFile;
+                }
+            }
+        }
+
+        private IEnumerable<XElement> GetNotCompileableNodes(XDocument xDocument)
+        {
+            var contentNodes = xDocument.Descendants(GetNameWithNamespace("Content"));
+            var noneNodes = xDocument.Descendants(GetNameWithNamespace("None"));
+
+            var nodesWhereFeatureFilesCouldBe = contentNodes.Union(noneNodes);
+            return nodesWhereFeatureFilesCouldBe;
+        }
+
+        private XName GetNameWithNamespace(string localName)
+        {
+            return XName.Get(localName, "http://schemas.microsoft.com/developer/msbuild/2003");
+        }
+
+        private string GetLanguage(XDocument project)
+        {
+            var imports = project.Descendants(GetNameWithNamespace("Import")).ToList();
+
+            if (imports.Any(n => n.Attribute("Project")?.Value.Contains("Microsoft.CSharp.targets") ?? false))
+            {
                 return GenerationTargetLanguage.CSharp;
+            }
+
+            if (imports.Any(n => n.Attribute("Project")?.Value.Contains("Microsoft.VisualBasic.targets") ?? false))
+            {
+                return GenerationTargetLanguage.VB;
+            }
 
             return GenerationTargetLanguage.CSharp;
         }

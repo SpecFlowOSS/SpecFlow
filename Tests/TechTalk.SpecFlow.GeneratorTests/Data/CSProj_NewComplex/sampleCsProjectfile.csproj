@@ -10,4 +10,10 @@
     <PackageReference Include="SpecFlow" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
+      <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
+    </None>
+  </ItemGroup>
+
 </Project>

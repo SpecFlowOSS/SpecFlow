@@ -175,6 +175,7 @@
     <None Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CreateWorkflowDefinition.feature.cs</LastGenOutput>
+      <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
     <None Include="Features\WorkflowInstance\WorkflowInstance.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

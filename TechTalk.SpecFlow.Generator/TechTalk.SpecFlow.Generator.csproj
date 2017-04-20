@@ -40,7 +40,6 @@
       <HintPath>..\packages\Gherkin.4.0.0\lib\net45\Gherkin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Build" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -73,7 +72,6 @@
     <Compile Include="Plugins\IGeneratorPlugin.cs" />
     <Compile Include="Plugins\IGeneratorPluginLoader.cs" />
     <Compile Include="Project\ISpecFlowProjectReader.cs" />
-    <Compile Include="Project\MsBuildProjectFileExtensions.cs" />
     <Compile Include="Project\MsBuildProjectReader.cs" />
     <Compile Include="Configuration\RuntimeConfigurationReader.cs" />
     <Compile Include="Configuration\InProcGeneratorInfoProvider.cs" />

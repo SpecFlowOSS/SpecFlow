@@ -102,6 +102,15 @@
     <Compile Include="TestUpToDateCheckerTests.cs" />
     <Compile Include="UnitTestFeatureGeneratorTests.cs" />
     <Compile Include="XUnitTestGeneratorProviderTests.cs" />
+    <Content Include="Data\VBProj_ToolsVersion_12\sampleCsProjectfile.vbproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\VBProj_ToolsVersion_14\sampleCsProjectfile.vbproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\VBProj_ToolsVersion_4\sampleCsProjectfile.vbproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TechTalk.SpecFlow.Generator\TechTalk.SpecFlow.Generator.csproj">
@@ -153,6 +162,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\CSProj_New\Features\WorkflowInstance\WorkflowInstance.feature">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\VBProj_ToolsVersion_12\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\VBProj_ToolsVersion_14\app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\VBProj_ToolsVersion_4\app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

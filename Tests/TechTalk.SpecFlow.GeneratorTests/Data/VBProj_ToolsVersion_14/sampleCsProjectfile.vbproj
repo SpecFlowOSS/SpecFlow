@@ -1,38 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FAA2B575-765C-4925-B762-43734306CB2C}</ProjectGuid>
+    <ProjectGuid>{C74623FE-0E68-4570-B712-70A7A1A15E49}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hacapp.Web.Tests.UI</RootNamespace>
     <AssemblyName>Hacapp.Web.Tests.UI</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
-    <IsCodedUITest>False</IsCodedUITest>
-    <TestProjectType>UnitTest</TestProjectType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>VBClassic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>VBClassic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
@@ -99,70 +106,70 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Features\Login\SocialLogins.feature.cs">
+    <Compile Include="Features\Login\SocialLogins.feature.vb">
       <DependentUpon>SocialLogins.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature.cs">
+    <Compile Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CreateWorkflowDefinition.feature</DependentUpon>
     </Compile>
-    <Compile Include="Features\WorkflowInstance\WorkflowInstance.feature.cs">
+    <Compile Include="Features\WorkflowInstance\WorkflowInstance.feature.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowInstance.feature</DependentUpon>
     </Compile>
-    <Compile Include="MoreLinq\MoreEnumerable.MaxBy.cs" />
-    <Compile Include="MoreLinq\MoreEnumerable.MinBy.cs" />
-    <Compile Include="PageElements\Button.cs" />
-    <Compile Include="PageElements\CheckBox.cs" />
-    <Compile Include="PageElements\Div.cs" />
-    <Compile Include="PageElements\DropDown.cs" />
-    <Compile Include="PageElements\Header.cs" />
-    <Compile Include="PageElements\Link.cs" />
-    <Compile Include="PageElements\MultiSelect.cs" />
-    <Compile Include="PageElements\PageElement.cs" />
-    <Compile Include="PageElements\RadioButton.cs" />
-    <Compile Include="PageElements\Table.cs" />
-    <Compile Include="PageElements\TableCell.cs" />
-    <Compile Include="PageElements\TextBox.cs" />
-    <Compile Include="PageElements\TimePicker.cs" />
-    <Compile Include="PageElements\ValidationSummary.cs" />
-    <Compile Include="Browser.cs" />
-    <Compile Include="CaptureScreenShots.cs" />
-    <Compile Include="PageObjects\FacebookLoginPageObject.cs" />
-    <Compile Include="PageObjects\GenericPage.cs" />
-    <Compile Include="PageObjects\GoogleLoginPageObject.cs" />
-    <Compile Include="PageObjects\LoginPageObject.cs" />
-    <Compile Include="PageObjects\MicrosoftLoginPageObject.cs" />
-    <Compile Include="PageObjects\NavBarPageObject.cs" />
-    <Compile Include="PageObjects\Page.cs" />
-    <Compile Include="PageObjects\SocialLoginPageObject.cs" />
-    <Compile Include="PageObjects\TwitterLoginPageObject.cs" />
-    <Compile Include="PageObjects\WorkflowDefinitionCreatePageObject.cs" />
-    <Compile Include="PageObjects\WorkflowDefinitionsHomePageObject.cs" />
-    <Compile Include="Steps\CleanUpSteps.cs" />
-    <Compile Include="Steps\IUserCredentials.cs" />
-    <Compile Include="Steps\NavBarSteps.cs" />
-    <Compile Include="Steps\SeleniumContext.cs" />
-    <Compile Include="Steps\TestSettings.cs" />
-    <Compile Include="Steps\UiTestsSetup.cs" />
-    <Compile Include="Steps\UserContext.cs" />
-    <Compile Include="Steps\UserCredentials.cs" />
-    <Compile Include="Steps\UserSteps.cs" />
-    <Compile Include="Steps\WorkflowDefinitionCreateSteps.cs" />
-    <Compile Include="Steps\WorkflowDefinitionHomeSteps.cs" />
-    <Compile Include="Steps\WorkflowInstanceParametersPageObject.cs" />
-    <Compile Include="Steps\WorkflowInstanceParameterSteps.cs" />
-    <Compile Include="ValueToFind.cs" />
-    <Compile Include="WaitFor.cs" />
-    <Compile Include="WaitForElementFailedException.cs" />
-    <Compile Include="WebDriverExtensions.cs" />
-    <Compile Include="YesNoRadioButtonValue.cs" />
-    <Compile Include="Steps\SocialLoginSteps.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.MaxBy.vb" />
+    <Compile Include="MoreLinq\MoreEnumerable.MinBy.vb" />
+    <Compile Include="PageElements\Button.vb" />
+    <Compile Include="PageElements\CheckBox.vb" />
+    <Compile Include="PageElements\Div.vb" />
+    <Compile Include="PageElements\DropDown.vb" />
+    <Compile Include="PageElements\Header.vb" />
+    <Compile Include="PageElements\Link.vb" />
+    <Compile Include="PageElements\MultiSelect.vb" />
+    <Compile Include="PageElements\PageElement.vb" />
+    <Compile Include="PageElements\RadioButton.vb" />
+    <Compile Include="PageElements\Table.vb" />
+    <Compile Include="PageElements\TableCell.vb" />
+    <Compile Include="PageElements\TextBox.vb" />
+    <Compile Include="PageElements\TimePicker.vb" />
+    <Compile Include="PageElements\ValidationSummary.vb" />
+    <Compile Include="Browser.vb" />
+    <Compile Include="CaptureScreenShots.vb" />
+    <Compile Include="PageObjects\FacebookLoginPageObject.vb" />
+    <Compile Include="PageObjects\GenericPage.vb" />
+    <Compile Include="PageObjects\GoogleLoginPageObject.vb" />
+    <Compile Include="PageObjects\LoginPageObject.vb" />
+    <Compile Include="PageObjects\MicrosoftLoginPageObject.vb" />
+    <Compile Include="PageObjects\NavBarPageObject.vb" />
+    <Compile Include="PageObjects\Page.vb" />
+    <Compile Include="PageObjects\SocialLoginPageObject.vb" />
+    <Compile Include="PageObjects\TwitterLoginPageObject.vb" />
+    <Compile Include="PageObjects\WorkflowDefinitionCreatePageObject.vb" />
+    <Compile Include="PageObjects\WorkflowDefinitionsHomePageObject.vb" />
+    <Compile Include="Steps\CleanUpSteps.vb" />
+    <Compile Include="Steps\IUserCredentials.vb" />
+    <Compile Include="Steps\NavBarSteps.vb" />
+    <Compile Include="Steps\SeleniumContext.vb" />
+    <Compile Include="Steps\TestSettings.vb" />
+    <Compile Include="Steps\UiTestsSetup.vb" />
+    <Compile Include="Steps\UserContext.vb" />
+    <Compile Include="Steps\UserCredentials.vb" />
+    <Compile Include="Steps\UserSteps.vb" />
+    <Compile Include="Steps\WorkflowDefinitionCreateSteps.vb" />
+    <Compile Include="Steps\WorkflowDefinitionHomeSteps.vb" />
+    <Compile Include="Steps\WorkflowInstanceParametersPageObject.vb" />
+    <Compile Include="Steps\WorkflowInstanceParameterSteps.vb" />
+    <Compile Include="ValueToFind.vb" />
+    <Compile Include="WaitFor.vb" />
+    <Compile Include="WaitForElementFailedException.vb" />
+    <Compile Include="WebDriverExtensions.vb" />
+    <Compile Include="YesNoRadioButtonValue.vb" />
+    <Compile Include="Steps\SocialLoginSteps.vb" />
+    <Compile Include="Properties\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.config">
@@ -170,30 +177,30 @@
     </Content>
     <None Include="Features\Login\SocialLogins.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SocialLogins.feature.cs</LastGenOutput>
+      <LastGenOutput>SocialLogins.feature.vb</LastGenOutput>
     </None>
     <None Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CreateWorkflowDefinition.feature.cs</LastGenOutput>
+      <LastGenOutput>CreateWorkflowDefinition.feature.vb</LastGenOutput>
       <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
     <None Include="Features\WorkflowInstance\WorkflowInstance.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowInstance.feature.cs</LastGenOutput>
+      <LastGenOutput>WorkflowInstance.feature.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <Compile Include="Steps\BrowserSelectionSteps.cs" />
+    <Compile Include="Steps\BrowserSelectionSteps.vb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\hacapp.core\Hacapp.Core.csproj">
+    <ProjectReference Include="..\hacapp.core\Hacapp.Core.vbproj">
       <Project>{38A957ED-6237-439D-93AC-220BFD7D0409}</Project>
       <Name>Hacapp.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hacapp.Data.Azure\Hacapp.Data.Azure.csproj">
+    <ProjectReference Include="..\Hacapp.Data.Azure\Hacapp.Data.Azure.vbproj">
       <Project>{246EF4BD-4252-4371-A824-2CEAD1F51CFE}</Project>
       <Name>Hacapp.Data.Azure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tests.Shared\Hacapp.Web.Tests.Shared.csproj">
+    <ProjectReference Include="..\Tests.Shared\Hacapp.Web.Tests.Shared.vbproj">
       <Project>{125f3b68-898e-4d70-8055-754d13f56bf8}</Project>
       <Name>Hacapp.Web.Tests.Shared</Name>
     </ProjectReference>
@@ -218,7 +225,7 @@
     </When>
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
