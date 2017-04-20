@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <AssemblyName>Hacapp.Web.Tests.UI</AssemblyName>
+    <RootNamespace>Hacapp.Web.Tests.UI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SpecFlow" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>

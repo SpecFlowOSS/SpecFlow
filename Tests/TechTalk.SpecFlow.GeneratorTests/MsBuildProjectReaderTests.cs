@@ -7,14 +7,33 @@ using TechTalk.SpecFlow.Generator.Project;
 
 namespace TechTalk.SpecFlow.GeneratorTests
 {
+    //If this tests are failing in R# TestRunner, disable shadow copy of assemblies
     [TestFixture]
     public class MsBuildProjectReaderTests
     {
+
         [Test]
-        public void Should_parse_csproj_file_correctly()
+        public void Should_parse_ToolsVersion4_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_4\\sampleCsProjectfile.csproj");
+        }
+
+        [Test]
+        public void Should_parse_ToolsVersion14_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_14\\sampleCsProjectfile.csproj");
+        }
+
+        [Test]
+        public void Should_parse_ToolsVersion12_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_12\\sampleCsProjectfile.csproj");
+        }
+
+        private void Should_parse_csproj_file_correctly(string csprojPath)
         {
             var directoryName = Path.GetDirectoryName(this.GetType().Assembly.Location);
-            string projectFilePath = Path.Combine(directoryName, "Data\\sampleCsProjectfile.csproj");
+            string projectFilePath = Path.Combine(directoryName, csprojPath);
             SpecFlowProject specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
             specflowProjectfile.FeatureFiles.Count.Should().Be(3);
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();
@@ -26,9 +45,9 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.ProjectSettings.ProjectName.Should().Be("sampleCsProjectfile");
 
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be("C#");
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.LanguageVersion.Should().Be(new Version(3,0));
+            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.LanguageVersion.Should().Be(new Version(3, 0));
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Platform.Should().Be(".NET");
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.PlatformVersion.Should().Be(new Version(3,5));
+            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.PlatformVersion.Should().Be(new Version(3, 5));
 
             specflowProjectfile.Configuration.GeneratorConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
             specflowProjectfile.Configuration.GeneratorConfiguration.AllowRowTests.Should().BeTrue();
