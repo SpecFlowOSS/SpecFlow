@@ -195,7 +195,7 @@ namespace TechTalk.SpecFlow.Generator.Project
         private bool IsAFeatureFile(string fileName)
         {
             return fileName.EndsWith(".feature", StringComparison.InvariantCultureIgnoreCase) ||
-                   fileName.EndsWith(".feature.xslx", StringComparison.InvariantCultureIgnoreCase);
+                   fileName.EndsWith(".feature.xlsx", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private IEnumerable<XElement> GetNotCompileableNodes(XDocument xDocument, bool newProjectSystem)
