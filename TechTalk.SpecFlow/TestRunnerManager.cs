@@ -64,7 +64,8 @@ namespace TechTalk.SpecFlow
 
             testRunner.OnTestRunStart();
 
-#if !SILVERLIGHT
+            //TODO[netcore]: this could be replaced using System.Runtime.Loader, but that only supports netstandard1.5 (System.Runtime.Loader.AssemblyLoadContext.Default.Unloading += context => OnTestRunnerEnd();
+#if !SILVERLIGHT && !NETCORE
             EventHandler domainUnload = delegate { OnTestRunnerEnd(); };
             AppDomain.CurrentDomain.DomainUnload += domainUnload;
             AppDomain.CurrentDomain.ProcessExit += domainUnload;
