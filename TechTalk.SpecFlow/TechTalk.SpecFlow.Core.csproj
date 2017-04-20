@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;BODI_DISABLECONFIGFILESUPPORT;BODI_LIMITEDRUNTIME;NETSTANDARD1_4;DISABLECONFIGFILESUPPORT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;BODI_DISABLECONFIGFILESUPPORT;BODI_LIMITEDRUNTIME;NETSTANDARD1_4;DISABLECONFIGFILESUPPORT;NETSTANDARD1_4;DISABLE_ASSIST</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Assist\**" />
+    <EmbeddedResource Remove="Assist\**" />
+    <None Remove="Assist\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="PlatformSpecific\ConfigurationSectionHandler.cs" />
