@@ -10,12 +10,10 @@ namespace TechTalk.SpecFlow.UnitTestProvider
     {
         public static Action<string, object[]> GetAssertMethodWithFormattedMessage(string assemblyName, string typeName, string methodName)
         {
-            Assembly msTestAssembly = Assembly.Load(assemblyName);
-            Type assertType = msTestAssembly.GetType(typeName, true);
+            Assembly msTestAssembly = Assembly.Load(new AssemblyName(assemblyName));
+            Type assertType = msTestAssembly.GetType(typeName, true, true);
 
-            MethodInfo method = assertType.GetMethod(methodName,
-                                                     BindingFlags.Public | BindingFlags.Static, null,
-                                                     new Type[] { typeof(string), typeof(object[]) }, null);
+            MethodInfo method = assertType.GetMethod(methodName, new Type[] { typeof(string), typeof(object[]) }); //TODO: BindingFlags.Public | BindingFlags.Static
             if (method == null)
                 throw new SpecFlowException("Assert method not found: " + methodName);
 

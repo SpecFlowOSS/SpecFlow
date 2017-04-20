@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Compatibility;
@@ -79,7 +80,7 @@ namespace TechTalk.SpecFlow.Tracing
 
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
-            var assembly = typeof(LanguageHelper).Assembly;
+            var assembly = typeof(LanguageHelper).GetTypeInfo().Assembly;
             var docStream = assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
             if (docStream == null)
                 throw new InvalidOperationException("Language resource not found.");

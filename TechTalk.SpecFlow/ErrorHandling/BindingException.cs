@@ -23,7 +23,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETCORE
         protected BindingException(
             SerializationInfo info,
             StreamingContext context) : base(info, context)

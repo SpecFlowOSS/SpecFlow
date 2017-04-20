@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
 using TechTalk.SpecFlow.Infrastructure;
@@ -110,7 +111,7 @@ namespace TechTalk.SpecFlow.Bindings
 
         private static object ConvertSimple(Type typeToConvertTo, object value, CultureInfo cultureInfo)
         {
-            if (typeToConvertTo.IsEnum && value is string)
+            if (typeToConvertTo.GetTypeInfo().IsEnum && value is string)
                 return ConvertToAnEnum(typeToConvertTo, (string) value);
 
             if (typeToConvertTo == typeof(Guid?) && string.IsNullOrEmpty(value as string))

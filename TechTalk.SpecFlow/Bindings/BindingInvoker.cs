@@ -100,13 +100,14 @@ namespace TechTalk.SpecFlow.Bindings
 
             if (methodBinding.cachedBindingDelegate == null)
             {
-                methodBinding.cachedBindingDelegate = CreateMethodDelegate(methodInfo);
+                var bindingClass = methodInfo.DeclaringType; //TODO[netcore]: this should be ReflectedType, because the method might be declared on a base class
+                methodBinding.cachedBindingDelegate = CreateMethodDelegate(methodInfo, bindingClass);
             }
 
             bindingAction = methodBinding.cachedBindingDelegate;
         }
 
-        protected virtual Delegate CreateMethodDelegate(MethodInfo method)
+        protected virtual Delegate CreateMethodDelegate(MethodInfo method, Type bindingClassType)
         {
             List<ParameterExpression> parameters = new List<ParameterExpression>();
             parameters.Add(Expression.Parameter(typeof(IContextManager), "__contextManager"));
@@ -144,8 +145,8 @@ namespace TechTalk.SpecFlow.Bindings
                                     contextManagerArg,
                                     scenarioContextProperty), 
                                 getInstanceMethod,
-                                Expression.Constant(method.ReflectedType, typeof(Type))),
-                            method.ReflectedType), 
+                                Expression.Constant(bindingClassType, typeof(Type))),
+                            method.DeclaringType), 
                         method, 
                         methodArguments),
                     parameters.ToArray());

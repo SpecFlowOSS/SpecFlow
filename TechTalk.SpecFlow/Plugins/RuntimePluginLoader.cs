@@ -13,14 +13,14 @@ namespace TechTalk.SpecFlow.Plugins
             Assembly assembly;
             try
             {
-                assembly = Assembly.Load(assemblyName);
+                assembly = Assembly.Load(new AssemblyName(assemblyName));
             }
             catch(Exception ex)
             {
                 throw new SpecFlowException(string.Format("Unable to load plugin: {0}. Please check http://go.specflow.org/doc-plugins for details.", pluginDescriptor.Name), ex);
             }
 
-            var pluginAttribute = (RuntimePluginAttribute)Attribute.GetCustomAttribute(assembly, typeof(RuntimePluginAttribute));
+            var pluginAttribute = assembly.GetCustomAttribute<RuntimePluginAttribute>();
             if (pluginAttribute == null)
                 throw new SpecFlowException(string.Format("Missing [assembly:RuntimePlugin] attribute in {0}. Please check http://go.specflow.org/doc-plugins for details.", assembly.FullName));
 

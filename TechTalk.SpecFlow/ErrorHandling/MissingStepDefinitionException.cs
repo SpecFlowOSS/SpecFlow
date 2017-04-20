@@ -15,7 +15,7 @@ namespace TechTalk.SpecFlow
         {
         }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETCORE
         protected MissingStepDefinitionException(
             SerializationInfo info,
             StreamingContext context)

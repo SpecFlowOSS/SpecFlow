@@ -177,7 +177,12 @@ namespace TechTalk.SpecFlow
 
         public static ITestRunner GetTestRunner(Assembly testAssembly = null, int? managedThreadId = null)
         {
+#if NETCORE
+            if (testAssembly == null)
+                throw new NotSupportedException("Inferring the binding assembly from the caller is not supported in SpecFlow .NET Core currently"); //TODO[netcore]: do we need this at all if there is no code generation?
+#else
             testAssembly = testAssembly ?? Assembly.GetCallingAssembly();
+#endif
             managedThreadId = GetLogicalThreadId(managedThreadId);
             var testRunnerManager = GetTestRunnerManager(testAssembly);
             return testRunnerManager.GetTestRunner(managedThreadId.Value);
@@ -226,6 +231,6 @@ namespace TechTalk.SpecFlow
             }
         }
 
-        #endregion
+#endregion
     }
 }

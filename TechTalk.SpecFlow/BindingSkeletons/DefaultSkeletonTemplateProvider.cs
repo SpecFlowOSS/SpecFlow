@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace TechTalk.SpecFlow.BindingSkeletons
 {
@@ -8,7 +9,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
     {
         protected override string GetTemplateFileContent()
         {
-            var resourceStream = GetType().Assembly.GetManifestResourceStream("TechTalk.SpecFlow.BindingSkeletons.DefaultSkeletonTemplates.sftemplate");
+            var resourceStream = GetType().GetTypeInfo().Assembly.GetManifestResourceStream("TechTalk.SpecFlow.BindingSkeletons.DefaultSkeletonTemplates.sftemplate");
             if (resourceStream == null)
                 throw new SpecFlowException("Missing resource: DefaultSkeletonTemplates.sftemplate");
 

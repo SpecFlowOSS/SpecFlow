@@ -20,7 +20,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
             if (type.FullName == baseType.FullName)
                 return true;
 
-            if (type.BaseType != null && IsAssignableTo(baseType, type.BaseType))
+            if (type.GetTypeInfo().BaseType != null && IsAssignableTo(baseType, type.GetTypeInfo().BaseType))
                 return true;
 
             return type.GetInterfaces().Any(_if => IsAssignableTo(baseType, _if));

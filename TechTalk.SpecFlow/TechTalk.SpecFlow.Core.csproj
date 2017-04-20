@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;BODI_DISABLECONFIGFILESUPPORT;BODI_LIMITEDRUNTIME;NETSTANDARD1_4;DISABLECONFIGFILESUPPORT;NETSTANDARD1_4;DISABLE_ASSIST</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;BODI_DISABLECONFIGFILESUPPORT;BODI_LIMITEDRUNTIME;NETSTANDARD1_4;DISABLECONFIGFILESUPPORT;NETSTANDARD1_4;DISABLE_ASSIST;NETSTANDARD1_4;NETCORE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
   </ItemGroup>
 

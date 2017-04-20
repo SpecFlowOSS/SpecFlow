@@ -11,7 +11,7 @@ namespace TechTalk.SpecFlow.Infrastructure
     {
         public Assembly Load(string assemblyName)
         {
-            return Assembly.Load(assemblyName);
+            return Assembly.Load(new AssemblyName(assemblyName));
         }
     }
 }

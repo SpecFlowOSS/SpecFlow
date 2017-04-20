@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
         internal bool BuildBindingsFromType(Type type)
         {
 // ReSharper disable PossibleMultipleEnumeration
-            var filteredAttributes = type.GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
+            var filteredAttributes = type.GetTypeInfo().GetCustomAttributes(typeof(Attribute), true).Cast<Attribute>().Where(attr => bindingSourceProcessor.CanProcessTypeAttribute(attr.GetType().FullName));
             if (!bindingSourceProcessor.PreFilterType(filteredAttributes.Select(attr => attr.GetType().FullName)))
                 return false;
 
@@ -74,11 +74,11 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
             return new BindingSourceType
                        {
                            BindingType = CreateBindingType(type),
-                           IsAbstract = type.IsAbstract,
-                           IsClass = type.IsClass,
-                           IsPublic = type.IsPublic,
+                           IsAbstract = type.GetTypeInfo().IsAbstract,
+                           IsClass = type.GetTypeInfo().IsClass,
+                           IsPublic = type.GetTypeInfo().IsPublic,
                            IsNested = TypeHelper.IsNested(type),
-                           IsGenericTypeDefinition = type.IsGenericTypeDefinition,
+                           IsGenericTypeDefinition = type.GetTypeInfo().IsGenericTypeDefinition,
                            Attributes = GetAttributes(filteredAttributes)
                        };
         }
