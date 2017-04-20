@@ -32,7 +32,7 @@ namespace TechTalk.SpecFlow.Bindings.Discovery
 
         private static bool IsPotentialBindingClass(IEnumerable<string> attributeTypeNames)
         {
-            return attributeTypeNames.Any(attr => attr.Equals(BINDING_ATTR, StringComparison.InvariantCulture));
+            return attributeTypeNames.Any(attr => attr.Equals(BINDING_ATTR)); //TODO[netcore]: removed InvariantCulture
         }
 
         public bool PreFilterType(IEnumerable<string> attributeTypeNames)

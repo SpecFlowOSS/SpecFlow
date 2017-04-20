@@ -103,7 +103,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
             appendWords(analyzedStepText.TextParts[0], language, result);
             for (int i = 1; i < analyzedStepText.TextParts.Count; i++)
             {
-                result.AppendFormat(paramFormat, analyzedStepText.Parameters[i - 1].Name.ToUpper(CultureInfo.InvariantCulture));
+                result.AppendFormat(paramFormat, analyzedStepText.Parameters[i - 1].Name.ToUpper()); //TODO[netcore]: removed InvariantCulture
                 appendWords(analyzedStepText.TextParts[i], language, result);
             }
 
@@ -126,7 +126,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
         {
             foreach (var word in GetWords(text))
             {
-                result.Append(word.Substring(0, 1).ToUpper(language));
+                result.Append(word.Substring(0, 1).ToUpper()); //TODO[netcore]: removed language for ToUpper
                 result.Append(word.Substring(1));
             }
         }
