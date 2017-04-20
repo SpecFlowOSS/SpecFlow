@@ -30,6 +30,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
             Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_12\\sampleCsProjectfile.csproj");
         }
 
+        [Test]
+        public void Should_parse_CSProj_New_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly("Data\\CSProj_New\\sampleCsProjectfile.csproj");
+        }
+
+        [Test]
+        public void Should_parse_CSProj_NewComplex_csproj_file_correctly()
+        {
+            Should_parse_csproj_file_correctly("Data\\CSProj_NewComplex\\sampleCsProjectfile.csproj");
+        }
+
         private void Should_parse_csproj_file_correctly(string csprojPath)
         {
             var directoryName = Path.GetDirectoryName(this.GetType().Assembly.Location);

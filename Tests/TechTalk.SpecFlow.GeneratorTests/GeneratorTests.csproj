@@ -164,7 +164,7 @@
     <Content Include="Data\CSProj_NewComplex\sampleCsProjectfile.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\CSProj_New\NetStandardLib.csproj">
+    <Content Include="Data\CSProj_New\sampleCsProjectfile.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\CSProj_ToolsVersion_4\sampleCsProjectfile.csproj">
