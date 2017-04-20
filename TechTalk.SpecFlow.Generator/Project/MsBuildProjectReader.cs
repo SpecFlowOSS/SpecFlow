@@ -11,11 +11,11 @@ namespace TechTalk.SpecFlow.Generator.Project
 {
     public class MsBuildProjectReader : ISpecFlowProjectReader
     {
-        private readonly IGeneratorConfigurationProvider configurationLoader;
+        private readonly IGeneratorConfigurationProvider _configurationLoader;
 
         public MsBuildProjectReader(IGeneratorConfigurationProvider configurationLoader)
         {
-            this.configurationLoader = configurationLoader;
+            _configurationLoader = configurationLoader;
         }
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
@@ -35,7 +35,7 @@ namespace TechTalk.SpecFlow.Generator.Project
             specFlowProject.ProjectSettings.AssemblyName = project.AllEvaluatedProperties.First(x=>x.Name=="AssemblyName").EvaluatedValue;
             specFlowProject.ProjectSettings.DefaultNamespace =project.AllEvaluatedProperties.First(x=>x.Name=="RootNamespace").EvaluatedValue;
 
-
+            MsBuildWorkspace
 
             specFlowProject.ProjectSettings.ProjectPlatformSettings.Language = GetLanguage(project);
 
@@ -56,7 +56,7 @@ namespace TechTalk.SpecFlow.Generator.Project
                 var configFileContent = File.ReadAllText(configFilePath);
                 var configurationHolder = GetConfigurationHolderFromFileContent(configFileContent);
                 specFlowProject.ProjectSettings.ConfigurationHolder = configurationHolder;
-                specFlowProject.Configuration = configurationLoader.LoadConfiguration(configurationHolder);
+                specFlowProject.Configuration = _configurationLoader.LoadConfiguration(configurationHolder);
             }
             
             return specFlowProject;
