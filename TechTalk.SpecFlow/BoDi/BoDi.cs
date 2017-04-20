@@ -33,12 +33,16 @@
  */
 using System;
 using System.Collections;
-using System.Configuration;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+#if !BODI_LIMITEDRUNTIME
 using System.Runtime.Serialization;
+#endif
+#if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
+using System.Configuration;
+#endif
 
 namespace BoDi
 {
@@ -281,7 +285,7 @@ namespace BoDi
             }
         }
 
-        #region Registration types
+#region Registration types
 
         private interface IRegistration
         {
@@ -422,7 +426,7 @@ namespace BoDi
             }
         }
 
-        #endregion
+#endregion
 
         private bool isDisposed = false;
         private readonly ObjectContainer baseContainer;
@@ -441,7 +445,7 @@ namespace BoDi
             RegisterInstanceAs<IObjectContainer>(this);
         }
 
-        #region Registration
+#region Registration
 
         public void RegisterTypeAs<TInterface>(Type implementationType, string name = null) where TInterface : class
         {
@@ -610,9 +614,9 @@ namespace BoDi
         }
 #endif
 
-        #endregion
+#endregion
 
-        #region Resolve
+#region Resolve
 
         public T Resolve<T>()
         {
@@ -795,7 +799,7 @@ namespace BoDi
                    parameterInfo.Name.Equals(REGISTERED_NAME_PARAMETER_NAME);
         }
 
-        #endregion
+#endregion
 
         public override string ToString()
         {
@@ -824,7 +828,7 @@ namespace BoDi
         }
     }
 
-    #region Configuration handling
+#region Configuration handling
 #if !BODI_LIMITEDRUNTIME && !BODI_DISABLECONFIGFILESUPPORT
 
     public class BoDiConfigurationSection : ConfigurationSection
@@ -890,5 +894,5 @@ namespace BoDi
     }
 
 #endif
-    #endregion
+#endregion
 }
