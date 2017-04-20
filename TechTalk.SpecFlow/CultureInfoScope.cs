@@ -11,21 +11,21 @@ namespace TechTalk.SpecFlow
 
         public CultureInfoScope(CultureInfo cultureInfo)
         {
-            if (cultureInfo != null && !cultureInfo.Equals(Thread.CurrentThread.CurrentCulture))
+            if (cultureInfo != null && !cultureInfo.Equals(CultureInfo.CurrentCulture))
             {
                 if (cultureInfo.IsNeutralCulture)
                 {
                     cultureInfo = LanguageHelper.GetSpecificCultureInfo(cultureInfo);
                 }
-                originalCultureInfo = Thread.CurrentThread.CurrentCulture;
-                Thread.CurrentThread.CurrentCulture = cultureInfo;
+                originalCultureInfo = CultureInfo.CurrentCulture;
+                CultureInfo.CurrentCulture = cultureInfo;
             }
         }
 
         public void Dispose()
         {
             if (originalCultureInfo != null)
-                Thread.CurrentThread.CurrentCulture = originalCultureInfo;
+                CultureInfo.CurrentCulture = originalCultureInfo;
         }
     }
 }

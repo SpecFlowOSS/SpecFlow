@@ -43,7 +43,7 @@ namespace TechTalk.SpecFlow
         internal static void DisableSingletonInstance()
         {
             isCurrentDisabled = true;
-            Thread.MemoryBarrier();
+            Interlocked.MemoryBarrier();
             current = null;
         }
         #endregion
