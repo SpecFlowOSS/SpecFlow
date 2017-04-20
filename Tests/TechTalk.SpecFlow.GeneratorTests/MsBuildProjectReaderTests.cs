@@ -12,22 +12,18 @@ namespace TechTalk.SpecFlow.GeneratorTests
     [TestFixture]
     public class MsBuildProjectReaderTests
     {
-        private void Should_parse_csproj_file_correctly(string csprojPath, string language)
+        private void Should_parse_csproj_file_correctly(string csprojPath, string language, string assemblyName, string rootNamespace, string projectName)
         {
             var directoryName = Path.GetDirectoryName(GetType().Assembly.Location);
             var projectFilePath = Path.Combine(directoryName, csprojPath);
             var specflowProjectfile = MsBuildProjectReader.LoadSpecFlowProjectFromMsBuild(projectFilePath);
 
 
-            specflowProjectfile.ProjectSettings.AssemblyName.Should().Be("Hacapp.Web.Tests.UI");
-            specflowProjectfile.ProjectSettings.DefaultNamespace.Should().Be("Hacapp.Web.Tests.UI");
-            specflowProjectfile.ProjectSettings.ProjectName.Should().Be("sampleCsProjectfile");
+            specflowProjectfile.ProjectSettings.AssemblyName.Should().Be(assemblyName);
+            specflowProjectfile.ProjectSettings.DefaultNamespace.Should().Be(rootNamespace);
+            specflowProjectfile.ProjectSettings.ProjectName.Should().Be(projectName);
 
             specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Language.Should().Be(language);
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.LanguageVersion.Should().Be(new Version(3, 0));
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.Platform.Should().Be(".NET");
-            specflowProjectfile.ProjectSettings.ProjectPlatformSettings.PlatformVersion.Should().Be(new Version(3, 5));
-
 
             specflowProjectfile.FeatureFiles.Count.Should().Be(3);
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\Login\SocialLogins.feature").Should().NotBeNull();
@@ -45,49 +41,49 @@ namespace TechTalk.SpecFlow.GeneratorTests
         [Test]
         public void Should_parse_CSProj_New_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_New\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp);
+            Should_parse_csproj_file_correctly("Data\\CSProj_New\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "sampleCsProjectfile", "sampleCsProjectfile", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_CSProj_NewComplex_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_NewComplex\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp);
+            Should_parse_csproj_file_correctly("Data\\CSProj_NewComplex\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion12_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_12\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp);
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_12\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion12_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_12\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB);
+            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_12\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion14_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_14\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp);
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_14\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion14_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_14\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB);
+            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_14\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion4_csproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_4\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp);
+            Should_parse_csproj_file_correctly("Data\\CSProj_ToolsVersion_4\\sampleCsProjectfile.csproj", GenerationTargetLanguage.CSharp, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
 
         [Test]
         public void Should_parse_ToolsVersion4_vbproj_file_correctly()
         {
-            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_4\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB);
+            Should_parse_csproj_file_correctly("Data\\VBProj_ToolsVersion_4\\sampleCsProjectfile.vbproj", GenerationTargetLanguage.VB, "Hacapp.Web.Tests.UI", "Hacapp.Web.Tests.UI", "sampleCsProjectfile");
         }
     }
 }
