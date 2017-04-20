@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.BindingSkeletons
 
         protected override string GetTemplateFileContent()
         {
-#if SILVERLIGHT
+#if SILVERLIGHT || NETCORE //TODO[netcore]: reading the template should be solved
             return "";
 #else
             string templateFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"SpecFlow\SkeletonTemplates.sftemplate");
