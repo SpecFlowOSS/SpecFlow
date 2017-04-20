@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Compatibility
     {
         public static CultureInfo GetCultureInfo(string cultureName)
         {
-            return CultureInfo.GetCultureInfo(cultureName);
+            return new CultureInfo(cultureName);
         }
     }
 }

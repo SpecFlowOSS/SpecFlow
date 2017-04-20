@@ -41,7 +41,7 @@ namespace TechTalk.SpecFlow.Configuration
 
         public RuntimeConfiguration()
         {
-            FeatureLanguage = CultureInfo.GetCultureInfo(ConfigDefaults.FeatureLanguage);
+            FeatureLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             ToolLanguage = CultureInfoHelper.GetCultureInfo(ConfigDefaults.FeatureLanguage);
             BindingCulture = null;
 
@@ -86,15 +86,15 @@ namespace TechTalk.SpecFlow.Configuration
 
             if (IsSpecified(configSection.Language))
             {
-                FeatureLanguage = CultureInfo.GetCultureInfo(configSection.Language.Feature);
+                FeatureLanguage = CultureInfoHelper.GetCultureInfo(configSection.Language.Feature);
                 this.ToolLanguage = string.IsNullOrEmpty(configSection.Language.Tool) ?
-                    CultureInfo.GetCultureInfo(configSection.Language.Feature) :
-                    CultureInfo.GetCultureInfo(configSection.Language.Tool);
+                    CultureInfoHelper.GetCultureInfo(configSection.Language.Feature) :
+                    CultureInfoHelper.GetCultureInfo(configSection.Language.Tool);
             }
 
             if (IsSpecified(configSection.BindingCulture))
             {
-                this.BindingCulture = CultureInfo.GetCultureInfo(configSection.BindingCulture.Name);
+                this.BindingCulture = CultureInfoHelper.GetCultureInfo(configSection.BindingCulture.Name);
             }
 
             if (IsSpecified(configSection.Runtime))
