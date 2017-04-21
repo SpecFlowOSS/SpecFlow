@@ -81,7 +81,7 @@ namespace TechTalk.SpecFlow.Tracing
         private static KeywordTranslation LoadTranslation(CultureInfo language)
         {
             var assembly = typeof(LanguageHelper).GetTypeInfo().Assembly;
-            var docStream = assembly.GetManifestResourceStream("TechTalk.SpecFlow.Languages.xml");
+            var docStream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".Tracing.Languages.xml");
             if (docStream == null)
                 throw new InvalidOperationException("Language resource not found.");
 

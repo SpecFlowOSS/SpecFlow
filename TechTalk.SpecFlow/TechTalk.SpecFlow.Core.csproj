@@ -20,6 +20,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Languages.xml" Link="Tracing\Languages.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="BindingSkeletons\DefaultSkeletonTemplates.sftemplate" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 

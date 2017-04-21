@@ -738,10 +738,10 @@ namespace BoDi
 
         private object CreateObject(Type type, ResolutionList resolutionPath, RegistrationKey keyToResolve)
         {
-            var ctors = type.GetTypeInfo().DeclaredConstructors;
-            //TODO: how to handle this in .NET Core?
-            //if (ctors.Length == 0)
-            //    ctors = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance);
+            var ctors = type.GetTypeInfo().DeclaredConstructors.Where(ctr => ctr.IsPublic).ToArray();
+            //TODO[netcore]: how to handle this in .NET Core?
+            if (ctors.Length == 0)
+                ctors = type.GetTypeInfo().DeclaredConstructors.ToArray();
 
             Debug.Assert(ctors.Count() > 0, "Class must have a constructor!");
 
