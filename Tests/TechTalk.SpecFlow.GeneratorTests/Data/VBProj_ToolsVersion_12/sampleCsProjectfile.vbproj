@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C74623FE-0E68-4570-B712-70A7A1A15E49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Hacapp.Web.Tests.UI</RootNamespace>
+    <AssemblyName>Hacapp.Web.Tests.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>VBClassic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>VBClassic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Spatial, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.9.3.5\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver">
+      <HintPath>..\packages\Selenium.WebDriver.2.44.0\lib\net40\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\packages\Selenium.Support.2.44.0\lib\net40\WebDriver.Support.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Features\Login\SocialLogins.feature.vb">
+      <DependentUpon>SocialLogins.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreateWorkflowDefinition.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Features\WorkflowInstance\WorkflowInstance.feature.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowInstance.feature</DependentUpon>
+    </Compile>
+    <Compile Include="MoreLinq\MoreEnumerable.MaxBy.vb" />
+    <Compile Include="MoreLinq\MoreEnumerable.MinBy.vb" />
+    <Compile Include="PageElements\Button.vb" />
+    <Compile Include="PageElements\CheckBox.vb" />
+    <Compile Include="PageElements\Div.vb" />
+    <Compile Include="PageElements\DropDown.vb" />
+    <Compile Include="PageElements\Header.vb" />
+    <Compile Include="PageElements\Link.vb" />
+    <Compile Include="PageElements\MultiSelect.vb" />
+    <Compile Include="PageElements\PageElement.vb" />
+    <Compile Include="PageElements\RadioButton.vb" />
+    <Compile Include="PageElements\Table.vb" />
+    <Compile Include="PageElements\TableCell.vb" />
+    <Compile Include="PageElements\TextBox.vb" />
+    <Compile Include="PageElements\TimePicker.vb" />
+    <Compile Include="PageElements\ValidationSummary.vb" />
+    <Compile Include="Browser.vb" />
+    <Compile Include="CaptureScreenShots.vb" />
+    <Compile Include="PageObjects\FacebookLoginPageObject.vb" />
+    <Compile Include="PageObjects\GenericPage.vb" />
+    <Compile Include="PageObjects\GoogleLoginPageObject.vb" />
+    <Compile Include="PageObjects\LoginPageObject.vb" />
+    <Compile Include="PageObjects\MicrosoftLoginPageObject.vb" />
+    <Compile Include="PageObjects\NavBarPageObject.vb" />
+    <Compile Include="PageObjects\Page.vb" />
+    <Compile Include="PageObjects\SocialLoginPageObject.vb" />
+    <Compile Include="PageObjects\TwitterLoginPageObject.vb" />
+    <Compile Include="PageObjects\WorkflowDefinitionCreatePageObject.vb" />
+    <Compile Include="PageObjects\WorkflowDefinitionsHomePageObject.vb" />
+    <Compile Include="Steps\CleanUpSteps.vb" />
+    <Compile Include="Steps\IUserCredentials.vb" />
+    <Compile Include="Steps\NavBarSteps.vb" />
+    <Compile Include="Steps\SeleniumContext.vb" />
+    <Compile Include="Steps\TestSettings.vb" />
+    <Compile Include="Steps\UiTestsSetup.vb" />
+    <Compile Include="Steps\UserContext.vb" />
+    <Compile Include="Steps\UserCredentials.vb" />
+    <Compile Include="Steps\UserSteps.vb" />
+    <Compile Include="Steps\WorkflowDefinitionCreateSteps.vb" />
+    <Compile Include="Steps\WorkflowDefinitionHomeSteps.vb" />
+    <Compile Include="Steps\WorkflowInstanceParametersPageObject.vb" />
+    <Compile Include="Steps\WorkflowInstanceParameterSteps.vb" />
+    <Compile Include="ValueToFind.vb" />
+    <Compile Include="WaitFor.vb" />
+    <Compile Include="WaitForElementFailedException.vb" />
+    <Compile Include="WebDriverExtensions.vb" />
+    <Compile Include="YesNoRadioButtonValue.vb" />
+    <Compile Include="Steps\SocialLoginSteps.vb" />
+    <Compile Include="Properties\AssemblyInfo.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Features\Login\SocialLogins.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SocialLogins.feature.vb</LastGenOutput>
+    </None>
+    <None Include="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CreateWorkflowDefinition.feature.vb</LastGenOutput>
+      <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
+    </None>
+    <None Include="Features\WorkflowInstance\WorkflowInstance.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowInstance.feature.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <Compile Include="Steps\BrowserSelectionSteps.vb" />
+    <None Include="..\..\LinkedFeature.feature">
+      <Link>LinkedFeature.feature</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\hacapp.core\Hacapp.Core.vbproj">
+      <Project>{38A957ED-6237-439D-93AC-220BFD7D0409}</Project>
+      <Name>Hacapp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hacapp.Data.Azure\Hacapp.Data.Azure.vbproj">
+      <Project>{246EF4BD-4252-4371-A824-2CEAD1F51CFE}</Project>
+      <Name>Hacapp.Data.Azure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Shared\Hacapp.Web.Tests.Shared.vbproj">
+      <Project>{125f3b68-898e-4d70-8055-754d13f56bf8}</Project>
+      <Name>Hacapp.Web.Tests.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
