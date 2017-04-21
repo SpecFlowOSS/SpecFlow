@@ -101,6 +101,7 @@
     <Compile Include="TestGeneratorTestsBase.cs" />
     <Compile Include="TestUpToDateCheckerTests.cs" />
     <Compile Include="UnitTestFeatureGeneratorTests.cs" />
+    <Compile Include="XUnit2TestGeneratorProviderTests.cs" />
     <Compile Include="XUnitTestGeneratorProviderTests.cs" />
     <Content Include="Data\VBProj_ToolsVersion_12\sampleCsProjectfile.vbproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
