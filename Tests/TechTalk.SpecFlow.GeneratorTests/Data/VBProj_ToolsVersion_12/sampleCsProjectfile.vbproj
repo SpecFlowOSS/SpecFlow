@@ -190,6 +190,9 @@
     </None>
     <None Include="packages.config" />
     <Compile Include="Steps\BrowserSelectionSteps.vb" />
+    <None Include="..\..\LinkedFeature.feature">
+      <Link>LinkedFeature.feature</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\hacapp.core\Hacapp.Core.vbproj">

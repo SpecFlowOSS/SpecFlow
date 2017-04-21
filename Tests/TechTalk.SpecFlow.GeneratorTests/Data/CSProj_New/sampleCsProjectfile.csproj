@@ -12,6 +12,9 @@
     <None Update="Features\WorkflowDefinition\CreateWorkflowDefinition.feature">
       <CustomToolNamespace>CustomNameSpace</CustomToolNamespace>
     </None>
+
+    <None Include="..\..\LinkedFeature.feature" Link="LinkedFeature.feature" />
+
   </ItemGroup>
 
 </Project>
