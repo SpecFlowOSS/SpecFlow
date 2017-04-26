@@ -3,7 +3,6 @@ using BoDi;
 
 namespace TechTalk.SpecFlow.Infrastructure
 {
-    //TODO: rename this to ITestObjectResolver
     /// <summary>
     /// Resolves user created test objects from different scopes (scenario, feature, test thread).
     /// </summary>
@@ -13,7 +12,8 @@ namespace TechTalk.SpecFlow.Infrastructure
     /// The test objects might be dependent on particular SpecFlow infrastructure, therefore the implemented 
     /// resolution logic should support resolving the following objects (from the provided SpecFlow container):
     /// <see cref="ScenarioContext"/>, <see cref="FeatureContext"/>, <see cref="TestThreadContext"/> and 
-    /// <see cref="IObjectContainer"/> (to be able to resolve any other SpecFlow infrastucture).
+    /// <see cref="IObjectContainer"/> (to be able to resolve any other SpecFlow infrastucture). So basically 
+    /// the resolution of these classes has to be forwarded to the original container.
     /// </para>
     /// <para>
     /// If the resolved (top level) object implements <see cref="IContainerDependentObject"/>, the method 
@@ -21,8 +21,8 @@ namespace TechTalk.SpecFlow.Infrastructure
     /// SpecFlow container. (The <see cref="Steps"/> base class needs this.)
     /// </para>
     /// </remarks>
-    public interface IBindingInstanceResolver
+    public interface ITestObjectResolver
     {
-        object ResolveBindingInstance(Type bindingType, IObjectContainer scenarioContainer); //TODO: rename parameter to "container"
+        object ResolveBindingInstance(Type bindingType, IObjectContainer container);
     }
 }

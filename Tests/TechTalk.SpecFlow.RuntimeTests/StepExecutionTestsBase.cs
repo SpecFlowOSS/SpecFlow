@@ -105,7 +105,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var testThreadContainer = new ObjectContainer();
             testThreadContainer.RegisterInstanceAs(runtimeConfiguration);
             testThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
-            testThreadContainer.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
+            testThreadContainer.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
             var containerBuilderMock = new Mock<IContainerBuilder>();
             containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
                 .Returns((IObjectContainer fc, ScenarioInfo si) =>

@@ -158,10 +158,10 @@
     <Compile Include="BoDi\BoDi.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
     <Compile Include="HookAttributes.cs" />
-    <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\TestObjectResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagerExtensions.cs" />
-    <Compile Include="Infrastructure\IBindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\ITestObjectResolver.cs" />
     <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />

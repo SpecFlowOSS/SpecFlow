@@ -29,7 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
-        private readonly IBindingInstanceResolver bindingInstanceResolver;
+        private readonly ITestObjectResolver testObjectResolver;
 
         private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
         private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
@@ -37,7 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             RuntimeConfiguration runtimeConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, IBindingInstanceResolver bindingInstanceResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             this.errorProvider = errorProvider;
             this.bindingInvoker = bindingInvoker;
@@ -51,7 +51,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
             this.stepDefinitionMatchService = stepDefinitionMatchService;
-            this.bindingInstanceResolver = bindingInstanceResolver;
+            this.testObjectResolver = testObjectResolver;
             this.TestThreadContainer = testThreadContainer;
         }
 
@@ -269,7 +269,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             if (runtimeParameterType == null)
                 throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
 
-            return bindingInstanceResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
+            return testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
         }
 
         private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)

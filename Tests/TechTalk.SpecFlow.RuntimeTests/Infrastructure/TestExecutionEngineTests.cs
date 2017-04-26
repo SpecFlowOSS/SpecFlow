@@ -31,13 +31,13 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
         private Mock<IBindingInvoker> methodBindingInvokerMock;
         private Dictionary<string, IStepErrorHandler> stepErrorHandlers;
         private Mock<IStepDefinitionSkeletonProvider> stepDefinitionSkeletonProviderMock;
-        private Mock<IBindingInstanceResolver> bindingInstanceResolverMock;
+        private Mock<ITestObjectResolver> testObjectResolverMock;
         private FeatureInfo featureInfo;
         private ScenarioInfo scenarioInfo;
         private ObjectContainer testThreadContainer;
         private ObjectContainer featureContainer;
         private ObjectContainer scenarioContainer;
-        private BindingInstanceResolver defaultBindingInstanceResolver = new BindingInstanceResolver();
+        private TestObjectResolver defaultTestObjectResolver = new TestObjectResolver();
 
         private List<IHookBinding> beforeScenarioEvents;
         private List<IHookBinding> afterScenarioEvents;
@@ -71,14 +71,14 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
             afterScenarioBlockEvents = new List<IHookBinding>();
 
             stepDefinitionSkeletonProviderMock = new Mock<IStepDefinitionSkeletonProvider>();
-            bindingInstanceResolverMock = new Mock<IBindingInstanceResolver>();
-            bindingInstanceResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
-                .Returns((Type t, IObjectContainer container) => defaultBindingInstanceResolver.ResolveBindingInstance(t, container));
+            testObjectResolverMock = new Mock<ITestObjectResolver>();
+            testObjectResolverMock.Setup(bir => bir.ResolveBindingInstance(It.IsAny<Type>(), It.IsAny<IObjectContainer>()))
+                .Returns((Type t, IObjectContainer container) => defaultTestObjectResolver.ResolveBindingInstance(t, container));
 
             var culture = new CultureInfo("en-US");
             contextManagerStub = new Mock<IContextManager>();
             scenarioInfo = new ScenarioInfo("scenario_title");
-            scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, bindingInstanceResolverMock.Object);
+            scenarioContext = new ScenarioContext(scenarioContainer, scenarioInfo, testObjectResolverMock.Object);
             scenarioContainer.RegisterInstanceAs(scenarioContext);
             contextManagerStub.Setup(cm => cm.ScenarioContext).Returns(scenarioContext);
             featureInfo = new FeatureInfo(culture, "feature_title", "", ProgrammingLanguage.CSharp);
@@ -122,7 +122,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
                 stepDefinitionMatcherStub.Object, 
                 stepErrorHandlers, 
                 methodBindingInvokerMock.Object,
-                bindingInstanceResolverMock.Object,
+                testObjectResolverMock.Object,
                 testThreadContainer);
         }
 
@@ -445,7 +445,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), testThreadContainer), 
+            testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), testThreadContainer), 
                 Times.Exactly(2));
         }
 
@@ -463,7 +463,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+            testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
                 Times.Exactly(2));
         }
 
@@ -481,7 +481,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+            testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
                 Times.Exactly(2));
         }
 
@@ -498,7 +498,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
+            testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), scenarioContainer),
                 Times.Exactly(2));
         }
 
@@ -516,7 +516,7 @@ namespace TechTalk.SpecFlow.RuntimeTests.Infrastructure
 
             AssertHooksWasCalledWithParam(beforeHook, DummyClass.LastInstance);
             AssertHooksWasCalledWithParam(afterHook, DummyClass.LastInstance);
-            bindingInstanceResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), featureContainer),
+            testObjectResolverMock.Verify(bir => bir.ResolveBindingInstance(typeof(DummyClass), featureContainer),
                 Times.Exactly(2));
         }
     }

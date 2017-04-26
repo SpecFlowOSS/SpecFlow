@@ -56,12 +56,12 @@ namespace TechTalk.SpecFlow
         internal List<StepInstance> MissingSteps { get; }
         internal Stopwatch Stopwatch { get; }
 
-        private readonly IBindingInstanceResolver bindingInstanceResolver;
+        private readonly ITestObjectResolver testObjectResolver;
 
-        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, IBindingInstanceResolver bindingInstanceResolver)
+        internal ScenarioContext(IObjectContainer scenarioContainer, ScenarioInfo scenarioInfo, ITestObjectResolver testObjectResolver)
         {
             this.ScenarioContainer = scenarioContainer;
-            this.bindingInstanceResolver = bindingInstanceResolver;
+            this.testObjectResolver = testObjectResolver;
 
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
@@ -92,7 +92,7 @@ namespace TechTalk.SpecFlow
         /// </remarks>
         public object GetBindingInstance(Type bindingType)
         {
-            return bindingInstanceResolver.ResolveBindingInstance(bindingType, ScenarioContainer);
+            return testObjectResolver.ResolveBindingInstance(bindingType, ScenarioContainer);
         }
     }
 }

@@ -74,7 +74,7 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             var runtimePluginEvents = globalContainer.Resolve<RuntimePluginEvents>();
             runtimePluginEvents.RaiseCustomizeTestThreadDependencies(testThreadContainer);
-            testThreadContainer.Resolve<IBindingInstanceResolver>();
+            testThreadContainer.Resolve<ITestObjectResolver>();
             return testThreadContainer;
         }
 
