@@ -14,7 +14,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         {
             private readonly ITestTracer testTracer;
             private TContext instance;
-            private IDisposable disposable;
+            private IObjectContainer objectContainer;
 
             public InternalContextManager(ITestTracer testTracer)
             {
@@ -26,7 +26,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                 get { return instance; }
             }
 
-            public void Init(TContext newInstance, IDisposable newDisposable)
+            public void Init(TContext newInstance, IObjectContainer newObjectContainer)
             {
                 if (instance != null)
                 {
@@ -34,7 +34,7 @@ namespace TechTalk.SpecFlow.Infrastructure
                     DisposeInstance();
                 }
                 instance = newInstance;
-                disposable = newDisposable;
+                objectContainer = newObjectContainer;
             }
 
             public void Cleanup()
@@ -49,9 +49,9 @@ namespace TechTalk.SpecFlow.Infrastructure
 
             private void DisposeInstance()
             {
-                disposable.Dispose();
+                objectContainer.Dispose();
                 instance = null;
-                disposable = null;
+                objectContainer = null;
             }
 
             public void Dispose()
