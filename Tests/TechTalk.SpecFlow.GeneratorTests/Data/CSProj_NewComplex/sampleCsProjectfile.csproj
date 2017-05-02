@@ -16,7 +16,10 @@
     </None>
 
     <None Include="..\..\LinkedFeature.feature" Link="LinkedFeature.feature" />
-    
+    <None Include="..\ExampleFeatures\Features\**\*.feature">
+      <Link>Features\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CustomToolNamespace>$(RootNamespace)</CustomToolNamespace>
+    </None>
   </ItemGroup>
 
 </Project>

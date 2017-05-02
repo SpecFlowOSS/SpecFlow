@@ -186,6 +186,10 @@
     <None Include="..\..\LinkedFeature.feature">
       <Link>LinkedFeature.feature</Link>
     </None>
+    <None Include="..\ExampleFeatures\Features\**\*.feature">
+      <Link>Features\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CustomToolNamespace>$(RootNamespace)</CustomToolNamespace>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\hacapp.core\Hacapp.Core.csproj">

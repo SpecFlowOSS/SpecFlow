@@ -77,6 +77,7 @@
     <Content Include="Data\CSProj_New\Class1.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="MSBuildRelativePathParserTests.cs" />
     <Compile Include="TestGeneratorTest.cs" />
     <Compile Include="CodeDomExtensions.cs" />
     <Compile Include="CustomTestGeneratorProviderTest.cs" />
@@ -174,6 +175,12 @@
     <Content Include="Data\VBProj_ToolsVersion_4\app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Data\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
