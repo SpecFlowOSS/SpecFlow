@@ -175,10 +175,10 @@
     <Content Include="Data\VBProj_ToolsVersion_4\app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Data\Features\Subfolder2\ExternalFeature2.feature">
+    <None Include="Data\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Features\Subfolder1\ExternalFeature1.feature">
+    <None Include="Data\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

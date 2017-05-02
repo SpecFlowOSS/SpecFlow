@@ -31,8 +31,8 @@ namespace TechTalk.SpecFlow.GeneratorTests
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowDefinition\CreateWorkflowDefinition.feature").CustomNamespace.Should().Be("CustomNameSpace");
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"Features\WorkflowInstance\WorkflowInstance.feature").Should().NotBeNull();
             specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\..\LinkedFeature.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\Features\Subfolder1\ExternalFeature1.feature").Should().NotBeNull();
-            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\Features\Subfolder2\ExternalFeature2.feature").Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\ExampleFeatures\Features\Subfolder1\ExternalFeature1.feature").Should().NotBeNull();
+            specflowProjectfile.FeatureFiles.Single(x => x.ProjectRelativePath == @"..\ExampleFeatures\Features\Subfolder2\ExternalFeature2.feature").Should().NotBeNull();
             
 
             specflowProjectfile.Configuration.GeneratorConfiguration.AllowDebugGeneratedFiles.Should().BeFalse();
