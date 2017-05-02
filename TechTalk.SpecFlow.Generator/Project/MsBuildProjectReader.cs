@@ -13,10 +13,12 @@ namespace TechTalk.SpecFlow.Generator.Project
     public class MsBuildProjectReader : ISpecFlowProjectReader
     {
         private readonly IGeneratorConfigurationProvider _configurationLoader;
+        private readonly IMSBuildRelativePathParser _msBuildRelativePathParser;
 
-        public MsBuildProjectReader(IGeneratorConfigurationProvider configurationLoader)
+        public MsBuildProjectReader(IGeneratorConfigurationProvider configurationLoader, IMSBuildRelativePathParser msBuildRelativePathParser)
         {
             _configurationLoader = configurationLoader;
+            _msBuildRelativePathParser = msBuildRelativePathParser;
         }
 
         public SpecFlowProject ReadSpecFlowProject(string projectFilePath)
@@ -103,7 +105,7 @@ namespace TechTalk.SpecFlow.Generator.Project
 
         public static SpecFlowProject LoadSpecFlowProjectFromMsBuild(string projectFilePath)
         {
-            return new MsBuildProjectReader(new GeneratorConfigurationProvider()).ReadSpecFlowProject(projectFilePath);
+            return new MsBuildProjectReader(new GeneratorConfigurationProvider(), new MSBuildRelativePathParser()).ReadSpecFlowProject(projectFilePath);
         }
 
         private string GetAppConfigFile(XDocument xDocument, bool newProjectSystem, string projectFolder)
@@ -157,15 +159,18 @@ namespace TechTalk.SpecFlow.Generator.Project
 
                 if (IsAFeatureFile(fileName))
                 {
-                    var featureFile = new FeatureFileInput(fileName);
-
                     var customNamespace = xElement.Descendants(GetNameWithNamespace("CustomToolNamespace", newProjectSystem)).SingleOrDefault();
-                    if (customNamespace != null)
+                  
+                    if (fileName.Contains("*"))
                     {
-                        featureFile.CustomNamespace = customNamespace.Value;
-                    }
+                        var files = _msBuildRelativePathParser.GetFiles(projectFolder, fileName);
 
-                    result.Add(featureFile);
+                        result.AddRange(files.Select(file => CreateFeatureFileInput(file, customNamespace)));
+                    }
+                    else
+                    {
+                        result.Add(CreateFeatureFileInput(fileName, customNamespace));
+                    }
                 }
             }
 
@@ -190,6 +195,17 @@ namespace TechTalk.SpecFlow.Generator.Project
             }
 
             return result;
+        }
+
+        private FeatureFileInput CreateFeatureFileInput(string file, XElement customNamespace)
+        {
+            var featureFile = new FeatureFileInput(file);
+
+            if (customNamespace != null)
+            {
+                featureFile.CustomNamespace = customNamespace.Value;
+            }
+            return featureFile;
         }
 
         private bool IsAFeatureFile(string fileName)
