@@ -13,7 +13,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         ScenarioStepContext StepContext { get; }
         StepDefinitionType? CurrentTopLevelStepDefinitionType { get; }
 
-        void InitializeFeatureContext(FeatureInfo featureInfo, CultureInfo bindingCulture);
+        void InitializeFeatureContext(FeatureInfo featureInfo);
         void CleanupFeatureContext();
 
         void InitializeScenarioContext(ScenarioInfo scenarioInfo);

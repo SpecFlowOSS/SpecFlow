@@ -8,6 +8,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Discovery;
 using TechTalk.SpecFlow.Bindings.Reflection;
+using TechTalk.SpecFlow.Configuration;
 using TechTalk.SpecFlow.Infrastructure;
 using TechTalk.SpecFlow.Tracing;
 using TechTalk.SpecFlow.Utils;
@@ -96,21 +97,32 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
             // FeatureContext and ScenarioContext is needed, because the [Binding]-instances live there
             FeatureLanguage = GetFeatureLanguage();
-            CultureInfo bindingCulture = GetBindingCulture();
+            var runtimeConfiguration = new RuntimeConfiguration
+            {
+                BindingCulture = GetBindingCulture()
+            };
 
             var testThreadContainer = new ObjectContainer();
+            testThreadContainer.RegisterInstanceAs(runtimeConfiguration);
             testThreadContainer.RegisterInstanceAs(new Mock<ITestRunner>().Object);
-            testThreadContainer.RegisterTypeAs<BindingInstanceResolver, IBindingInstanceResolver>();
+            testThreadContainer.RegisterTypeAs<TestObjectResolver, ITestObjectResolver>();
             var containerBuilderMock = new Mock<IContainerBuilder>();
             containerBuilderMock.Setup(m => m.CreateScenarioContainer(It.IsAny<IObjectContainer>(), It.IsAny<ScenarioInfo>()))
-                .Returns((IObjectContainer ttc, ScenarioInfo si) =>
+                .Returns((IObjectContainer fc, ScenarioInfo si) =>
                 {
-                    var scenarioContainer = new ObjectContainer(ttc);
+                    var scenarioContainer = new ObjectContainer(fc);
                     scenarioContainer.RegisterInstanceAs(si);
                     return scenarioContainer;
                 });
+            containerBuilderMock.Setup(m => m.CreateFeatureContainer(It.IsAny<IObjectContainer>(), It.IsAny<FeatureInfo>()))
+                .Returns((IObjectContainer ttc, FeatureInfo fi) =>
+                {
+                    var featureContainer = new ObjectContainer(ttc);
+                    featureContainer.RegisterInstanceAs(fi);
+                    return featureContainer;
+                });
             ContextManagerStub = new ContextManager(MockRepository.Stub<ITestTracer>(), testThreadContainer, containerBuilderMock.Object);
-            ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null), bindingCulture);
+            ContextManagerStub.InitializeFeatureContext(new FeatureInfo(FeatureLanguage, "test feature", null));
             ContextManagerStub.InitializeScenarioContext(new ScenarioInfo("test scenario"));
 
             StepArgumentTypeConverterStub = MockRepository.Stub<IStepArgumentTypeConverter>();

@@ -43,5 +43,7 @@ namespace TechTalk.SpecFlow.Bindings.Reflection
         {
             return (Type != null ? Type.GetHashCode() : 0);
         }
+
+        public static readonly RuntimeBindingType Void = new RuntimeBindingType(typeof(void));
     }
 }
