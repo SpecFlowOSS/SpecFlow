@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using BoDi;
 using TechTalk.SpecFlow.BindingSkeletons;
 using TechTalk.SpecFlow.Bindings;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -28,6 +29,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         private readonly IStepErrorHandler[] stepErrorHandlers;
         private readonly IBindingInvoker bindingInvoker;
         private readonly IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider;
+        private readonly ITestObjectResolver testObjectResolver;
 
         private ProgrammingLanguage defaultTargetLanguage = ProgrammingLanguage.CSharp;
         private CultureInfo defaultBindingCulture = CultureInfo.CurrentCulture;
@@ -35,7 +37,7 @@ namespace TechTalk.SpecFlow.Infrastructure
         public TestExecutionEngine(IStepFormatter stepFormatter, ITestTracer testTracer, IErrorProvider errorProvider, IStepArgumentTypeConverter stepArgumentTypeConverter, 
             Configuration.SpecFlowConfiguration specFlowConfiguration, IBindingRegistry bindingRegistry, IUnitTestRuntimeProvider unitTestRuntimeProvider, 
             IStepDefinitionSkeletonProvider stepDefinitionSkeletonProvider, IContextManager contextManager, IStepDefinitionMatchService stepDefinitionMatchService,
-            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker)
+            IDictionary<string, IStepErrorHandler> stepErrorHandlers, IBindingInvoker bindingInvoker, ITestObjectResolver testObjectResolver = null, IObjectContainer testThreadContainer = null) //TODO: find a better way to access the container
         {
             this.errorProvider = errorProvider;
             this.bindingInvoker = bindingInvoker;
@@ -49,6 +51,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             this.stepArgumentTypeConverter = stepArgumentTypeConverter;
             this.stepErrorHandlers = stepErrorHandlers == null ? null : stepErrorHandlers.Values.ToArray();
             this.stepDefinitionMatchService = stepDefinitionMatchService;
+            this.testObjectResolver = testObjectResolver;
+            this.TestThreadContainer = testThreadContainer;
         }
 
         public FeatureContext FeatureContext
@@ -82,20 +86,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             // if the unit test provider would execute the fixture teardown code 
             // only delayed (at the end of the execution), we automatically close 
             // the current feature if necessary
-            if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                contextManager.FeatureContext != null)
+            if (unitTestRuntimeProvider.DelayedFixtureTearDown && FeatureContext != null)
             {
                 OnFeatureEnd();
             }
 
-            // The Generator defines the value of FeatureInfo.Language: either feature-language or language from App.config or the default
-            // The runtime can define the binding-culture: Value is configured on App.config, else it is null
-            CultureInfo bindingCulture = specFlowConfiguration.BindingCulture ?? featureInfo.Language;
 
+            contextManager.InitializeFeatureContext(featureInfo);
+
+            defaultBindingCulture = FeatureContext.BindingCulture;
             defaultTargetLanguage = featureInfo.GenerationTargetLanguage;
-            defaultBindingCulture = bindingCulture;
-
-            contextManager.InitializeFeatureContext(featureInfo, bindingCulture);
             FireEvents(HookType.BeforeFeature);
         }
 
@@ -105,16 +105,16 @@ namespace TechTalk.SpecFlow.Infrastructure
             // only delayed (at the end of the execution), we ignore the 
             // feature-end call, if the feature has been closed already
             if (unitTestRuntimeProvider.DelayedFixtureTearDown &&
-                contextManager.FeatureContext == null)
+                FeatureContext == null)
                 return;
                 
             FireEvents(HookType.AfterFeature);
 
             if (specFlowConfiguration.TraceTimings)
             {
-                contextManager.FeatureContext.Stopwatch.Stop();
-                var duration = contextManager.FeatureContext.Stopwatch.Elapsed;
-                testTracer.TraceDuration(duration, "Feature: " + contextManager.FeatureContext.FeatureInfo.Title);
+                FeatureContext.Stopwatch.Stop();
+                var duration = FeatureContext.Stopwatch.Elapsed;
+                testTracer.TraceDuration(duration, "Feature: " + FeatureContext.FeatureInfo.Title);
             }
 
             contextManager.CleanupFeatureContext();
@@ -202,7 +202,8 @@ namespace TechTalk.SpecFlow.Infrastructure
         }
 
         #region Step/event execution
-        private void FireScenarioEvents(HookType bindingEvent)
+
+        protected virtual void FireScenarioEvents(HookType bindingEvent)
         {
             FireEvents(bindingEvent);
         }
@@ -217,8 +218,58 @@ namespace TechTalk.SpecFlow.Infrastructure
                 if (eventBinding.IsScoped && !eventBinding.BindingScope.Match(stepContext, out scopeMatches))
                     continue;
 
-                bindingInvoker.InvokeHook(eventBinding, contextManager, testTracer);
+                InvokeHook(bindingInvoker, eventBinding, bindingEvent);
             }
+        }
+
+        protected IObjectContainer TestThreadContainer { get; }
+
+        public void InvokeHook(IBindingInvoker invoker, IHookBinding hookBinding, HookType hookType)
+        {
+            var currentContainer = GetHookContainer(hookType);
+            var arguments = ResolveArguments(hookBinding, currentContainer);
+
+            TimeSpan duration;
+            invoker.InvokeBinding(hookBinding, contextManager, arguments, testTracer, out duration);
+        }
+
+        private IObjectContainer GetHookContainer(HookType hookType)
+        {
+            IObjectContainer currentContainer;
+            switch (hookType)
+            {
+                case HookType.BeforeTestRun:
+                case HookType.AfterTestRun:
+                    currentContainer = TestThreadContainer;
+                    break;
+                case HookType.BeforeFeature:
+                case HookType.AfterFeature:
+                    currentContainer = FeatureContext.FeatureContainer;
+                    break;
+                default: // scenario scoped hooks
+                    currentContainer = ScenarioContext.ScenarioContainer;
+                    break;
+            }
+            return currentContainer;
+        }
+
+        private object[] ResolveArguments(IHookBinding hookBinding, IObjectContainer currentContainer)
+        {
+            if (hookBinding.Method == null || !hookBinding.Method.Parameters.Any())
+                return null;
+            return hookBinding.Method.Parameters.Select(p => ResolveArgument(currentContainer, p)).ToArray();
+        }
+
+        private object ResolveArgument(IObjectContainer container, IBindingParameter parameter)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            if (parameter == null) throw new ArgumentNullException(nameof(parameter));
+
+            var runtimeParameterType = parameter.Type as RuntimeBindingType;
+            if (runtimeParameterType == null)
+                throw new SpecFlowException("Parameters can only be resolved for runtime methods.");
+
+            return testObjectResolver.ResolveBindingInstance(runtimeParameterType.Type, container);
         }
 
         private IOrderedEnumerable<IHookBinding> GetOrderedHooks(HookType bindingEvent)
@@ -226,7 +277,7 @@ namespace TechTalk.SpecFlow.Infrastructure
             return bindingRegistry.GetHooks(bindingEvent).OrderBy(x => x.HookOrder);            
         }
 
-        private void ExecuteStep(StepInstance stepInstance)
+        private void ExecuteStep(IContextManager contextManager, StepInstance stepInstance)
         {
             HandleBlockSwitch(stepInstance.StepDefinitionType.ToScenarioBlock());
 
@@ -240,6 +291,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             try
             {
                 match = GetStepMatch(stepInstance);
+                contextManager.StepContext.StepInfo.BindingMatch = match;
+                contextManager.StepContext.StepInfo.StepInstance = stepInstance;
                 arguments = GetExecuteArguments(match);
 
                 if (isStepSkipped)
@@ -302,11 +355,11 @@ namespace TechTalk.SpecFlow.Infrastructure
             }
         }
 
-        private BindingMatch GetStepMatch(StepInstance stepInstance)
+        protected virtual BindingMatch GetStepMatch(StepInstance stepInstance)
         {
             List<BindingMatch> candidatingMatches;
             StepDefinitionAmbiguityReason ambiguityReason;
-            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, contextManager.FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
+            var match = stepDefinitionMatchService.GetBestMatch(stepInstance, FeatureContext.BindingCulture, out ambiguityReason, out candidatingMatches);
 
             if (match.Success)
                 return match;
@@ -320,12 +373,12 @@ namespace TechTalk.SpecFlow.Infrastructure
                     throw errorProvider.GetAmbiguousBecauseParamCheckMatchError(candidatingMatches, stepInstance);
             }
 
-            testTracer.TraceNoMatchingStepDefinition(stepInstance, contextManager.FeatureContext.FeatureInfo.GenerationTargetLanguage, contextManager.FeatureContext.BindingCulture, candidatingMatches);
+            testTracer.TraceNoMatchingStepDefinition(stepInstance, FeatureContext.FeatureInfo.GenerationTargetLanguage, FeatureContext.BindingCulture, candidatingMatches);
             contextManager.ScenarioContext.MissingSteps.Add(stepInstance);
             throw errorProvider.GetMissingStepDefinitionError();
         }
 
-        private TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
+        protected virtual TimeSpan ExecuteStepMatch(BindingMatch match, object[] arguments)
         {
             TimeSpan duration = TimeSpan.Zero;
             try
@@ -399,7 +452,8 @@ namespace TechTalk.SpecFlow.Infrastructure
             contextManager.InitializeStepContext(new StepInfo(stepDefinitionType, text, tableArg, multilineTextArg));
             try
             {
-                ExecuteStep(new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext()));
+                var stepInstance = new StepInstance(stepDefinitionType, stepDefinitionKeyword, keyword, text, multilineTextArg, tableArg, contextManager.GetStepContext());
+                ExecuteStep(contextManager, stepInstance);
             }
             finally
             {

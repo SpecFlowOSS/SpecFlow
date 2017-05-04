@@ -17,6 +17,13 @@ namespace TechTalk.SpecFlow
         internal StepDefinitionType[] Types { get; private set; }
         public string Regex { get; set; }
 
+        /// <summary>
+        /// additional information in which culture the step is written
+        /// it does not affect the matching of the step
+        /// it is only for tooling support needed
+        /// </summary>
+        public string Culture { get; set; }
+
         internal StepDefinitionBaseAttribute(string regex, StepDefinitionType type)
             : this(regex, new[] { type })
         {
@@ -46,6 +53,12 @@ namespace TechTalk.SpecFlow
             : base(regex, StepDefinitionType.Given)
         {
         }
+
+        public GivenAttribute(string regex, string culture) 
+            : this(regex)
+        {
+            Culture = culture;
+        }
     }
 
     /// <summary>
@@ -60,6 +73,12 @@ namespace TechTalk.SpecFlow
         public WhenAttribute(string regex)
             : base(regex, StepDefinitionType.When)
         {
+        }
+
+        public WhenAttribute(string regex, string culture) 
+            : this(regex)
+        {
+            Culture = culture;
         }
     }
 
@@ -76,6 +95,12 @@ namespace TechTalk.SpecFlow
             : base(regex, StepDefinitionType.Then)
         {
         }
+
+        public ThenAttribute(string regex, string culture) 
+            : this(regex)
+        {
+            Culture = culture;
+        }
     }
 
     /// <summary>
@@ -83,142 +108,20 @@ namespace TechTalk.SpecFlow
     /// </summary>
     public class StepDefinitionAttribute : StepDefinitionBaseAttribute
     {
-        public StepDefinitionAttribute() : this(null)
+        public StepDefinitionAttribute() 
+            : this(null)
         {
         }
 
-        public StepDefinitionAttribute(string regex) : base(regex, new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then })
+        public StepDefinitionAttribute(string regex) 
+            : base(regex, new[] { StepDefinitionType.Given, StepDefinitionType.When, StepDefinitionType.Then })
         {
         }
-    }
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class HookAttribute : Attribute
-    {
-        internal HookType Event { get; private set; }
-        public string[] Tags { get; private set; }
-        /// <summary>
-        /// The order in which the hook will be executed. Lower numbers go first. 
-        /// Orders are only applicable for hooks of the same type. 
-        /// Hooks with the same priority will have non-deterministic execution order. 
-        /// Default value is 10,000.
-        /// </summary>
-        public int Order { get; set; }
-        public const int DefaultOrder = 10000;
-
-        internal HookAttribute(HookType bindingEvent, string[] tags)
+        public StepDefinitionAttribute(string regex, string culture) 
+            : this(regex)
         {
-            Event = bindingEvent;
-            Tags = tags;
-            Order = DefaultOrder;
+            Culture = culture;
         }
-    }
-
-    public class BeforeTestRunAttribute : HookAttribute
-    {
-        /// <summary>
-        /// Constructs a new BeforeTestRunAttribute with a default Order of 10000
-        /// </summary>
-        public BeforeTestRunAttribute() : base(HookType.BeforeTestRun, null) {}
-        
-    }
-
-    public class AfterTestRunAttribute : HookAttribute
-    {
-        public AfterTestRunAttribute() : base(HookType.AfterTestRun, null) { }        
-    }
-
-    public class BeforeFeatureAttribute : HookAttribute
-    {
-        public BeforeFeatureAttribute(params string[] tags) : base(HookType.BeforeFeature, tags) { }
-    }
-
-    public class AfterFeatureAttribute : HookAttribute
-    {
-        public AfterFeatureAttribute(params string[] tags) : base(HookType.AfterFeature, tags) { }        
-    }
-
-    /// <summary>
-    /// Specifies a hook to be executed before each scenario.
-    /// </summary>
-    public class BeforeScenarioAttribute : HookAttribute
-    {
-        public BeforeScenarioAttribute(params string[] tags) : base(HookType.BeforeScenario, tags) { }
-    }
-
-    /// <summary>
-    /// Specifies a hook to be executed before each scenario. This attribute is a synonym to <see cref="BeforeScenarioAttribute"/>.
-    /// </summary>
-    public class BeforeAttribute : BeforeScenarioAttribute
-    {
-        public BeforeAttribute(params string[] tags) : base(tags) { }
-    }
-
-    /// <summary>
-    /// Specifies a hook to be executed after each scenario.
-    /// </summary>
-    public class AfterScenarioAttribute : HookAttribute
-    {     
-        public AfterScenarioAttribute(params string[] tags) : base(HookType.AfterScenario, tags) { }
-    }
-
-    /// <summary>
-    /// Specifies a hook to be executed after each scenario. This attribute is a synonym to <see cref="AfterScenarioAttribute"/>.
-    /// </summary>
-    public class AfterAttribute : AfterScenarioAttribute
-    {
-        public AfterAttribute(params string[] tags) : base(tags) { }
-    }
-
-    public class BeforeScenarioBlockAttribute : HookAttribute
-    {   
-        public BeforeScenarioBlockAttribute(params string[] tags) : base(HookType.BeforeScenarioBlock, tags) { }
-    }
-
-    public class AfterScenarioBlockAttribute : HookAttribute
-    {        
-        public AfterScenarioBlockAttribute(params string[] tags) : base(HookType.AfterScenarioBlock, tags) { }
-    }
-
-    public class BeforeStepAttribute : HookAttribute
-    {      
-        public BeforeStepAttribute(params string[] tags) : base(HookType.BeforeStep, tags) { }
-    }
-
-    public class AfterStepAttribute : HookAttribute
-    {        
-        public AfterStepAttribute(params string[] tags) : base(HookType.AfterStep, tags) { }
-    }
-
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public class StepArgumentTransformationAttribute : Attribute
-    {
-        public string Regex { get; set; }
-
-        public StepArgumentTransformationAttribute(string regex)
-        {
-            Regex = regex;
-        }   
-        
-        public StepArgumentTransformationAttribute()
-        {
-            Regex = null;
-        }
-    }
-
-    /// <summary>
-    /// Restricts the binding attributes (step definition, hook, etc.) to be applied only in a specific scope.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-    public class ScopeAttribute : Attribute
-    {
-        public string Tag { get; set; }
-        public string Feature { get; set; }
-        public string Scenario { get; set; }
-    }
-
-    [Obsolete("Use [Scope] attribute instead.")]
-    public class StepScopeAttribute : ScopeAttribute
-    {
     }
 }

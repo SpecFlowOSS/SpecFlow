@@ -10,7 +10,7 @@ namespace TechTalk.SpecFlow.Parser
 {
     public class SpecFlowGherkinParser
     {
-        private readonly GherkinDialectProvider dialectProvider;
+        private readonly IGherkinDialectProvider dialectProvider;
 
         private class SpecFlowGherkinDialectProvider : GherkinDialectProvider
         {
@@ -38,14 +38,19 @@ namespace TechTalk.SpecFlow.Parser
             }
         }
 
-        public GherkinDialectProvider DialectProvider
+        public IGherkinDialectProvider DialectProvider
         {
             get { return dialectProvider; }
         }
 
-        public SpecFlowGherkinParser(CultureInfo defaultLanguage)
+        public SpecFlowGherkinParser(IGherkinDialectProvider dialectProvider)
         {
-            dialectProvider = new SpecFlowGherkinDialectProvider(defaultLanguage.Name);
+            this.dialectProvider = dialectProvider;
+        }
+
+        public SpecFlowGherkinParser(CultureInfo defaultLanguage) 
+            : this(new SpecFlowGherkinDialectProvider(defaultLanguage.Name))
+        {
         }
 
         private static StepKeyword GetStepKeyword(GherkinDialect dialect, string stepKeyword)
@@ -119,16 +124,30 @@ namespace TechTalk.SpecFlow.Parser
 
         public SpecFlowDocument Parse(TextReader featureFileReader, string sourceFilePath)
         {
-            var parser = new Parser<SpecFlowDocument>(new SpecFlowAstBuilder(sourceFilePath));
-            var tokenMatcher = new TokenMatcher(dialectProvider);
-            SpecFlowDocument specFlowDocument = parser.Parse(new TokenScanner(featureFileReader), tokenMatcher);
+            var parser = new Parser<SpecFlowDocument>(CreateAstBuilder(sourceFilePath));
+            SpecFlowDocument specFlowDocument = parser.Parse(CreateTokenScanner(featureFileReader), CreateTokenMatcher());
 
             CheckSemanticErrors(specFlowDocument);
 
             return specFlowDocument;
         }
 
-        private void CheckSemanticErrors(SpecFlowDocument specFlowDocument)
+        protected virtual ITokenScanner CreateTokenScanner(TextReader featureFileReader)
+        {
+            return new TokenScanner(featureFileReader);
+        }
+
+        protected virtual ITokenMatcher CreateTokenMatcher()
+        {
+            return new TokenMatcher(dialectProvider);
+        }
+
+        protected virtual IAstBuilder<SpecFlowDocument> CreateAstBuilder(string sourceFilePath)
+        {
+            return new SpecFlowAstBuilder(sourceFilePath);
+        }
+
+        protected virtual void CheckSemanticErrors(SpecFlowDocument specFlowDocument)
         {
             if (specFlowDocument?.SpecFlowFeature == null)
                 return;

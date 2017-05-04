@@ -8,6 +8,8 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
 {
     public class MbUnit3TestGeneratorProvider : MbUnitTestGeneratorProvider
     {
+        protected const string PARALLELIZABLE_ATTR = "MbUnit.Framework.ParallelizableAttribute";
+
         public MbUnit3TestGeneratorProvider(CodeDomHelper codeDomHelper) : base(codeDomHelper)
         {
         }
@@ -21,6 +23,11 @@ namespace TechTalk.SpecFlow.Generator.UnitTestProvider
         public override UnitTestGeneratorTraits GetTraits()
         {
             return base.GetTraits()| UnitTestGeneratorTraits.ParallelExecution;
+        }
+
+        public override void SetTestClassParallelize(TestClassGenerationContext generationContext)
+        {
+            CodeDomHelper.AddAttribute(generationContext.TestClass, PARALLELIZABLE_ATTR, new CodeAttributeArgument(new CodePrimitiveExpression(generationContext.TestClass.Name)));
         }
     }
 }

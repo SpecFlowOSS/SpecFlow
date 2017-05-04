@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using BoDi;
 using FluentAssertions;
 using Moq;
@@ -103,6 +104,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             mockTracer.Verify(x => x.TraceWarning("The previous ScenarioStepContext was already disposed."), Times.Once());
         }
 
+        [Test]
         public void StepContext_WhenInitializedOnce_ShouldReportStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -116,6 +118,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(firstStepInfo, actualStepInfo);
         }
 
+        [Test]
         public void StepContext_WhenInitializedTwice_ShouldReportSecondStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -130,6 +133,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             Assert.AreEqual(secondStepInfo, actualStepInfo);
         }
 
+        [Test]
         public void StepContext_WhenInitializedTwiceAndCleanedUpOnce_ShouldReportFirstStepInfo()
         {
             var mockTracer = new Mock<ITestTracer>();
@@ -138,6 +142,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
             var firstStepInfo = CreateStepInfo("I have called initialize once");
             contextManager.InitializeStepContext(firstStepInfo);
             contextManager.InitializeStepContext(CreateStepInfo("I have called initialize twice"));
+            contextManager.CleanupStepContext();
 
             var actualStepInfo = contextManager.StepContext.StepInfo;
 
@@ -277,6 +282,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
         {
             var mockTracer = new Mock<ITestTracer>();
             var contextManager = ResolveContextManager(mockTracer.Object);
+            contextManager.InitializeFeatureContext(new FeatureInfo(new CultureInfo("en-US"), "F", null));
 
             contextManager.InitializeStepContext(this.CreateStepInfo("I have called initialize once"));
             //// Do not call CleanupStepContext, in order to simulate an inconsistent state

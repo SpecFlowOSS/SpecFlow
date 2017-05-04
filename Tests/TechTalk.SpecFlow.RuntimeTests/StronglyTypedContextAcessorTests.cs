@@ -265,7 +265,7 @@ namespace TechTalk.SpecFlow.RuntimeTests
 
         private static ScenarioContext CreateScenarioContext()
         {
-            return new ScenarioContext(new ObjectContainer(), new ScenarioInfo("Test", new string[] {}), new BindingInstanceResolver());
+            return new ScenarioContext(new ObjectContainer(), new ScenarioInfo("Test", new string[] {}), new TestObjectResolver());
         }
 
         public class ScenarioTestClass : IScenarioTestInterface

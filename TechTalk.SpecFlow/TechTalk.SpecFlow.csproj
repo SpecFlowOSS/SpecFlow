@@ -171,10 +171,11 @@
     <Compile Include="Configuration\JsonConfig\UnitTestProviderElement.cs" />
     <Compile Include="Configuration\SpecFlowConfigurationHolder.cs" />
     <Compile Include="EnvironmentVariableNames.cs" />
-    <Compile Include="Infrastructure\BindingInstanceResolver.cs" />
+    <Compile Include="HookAttributes.cs" />
+    <Compile Include="Infrastructure\TestObjectResolver.cs" />
     <Compile Include="Infrastructure\ContextManager.cs" />
     <Compile Include="Infrastructure\ContextManagerExtensions.cs" />
-    <Compile Include="Infrastructure\IBindingInstanceResolver.cs" />
+    <Compile Include="Infrastructure\ITestObjectResolver.cs" />
     <Compile Include="Infrastructure\IContainerDependentObject.cs" />
     <Compile Include="Configuration\DefaultRuntimeConfigurationProvider.cs" />
     <Compile Include="Configuration\IRuntimeConfigurationProvider.cs" />
@@ -220,6 +221,8 @@
     <Compile Include="Plugins\RuntimePluginParameters.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="ScenarioStepContext.cs" />
+    <Compile Include="ScopeAttributes.cs" />
+    <Compile Include="StepArgumentTransformationAttribute.cs" />
     <Compile Include="StepInfo.cs" />
     <Compile Include="Steps.cs" />
     <Compile Include="Bindings\StepArgumentTransformationBinding.cs" />

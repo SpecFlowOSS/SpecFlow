@@ -35,12 +35,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions, Version=4.9.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentAssertions.4.9.0\lib\net45\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FluentAssertions.Core, Version=4.9.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentAssertions.4.9.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+    <Reference Include="FluentAssertions.Core, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Gherkin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
@@ -98,11 +98,14 @@
     <Compile Include="Drivers\AppConfigConfigurationDriver.cs" />
     <Compile Include="Drivers\SpecFlowJsonConfigurationDriver.cs" />
     <Compile Include="Drivers\StepBindingInput.cs" />
+    <Compile Include="StepDefinitions\TestSettingsFileSteps.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.cs" />
     <EmbeddedResource Include="Drivers\Templates\BindingClass.fs" />
     <EmbeddedResource Include="Drivers\Templates\Bindings.fs" />
+    <Compile Include="Drivers\TestSettingsFileInput.cs" />
     <Compile Include="Drivers\XUnitTestExecutionDriver.cs" />
     <Compile Include="StepDefinitions\BeforeScenarioHooks.cs" />
+    <Compile Include="StepDefinitions\ContentFileSteps.cs" />
     <Compile Include="StepDefinitions\ExternalLibrarySteps.cs" />
     <Compile Include="StepDefinitions\GherkinParserSteps.cs" />
     <Compile Include="StepDefinitions\ProjectSteps.cs" />
@@ -138,6 +141,7 @@
     <None Include="Features\ContextInjection.feature" />
     <None Include="Features\ExternalSteps.feature" />
     <None Include="Features\InAppDomainParallelExecution.feature" />
+    <None Include="Features\InjectoContextToHooks.feature" />
     <None Include="Features\LanguageSupport.feature" />
     <None Include="Features\Reports\StepDefinitionReport.feature" />
     <None Include="Features\ScopedHooks.feature" />

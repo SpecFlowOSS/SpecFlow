@@ -468,6 +468,7 @@ namespace TechTalk.SpecFlow.Generator
         {
 
             CodeMemberMethod testMethod = CreateTestMethod(generationContext, scenarioOutline, exampleSetTags, variantName, exampleSetIdentifier);
+            AddLineDirective(testMethod.Statements, scenarioOutline);
 
             //call test implementation with the params
             List<CodeExpression> argumentExpressions = row.Cells.Select(paramCell => new CodePrimitiveExpression(paramCell.Value)).Cast<CodeExpression>().ToList();

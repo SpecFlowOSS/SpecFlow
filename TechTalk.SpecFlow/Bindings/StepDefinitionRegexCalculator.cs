@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using TechTalk.SpecFlow.Bindings.Reflection;
@@ -17,7 +16,17 @@ namespace TechTalk.SpecFlow.Bindings
 
     public class StepDefinitionRegexCalculator : IStepDefinitionRegexCalculator
     {
-        private readonly Configuration.SpecFlowConfiguration specFlowConfiguration;
+        // for us, a word character means:
+        // \w - letters (Ll, Lu, Lt, Lo, Lm), marks (Mn), numbers (Nd), connectors (Pc, like '_')
+        // \p{Sc} - currency symbols (Sc)
+        // minus sign
+
+        // words can be connected with:
+        // any non-word character (including empty)
+        // but - sign can only stand at the end of the connecting text if the next character is not digit
+
+        private const string WordConnectorRe = @"[^\w\p{Sc}]*(?!(?<=-)\d)";
+
 
         public StepDefinitionRegexCalculator(Configuration.SpecFlowConfiguration specFlowConfiguration)
         {
@@ -29,29 +38,32 @@ namespace TechTalk.SpecFlow.Bindings
         {
             // if method name seems to contain regex, we use it as-is
             if (nonIdentifierRe.Match(bindingMethod.Name).Success)
-            {
                 return bindingMethod.Name;
-            }
 
-            string stepText = bindingMethod.Name;
-            stepText = RemoveStepPrefix(stepDefinitionType, stepText);
+            string methodName = bindingMethod.Name;
+            methodName = RemoveStepPrefix(stepDefinitionType, methodName);
 
             var parameters = bindingMethod.Parameters.ToArray();
 
             int processedPosition = 0;
             var reBuilder = new StringBuilder("(?i)");
-            foreach (var paramPosition in parameters.Select((p, i) => CalculateParamPosition(stepText, p, i)).Where(pp => pp.Position >= 0).OrderBy(pp => pp.Position))
+            foreach (var paramPosition in parameters.Select((p, i) => CalculateParamPosition(methodName, p, i)).Where(pp => pp.Position >= 0).OrderBy(pp => pp.Position))
             {
                 if (paramPosition.Position < processedPosition)
                     continue; //this is an error case -> overlapping parameters
 
-                reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, paramPosition.Position - processedPosition)));
+                if (paramPosition.Position > processedPosition)
+                { 
+                    reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition, paramPosition.Position - processedPosition)));
+                    reBuilder.Append(WordConnectorRe);
+                }
                 reBuilder.Append(CalculateParamRegex(parameters[paramPosition.ParamIndex]));
+                reBuilder.Append(WordConnectorRe);
                 processedPosition = paramPosition.Position + paramPosition.Length;
             }
 
-            reBuilder.Append(CalculateRegex(stepText.Substring(processedPosition, stepText.Length - processedPosition)));
-            reBuilder.Append(@"\W*");
+            reBuilder.Append(CalculateWordRegex(methodName.Substring(processedPosition)));
+            reBuilder.Append(WordConnectorRe);
 
             return reBuilder.ToString();
         }
@@ -92,22 +104,28 @@ namespace TechTalk.SpecFlow.Bindings
 
         private string CalculateParamRegex(IBindingParameter parameterInfo)
         {
-            return string.Format(@"(?:['""](?<{0}>.*[^'""])['""]|(?<{0}>.+))", parameterInfo.ParameterName);
+            // parameters should match to the following
+            // 1. quoted text: "..."
+            // 2. apostrophed text: '...'
+            // 3. longer text with lazy matching (as few as possible), to avoid "eating" whitespace before/after
+            return string.Format(@"(?:""(?<{0}>[^""]*)""|'(?<{0}>[^']*)'|(?<{0}>.*?))", parameterInfo.ParameterName);
         }
 
-        private static readonly Regex wordBoundaryRe = new Regex(@"(?<=[\d\p{L}])\p{Lu}|(?<=\p{L})\d"); //mathces on boundaries of: 0A, aA, AA, a0, A0
+        private static readonly Regex wordBoundaryRe = new Regex(@"_+|(?<=[\d\p{L}])(?=\p{Lu})|(?<=\p{L})(?=\d)"); //mathces on underscores and boundaries of: 0A, aA, AA, a0, A0
 
-        private string CalculateRegex(string text)
+        private string CalculateWordRegex(string methodNamePart)
         {
-            text = wordBoundaryRe.Replace(text, match => @"\W*" + match.Value[0]);
-            return text.Replace("_", @"\W+(?!(?<=-)\d)"); //get one or more non-word characters until we find one which is not a - that is followed by a number
+            if (string.IsNullOrEmpty(methodNamePart))
+                return string.Empty;
+
+            return wordBoundaryRe.Replace(methodNamePart.Trim('_'), match => WordConnectorRe);
         }
 
         private class ParamSearchResult
         {
-            public int Position { get; private set; }
-            public int Length { get; private set; }
-            public int ParamIndex { get; private set; }
+            public int Position { get; }
+            public int Length { get; }
+            public int ParamIndex { get; }
 
             public ParamSearchResult(int position, int length, int paramIndex)
             {
@@ -117,30 +135,14 @@ namespace TechTalk.SpecFlow.Bindings
             }
         }
 
-        private int IndexOfWithUnderscores(string text, string textToFind)
-        {
-            int index = ("_" + text + "_").IndexOf("_" + textToFind + "_");
-            return index;
-        }
-
-        private ParamSearchResult CalculateParamPosition(string stepText, IBindingParameter bindingParameter, int paramIndex)
+        private ParamSearchResult CalculateParamPosition(string methodNamePart, IBindingParameter bindingParameter, int paramIndex)
         {
             string paramName = bindingParameter.ParameterName.ToUpper();
-            int result = IndexOfWithUnderscores(stepText, paramName);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramName.Length, paramIndex);
-                
-            result = stepText.IndexOf(paramName);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramName.Length, paramIndex);
-
-            string paramReference = string.Format("P{0}", paramIndex);
-            result = IndexOfWithUnderscores(stepText, paramReference);
-            if (result >= 0)
-                return new ParamSearchResult(result, paramReference.Length, paramIndex);
-
+            var paramRegex = new Regex(string.Format(@"_?{0}_?|_?P{1}_?", paramName, paramIndex));
+            var match = paramRegex.Match(methodNamePart);
+            if (match.Success)
+                return new ParamSearchResult(match.Index, match.Length, paramIndex);
             return new ParamSearchResult(-1, 0, paramIndex);
         }
-
     }
 }
